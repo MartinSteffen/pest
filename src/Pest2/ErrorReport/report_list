@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	--------------
 //
-//	$Id: report_list,v 1.49 1999-02-10 11:15:13 swtech22 Exp $
+//	$Id: report_list,v 1.50 1999-02-10 16:50:51 swtech23 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -385,7 +385,7 @@ java.lang.NullPointerException:
 #Number:	25.1
 #Autor:		Bernd Weber bwe
 #Subject:	Check: erkennt Interlevel-Transition nicht.
-#Status:	processing
+#Status:	fixed
 #Description:
 
 Erzeugt man einen Or-State und einen Basic-State wie in Nr. 24 und zieht eine
