@@ -4,8 +4,6 @@
  *
  * Created: Fri Nov 27 09:58:01 1998
  *
- * @author Software Technologie 24
- * @version
  */
 
 package editor;
@@ -16,6 +14,15 @@ import java.io.*;
 import absyn.*;
 import editor.desk.*;
 
+/**
+ * @author Michael Mai / Martin Bestaendig
+ * @version v 1.9 </dl>
+ * <H3>STATUS:</H3>
+ * <ul>
+ * <li> Alle Objekte koennen gehighlightet werden.
+ * <li> Stubs dienen zur Kompatibilitaet mit anderem Editor
+ * </ul>
+ */
 public class highlightObject {
 
   static Graphics h;

@@ -20,28 +20,26 @@ import tesc1.*;
 
 /**
  * @author Michael Mai / Martin Bestaendig
- * @version
+ * @version 1.33 </dl>
  *
- * Wir erwarten :
+ * <H3>Wir erwarten :</H3>
  *<ul>
  * <li> eine syntaktisch korrekte Statechart  
  * <li> diese Statechart soll mindestens so aussehen : Statechart(null,null,null,null)  
  * <li> die Koordinaten der Statechart-Objekt muessen korrekt und relativ sein
  * <li> alle Listen muessen vorschriftsmaessig gefuehrt sein
  * </ul>
- *
- * Wir bieten :
+ * </dl>
+ *<H3> Wir bieten :</H3>
  *<ul>
  * <li> ein grafisches Tool zum veraendern von Statecharts  
  * <li> ein separates Menuefenster  
  * <li> die Moeglichkeit alle Menues zu deaktivieren
  * <li> eine highlight-Funktion zur Simulation
- *<DL COMPACT>
  * </ul>
- * 
- *<DT><STRONG>
- * STATUS.
- *</STRONG>
+ * </dl>
+ *<H3> STATUS:</H3>
+ * <ul>
  * <li> Zeichnen von States funktioniert
  * <li> Zeichnen von Connectoren funktioniert
  * <li> Zeichnen von Transitionen funktioniert
@@ -54,29 +52,11 @@ import tesc1.*;
  * <li> highlighten funktioniert
  * <li> Zoomen funktioniert
  * <li> Kopieren von Objekten beschraenkt sich derzeit auf States (andere scheinen wenig sinnvoll)
- * <li> Verschieben von Komponenten beinhaltet noch einige NULLPOINTER-Exceptions und ist deshalb noch nicht eingebunden.
+ * <li> Verschieben von Komponenten wurde eingebunden, kolliediert aber noch mit der AbSyn.
  * <li> Ein Info-Fenster fuer die Transitionslabel wurde erstellt
  * <li> Ein Syntaxcheck fuer die Transitionsanchor wurde eingefuegt
- * <li> Undo funktioniert (In Abhaengigkeit zum AbSyn-Status
- *
- *<DT><STRONG>
- * TODO.
- * </STRONG>
- * <li> Speichern von Substatecharts (Termin : Abhaengig von der GUI
- * <DT><STRONG>
- *
- *<DT><STRONG>
- * BEKANNTE FEHLER.
- * </STRONG> 
- * Fehler treten zur Zeit auf, wenn wir keine gui-Referenz bekommen, dann laeuft das Programm, gibt aber Fehlermeldungen aus. 
- * Das Beispiel der STM laesst sich nicht fehlerfrei laden.
- * Wird ein Startzustand in ein anderes Objekt umgewandelt, so bleibt es trotzdem Startzustand. 
- *
- * </DT><STRONG>
- * TEMPORŽREN FEATURES.
- * </STRONG>
- * Derzeit keine.
- * </DL COMPACT>
+ * <li> Undo funktioniert (In Abhaengigkeit zum AbSyn-Status)
+ * </ul>
  */
 public class Editor extends Frame {
     public static String Buttontype = "";
