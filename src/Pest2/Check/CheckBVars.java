@@ -104,6 +104,12 @@ class CheckBVars {
 
       trl = os.trs;
       while (trl != null) {
+        // Faengt GuardUndet ab
+        if (trl.head.label.guard instanceof GuardUndet) {
+          error.addError(new ItemError(100,"undefinierter Guard (GuardUndet) gefunden", path));     
+          ok = false;
+          }
+
         // Testen, ob die BVars in den Guards auch deklariert sind
         if (trl.head.label.guard instanceof GuardBVar) {
           GuardBVar g = (GuardBVar)trl.head.label.guard;
