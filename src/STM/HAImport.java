@@ -65,7 +65,7 @@ import tesc1.TESCSaver;
  * </DL COMPACT>
  *
  * @author  Sven Jorga, Werner Lehmann
- * @version $Id: HAImport.java,v 1.22 1999-02-11 18:38:54 swtech18 Exp $
+ * @version $Id: HAImport.java,v 1.23 1999-02-11 22:14:32 swtech18 Exp $
  */
 public class HAImport implements Patterns {
   Perl5Util perl = new Perl5Util();
@@ -307,7 +307,13 @@ public class HAImport implements Patterns {
     return getStatechart();
   }
 
-  // Pattern darf nicht in Stringset enthalten sein
+  /** Diese Methode liefert zurück, ob die importierte StateChart
+   *  Koordinaten hat (true) oder nicht (false).
+   */
+  public boolean hasCoords() {
+    return parseCoords;
+  }
+
   private Vector splitStringset(String stringset, String pattern) {
     if (stringset.equals(""))
       return new Vector();
@@ -519,7 +525,7 @@ public class HAImport implements Patterns {
   }
 
   private boolean inXRange(State s1, State s2) {
-    int size = 25;
+    int size = 5;
     int pos = s1.rect.x + s1.rect.width;
     if(pos-size < s2.rect.x && s2.rect.x < pos+size &&
        s1.rect.y-size < s2.rect.y && s2.rect.y < s1.rect.y+size)
@@ -530,8 +536,8 @@ public class HAImport implements Patterns {
 
   private boolean inYRange(State s1, State s2) {
     int pos = s1.rect.y + s1.rect.height;
-    if(pos-25 < s2.rect.y && s2.rect.y < pos+25 &&
-       s1.rect.x-25 < s2.rect.x && s2.rect.x < s1.rect.x+25)
+    if(pos-5 < s2.rect.y && s2.rect.y < pos+5 &&
+       s1.rect.x-5 < s2.rect.x && s2.rect.x < s1.rect.x+5)
       return true;
     else
       return false;
