@@ -1,8 +1,8 @@
-# $Id: Makefile,v 1.8 1999-02-11 10:57:47 swtech25 Exp $
+# $Id: Makefile,v 1.9 1999-02-17 11:00:34 swtech25 Exp $
 JAVAC=javac
 JAVACFLAGS=-deprecation -depend
 JAVADOC=javadoc
-JAVADOCFLAGS=-author -version
+JAVADOCFLAGS=-author -version -private
 files=CodeGen.java CodeGenException.java dumpHA.java dumpTables.java
 
 all: $(files:.java=.class)
