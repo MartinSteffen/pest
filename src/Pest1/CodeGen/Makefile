@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.5 1999-01-18 11:00:43 swtech25 Exp $
+# $Id: Makefile,v 1.6 1999-01-25 15:10:16 swtech25 Exp $
 JAVAC=javac
 JAVACFLAGS=-g -deprecation -depend
 JAVADOC=javadoc
@@ -13,5 +13,5 @@ clean:
 %.class: %.java
 	$(JAVAC) $(JAVACFLAGS) $<
 
-local-docu: $(files)
+localdocu: $(files)
 	$(JAVADOC) $(JAVADOCFLAGS) $(files)
