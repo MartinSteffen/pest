@@ -7,6 +7,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import com.oroinc.text.perl.*;
 import util.PrettyPrint;
+import gui.GUIInterface;
 
 /**
  * Die Klasse HAImport dient zur Konvertierung des HA-Formates in einen
@@ -15,11 +16,13 @@ import util.PrettyPrint;
  * wird ein PEST-Statechart erzeugt.
  * Beispiel:
  * <pre>
+ *    GUIInterface myWindow = ...;
  *    Statechart st = null;
  *    BufferedReader buf = new BufferedReader(new FileReader(new File(ha-format.txt)));
- *    HAImport imp = new HAImport(buf);
+ *    HAImport imp = new HAImport(buf, myWindow);
  *
  *    st = imp.getStatechart();
+ *    if (st == null) System.out.println("Import fehlgeschlagen!");
  * </pre>
  *
  * <DL COMPACT>
@@ -29,10 +32,9 @@ import util.PrettyPrint;
  * Import funktioniert (HA-Format wird eingelesen und ein
  * StateChart in PEST-Syntax zur&uuml;ckgeliefert).
  * <DT><STRONG>TODO.</STRONG>
- * Die durch das Entfernen von Konnektoren entstandenen 
+ * Die durch das Entfernen von Konnektoren entstandenen
  * &Uuml;berschneidungen von Transitionen m&uuml;ssen
- * noch &uuml;berarbeitet werden. Exceptions m&uuml;ssen noch in Form von Warnungen
- * und Fehlermeldungen an GUI weitergeleitet werden.
+ * noch &uuml;berarbeitet werden.
  * <DT><STRONG>
  * BEKANNTE FEHLER.
  * </STRONG>
@@ -48,11 +50,12 @@ import util.PrettyPrint;
  * </DL COMPACT>
  *
  * @author  Sven Jorga, Werner Lehmann
- * @version $Id: HAImport.java,v 1.6 1999-01-05 15:40:34 swtech18 Exp $
+ * @version $Id: HAImport.java,v 1.7 1999-01-08 16:49:53 swtech18 Exp $
  */
 public class HAImport implements Patterns {
   Perl5Util perl = new Perl5Util();
 
+  private static final int SKAL = 20;
   private String mkhaString = null;
   private String eventsString = null;
   private String statesString = null;
@@ -67,27 +70,45 @@ public class HAImport implements Patterns {
   private String depthString = null;
   private String initString = null;
 
-  Hashtable tyHash = null;
-  Hashtable hiHash = null;
-  Hashtable trHash = null;
-  Hashtable coordHash = null;
-  Hashtable initHash = null;
+  private GUIInterface gui = null;
+  private boolean initSuccess = false;
+  private Hashtable tyHash = null;
+  private Hashtable hiHash = null;
+  private Hashtable trHash = null;
+  private Hashtable coordHash = null;
+  private Hashtable initHash = null;
 
   public HAImport(BufferedReader reader) throws Exception {
+    initImport(reader);
+  }
+
+  public HAImport(BufferedReader reader, GUIInterface gui ) throws Exception {
+    this.gui = gui;
+    try {
+      initImport(reader);}
+    catch ( Exception e) {
+      if (gui == null)
+        throw e;
+      else
+        gui.userMessage("STM: Fehler beim Importieren. (" + e.getMessage() + ")");}
+  }
+
+  public void initImport(BufferedReader reader) throws Exception {
     String str = new String();
-   
+
+    initSuccess = false;
     while (reader.ready())
       str += reader.readLine();
     str = perl.substitute("s/\\s//g",str);
     String pattern = new String(MK_SYSTEM);
     if (!perl.match("/"+pattern+"/",str))
-      throw new Exception("Fehler beim Importieren.");
+      throw new Exception("Eingabedatei nicht korrektes HAFormat. Konstruktor mk_system() fehlerhaft.");
     str = perl.group(1);
 
     pattern = STRINGSET+",(.*)";
     for (int i=1; i<13; i++) {
       if (!perl.match("/"+pattern+"/",str))
-        throw new Exception("Fehler beim Importieren.");
+        throw new Exception("Komponente "+i+" vom ersten mk_ha() fehlerhaft.");
       switch(i) {
         case( 1): eventsString = perl.group(1); pattern = STRINGSET; break;
         case( 2): statesString = perl.group(1); pattern = STRING; break;
@@ -111,33 +132,26 @@ public class HAImport implements Patterns {
     hiHash = makeHiHash(hiString);
     trHash = makeTrHash(trmapString);
     coordHash = makeCoordHash(statesString);
-    //System.out.println(coordHash);
     initHash = makeInitHash(initString);
-    //System.out.println(initHash);
-    //PathList p = getPathList();
-    //Or_State stTest = (Or_State)getState();
-
-    //pp.start(new Statechart(getEventList(),getBvarList(),getPathList(),getState()));
+    initSuccess = true;
   }
 
-  public Statechart getStatechart() {
+  public Statechart getStatechart() throws Exception {
     Statechart st = null;
-    try {
-      st = new Statechart(getEventList(),getBvarList(),getPathList(),getState()); }
-    catch(Exception e) {
-      System.out.println("Fehler beim Importieren. (" + e.getMessage() + ")");}
+    if (!initSuccess)
+      gui.userMessage("STM: getStatechart - Init fehlgeschlagen.");
+    else
+      try {
+        st = new Statechart(getEventList(),getBvarList(),getPathList(),getState()); }
+      catch(Exception e) {
+        if (gui == null)
+          throw e;
+        else
+          gui.userMessage("STM: Fehler beim Importieren. (" + e.getMessage() + ")");}
     return st;
   }
 
-  //public HAImport(String filename) throws Exception {
-    // try {
-    //HAImport(new BufferedReader(new FileReader(new File(filename))));//}
-  //catch(Exception e) {
-  //  throw new Exception("Fehler beim Importieren von " + filename + ". (" + e.getMessage() + ")");}
-  //}
-
   // Pattern darf nicht in Stringset enthalten sein
-
   private Vector splitStringset(String stringset, String pattern) {
     Vector strVec = perl.split(pattern,stringset);
     for (int i=0; i < strVec.size(); i++)
@@ -183,8 +197,8 @@ public class HAImport implements Patterns {
         // Remove (...)
         currentCoord = currentCoord.substring(1,currentCoord.length()-1);
         xyVec = deliSplit(currentCoord,',');
-        pointVec.addElement(new CPoint(Integer.parseInt((String)xyVec.elementAt(0)),
-                                      Integer.parseInt((String)xyVec.elementAt(1))));
+        pointVec.addElement(new CPoint(Integer.parseInt((String)xyVec.elementAt(0))*SKAL,
+                                      Integer.parseInt((String)xyVec.elementAt(1))*SKAL));
       }
       tempHash.put(removeQuotes((String)currentVec.elementAt(0)),pointVec);
     }
@@ -271,7 +285,7 @@ public class HAImport implements Patterns {
 
   private State getState() {
     try {
-      return createState(rootString); }
+      return createState(rootString, new CRectangle(0,0,0,0)); }
     catch (Exception e) {
       e.printStackTrace();
       System.out.println("schiefgegangen: "+e.getMessage());
@@ -279,7 +293,7 @@ public class HAImport implements Patterns {
     }
   }
 
-  private State createState(String stateName) throws Exception {
+  private State createState(String stateName, Rectangle baseRect) throws Exception {
     String stateType = null;
     Vector hiVec = null, trVec = null, pointVec = null;
     Or_State os = null;
@@ -305,6 +319,7 @@ public class HAImport implements Patterns {
         //rt = new CRectangle((CRectangle)rt.union(new CRectangle(pt)));
         }
     }
+    rt = new CRectangle(rt.x-baseRect.x,rt.y-baseRect.y,rt.width,rt.height);
     if (stateType.equalsIgnoreCase("BASIC"))
       return new Basic_State(new Statename(stateName),rt);
     else if (stateType.equalsIgnoreCase("OR")) {
@@ -316,14 +331,14 @@ public class HAImport implements Patterns {
         throw new Exception("or-State muss Substates enthalten");
       for (int i=hiVec.size(); i>0; i--) {
         // StateList erzeugen
-        sl = new StateList(createState((String)hiVec.elementAt(i-1)),sl);
+        sl = new StateList(createState((String)hiVec.elementAt(i-1),rt),sl);
         if ((trVec = (Vector)trHash.get((String)hiVec.elementAt(i-1))) != null) {
           for (int k=trVec.size(); k>0; k--) {
             Vector currentTrVec = (Vector)trVec.elementAt(k-1);
             pointVec.removeAllElements(); // pointVec soll jetzt die Koordinaten der Transitionen aufnehmen
             for (int m=6; m<currentTrVec.size(); m++) {
               perl.match("/<?mk_coord\\((\\d+),(\\d+)\\)>?/",(String)currentTrVec.elementAt(m));
-              pointVec.addElement(new CPoint(Integer.parseInt(perl.group(1)),Integer.parseInt(perl.group(2))));
+              pointVec.addElement(new CPoint((Integer.parseInt(perl.group(1))*SKAL)-rt.x,(Integer.parseInt(perl.group(2))*SKAL)-rt.y));
             }
             pointVec = removeDuplicates(pointVec);
             pointArray = new CPoint[pointVec.size()];
@@ -347,10 +362,10 @@ public class HAImport implements Patterns {
       if (hiVec == null)
         throw new Exception("And-State muss Substates enthalten");
       for (int i=hiVec.size(); i>0; i--)
-        sl = new StateList(createState((String)hiVec.elementAt(i-1)),sl);
+        sl = new StateList(createState((String)hiVec.elementAt(i-1),rt),sl);
       return new And_State(new Statename(stateName),sl,rt);  }
     else
-      throw new Exception("falscher Typ");
+      throw new Exception("State "+stateName+" hat unbekannten Typ "+stateType);
 
   }
 
@@ -358,10 +373,10 @@ public class HAImport implements Patterns {
     Vector v = new Vector();
     v = (Vector)vec.clone();
 
-    if (v.size() == 0) 
+    if (v.size() == 0)
       return v;
 
-    for (int i=0; i<v.size()-1; i++) 
+    for (int i=0; i<v.size()-1; i++)
       if ( ((CPoint)v.elementAt(i)).equals((CPoint)v.elementAt(i+1)))
         v.removeElementAt(i);
     return v;
@@ -379,11 +394,9 @@ public class HAImport implements Patterns {
     else if (perl.match("/^mk_noop\\((.*)\\)/",actionString)) {
       return new ActionEmpty(new Dummy()); }
     else if (perl.match("/mk_istmt\\((.*)\\)/",actionString)) {
-      throw new Exception("Integer Statements ("+actionString+") als Action sind nicht in PEST unterstÆtzt!"); }
-      //return null;
+      throw new Exception("Integer Statements ("+actionString+") als Action sind nicht in PEST unterstuetzt!"); }
     else {
       throw new Exception("Action ("+actionString+") kann nicht erzeugt werden."); }
-      //return null; }
   }
 
   private Aseq createAseq(String aseqString) throws Exception {
@@ -392,7 +405,7 @@ public class HAImport implements Patterns {
     Aseq result = null;
 
     if (aseqString.equals("") || (aseqString == null))
-      return null;
+      return new Aseq(new ActionEmpty(new Dummy()),null);
 
     Vector dsVec = deliSplit(aseqString,',');
     for (int i=dsVec.size(); i>0; i--)
@@ -417,7 +430,6 @@ public class HAImport implements Patterns {
                                      createGuard("",(String) vec.elementAt(1)))); }
     else {
       throw new Exception("Boolstmt ("+boolstmtString+") kann nicht erzeugt werden."); }
-      //return null; }
   }
 
   private Path createPath(String statename) {
