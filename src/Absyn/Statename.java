@@ -4,15 +4,29 @@ import java.io.Serializable;
 
 public class Statename extends TrAnchor implements Serializable, Cloneable {
     public String name;
+    public CPoint position;
+
     public Statename (String s) {
 	name = s;
+	position = null;
+    };
+
+    public Statename (String s, CPoint p) {
+	name = s;
+	position = p;
     };
 
 /**
  * @exception CloneNotSupportedException self-explanatory exception
  */
     public Object clone() throws CloneNotSupportedException {
-	return new Statename(name);
+      CPoint positionclone;
+      if (position != null) {
+	positionclone = (CPoint)position.clone();
+      } else
+	positionclone = null;
+
+	return new Statename(name, positionclone);
     };
 }
 
@@ -20,9 +34,12 @@ public class Statename extends TrAnchor implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Statename.java,v 1.7 1998-12-15 16:33:31 swtech00 Exp $
+//	$Id: Statename.java,v 1.8 1999-01-08 23:03:32 swtech14 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.7  1998/12/15 16:33:31  swtech00
+//	Towards new package names.
+//
 //	Revision 1.6  1998/12/15 13:38:08  swtech00
 //	exception-tag hinzugefuegt um javadoc sauber durchlaufen zu lassen
 //
