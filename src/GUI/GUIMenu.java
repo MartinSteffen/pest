@@ -10,7 +10,8 @@ extends MenuBar
 pest myWindow;
 
     Menu M_Export,M_Werkzeuge;
-MenuItem M_Speichern, M_Speichernu, M_Editor;
+MenuItem M_Speichern, M_Editor;
+    //MenuItem M_Speichernu;
 MenuItem M_Simulator, M_Codegen, M_SyntaxCheck,M_PrettyPrint;
 
 
@@ -31,7 +32,7 @@ public GUIMenu(pest myWindow)
   addMenuItem(m,"&Neu",ml);
   addMenuItem(m,"&Oeffnen",ml);
   M_Speichern  = addMenuItem(m,"&Speichern",ml);
-  M_Speichernu = addMenuItem(m,"Speichern &unter",ml);
+  //  M_Speichernu = addMenuItem(m,"Speichern &unter",ml);
   m.addSeparator();
 
   Menu mm = new Menu("Import");
@@ -112,7 +113,7 @@ void updateMenu()
 	if (myWindow.SyntaxBaum == null)
 	    {
  		M_Speichern.setEnabled(false);
- 		M_Speichernu.setEnabled(false);
+		// 		M_Speichernu.setEnabled(false);
  		M_Export.setEnabled(false);
 		M_Werkzeuge.setEnabled(false);
 		// 		M_Editor.setEnabled(false);
@@ -124,7 +125,7 @@ void updateMenu()
 	    {
 		
  		M_Speichern.setEnabled(true);
- 		M_Speichernu.setEnabled(true);
+		// 		M_Speichernu.setEnabled(true);
  		M_Editor.setEnabled(true);
  		M_Export.setEnabled(true);
 		M_Werkzeuge.setEnabled(true);

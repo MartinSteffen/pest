@@ -33,6 +33,11 @@ implements GUIInterface
 
     boolean CheckedSC = false;
     boolean ResultSC = false;
+    boolean isDirty = false;
+
+    Color stateColor = Color.red;
+    Color connectorColor = Color.blue;
+    Color transitionColor = Color.green;
 
    public static void main(String[] args)
     {
@@ -57,6 +62,7 @@ implements GUIInterface
 	add(MsgWindow);
 
 	setVisible(true);
+	restoreConfig();
 	fDialog = new FileDialog(this);
 
 	theGUIMenu.updateMenu();
@@ -65,19 +71,107 @@ implements GUIInterface
    
     }
 
-
-    boolean checkSB()
+    boolean isDirty()
     {
-	userMessage("GUI   : SyntaxCheck");
-	if(!CheckedSC)
+	if (PEditor != null)
+	    {
+		if(PEditor.listenEditor() == true)
+		    {
+			CheckedSC = false; 
+			//da "listenEditor" immer nur angibt,
+			//ob Änderungen seit dem letzen Aufruf
+			//passiert sind, muss hier der Status 
+			// für den Syntaxcheck gemerkt werden.
+			isDirty = true;
+		    }
+	    }
+
+	return isDirty;
+    }
+
+    void rememberConfig()
+    {
+	pestConfig theConfig = new pestConfig();
+	theConfig.GUIDim = getSize();
+	theConfig.GUILoc = getLocation();
+	theConfig.Dateiname = SBDateiname;
+
+	if (PEditor == null)
+	    {
+		theConfig.isEditor = false;
+	    }
+	else
+	    {
+		theConfig.EditorDim = PEditor.getSize();
+		theConfig.EditorLoc = PEditor.getLocation();
+	    }
+
+	try {
+	    FileOutputStream outf = new FileOutputStream("pest.cfg");
+	    ObjectOutputStream oos = new ObjectOutputStream(outf);
+	    oos.writeObject(theConfig);
+	    oos.flush();
+	    oos.close();
+	} catch(IOException e){
+	    OkDialog("FEHLER","Die PEST-Parameter konnten nicht gespeichert werden.");
+	}
+    }
+
+
+    void restoreConfig()
+    {
+	try {
+	    FileInputStream inf = new FileInputStream("pest.cfg");
+	    ObjectInputStream ois = new ObjectInputStream(inf);
+	    pestConfig theConfig = (pestConfig)ois.readObject();
+	    ois.close();
+
+	    setSize(theConfig.GUIDim);
+	    setLocation(theConfig.GUILoc);
+// 	    if(theConfig.Dateiname !=null)
+// 		{
+// 		    load_named_sc(theConfig.Dateiname);
+// 		}
+
+// 	    if (theConfig.isEditor)
+// 		{
+
+	} catch(Exception e){
+	    OkDialog("FEHLER","Die PEST-Parameter konnten nicht gespeichert werden.");
+	}
+
+    }
+
+	
+    void setDirty(boolean d)
+    {
+	isDirty = d;
+    }
+
+    boolean checkSB(boolean forced)
+    {
+	userMessage("GUI   : SyntaxCheck start");
+	if (forced)
+	    {
+		userMessage("GUI   : neuer Test wird gefordert.");
+	    }
+	else
+	    {
+		if (PEditor != null)
+		    {
+			if(PEditor.listenEditor() == true)
+			    {
+				CheckedSC = false;
+				userMessage("GUI   : Statechart wurde verändert");
+			    }
+		    }
+	    }
+
+	if( (!CheckedSC) || (forced) )
 	    {
 		check.ModelCheck SCchecker = new check.ModelCheck(this);
 		ResultSC = SCchecker.checkModel(SyntaxBaum);
 		CheckedSC = true;
-//		if (SCchecker.getErrorNumber()==0)
-//		    {
-//			ResultSC = true;
-//		    }
 	    }
 	else
 	    {
@@ -93,8 +187,10 @@ implements GUIInterface
 		userMessage("GUI   : SyntaxCheck erfolgreich :-)");
 	    }
 
+	userMessage("GUI   : SyntaxCheck ende");
 	return ResultSC;
     }
+
 
     void setStatechart(Statechart sc,String name)
     {
@@ -107,6 +203,25 @@ implements GUIInterface
     }
 
 
+    boolean isSaved()
+    {
+	boolean resp;
+
+	if(isDirty())
+	    {
+		resp = false;
+		if (YesNoDialog("ACHTUNG","Das aktuelle Statechart wurde noch nicht gespeichert ! Trotzdem fortfahren ?") == 1)
+		    {
+			resp = true;
+		    }
+	    }
+	else
+	    {
+		resp = true;
+	    }
+
+	return resp;
+    }	
 
     public void addGUIMenu(Menu m){
 	theGUIMenu.add(m);
@@ -238,7 +353,8 @@ implements GUIInterface
 		    oos.writeObject(SyntaxBaum);
 		    oos.flush();
 		    oos.close();
-      		    
+      		    setDirty(false);
+		    SBDateiname = fDialog.getDirectory()+FileName;
 		}catch (Exception e)
 		    {
 			OkDialog("Fehler","Die Datei kann nicht gespeichert werden");
@@ -263,9 +379,10 @@ implements GUIInterface
 		try {
 		    FileInputStream fis = new FileInputStream(fDialog.getDirectory()+FileName);
 		    ObjectInputStream ois = new ObjectInputStream(fis);
-		    SyntaxBaum = (absyn.Statechart) ois.readObject();
+		    absyn.Statechart Synb = (absyn.Statechart) ois.readObject();
 		    ois.close();
-		    SBDateiname = fDialog.getDirectory()+FileName;
+		    setStatechart(Synb,fDialog.getDirectory()+FileName);
+		    setDirty(false);
 		}catch (Exception e)
 		    {
 			OkDialog("Fehler","Das Laden ist fehlgeschlagen !");
@@ -297,10 +414,14 @@ implements GUIInterface
     {
 	public void windowClosing(WindowEvent e)
 	{
-	    e.getWindow().setVisible(false);    
-	    // der Vorspann e.getWindow() muss hier nicht sein....
-	    e.getWindow().dispose();            
-	    //        -"-
+	    if(isSaved())
+		{
+		    rememberConfig();
+		    e.getWindow().setVisible(false);    
+		    // der Vorspann e.getWindow() muss hier nicht sein....
+		    e.getWindow().dispose();            
+		    //        -"-
+		}
 	}
 	
 	public void windowClosed(WindowEvent e)

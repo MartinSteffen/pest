@@ -30,45 +30,59 @@ public void actionPerformed(ActionEvent e) {
 
   if(cmd.equals("TESC"))
       {
-	  BufferedReader stImp = myWindow.load("TESC-Datei importieren");
-	  if (stImp != null)
+	  if (myWindow.isSaved())
 	      {
-		  try{
-		      TESCLoader imp = new TESCLoader(myWindow);
-		      Statechart Synb = imp.getStatechart(stImp);
-		      if (Synb != null)
-			{
-			  myWindow.userMessage("GUI   : TESC1 erfolgreich");
-			  GraphOptimizer go = new GraphOptimizer(Synb,myWindow.getGraphics().getFontMetrics());
-			  Synb = go.start();
-			  myWindow.setStatechart(Synb,"UNBENANNT");
-			}
-		      else
-			{
-			  myWindow.userMessage("GUI   : TESC1 Fehlgeschlagen !");
-			}
-		  }catch(Exception ime){
-		      myWindow.OkDialog("Fehler",ime.getMessage());		     
-		  }
+		  BufferedReader stImp = myWindow.load("TESC-Datei importieren");
+		  if (stImp != null)
+		      {
+			  try{
+			      TESCLoader imp = new TESCLoader(myWindow);
+			      Statechart Synb = imp.getStatechart(stImp);
+			      if (Synb != null)
+				  {
+				      myWindow.userMessage("GUI   : TESC1 erfolgreich");
+				      GraphOptimizer go = new GraphOptimizer(Synb,myWindow.getGraphics().getFontMetrics());
+				      Synb = go.start();
+				      myWindow.setStatechart(Synb,"UNBENANNT");
+				      myWindow.setDirty(true);
+				  }
+			      else
+				  {
+				      myWindow.userMessage("GUI   : TESC1 Fehlgeschlagen !");
+				  }
+			  }catch(Exception ime){
+			      myWindow.OkDialog("Fehler",ime.getMessage());		     
+			  }
+		      }
 	      }
-
 	  //  myWindow.OkDialog("Fehler","TESC sollte BufferedReader erwarten - nicht FileInputStream");
       
       }else if (cmd.equals("Statemate")) {
-	  BufferedReader stImp = myWindow.load("Statemate-Datei importieren");
-	  if (stImp != null)
+	  if(myWindow.isSaved())
 	      {
-		  try{
-		  HAImport imp = new HAImport(new BufferedReader(stImp));
-		  Statechart Synb = imp.getStatechart();
-		  myWindow.setStatechart(Synb,"UNBENANNT");
-
-		  }catch(Exception ime){
-	  	  myWindow.OkDialog("Fehler",ime.getMessage());		     
-		  }
+		  BufferedReader stImp = myWindow.load("Statemate-Datei importieren");
+		  if (stImp != null)
+		      {
+			  try{
+			      HAImport imp = new HAImport(new BufferedReader(stImp),myWindow);
+			      Statechart Synb = imp.getStatechart();
+			      if (Synb == null)
+				  {
+				      myWindow.OkDialog("Fehler","Der Import ist fehlgeschlagen !");
+				  }
+			      else
+				  {
+				      myWindow.setStatechart(Synb,"UNBENANNT");
+				      myWindow.setDirty(true);
+				  }
+			      
+			      
+			  }catch(Exception ime){
+			      myWindow.OkDialog("Fehler",ime.getMessage());		     
+			  }
  
+		      }
 	      }
-
       }else{  
 	 myWindow.userMessage("GUI   : IMPORT NOCH NICHT IMPLEMENTIERT"); 
       }	

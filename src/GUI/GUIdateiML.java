@@ -24,16 +24,26 @@ public void actionPerformed(ActionEvent e) {
 
   if(cmd.equals("Beenden"))
       {
-	  System.exit(0);
+	  if(myWindow.isSaved())
+	      {
+		  myWindow.rememberConfig();
+		  System.exit(0);
+	      }
       }else if (cmd.equals("Oeffnen")) {
-	  myWindow.load_sc();
+	  if(myWindow.isSaved())
+	      {
+		  myWindow.load_sc();
+	      }
       }else if (cmd.equals("Speichern")) {
 	  myWindow.save_sc();
       }else if (cmd.equals("Neu")) {
-	  myWindow.setStatechart(new absyn.Statechart(myWindow.SBDateiname),"UNBENANNT");
+	  if (myWindow.isSaved())
+	      {
+		  myWindow.setStatechart(new absyn.Statechart(myWindow.SBDateiname),"UNBENANNT");
+	      }
       }else{
-	  myWindow.userMessage("GUI   : cmd:"+cmd);
-	  new testClass(myWindow);
+	  myWindow.userMessage("GUI   : "+cmd+" nicht vorhanden !");
+
       }	 
   
 }

@@ -26,22 +26,47 @@ public void actionPerformed(ActionEvent e) {
   myWindow.userMessage("GUI   : starte "+cmd);
   if(cmd.equals("Editor"))
       {
-	myWindow.PEditor = new editor.Editor(myWindow.SyntaxBaum,myWindow.SBDateiname,100,100,200,200,myWindow);
+	  if (myWindow.PEditor == null)
+	      {
+		  myWindow.PEditor = new editor.Editor(myWindow.SyntaxBaum,myWindow.SBDateiname,100,100,200,200,myWindow);
+		  myWindow.PEditor.addWindowListener(new GUIexitLis(myWindow));
+	      }
+	  else
+	      {
+		  myWindow.OkDialog("Fehler","Es kann nur ein Editor gestartet werden !");
+	      }
 
       }else if (cmd.equals("SyntaxCheck")) {
 
-	  myWindow.CheckedSC = false;
-	  myWindow.checkSB();
+	  myWindow.checkSB(true);
 	  
       }else if (cmd.equals("Simulator")) {
-	  if (myWindow.checkSB())
+	  if (myWindow.checkSB(false))
 	      {
-		  new simu.Simu(myWindow.SyntaxBaum,myWindow.PEditor,myWindow);
+		  if (myWindow.PEditor != null)
+		      {
+			  myWindow.PEditor.work(false);   // Änderungen verbieten
+			  simu.Simu Sim = new simu.Simu(myWindow.SyntaxBaum,myWindow.PEditor,myWindow);
+// 			  if (Sim instanceof Thread)
+// 			      {
+// 				  Sim.start();
+// 				  while(Sim.isAlive())
+// 				      {
+// 					  // warten auf Ende !
+// 				      }
+// 			      }
+
+			  myWindow.PEditor.work(true);    // Änderungen zulassen
+		      }
+		  else
+		      {
+			  myWindow.OkDialog("Fehler","Zur Simulation muß ein Editor geöffnet sein");
+		      }
 		//  myWindow.OkDialog("FEHLER","Nicht compilierbar");
 
 	      }
       }else if (cmd.equals("Codegenerator")) {
-	  if (myWindow.checkSB())
+	  if (myWindow.checkSB(false))
 	      {
 		  //myWindow.OkDialog("FEHLER","Wegen nicht compilierbarem Quelltext nicht implementiert");
 	      	try{
