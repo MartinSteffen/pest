@@ -44,9 +44,13 @@ public class Repaint {
     }
 
    private void redraw(Statename sn,int nx, int ny, boolean drawflag) {
+   boolean test = true;
+		if (sn.name.length() >= 3) {
 		tempstring = sn.name.substring(0,3);
 		System.out.println("<<"+tempstring+">>");
-		if (tempstring.compareTo("...")!=0) 
+		if (tempstring.compareTo("...")==0) test = false;}
+ 
+		if (test == true)
 		{
 	 	h.setColor(def_text);h.drawString( sn.name,
 			(int) ((nx*Editor.ZoomFaktor)+4),
@@ -55,12 +59,25 @@ public class Repaint {
 	}
 
 private void redraw(Tr tr,int nx, int ny, boolean drawflag) {
-	
+int trsize = tr.points.length-1;
+	System.out.println("Anzahl ZeigerPunkte : "+(int) (trsize+1));
+	for (int lauf = 0;lauf < (trsize-1);lauf++) {h.setColor(def_tr);h.drawLine(	(int) ((tr.points[lauf].x+nx)*Editor.ZoomFaktor),
+									(int) ((tr.points[lauf].y+ny)*Editor.ZoomFaktor),
+									(int) ((tr.points[lauf+1].x+nx)*Editor.ZoomFaktor),
+									(int) ((tr.points[lauf+1].y+ny)*Editor.ZoomFaktor) )
+									;}
+
+if (tr.source instanceof UNDEFINED) {h.setColor(def_tr);
+				h.fillOval(	(int) (((tr.points[0].x+nx)-3)*Editor.ZoomFaktor),
+						(int) (((tr.points[0].y+ny)-3)*Editor.ZoomFaktor),
+						6,6);}
+
+
 	 drawPESTTrans.drawTrans(h,
-				(int) ((tr.points[0].x+nx)*Editor.ZoomFaktor),
-				(int) ((tr.points[0].y+ny)*Editor.ZoomFaktor),
-				(int) ((tr.points[1].x+nx)*Editor.ZoomFaktor),
-				(int) ((tr.points[1].y+ny)*Editor.ZoomFaktor),
+				(int) ((tr.points[trsize-1].x+nx)*Editor.ZoomFaktor),
+				(int) ((tr.points[trsize-1].y+ny)*Editor.ZoomFaktor),
+				(int) ((tr.points[trsize].x+nx)*Editor.ZoomFaktor),
+				(int) ((tr.points[trsize].y+ny)*Editor.ZoomFaktor),
 				tr.source,
 				tr.target,
 				def_tr );
@@ -171,11 +188,21 @@ private void redraw(Tr tr,int nx, int ny, boolean drawflag) {
 	                if (templist.head.name == tempstatelist.head) {
 		System.out.println("Default : "+templist.head.name);
 		h.setColor(def_state);
-		h.fillOval((int) ((templist.head.rect.x+neux+(templist.head.rect.width / 2)-10)*Editor.ZoomFaktor),
-			(int) ((templist.head.rect.y+neuy+(templist.head.rect.height / 2)-10)*Editor.ZoomFaktor),
-			(int) (20),
-			(int) (20)
-			);
+		// h.fillOval((int) ((templist.head.rect.x+neux+(templist.head.rect.width / 2)-10)*Editor.ZoomFaktor),
+		//	(int) ((templist.head.rect.y+neuy+(templist.head.rect.height / 2)-10)*Editor.ZoomFaktor),
+		//	(int) (20),
+		//	(int) (20)
+		//	);
+		h.setColor(def_state);
+		h.drawRect((int) ((templist.head.rect.x+neux)*Editor.ZoomFaktor)+2,
+			   (int) ((templist.head.rect.y+neuy)*Editor.ZoomFaktor)+2,
+			   (int) ((templist.head.rect.width)*Editor.ZoomFaktor)-4,
+			   (int) ((templist.head.rect.height)*Editor.ZoomFaktor)-4 );
+		h.drawRect((int) ((templist.head.rect.x+neux)*Editor.ZoomFaktor)+4,
+			   (int) ((templist.head.rect.y+neuy)*Editor.ZoomFaktor)+4,
+			   (int) ((templist.head.rect.width)*Editor.ZoomFaktor)-8,
+			   (int) ((templist.head.rect.height)*Editor.ZoomFaktor)-8 );
+		
 
 	
 		}
@@ -186,9 +213,6 @@ private void redraw(Tr tr,int nx, int ny, boolean drawflag) {
 
 	    tempstatelist = tempstatelist.tail;
 	   }
-
-
-	// die Listen fuer tr,co folgen spaeter
     }
 
  private void redraw(And_State as, int nx, int ny, boolean drawflag) {

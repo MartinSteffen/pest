@@ -101,6 +101,12 @@ System.out.println("tempp2 :"+temppoint[1]);
 System.out.println("name 1 :"+name1);
 System.out.println("name 2 :"+name2);
 
+if (name1 instanceof UNDEFINED) {g.setColor(c_color);
+				g.fillOval(	(int) (((temppoint[0].x+matrix1.x)-3)*Editor.ZoomFaktor),
+						(int) (((temppoint[0].y+matrix1.y)-3)*Editor.ZoomFaktor),
+						6,6);}
+
+
  drawTrans(g,
 		(int) ((temppoint[0].x+matrix1.x)*Editor.ZoomFaktor),
 		(int) ((temppoint[0].y+matrix1.y)*Editor.ZoomFaktor),
@@ -151,10 +157,10 @@ public static void drawTrans(Graphics g,int cx1, int cy1, int cx2, int cy2,TrAnc
 	wneu = winkel - Math.PI +((Math.PI)/4);	//    wneu:=wwinkel+ ((180-ww)*(pi/180));
 	g.drawLine(cx2,cy2,cx2+ (int) Math.round(size*Math.cos(wneu)),cy2- (int) Math.round(size*Math.sin(wneu)));
 
-	if (ta1 instanceof UNDEFINED) {g.fillOval(cx1-3,cy1-3,6,6);}
-	if (ta2 instanceof UNDEFINED) {g.fillOval(cx2-3,cy2-3,8,6);}
-
+//	if (ta1 instanceof UNDEFINED) {g.fillOval(cx1-3,cy1-3,6,6);}
+	if (ta2 instanceof UNDEFINED) {g.fillOval(cx2-3,cy2-3,6,6);}
     } 
+
 
 private static CPoint transpoint(Statechart root,int cx1, int cy1)
 	{
@@ -188,6 +194,8 @@ private static CPoint transpoint(Statechart root,int cx1, int cy1)
 	temppoint.y = ncy1;
 	return temppoint; 
 	}
+
+
 
 } // drawPESTTrans
 
