@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.21 1999-01-22 10:42:58 swtech11 Exp $
+//	$Id: report_list,v 1.22 1999-01-22 10:49:03 swtech26 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -249,7 +249,7 @@ java.lang.Exception: Interleveltransitionen nicht zulässig
 #Number:	18
 #Autor:		Erich Mikk erm
 #Subject:	Start des Simulators gelingt nicht: NullPointerException
-#Status:	reported 
+#Status:	confirmed and processing .....
 #Description:
 
 Importiere  ~swtech12/Examples/TV/tv.st
