@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.75 1999-02-08 10:51:58 swtech24 Exp $
+//	$Id: report_list,v 1.76 1999-02-08 11:21:39 swtech01 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -626,7 +626,7 @@ Default-States einer Ebene geloescht.
 #Number:        41
 #Autor:         Bernd Weber bwe
 #Subject:       GUI: Nach Speichern wird Dateiname in Titelleiste nicht aktualisiert
-#Status:        fixed
+#Status:        confirmed
 #Description:
 //------------------------------------------------------------------------------
 #Number:        42
@@ -664,7 +664,7 @@ aktiv).
 #Number:        45
 #Autor:         Bernd Weber bwe
 #Subject:       Editor: Labeln von Transition fast unmöglich
-#Status:        fixed
+#Status:        confirmed
 #Description:
 
 1. Zwei Basic States nebeneinander erzeugen
@@ -843,4 +843,3 @@ Wenn Import->Statemate fehlschlägt, gibt es ein pop-up window.
 Aber wenn Import->TESC fehlschlägt, gibt es kein po-up window.
 Mir gefällt die Variante mit pop-up besser.
 //----------------------------------------------------------------------------t
-
