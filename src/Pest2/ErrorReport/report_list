@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	------------------
 //
-//	$Id: report_list,v 1.24 1999-02-01 19:43:25 swtech18 Exp $
+//	$Id: report_list,v 1.25 1999-02-03 16:58:30 swtech01 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -242,3 +242,89 @@ der interne Zustand nach dem Erstellen einer neuen leeren Statechart ist also vo
 Vorbedingungen abhaengig.
 
 //------------------------------------------------------------------------------
+#Number:	15
+#Autor:		Bernd Weber bwe
+#Subject:	Editor: Alle neuen States sind Default States
+#Status:	reported
+#Description:
+
+Neue Zustaende sollten nicht Default States sein.
+//------------------------------------------------------------------------------
+#Number:	16
+#Autor:		Bernd Weber bwe
+#Subject:	Editor: Default-States nach Benennung von State inkonsistent
+#Status:	reported
+#Description:
+
+Man erzeuge einen Basic State (ist immer default) und bennenne diesen um. Dann
+steht noch immer der alte Name in der Liste der Default States. 
+Workaround: Erst Default Connectoren entfernen, dann umbenennen.
+//------------------------------------------------------------------------------
+#Number:	17
+#Autor:		Bernd Weber bwe
+#Subject:	GUI/Editor: GUI bekommt Aenderungen in Chart nicht mit.
+#Status:	reported
+#Description:
+
+Pest starten, neue Chart erzeugen, Editor starten und neuen Zustand hinzufügen.
+Jetzt neue Chart (aus GUI) erzeugen -> GUI meckert nicht!!!
+Editor warnt aber, wenn man im Editor "Datei-Neu" wählt.
+
+Aus diesem Grund ist auch SyntaxCheck nur einmal (aus graf. Menu) aufrufbar.
+//------------------------------------------------------------------------------
+#Number:	18
+#Autor:		Bernd Weber bwe
+#Subject:	Editor: noch mehr Default States
+#Status:	reported
+#Description:
+
+Erzeugt in eienm Or State neue Basic States werden alle Zustaende des
+Or States zu Default States !?!
+//------------------------------------------------------------------------------
+#Number:	19
+#Autor:		Bernd Weber bwe
+#Subject:	Editor: erzeugt unbehandelte Exception
+#Status:	reported
+#Description:
+
+Löscht man die Default-Connectoren in einem Or State und versucht mehr
+als einen State zum Default zu machen, gibt es eine Exception:
+  
+  java.lang.NullPointerException: 
+        at editor.Methoden_0.addDefaultMouseClicked(Methoden_0.java:844)
+        at editor.Editor$12.mouseClicked(Editor.java:427)
+        at java.awt.Component.processMouseEvent(Component.java:1904)
+        at java.awt.Component.processEvent(Component.java:1778)
+        at java.awt.Container.processEvent(Container.java:792)
+        at java.awt.Window.processEvent(Window.java:273)
+        at java.awt.Component.dispatchEventImpl(Component.java:1456)
+        at java.awt.Container.dispatchEventImpl(Container.java:837)
+        at java.awt.Window.dispatchEventImpl(Window.java:401)
+        at java.awt.Component.dispatchEvent(Component.java:1393)
+        at java.awt.EventDispatchThread.run(EventDispatchThread.java:63)
+//------------------------------------------------------------------------------
+#Number:	20
+#Autor:		Bernd Weber bwe
+#Subject:	Editor: Default States, die Vierte
+#Status:	reported
+#Description:
+
+Default Connectoren von Or States koennen nicht geloescht
+werden. 
+Workaround: Erst Default Connector des Basic States loeschen, dann
+Substates erzeugen (und keine neuen Basic States auf gleicher Ebene
+wie ein Or State, sonst ist alles hin.
+//------------------------------------------------------------------------------
+#Number:	21
+#Autor:		Bernd Weber bwe
+#Subject:	Editor: Default States, die Vierte
+#Status:	reported
+#Description:
+
+Default Connectoren von Or States koennen nicht geloescht
+werden. 
+Workaround: Erst Default Connector des Basic States loeschen, dann
+Substates erzeugen (und keine neuen Basic States auf gleicher Ebene
+wie ein Or State, sonst ist alles hin.
+//------------------------------------------------------------------------------
+
