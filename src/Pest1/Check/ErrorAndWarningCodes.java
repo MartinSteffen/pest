@@ -9,7 +9,7 @@ package check;
  *   400-499 Transitions Fehler
  *
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: ErrorAndWarningCodes.java,v 1.31 1999-01-28 20:56:18 swtech11 Exp $
+ *  @version  $Id: ErrorAndWarningCodes.java,v 1.32 1999-02-01 10:19:49 swtech11 Exp $
  */
 class ErrorAndWarningCodes {
 
@@ -76,6 +76,7 @@ class ErrorAndWarningCodes {
       case 314: {_s = "In diesem State gibt es keinen Defaultconnector."; break; }
       case 315: {_s = "IN diesem State gibt es mehr als einen Defaultconnector."; break; }
       case 316: {_s = "Der Statename ist ein leerer String.."; break; }
+      case 317: {_s = "Fataler Fehler: Unbekannter Statetyp."; break; }
 
       case 400: {_s = "Der Start-State der Transition ist nicht definiert."; break; }
       case 401: {_s = "Der Ziel-State der Transition ist nicht definiert."; break; }

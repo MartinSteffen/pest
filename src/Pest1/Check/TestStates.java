@@ -8,7 +8,7 @@ import java.util.*;
  * ob die Deklarierten eindeutig sind und ob sie alle verwendet werden.
  *
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestStates.java,v 1.15 1999-01-28 20:56:24 swtech11 Exp $
+ *  @version  $Id: TestStates.java,v 1.16 1999-02-01 10:19:51 swtech11 Exp $
  */
 class TestStates extends ModelCheckBasics{
   private Vector Pfad1=new Vector();
@@ -50,11 +50,15 @@ class TestStates extends ModelCheckBasics{
   Vector getPathListFromState(State _s) {
     Vector plv = new Vector();
     if (_s instanceof Or_State) {toOrState ((Or_State)_s, "", plv); }
-    if (_s instanceof And_State) {toAndState ((And_State)_s, "", plv); }
-    if (_s instanceof Basic_State) {
-      String np = getAddPathPart("", _s.name.name);
-      plv.addElement(new StateC(_s,np,np));
-    }
+    else {
+       if (_s instanceof And_State) {toAndState ((And_State)_s, "", plv); }
+       else {
+         if (_s instanceof Basic_State) {
+         String np = getAddPathPart("", _s.name.name);
+         plv.addElement(new StateC(_s,np,np));
+         }
+         else {msg.addError(317,"",_s);}
+       }}
     return plv;
   }
   // notwendige Methoden für getPathListFromState
@@ -70,11 +74,17 @@ class TestStates extends ModelCheckBasics{
   }
   void tonavStateInStateList(StateList sl, String p, Vector plv) {
     if (sl.head instanceof Or_State) {toOrState ((Or_State)sl.head, p, plv); }
-    if (sl.head instanceof And_State) {toAndState ((And_State)sl.head, p, plv); }
-    if (sl.head instanceof Basic_State) {
-      String np = getAddPathPart(p, sl.head.name.name);
-      plv.addElement(new StateC(sl.head,p,np));
-    }
+    else {
+         if (sl.head instanceof And_State) {toAndState ((And_State)sl.head, p, plv); }
+	 else {
+             if (sl.head instanceof Basic_State) {
+             String np = getAddPathPart(p, sl.head.name.name);
+             plv.addElement(new StateC(sl.head,p,np));
+             }
+             else {msg.addError(317,"State: "+p, sl.head);
+                   String np = getAddPathPart(p, sl.head.name.name);
+                   plv.addElement(new StateC(sl.head,p,np)); }
+	 }}
     if (sl.tail != null) { tonavStateInStateList(sl.tail, p, plv); }
   }
 
