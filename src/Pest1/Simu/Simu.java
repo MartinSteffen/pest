@@ -11,9 +11,9 @@
 import Absyn.*;
 
 public class Simu {
-    
+    public Statechart SDaten; 
     public Simu(Statechart Daten) {
-	        
+	SDaten = Daten;	        
     }
     
 } // Simu

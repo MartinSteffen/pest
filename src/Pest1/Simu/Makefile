@@ -1,6 +1,6 @@
 # Makefile fuer Simulator
 
-cc = /opt/jdk/jdk1.1.6/bin/javac
+cc = javac
 
 
 all : Simu.class 
