@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.55 1999-02-03 12:16:24 swtech24 Exp $
+//	$Id: report_list,v 1.56 1999-02-03 17:11:20 swtech25 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -544,7 +544,7 @@ Nach Beenden einer Simulation taucht das Editor-Menu nicht wieder auf.
 #Number:	36
 #Autor:		Bernd Weber bwe
 #Subject:	Syntaxfehler in von CodeGen erzeugtem Code
-#Status: 	reported
+#Status: 	processing
 #Description: 
 
 Default-Namen (beginnen mit "...") verursachen Syntax-Fehler im
@@ -675,7 +675,7 @@ einmal restore) und PrettyPrinter zeigt keine Veraenderungen mehr.
 #Number:        48
 #Autor:         Bernd Weber bwe
 #Subject:       Codegen: Keine Schritte erkennbar
-#Status:        reported
+#Status:        processing
 #Description:
 
 1. Importiere TV.st mit STM-Import
@@ -710,7 +710,7 @@ parent state aussenrum. Dabei werden die Labels nach unten verschoben.
 #Number:        50
 #Autor:         Bernd Weber bwe
 #Subject:       Codegen: Implementierung nicht korrekt
-#Status:        reported
+#Status:        processing
 #Description:
 
 1. Lade Chart ~swtech12/Examples/misc/abc.pest bzw. importiere
@@ -732,4 +732,4 @@ durch PARALLEL zu einem AND State, erhaelt er einen neuen Namen. Fatal
 deswegen, weil Codegen die Default-Namen nicht vertraegt.
 
 
-   
+
