@@ -9,9 +9,9 @@ import java.awt.Point;
 /**
  *Tr.
  * @author Initially provided by Martin Steffen.
- * @version $Id: Tr.java,v 1.10 1998-12-15 16:33:32 swtech00 Exp $
+ * @version $Id: Tr.java,v 1.11 1999-01-04 09:44:53 swtech24 Exp $
  */
-public class Tr  implements Serializable, Cloneable {   // Transition
+public class Tr extends Absyn implements Serializable, Cloneable {   // Transition
     public CPoint[]  points;
     public TrAnchor source;
     public TrAnchor target;
@@ -54,9 +54,12 @@ public class Tr  implements Serializable, Cloneable {   // Transition
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Tr.java,v 1.10 1998-12-15 16:33:32 swtech00 Exp $
+//	$Id: Tr.java,v 1.11 1999-01-04 09:44:53 swtech24 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.10  1998/12/15 16:33:32  swtech00
+//	Towards new package names.
+//
 //	Revision 1.9  1998/12/15 13:38:08  swtech00
 //	exception-tag hinzugefuegt um javadoc sauber durchlaufen zu lassen
 //
