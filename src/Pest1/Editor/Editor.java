@@ -89,6 +89,7 @@ public class Editor extends Frame {
     static PESTDrawDesk scribble;
     ScrollPane pane = new ScrollPane();      // Create a ScrollPane.
     Panel panel = new Panel();
+    static Frame th;
 
 
 static Panel xpanel;
@@ -192,6 +193,7 @@ System.out.println("default-or");
 }
     drawfeld = this;
     drawstatus = true;
+th = this;
     menufeld = new Editor("menue");
     this.setLocation(top,left);                // Koordinaten des Zeichenfensters setzen.
     // ScrollPane pane = new ScrollPane();      // Create a ScrollPane.
@@ -423,7 +425,7 @@ public static String Stringeingabe(String a, String b, String c,Absyn type)
 	if (tempstring.compareTo("")==0) {tempname = "";} else {tempname = c;}
 	}
 
-	tempstring = gui.EingabeDialog(a,b,tempname);
+	tempstring = gui.EingabeDialog(th,a,b,tempname);
 	return tempstring;
     }
 
@@ -440,7 +442,7 @@ public static String labelObject (Absyn obj)
 	    {
 		stateobj = (State) obj;
 		name = stateobj.name.name;
-		ausgabe = Stringeingabe("Zustand umbenennen","Neuer Name fuer den gewaehlten Zustand :",name,obj);
+		ausgabe = Stringeingabe("Zustand umbenennen","Neuer Zustandsname :",name,obj);
 		if (ausgabe != null) {
 		    if (ausgabe.length() < 1 ) {ausgabe2 = name;} else {ausgabe2 = ausgabe;}
 		} else {ausgabe2 = name;}
@@ -450,7 +452,7 @@ public static String labelObject (Absyn obj)
 	   {
 		transobj = (Tr) obj;
 		name = transobj.label.caption;
-		ausgabe2 = Stringeingabe("Transition umbenennen","Neuer Name fuer die gewaehlten Transition :",name,obj);
+		ausgabe2 = Stringeingabe("Transition umbenennen","Neues Transitionslabel :",name,obj);
   if (ausgabe2 == null) {ausgabe2 = name;}
 		transobj.label.caption = ausgabe2;
 		TESCLoader tl = new TESCLoader(gui);
