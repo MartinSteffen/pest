@@ -189,10 +189,10 @@ public class PrettyPrint {
       if (pa != null)        
 	  // das hilft hier nicht viel, denn
 	  // wg. Overloading kommt man hier garnicht her
-      System.out.print (pa.current);
-      if (pa.outer != null) {
+      System.out.print (pa.head);
+      if (pa.tail != null) {
 	  System.out.print(".");             // Punkt als Separator
-	  start(pa.outer);
+	  start(pa.tail);
       }
   } // method start (Path)
 
