@@ -51,6 +51,7 @@ class CheckBVars {
     BvarList bv;
     BAss ba = null;
     StateList substates = null;
+    CheckDupes checkDupes = new CheckDupes(statechart, error, warning);
     Or_State os;
     And_State as;
     TrList trl = null;
@@ -60,6 +61,7 @@ class CheckBVars {
     if (s instanceof Or_State) {
       os = (Or_State)s;
       substates=os.substates;
+      if (!checkDupes.check(substates,path)) { ok = false; }
       trl = os.trs;
       while (trl != null) {
         // Testen, ob die BVars in den Guards auch deklariert sind
@@ -114,7 +116,7 @@ class CheckBVars {
   while (substates != null) {
     ok = ok && new CheckBVars(statechart,
                               substates.head,
-                              path+"."+substates.head.name.name).check();
+                              path+"."+substates.head.name.name,error,warning).check();
     substates = substates.tail;
     }
 

@@ -4,14 +4,14 @@
 //
 //
 //   Letzte Aenderung von:  Mario Thies
-//                          24.01.1999
+//                          31.01.1999
 //
 // ****************************************************************************
 
 package check;
 
 import absyn.*;            // abstrakte Syntax
-import java.util.*;        // f¸r Vector-Klasse benˆtigt
+import java.util.*;        // fÅr Vector-Klasse ben˜tigt
 
 /**
  * @author Java Praktikum: <a href="mailto:swtech23@informatik.uni-kiel.de">Gruppe 23</a><br>Mario Thies und Tobias Kunz
@@ -29,27 +29,32 @@ class CheckDupes {
     this.error = error;
     }
 
-  public boolean check() {
-    return check(statechart.cnames, "");
+  CheckDupes() {
+    warning = null;
+    error = null;
     }
 
-  private boolean check(PathList p, String path) {
-    if (p == null) {
+  // public boolean check() {
+  // return check(statechart.cnames, "");
+  //  }
+
+  protected boolean check(StateList _sl, String path) {
+    if (_sl == null) {
       return true; }
     else {
-      PathList i = p.tail;
-      while (i != null) {
-        if (p.head.head.compareTo(i.head.head)==0) {
-          error.addError(new ItemError(100,"Doppelter Bezeichner "+i.head, path));
-          return false;
-          }
-        else {
-          i = i.tail;
-          }
-        }
-      }
+      StateList sl = _sl.tail;
+      State s = _sl.head;
+      boolean ok = true;
 
-    return check(p.tail, p.head.head+"."+path);
+      while (sl != null && ok) {
+        if (sl.head.name.name.compareTo(s.name.name)==0) {
+          ok = false;
+          error.addError(new ItemError(100,"Doppelter Bezeichner gefunden:"+s.name.name, path));
+          }
+        sl = sl.tail;
+        }
+      return ok && check(_sl.tail,path);
+      }
     }
 
   }

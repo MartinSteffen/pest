@@ -24,14 +24,19 @@ class CheckStates {
   public boolean check() {
     //System.out.println("Check State!");
     boolean ok = checkState(statechart.state);
-    return true;
+    return ok;
   }
 
-  boolean checkState(State state) {
+  protected boolean checkState(State state) {
     boolean ok = true;
     And_State as;
     Or_State os;
     StateList substates = null;
+
+    if (state == null) {
+    error.addError(new ItemError(100, "Zustand ist leer",""));
+    ok = false;
+    }
 
     if (state instanceof And_State) {
       as = (And_State)state;
@@ -51,7 +56,7 @@ class CheckStates {
       substates = substates.tail;
     }
 
-    return ok;
+  return ok;
   }
 
 
