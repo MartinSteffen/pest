@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestTransitions.java,v 1.21 1999-01-26 22:39:37 swtech11 Exp $
+ *  @version  $Id: TestTransitions.java,v 1.22 1999-01-27 12:18:54 swtech11 Exp $
  */
 class TestTransitions extends ModelCheckBasics {
   Vector newPLV = new Vector(); // Vector fuer die selbst angelegte PathList der States
@@ -63,13 +63,14 @@ class TestTransitions extends ModelCheckBasics {
   // übergebenen Statenamen in der Pfadliste der Statechart suchen und die Anzahl zurückgeben
   int AnzStatenameInPathList(Vector pl, String s) {
     int anz = 0;
-    String sn;
-    for (int i=0; (i<pl.size()) ; i++) {
-      sn  = (String)pl.elementAt(i);
-      if (sn.endsWith(s)){ anz++; }
-    }
+     for(PathList p=sc.cnames; p!=null; p=p.tail){
+       Path p_;
+       for (p_=p.head; p_.tail!=null; p_=p_.tail);
+       if (p_.head.equals(s)) anz++;
+ }  
     return anz;
-  }
+ 
+}
 
   // übergebenen Statenamen in der Pfadliste der Statechart suchen; TRUE wenn gefunden
   boolean StatenameInPathList(Vector pl, String s) {
@@ -196,7 +197,6 @@ class TestTransitions extends ModelCheckBasics {
       else { // State -> Interlevel ?
         //i2 = !NameInThisStateSubstates(((Or_State)_s).substates, z2); }
         int anz = AnzNameInThisStateSubstates(((Or_State)_s).substates, z2, 0);
-        // System.out.println(anz);
         if (anz > 1) { // 2 uneindeutige States auf einem Level
           i2 = false;
           msg.addError(425,"Trans: "+z1+" -> "+z2+" in State: " + p,tl.head);
@@ -205,7 +205,7 @@ class TestTransitions extends ModelCheckBasics {
         else if (anz == 0) { i2 = true; } //  1 oder mehr States nur am falschen Ort => Interlevel eindeutig
         else if (anz == 1 & aS >1) { // 1 State richtig und 1 oder mehr States falsch => Interlevel ?
           State st =  StateFromStatenameInThisStateSubstates(((Or_State)_s).substates, z2);
-          // System.out.println("Graphischer Test notwendig"+st);
+	  //System.out.println("Graphischer Test notwendig"+st);
           i2 = !pruefe_coord_IT( st,tl.head,false);
         }
       }        
@@ -501,16 +501,7 @@ class TestTransitions extends ModelCheckBasics {
     int ys=s.rect.y;
     int hs=s.rect.height;
     int ws=s.rect.width;
-/*
-System.out.println();
-System.out.println("xt"+xt);
-System.out.println("yt"+yt);
-System.out.println("xs"+xs);
-System.out.println("ys"+ys);
-System.out.println("hs"+hs);
-System.out.println("ws"+ws);
-System.out.println();
-*/
+
 
     boolean b=false;
     if (umgebung(xs,xt) && yt>=ys && yt<=(ys+hs)) b=true;
@@ -525,7 +516,6 @@ System.out.println();
     int e=2;
     boolean b=false;
     if (((int)Math.abs(a-s))<e) b=true;
-//System.out.println(b);
     return b;
   }
 

@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestStates.java,v 1.12 1999-01-26 12:33:03 swtech11 Exp $
+ *  @version  $Id: TestStates.java,v 1.13 1999-01-27 12:18:53 swtech11 Exp $
  */
 
 /** Diese Testklasse testet, ob alle Statenamen deklariert worden sind, 
@@ -96,7 +96,7 @@ class TestStates extends ModelCheckBasics{
 
        p_=p_.tail;
        for(;p_!=null; p_=p_.tail) {
-	   if (p_.head.equals("")) {msg.addError(316,"");};
+	   if (p_.head.equals("")) {msg.addError(316,"Pfadliste");};
 	   s=s+"."+p_.head;
            if (p_.tail==null) {
                sn=p_.head;
@@ -128,7 +128,7 @@ class TestStates extends ModelCheckBasics{
     
     void pruefeState(State s, State _s, String p){
     if (s instanceof Or_State) {
-	   if (((Or_State)s).substates==null) {msg.addError(305,"State: "+s.name.name);}
+	   if (((Or_State)s).substates==null) {msg.addError(305,"State: "+s.name.name,s);}
 	   else {
                 p=getAddPathPart(p, s.name.name);
 	        if (Anzahl_States(((Or_State)s).substates)==1) {msg.addWarning(304,"State: "+p,s);};
@@ -155,7 +155,7 @@ dc.removeElementAt(i);};};
     if (sl.tail != null) { navStateInStateList(sl.tail, _s, p, dc); }
     if (sl.tail ==null) {if (dc.size()>0) {
                for (;dc.size()!=0; dc.removeElementAt(0)) {
-                  msg.addError(312,"Defaultconnector "+(String)dc.elementAt(0)+" in State "+p);};};
+                  msg.addError(312,"Defaultconnector "+(String)dc.elementAt(0)+" in State "+p, _s);};};
   };}
 
     /** Berechnet die Anzahl der States die in StateList sl vorhandne sind. */
@@ -171,13 +171,13 @@ dc.removeElementAt(i);};};
      if (sl!=null) {
         for (;sl.tail!=null; sl=sl.tail ) {
             for(int i=0; i<v.size();i++){
-              if (((String)v.elementAt(i)).equals(sl.head.name)) {msg.addError(313,"Defaultcon: "+sl.head.name+" im State "+p);}
+              if (((String)v.elementAt(i)).equals(sl.head.name)) {msg.addError(313,"Defaultcon: "+sl.head.name+" im State "+p, _s);}
 	      else {v.addElement(sl.head.name);};};
 	    if (v.size()==0) {v.addElement(sl.head.name);}
               };
     int s=v.size();
     for(int i=0; i<s; i++){
-     if (((String)v.elementAt(i)).equals(sl.head.name)) {msg.addError(313,"Defaultcon: "+sl.head.name+" im State "+p);}
+     if (((String)v.elementAt(i)).equals(sl.head.name)) {msg.addError(313,"Defaultcon: "+sl.head.name+" im State "+p, _s);}
 	      else {v.addElement(sl.head.name);
 };
 };
@@ -185,8 +185,8 @@ dc.removeElementAt(i);};};
 
 
      };
-     if (sl==null) {msg.addError(314,"State "+p);};
-     if (v.size()>1)  {msg.addError(315,"State "+p);};
+     if (sl==null) {msg.addError(314,"State "+p, _s);};
+     if (v.size()>1)  {msg.addError(315,"State "+p, _s);};
      return v;
     }
 
