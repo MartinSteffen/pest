@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestEvents.java,v 1.4 1999-01-03 15:14:30 swtech11 Exp $
+ *  @version  $Id: TestEvents.java,v 1.5 1999-01-06 08:15:13 swtech11 Exp $
  */
 /** Diese Testklasse testet, ob alle Events deklariert worden sind, 
     <br>ob die deklarierten eindeutig sind und ob sie alle verwendet werden.*/
@@ -92,11 +92,14 @@ class TestEvents extends ModelCheckBasics{
  
   void pruefePath(Path p, Tr t, String s){
       PathList pl=sc.cnames;
+      Path p1;
       boolean b=true;
       for(; ((pl != null) && b) ; pl=pl.tail){ 
-	  if (p==pl.head) {b=false;};};
+          p1=p;
+          for( Path p2=pl.head; ((p2 != null) && (p1!=null) && b); p2=p2.tail) {  
+	  if (p1.head!=p2.head) {b=false;} else {p1=p1.tail;};};};
       
-      if (b) {msg.addError(203,"Statename: "+p+"/ Trans: "
+      if (b) {msg.addError(203,"Statename: "+(Path)p+"/ Trans: "
                                +((Statename)t.source).name+" -> "+((Statename)t.target).name+
                            " in State: "+s);}
      
