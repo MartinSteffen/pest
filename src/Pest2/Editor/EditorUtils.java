@@ -1,3 +1,5 @@
+package editor;
+
 
 import absyn.*;
 import java.awt.*;
