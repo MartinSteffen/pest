@@ -56,6 +56,10 @@ Transitionen sehen folgendermassen aus (Name1, Name2 sind Connames bzw. Statenam
  from <Name1> to <Name2> on <Guard>;	(Dummy-Action
 oder
  from <Name1> to <Name2> on <Guard> do <Action>;
+oder
+ from <Name1> to <Name2>;
+oder
+ from <Name1> to <Name2> do <Action>;
 
 ----------------------------
 
@@ -63,7 +67,7 @@ Guards bestehen aus Boolschen-Ausdruecken mit Event- bzw. Bool-Variablen:
 
 <Eventteil> [ <Boolteil> ]
 
-<Eventteil> und <Boolteil> werden durch && verknuepft.
+<Eventteil> und <Boolteil> werden durch die Klammer durch && verknuepft.
 
 ----------------------------
 

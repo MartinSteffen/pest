@@ -1,6 +1,9 @@
-/* Grammatik fuer Tesc - $Id: grammatik.txt,v 1.7 1999-01-13 18:44:50 swtech13 Exp $ 
+/* Grammatik fuer Tesc - $Id: grammatik.txt,v 1.8 1999-01-29 20:50:36 swtech13 Exp $ 
  *
  * $Log: not supported by cvs2svn $
+ * Revision 1.7  1999/01/13 18:44:50  swtech13
+ * pathop nun in [ Bvar ]
+ *
  * Revision 1.6  1999/01/11 20:11:29  swtech13
  * Grammatik eingeschraenkt, so dass Variablentypen eindeutig aus dem Kontext
  * bestimmt werden koennen.
@@ -83,7 +86,7 @@
 <TRLIST>      ::= <TRANSITION>;<TRLIST> | <TRANSITION>;
 
 
-<TRANSITION>  ::= from <SNAME> to <SNAME> on <GUARD> <ACTIONSTMT>
+<TRANSITION>  ::= from <SNAME> to <SNAME> on <GUARD> <ACTIONSTMT> | from <SNAME> to <SNAME> <ACTIONSTMT>
 
 <ACTIONSTMT   ::= do <ACTION>; | ;
 
