@@ -3,8 +3,8 @@
          Test auf BVars ist vollstaendig
          Test auf Events ist vollstaendig
          Test auf States ist vollstaendig
-         Test auf Tranisitionen ist vorhanden, wird aber noch erweitert
-         Test auf Kreisfreiheit, ueberprueft noch nicht alle moegliche Kreise
+         Test auf Tranisitionen ist vollstaendig
+         Test auf Kreisfreiheit ist vollstaendig
         
          
 
@@ -13,3 +13,7 @@
          
 
 04.01.99 fertiger Checker zum Testen
+
+20.01.99 ErrorBrowser ist in Arbeit
+21.01.99 Crossreference ist fertig zum Testen, gefundene Objekte werden gehighlightet.
+25.01.99 ErrorBrowser ist fertig, Highlighten von Errors
