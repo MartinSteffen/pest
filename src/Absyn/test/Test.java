@@ -22,24 +22,57 @@ public class Test {
     try{
 	//Statechart sc2 = (Statechart)sc.clone();
 
-	SEvent A = new SEvent ("A");
-	SEvent B = new SEvent ("B");
-	SEvent C = new SEvent ("C");
-	SEvent D = new SEvent ("D");
-	SEvent G = new SEvent ("G");
+        
 
-	SEventList statelist =
-	    new SEventList (A,
-			    new SEventList (B,
-					    new SEventList (C,
-							    new SEventList (D,
-									    new SEventList (G,null)))));
+      //  neue Tests, zum Cloneable
+      Location l1 = new Location(123);
+      Location l2 = new Location(456);
+      Dummy d1 = new Dummy(l1);
+      Dummy d2 = (Dummy)d1.clone();
+      pp.start(d1);
+      pp.start(d2);
+      d2.location = l2;
+      pp.start(d1);
+      pp.start(d2);
+      
+      //
+      SEvent A = new SEvent ("A");
+      SEvent Aclone = (SEvent)A.clone();
+      pp.start(A);
+      pp.start(Aclone);
+      Aclone.name = "Neu";
+      pp.start(A);
+      pp.start(Aclone);
+      
 
-	A.clone();
-	statelist.clone();
+      
+      SEvent B = new SEvent ("B");
+      SEvent C = new SEvent ("C");
+      SEvent D = new SEvent ("D");
+      SEvent G = new SEvent ("G");
+
+      SEventList statelist =
+	new SEventList (A,
+			new SEventList (B,
+					new SEventList (C,
+							new SEventList (D,
+									new SEventList (G,null)))));
+
+
+	SEventList statelistclone = (SEventList) statelist.clone();
+	pp.start(statelist);
+	pp.start(statelistclone);
+	statelistclone.tail = null;
+	pp.start(statelist);
+	pp.start(statelistclone);
+	
 
 	Path sudp = new Path ("SUD", null);
-	sudp.clone();
+	Path sudpclone = (Path) sudp.clone();
+
+	pp.start(sudp);
+	pp.start(sudpclone);
+
 	Path p1p  = sudp.append("P1");
 	Path p2p  = sudp.append("P2");
 	Path p3p  = sudp.append("P3");
@@ -52,8 +85,21 @@ public class Test {
 	Path t1p = r2p.append("T1");
 	Path t2p = r2p.append("T2");
 	
-	t2p.clone();
 
+	pp.start(sudp);
+	pp.start(sudpclone);
+
+	System.out.println();
+	Path t2pclone = (Path)t2p.clone();
+	System.out.println();
+	pp.start(t2p);
+	System.out.println();
+	pp.start(t2pclone);
+	t2pclone.tail = null;
+	System.out.println();
+	pp.start(t2p);
+	System.out.println();
+	pp.start(t2pclone);
 
 
 
