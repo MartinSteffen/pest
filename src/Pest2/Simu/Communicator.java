@@ -158,13 +158,13 @@ public class Communicator extends Frame implements ActionListener{
     Tr element=null;
     while (actives.hasMoreElements()){
       element=(Tr)actives.nextElement();
-      highlight=new highlightObject(element,Color.black);
+      highlight=new highlightObject(element,Color.white);
     }
   }
   
   void unhighlightPrevTrs(){
     highlightObject highlight=null;
-    TransitionTabelle transitions=akt_status.transitions;
+    TransitionTabelle transitions=prev_status.transitions;
     Enumeration actives=transitions.data.elements();
     Tr element=null;
     while (actives.hasMoreElements()){
