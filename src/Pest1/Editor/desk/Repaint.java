@@ -211,6 +211,13 @@ if (matrix.akt.rect != null)
 							(int) (bs.rect.height* Editor.ZoomFaktor)
 
 					);}
+		if (bs instanceof Ref_State)
+		    {
+			Ref_State rstate = (Ref_State) bs;
+			h.setColor( Editor.st_color());h.drawString("@"+rstate.filename,
+								    (int) ((bs.rect.x+neux) * Editor.ZoomFaktor+8),
+								    (int) ((bs.rect.y+neuy+bs.rect.height/2) * Editor.ZoomFaktor));
+		    }
 	    }
 	// die Statename folgt spaeter
     }
