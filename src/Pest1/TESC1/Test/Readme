@@ -1,0 +1,16 @@
+Folgende Tests wurden durchgefuehrt,
+dabei wurde jeweils das tesc-file importiert, mit Syntaxcheck geprueft, als
+st-file gespeichert, und als exp-<file>.tesc exportiert.
+(Und natuerlich im Editor/PretttyPrinter angesehen):
+
+bsp1.tesc	: Sehr einfaches Beispiel
+example.tesc	: Beispiel aus dem Pflichtenheft
+all.tesc	: Hier werden alle(?) Sprachelemente verwendet
+
+Folgende Statecharts wurden von stm importiert und als tesc exportiert:
+
+tv.st
+cd.st
+
+Die tesc-files wurden dann importiert, mit Syntaxcheck und im
+Editor geprueft.
