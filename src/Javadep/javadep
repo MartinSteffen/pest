@@ -364,15 +364,12 @@ html_print_deps()
  my_alldeps=$*
  myfunc_name=`(IFS=".";set $my_func;while [ $# -gt 1 ]; do shift; done;echo $1)`
 
- if [ $ref_installed = 1 ]; then
-   echo "<h2 align=center> $my_func </h2>" >>$tempfile
-   echo "<h3> Declaration(s) for $myfunc_name </h3>" >>$tempfile
+  if [ $ref_installed = 1 ]; then
    (grep "href=\"$org_package\..*$myfunc_name(" $ref_file|sed 's/<dt>//g'|add_prefix "<li>"|add_postfix "</li>") >> $tempfile
  else
    warning "Docu not installed. No links to declarations created."
  fi 
- 
-  echo "<h3> Occurences of $myfunc_name </h3>" >>$tempfile
+
   echo "<ul>" >>$tempfile
   for my_dep in $my_alldeps; do
     (
@@ -394,8 +391,13 @@ html_print_unused_functions()
 {
  echo "<h2> Functions never used in external packages</h2>" >>$tempfile
  echo "<ul>" >>$tempfile
- for myfunction in $*; do
-   echo "<li> $myfunction </li>" >>$tempfile
+ for myfunction in $unused_functions; do
+   myname=`(IFS=".";set $myfunction;while [ $# -gt 1 ]; do shift; done; echo $1)`
+   if [ $ref_installed = 1 ]; then
+     (grep "href=\"$org_package\..*$myname(" $ref_file|sed 's/<dt>//g'|add_prefix "<li>"|add_postfix "</li>") >> $tempfile
+   else
+     echo "<li> $myfunction </li>" >>$tempfile
+   fi
  done
  echo "</ul>" >>$tempfile
 }
@@ -556,7 +558,7 @@ done
 if [ $show_unused_functions = 1 ]; then
   unused_functions=`(for i in $unused_functions; do echo $i; done)|sort -u`
   if [ $html = 1 ]; then
-    html_print_unused_functions $unused_functions
+    html_print_unused_functions
   else
     set $unused_functions
     if [ $# -gt 0 ]; then
