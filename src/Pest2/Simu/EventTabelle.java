@@ -1,11 +1,10 @@
 package simu;
 
 
-import java.util.Hashtable;
-import java.util.Enumeration;
+import java.util.*;
 import absyn.*;
 
-public class EventTabelle extends Object{
+class EventTabelle extends Object{
   Hashtable data=null;
 
   public EventTabelle(){
@@ -20,6 +19,18 @@ public class EventTabelle extends Object{
   public void set(String name, SEvent e){
     if (!(isSet(name))){
       data.put(name,e);
+    }
+  }
+
+  public void insert(String elements){
+    String inline=elements.trim();
+    String temp=null;
+    if (inline.length()!=0){
+      StringTokenizer strtok=new StringTokenizer(inline," ");
+      while (strtok.hasMoreTokens()){
+	temp=strtok.nextToken();
+	set(temp,new SEvent(temp));
+      }
     }
   }
 

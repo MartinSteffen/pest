@@ -7,7 +7,7 @@ import java.util.Vector;
 import java.util.Enumeration;
 import java.io.BufferedReader;
 
-public class Status extends Object{
+class Status extends Object{
   StateTabelle states=null;
   TransitionTabelle transitions=null;
   EventTabelle events=null;

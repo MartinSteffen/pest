@@ -5,7 +5,7 @@ import java.awt.event.*;
 import java.util.*;
 import absyn.*;
 
-public class SchrittweitenDialog extends Dialog implements ActionListener{
+class SchrittweitenDialog extends Dialog implements ActionListener{
 
   int result=0;
   Button b=null;

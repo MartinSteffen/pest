@@ -204,11 +204,11 @@ class Monitor extends Frame implements ActionListener{
     BvarList var_tail=s.bvars;
     if (var_tail!=null){
       Bvar var_head=var_tail.head;
-      all_conditions.addElement(new BooleanView(var_head));
       var_tail=var_tail.tail;
+      all_conditions.addElement(new BooleanView(var_head));
       while (var_tail!=null){
-	var_tail=var_tail.tail;
 	var_head=var_tail.head;
+	var_tail=var_tail.tail;
 	all_conditions.addElement(new BooleanView(var_head));
       }
     }

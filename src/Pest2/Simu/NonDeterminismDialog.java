@@ -5,7 +5,7 @@ import java.awt.event.*;
 import java.util.*;
 import absyn.*;
 
-public class NonDeterminismDialog extends Dialog implements ActionListener{
+class NonDeterminismDialog extends Dialog implements ActionListener{
 
   Vector result=null;
   Vector listvector=null;

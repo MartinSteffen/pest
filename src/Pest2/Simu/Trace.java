@@ -4,15 +4,18 @@ package simu;
 import java.io.*;
 import java.util.*;
 
+import absyn.*;
 
-public class Trace extends Object{
+class Trace extends Object{
 
   Vector statusse=null;
   int pos=0;
+  Statechart chart=null;
 
-  public Trace(){
+  public Trace(Statechart s){
     statusse=new Vector();
     pos=0;
+    chart=s;
   }
 
   public int size(){
@@ -51,64 +54,60 @@ public class Trace extends Object{
     }
     return result;
   }
-
-  public void read(BufferedReader r) throws IOException{
+ 
+  /* Lies einen Trace....braucht mal ein Redesign, nicht sehr schoen!!*/
+  public void read(BufferedReader r) throws IOException, TraceFormatException{
     String status=null;
     String states=null;
     String booleans=null;
     String events=null;
     int pos=0;
+    int global_pos=0;
     int brace_level=0;
     String inline=new String();
     /* Lies alles in einen String - nicht schoen, aber einfach */
     while (r.ready()){
       inline=inline+r.readLine();
-      System.out.println("Lese Zeile...");
     }
     /* Aeussere Klammern entfernen */
     String trace=(inline.substring(inline.indexOf("(")+1,inline.lastIndexOf(")"))).trim();
     
-    System.out.println("Trace:" +trace);
     pos=0;
     brace_level=0;
     char c;
-    do{
-      c=trace.charAt(pos);
-      if (c=='('){
-	brace_level++;
+    while (true){
+      trace=trace.trim();
+      if (trace.length()==0){
+	break;
       }
-      if (c==')'){
-	brace_level--;
+      pos=0;
+      brace_level=0;
+      do{
+	c=trace.charAt(pos);
+	if (c=='('){
+	  brace_level++;
+	}
+	if (c==')'){
+	  brace_level--;
+	}
+	pos++;
       }
-      pos++;
-    }
-    while(brace_level!=0);
-    status=trace.substring(0,pos);
-    status=(status.substring(status.indexOf("(")+1,status.lastIndexOf(")"))).trim();
-    
-    
-    pos=0;
-    brace_level=0;
-    do{
-      c=status.charAt(pos);
-      if (c=='('){
-	brace_level++;
-      };
-      if (c==')'){
-	brace_level--;
+      while(brace_level!=0);
+      if(pos==0){
+	break;
       }
-      pos++;
-    }
-    while(brace_level!=0);
-    states=status.substring(0,pos);
-    states=(states.substring(states.indexOf("(")+1,states.lastIndexOf(")"))).trim();
-
-    pos=status.indexOf('(',pos);
-    status=status.substring(pos);
-    pos=0;
-    brace_level=0;
-    do{
-      c=status.charAt(pos);
+      status=trace.substring(0,pos);
+      status=(status.substring(status.indexOf("(")+1,status.lastIndexOf(")"))).trim();
+      if ((pos<trace.length())||(pos>0)){
+	trace=(trace.substring(pos)).trim();
+      }
+      else{
+	break;
+      }
+      pos=0;
+      brace_level=0;
+      do{
+	c=status.charAt(pos);
       if (c=='('){
 	brace_level++;
       };
@@ -116,49 +115,66 @@ public class Trace extends Object{
 	brace_level--;
       }
       pos++;
-    }
-    while(brace_level!=0);
-    events=status.substring(0,pos);
-    events=(events.substring(events.indexOf("(")+1,events.lastIndexOf(")"))).trim();
-    pos=status.indexOf('(',pos);
-    status=status.substring(pos);
-    pos=0;
-    brace_level=0;
-    do{
-      c=status.charAt(pos);
-      if (c=='('){
-	brace_level++;
-      };
-      if (c==')'){
-	brace_level--;
       }
-      pos++;
+      while(brace_level!=0);
+      states=status.substring(0,pos);
+      states=(states.substring(states.indexOf("(")+1,states.lastIndexOf(")"))).trim();
+      pos=status.indexOf('(',pos);
+      status=status.substring(pos);
+      pos=0;
+      brace_level=0;
+      do{
+	c=status.charAt(pos);
+	if (c=='('){
+	  brace_level++;
+	};
+	if (c==')'){
+	  brace_level--;
+	}
+	pos++;
+      }
+      while(brace_level!=0);
+      events=status.substring(0,pos);
+      events=(events.substring(events.indexOf("(")+1,events.lastIndexOf(")"))).trim();
+      pos=status.indexOf('(',pos);
+      status=status.substring(pos);
+      pos=0;
+      brace_level=0;
+      do{
+	c=status.charAt(pos);
+	if (c=='('){
+	  brace_level++;
+	};
+	if (c==')'){
+	  brace_level--;
+	}
+	pos++;
+      }
+      while(brace_level!=0);
+      booleans=status.substring(0,pos);
+      booleans=(booleans.substring(booleans.indexOf("(")+1,booleans.lastIndexOf(")"))).trim();
+      Status stat=new Status();
+      //System.err.println("States: "+states);
+      //System.err.println("Events: "+events);
+      //System.err.println("Condit: "+booleans);
+      stat.states.insert(states,chart);
+      stat.events.insert(events);
+      stat.booleans.insert(booleans);
+      add(stat);
     }
-    while(brace_level!=0);
-    booleans=status.substring(0,pos);
-    booleans=(booleans.substring(booleans.indexOf("(")+1,booleans.lastIndexOf(")"))).trim();
-    
-    Status stat=new Status();
-    //stat.states=stat.states.insert(states);
-    //stat.events=stat.events.insert(events);
-    //stat.booleans=stat.booleans.insert(booleans);
-    
-    StringTokenizer strtok=new StringTokenizer(inline,"() \n\t");
-    while (strtok.hasMoreTokens()){
-      System.out.println("Token: "+strtok.nextToken());
-    }
-
   }
     
 
   public String toString(){
     String result="";
     Status temp=null;
+    result+="(";
     Enumeration enum=statusse.elements();
     while (enum.hasMoreElements()){
       temp=(Status)enum.nextElement();
       result+=temp.toString()+"\n";
     }
+    result+=")";
     return result;
   }
       

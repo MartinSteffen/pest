@@ -4,7 +4,7 @@ import absyn.*;
 import java.util.Vector;
 import gui.*;
 
-/** Die Nachfolgermaschine: NICHT ausreichend getestet!!!*/
+
 class Nachfolgermaschine extends Object{
    Statechart chart=null;
    StateTabelle act_states=null;
@@ -271,8 +271,13 @@ class Nachfolgermaschine extends Object{
    }
 
    boolean isSatisfied(GuardBVar gb){
-      Bvar bvar=gb.bvar;
-      return act_booleans.isTrue(bvar);
+     boolean result=false;
+     Bvar bvar=gb.bvar;
+     result=act_booleans.isTrue(bvar);
+     if (gui.isDebug()){
+       System.out.println("Bvar "+bvar.var+" ist "+result+" .");
+     }
+     return act_booleans.isTrue(bvar);
    }
   
    boolean isSatisfied(GuardNeg gn){
@@ -626,9 +631,12 @@ class Nachfolgermaschine extends Object{
   }
 
   Status progress(ActionStmt as, Status status){
+    if (gui.isDebug()){
+      System.out.println("progress fuer ActionStmt");
+    }
     Status result=status;
     Boolstmt stmt=as.stmt;
-    Class klasse=as.getClass();
+    Class klasse=stmt.getClass();
     String klassenname=klasse.getName();
     if (klassenname.equals("absyn.BAss")){
       result=progress((BAss)stmt,status);
@@ -643,6 +651,9 @@ class Nachfolgermaschine extends Object{
   }
 
   Status progress(BAss bass, Status status){
+    if (gui.isDebug()){
+      System.out.println("progress fuer BAss");
+    }
     Status result=status;
     Bassign assign=bass.ass;
     Bvar lhs=assign.blhs;
@@ -657,6 +668,9 @@ class Nachfolgermaschine extends Object{
   }
   
   Status progress(MFalse fass, Status status){
+    if (gui.isDebug()){
+      System.out.println("progress fuer MFalse");
+    }
     Status result=status;
     Bvar var=fass.var;
     result.booleans.setFalse(var);
@@ -664,9 +678,17 @@ class Nachfolgermaschine extends Object{
   }
   
   Status progress(MTrue tass, Status status){
+    if (gui.isDebug()){
+      System.out.println("progress fuer MTrue");
+    }
     Status result=status;
     Bvar var=tass.var;
+
     result.booleans.setTrue(var);
+    if (gui.isDebug()){
+      System.out.println(var.var+" wurde auf True gesetzt");
+      System.out.println(var.var+" ist "+result.booleans.isTrue(var));
+    }
     return result;
   }
   

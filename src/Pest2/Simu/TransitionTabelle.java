@@ -6,7 +6,7 @@ import java.util.Hashtable;
 import absyn.*;
 import util.*;
 
-public class TransitionTabelle extends Object{
+class TransitionTabelle extends Object{
   Hashtable data=null;
 
   public TransitionTabelle(){

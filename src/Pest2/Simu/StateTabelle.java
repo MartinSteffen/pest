@@ -1,12 +1,11 @@
 package simu;
 
 
-import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.*;
 import absyn.*;
 import util.*;
 
-public class StateTabelle extends Object{
+class StateTabelle extends Object{
   Hashtable data=null;
 
   public StateTabelle(){
@@ -18,7 +17,7 @@ public class StateTabelle extends Object{
     String head=path.head;
     Path   tail=path.tail;
     while (tail!=null){
-      System.out.print(head+" ");
+      System.out.print(head+"-");
       head=tail.head;
       tail=tail.tail;
     }
@@ -30,12 +29,127 @@ public class StateTabelle extends Object{
     String head=path.head;
     Path   tail=path.tail;
     while (tail!=null){
-      result+=head+",";
+      result=head+".";
       head=tail.head;
       tail=tail.tail;
     }
     result+=head;
     return result;
+  }
+
+  Path stringToPath(String input){
+    Path result=null;
+    String inline=input.trim();
+    String temp=null;
+    if (inline.length()!=0){
+      StringTokenizer strtok=new StringTokenizer(inline,".");
+      result=new Path(strtok.nextToken(),null);
+      while (strtok.hasMoreTokens()){
+	temp=strtok.nextToken();
+	result=result.append(temp);
+      }
+    }
+    return result;
+  }
+
+  State stateByPath(Path p, Basic_State s){
+    State result=s;
+    if (p!=null){
+      result=null;
+    }
+    return result;
+  }
+
+  State stateByPath(Path p, And_State s){
+    State result=s;
+    if (p!=null){
+      StateList list=s.substates;
+      State listhead=null;
+      String head=p.head;
+      while (list!=null){
+	listhead=list.head;
+	if (head.equals(listhead.name.name)){
+	  result=stateByPath(p.tail,listhead);
+	  break;
+	}
+	else{
+	  result=null;
+	}
+	list=list.tail;
+      }
+    }
+    return result;
+  }
+    
+  State stateByPath(Path p, Or_State s){
+    State result=s;
+    if (p!=null){
+      StateList list=s.substates;
+      State listhead=null;
+      String head=p.head;
+      while (list!=null){
+	listhead=list.head;
+	if (head.equals(listhead.name.name)){
+	  result=stateByPath(p.tail,listhead);
+	  break;
+	}
+	else{
+	  result=null;
+	}
+	list=list.tail;
+      }
+    }
+    return result;
+  }
+    
+
+  State stateByPath(Path p, State s){
+    State result=null;
+    if (s instanceof Basic_State){
+      result=stateByPath(p,(Basic_State)s);
+    }
+    if (s instanceof And_State){
+      result=stateByPath(p,(And_State)s);
+    }
+    if (s instanceof Or_State){
+      result=stateByPath(p,(Or_State)s);
+    }
+    return result;
+  }
+
+  State stateByPath(Path p,Statechart s){
+    State result=s.state;
+    if (p!=null){
+      String head=p.head;
+      if (head.equals(result.name.name)){
+	result=stateByPath(p.tail,result);
+      }
+    }
+    return result;
+  }
+    
+
+
+  public void insert(String elements,Statechart s) throws TraceFormatException{
+    String inline=elements.trim();
+    String temp=null;
+    State tempstate=null;
+    State defaultstate=s.state;
+    Path temppath=null;
+    if (inline.length()!=0){
+      StringTokenizer strtok=new StringTokenizer(inline," ");
+      while (strtok.hasMoreTokens()){
+	temp=strtok.nextToken();
+	temppath=stringToPath(temp);
+	tempstate=stateByPath(temppath,s);
+	if (tempstate!=null){
+	  setActive(temppath,tempstate);
+	}
+	else{
+	  throw(new TraceFormatException());
+	}
+      }
+    }
   }
 
   public void debug(){
@@ -131,5 +245,13 @@ public class StateTabelle extends Object{
   }
 
 }
+
+
+
+
+
+
+
+
 
 

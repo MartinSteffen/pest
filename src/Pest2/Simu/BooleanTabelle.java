@@ -1,14 +1,11 @@
 package simu;
 
-
-import java.util.Enumeration;
-import java.util.Hashtable;
-
-import java.util.StringTokenizer; 
+import java.util.*; 
 
 import absyn.*;
+import util.*;
 
-public class BooleanTabelle extends Object{
+class BooleanTabelle extends Object{
   Hashtable data=null;
 
   public BooleanTabelle(){
@@ -16,48 +13,69 @@ public class BooleanTabelle extends Object{
   }
 
 
-  public BooleanTabelle insert(String s){
-    Bvar b=null;
-    BooleanTabelle result=new BooleanTabelle();
-    StringTokenizer strtok=new StringTokenizer(s," ");
-    while (strtok.hasMoreTokens()){
-      /* hier BVars einfuegen */
+  public void insert(String elements){
+    String inline=elements.trim();
+    String temp=null;
+    if (inline.length()!=0){
+      StringTokenizer strtok=new StringTokenizer(inline," ");
+      while (strtok.hasMoreTokens()){
+	temp=strtok.nextToken();
+	setTrue(temp);
+      }
     }
-    return result;
   }
-    
       
 
   public BooleanTabelle filterConditions(BooleanTabelle tab){
     BooleanTabelle result=new BooleanTabelle();
     Enumeration keys=null;
     keys=(data).keys();
-    Bvar tempvar=null;
+    String tempvar=null;
     while (keys.hasMoreElements()){
-      tempvar=(Bvar)keys.nextElement();
+      tempvar=(String)keys.nextElement();
       if (isTrue(tempvar)){
 	result.setTrue(tempvar);
       }
     }
     Enumeration tab_keys=(tab.data).keys();
-    Bvar tab_element=null;
+    String tab_element=null;
     while (tab_keys.hasMoreElements()){
-      tab_element=(Bvar)tab_keys.nextElement();
-      if (data.containsKey(tab_element)){
+      tab_element=(String)tab_keys.nextElement();
+      System.err.print(tab_element);
+      if (isIn(tab_element)){
 	if (isTrue(tab_element)){
 	  result.setTrue(tab_element);
+	  System.err.println(" auf true!!!");
+	}
+	else{
+	  System.err.println(" auf false!!!");
 	}
       }
       else{
 	result.setTrue(tab_element);
+	System.err.println(" auf true!! (sowieso...)");
       }
     }
     return result;
   }
       
+  boolean isIn(String name){
+    boolean result=false;
+    Enumeration enum=data.keys();
+    String temp=null;
+    while ((enum.hasMoreElements())&&(result!=true)){
+      temp=(String)enum.nextElement();
+      result=name.equals(temp);
+    }
+    return result;
+  }
 
   public boolean isTrue(Bvar b){
     String name=b.var;
+    return (isTrue(name));
+  }
+   
+  public boolean isTrue(String name){
     String value=(String)data.get(name);
     if (value!=null){
       return (value.equals("true"));
@@ -65,8 +83,7 @@ public class BooleanTabelle extends Object{
     else{
       return false;
     }
-  }
-   
+  } 
  
   public void setTrue(Bvar b){
     String name=b.var;
@@ -87,25 +104,29 @@ public class BooleanTabelle extends Object{
   }
 
 
-   public BooleanTabelle verbinde(BooleanTabelle tab) throws RacingException{
+  public BooleanTabelle verbinde(BooleanTabelle tab) throws RacingException{
     BooleanTabelle result=new BooleanTabelle();
     boolean racing_occured=false;;
     Bvar racing_var=null;
-    Bvar tempkey=null;
+    String tempkey=null;
     String tempvalue=null;
     Enumeration keys=null;
     keys=(tab.data).keys(); /* Zunaechst alle "Wahren" aus tab nach result...*/
     while (keys.hasMoreElements()){
-      tempkey=(Bvar)keys.nextElement();
-      tempvalue=(String)(tab.data.get(tempkey));
-      (result.data).put(tempkey,tempvalue);
+      tempkey=(String)keys.nextElement();
+      if (isTrue(tempkey)){
+	result.setTrue(tempkey);
+      }
+      else{
+	result.setFalse(tempkey);
+      }
     }
     keys=data.keys();                   /* und dann alle aktiven der Instanz, aber nur, wenn */
     while (keys.hasMoreElements()){     /* wenn nicht schon vorher gesetzt*/
-      tempkey=(Bvar)keys.nextElement();
+      tempkey=(String)keys.nextElement();
       tempvalue=(String)(data.get(tempkey));
       /* Wurde tempkey schon vorher von tab nach result gesetzt? */
-      if ((result.data).containsKey(tempkey)){
+      if (result.isIn(tempkey)){
 	/*Wenn ja, dann pruefen, ob der angestrebte Wert bei beiden das gleiche ergibt*/
         String valueAusTab=(String)result.data.get(tempkey);
 	if (valueAusTab.equals(tempvalue)){
@@ -115,7 +136,7 @@ public class BooleanTabelle extends Object{
 	  /* Racing-Condition: Zwei unterschiedliche Aktionen wollten quasi gleichzeitig*/
 	  /* eine boolesche Variable unterschiedlich setzen.... Finden wir nicht schoen..*/
 	  racing_occured=true;
-	  racing_var=tempkey;
+	  racing_var=new Bvar(tempkey);
 	}
       }
       else{

@@ -8,7 +8,7 @@ import editor.*;
 import gui.*;
 import util.*;
 
-public class Communicator extends Frame implements ActionListener, ItemListener{
+class Communicator extends Frame implements ActionListener, ItemListener{
   Statechart chart=null;
   Editor editor=null;
   GUIInterface gui=null;
@@ -43,7 +43,7 @@ public class Communicator extends Frame implements ActionListener, ItemListener{
     running=true;
     chart=s;
     monitor=new Monitor(chart,this);
-    tracer=new Tracer(this);
+    tracer=new Tracer(this,gui,chart);
     brdialog=new BreakpointDialog(this,chart,gui,new Vector());
     brkpts=new Vector();
     buildFrame();
@@ -183,14 +183,21 @@ public class Communicator extends Frame implements ActionListener, ItemListener{
     State element=null;
     while (actives.hasMoreElements()){
       element=(State)actives.nextElement();
-      if (element instanceof Or_State){
-	highlight=new highlightObject((Or_State)element,Color.white);
-      }
-      if (element instanceof Basic_State){
-	highlight=new highlightObject((Basic_State)element,Color.white);
-      }
+      if (element!=null){
+	if (element instanceof Or_State){
+	  highlight=new highlightObject((Or_State)element,Color.white);
+	}
+	if (element instanceof Basic_State){
+	  highlight=new highlightObject((Basic_State)element,Color.white);
+	}
         if (element instanceof And_State){
-	highlight=new highlightObject((And_State)element,Color.white);
+	  highlight=new highlightObject((And_State)element,Color.white);
+	}
+      }
+      else{
+	if (gui.isDebug()){
+	  System.out.println("State ist null");
+	}
       }
     }
   }
@@ -202,14 +209,21 @@ public class Communicator extends Frame implements ActionListener, ItemListener{
     State element=null;
     while (actives.hasMoreElements()){
       element=(State)actives.nextElement();
+      if (element!=null){
         if (element instanceof Or_State){
-	highlight=new highlightObject((Or_State)element);
-      }
-      if (element instanceof Basic_State){
-	highlight=new highlightObject((Basic_State)element);
-      }
+	  highlight=new highlightObject((Or_State)element);
+	}
+	if (element instanceof Basic_State){
+	  highlight=new highlightObject((Basic_State)element);
+	}
         if (element instanceof And_State){
-	highlight=new highlightObject((And_State)element);
+	  highlight=new highlightObject((And_State)element);
+	}
+      }
+      else{
+	if (gui.isDebug()){
+	  System.out.println("State ist null");
+	}
       }
     }
   }
@@ -222,7 +236,14 @@ public class Communicator extends Frame implements ActionListener, ItemListener{
     Tr element=null;
     while (actives.hasMoreElements()){
       element=(Tr)actives.nextElement();
-      highlight=new highlightObject(element,Color.white);
+      if (element!=null){
+	highlight=new highlightObject(element,Color.black);
+      }
+      else{
+	if (gui.isDebug()){
+	  System.out.println("Tr ist null");
+	}
+      }
     }
   }
   
@@ -233,7 +254,14 @@ public class Communicator extends Frame implements ActionListener, ItemListener{
     Tr element=null;
     while (actives.hasMoreElements()){
       element=(Tr)actives.nextElement();
-      highlight=new highlightObject(element);
+      if (element!=null){
+	highlight=new highlightObject(element);
+      }
+      else{
+	if (gui.isDebug()){
+	  System.out.println("Tr ist null");
+	}
+      }
     }
   } 
 
@@ -247,6 +275,7 @@ public class Communicator extends Frame implements ActionListener, ItemListener{
       public void windowClosing(WindowEvent e){
 	setVisible(false);
 	monitor.setVisible(false);
+	tracer.setVisible(false);
 	gui.simuExit();
       }
     });
@@ -306,7 +335,7 @@ public class Communicator extends Frame implements ActionListener, ItemListener{
     Schrittanzahl=result;
   }
 
-    public void itemStateChanged(ItemEvent e){
+  public void itemStateChanged(ItemEvent e){
     Checkbox box=(Checkbox)e.getItemSelectable();
     int change=e.getStateChange();
     if (box instanceof EventView){
@@ -315,13 +344,27 @@ public class Communicator extends Frame implements ActionListener, ItemListener{
       String name=event.name;
       if (change==ItemEvent.SELECTED){
 	akt_status.events.set(name,new SEvent(name));
-	monitor.setStatus(akt_status);
+	//monitor.setStatus(akt_status);
       }
       if (change==ItemEvent.DESELECTED){
 	akt_status.events.remove(name);
-	monitor.setStatus(akt_status);
+	//monitor.setStatus(akt_status);
       }
     }
+    if (box instanceof BooleanView){
+      BooleanView bview=(BooleanView)box;
+      Bvar bvar=bview.bvar;
+      String name=bvar.var;
+      if (change==ItemEvent.SELECTED){
+	akt_status.booleans.setTrue(name);
+	//monitor.setStatus(akt_status);
+      }
+      if (change==ItemEvent.DESELECTED){
+	akt_status.booleans.setFalse(name);
+	//monitor.setStatus(akt_status);
+      }
+    }
+   
   }
 
 

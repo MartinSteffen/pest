@@ -8,7 +8,7 @@ import tesc1.*;
 import java.io.*;
 import gui.*;
 
-public class BreakpointDialog extends Dialog implements ActionListener{
+class BreakpointDialog extends Dialog implements ActionListener{
 
   Button b1=null;
   Button b2=null;

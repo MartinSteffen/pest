@@ -4,7 +4,7 @@ import absyn.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class BVarRacingDialog extends Dialog implements ActionListener{
+class BVarRacingDialog extends Dialog implements ActionListener{
   BooleanTabelle status=null;
   Bvar var=null;
 

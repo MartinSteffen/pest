@@ -4,7 +4,7 @@ import java.awt.*;
 import absyn.*;
 
 
-public class EventView extends Checkbox{
+class EventView extends Checkbox{
 
    SEvent event=null;
 
