@@ -17,7 +17,7 @@ import util.*;
  */
 
 
-public class TESCLabelGen {
+class TESCLabelGen {
     
     private int errorCount = 0;   // Anzahl der aufgetretenen Fehler
     private Vector errorList;     // Fehlerliste
@@ -45,7 +45,7 @@ public class TESCLabelGen {
      * @param Action
      * @param GUIInterface
      */ 
-    public TESCLabelGen(Guard grd_, Action act_, GUIInterface gi_) {
+    protected TESCLabelGen(Guard grd_, Action act_, GUIInterface gi_) {
 	gi = gi_;
      
 	grd = grd_;
@@ -74,7 +74,7 @@ public class TESCLabelGen {
      * @param Guard 
      * @param Action
      */ 
-    public TESCLabelGen(Guard grd_, Action act_) {
+    protected TESCLabelGen(Guard grd_, Action act_) {
 	gi = null;
      
 	grd = grd_;
@@ -95,7 +95,7 @@ public class TESCLabelGen {
     }
 
     
-    public String getGuard() {
+    protected String getGuard() {
 	String s = null;
 	boolean b = false;
 	boolean c = false;

@@ -72,7 +72,7 @@ import util.*;
  * <br>
  * <hr>
  * @author Arne Koch/Mike Rumpf.
- * @version  $Id: TESCSaver.java,v 1.6 1999-01-27 17:32:46 swtech13 Exp $ 
+ * @version  $Id: TESCSaver.java,v 1.7 1999-01-28 17:26:16 swtech13 Exp $ 
  */ 
 
 /* Konventionen:
@@ -192,8 +192,8 @@ public class TESCSaver {
     }
 
     private void initSwitches() {
-      //switches.addElement("debug");
-	 switches.addElement("Trans.useAbsyn");
+	if (gi.isDebug()) switches.addElement("debug");
+	switches.addElement("Trans.useAbsyn");
     }
 
     private boolean save() throws IOException {
@@ -265,13 +265,13 @@ public class TESCSaver {
 	d = savetransitionlist(st.trs);
 
 	if (!a)
-	     gi.userMessage("statelist");
+	     debug("Fehler in statelist");
 	if (!b)
-	     gi.userMessage("defcon");
+	     debug("Fehler in defcon");
 	if (!c)
-	     gi.userMessage("cons");
+	     debug("Fehler in cons");
 	if (!d)
-	     gi.userMessage("Transition");
+	     debug("Fehler in Transition");
 
 
 	bw.newLine();
