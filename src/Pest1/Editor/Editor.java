@@ -31,6 +31,8 @@ import java.awt.event.*;
 import java.io.*;
 import absyn.*;
 import editor.desk.*;
+import gui.*;
+import gui.popdialoge.*;
 
 public class Editor extends Frame {
     private static String Buttontype = "";
@@ -38,6 +40,15 @@ public class Editor extends Frame {
     private static Editor menufeld = null;
     private static Editor drawfeld = null;
     private static boolean workable = true;
+    private static boolean drawstatus = false;
+    public static double ZoomFaktor = 1;
+    public static double zoomfk = 1;
+    private static GUIInterface gui = null; // Referenz auf die GUI (mit NULL vorbelegen)
+
+    static PESTDrawDesk scribble;
+    ScrollPane pane = new ScrollPane();      // Create a ScrollPane.
+    Panel panel = new Panel();
+
 
 static Panel xpanel;
 static Graphics h;
@@ -48,6 +59,7 @@ static Statechart nroot = new Statechart(null,null,null,null);
        public void actionPerformed(ActionEvent e){
        Buttontype = e.getActionCommand();}
     };
+
 
 /**
  * Generiert einen Menu-Frame 
@@ -61,8 +73,12 @@ static Statechart nroot = new Statechart(null,null,null,null);
 
     nroot = root; 
     
-    new Editor(nroot,name,100,100,500,400);}
+    new Editor(nroot,name,100,100,500,400,null);}
 
+
+public Editor(Statechart root,String name,int top,int left,int width,int height) {
+	nroot = root;
+    new Editor(nroot,name,top,left,width,height,null); }
 
 /**
  * Generiert einen Menu-Frame 
@@ -90,9 +106,9 @@ static Statechart nroot = new Statechart(null,null,null,null);
 	this.add(Trans);
 	Trans.setActionCommand("Draw_Trans");
 	Trans.addActionListener(listener);
-	Button Defconn = new Button("DEF CONN");
+	Button Defconn = new Button("CONNECTOR");
 	this.add(Defconn);
-	Defconn.setActionCommand("Draw_DefConn");
+	Defconn.setActionCommand("Draw_Conn");
 	Defconn.addActionListener(listener);
 	Button Par = new Button("PARALLEL");
 	this.add(Par);
@@ -106,6 +122,12 @@ static Statechart nroot = new Statechart(null,null,null,null);
 	this.add(TLabelT);
 	TLabelT.setActionCommand("Draw_TransLabel");
 	TLabelT.addActionListener(listener);
+
+	Button setdef = new Button("Set Default");
+	this.add(setdef);
+	setdef.setActionCommand("Set_Default");
+	setdef.addActionListener(listener);
+
 	this.show();
     } 
 
@@ -122,20 +144,21 @@ static Statechart nroot = new Statechart(null,null,null,null);
  * </ul>
  */
 
-  public Editor(Statechart root,String name,int top,int left,int width,int height) {
+  public Editor(Statechart root,String name,int top,int left,int width,int height,GUIInterface ngui) {
   super(name);                  // Create the window.
-
+gui = ngui;
 // Statechart root = new Statechart(null,null,null,null);
 nroot = root;  
 
     drawfeld = this;
+    drawstatus = true;
     menufeld = new Editor("menue");
     this.setLocation(top,left);                // Koordinaten des Zeichenfensters setzen.
-    ScrollPane pane = new ScrollPane();      // Create a ScrollPane.
+    // ScrollPane pane = new ScrollPane();      // Create a ScrollPane.
     pane.setSize(width,height);                  // Specify its size.
     this.add(pane, "Center");                // Add it to the frame.
-    PESTDrawDesk scribble;
-    Panel panel = new Panel();
+    
+   // Panel panel = new Panel();
    xpanel = panel;
     scribble = new PESTDrawDesk(panel, 2400, 2400,nroot); // Create a bigger scribble area.
     pane.add(scribble);                      // Add it to the ScrollPane.
@@ -159,18 +182,76 @@ Menu win = new Menu("Window");            // Create a File menu.
       public void actionPerformed(ActionEvent e) { Dispose();  }
     });
 
-
-
-
     Menu tools = new Menu("Tools");            // Create a File menu.
     menubar.add(tools);                       // Add to menubar.
 
     // Tool-Menue erzeugen
     MenuItem s1, s2, s3;
-    tools.add(s1 = new MenuItem("T1"));
+    tools.add(s1 = new MenuItem("Dialog"));
     tools.add(s2 = new MenuItem("T2"));
     tools.add(s3 = new MenuItem("T3 .."));
     // Set the window size and pop it up.
+
+s1.addActionListener(new ActionListener() {    
+      public void actionPerformed(ActionEvent e) { fehlermeldung1();}
+    });
+
+   Menu zoom = new Menu("Zoom");            // Create a File menu.
+    menubar.add(tools);                       // Add to menubar.
+
+    // Tool-Menue erzeugen
+    MenuItem z1, z2, z3, z4, z5, z6, z7,z10,z12;
+    zoom.add(z10 = new MenuItem("Zoom In"));
+    zoom.add(z12 = new MenuItem("Zoom Out"));
+    zoom.addSeparator();
+    zoom.add(z1 = new MenuItem("1/8 x"));
+    zoom.add(z2 = new MenuItem("1/4 x"));
+    zoom.add(z3 = new MenuItem("1/2 x "));
+    zoom.add(z4 = new MenuItem("1 x"));
+    zoom.add(z5 = new MenuItem("2 x"));
+    zoom.add(z6 = new MenuItem("4 x "));
+    zoom.add(z7 = new MenuItem("8 x "));
+
+    menubar.add(zoom);                       // Add to menubar.
+
+
+z1.addActionListener(new ActionListener() {    
+      public void actionPerformed(ActionEvent e) { ZoomFaktor = 0.125; zoomfk = -8; scribble.repaint();}
+    });
+z2.addActionListener(new ActionListener() {    
+      public void actionPerformed(ActionEvent e) { ZoomFaktor = 0.25; zoomfk = -4;scribble.repaint();}
+    });
+z3.addActionListener(new ActionListener() {    
+      public void actionPerformed(ActionEvent e) { ZoomFaktor = 0.5; zoomfk = -2;scribble.repaint();}
+    });
+z4.addActionListener(new ActionListener() {    
+      public void actionPerformed(ActionEvent e) { ZoomFaktor = 1; zoomfk = 1;	scribble.repaint();}
+    });
+z5.addActionListener(new ActionListener() {    
+      public void actionPerformed(ActionEvent e) { ZoomFaktor = 2; zoomfk = 2;scribble.repaint();}
+    });
+z6.addActionListener(new ActionListener() {    
+      public void actionPerformed(ActionEvent e) { ZoomFaktor = 4; zoomfk = 4; scribble.repaint();}
+    });
+z7.addActionListener(new ActionListener() {    
+      public void actionPerformed(ActionEvent e) { ZoomFaktor = 8; zoomfk = 8; scribble.repaint();}
+    });
+
+z10.addActionListener(new ActionListener() {    
+      public void actionPerformed(ActionEvent e) { zoomfk = zoomfk + 1; if (zoomfk == 0) {zoomfk = 2;}
+			if (zoomfk > -1) {ZoomFaktor = zoomfk;} else
+					{ZoomFaktor = 1/(Math.abs(zoomfk));}
+					 	scribble.repaint();}
+
+    });
+z12.addActionListener(new ActionListener() {    
+      public void actionPerformed(ActionEvent e) { zoomfk = zoomfk - 1; if (zoomfk == 0) {zoomfk = -2;}
+			if (zoomfk > -1) {ZoomFaktor = zoomfk;} else
+					{ZoomFaktor = 1/(Math.abs(zoomfk));}
+						scribble.repaint();}
+    });
+
+
 
       
  s1.addActionListener(new ActionListener() {    
@@ -195,8 +276,14 @@ public static String Editor () {return Buttontype ;}
  * (nur fuer Editor-Events)
  */
 
-public static void SetListen() {  update = true;
- PESTDrawDesk.addundo(nroot);}
+public static void SetListen() {
+// *****************************
+	Relist rl = new Relist(); rl.start(nroot,null,null,nroot);  
+	update = true;
+//  *****************************
+	gui.userMessage("Editor : Update durchgefuehrt");
+ 	PESTDrawDesk.addundo(nroot);
+	}
  
 private static void RemoveListen() {update = false;}
 
@@ -219,6 +306,7 @@ public static boolean listenEditor() {
 public static void Dispose() {
     menufeld.dispose();
     drawfeld.dispose();
+    drawstatus = false;
     }
 
 /**
@@ -241,13 +329,29 @@ public static void work(boolean arbeit) {
 
 public static boolean work() { return workable;}
 
+public static boolean active() { return drawstatus;}
+
 private static void Freeit(Statechart xroot) { 	xroot.state = null;
 					xroot.events = null;
 					xroot.bvars = null;
    					xroot.cnames = null;
-					new PESTDrawDesk();   
-
+					scribble.repaint();
 					}
+
+public static void newdraw() { 
+			scribble.repaint();
+			}
+
+
+
+    // Vorsicht : die folgende Methode wurde nur zu Testzwecken eingebaut
+    // und verursacht inkonsistente Zustaende !!!!!!!!!!!!!!!!!!!!!!!!!!!
+public Editor(boolean i) {System.out.println("loesche alles im Editor"); scribble.repaint(); }
+
+public static void fehlermeldung1()
+{
+  gui.OkDialog("Editor","Fehler beim Zeichnen aufgetreten");
+}
 
 
 }

@@ -15,16 +15,14 @@ import java.awt.event.*;
 import java.io.*;
 import absyn.*;
 import editor.desk.*;
+
 public class highlightObject {
 
-
   static Graphics h;
-       
+  static highLList drawlist = null;       
+
   public highlightObject (Graphics g) {h = g;};
    
-    
-  public highlightObject () { h.drawRect(10,10,100,100);}
-
     
 /**
  * Generates a change to default color of object 
@@ -33,22 +31,76 @@ public class highlightObject {
  * <li>obj  :  
  * </ul>
  */
-
+   highLList temp;
+   highLO tempobj;
 
     public highlightObject(Basic_State obj) { }
-    public highlightObject(Basic_State obj, Color col) { }
+    public highlightObject(Basic_State obj, Color col) { temp = drawlist;
+						tempobj = new highLO(obj,Color.red);
+						drawlist = new highLList(tempobj,temp);
+						System.out.println("highlist : "+drawlist.head.type);}
 
     public highlightObject(And_State obj) { }
-    public highlightObject(And_State obj, Color col) { }
+    public highlightObject(And_State obj, Color col) { 	temp = drawlist;
+						tempobj = new highLO(obj,Color.red);
+						drawlist = new highLList(tempobj,temp);
+						System.out.println("highlist : "+drawlist.head.type);}
    
     public highlightObject(Or_State obj) { }
-    public highlightObject(Or_State obj, Color col) { }
+    public highlightObject(Or_State obj, Color col) { 	temp = drawlist;
+						tempobj = new highLO(obj,Color.red);
+						drawlist = new highLList(tempobj,temp);
+						System.out.println("highlist : "+drawlist.head.type);}
 
     public highlightObject(Tr obj) { }
-    public highlightObject(Tr obj, Color col) { }
+    public highlightObject(Tr obj, Color col) { 	temp = drawlist;
+					tempobj = new highLO(obj,Color.red);
+					drawlist = new highLList(tempobj,temp);
+					System.out.println("highlist : "+drawlist.head.type);}
 
     public highlightObject(Connector obj) { }
-    public highlightObject(Connector obj, Color col) { }
+    public highlightObject(Connector obj, Color col) { 	temp = drawlist;
+						tempobj = new highLO(obj,Color.red);
+						drawlist = new highLList(tempobj,temp);
+						System.out.println("highlist : "+drawlist.head.type);}
+
+    public highlightObject(Graphics g,Statechart root) 
+     {
+     h = g;
+    highLList neulist = drawlist; 
+     new HighObj(h);
+      HighObj rp = new HighObj();
+      while (neulist != null)
+	{ 
+               System.out.println("neulist :"+neulist.head.type);
+	rp.start(root,0,0,true,neulist.head.type,neulist.head.color);
+	neulist = neulist.tail;
+	}
+     }
+
+
+    public highlightObject() { Editor.newdraw()  ;} // repaint aufrufen.
+    public highlightObject(boolean test) {drawlist = null;}
+
+
+class highLO 
+{
+     private Absyn type;
+     private Color color;
+     private highLO(Absyn ab, Color col)
+	{ type = ab;
+	   color = col;}
+}
+
+class highLList 
+{
+     private highLO head; 
+     private highLList tail;
+     private highLList(highLO h, highLList tl)
+	{ head = h;
+	   tail = tl;}
+}
+
 
 
 } // highlightObject
