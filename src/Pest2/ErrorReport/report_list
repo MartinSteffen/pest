@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	--------------
 //
-//	$Id: report_list,v 1.63 1999-02-12 09:14:56 swtech00 Exp $
+//	$Id: report_list,v 1.64 1999-02-12 09:33:07 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -103,7 +103,7 @@ Fehler: Oberer Rand (etwa 1/5)der Chart ist nicht sichtbar.
 #Number:	6
 #Autor:		Erich Mikk erm
 #Subject:	TESC Export/Import Probleme
-#Status: 	fixed/Fehler nicht mehr feststellbar (swtech20)
+#Status: 	canceled (als #45 gemeldet)
 #Description: 
 
 Importiere File X.st aus SE-Systems.
@@ -635,7 +635,7 @@ jedoch nicht und verbrt die gesamte Rechenzeit :-( .
 #Number:	40
 #Autor:		Erich Mikk
 #Subject:	Check erkennt Undet_Guard nicht
-#Status:	fixed
+#Status:	confirmed
 #Description:
 
 Am 11.2. zurück:
@@ -662,7 +662,7 @@ das Menu fr den Zustand Nondet.
 #Number:	42
 #Autor:		Erich Mikk erm
 #Subject:	TESC2 berechnet falsche Koordinaten, oder check spinnt?
-#Status:	fixed
+#Status:	confirmed
 #Description:
 
 TESC-Import /home/swtech12/Examples/PC/a1.pest2.tesc
