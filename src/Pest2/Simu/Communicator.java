@@ -240,22 +240,6 @@ class Communicator extends Frame implements ActionListener, ItemListener{
     StateTabelle states=akt_status.states;
     Enumeration actives=states.data.elements();
     State element=null;
-    if (PEST==1){
-      try{
-	Class highlightClass=Class.forName("editor.highlightObject");
-	Class[] parameters=new Class[1];
-	parameters[0]=Class.forName("java.lang.Boolean");
-	Constructor construct=highlightClass.getConstructor(parameters);
-	Object[] constructparameters=new Object[1];
-	constructparameters[0]=new Boolean(true);
-	highlight=(highlightObject)construct.newInstance(constructparameters);
-      }
-      catch (Exception e){
-	if (gui.isDebug()){
-	  System.out.println(e);
-	}
-      }
-    }
     while (actives.hasMoreElements()){
       element=(State)actives.nextElement();
       if (element!=null){
@@ -285,7 +269,7 @@ class Communicator extends Frame implements ActionListener, ItemListener{
       }
       catch (Exception e){
 	if (gui.isDebug()){
-	  System.out.println(e);
+	  System.out.println("highlight_States: nach init"+e);
 	}
       }
     }
@@ -319,14 +303,16 @@ class Communicator extends Frame implements ActionListener, ItemListener{
     if (PEST==1){
       try{
 	Class highlightClass=Class.forName("editor.highlightObject");
-	Class[] parameters=null;
+	Class[] parameters=new Class[1];
+	parameters[0]=Boolean.TYPE;
 	Constructor construct=highlightClass.getConstructor(parameters);
-	Object[] constructparameters=null;
+	Object[] constructparameters=new Object[1];
+	constructparameters[0]=new Boolean(true);
 	highlight=(highlightObject)construct.newInstance(constructparameters);
       }
       catch (Exception e){
 	if (gui.isDebug()){
-	  System.out.println(e);
+	  System.out.println("unhighlight States"+e);
 	}
       }
     }
@@ -338,22 +324,6 @@ class Communicator extends Frame implements ActionListener, ItemListener{
     TransitionTabelle transitions=akt_status.transitions;
     Enumeration actives=transitions.data.elements();
     Tr element=null;
-    if (PEST==1){
-      try{
-	Class highlightClass=Class.forName("editor.highlightObject");
-	Class[] parameters=new Class[1];
-	parameters[0]=Class.forName("java.lang.Boolean");
-	Constructor construct=highlightClass.getConstructor(parameters);
-	Object[] constructparameters=new Object[1];
-	constructparameters[0]=new Boolean(true);
-	highlight=(highlightObject)construct.newInstance(constructparameters);
-      }
-      catch (Exception e){
-	if (gui.isDebug()){
-	  System.out.println(e);
-	}
-      }
-    }
     while (actives.hasMoreElements()){
       element=(Tr)actives.nextElement();
       if (element!=null){
@@ -400,14 +370,16 @@ class Communicator extends Frame implements ActionListener, ItemListener{
     if (PEST==1){
       try{
 	Class highlightClass=Class.forName("editor.highlightObject");
-	Class[] parameters=null;
+	Class[] parameters=new Class[1];
+	parameters[0]=Boolean.TYPE;
 	Constructor construct=highlightClass.getConstructor(parameters);
-	Object[] constructparameters=null;
+	Object[] constructparameters=new Object[1];
+	constructparameters[0]=new Boolean(true);
 	highlight=(highlightObject)construct.newInstance(constructparameters);
       }
       catch (Exception e){
 	if (gui.isDebug()){
-	  System.out.println(e);
+	  System.out.println("unhighlightTrs"+e);
 	}
       }
     }
@@ -421,6 +393,7 @@ class Communicator extends Frame implements ActionListener, ItemListener{
     setLayout(new FlowLayout());
     addWindowListener(new WindowAdapter(){
       public void windowClosing(WindowEvent e){
+	prev_status=akt_status;
 	unhighlightPrevTrs();
 	unhighlightPrevStates();
 	setVisible(false);
