@@ -4,6 +4,8 @@ import java.awt.event.*;
 import java.io.*;
 import popdialoge.*;
 
+import Absyn.*;
+
 
 public class pest
 extends Frame
@@ -12,6 +14,12 @@ implements GUIInterface
     FileDialog fDialog;
     GUIMenu theGUIMenu;
     TextArea MsgWindow;
+
+    Statechart SyntaxBaum = null;
+    String     SBDateiname = null;
+
+    boolean CheckedSC = false;
+    boolean ResultSC = false;
 
    public static void main(String[] args)
     {
@@ -38,10 +46,50 @@ implements GUIInterface
 	setVisible(true);
 	fDialog = new FileDialog(this);
 
-	Initialize();
-
+	theGUIMenu.updateMenu();
+	userMessage("GUI   : PEST initialisiert");
+	repaint();
+   
     }
 
+
+    boolean checkSB()
+    {
+	if(!CheckedSC)
+	    {
+		Check.modelCheck SCchecker = new Check.modelCheck();
+		ResultSC = SCchecker.checkModel(SyntaxBaum);
+		CheckedSC = true;
+		if (SCchecker.getErrorNumber()==0)
+		    {
+			ResultSC = true;
+		    }
+	    }
+	else
+	    {
+		userMessage("GUI   : SyntaxBaum nicht verändert -> Benutze altes Ergebnis");
+	    }
+
+	if (!ResultSC)
+	    {
+		userMessage("GUI   : SyntaxCheck fehlgeschlagen");
+	    }
+	else
+	    {
+		userMessage("GUI   : SyntaxCheck erfolgreich :-)");
+	    }
+
+	return ResultSC;
+    }
+
+    void setStatechart(Statechart sc,String name)
+    {
+	SyntaxBaum = sc;
+	SBDateiname = name;
+	CheckedSC = false;
+	ResultSC  = false;
+	theGUIMenu.updateMenu();	
+    }
 
     public void addGUIMenu(Menu m){
 	theGUIMenu.add(m);
@@ -79,14 +127,6 @@ implements GUIInterface
 	return new YesNoCancelDialog(par,Titel,Msg).getAnswer();
     }
 
-
-
-    
-    public void Initialize()
-    {
-	userMessage("GUI:\tPEST initialisiert");
-	repaint();
-    }
     
     
     /**
@@ -108,17 +148,18 @@ implements GUIInterface
 		    BufferedReader  inFile = new BufferedReader(new FileReader(fDialog.getDirectory()+FileName));
 		    if(inFile.readLine().equals("zustand"))
 			{
-			    Initialize();
+			    // hier soll noch irgendwie geladen werden
+			    
 			}
 		    else
 			{
-			    System.out.println("Is keine PEST-Datei");
+			    OkDialog("Fehler","Ist keine PEST-Datei");
 			}
 		    inFile.close();
 		    
 		}catch (IOException e)
 		    {
-			System.out.println("Schade...");
+			OkDialog("Fehler","Auf die Datei kann nicht zugegriffen werden");
 			// Alarm !
 		    }
 		
@@ -150,7 +191,7 @@ implements GUIInterface
 		    
 		}catch (IOException e)
 		    {
-			System.out.println("Schade...");
+			OkDialog("FEHLER","Das Speichern ist FEHLGESCHLAGEN !");
 			// Alarm !
 		    }
 		
@@ -165,8 +206,8 @@ implements GUIInterface
     public void paint(Graphics g)
     {
 	g.setFont(new Font("Serif",Font.PLAIN,14));
-	g.drawString("(P)rogramming (E)nviroment for (ST)atecharts",getInsets().left+30,
-		     getInsets().top+50);
+	//	g.drawString("(P)rogramming (E)nviroment for (ST)atecharts",getInsets().left+30,
+	//		     getInsets().top+50);
     }
     
     
