@@ -294,6 +294,7 @@ implements GUIInterface
 		    controlWindow.highLight[7] = true; 
 		    controlWindow.highLight[8] = ResultSC;
 		    controlWindow.highLight[9] = true;
+		    controlWindow.highLight[11] = true;
 		    EditorLoc = theConfig.EditorLoc;
 		    EditorDim = theConfig.EditorDim;
 		    
@@ -480,6 +481,7 @@ void newStatechart()
 	controlWindow.highLight[8] = false;
 	controlWindow.highLight[9] = true;
 	controlWindow.highLight[10] = false;
+	controlWindow.highLight[11] = true;
 	controlWindow.repaint();
 	userMessage("GUI   : Neues Statechart erzeugt");
 	theGUIMenu.updateMenu();	
@@ -685,11 +687,14 @@ void newStatechart()
 		    oos.writeObject(SyntaxBaum);
 		    oos.flush();
 		    oos.close();
-      		    setDirty(false);
 		    SBPfad = fDialog.getDirectory();
 		    SBDateiname = FileName;
-		    exlis.windowClosing(new WindowEvent(this,WindowEvent.WINDOW_CLOSING));
-		    startEditor();
+		    if (PEditor != null)
+			{
+			    exlis.windowClosing(new WindowEvent(this,WindowEvent.WINDOW_CLOSING));
+			    startEditor();
+			}
+		    setDirty(false);
 		}catch (Exception e)
 		    {
 			OkDialog("Fehler","Die Datei kann nicht gespeichert werden");

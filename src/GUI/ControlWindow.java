@@ -18,10 +18,10 @@ extends Canvas
     {
 
 	this.parent = parent;
-	rect = new Rectangle[14];
-	label = new String[14];
-	rectPos = new Point[14];
-	highLight = new boolean[11]; 
+	rect = new Rectangle[15];
+	label = new String[15];
+	rectPos = new Point[15];
+	highLight = new boolean[12]; 
 
 	label[0] = "Neu";
 	label[1] = "Oeffnen";
@@ -37,6 +37,7 @@ extends Canvas
 	label[11] = "Statechart";
 	label[12] = "Import";
 	label[13] = "Export";
+	label[14] = "Neue Koordinaten";
 
 			
 	for (int i = 0 ; i < 4 ; ++i)
@@ -44,11 +45,11 @@ extends Canvas
 		highLight[i] = true;
 	    }
 
-	for (int i = 4 ; i < 11 ; ++i)
+	for (int i = 4 ; i < 12 ; ++i)
 	    {
 		highLight[i] = false;
 	    }
-
+	
 
 	repaint();
     }
@@ -75,12 +76,14 @@ extends Canvas
 	    rectPos[11] = new Point(0, 2*ySkala);
 	    rectPos[12] = new Point(xSkala, 5*ySkala);	
 	    rectPos[13] = new Point(6*xSkala, 5*ySkala);
+	    rectPos[14] = new Point(xSkala , ySkala);
 	    
 	    for (int i = 0; i < 14; ++i)
 		{
 		    rect[i] = new Rectangle(rectPos[i].x,rectPos[i].y,xSkala*2,ySkala/2);
 
 		}
+	    rect[14] = new Rectangle(rectPos[14].x,rectPos[14].y,xSkala*3,ySkala/2);
 
 	    
 	    int xinset = xSkala/20;
@@ -102,6 +105,16 @@ extends Canvas
 		    g.drawString(label[i], rectPos[i].x + xSkala/3, rectPos[i].y +ySkala/2 - 2*xinset);
 		    //g.drawRect(rectPos[i].x, rectPos[i].y, rect[i].width, rect[i].height);
 		}
+	    if (highLight[11])
+		{
+		    g.setColor(parent.color[parent.ActColorIndex]);
+		}
+	    else 
+		{
+		    g.setColor(parent.color[parent.InactColorIndex]);
+		}
+	    g.drawString(label[14], rectPos[14].x + xSkala/3, rectPos[14].y + ySkala/2 - 2*xinset);
+	    
 
 	    g.setColor(Color.black);
 	    for (int i = 11; i < 14; ++i)
@@ -120,12 +133,14 @@ extends Canvas
 	    g.drawLine(rect[5].x + 4*xinset + xSkala/3 + fm.stringWidth("Editor"), rect[5].y + yinset, rect[10].x + xinset, rect[10].y + yinset);
 	    g.drawLine(rect[12].x +4* xinset +xSkala/3 + fm.stringWidth("Import"), rect[12].y + yinset, rect[2].x + xinset, rect[2].y + yinset);
 	    g.drawLine(rect[13].x + 4* xinset + xSkala/3 + fm.stringWidth("Export"), rect[13].y + yinset, 8*xSkala + xinset, 5*ySkala + yinset);
-	    g.drawLine(rect[4].x + 4*xinset + xSkala/3 + fm.stringWidth("SyntaxCheck"), rect[4].y + yinset, rect[9].x + xinset, rect[9].y + yinset); 
+	    g.drawLine(rect[4].x + 4*xinset + xSkala/3 + fm.stringWidth("SyntaxCheck"), rect[4].y + yinset, rect[9].x + xinset, rect[9].y + yinset);
+	    g.drawLine(rect[11].x + xinset + xSkala , rect[11].y - ySkala/4 , rect[14].x + xinset , rect[14].y + yinset);
+	    
 	    for (int i = 0; i < 11; ++i )
 		{		   
 		    g.fillRect(rect[i].x , rect[i].y + rect[i].height/2 , 2*xinset , 2*xinset);		
 		}
-
+	    g.fillRect(rect[14].x , rect[14].y + rect[14].height/2 , 2*xinset , 2*xinset);
 	    
 	}
 

@@ -90,6 +90,11 @@ extends MouseAdapter
 		menu.mlw.actionPerformed(new ActionEvent(this,ActionEvent.ACTION_PERFORMED,source.label[10]));
 	    }
 
+	if ((source.highLight[11]) && (source.rect[14].contains(pos)))
+	    {
+		menu.mlw.actionPerformed(new ActionEvent(this,ActionEvent.ACTION_PERFORMED,source.label[14]));
+	    }
+
     }
  
     

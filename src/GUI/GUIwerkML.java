@@ -55,6 +55,8 @@ public void actionPerformed(ActionEvent e) {
       }else if (cmd.equals("Crossreferenz")) {
 	  check.Crossreference cr = new check.Crossreference(myWindow,  myWindow.PEditor);
 	  cr.report(myWindow.SyntaxBaum);
+      } else if (cmd.equals("Neue Koordinaten")){
+	      myWindow.OkDialog("","Muss noch mit Statemate abgesprochen werden");
       }else if (cmd.equals("PrettyPrinter")) {
 	  (new PrettyPrint()).start( myWindow.SyntaxBaum );
       }else{  
