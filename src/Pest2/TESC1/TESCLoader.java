@@ -1,37 +1,52 @@
 package TESC1;
 
-/**
- * Schnittstellenklasse fuer TESC1.
- * <p>
- * @author Michael Suelzer, Christoph Schuette (swtech20).
- * @version  $Id: TESCLoader.java,v 1.2 1998-12-05 18:47:27 swtech20 Exp $
- */   
-
 import java.io.*;
 import Absyn.*;
+import GUI.*;
 
+/**
+ * Schnittstellenklasse fuer TESC1. 
+ * @version  $Id: TESCLoader.java,v 1.3 1998-12-07 19:55:16 swtech20 Exp $
+ * @author Michael Suelzer, Christoph Schuette.
+ */   
 public class TESCLoader {
 
     private Statechart statechart = null;
     private TESCParser parser = null;
-  
-
+    private GUIInterface gui = null;
+    
+    /**
+     * Erzeugt eine Instanz von <code>TESCLoader<code>. 
+     * Fehler waehrend des Parsens werden ueber die GUI-Schnitstelle mitgeteilt.
+     */
+    public TESCLoader(GUIInterface gui_) {           
+	gui = gui_; 
+    } 
+   
+    /**
+     * Startet den Parse-Vorgang und liefert bei Erfolg ein Statechart.
+     * @return 
+     * <ul>
+     * <li> Statechart-Instanz bei erfolgreichem Einlesen und Parsen.
+     * <li> <code>null<code> bei Auftreten eines Fehlers.
+     * </ul>
+     * @param fis FileInputStream
+     * @see TESC1.TESCParser
+     */
     public Statechart getStatechart(FileInputStream fis) {
  
 	parser = new TESCParser();
 	statechart = parser.parseStream(fis);
-	
-	return Example.getExample();
+	return  Example.getExample();
     }
 
-    public int getErrorCount() {
+    private int getErrorCount() {
 	return parser.getErrorCount();
     }
 
-    public String getErrorText(int error) {
+    private String getErrorText(int error) {
 	return parser.getErrorText(error);
     }
-
 }
       
 //----------------------------------------------------------------------
@@ -39,6 +54,9 @@ public class TESCLoader {
 //	----------------------
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.2  1998/12/05 18:47:27  swtech20
+//	Rueckgabe des Beispiel-StateCharts.
+//
 //
 //----------------------------------------------------------------------
 
