@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	--------------
 //
-//	$Id: report_list,v 1.64 1999-02-12 09:33:07 swtech00 Exp $
+//	$Id: report_list,v 1.65 1999-02-12 11:34:49 swtech01 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -386,7 +386,7 @@ java.lang.NullPointerException:
 #Number:	25.1
 #Autor:		Bernd Weber bwe
 #Subject:	Check: erkennt Interlevel-Transition nicht.
-#Status:	fixed
+#Status:	confirmed
 #Description:
 
 Erzeugt man einen Or-State und einen Basic-State wie in Nr. 24 und zieht eine
@@ -511,7 +511,7 @@ zu erzeugen. Das ergibt eine Exception:
 #Number:	31
 #Autor:		Bernd Weber bwe
 #Subject:	Check: Erkennt Schleife an Connector nicht
-#Status:	fixed
+#Status:	confirmed
 #Description:
 
 Erstellt man einen Connector und darin eine Transition von diesem zu sich
@@ -534,7 +534,7 @@ Import fehl (mit der sprlichen Meldung: FEHLER).
 #Number:	33
 #Autor:		Bernd Weber bwe
 #Subject:	Simulation: Kommt mit Connectoren nicht klar
-#Status:	fixed 
+#Status:	confirmed 
 #Description:
 
 swtech22: Test hierfuer in simu/Test/Fehler33.test
@@ -565,7 +565,7 @@ dem man die Transition(en) auswhlen knnen soll. Mir ist dies nicht mglich
 #Number:	35
 #Autor:		Bernd Weber bwe
 #Subject:	Simulation: Kommt i.A. mit Connectoren nicht klar
-#Status:	fixed
+#Status:	confirmed
 #Description:
 
 swtech22: Test hierfuer in simu/Test/Fehler35.test
@@ -610,7 +610,7 @@ beide Basic States als Default angegeben sind. Syntaxcheck meldet keine Fehler.
 #Number:	38
 #Autor:		Bernd Weber bwe
 #Subject:	Tesc: Falscher Default State wird nicht erkannt
-#Status:	fixed
+#Status:	confirmed
 #Description:
 
 Importiere ~swtech12/Examples/misc/faulty3.tesc2. Ergibt keine Fehler, obwohl
