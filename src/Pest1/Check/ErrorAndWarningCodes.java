@@ -2,7 +2,7 @@ package check;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: ErrorAndWarningCodes.java,v 1.26 1999-01-18 14:15:19 swtech11 Exp $
+ *  @version  $Id: ErrorAndWarningCodes.java,v 1.27 1999-01-18 16:30:39 swtech11 Exp $
  */
 class ErrorAndWarningCodes {
   ErrorAndWarningCodes() {
@@ -72,6 +72,7 @@ class ErrorAndWarningCodes {
       case 313: {_s = "Der Defaultconnector ist mehrfach eingetragen."; break; }
       case 314: {_s = "In diesem State gibt es keinen Defaultcon."; break; }
       case 315: {_s = "IN diesem State gibt es mehr als einen Defaultcon."; break; }
+      case 316: {_s = "Der Statename ist ein leerer String.."; break; }
 
       case 400: {_s = "Der Start-State der Transition ist nicht definiert."; break; }
       case 401: {_s = "Der Ziel-State der Transition ist nicht definiert."; break; }

@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestStates.java,v 1.8 1999-01-18 08:00:36 swtech11 Exp $
+ *  @version  $Id: TestStates.java,v 1.9 1999-01-18 16:30:40 swtech11 Exp $
  */
 
 /** Diese Testklasse testet, ob alle Statenamen deklariert worden sind, 
@@ -41,11 +41,10 @@ class TestStates extends ModelCheckBasics{
 	for (int i=0; i<p1.size(); i++){
 
            int j=0;
-           if (!Pfad2.contains(p1.elementAt(i)))
+           if (!equalString(Pfad2, (String)p1.elementAt(i)))
                {msg.addError(303,"State: "+(String)p1.elementAt(i));};
 
-           for (;p2.contains(p1.elementAt(i)) ;j++){
-               p2.removeElement(p1.elementAt(i));};
+           for (;equalString_r(p2, (String)p1.elementAt(i)) ;j++){};
            if (j>1) {
             msg.addError(301,"State: "+(String)p1.elementAt(i)+" Anzahl: "+j);}
 	};
@@ -62,9 +61,11 @@ class TestStates extends ModelCheckBasics{
        
 
        p_=p_.tail;
-       for(;p_!=null; p_=p_.tail) {s=s+"."+p_.head;};
+       for(;p_!=null; p_=p_.tail) {
+	   if (p_.head.equals("")) {msg.addError(316,"");
+          s=s+"."+p_.head;};}
    
-       if (Pfad2.contains(s)) { msg.addError(300,"State: "+s);}
+       if (equalString(Pfad2, s)) { msg.addError(300,"State: "+s);}
                                 else {Pfad2.addElement(s);};
         }; 
     };

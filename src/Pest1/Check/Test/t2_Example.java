@@ -3,7 +3,7 @@ import absyn.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: t2_Example.java,v 1.16 1999-01-11 12:18:00 swtech11 Exp $
+ *  @version  $Id: t2_Example.java,v 1.17 1999-01-18 16:30:48 swtech11 Exp $
  */
 public class t2_Example {
   
@@ -239,7 +239,7 @@ public static Statechart getExample_m() {
 
   public static Statechart getExample_d2() {
 
- Bvar a3 = new Bvar ("A");
+ Bvar a3 = new Bvar ("");
 
  /*BvarList blist=new BvarList(a3,null);
    blist=new BvarList(a4,blist);*/
@@ -250,7 +250,7 @@ public static Statechart getExample_m() {
     SEvent A = new SEvent ("A");
     SEvent B = new SEvent ("B");
     SEvent C = new SEvent ("C");
-    SEvent D = new SEvent ("D");
+    SEvent D = new SEvent ("");
     SEvent G = new SEvent ("G");
 
     SEventList statelist =
@@ -266,7 +266,7 @@ public static Statechart getExample_m() {
     Path p1p  = sudp.append("P1");
     Path p2p  = sudp.append("P2");
     Path p3p  = sudp.append("P3");
-    Path q1p  = p3p.append("Q1");
+    Path q1p  = p3p.append("");
     Path q2p  = p3p.append("Q2");
     Path r1p = q2p.append("R1");
     Path r2p = q2p.append("R2");
