@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	------------------
 //
-//	$Id: report_list,v 1.11 1999-01-25 14:13:46 swtech00 Exp $
+//	$Id: report_list,v 1.12 1999-01-27 15:11:08 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -99,4 +99,32 @@ Transitionsbeschriftungen nicht sichtbar.
 
 Lade Statechart wie in Nr. 4. und starte Editor.
 Fehler: Oberer Rand (etwa 1/5)der Chart ist nicht sichtbar.
+//------------------------------------------------------------------------------
+#Number:	6
+#Autor:		Erich Mikk erm
+#Subject:	TESC Export/Import Probleme
+#Status: 	reported 
+#Description: 
+
+Importiere File X.st aus SE-Systems.
+
+X \in {cd.st,vcr.st} dann kann TESC-Export es nicht exportieren
+
+X \in {tamagotc.st} dann kann das Exportierte File nicht mehr eingelesen werden.
+
+
+//------------------------------------------------------------------------------
+#Number:	7
+#Autor:		Erich Mikk erm
+#Subject:	Check achtet nicht auf Keywords
+#Status: 	reported 
+#Description: 
+
+Importiere SE-Systems/vcr.st 
+Syntaxcheck ist erfolgreich.  
+
+Das kann aber nicht sein, denn in den Guards kommen Keywords vor (zumindest
+meckert tesc1 darüber; das sieht man, wenn man die Chart Exportiert und
+wieder Importiert über die TESC-Schnittstelle, der Import geht nicht wegen Keywords).
+
 //------------------------------------------------------------------------------
