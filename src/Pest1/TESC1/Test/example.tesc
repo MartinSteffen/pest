@@ -18,7 +18,7 @@ or SUD:
 
 				transitions:
 				from S1 to S2 on C;
-				from S2 to S1 on G && in(SUD.P3.Q2.R2.T2);
+				from S2 to S1 on G [ in(SUD.P3.Q2.R2.T2) ];
 			end R1;
 
 			or R2:
