@@ -71,6 +71,7 @@ public class Editor extends Frame {
     public static final String LongLabel = "<LongLabel>";
     public static boolean init = true;
     public static boolean Bez = false;
+	public static boolean da = true;
     private static GUIInterface gui = null; // Referenz auf die GUI (mit NULL vorbelegen)
     
     static PESTDrawDesk scribble;
