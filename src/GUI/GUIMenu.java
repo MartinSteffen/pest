@@ -70,6 +70,9 @@ public GUIMenu(pest myWindow)
   CheckboxMenuItem cbItem = new CheckboxMenuItem("Graphische Benutzerfuehrung",true);
   cbItem.addItemListener(mle);
   m.add(cbItem);
+  cbItem = new CheckboxMenuItem("Debugging",myWindow.debugMode);
+  cbItem.addItemListener(mle);
+  m.add(cbItem);
   //m.add(new MenuItem("Benutzerfuehrung"));
   //addMenuItem(m,"Statemate",mle);
   add(m);

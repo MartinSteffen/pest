@@ -27,14 +27,14 @@ implements ActionListener
 	add("North",panel);
 	panel = new Panel(new BorderLayout());
 	Panel panel1 = new Panel(new GridLayout(2,2));
-	xText = new TextField("640",5);
-	yText = new TextField("480",5);
+	xText = new TextField(String.valueOf(parent.stmXSize),5);
+	yText = new TextField(String.valueOf(parent.stmYSize),5);
 	panel1.add(new Label("x-Auflösung:"));
 	panel1.add(xText);
 	panel1.add(new Label("y-Auflösung:"));
 	panel1.add(yText);
 	panel.add("Center",panel1);
-	cbox = new Checkbox("Koorditaten nicht übernehmen",true);
+	cbox = new Checkbox("Koordinaten übernehmen",parent.stmKoord);
 	panel.add("South",cbox);
 	add("Center",panel);
 	panel = new Panel(new FlowLayout());

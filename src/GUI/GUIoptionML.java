@@ -31,9 +31,8 @@ public void actionPerformed(ActionEvent e) {
     if(cmd.equals("Editor"))
 	{
 	    EdColor = new EditorOption(myWindow,this);
-     }else if(cmd.equals("Graphische Benutzerfuehrung"))
-	 {
-	     GUIColor = new GUIFarbOption(myWindow,this);
+     }else if(cmd.equals("Graphische Benutzerfuehrung")) {
+	 GUIColor = new GUIFarbOption(myWindow,this);
       }else if (cmd.equals("SyntaxCheck")) { 
 	  //new check.CheckOption(myWindow,myWindow.checkConfig);
       }else if (cmd.equals("Statemate")) {
@@ -46,20 +45,32 @@ public void actionPerformed(ActionEvent e) {
 
 public void itemStateChanged(ItemEvent e)
     {
-	myWindow.ctrlWin =((CheckboxMenuItem)(e.getSource())).getState();
-	if (myWindow.ctrlWin)
-	    {
-		myWindow.MsgWindow.setRows(4);
-		myWindow.add("South",myWindow.MsgWindow);
-		myWindow.add("Center",myWindow.controlWindow);
-	    }
-	else
-	    {
-		myWindow.MsgWindow.setRows(50);
-		myWindow.remove(myWindow.controlWindow);
-		myWindow.add("Center",myWindow.MsgWindow);
-		//	myWindow.add("South",myWindow.controlWindow);
-	    }
+	boolean state =((CheckboxMenuItem)(e.getSource())).getState();
+	String  name  = e.paramString();
+	if(name.indexOf("Graphische Benutzerfuehrung")!=-1) {
+	    myWindow.ctrlWin = state;
+	    if (myWindow.ctrlWin)
+		{
+		    myWindow.MsgWindow.setRows(4);
+		    myWindow.add("South",myWindow.MsgWindow);
+		    myWindow.add("Center",myWindow.controlWindow);
+		}
+	    else
+		{
+		    myWindow.MsgWindow.setRows(50);
+		    myWindow.remove(myWindow.controlWindow);
+		    myWindow.add("Center",myWindow.MsgWindow);
+		    //	myWindow.add("South",myWindow.controlWindow);
+		}
+	}else if(name.indexOf("Debugging") != -1){
+	    myWindow.debugMode = state;
+// 	    if (myWindow.debugMode){
+// 		myWindow.userMessage("GUI:   debugging on");
+// 	    }else{
+// 		myWindow.userMessage("GUI:   debugging off");
+// 	    }
+	}
+	    
 	myWindow.setVisible(true);
 	//myWindow.repaint();
     }

@@ -82,6 +82,8 @@ implements GUIInterface
     boolean isDirty = false;
     boolean ctrlWin = false;
 
+    boolean debugMode = true;
+
     Color color[]; 
 
     int stateColorIndex = 0;
@@ -174,12 +176,7 @@ implements GUIInterface
 	theConfig.GUIDim = getSize();
 	theConfig.GUILoc = getLocation();
 	theConfig.GUILoc.y = theConfig.GUILoc.y + getInsets().top;
-	theConfig.Dateiname = SBDateiname;
-	theConfig.Pfad = SBPfad;
-        theConfig.CheckedSC = CheckedSC;
-        theConfig.ResultSC = ResultSC;
-        theConfig.isDirty = isDirty;
-        theConfig.ctrlWin = ctrlWin;
+
 
 	//	theConfig.checkConfig = checkConfig;
 
@@ -214,6 +211,7 @@ implements GUIInterface
 	    oos.writeObject(theConfig);
 	    oos.flush();
 	    oos.close();
+
 	} catch(IOException e){
 	    OkDialog("FEHLER","Die PEST-Parameter konnten nicht gespeichert werden.");
 	}
@@ -503,6 +501,11 @@ implements GUIInterface
 
     public String EingabeDialog(Frame par, String Titel, String Msg, String Defaulttext){
         return new EingabeDialog(par,par.getGraphics().getFontMetrics(),Titel,Msg,Defaulttext).getEingabe();
+    }
+
+    public boolean isDebug()
+    {
+	return debugMode;
     }
 
     public Color getStatecolor()

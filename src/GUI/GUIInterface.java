@@ -159,5 +159,12 @@ public interface GUIInterface{
      */
 
     //    public check.CheckConfig getCheckConfig();
+
+
+    /** isDebug
+     * Gibt den Debugging Status zurueck.
+     */
+
+    public boolean isDebug();
 }
 
