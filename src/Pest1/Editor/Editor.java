@@ -504,7 +504,8 @@ public static void dislocation() {
     if (init == true)
 	{
 	    init = false;
-	    gui.OkDialog("Editor","Koordinatenproblem aufgetreten"); 
+	    gui.OkDialog("Editor","Koordinatenproblem aufgetreten");
+ 
 	    gui.editorClosing();
 	}
 }
