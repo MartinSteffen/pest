@@ -1,9 +1,8 @@
-
 import absyn.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: t2_Example.java,v 1.8 1998-12-29 15:01:37 swtech11 Exp $
+ *  @version  $Id: t2_Example.java,v 1.9 1998-12-30 18:20:00 swtech11 Exp $
  */
 public class t2_Example {
   
@@ -240,19 +239,13 @@ public static Statechart getExample_m() {
   public static Statechart getExample_d2() {
 
  Bvar a3 = new Bvar ("A");
- Bvar a4 = new Bvar ("C");
- Bvar a5 = new Bvar ("B");
- Bvar a6 = new Bvar ("D");
- Bvar a7 = new Bvar ("F");
-   
+
  /*BvarList blist=new BvarList(a3,null);
    blist=new BvarList(a4,blist);*/
 
      BvarList blist =
-      new BvarList (a3,
- new BvarList (a4,
- new BvarList (a6,
- new BvarList (a5,null))));    
+      new BvarList (a3,null);
+
     SEvent A = new SEvent ("A");
     SEvent B = new SEvent ("B");
     SEvent C = new SEvent ("C");
@@ -301,15 +294,15 @@ public static Statechart getExample_m() {
   Basic_State T1 = new Basic_State (new Statename("T1"));
   Basic_State T2 = new Basic_State (new Statename("T2"));
 
-  Tr tr1 = new Tr (null, 
+  Tr tr1 = new Tr (new Statename ("S1"), 
 		   new Statename ("S2"),
-		   new TLabel (new GuardEvent(new SEvent("C")),new ActionEmpty(new Dummy())));
+		   new TLabel (new GuardEmpty(new Dummy()),new ActionEmpty(new Dummy())));
 
   Tr tr2 = new Tr (new Statename ("S2"), 
 		   new Statename ("S1"),
 		   new TLabel (new GuardCompg (new Compguard (Compguard.AND,
-							  new GuardEvent(new SEvent("G")),
-							  new GuardCompp (new Comppath (Comppath.IN,t2p)))),
+							  new GuardEvent(new SEvent("A")),
+							  new GuardEvent(new SEvent("C")))),
 					   new ActionEmpty (new Dummy())));
 
 
@@ -324,10 +317,12 @@ public static Statechart getExample_m() {
 			      new StateList (T1,new StateList (T2,null)),
 			      new TrList  (new Tr (new Statename ("T1"), 
 						   new Statename ("T2"),
-						   new TLabel (new GuardUndet("s"), new ActionEmpty(new Dummy()))),
+						   new TLabel (new GuardCompg (new Compguard (Compguard.AND,
+							  new GuardEvent(new SEvent("C")),
+							  new GuardEvent (new SEvent("A")))),new ActionEmpty(new Dummy()))),
 					   new TrList (new Tr (new Statename ("T2"), 
 							       new Statename ("T1"),
-							       new TLabel (null , null)),null)),
+							       new TLabel (new GuardEvent(new SEvent("G")),new ActionEmpty(new Dummy()))),null)),
 			      new StatenameList (new Statename("T1"), null),	
 			      null);
   
@@ -346,7 +341,7 @@ public static Statechart getExample_m() {
 			      new StateList (Q1,new StateList (Q2,null)),
 			      new TrList (new Tr (new Statename ("Q1"), 
 						  new Statename ("Q2"),
-						  new TLabel (new GuardEvent(new SEvent("A")),
+						  new TLabel (new GuardCompp(new Comppath(Comppath.IN,p2p)),
 							                     new ActionEvt (new SEvent("C")))),
 					  null),
 			      new StatenameList( new Statename("Q1"), null),	
@@ -356,14 +351,14 @@ public static Statechart getExample_m() {
 			       new Statename ("SUD"),
 			       new StateList (P1,new StateList (P2,new StateList (P3,null))),
 			       new TrList (new Tr (new Statename ("P1"), 
-						   new Statename ("P2"), 
-						   new TLabel (new GuardEvent(new SEvent("C")),new ActionEmpty(new Dummy()))),
+						   new Statename ("P2"),
+						   new TLabel (new GuardCompp(new Comppath(Comppath.IN,p3p)),new ActionEmpty(new Dummy()))),
 					   new TrList (new Tr (new Statename ("P1"), 
 							       new Statename ("P3"), 
 							       new TLabel (new GuardEvent(new SEvent("A")),new ActionEmpty(new Dummy()))),
 						       new TrList (new Tr (new Statename ("P3"), 
 									   new Statename ("P1"), 
-									   new TLabel (new GuardEvent(new SEvent("B")),
+									   new TLabel (new GuardNeg(new GuardEvent(new SEvent("A"))),
 										       new ActionEmpty(new Dummy()))),null))),
 			       new StatenameList (new Statename("P1"), null),
 			       null);  

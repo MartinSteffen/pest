@@ -6,11 +6,11 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestTransitions.java,v 1.4 1998-12-29 14:25:51 swtech11 Exp $
+ *  @version  $Id: TestTransitions.java,v 1.5 1998-12-30 18:20:34 swtech11 Exp $
  */
 class TestTransitions extends ModelCheckBasics {
   Vector newPLV = new Vector(); // Vector fuer die selbst angelegte PathList der States
-  Vector newCLV = new Vector(); // Vector fuer die selbst angelegte PathList der Connectoren
+  Vector newCLV = new Vector(); // Vector fuer die selbst angelegte PathList der Connectoren  Vector Guardlist =new Vector();
 
   TestTransitions(Statechart _s, ModelCheckMsg _m) {
     super(_s,_m);
@@ -20,10 +20,10 @@ class TestTransitions extends ModelCheckBasics {
   boolean check() {
     int m=msg.getErrorNumber();
     newPLV = getPathListFromState(sc.state);
-    newCLV = getConnectorPathListFromState(sc.state);
+    newCLV = getConnectorPathListFromState(sc.state);
     if (sc.state instanceof Or_State) {testTransOrState ((Or_State)sc.state, null,""); }  // null, da es keinen übergeordneten State gibt
     if (sc.state instanceof And_State) {testTransAndState ((And_State)sc.state, null,""); }
-    if (sc.state instanceof Basic_State) {testTransBasicState ((Basic_State)sc.state, null,""); }
+    if (sc.state instanceof Basic_State) {testTransBasicState ((Basic_State)sc.state, null,""); }    ND();
 
     msg.addWarning(4,"bei allen Transitionen");
     return ((msg.getErrorNumber()-m)==0);
@@ -125,7 +125,7 @@ class TestTransitions extends ModelCheckBasics {
     else if (j1==true & j2==true)  { msg.addError(414,"Trans: ("+z1+") -> ("+z2+") in State: " + p); }
 
 
-    if (printOut == true) { System.out.println("Trans: "+z1+" -> "+z2); }
+    if (printOut == true) { System.out.println("Trans: "+z1+" -> "+z2); }    if (tl.head.label.guard!=null)  {Guardlist.addElement(tl.head.label.guard);} // DW
     if (tl.tail != null) { nextTransInTransList(tl.tail, _s,p); }
   }
 
@@ -159,6 +159,60 @@ class TestTransitions extends ModelCheckBasics {
     if (sl.head instanceof And_State) {coAndState ((And_State)sl.head, p, clv); }
     if (sl.tail != null) { coNextStateInStateList(sl.tail, p, clv); }
   }
+  // DW
+  void ND(){
+   Guard g;
+   for (;Guardlist.size()>0;){
+     g=(Guard)Guardlist.elementAt(0);
+     Guardlist.removeElement(g);
+     for (int i=0; i<Guardlist.size(); i++){
+       String text=vergleicheGuards(g,(Guard)Guardlist.elementAt(i),"");
+       if (text!="") {msg.addWarning(416,text);};};
 
+   };
+  };
+
+  // DW
+
+  String vergleicheGuards(Guard g1, Guard g2, String text){
+   if ((g1 instanceof GuardEvent) &&  (g2 instanceof GuardEvent)){
+     if (((GuardEvent)g1).event.name==((GuardEvent)g2).event.name) {
+                  text=text+"GuardEvent: "+((GuardEvent)g1).event.name;
+                   };};
+
+   if ((g1 instanceof GuardBVar) && (g2 instanceof GuardBVar)){
+     if (((GuardBVar)g1).bvar.var==((GuardBVar)g2).bvar.var) {
+                  text=text+"GuardBVar: "+((GuardBVar)g1).bvar.var;
+                   };};
+
+   if ((g1 instanceof GuardCompp) && (g2 instanceof GuardCompp)){
+     if ((((GuardCompp)g1).cpath.pathop==((GuardCompp)g2).cpath.pathop)
+                  &&  Pathequal(((GuardCompp)g1).cpath.path,((GuardCompp)g2).cpath.path))
+                  {text=text+"GuardCompp: "+((GuardCompp)g1).cpath.pathop+" "+((GuardCompp)g1).cpath.path;
+                   };};
+
+   if ((g1 instanceof GuardNeg) && (g2 instanceof GuardNeg)){
+        String s=vergleicheGuards(((GuardNeg)g1).guard,((GuardNeg)g2).guard,"");
+               if (s!="") {text="GuardNeg1: "+s;};
+                         };
+
+   if ((g1 instanceof GuardCompg) && (g2 instanceof GuardCompg)){
+     if (((GuardCompg)g1).cguard.eop ==((GuardCompg)g2).cguard.eop) {
+                   String s1=vergleicheGuards(((GuardCompg)g1).cguard.elhs,((GuardCompg)g2).cguard.elhs,"");
+                   String s2=vergleicheGuards(((GuardCompg)g1).cguard.erhs,((GuardCompg)g2).cguard.erhs,"");
+                   if ((s1!="") && (s2!="")) {text=text+"GuardCompg: "+((GuardCompg)g1).cguard.eop+" "+ s1+" " + s2;}
+                     else { if ((((GuardCompg)g1).cguard.eop == Compguard.OR) || (((GuardCompg)g1).cguard.eop == Compguard.AND)) {
+                       s1=vergleicheGuards(((GuardCompg)g1).cguard.elhs,((GuardCompg)g2).cguard.erhs,"");
+                       s2=vergleicheGuards(((GuardCompg)g1).cguard.erhs,((GuardCompg)g2).cguard.elhs,"");
+                       if ((s1!="") && (s2!="")) {text=text+"GuardCompg: "+((GuardCompg)g1).cguard.eop+" "+ s1+" " + s2;};
+
+
+                         };};
+
+                   };};
+
+   return text;
+
+  };
 
 }

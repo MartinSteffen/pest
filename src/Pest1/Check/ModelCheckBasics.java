@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: ModelCheckBasics.java,v 1.2 1998-12-15 17:51:39 swtech00 Exp $
+ *  @version  $Id: ModelCheckBasics.java,v 1.3 1998-12-30 18:20:33 swtech11 Exp $
  */
 class ModelCheckBasics {
   ModelCheckMsg msg = new ModelCheckMsg();
@@ -161,5 +161,13 @@ class ModelCheckBasics {
     if (sl.tail != null) { toNextStateInStateList(sl.tail, p, plv); }
   }
 
+  boolean Pathequal(Path p1, Path p2){
+  boolean b=(p1.head == p2.head);
+  if ((b==true) && (p1.tail!=null) && (p2.tail!=null)) {b=Pathequal(p1.tail, p2.tail);}
+  if ((b==true) &&
+      (((p1.tail!=null) && (p2.tail==null)) ||
+       ((p1.tail==null) && (p2.tail!=null))))  {b=false;}
+  return b;
+  };
 
 }
