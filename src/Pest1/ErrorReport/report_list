@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.8 1999-01-15 14:02:11 swtech21 Exp $
+//	$Id: report_list,v 1.9 1999-01-16 14:07:01 swtech13 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -89,7 +89,7 @@ sind fehlerhaft: cd.st hat keine Initmap und system.st hat keine Trmap.
 #Number:        5
 #Autor:         Arne Koch swtech13
 #Subject:       Warnings bei SyntaxCheck
-#Status:        fixed
+#Status:        confirmed
 #Description:
 
 Falls in einer Action einer Transition Events generiert werden, auf die in
