@@ -135,7 +135,7 @@ import editor.*;
  *</Table>
  * <br>
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: ModelCheck.java,v 1.36 1999-02-01 19:51:16 swtech11 Exp $
+ * @version  $Id: ModelCheck.java,v 1.37 1999-02-08 23:38:57 swtech11 Exp $
  * @see CheckConfig
  */
 public class ModelCheck {
@@ -179,7 +179,7 @@ public class ModelCheck {
     gui = _gui;
     outputGUI = true;
     edit = _edit;
-    cf = _cf;
+    if ( _cf==null ) { cf = new CheckConfig(); } else { cf = _cf; }
 
   }
 

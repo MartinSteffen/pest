@@ -3,10 +3,13 @@ import absyn.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: t2_Example.java,v 1.17 1999-01-18 16:30:48 swtech11 Exp $
+ *  @version  $Id: t2_Example.java,v 1.18 1999-02-08 23:38:09 swtech11 Exp $
  */
 public class t2_Example {
-  
+
+/**
+ * Statechart Daniel 1
+ */
   public static Statechart getExample_d() {
     
 
@@ -142,6 +145,9 @@ Bvar a3 = new Bvar ("A");
   }
 
 
+/**
+ * Statechart Magnus 1
+ */
 public static Statechart getExample_m() {
     
     Path sudp = new Path ("SUD", null);
@@ -202,6 +208,9 @@ public static Statechart getExample_m() {
     return new Statechart (null, null, pathlist, SUD);
   }
 
+/**
+ * Statechart Magnus 2
+ */
   public static Statechart getExample_m2() {
 
     Basic_State P1 = new Basic_State (new Statename("P1"));
@@ -237,6 +246,9 @@ public static Statechart getExample_m() {
     return new Statechart (null, null, null, SUD);
   }
 
+/**
+ * Statechart Daniel 2
+ */
   public static Statechart getExample_d2() {
 
  Bvar a3 = new Bvar ("");
@@ -372,6 +384,9 @@ public static Statechart getExample_m() {
 			 SUD);
   }
 
+/**
+ * Statechart Magnus 3
+ */
   public static Statechart getExample_m3() {
 
     Basic_State P1 = new Basic_State (new Statename("P1"));

@@ -35,7 +35,7 @@ import java.awt.*;
  * keine
  * </DL COMPACT>
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: Crossreference.java,v 1.18 1999-02-01 19:51:13 swtech11 Exp $
+ * @version  $Id: Crossreference.java,v 1.19 1999-02-08 23:38:52 swtech11 Exp $
  */
 public class Crossreference extends ModelCheckBasics {
   private GUIInterface gui = null;     // Referenz auf die GUI
@@ -65,7 +65,7 @@ public class Crossreference extends ModelCheckBasics {
   public Crossreference(GUIInterface _gui, Editor _edit, CheckConfig _cf) {
     gui  = _gui;
     edit = _edit;
-    cf   = _cf;
+    if ( _cf==null ) { cf = new CheckConfig(); } else { cf = _cf; }
   }
 
   /**
