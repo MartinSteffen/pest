@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.26 1999-01-25 13:57:23 swtech11 Exp $
+//	$Id: report_list,v 1.27 1999-01-25 15:24:13 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -304,4 +304,17 @@ Automaton.java:12: ')' expected.
         if ( pre_events[EVENT_$$stop$$] {
                                        ^
 1 error
+//------------------------------------------------------------------------------
+
+#Number:	22
+#Autor:		Erich Mikk
+#Subject:	STM-Import traegt ~ für leere Beschriftung ein.
+#Status:	reported
+#Description:
+
+Beim Import wird das Feld 'caption' in TLabel von  der STM-Import gefüllt. 
+Bei leeren Beschriftungen wird ~ als Beschriftung in caption eingetragen.
+So sehen die Berschrifungen z.Zt. so aus: ~[~]/~. 
+
+Sein soll: ein String der Länge null.
 //------------------------------------------------------------------------------
