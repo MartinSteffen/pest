@@ -14,7 +14,7 @@ import java.util.*;
  * an interface to the original textual representations of
  * states, events and conditions.
  *
- * @version $Id: dumpTables.java,v 1.2 1999-01-08 18:37:42 swtech25 Exp $
+ * @version $Id: dumpTables.java,v 1.3 1999-01-18 12:33:30 swtech25 Exp $
  * @author Marcel Kyas
  */
 public class dumpTables
@@ -54,6 +54,7 @@ public class dumpTables
 	};
 
 	private final String[] tail = {
+		"boolean[] his_states = new boolean[statenames.length];",
 		"boolean[] pre_states = new boolean[statenames.length];",
 		"boolean[] post_states = new boolean[statenames.length];",
 		"boolean[] pre_events = new boolean[eventnames.length];",
@@ -73,12 +74,12 @@ public class dumpTables
 	private int state_curr_key = 0;
 	private int event_curr_key = 0;
 	private int cond_curr_key = 0;
-	private Hashtable states_sym = new Hashtable(1024, loadFactor);
-	private Hashtable events_sym = new Hashtable(1024, loadFactor);
-	private Hashtable cond_sym   = new Hashtable(1024, loadFactor);
-	private Path[]   states;
-	private String[] events;
-	private String[] cond;
+	Hashtable states_sym = new Hashtable(1024, loadFactor);
+	Hashtable events_sym = new Hashtable(1024, loadFactor);
+	Hashtable cond_sym   = new Hashtable(1024, loadFactor);
+	Path[]   states;
+	String[] events;
+	String[] cond;
 
 	/**
 	 * This is the only constructor for this class.  Do not use any
