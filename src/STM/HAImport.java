@@ -23,11 +23,10 @@ import util.PrettyPrint;
  * </pre>
  *
  * @author  Sven Jorga, Werner Lehmann
- * @version $Id: HAImport.java,v 1.2 1998-12-15 17:51:55 swtech00 Exp $
+ * @version $Id: HAImport.java,v 1.3 1998-12-16 20:16:44 swtech18 Exp $
  */
 public class HAImport implements Patterns {
   Perl5Util perl = new Perl5Util();
-  PrettyPrint pp = new PrettyPrint ();
 
   private String mkhaString = null;
   private String eventsString = null;
@@ -93,7 +92,16 @@ public class HAImport implements Patterns {
     //PathList p = getPathList();
     //Or_State stTest = (Or_State)getState();
 
-    pp.start(new Statechart(getEventList(),getBvarList(),getPathList(),getState()));
+    //pp.start(new Statechart(getEventList(),getBvarList(),getPathList(),getState()));
+  }
+
+  public Statechart getStatechart() {
+    Statechart st = null;
+    try {
+      st = new Statechart(getEventList(),getBvarList(),getPathList(),getState()); }
+    catch(Exception e) {
+      System.out.println("Fehler beim Importieren. (" + e.getMessage() + ")");}
+    return st;
   }
 
   //public HAImport(String filename) throws Exception {
@@ -214,9 +222,11 @@ public class HAImport implements Patterns {
   private String removeQuotes(String str) { return perl.substitute("s/\"//g",str); }
 
   public static final void main(String args[]) {
+    PrettyPrint pp = new PrettyPrint ();
     try {
       //HAImport imp = new HAImport(new BufferedReader(new FileReader(new File("Test/ha-format.txt")))); }
-      HAImport imp = new HAImport(new BufferedReader(new FileReader(new File("Test/a1.st")))); }
+      HAImport imp = new HAImport(new BufferedReader(new FileReader(new File("STM/Test/a1.st"))));
+      pp.start(imp.getStatechart());}
     catch (Exception e) {
       e.printStackTrace();
       System.err.println("schiefgegangen");
@@ -252,6 +262,7 @@ public class HAImport implements Patterns {
     StatenameList snl = null;
     TrList tl = null;
     CPoint pt = null;
+    Rectangle rect = null;
     CRectangle rt = null;
     CPoint pointArray[];
 
@@ -263,8 +274,11 @@ public class HAImport implements Patterns {
       pt = (CPoint)pointVec.elementAt(l);
       if (rt == null)
         rt = new CRectangle(pt);
-      else
-        rt = new CRectangle((CRectangle)rt.union(new CRectangle(pt)));
+      else {
+        rect = rt.union(new CRectangle(pt));
+        rt = new CRectangle(rect.x,rect.y,rect.width,rect.height);
+        //rt = new CRectangle((CRectangle)rt.union(new CRectangle(pt)));
+        }
     }
     if (stateType.equalsIgnoreCase("BASIC"))
       return new Basic_State(new Statename(stateName),rt);
