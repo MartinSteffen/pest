@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.19 1999-01-22 08:57:46 swtech00 Exp $
+//	$Id: report_list,v 1.20 1999-01-22 10:41:12 swtech11 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -245,8 +245,7 @@ java.lang.Exception: Interleveltransitionen nicht zulässig
         at java.awt.MenuComponent.dispatchEvent(MenuComponent.java:169)
         at java.awt.EventDispatchThread.run(EventDispatchThread.java:83)
 
-//------------------------------------------------------------------------------
-
+//----------------------------------------------------------------------------
 #Number:	18
 #Autor:		Erich Mikk erm
 #Subject:	Start des Simulators gelingt nicht: NullPointerException
@@ -268,3 +267,11 @@ java.lang.NullPointerException
         at java.awt.EventDispatchThread.run(EventDispatchThread.java:83)
  
 //------------------------------------------------------------------------------
+#Number:	19
+#Autor:		Magnus Stiller swtech11
+#Subject:	Defaultstate im Editor nicht moeglich
+#Status:	reported
+#Description:
+
+Setzt man in einem leeren Editor einen State und will diesen als Default kennzeichenen, passiert nichts.
+
