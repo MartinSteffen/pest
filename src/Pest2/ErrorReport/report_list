@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	------------------
 //
-//	$Id: report_list,v 1.14 1999-01-27 16:20:21 swtech23 Exp $
+//	$Id: report_list,v 1.15 1999-01-28 13:43:16 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -154,4 +154,29 @@ java.lang.ClassCastException: absyn.And_State
         at java.awt.Window.dispatchEventImpl(Window.java:492)
         at java.awt.Component.dispatchEvent(Component.java:1708)
         at java.awt.EventDispatchThread.run(EventDispatchThread.java:81)
+//------------------------------------------------------------------------------
+
+#Number:	9
+#Autor:		Erich Mikk erm
+#Subject:	Simulation highlightet nicht
+#Status: 	reported 
+#Description: 
+
+Importiere TV/tv.st.
+Starte Editor.
+Starte Simulation.
+Führe Schrittweise Simualtion durch (ein Schritt reicht).
+Im Editor wird nichts gehighlightet.
+//------------------------------------------------------------------------------
+
+#Number:	9
+#Autor:		Erich Mikk erm
+#Subject:	Default states nicht erkennbar.
+#Status: 	reported 
+#Description: 
+
+
+Importiere TV/tv.st.
+Starte Editor.
+Default states nicht erkennbar.
 //------------------------------------------------------------------------------
