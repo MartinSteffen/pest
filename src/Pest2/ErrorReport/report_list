@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	------------------
 //
-//	$Id: report_list,v 1.28 1999-02-04 11:18:18 swtech00 Exp $
+//	$Id: report_list,v 1.29 1999-02-04 11:48:53 swtech23 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -583,7 +583,7 @@ kein Default State markiert ist. Syntaxcheck meldet keine Fehler.
 Importiere ~swtech12/Examples/misc/faulty2.tesc2. Ergibt keine Fehler, obwohl
 beide Basic States als Default angegeben sind. Syntaxcheck meldet keine Fehler.
 //------------------------------------------------------------------------------
-#Number:	37
+#Number:	38
 #Autor:		Bernd Weber bwe
 #Subject:	Tesc: Zu viele Default States werden nicht erkannt
 #Status:	reported
@@ -592,20 +592,20 @@ beide Basic States als Default angegeben sind. Syntaxcheck meldet keine Fehler.
 Importiere ~swtech12/Examples/misc/faulty3.tesc2. Ergibt keine Fehler, obwohl
 root als sein eigener default markiert ist. Syntaxcheck meldet keine Fehler.
 //------------------------------------------------------------------------------
-#Number:	38
+#Number:	39
 #Autor:		Bernd Weber bwe
 #Subject:	Check: Terminiert nicht !!!
-#Status:	reported
+#Status:	processing
 #Description:
 
 Importiere ~swtech12/Examples/misc/bvar-test1.tesc2. Chart wird im Editor
 richtig angezeigt und enthält AFAIK keine Fehler. Der Syntaxcheck terminiert
 jedoch nicht und verbrät die gesamte Rechenzeit :-( .
 //------------------------------------------------------------------------------
-#Number:	38
+#Number:	40
 #Autor:		Erich Mikk
 #Subject:	Check erkennt Undet_Guard nicht
-#Status:	reported
+#Status:	processing
 #Description:
 
 STM-Import SE-Systems/bf_thrusters.st.
