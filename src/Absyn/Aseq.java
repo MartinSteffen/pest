@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Sequence of actions, needed as the contense of a s_block.
  * <br>
  * @author Initially provided by Martin Steffen.
- * @version $Id: Aseq.java,v 1.8 1998-12-15 16:33:24 swtech00 Exp $
+ * @version $Id: Aseq.java,v 1.9 1999-01-09 15:47:53 swtech13 Exp $
  */
 public class Aseq extends Absyn implements Serializable, Cloneable {
 /**
@@ -27,8 +27,20 @@ public class Aseq extends Absyn implements Serializable, Cloneable {
  * @exception CloneNotSupportedException self-explanatory exception
  */
     public Object clone() throws CloneNotSupportedException {
-	return new Aseq ((Action)head.clone(),
-			 (Aseq)tail.clone());
+	Action headclone;
+	if (head != null) {
+	    headclone = (Action)head.clone();
+	}
+	else headclone = null;
+	
+	Aseq tailclone;
+	if (tail != null) {
+	    tailclone = (Aseq)tail.clone();
+	}
+	else tailclone = null;
+	
+	return new Aseq ((Action)headclone,
+			 (Aseq)tailclone);
     };
 
 };
@@ -36,9 +48,12 @@ public class Aseq extends Absyn implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Aseq.java,v 1.8 1998-12-15 16:33:24 swtech00 Exp $
+//	$Id: Aseq.java,v 1.9 1999-01-09 15:47:53 swtech13 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.8  1998/12/15 16:33:24  swtech00
+//	Towards new package names.
+//
 //	Revision 1.7  1998/12/15 13:38:01  swtech00
 //	exception-tag hinzugefuegt um javadoc sauber durchlaufen zu lassen
 //

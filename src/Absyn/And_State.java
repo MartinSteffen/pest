@@ -31,8 +31,15 @@ public class And_State extends State implements Serializable, Cloneable {
 	   rectclone = (CRectangle)rect.clone();
        else
 	   rectclone = null;
+
+       StateList substatesclone;
+       if (substates != null) 
+	   substatesclone = (StateList)substates.clone();
+       else
+	   substatesclone = null;
+
        return new And_State(name, 
-			     (StateList)substates.clone(), 
+			     (StateList)substatesclone, 
 			     rectclone);
     };
 }
@@ -40,9 +47,12 @@ public class And_State extends State implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: And_State.java,v 1.10 1998-12-17 15:47:16 swtech00 Exp $
+//	$Id: And_State.java,v 1.11 1999-01-09 15:47:52 swtech13 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.10  1998/12/17 15:47:16  swtech00
+//	Null-Pointer-Exception nei clone() abgefangen
+//
 //	Revision 1.9  1998/12/15 16:33:24  swtech00
 //	Towards new package names.
 //

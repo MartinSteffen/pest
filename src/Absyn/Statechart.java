@@ -29,9 +29,22 @@ public class Statechart extends Absyn implements Serializable, Cloneable  {
 	    bvarsclone = (BvarList) bvars.clone();
 	else
 	    bvarsclone = null;
-	return new Statechart((SEventList)events.clone(),
+		
+	SEventList seventsclone;
+	if (events != null)
+	    seventsclone = (SEventList) events.clone();
+	else
+	    seventsclone = null;
+
+	PathList cnamesclone;
+	if (cnames != null)
+	    cnamesclone = (PathList) cnames.clone();
+	else
+	    cnamesclone = null;
+
+	return new Statechart((SEventList)seventsclone,
 			      (BvarList)bvarsclone,
-			      (PathList)cnames.clone(),
+			      (PathList)cnamesclone,
 			      (State)state.clone());
     };
 
@@ -40,9 +53,12 @@ public class Statechart extends Absyn implements Serializable, Cloneable  {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Statechart.java,v 1.12 1998-12-15 16:33:31 swtech00 Exp $
+//	$Id: Statechart.java,v 1.13 1999-01-09 15:47:54 swtech13 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.12  1998/12/15 16:33:31  swtech00
+//	Towards new package names.
+//
 //	Revision 1.11  1998/12/15 13:38:08  swtech00
 //	exception-tag hinzugefuegt um javadoc sauber durchlaufen zu lassen
 //
