@@ -112,14 +112,14 @@ public class Example {
 			       new StateList (P1,new StateList (P2,new StateList (P3,null))),
 			       new TrList (new Tr (new Statename ("P1"), 
 						   new Statename ("P2"), 
-						   new TLabel (new GuardEvent(new SEvent("C")),null)),
+						   new TLabel (new GuardEvent(new SEvent("C")),new ActionEmpty(new Dummy()))),
 					   new TrList (new Tr (new Statename ("P1"), 
 							       new Statename ("P3"), 
-							       new TLabel (new GuardEvent(new SEvent("A")),null)),
+							       new TLabel (new GuardEvent(new SEvent("A")),new ActionEmpty(new Dummy()))),
 						       new TrList (new Tr (new Statename ("P3"), 
 									   new Statename ("P1"), 
 									   new TLabel (new GuardEvent(new SEvent("B")),
-										                      null)),null))),
+										       new ActionEmpty(new Dummy()))),null))),
 			       new StatenameList (new Statename("P1"), null),
 			       null);  
   
