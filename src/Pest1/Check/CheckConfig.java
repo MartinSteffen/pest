@@ -7,7 +7,7 @@ import java.awt.*;
  * Klasse zum Speichern der Optionen des Syntax Checks.
  *
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: CheckConfig.java,v 1.3 1999-01-22 20:33:20 swtech11 Exp $
+ *  @version  $Id: CheckConfig.java,v 1.4 1999-02-01 12:06:12 swtech11 Exp $
  */
 public class CheckConfig implements Serializable {
 
@@ -27,7 +27,7 @@ public class CheckConfig implements Serializable {
   public boolean cr_highlight = true;
 
   /**
-  * Index der Highlicht Color
+  * Index der Highlight Color
   */
   public int high_color = 8;
 
