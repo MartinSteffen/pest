@@ -28,6 +28,11 @@ import editor.*;
  * keine Fehler mehr enthält, die den Simulator oder den CodeGenerator zu
  * zu falschen Ergebnissen führen würde.
  * </ul>
+ * <h2>Testmöglichkeiten:</h2>
+ * Das Testprogramm t.java im Directory test erzeugt fehlerhafte Statecharts,
+ * deren Resultate man gezielt analysieren kann (näheres siehe README).
+ * <br>
+ * <br>  
  * <br>
  * <DL COMPACT>
  * <DT><STRONG>STATUS: </STRONG><br>
@@ -135,7 +140,7 @@ import editor.*;
  *</Table>
  * <br>
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: ModelCheck.java,v 1.38 1999-02-09 13:46:26 swtech11 Exp $
+ * @version  $Id: ModelCheck.java,v 1.39 1999-02-10 01:11:03 swtech11 Exp $
  * @see CheckConfig
  */
 public class ModelCheck {
@@ -277,7 +282,7 @@ public class ModelCheck {
 
     if ( outputGUI == true ) {
       if (cf.sc_browser==true) { // Browser-Ausgabe
-        Browser b = new Browser((pest)gui,edit,mcm,cf);
+        Browser b = new Browser((pest)gui,this,edit,mcm,cf);
       }
       else { outputToGUI(); } // Ausgabe an die GUI
     }

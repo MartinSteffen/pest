@@ -11,15 +11,17 @@ import java.util.*;
  * Browser
  *
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: Browser.java,v 1.11 1999-01-26 22:39:32 swtech11 Exp $
+ *  @version  $Id: Browser.java,v 1.12 1999-02-10 01:11:01 swtech11 Exp $
  */
 class Browser extends Dialog implements ActionListener {
   pest parent = null;
   Editor edit = null;
   ModelCheckMsg mcm;
+  ModelCheck mc;
   CheckConfig cf;
   List lst; // Liste für Meldungen
   Button button1; // OK Knopf
+  Button button2; // SAVE Knopf
   Panel panel;
   boolean high = false; // highlighten ?
   boolean SE = false;
@@ -28,11 +30,12 @@ class Browser extends Dialog implements ActionListener {
   /**
    * Konstruktor für das Eingabefenster
    */
-  public Browser(pest parent,Editor _edit,ModelCheckMsg _mcm, CheckConfig _cf)  {
+  public Browser(pest parent,ModelCheck _mc, Editor _edit,ModelCheckMsg _mcm, CheckConfig _cf)  {
     super(parent,"Message-Browser",false);
     edit = _edit;
-    mcm = _mcm;
-    cf = _cf;
+    mc   = _mc;
+    mcm  = _mcm;
+    cf   = _cf;
     this.parent = parent;
     Point p = parent.getLocation();
     setLocation(p.x + 30 , p.y + 30);
@@ -63,7 +66,7 @@ class Browser extends Dialog implements ActionListener {
           lst.add("     "+mcm.getWarningPath(i)); }}}
 
     // Markierungen auswerten
-    if ( (mcm.getWarningNumber()>0 & cf.sc_warning==true) | mcm.getErrorNumber()>0) {
+    // if ( (mcm.getWarningNumber()>0 & cf.sc_warning==true) | mcm.getErrorNumber()>0) {
       lst.addItemListener( new ItemListener() {
         public void itemStateChanged(ItemEvent e) {
           selectConfirm();
@@ -71,7 +74,7 @@ class Browser extends Dialog implements ActionListener {
         }
       });
       add(lst,"Center");
-     }
+     // }
 
     // Steuerungsbuttons
   	panel = new Panel(new FlowLayout());
@@ -81,6 +84,11 @@ class Browser extends Dialog implements ActionListener {
 	  button1.setActionCommand("OK");
   	button1.addActionListener(this);
 	  panel.add(button1);
+    panel.add(new Label("   "));
+  	button2 = new Button("Speichern als Textfile");
+	  button2.setActionCommand("SAVE");
+  	button2.addActionListener(this);
+	  panel.add(button2);
   	add(panel,"South");
     pack();
 	  setResizable(true);
@@ -167,6 +175,10 @@ class Browser extends Dialog implements ActionListener {
   		setVisible(false);
 	  	dispose();
 	  }
+    else if (cmd.equals(button2.getActionCommand())) {
+      mc.outputToFile("Check_Ergebnis.txt");
+	  }
+
   }
 
 

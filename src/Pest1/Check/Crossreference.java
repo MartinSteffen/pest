@@ -4,10 +4,14 @@ import absyn.*;
 import gui.*;
 import editor.*;
 import java.util.*;
+import java.io.*;
 import java.awt.*;
 
 /**
  * <h1>Crossreference für Statecharts</h1>
+ * <h2>Bedienung:</h2>
+ * Im Eingabedialog kann man den gewünschten Suchbegriff eingeben.
+ * Dabei ist auch der Stern als Platzhalter erlaubt.
  * <h2>Empfohlender Aufruf:</h2>
  * <ol>
  * <li>Initialisierung:    Crossreference cr = new Crossreference(GUI_Referenz, EDITOR_Referenz, CheckConfig)
@@ -22,7 +26,12 @@ import java.awt.*;
  * <h2>Garantien nach der Beendigung des Reports:</h2>
  * <ul>
  * <li>Der Report verändert die an ihn übergebene Statechart <b>nicht</b>.
- * </ul><br>
+ * </ul>
+ * <h2>Testmöglichkeiten:</h2>
+ * Das Testprogramm t.java im Directory test erzeugt fehlerhafte Statecharts,
+ * deren Resultate man gezielt analysieren kann (näheres siehe README).
+ * <br>
+ * <br>
  * <br>
  * <DL COMPACT>
  * <DT><STRONG>STATUS: </STRONG><br>
@@ -35,7 +44,7 @@ import java.awt.*;
  * keine
  * </DL COMPACT>
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: Crossreference.java,v 1.19 1999-02-08 23:38:52 swtech11 Exp $
+ * @version  $Id: Crossreference.java,v 1.20 1999-02-10 01:11:02 swtech11 Exp $
  */
 public class Crossreference extends ModelCheckBasics {
   private GUIInterface gui = null;     // Referenz auf die GUI
@@ -75,7 +84,7 @@ public class Crossreference extends ModelCheckBasics {
   public void report(Statechart _sc) {
     sc=_sc;
     // Eingabe
-    such = gui.EingabeDialog("Crossreference","Zu suchendes Element eingeben:",such);
+    such = gui.EingabeDialog("Crossreference","Zu suchendes Element eingeben (* erlaubt):",such);
     if (such!=null) {
       // Start der Auswertung
       report_list();
@@ -98,7 +107,9 @@ public class Crossreference extends ModelCheckBasics {
         if (high==true) {ho = new highlightObject(); }// Highlighten aktivieren
       }
       else { gui.userMessage("Check: "+such+" wurde nicht gefunden."); }
+// outputToFile("test.txt");
     }
+
   }
 
   // Listen durchsuchen
@@ -294,6 +305,34 @@ public class Crossreference extends ModelCheckBasics {
     ReportItem ri = new ReportItem(o, ho, p1 +" Trans: "+s1+" -> "+s2+" in State: "+p);
     items.addElement(ri);
   }
+
+/**
+ * Gibt alle Meldungen des Syntax Checkers in eine Datei aus.
+ * Die Methode gibt alle Fehler- und Warnungmeldungen in einer Textdatei im ASCII-Format aus.
+ * @param _name  Name der Datei, in die gespeichert werden soll
+ */
+  void outputToFile(String _name) {
+    try {
+      FileOutputStream fos = new FileOutputStream(_name);
+      PrintWriter out = new PrintWriter(fos);
+      out.println("Meldungen der Crossreference:");
+      out.println();
+      if (items.size()>0) {
+        out.println(such+" ist ein:");
+        for (int i=0; i<items.size(); i++) {
+          ReportItem rp = (ReportItem)items.elementAt(i);
+          out.println("- "+rp.Pth);
+        }
+      }
+      else {
+        out.println(such+" wurde nicht gefunden");
+      }
+      out.flush();
+      out.close();
+    }
+    catch (Exception e) { System.out.println(e); }
+  }
+
 }
 
 
