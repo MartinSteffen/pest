@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.47 1999-02-01 19:41:24 swtech18 Exp $
+//	$Id: report_list,v 1.48 1999-02-02 09:47:10 swtech24 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -66,7 +66,7 @@ Das Laden ist fehlgeschlagen! (ERSTER FEHLER, warum laden)?
 #Number: 	3
 #Autor:   	Erich Mikk erm
 #Subject:	Menüs nicht einheitlich
-#Status: 	reported 
+#Status: 	confirmed 
 #Description: 
 
 Das linke obere Menü hießt in der Hauptinstanz und im Editor anders. Auch
@@ -166,7 +166,7 @@ Die rechte untere Ecke des Charts ist nicht mit den Slidern erreichbar.
 #Number:	11
 #Autor:		Stefan Lemke swtech21
 #Subject:	PEST1: Loeschen von States
-#Status:	reported
+#Status:	fixed
 #Description:
 
 State erstellt. Das Loeschen ist nicht moeglich. Auswahl der Funktion aus dem
@@ -270,7 +270,7 @@ java.lang.NullPointerException
 #Number:	19
 #Autor:		Magnus Stiller swtech11
 #Subject:	Defaultstate im Editor nicht moeglich
-#Status:	reported
+#Status:	fixed
 #Description:
 
 Setzt man in einem leeren Editor einen State und will diesen als Default kennzeichenen, passiert nichts.
@@ -322,7 +322,7 @@ Sein soll: ein String der Länge null.
 #Number:	23
 #Autor:		Daniel Wendorff Magnus Stiller swtech11
 #Subject:	falsches Einsortieren von Transitionen durch Editor
-#Status:	reported
+#Status:	processing
 #Description:
 
 Man importiert mit TESC examples ein. Dann einen SyntaxCheck, der keine Fehler anzeigt. Anschliessend oeffnet man den Editor und fuehrt erneut den Check durch, jetzt hat man viele Interlevel Transitionen, die als Fehler angezeigt werden.
@@ -409,7 +409,7 @@ Danach ist der SyntaxCheck nicht mehr ueber das grafische Menue aktivierbar, ueb
 #Number:	29
 #Autor:		Heiko Haller, Stefan Lemke, swtech21
 #Subject:	Editor: Nach Undo kein chart mehr
-#Status: 	reported
+#Status: 	processing
 #Description: 
 
 or Safer:
@@ -447,7 +447,7 @@ Offensichtlich wurden die Koordinaaten umberechnet (Editor?).
 #Number:	31
 #Autor:		Heiko Haller, Stefan Lemke, swtech21
 #Subject:	Editor zeichnet offenbar auch nicht sichtbare Bereiche
-#Status: 	reported
+#Status: 	processing
 #Description: 
 
 in TESC beschriebenes Statechart importiert (~swtech21/tests/tesc/Safer3.tesc).
@@ -464,7 +464,7 @@ gezeichnet wird.
 #Number:	32
 #Autor:		Heiko Haller, Stefan Lemke, swtech21
 #Subject:	Editor zeichnet Chart immer komplett
-#Status: 	reported
+#Status: 	processing
 #Description: 
 
 Dieses Problem hatwahrscheinlich direkt mit 31 zu tun:
@@ -496,7 +496,7 @@ ist nicht besonders informativ.
 #Number:	34
 #Autor:		Bernd Weber bwe
 #Subject:	Editor erzeugt unbehandelte Exception:
-#Status: 	reported
+#Status: 	fixed
 #Description: 
 
 Versucht man, ausserhalb aller gezeichneten Zustaende einen AND-State
@@ -588,9 +588,10 @@ Exportiere Chart mit TESC-Export, die Default-Namen
 #Number:        39
 #Autor:         stm swtech18
 #Subject:       Nach dem Aendern von Labeln von Defaultstates sind dieses nicht mehr Default!
-#Status:        reported
+#Status:        fixed
 #Description:
-
+Um Fehler beim Anwender zu vermeiden werden bei Namensaenderungen alle Default-States einer
+Ebene geloescht
 //------------------------------------------------------------------------------
 #Number:        40
 #Autor:         stm swtech18
