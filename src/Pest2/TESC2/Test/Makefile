@@ -8,7 +8,8 @@ ROPTIONS =
  
 CLASSES = \
 TestProperMap.class \
-TestGraphAlgorithm.class
+TestGraphAlgorithm.class \
+TestFrame.class
 
 .SUFFIXES: .java .class
  
@@ -25,3 +26,6 @@ clean:
 
 run1:
 	$(VM) -classpath "$(CLASSPATH)" TestGraphAlgorithm
+
+frame:
+	$(VM) -classpath "$(CLASSPATH)" TestFrame
