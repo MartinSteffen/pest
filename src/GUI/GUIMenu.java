@@ -49,14 +49,14 @@ public GUIMenu(pest myWindow)
   add(m);
 
   m = new Menu("Einstellungen");
-  addMenuItem(m,"Allgemein",mle);
-  m.addSeparator();
-  addMenuItem(m,"Editor",mle);
-  addMenuItem(m,"Simulator",mle);
-  addMenuItem(m,"SyntaxCheck",mle);
-  addMenuItem(m,"Codegenerator",mle);
+  //addMenuItem(m,"Allgemein",mle);
+  //m.addSeparator();
+  addMenuItem(m,"Farben",mle);
+  //addMenuItem(m,"Simulator",mle);
+  //addMenuItem(m,"SyntaxCheck",mle);
+  //addMenuItem(m,"Codegenerator",mle);
   addMenuItem(m,"TESC",mle);
-  addMenuItem(m,"Statemate",mle);
+  //addMenuItem(m,"Statemate",mle);
   add(m);
 
   M_Werkzeuge = new Menu("Werkzeuge");

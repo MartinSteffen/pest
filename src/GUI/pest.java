@@ -28,6 +28,9 @@ implements GUIInterface
     TextArea MsgWindow;
 
     editor.Editor PEditor = null;
+    Dimension EditorDim = null;
+    Point EditorLoc  = null;
+
     Statechart SyntaxBaum = null;
     String     SBDateiname = null;
 
@@ -96,12 +99,19 @@ implements GUIInterface
 	theConfig.GUILoc = getLocation();
 	theConfig.Dateiname = SBDateiname;
 
+	theConfig.stateColor      = stateColor;
+	theConfig.transitionColor = transitionColor;
+	theConfig.connectorColor  = connectorColor;
+
 	if (PEditor == null)
 	    {
 		theConfig.isEditor = false;
+		theConfig.EditorDim = EditorDim;
+		theConfig.EditorLoc = EditorLoc;
 	    }
 	else
 	    {
+		theConfig.isEditor = true;
 		theConfig.EditorDim = PEditor.getSize();
 		theConfig.EditorLoc = PEditor.getLocation();
 	    }
@@ -126,15 +136,26 @@ implements GUIInterface
 	    pestConfig theConfig = (pestConfig)ois.readObject();
 	    ois.close();
 
+	    stateColor      = theConfig.stateColor;
+	    transitionColor = theConfig.transitionColor;
+	    connectorColor  = theConfig.connectorColor;
+	    
 	    setSize(theConfig.GUIDim);
 	    setLocation(theConfig.GUILoc);
-// 	    if(theConfig.Dateiname !=null)
-// 		{
-// 		    load_named_sc(theConfig.Dateiname);
-// 		}
+ 	    if(theConfig.Dateiname !=null)
+ 		{
+ 		    load_named_sc(theConfig.Dateiname);
+ 		}
 
-// 	    if (theConfig.isEditor)
-// 		{
+	    EditorLoc = theConfig.EditorLoc;
+	    EditorDim = theConfig.EditorDim;
+
+ 	    if (theConfig.isEditor)
+ 		{
+		    startEditor();
+		    //		    PEditor.setLocation(EditorLoc);
+		    //		    PEditor.setSize(EditorDim);
+		}
 
 	} catch(Exception e){
 	    userMessage("GUI   : Die PEST-Parameter konnten nicht geladen werden.");
@@ -146,6 +167,36 @@ implements GUIInterface
     void setDirty(boolean d)
     {
 	isDirty = d;
+    }
+
+    void startEditor()
+    {
+	if (EditorLoc == null)
+	    {
+		startEditorSized(100,100,200,200);
+	    }
+	else
+	    {
+		startEditorSized(EditorLoc.x,EditorLoc.y,EditorDim.width,EditorDim.height);
+	    }
+    }
+
+    void startEditorSized(int x, int y, int b ,int h )
+    {
+	if (PEditor == null)
+	    {
+		PEditor = new editor.Editor(SyntaxBaum,SBDateiname,x,y,b,h,this);
+		if(EditorDim != null)
+		    {
+			PEditor.setSize(EditorDim);
+			PEditor.setLocation(EditorLoc);
+		    }
+		PEditor.addWindowListener(new GUIexitLis(this));
+	    }
+	else
+	    {
+		OkDialog("Fehler","Es kann nur ein Editor gestartet werden !");
+	    }
     }
 
     boolean checkSB(boolean forced)
@@ -376,23 +427,27 @@ implements GUIInterface
 	String FileName = fDialog.getFile();
 	if (FileName != null)//Ok gewählt
 	    {
-		try {
-		    FileInputStream fis = new FileInputStream(fDialog.getDirectory()+FileName);
-		    ObjectInputStream ois = new ObjectInputStream(fis);
-		    absyn.Statechart Synb = (absyn.Statechart) ois.readObject();
-		    ois.close();
-		    setStatechart(Synb,fDialog.getDirectory()+FileName);
-		    setDirty(false);
-		}catch (Exception e)
-		    {
-			OkDialog("Fehler","Das Laden ist fehlgeschlagen !");
-			// Alarm !
-		    }
-		
+		load_named_sc(fDialog.getDirectory()+FileName);		
 	    }
 	
 	fDialog.setVisible(false);
 	fDialog.dispose();
+    }
+
+    void load_named_sc(String name)
+    {
+	try {
+	    FileInputStream fis = new FileInputStream(name);
+	    ObjectInputStream ois = new ObjectInputStream(fis);
+	    absyn.Statechart Synb = (absyn.Statechart) ois.readObject();
+	    ois.close();
+	    setStatechart(Synb,name);
+	    setDirty(false);
+	}catch (Exception e)
+	    {
+		OkDialog("Fehler","Das Laden ist fehlgeschlagen !");
+		// Alarm !
+	    }
     }
 
 

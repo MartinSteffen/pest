@@ -11,4 +11,5 @@ class pestConfig
     Point GUILoc, EditorLoc;
     boolean isEditor;
     String Dateiname;
+    Color stateColor,transitionColor,connectorColor;
 }

@@ -16,6 +16,8 @@ class GUIexitLis
 	//	e.getWindow().dispose();            
 	//e.getWindow().setVisible(false);
 	myWindow.isDirty();
+	myWindow.EditorDim = myWindow.PEditor.getSize();
+	myWindow.EditorLoc = myWindow.PEditor.getLocation();
 	myWindow.PEditor.Dispose();
 	// hiernach sollte der Editor beendet sein !
 	myWindow.PEditor = null;

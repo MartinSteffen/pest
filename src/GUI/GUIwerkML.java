@@ -26,16 +26,7 @@ public void actionPerformed(ActionEvent e) {
   myWindow.userMessage("GUI   : starte "+cmd);
   if(cmd.equals("Editor"))
       {
-	  if (myWindow.PEditor == null)
-	      {
-		  myWindow.PEditor = new editor.Editor(myWindow.SyntaxBaum,myWindow.SBDateiname,100,100,200,200,myWindow);
-		  myWindow.PEditor.addWindowListener(new GUIexitLis(myWindow));
-	      }
-	  else
-	      {
-		  myWindow.OkDialog("Fehler","Es kann nur ein Editor gestartet werden !");
-	      }
-
+	  myWindow.startEditor();
       }else if (cmd.equals("SyntaxCheck")) {
 
 	  myWindow.checkSB(true);

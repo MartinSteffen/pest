@@ -24,7 +24,7 @@ public GUIoptionML(GUIMenu myMenu,pest myWindow)
 public void actionPerformed(ActionEvent e) {
   String cmd = e.getActionCommand();
   
-  if(cmd.equals("Editor"))
+  if(cmd.equals("Farben"))
       {
           option = new EditorOption(myWindow,this);
       }
