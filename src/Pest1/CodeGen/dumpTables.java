@@ -14,7 +14,7 @@ import java.util.*;
  * an interface to the original textual representations of
  * states, events and conditions.
  *
- * @version $Id: dumpTables.java,v 1.8 1999-01-21 13:45:40 swtech25 Exp $
+ * @version $Id: dumpTables.java,v 1.9 1999-01-21 15:20:35 swtech25 Exp $
  * @author Marcel Kyas
  */
 public class dumpTables
@@ -116,9 +116,12 @@ public class dumpTables
 		"\t */",
 		"\tpublic void finalizeStep() {",
 		"\t\tpre_cond = post_cond;",
+		"\t\tpost_cond = new boolean[condition_names.length];",
 		"\t\tpre_events = post_events;",
+		"\t\tpost_events = new boolean[eventnames.length];",
 		"\t\this_states = pre_states;",
 		"\t\tpre_states = post_states;",
+		"\t\tpost_states = new boolean[statenames.length];",
 		"\t}",
 		"}"
 	};
