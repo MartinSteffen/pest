@@ -1,0 +1,8 @@
+Plan fuer den Syntaxcheck
+
+27.11.	Stubs fuer die Klassen
+04.12.	Event- und bvar-Checks
+11.12.	Transition-Checks
+18.12.	Implementierung des Connectors
+04.01.	Implementierung des Statechecks
+11.01.	Tests & Bugfixes
