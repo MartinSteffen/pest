@@ -292,6 +292,8 @@ ttest = true;
 		 	trlist.head.points[0].y = trlist.head.points[0].y-(cy1-matrix.y);
 			trlist.head.points[pointlength].x = trlist.head.points[pointlength].x-(cx1-matrix.x);
 			trlist.head.points[pointlength].y = trlist.head.points[pointlength].y-(cy1-matrix.y);
+			trlist.head.label.position.x = trlist.head.label.position.x-(cx1-matrix.x);
+			trlist.head.label.position.y = trlist.head.label.position.y-(cy1-matrix.y);
 
 		} else 
 		{trlist4 = trlist3; trlist3 = new TrList(trlist.head,trlist4);}
