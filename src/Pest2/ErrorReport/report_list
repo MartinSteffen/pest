@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	------------
 //
-//	$Id: report_list,v 1.73 1999-02-28 14:34:43 swtech01 Exp $
+//	$Id: report_list,v 1.74 1999-03-01 08:29:44 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -689,7 +689,7 @@ Transitionen aktivieren, dann gehen von SAFE zwei Linien ins Nichts
 #Number:	44
 #Autor:		Erich Mikk erm
 #Subject:	Nur eine Simulation pro Session m÷glich
-#Status:	fixed
+#Status:	confirmed
 #Description:
 
 swtech22: Nach Absprache mit GUI rufen wir jetzt eine Funktion auf,
