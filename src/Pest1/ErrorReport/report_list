@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.81 1999-02-08 16:26:32 swtech11 Exp $
+//	$Id: report_list,v 1.82 1999-02-09 08:30:49 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -337,7 +337,7 @@ die als Fehler angezeigt werden.
 #Number:	24
 #Autor:		Erich Mikk
 #Subject:	Interlevel Trs in SE-Examples/cd.st
-#Status:	fixed
+#Status:	confirmed
 #Description:
 
 STM-Import SE-Examples/cd.st.
@@ -361,7 +361,7 @@ Was geht hier schief:
 #Number:	25
 #Autor:		Erich Mikk
 #Subject:	STM-Import ignoriert history connectors
-#Status:	fixed
+#Status:	confirmed
 #Description:
 
 In manchen Files des SAFER-Projekts verwendet man history connectors
@@ -463,8 +463,10 @@ mehr angezeigt.
 #Number:	30
 #Autor:		Erich Mikk erm
 #Subject:	Editor erzeugt Interlevel Transitionen (IT)?
-#Status: 	fixed
+#Status: 	reported
 #Description: 
+
+Am 9.2. zurückgesetzt: es funktioniert zwar für a1.st, aber nicht für thrusters.st!
 
 Man nehme in der folgenden Sequenz statt PC/a1.st SAFER/thrusters.st.
 Dann hat man wieder den Eindruck, dass Editor ITs erzeugt.
@@ -835,7 +837,7 @@ GUI   : TESC1 Fehlgeschlagen !
 #Number:        57
 #Autor:         Erich Mikk erm
 #Subject:       Fehlerreports (Import STM und Import TESC) nicht einheitlich.
-#Status:        fixed
+#Status:        reported
 #Description:
 
 Wenn Import->Statemate fehlschlägt, gibt es ein pop-up window.
