@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestTransitions.java,v 1.9 1999-01-10 16:06:37 swtech11 Exp $
+ *  @version  $Id: TestTransitions.java,v 1.10 1999-01-11 12:17:57 swtech11 Exp $
  */
 class TestTransitions extends ModelCheckBasics {
   Vector newPLV = new Vector(); // Vector fuer die selbst angelegte PathList der States
@@ -191,13 +191,14 @@ class TestTransitions extends ModelCheckBasics {
      Guardlist.removeElement(g);
      for (int i=0; i<Guardlist.size(); i++){
        String text=vergleicheGuards(g,(GuardE)Guardlist.elementAt(i),"");
+       //System.out.println("Text "+text+" S1 "+((Statename)g.t.source).name+" S2 "+((Statename)((GuardE)Guardlist.elementAt(i)).t.source).name);
        if (text!="") {
            if ((g.t.source instanceof Conname) && (((GuardE)Guardlist.elementAt(i)).t.source instanceof Conname) &&
                  (((Conname)g.t.source).name.equals(((Conname)((GuardE)Guardlist.elementAt(i)).t.source).name )))  
                                     {msg.addWarning(416,text);};
            if ((g.t.source instanceof Statename) && (((GuardE)Guardlist.elementAt(i)).t.source instanceof Statename) &&
-                 (((Statename)g.t.source).name.equals(((Statename)((GuardE)Guardlist.elementAt(i)).t.source).name )))  
-                                    {msg.addWarning(416,text);};
+                 ((((Statename)g.t.source).name).equals(((Statename)((GuardE)Guardlist.elementAt(i)).t.source).name ))) 
+	       {msg.addWarning(416,text);};
 
 };
 
@@ -210,12 +211,12 @@ class TestTransitions extends ModelCheckBasics {
    Guard g1=_g1.g;
    Guard g2=_g2.g;
    if ((g1 instanceof GuardEvent) &&  (g2 instanceof GuardEvent)){
-     if (((GuardEvent)g1).event.name==((GuardEvent)g2).event.name) {
+     if (((GuardEvent)g1).event.name.equals(((GuardEvent)g2).event.name)) {
                   text=text+"GuardEvent: "+((GuardEvent)g1).event.name;
                    };};
 
    if ((g1 instanceof GuardBVar) && (g2 instanceof GuardBVar)){
-     if (((GuardBVar)g1).bvar.var==((GuardBVar)g2).bvar.var) {
+     if (((GuardBVar)g1).bvar.var.equals(((GuardBVar)g2).bvar.var)) {
                   text=text+"GuardBVar: "+((GuardBVar)g1).bvar.var;
                    };};
 
@@ -264,7 +265,9 @@ class TestTransitions extends ModelCheckBasics {
       navTransInTransList(os.trs, os, np);
       TransAnalyse();
     }
+    //System.out.println(np+" vorher: "+Guardlist.size());
     ND();
+    //System.out.println(np+" nachher: "+Guardlist.size());
     if (os.substates != null) { navStateInStateList(os.substates, os, np); }
   }
 

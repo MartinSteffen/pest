@@ -1,8 +1,9 @@
+
 import absyn.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: t2_Example.java,v 1.15 1999-01-08 17:14:52 swtech11 Exp $
+ *  @version  $Id: t2_Example.java,v 1.16 1999-01-11 12:18:00 swtech11 Exp $
  */
 public class t2_Example {
   
