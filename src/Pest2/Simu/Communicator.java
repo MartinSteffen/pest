@@ -19,6 +19,7 @@ public class Communicator extends Frame{
 
   List list=null;
   Vector listvector=null;
+  Tr listresult=null;
 
   public Communicator(GUIInterface g){
     super("PEST: Simulation");
