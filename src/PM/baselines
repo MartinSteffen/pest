@@ -7,3 +7,43 @@ Syntax ist noch nicht stabil: Konstruktoren muessen verwollstaendigt
 werden. Eine Musterloesung zur Konstruktion eines Syntaxbaums gibt es noch
 nicht. Keine Durchgaengige Benutzung von javadoc-Konventionen (Absyn hat
 damit angefangen).
+
+PEST1_ABSYN_BETA PEST2_ABSYN_BETA
+
+STATUS
+------
+
+Die Arbeiten an der abstrakten Syntax sind weitgehen abgeschlossen. Die
+letzten Aenderungen waren: Label, ActionEvent und Path wurden
+umbenannt/geaendert.
+
+Die Musterloesung befindet sich in Absyn/Example.java.
+
+Der pretty-printer in Util. Man kann die Musterloesung mit dem
+pretty-printer ausgeben, z.B. mit "java Util.PrettyEx".
+
+TODO 
+----- 
+
+Da die abstrakte Syntax geaendert wurde, kann der alte Code nicht mehr
+uebersetzt werden.
+
+An der abstrakten Syntax sind folgende Punkte  noch in der Bearbeitung:
+1. Die Erweiterung der abstrakten Syntax um cloneable.
+2. Pfichtenheft wird den neuen Klassen angepasst.
+
+Folgende Gruppen haben noch keine Stubs zur Verfuegung gestellt:
+PEST1/Simu und STM.
+
+Folgende Fehlermeldung wird in PEST1/TESC2 erzeugt:
+
+Generating documentation for class TESC2.GraphOptimizer
+Method void start() 
+        declares that it throws class TESC2.AlgorithmException,
+        but there is no corresponding @exception item
+Method void start(int) 
+        declares that it throws class TESC2.AlgorithmException,
+        but there is no corresponding @exception item
+
+Die Angleichung der Schnittstellen ist noch nicht abgeschlossen.
+
