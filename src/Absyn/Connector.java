@@ -7,7 +7,7 @@ import java.awt.Point;
 /**
  * Connector.
  * @author Initially provided by Martin Steffen.
- * @version $Id: Connector.java,v 1.12 1999-01-11 17:23:48 swtech00 Exp $
+ * @version $Id: Connector.java,v 1.13 1999-02-09 10:45:51 swtech00 Exp $
  */
 public class Connector  extends Absyn implements Serializable, Cloneable {
 /**
@@ -53,7 +53,8 @@ public class Connector  extends Absyn implements Serializable, Cloneable {
       positionclone = null;
     
     Location  locationclone  = (location == null) ? null : (Location)location.clone();
-    return new Connector((Conname)name.clone(),
+    Conname nameclone        = (name == null)     ? null : (Conname)name.clone();
+    return new Connector(nameclone,
 			 positionclone,
 			 locationclone);
   };
@@ -64,9 +65,19 @@ public class Connector  extends Absyn implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Connector.java,v 1.12 1999-01-11 17:23:48 swtech00 Exp $
+//	$Id: Connector.java,v 1.13 1999-02-09 10:45:51 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.12  1999/01/11 17:23:48  swtech00
+//	Alle Bestandteile der abstrakten Syntax mit Locations (= nicht-abstrakte
+//	Unterklassen von Absyn) in der Form modifiziert, da"s das Locations-Feld
+//	mit-geklont wird. =>
+//
+//	     o	Jeweils neuer Kontruktor hinzugef"ugt
+//	     o  clone-Methode angepa"st
+//
+//	[Steffen]
+//
 //	Revision 1.11  1998/12/17 15:47:17  swtech00
 //	Null-Pointer-Exception nei clone() abgefangen
 //
