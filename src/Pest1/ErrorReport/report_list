@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.29 1999-01-26 13:04:19 swtech25 Exp $
+//	$Id: report_list,v 1.30 1999-01-26 14:52:31 swtech18 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -79,7 +79,7 @@ dahinter verbergt ist.
 #Number:        4 
 #Autor:         Sven Jorga, Werner Lehmann swtech18
 #Subject:       HA-Format Fehler 
-#Status:        fixed
+#Status:        confirmed
 #Description:
 
 Die Dateien ~/swtech12/Examples/SE-Systems/cd.st und ~/swtech12/Examples/TV/system.st
@@ -279,7 +279,7 @@ Setzt man in einem leeren Editor einen State und will diesen als Default kennzei
 #Number:	20
 #Autor:		Erich Mikk
 #Subject:	STM-Importierten Labels werden nicht angezeigt: Koordinaaten fehlen
-#Status:	reported
+#Status:	processing
 #Description:
 
 Importiere z.B. TV/tv.st und starte Editor.
