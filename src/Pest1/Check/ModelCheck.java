@@ -28,7 +28,7 @@ import gui.*;
  * <a href="#Codes">Codes von Fehlern und Warnungen beim Syntax Check</a><br>
  * <br>
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: ModelCheck.java,v 1.7 1998-12-22 10:05:21 swtech11 Exp $
+ * @version  $Id: ModelCheck.java,v 1.8 1998-12-22 17:30:23 swtech11 Exp $
  */
 public class ModelCheck {
   private ModelCheckMsg mcm; // Object, um die Fehler und Warnungen zu speichern
@@ -58,7 +58,7 @@ public class ModelCheck {
 
 /**
  * Führt den gesamten Syntax Check durch.
- * Die Methode gibt <b>true</b> zurück, falls keine Fehler aufgetreten sind, sonst <b>false</b>.
+ * @return true, falls keine Fehler aufgetreten sind, sonst false
  * @param sc  die zu checkende Statechart
  */
   public boolean checkModel(Statechart sc) {
@@ -69,15 +69,19 @@ public class ModelCheck {
     boolean NoFatalError = false;
     boolean result = false;
 
-         // Calendar now = Calendar.getInstance();
-         // long sz, ez;
+    Date now;
+
+    long s0=0; long e0=0; long s1=0; long e1=0; long s2=0; long e2=0;
+    long s3=0; long e3=0; long s4=0; long e4=0; long s5=0; long e5=0;
 
     // Test auf Kreisfreiheit und doppelte Referenzierung
 
-         //  sz = System.currentTimeMillis();
 
+    s0 = getT();
+    s1 = getT();
     TestPI tpi = new TestPI(sc, mcm);
     NoFatalError=tpi.check();
+    e1 = getT();
 
     if ( NoFatalError == false ) {
       if ( outputGUI == true ) {
@@ -95,8 +99,10 @@ public class ModelCheck {
         if ( outputGUI == true ) { gui.userMessage("Check: Der Check für die Überprüfung der States wurde nicht ausgeführt."); }
       }
       else {
+        s2 = getT();
         TestStates ts = new TestStates(sc, mcm);
         NoStateError = ts.check();
+        e2 = getT();
         if ( outputGUI == true ) { gui.userMessage("Check: Keine Fehler während der Überprüfung der States gefunden."); }
       }
 
@@ -106,8 +112,10 @@ public class ModelCheck {
         if ( outputGUI == true ) { gui.userMessage("Check: Der Check für die Überprüfung der Transitionen wurde nicht ausgeführt."); }
       }
       else {
+        s3 = getT();
         TestTransitions tt = new TestTransitions(sc,mcm);
         NoTransError = tt.check();
+        e3 = getT();
         if ( outputGUI == true & NoTransError == true ) {
           gui.userMessage("Check: Keine Fehler während der Überprüfung der Transitions gefunden.");
         }
@@ -119,8 +127,10 @@ public class ModelCheck {
         if ( outputGUI == true ) { gui.userMessage("Check: Der Check für die Überprüfung der Events wurde nicht ausgeführt."); }
       }
       else {
+        s4 = getT();
         TestEvents te = new TestEvents(sc, mcm);
         NoEventError = te.check();
+        e4 = getT();
         if ( outputGUI == true & NoEventError == true ) { gui.userMessage("Check: Keine Fehler während der Überprüfung der Events gefunden."); }
       }
 
@@ -130,23 +140,49 @@ public class ModelCheck {
         if ( outputGUI == true ) { gui.userMessage("Check: Der Check für die Überprüfung der Booleschen Variablen wurde nicht ausgeführt."); }
       }
       else {
+        s5 = getT();
         TestBVars tb = new TestBVars(sc, mcm);
         NoBooleanError = tb.check();
+        e5 = getT();
         if ( outputGUI == true & NoBooleanError == true) { gui.userMessage("Check: Keine Fehler während der Überprüfung der Booleschen Variablen gefunden."); }
       }
 
       // Gesamtergebnis erstellen
       result = ( NoEventError & NoBooleanError & NoTransError & NoStateError );
-
-      if ( outputGUI == true ) { outputToGUI(); }
     }
 
+    e0 = getT();
+    
+    System.out.println("");
+    System.out.println("Dauer in Sekunden fuer Check auf:");
+    System.out.println("- fatale Fehler: " + getS(s1,e1));
+    if ( NoFatalError == true ) {
+      System.out.println("- States       : " + getS(s2,e2));
+      System.out.println("- Transitionen : " + getS(s3,e3));
+      System.out.println("- Events       : " + getS(s4,e4));
+      System.out.println("- BVars        : " + getS(s5,e5));
+    }
+    System.out.println("=================================");
+    System.out.println("- alles        : " + getS(s0,e0));
+    System.out.println("");
 
-                // ez = System.currentTimeMillis();
-                // System.out.println(sz+" "+ez+" "+(long)(ez-sz));
-
+    if ( outputGUI == true ) { outputToGUI(); }
     return result;
   };
+
+
+  private long getT() {
+    Date now = new Date();
+    return now.getTime();
+  }
+
+  private float getS(long s, long e) {
+    float f=0;
+    // System.out.println(s + " " + e);
+    if ( e != s ) { f = ((float)(e-s))/100; }      //  
+    return f;
+  }
+
 
 
 /**
