@@ -63,15 +63,18 @@ import util.*;
  * <DT><STRONG>
  * TODO: </strong>
  * <ul>
- * <li> Eingaben in den Fenstern fuer BVars und Events werden nicht ausgewertet (Deadline: 18.01.)
+ * <li> Auswahl bei Nichtdeterminismus
+ * <li> Traces
+ * <li> Asynchroner Modus wird (NOCH) nicht aktiviert, ist im Sourcecode aber schon vorhanden.
+ * <li> Multiple Steps (NOCH) nicht aktiviert, im Sourcecode vorhanden.
+ * <li> Reset des Simulators (NOCH) nicht aktiviert.
  * </ul>
  * <p> 
  * <DT><STRONG>
  * BEKANNTE FEHLER:</strong>
  * <ul>
- * <li> Die clone()-Funktion der Absyn erzeugt Fehlermeldungen, die einen fehlerfreien Lauf bisher unmoeglich machen.
- * <li> Die Buttons im Simulatorfenster funktionieren noch nicht wie gewuenscht (deswegen disabled)
- * <li> Bei dem Scrollen in der Event- bzw. BvarListe treten Fehler bei den Checkboxen auf.
+ * <li> Bei einem Step werden die Transitionen nicht angezeigt, nur der dann erreichte State (in Arbeit)
+ * <li> Keine Auswahl bei Nichtdeterminismus, Auswahl wird (noch) per Zufallszahl getroffen (in Arbeit)
  * </ul>
  * <p>
  * <DT><STRONG>
@@ -81,7 +84,7 @@ import util.*;
  * <ul>
  * <li> Statusausgaben ueber Fehler beim Erzeugen diverser Clones
  * <li> Statusausgaben zum Ueberpruefen diverser Features (z.B. welche Objekte gehighlighted werden)
- * <li> Debugmodus: Wird durch Setzen der "debug"-Variablen eingeschaltet
+ * <li> Debugmodus: Wird durch Setzen der "debugX"-Variablen eingeschaltet (wird auf die GUI-Var umgehaengt
  * </ul>
  * </ul>
  * <p>
@@ -167,8 +170,10 @@ public Simu(Statechart Daten, Editor eEdit, GUIInterface igui) {
 	int bListSize, eListSize;
 	SDaten = Daten;
 	
+	boolean DBStatus = false;            // Keine DebugInformationen ausgeben, temporaer, da
+	//boolean DBStatus = gui.isDebug();  // die Abfrage des Debugstatus der GUI (hier) nicht funktioniert
 
-	setDebugLevel(gui.isDebug());
+	setDebugLevel(DBStatus);
 	
 	if (debug1) {
 		System.out.println("Simulator aufgerufen !!");
@@ -212,7 +217,7 @@ public Simu(Statechart Daten, Editor eEdit, GUIInterface igui) {
 			System.out.println("Listframerahmen Checkpoint 1 erreicht !");
 		}
 		if (bListSize != 0) {
-			LF1 = new ListFrame(bvList, gui.isDebug(), this, bListSize);
+			LF1 = new ListFrame(bvList, DBStatus, this, bListSize);
 			LF1.pack();
 			LF1.setSize(538, 399);
 			LF1.setLocation(700, 50);
@@ -223,7 +228,7 @@ public Simu(Statechart Daten, Editor eEdit, GUIInterface igui) {
 			System.out.println("Listframerahmen Checkpoint 2 erreicht !");
 		}
 		if (eListSize != 0) {
-			LF2 = new ListFrame(seList, gui.isDebug(), this, eListSize);
+			LF2 = new ListFrame(seList, DBStatus, this, eListSize);
 			LF2.pack();
 			LF2.setSize(538, 399);
 			LF2.setTitle("Event-Liste");
@@ -714,7 +719,7 @@ public Statechart example() {
 
  *  @author   Daniel Wendorff und Magnus Stiller
 
- *  @version  $Id: Simu.java,v 1.18 1999-01-31 23:40:50 swtech26 Exp $
+ *  @version  $Id: Simu.java,v 1.19 1999-02-01 12:29:04 swtech26 Exp $
 
  */
 
