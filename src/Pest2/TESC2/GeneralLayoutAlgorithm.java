@@ -18,8 +18,8 @@ abstract class GeneralLayoutAlgorithm implements LayoutAlgorithm {
     /**
      * Klassenkonstanten
      */
-    static final int WIDTH_BONUS = 10;
-    static final int HEIGHT_BONUS = 10;
+    static final int WIDTH_BONUS = 15;
+    static final int HEIGHT_BONUS = 15;
 
     /**
      * Instanzvariablen
