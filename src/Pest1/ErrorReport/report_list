@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.49 1999-02-02 11:26:54 swtech01 Exp $
+//	$Id: report_list,v 1.50 1999-02-02 12:46:19 swtech11 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -270,7 +270,7 @@ java.lang.NullPointerException
 #Number:	19
 #Autor:		Magnus Stiller swtech11
 #Subject:	Defaultstate im Editor nicht moeglich
-#Status:	fixed
+#Status:	confirmed
 #Description:
 
 Setzt man in einem leeren Editor einen State und will diesen als Default kennzeichenen, passiert nichts.
@@ -553,20 +553,7 @@ erzeugten Java-Code.
 #Number:	37
 #Autor:		Bernd Weber bwe
 #Subject:	Check-Meldungen inkonsistent
-#Status: 	reported
-#Description: 
-
-Beim Check einer leeren Chart, werden 2 Fehler gemeldet:
- 1) Keine States
- 2) Keine Transitionen
-Nach dem Erzeugen einer Transistion wird kein Fehler mehr gemeldet
-(sollte zumindest "Keine Transitionen" melden) -> Inkonsistenz. Es
-muessen keine Tr. vorkommen, also ist dies KEIN Fehler.
-//------------------------------------------------------------------------------
-#Number:	37
-#Autor:		Bernd Weber bwe
-#Subject:	Check-Meldungen inkonsistent
-#Status: 	reported
+#Status: 	fixed
 #Description: 
 
 Beim Check einer leeren Chart, werden 2 Fehler gemeldet:
