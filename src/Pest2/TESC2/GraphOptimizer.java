@@ -36,10 +36,22 @@ import absyn.*;
  *   plaziert.
  *  <p>Weitere Algorithmen (einer) in Planung.<p>
  *
+ * <p>Vorbedingungen:
+ * <br> Das beim Konstruktor &uuml;bergebene Statechart mu&szlig; folgende
+ * Korrektheitsbedingungen erf&uuml;llen:
+ * <br> -keine Interlevel-Transitionen
+ * <br> -keine Schleifen im State-Baum
+ * <br> -bis auf die Instanzvariablen f&uuml;r Koordinaten (und Listen usw.) 
+ * d&uuml;rfen keine null-Pointer vorkommen
+ *
+ * <p>Nachbedingungen:
+ * <br> Bis jetzt wird die unver&auml;nderte Statechart zur&uuml;ckgegeben.
+ * <br> Die Koordinateninstanzvariablen bleiben also unver&auml;ndert.
+ *
  * Created: Fri Nov 27 11:26:25 1998
  *
  * @author Software Technologie 19, Klaus H&ouml;ppner, Achim Abeling
- * @version $Id: GraphOptimizer.java,v 1.6 1998-12-21 13:13:14 swtech19 Exp $
+ * @version $Id: GraphOptimizer.java,v 1.7 1998-12-21 14:06:34 swtech19 Exp $
  *
  */
 
@@ -94,6 +106,8 @@ public class GraphOptimizer {
      * (was wissen wir auch noch nicht)
      */
     public Statechart start() throws AlgorithmException {
+
+	/*
 	Statechart scclone = null;
 	LayoutAlgorithm layoutAR;
 
@@ -110,9 +124,9 @@ public class GraphOptimizer {
 	} catch (CloneNotSupportedException e) {
 
 	}
-
+	*/
 	
-	return scclone;
+	return sc;
     }
 
     // Plaziert beliebiges Statechart (auch ohne Koordinaten)
