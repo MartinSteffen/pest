@@ -1,6 +1,3 @@
-/*
-Sammlung von Methoden fuer den Editor
-*/
 package editor;
 
 import absyn.*;
@@ -130,6 +127,7 @@ public class Methoden_0
                 setNullArray(pointsTr);
                 EditorUtils.showStates(editor);
                 showAllTrans(editor);
+                editor.setChangedStatechart(true);
             }
         }
         else if (checkMouseButton(e,3))
@@ -150,6 +148,7 @@ public class Methoden_0
         Connector dummy = new Connector(new Conname("...Connector"),new CPoint(x-r.x,y-r.y));
         ConnectorList clist = new ConnectorList(dummy,os.connectors);
         os.connectors = clist;
+        editor.setChangedStatechart(true);
         updateAll(editor);
     }
 
@@ -265,6 +264,12 @@ public class Methoden_0
         if (!state.rect.contains(x,y)) return;
         Connector con = getConEnvOf(x,y,editor);
         Graphics g = editor.getGraphics();
+        int big = 10;
+        switch((int)(Methoden_1.getFactor()*100))
+        {
+            case 400 : {big = 15; break;}
+            case 25  : {big = 5;break;}
+        }
         if (con != null)
         {
             State s = getFirstOrStateOf(x,y,editor);
@@ -273,14 +278,14 @@ public class Methoden_0
                 g.setColor(Color.blue);
             else g.setColor(Color.red);
             g.fillOval((int)((double)(con.position.x+r.x)*Methoden_1.getFactor())-editor.scrollX,
-                       (int)((double)(con.position.y+r.y)*Methoden_1.getFactor())-editor.scrollY,10,10);
-            conpos = new Point(con.position.x+r.x-editor.scrollX,con.position.y+r.y-editor.scrollY);
+                       (int)((double)(con.position.y+r.y)*Methoden_1.getFactor())-editor.scrollY,big,big);
+            conpos = new Point((int)((double)(con.position.x+r.x)*Methoden_1.getFactor())-editor.scrollX,
+                                (int)((double)(con.position.y+r.y)*Methoden_1.getFactor())-editor.scrollY);
             g.dispose();
             return;
         }
         g.setColor(editor.gui.getConnectorcolor());
-        g.fillOval((int)((double)conpos.x*Methoden_1.getFactor()),
-                   (int)((double)conpos.y*Methoden_1.getFactor()),10,10);
+        g.fillOval(conpos.x,conpos.y,big,big);
         conpos = new Point(0,0);
         g.dispose();
     }
@@ -316,12 +321,18 @@ public class Methoden_0
         g.setColor(editor.gui.getTransitioncolor());
         TrList dlist = trlist;
         int i=0;
+        if (editor.cbbezier.getState())
+        {
+            while (dlist != null)
+            {
+                bezier(dlist.head.points,absX,absY,editor.gui.getTransitioncolor(),editor);
+                dlist = dlist.tail;
+            }
+            return;
+        }
         while (dlist != null)
         {
             i=0;
-//            bezier(g,dlist.head.points,absX,absY,editor);
-//            dlist = dlist.tail;
-//        }
             try
             {
                 for (i=0;i<=dlist.head.points.length-1;i++)
@@ -375,9 +386,10 @@ public class Methoden_0
 
 
 // x,y absolute Koordinate des innersten zustandes
-    private static void bezier(Point[] p1,int x, int y,Editor editor)
+    public static void bezier(Point[] p1,int x, int y,Color col, Editor editor)
     {
         Graphics g = editor.getGraphics();
+        g.setColor(col);
 	    double[] px = new double[p1.length+1];
 	    double[] py = new double[p1.length+1];
 	    int m=p1.length,i=0,count = 0,k=0;
@@ -389,13 +401,24 @@ public class Methoden_0
             for(i=0;i<=p1.length-1;i++){
                 if ( i == 1 & p1.length == 2)
                 {
-                    px[1] = (double)((p1[0].x+p1[1].x)/2+x);
-                    int neu = Betrag(p1[0].y,p1[1].y);
-                    if ( neu < 5) neu = 10;
-                    py[1] = (double)(p1[0].y+neu+y);
-                    px[2] = (double)(p1[1].x+x);
-                    py[2] = (double)(p1[1].y+y);
+                    if (Betrag(p1[0].x,p1[1].x) < 5 | Betrag(p1[0].y,p1[1].y) < 5)
+                    {
+                        px[1] = (double)((p1[0].x+p1[1].x)/2+x);
+                        py[1] = (double)((p1[0].y+p1[1].y)/2+y);
+                        px[2] = (double)(p1[1].x+x);
+                        py[2] = (double)(p1[1].y+y);
+                    }
+                    else
+                    {
+                        px[1] = (double)((p1[0].x+p1[1].x)/2+x);
+                        if (p1[0].x < p1[1].x)
+                            py[1] = (double)(p1[1].y+y);//0].y+neu+y);
+                        else py[1] = (double)(p1[0].y+y);
+                        px[2] = (double)(p1[1].x+x);
+                        py[2] = (double)(p1[1].y+y);
+                    }
                     break;
+
                 }
       	        px[i] = (double)p1[i].x+x;
   	            py[i] = (double)p1[i].y+y;
@@ -578,13 +601,16 @@ public class Methoden_0
             g.setColor(editor.gui.getStatecolor());
             int groesse = (int)(Methoden_1.getFactor()*100);
             Font font = new Font("Serif",Font.PLAIN,14);
+            if (editor.fontsize != 0) g.setFont(new Font("Serif",Font.PLAIN,editor.fontsize));
+            else{
             if (groesse < 25) g.setFont(font = new Font("Serif",Font.PLAIN,8));
             else if (groesse < 50) g.setFont(font = new Font("Serif",Font.PLAIN,10));
             else if (groesse < 100) g.setFont(font = new Font("Serif",Font.PLAIN,14));
             else if (groesse < 200) g.setFont(font = new Font("Serif",Font.PLAIN,16));
             else if (groesse < 300) g.setFont(font = new Font("Serif",Font.PLAIN,18));
-            else if (groesse < 400) g.setFont(font = new Font("Serif",Font.PLAIN,20));
-            else if (groesse > 400) g.setFont(font = new Font("Serif",Font.PLAIN,20));
+            else if (groesse <= 400) g.setFont(font = new Font("Serif",Font.PLAIN,20));
+            else if (groesse > 400) g.setFont(font = new Font("Serif",Font.PLAIN,22));
+            }
             g.setColor(Color.red);
             StateList help = list;
             while (help != null) {
@@ -631,16 +657,16 @@ public class Methoden_0
             g = editor.getGraphics();
             g.setColor(editor.gui.getConnectorcolor());
             int groesse = (int)(Methoden_1.getFactor()*100);
-            switch(groesse)
-            {
-                case 400 : {g.setFont(new Font("Serif",Font.PLAIN,20));break;}
-                case 300 : {g.setFont(new Font("Serif",Font.PLAIN,18));break;}
-                case 200 : {g.setFont(new Font("Serif",Font.PLAIN,16));break;}
-                case 50 : {g.setFont(new Font("Serif",Font.PLAIN,10));break;}
-                case 25 :  g.setFont(new Font("Serif",Font.PLAIN,8));
-            }
+            if (editor.fontsize != 0) g.setFont(new Font("Serif",Font.PLAIN,editor.fontsize));
+            else{
             if (groesse < 25) g.setFont(new Font("Serif",Font.PLAIN,8));
-            if (groesse > 400) g.setFont(new Font("Serif",Font.PLAIN,20));
+            else if (groesse < 50) g.setFont(new Font("Serif",Font.PLAIN,10));
+            else if (groesse < 100) g.setFont(new Font("Serif",Font.PLAIN,14));
+            else if (groesse < 200) g.setFont(new Font("Serif",Font.PLAIN,16));
+            else if (groesse < 300) g.setFont(new Font("Serif",Font.PLAIN,18));
+            else if (groesse <= 400) g.setFont(new Font("Serif",Font.PLAIN,20));
+            else if (groesse > 400) g.setFont(new Font("Serif",Font.PLAIN,22));
+            }
             StateList help = list;
             while (help != null)
             {
@@ -683,16 +709,16 @@ public class Methoden_0
             g.setColor(editor.gui.getTransitioncolor());
 
             int groesse = (int)(Methoden_1.getFactor()*100);
-            switch(groesse)
-            {
-                case 400 : {g.setFont(new Font("Serif",Font.PLAIN,20));break;}
-                case 300 : {g.setFont(new Font("Serif",Font.PLAIN,18));break;}
-                case 200 : {g.setFont(new Font("Serif",Font.PLAIN,16));break;}
-                case 50 : {g.setFont(new Font("Serif",Font.PLAIN,10));break;}
-                case 25 :  g.setFont(new Font("Serif",Font.PLAIN,8));
-            }
+            if (editor.fontsize != 0) g.setFont(new Font("Serif",Font.PLAIN,editor.fontsize));
+            else{
             if (groesse < 25) g.setFont(new Font("Serif",Font.PLAIN,8));
-            if (groesse > 400) g.setFont(new Font("Serif",Font.PLAIN,20));
+            else if (groesse < 50) g.setFont(new Font("Serif",Font.PLAIN,10));
+            else if (groesse < 100) g.setFont(new Font("Serif",Font.PLAIN,14));
+            else if (groesse < 200) g.setFont(new Font("Serif",Font.PLAIN,16));
+            else if (groesse < 300) g.setFont(new Font("Serif",Font.PLAIN,18));
+            else if (groesse <= 400) g.setFont(new Font("Serif",Font.PLAIN,20));
+            else if (groesse > 400) g.setFont(new Font("Serif",Font.PLAIN,22));
+            }
 
             StateList help = list;
             while (help != null)
@@ -714,7 +740,7 @@ public class Methoden_0
                         }
                         String trName = tlist.head.label.caption;
                         String neuString = trName;
-                        if (trName.length() > 20) neuString = trName.substring(1,20);
+                        if (trName.length() > 20) neuString = trName.substring(0,20);
                         g.drawString(neuString,(int)((double)(r.x+tlist.head.label.position.x)*Methoden_1.getFactor())-editor.scrollX,
                                      (int)((double)(r.y+tlist.head.label.position.y)*Methoden_1.getFactor())-editor.scrollY);
                         tlist = tlist.tail;
@@ -817,7 +843,7 @@ public class Methoden_0
         Point[] p = new Point[2];
         p[0] = new Point(-15,0);
         p[1] = new Point(0,15);
-        bezier(p,r.x,r.y,editor);
+        bezier(p,r.x,r.y,editor.gui.getStatecolor(),editor);
     }
 
 
@@ -839,6 +865,7 @@ public class Methoden_0
                     neu = neu.tail;
                 }
                 os.defaults = copy;
+                editor.setChangedStatechart(true);
                 return;
             }
             while (list.tail != null)
@@ -852,6 +879,7 @@ public class Methoden_0
                     neu = neu.tail;
                 }
                 os.defaults = copy;
+                editor.setChangedStatechart(true);
                 return;
                 }
                 list = list.tail.tail;

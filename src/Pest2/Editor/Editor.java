@@ -8,8 +8,9 @@ import absyn.*;
 import gui.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
 /*
-Aenderungen am 27.01.99 (von long)
+Aenderungen am 01.02.99 (von long)
 */
 
 public class Editor extends Frame implements ActionListener {
@@ -25,14 +26,17 @@ public class Editor extends Frame implements ActionListener {
     public StateList stateList = null;
     private String status = "";
     private Scrollbar vert,horiz;
-    public int scrollX=-2,scrollY=-21;
+    public int scrollX=0,scrollY=-80;
     public GUIInterface gui = null;
     private boolean changedStatechart = false; //fuer listenEditor()
     private String statechartName = "";
 
-    private MenuItem copyOneCon,copyOneTr,insertOne,moveOne,removeOne,moveTransName;
+    private MenuItem copyOneCon,copyOneTr,insertOne,moveOne,removeOne,moveTransName,simulieren;
     private Menu copy = new Menu("Kopieren");
     private Dimension dimension;
+    public CheckboxMenuItem cbbezier = new CheckboxMenuItem("Transitionen mit Kurven");
+    public int fontsize = 0;
+
 
     final Editor editor = this;
 
@@ -58,6 +62,7 @@ public class Editor extends Frame implements ActionListener {
         setBounds(x,y,width,height);
         gui = gui_interface;
         mainproc();
+        checkHighlight();
     }
 
 
@@ -77,6 +82,21 @@ public class Editor extends Frame implements ActionListener {
         Menu Extras = new Menu("Extras");
         mb.add(Extras);
 
+        Menu simulation = new Menu("Simulation");
+        mb.add(simulation);
+
+        simulieren = new MenuItem("Simulieren");
+        simulieren.addActionListener(this);
+        simulieren.setActionCommand("Simulieren");
+        simulieren.setEnabled(false);
+        simulation.add(simulieren);
+
+        Menu option = new Menu("Option");
+        mb.add(option);
+
+        cbbezier.setState(false);
+        option.add(cbbezier);
+
         Menu Zoom = new Menu("Zoom");
         mb.add(Zoom);
 
@@ -85,6 +105,11 @@ public class Editor extends Frame implements ActionListener {
         mi.setActionCommand("Neu");
         datei.add(mi);
         datei.addSeparator();
+
+        mi = new MenuItem("Schriftgroesse");
+        mi.addActionListener(this);
+        mi.setActionCommand("Schriftgroesse");
+        option.add(mi);
 
         undo = new MenuItem("Rueckgaengig");
         undo.addActionListener(this);
@@ -236,8 +261,8 @@ public class Editor extends Frame implements ActionListener {
         {
             public void adjustmentValueChanged(AdjustmentEvent e)
             {
-                scrollX = e.getValue()-2;
-                horiz.setValues(e.getValue(),40,0,10000);
+                scrollX = e.getValue();
+                horiz.setValues(e.getValue(),40,0,4000);
                 repaint();
             }
         });
@@ -245,9 +270,18 @@ public class Editor extends Frame implements ActionListener {
         {
             public void adjustmentValueChanged(AdjustmentEvent e)
             {
-                scrollY = e.getValue()-21;
-                vert.setValues(e.getValue(),40,0,10000);
+                scrollY = e.getValue()-80;
+                vert.setValues(e.getValue(),40,0,3000);
                 repaint();
+            }
+        });
+
+        cbbezier.addItemListener(new ItemListener(){
+            public void itemStateChanged(ItemEvent e){
+                if (cbbezier.getState()){
+                    repaint();
+                }
+                else repaint();
             }
         });
 
@@ -365,6 +399,10 @@ public class Editor extends Frame implements ActionListener {
         addMouseListener(new MouseAdapter() {
 
             public void mousePressed(MouseEvent e) {
+                if ((int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()) <= 0 |
+                    (int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()) <= 0 |
+                    (int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()) >= 4000 |
+                    (int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()) >= 3000) return;
                 if (status.equals("Zustand hinzufuegen"))
                     EditorUtils.createStateMousePressed(e, editor);
                 if (status.equals("Zustand verschieben"))
@@ -373,6 +411,10 @@ public class Editor extends Frame implements ActionListener {
             }
 
             public void mouseReleased(MouseEvent e) {
+                if ((int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()) <= 0 |
+                    (int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()) <= 0 |
+                    (int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()) >= 4000 |
+                    (int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()) >= 3000) return;
                 if (status.equals("Zustand hinzufuegen"))
                     EditorUtils.createStateMouseReleased(e, editor);
                 if (status.equals("And_Zustand erzeugen"))
@@ -398,6 +440,10 @@ public class Editor extends Frame implements ActionListener {
             }
             public void mouseClicked(MouseEvent e)
             {
+                if ((int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()) <= 0 |
+                    (int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()) <= 0 |
+                    (int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()) >= 4000 |
+                    (int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()) >= 3000) return;
                 if (status.equals("Transition hinzufuegen"))
                 {
                     Methoden_0.transitionMouseClicked(e,(int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()),(int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()),editor);
@@ -449,6 +495,10 @@ public class Editor extends Frame implements ActionListener {
         addMouseMotionListener(new MouseMotionAdapter() {
 
             public void mouseMoved(MouseEvent e) {
+                if ((int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()) <= 0 |
+                    (int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()) <= 0 |
+                    (int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()) >= 4000 |
+                    (int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()) >= 3000) return;
                 if (status.equals("And_Zustand erzeugen"))
                     EditorUtils.andStateMouseMoved(e, editor);
                 if (status.equals("Zustand loeschen"))
@@ -471,6 +521,10 @@ public class Editor extends Frame implements ActionListener {
             }
             public void mouseDragged(MouseEvent e)
             {
+                if ((int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()) <= 0 |
+                    (int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()) <= 0 |
+                    (int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()) >= 4000 |
+                    (int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()) >= 3000) return;
                 if (status.equals("Zustand hinzufuegen"))
                     EditorUtils.createStateMouseDragged(e, editor);
                 if (status.equals("Zustand verschieben"))
@@ -485,7 +539,6 @@ public class Editor extends Frame implements ActionListener {
         addWindowListener(new WindowAdapter() {
 
             public void windowClosing(WindowEvent e) {
-//                if ((gui.YesNoDialog(editor,statechartName,"Aktuelle Statechart wird geloescht")) == 2) return;
                 Window window = e.getWindow();
                 window.dispose();
             }
@@ -555,6 +608,12 @@ public class Editor extends Frame implements ActionListener {
 
     }
 
+    private void checkHighlight()
+    {
+        File file = new File("highlight.dat");
+        if (file.exists()) file.delete();
+    }
+
     private void setAllDeselected(CheckboxMenuItem c0,CheckboxMenuItem c1,CheckboxMenuItem c2,CheckboxMenuItem c3,CheckboxMenuItem c4,CheckboxMenuItem c5,CheckboxMenuItem c6,CheckboxMenuItem c7)
     {
         c0.setState(false);
@@ -582,8 +641,8 @@ public class Editor extends Frame implements ActionListener {
             list = list.tail;
         }
         int maxScreen;
-        if (dimension.width < dimension.height) maxScreen = dimension.height;
-        else maxScreen = dimension.width;
+        if (dimension.width < dimension.height) maxScreen = dimension.width;
+        else maxScreen = dimension.height;
         if (startX < startY) max += startX;
         else max += startY;
         if (max == 0) max = maxScreen;
@@ -638,14 +697,25 @@ public class Editor extends Frame implements ActionListener {
         if (command.equals("move Transname")) {status = "move Transname";}
         if (command.equals("Zustand verschieben")) status = "Zustand verschieben";
 
-//Zoomen
-        if (command.equals("10%")) {Methoden_1.setFactor(10);repaint();}
-        if (command.equals("25%")) {Methoden_1.setFactor(25);repaint();}
-        if (command.equals("50%")) {Methoden_1.setFactor(50);repaint();}
-        if (command.equals("100%")) {Methoden_1.setFactor(100);repaint();}
-        if (command.equals("200%")) {Methoden_1.setFactor(200);repaint();}
-        if (command.equals("300%")) {Methoden_1.setFactor(300);repaint();}
-        if (command.equals("400%")) {Methoden_1.setFactor(400);repaint();}
+        if (command.equals("Schriftgroesse")) {setFontSize();repaint();}
+
+        if (command.equals("Simulieren")) {Methoden_1.startSimulation(editor);simulieren.setEnabled(false);}
+
+    }
+
+    private void setFontSize()
+    {
+        String nr = gui.EingabeDialog(this,"Schriftgroesse","Schriftgroesse einstellen","10");
+        if (nr == null) {fontsize = 0; return;}
+        try
+        {
+            Integer i = new Integer(nr);
+            fontsize = i.intValue();
+            if (fontsize < 5 | fontsize > 30)
+                fontsize = 10;
+            return;
+        }
+        catch(NumberFormatException e) {fontsize = 0;}
     }
 
     private void initStatechart()
@@ -663,13 +733,13 @@ public class Editor extends Frame implements ActionListener {
 
     private void initCopy()
     {
-        if (Methoden_1.selectOneConnector != null){// | Methoden_1.selectList != null){
+        if (Methoden_1.selectOneConnector != null & Methoden_1.markLast instanceof Connector){// | Methoden_1.selectList != null){
             copy.setEnabled(true);
             copyOneCon.setEnabled(true);
         }
         else
             copyOneCon.setEnabled(false);
-        if (Methoden_1.selectOneTr != null){
+        if (Methoden_1.selectOneTr != null & Methoden_1.markLast instanceof Tr){
             copy.setEnabled(true);
             copyOneTr.setEnabled(true);
             if (Methoden_1.selectOneTr.label.position != null)

@@ -9,10 +9,10 @@ public class EditorUtils {
     private static int stateCount = 0;
 
     private static int getCoordX(MouseEvent e,Editor editor) {
-        return (e.getX()+editor.scrollX);
+        return (int) Math.round((e.getX()+editor.scrollX) / Methoden_1.getFactor());
     }
     private static int getCoordY(MouseEvent e, Editor editor) {
-        return (e.getY()+editor.scrollY);
+        return (int) Math.round((e.getY()+editor.scrollY) / Methoden_1.getFactor());
     }
 
 
@@ -26,7 +26,7 @@ public class EditorUtils {
     public static void createStateMousePressed(MouseEvent e, Editor editor) {
 
         editor.startPoint = new Point(getCoordX(e,editor),getCoordY(e,editor));
-        editor.newRect = new CRectangle(getCoordX(e,editor), getCoordY(e,editor),0,0);
+        editor.newRect = new CRectangle(editor.startPoint.x, editor.startPoint.y,0,0);
     }
 
 // **************************************************************************
@@ -153,11 +153,9 @@ public class EditorUtils {
                 Basic_State neu = new Basic_State(
                         new Statename("...defaultName"+stateCount), newState.rect);
                 orFather.substates = new StateList(neu, orFather.substates);
-                orFather.defaults = new StatenameList(neu.name, orFather.defaults);
             }
             else {
                 orFather.substates = new StateList(newState, orFather.substates);
-                orFather.defaults = new StatenameList(newState.name, orFather.defaults);
             }
         }
         else {  // Zustand wieder vom Fenster loeschen
@@ -180,13 +178,14 @@ public class EditorUtils {
         // *** loesche eine evtl. schon gezeigte Linie
 
         if (editor.endPoint != null)
-            showAndLine(editor.startPoint, editor.endPoint, editor.getBackground(), editor);
+            showAndLine(editor.startPoint, editor.endPoint, editor.getBackground(), editor, e);
 
         // *** In welchem Zustand liegt der Mauszeiger gerade?
 
         State inState = getInnermostStateOf(getCoordX(e,editor), getCoordY(e,editor), editor);
 
-        if (inState.equals(editor.statechart.state)) inState = null;
+        if (inState.equals(editor.statechart.state)
+            | inState instanceof And_State) inState = null;
 
         // *** Weiter nur, wenn Maus in einem Zustand ist
 
@@ -203,11 +202,12 @@ public class EditorUtils {
 
                 // *** senkrechte TrennLinie
 
-                editor.startPoint = new Point(getCoordX(e,editor),
-                                              abs(editor,inState).y);
-                editor.endPoint   = new Point(getCoordX(e,editor),
-                                              abs(editor,inState).y
-                                              + inState.rect.height);
+                editor.startPoint = new Point(
+                                    getCoordX(e,editor),
+                                    abs(editor,inState).y);
+                editor.endPoint   = new Point(
+                                    editor.startPoint.x,
+                                    editor.startPoint.y+inState.rect.height);
 
                 a = new CRectangle(abs(editor,inState).x,
                                    abs(editor,inState).y,
@@ -222,11 +222,12 @@ public class EditorUtils {
 
                 // *** waagerechte TrennLinie
 
-                editor.startPoint = new Point(abs(editor,inState).x,
-                                              getCoordY(e,editor));
-                editor.endPoint   = new Point(abs(editor,inState).x
-                                              +inState.rect.width,
-                                              getCoordY(e,editor));
+                editor.startPoint = new Point(
+                                    abs(editor,inState).x,
+                                    getCoordY(e,editor));
+                editor.endPoint   = new Point(
+                                    editor.startPoint.x+inState.rect.width,
+                                    editor.startPoint.y);
 
                 a = new CRectangle(abs(editor,inState).x,
                                    abs(editor,inState).y,
@@ -255,16 +256,16 @@ public class EditorUtils {
             }
             if (editor.actionOk)
                  showAndLine(editor.startPoint, editor.endPoint,
-                             Color.red, editor);
+                             Color.red, editor,e);
             else showAndLine(editor.startPoint, editor.endPoint,
-                             Color.gray, editor);
+                             Color.gray, editor,e);
         }
         else
             // *** Maus ist in keinem Zustand
 
             if (editor.endPoint != null) {
                 showAndLine(editor.startPoint, editor.endPoint,
-                            editor.getBackground(), editor);
+                            editor.getBackground(), editor,e);
                 editor.startPoint = null;
                 editor.endPoint = null;
                 editor.actionOk = false;
@@ -312,26 +313,28 @@ public class EditorUtils {
             StatenameList helpnames = null;
 
             if (father instanceof Or_State) {
-                if ( ((Or_State) father).defaults.head.equals(inState.name) )
-                    ((Or_State) father).defaults = ((Or_State) father).defaults.tail;
-                else
+                if ( ((Or_State) father).defaults != null) {
+                  if ( ((Or_State) father).defaults.head.equals(inState.name) )
+                      ((Or_State) father).defaults = ((Or_State) father).defaults.tail;
+                  else
                     helpnames = ((Or_State) father).defaults;
 
-                if (helpnames != null)
+                  if (helpnames != null)
                     while (helpnames.tail != null) {
                         if (helpnames.tail.head.equals(inState.name)) {
                             helpnames.tail = helpnames.tail.tail;
                         }
                         else helpnames = helpnames.tail;
                     }
+                }
             }
 
             // *** fge inStateAnd.name in father.defaults ein, falls father
             // *** Or_State
 
-            if (father instanceof Or_State)
-                ((Or_State) father).defaults = new StatenameList(inStateAnd.name,
-                                                ((Or_State) father).defaults);
+//             if (father instanceof Or_State)
+//                ((Or_State) father).defaults = new StatenameList(inStateAnd.name,
+//                                                ((Or_State) father).defaults);
 
             // *** erzeuge 2 Or_States aState und bState und
 
@@ -364,11 +367,12 @@ public class EditorUtils {
                 // *** schon gespeichhert in absInStateVar
                 // *** getSideOf == 0 ==> senkrechteLinie
 
-                editor.startPoint = new Point(getCoordX(e,editor),
-                                              absInStateVar.y);
-                editor.endPoint   = new Point(getCoordX(e,editor),
-                                              absInStateVar.y
-                                              + inState.rect.height);
+                editor.startPoint = new Point(
+                                    getCoordX(e,editor),
+                                    abs(editor,inState).y);
+                editor.endPoint   = new Point(
+                                    editor.startPoint.x,
+                                    editor.startPoint.y+inState.rect.height);
 
                 aState.rect = new CRectangle(point.x, point.y,
                                              editor.startPoint.x - absPoint.x,
@@ -384,11 +388,12 @@ public class EditorUtils {
 
                 // *** waagerechte TrennLinie
 
-                editor.startPoint = new Point(absInStateVar.x,
-                                              getCoordY(e,editor));
-                editor.endPoint   = new Point(absInStateVar.x
-                                              + inState.rect.width,
-                                              getCoordY(e,editor));
+                editor.startPoint = new Point(
+                                    abs(editor,inState).x,
+                                    getCoordY(e,editor));
+                editor.endPoint   = new Point(
+                                    editor.startPoint.x+inState.rect.width,
+                                    editor.startPoint.y);
 
                 aState.rect = new CRectangle(point.x, point.y,
                                              inState.rect.width,
@@ -495,7 +500,7 @@ public class EditorUtils {
         }
         else { // action nicht ok
             // loesche eine evtl. schon gezeigte Linie
-            if (editor.endPoint != null) showAndLine(editor.startPoint, editor.endPoint, editor.getBackground(), editor);
+            if (editor.endPoint != null) showAndLine(editor.startPoint, editor.endPoint, editor.getBackground(), editor,e);
         }
         editor.startPoint = null;
         editor.endPoint = null;
@@ -575,10 +580,21 @@ public class EditorUtils {
 
 // **************************************************************************
 
-    public static void showAndLine(Point start, Point end, Color color, Editor editor) {
+    public static void showAndLine(Point start, Point end, Color color, Editor editor, MouseEvent e) {
+        // start und end haben absolute Koordinaten bzgl. des abs. Ursprunges
         Graphics g = editor.getGraphics();
         g.setColor(color);
-        g.drawLine(start.x-editor.scrollX, start.y-editor.scrollY, end.x-editor.scrollX, end.y-editor.scrollY);
+        double factor = Methoden_1.getFactor();
+
+        int relX1 = start.x-(int)(Math.round(editor.scrollX/factor));
+        int relY1 = start.y-(int)(Math.round(editor.scrollY/factor));
+        int relX2 = end.x-(int)(Math.round(editor.scrollX/factor));
+        int relY2 = end.y-(int)(Math.round(editor.scrollY/factor));
+
+          g.drawLine((int) Math.round((relX1)*factor),
+                     (int) Math.round((relY1)*factor),
+                     (int) Math.round((relX2)*factor),
+                     (int) Math.round((relY2)*factor));
     }
 
 // **************************************************************************
@@ -924,9 +940,9 @@ public class EditorUtils {
                         ((Or_State) grandFather).substates
                                       = new StateList(newFather,
                                         ((Or_State) grandFather).substates);
-                        ((Or_State) grandFather).defaults
-                                      = new StatenameList(newFather.name,
-                                        ((Or_State) grandFather).defaults);
+ //                       ((Or_State) grandFather).defaults
+ //                                     = new StatenameList(newFather.name,
+ //                                       ((Or_State) grandFather).defaults);
                     }
                 }
                 else {

@@ -7,6 +7,7 @@ import tesc1.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.*;
 
 class ObjectList
 {
@@ -58,6 +59,7 @@ public class Methoden_1
             s.name = new Statename(name);
             changeTransName(name,x,y,editor);
             editor.repaint();
+            editor.setChangedStatechart(true);
         }
     }
 
@@ -71,6 +73,7 @@ public class Methoden_1
             s.name = new Statename(name);
             changeTransName(name,x,y,editor);
             editor.repaint();
+            editor.setChangedStatechart(true);
         }
     }
 
@@ -84,6 +87,7 @@ public class Methoden_1
         {
             con.name.name = name;
             editor.repaint();
+            editor.setChangedStatechart(true);
         }
     }
 
@@ -120,6 +124,7 @@ public class Methoden_1
             trans.label = tlabel;
             trans.label.position = new CPoint(Betrag(r.x,x),Betrag(r.y,y));
             editor.repaint();
+            editor.setChangedStatechart(true);
         }
     }
 
@@ -317,6 +322,8 @@ public class Methoden_1
             selectOneConnector(x,y,editor);
         else
             selectOneTr(x,y,editor);
+	//	new highlightObject(selectOneConnector,Color.white);
+	// new highlightObject(selectOneTr,Color.white);
     }
 
     public static void insertOne(int x, int y, Editor editor)
@@ -419,6 +426,7 @@ public class Methoden_1
         changeTrAnchorOf(tr,new Point(r.x,r.y),editor); //veraendert die TrAnchor-Felder
         TrList list = new TrList(tr,os.trs);
         os.trs = list;
+        editor.setChangedStatechart(true);
     }
     private static Tr getNewPosTrans(Tr tr, Point p, int x, int y)
     {
@@ -464,6 +472,38 @@ public class Methoden_1
         if (editor.gui.getTransitioncolor() != Color.blue)
             g.setColor(Color.blue);
         else g.setColor(Color.red);
+
+        int groesse = (int)(Methoden_1.getFactor()*100);
+        if (editor.fontsize != 0) g.setFont(new Font("Serif",Font.PLAIN,editor.fontsize));
+        else
+        {
+            if (groesse < 25) g.setFont(new Font("Serif",Font.PLAIN,8));
+            else if (groesse < 50) g.setFont(new Font("Serif",Font.PLAIN,10));
+            else if (groesse < 100) g.setFont(new Font("Serif",Font.PLAIN,14));
+            else if (groesse < 200) g.setFont(new Font("Serif",Font.PLAIN,16));
+            else if (groesse < 300) g.setFont(new Font("Serif",Font.PLAIN,18));
+            else if (groesse <= 400) g.setFont(new Font("Serif",Font.PLAIN,20));
+            else if (groesse > 400) g.setFont(new Font("Serif",Font.PLAIN,22));
+        }
+
+        if (tr.label.caption.length() > 2)
+        {
+            if((tr.label.caption.charAt(0)=='.') & (tr.label.caption.charAt(1)=='.') &
+               (tr.label.caption.charAt(2)=='.'));
+            else
+            {
+                String trName = tr.label.caption;
+                String neuString = trName;
+                if (trName.length() > 20) neuString = trName.substring(0,20);
+                g.drawString(neuString,(int)((double)(p.x+tr.label.position.x)*Methoden_1.getFactor())-editor.scrollX,
+                            (int)((double)(p.y+tr.label.position.y)*Methoden_1.getFactor())-editor.scrollY);
+            }
+        }
+        if (editor.cbbezier.getState())
+        {
+            Methoden_0.bezier(tr.points,p.x,p.y,editor.gui.getTransitioncolor(),editor);
+            return;
+        }
         int i=0;
         try
         {
@@ -496,6 +536,72 @@ public class Methoden_1
          g.dispose();
     }
 
+/*
+    Methode: markSelectedTr(..)
+    Funktion: so wie die Methode oben, jedoch mit der Uebergabe von einer Farbe
+              (wird fuer die Simulation benutzt)
+*/
+    private static void markSelectedTr(Tr tr, Point p, Color col, Editor editor)
+    {
+        if (tr == null | (tr.points.length <2)) return;
+        Graphics g = editor.getGraphics();
+        g.setColor(col);
+        int i=0;
+        try
+        {
+            for (i=0;i<=tr.points.length-1;i++)
+            {
+                if (i==0) g.fillOval((int)((double)(tr.points[0].x+p.x)*Methoden_1.getFactor())-2-editor.scrollX,
+                           (int)((double)(tr.points[0].y+p.y)*Methoden_1.getFactor())-editor.scrollY,4,4);
+                g.drawLine((int)((double)(tr.points[i].x+p.x)*Methoden_1.getFactor())-editor.scrollX,
+                           (int)((double)(tr.points[i].y+p.y)*Methoden_1.getFactor())-editor.scrollY,
+                           (int)((double)(tr.points[i+1].x+p.x)*Methoden_1.getFactor())-editor.scrollX,
+                           (int)((double)(tr.points[i+1].y+p.y)*Methoden_1.getFactor())-editor.scrollY);
+            }
+         }
+         catch(NullPointerException e)
+         {
+             if (i>=1){
+             Pfeil pfeil = new Pfeil(g,(int)((double)(tr.points[i-1].x+p.x)*Methoden_1.getFactor())-editor.scrollX,
+                                       (int)((double)(tr.points[i-1].y+p.y)*Methoden_1.getFactor())-editor.scrollY,
+                                       (int)((double)(tr.points[i].x+p.x)*Methoden_1.getFactor())-editor.scrollX,
+                                       (int)((double)(tr.points[i].y+p.y)*Methoden_1.getFactor())-editor.scrollY);}
+         }
+         catch(ArrayIndexOutOfBoundsException e)
+         {
+             if (i>=1){
+             Pfeil pfeil = new Pfeil(g,(int)((double)(tr.points[i-1].x+p.x)*Methoden_1.getFactor())-editor.scrollX,
+                                       (int)((double)(tr.points[i-1].y+p.y)*Methoden_1.getFactor())-editor.scrollY,
+                                       (int)((double)(tr.points[i].x+p.x)*Methoden_1.getFactor())-editor.scrollX,
+                                       (int)((double)(tr.points[i].y+p.y)*Methoden_1.getFactor())-editor.scrollY);}
+         }
+         g.dispose();
+    }
+
+    private static void markSelectedTr(Tr tr,Color col,Editor editor)
+    {
+        StateList list = editor.stateList;
+        while (list != null)
+        {
+            if (list.head instanceof Or_State)
+            {
+                Or_State os = (Or_State) list.head;
+                TrList tlist = os.trs;
+                while (tlist != null)
+                {
+                    if (tlist.head.equals(tr))
+                    {
+                        Rectangle r = Methoden_0.abs(editor,list.head);
+                        markSelectedTr(tr,new Point(r.x,r.y),col,editor);
+                        return;
+                    }
+                    tlist = tlist.tail;
+                }
+            }
+            list = list.tail;
+        }
+    }
+
     private static void removeOneTr(Editor editor)
     {
         StateList list = editor.stateList;
@@ -516,6 +622,7 @@ public class Methoden_1
                     selectOneTr = null;
                     markLast = null;
                     editor.repaint();
+                    editor.setChangedStatechart(true);
                     return;
             }
                 copy = new TrList(tlist.head,copy);
@@ -540,6 +647,7 @@ public class Methoden_1
                         selectOneTr = null;
                         markLast = null;
                         editor.repaint();
+                        editor.setChangedStatechart(true);
                         return;
                     }
                     copy = new TrList(tlist.head,copy);
@@ -573,6 +681,46 @@ public class Methoden_1
                        (int)((double)(con.position.y+p.y)*Methoden_1.getFactor())-editor.scrollY,big,big);
         }
         g.dispose();
+    }
+
+    private static void markSelectedCon(Connector con, Point p,Color col, Editor editor)
+    {
+        Graphics g = editor.getGraphics();
+        g.setColor(col);
+        int big = 10;
+        if (Methoden_1.getFactor()*100 < 25) big = 5;
+        else if (Methoden_1.getFactor()*100 > 400) big = 15;
+        else big = 10;
+        if(con != null)
+        {
+            g.fillOval((int)((double)(con.position.x+p.x)*Methoden_1.getFactor())-editor.scrollX,
+                       (int)((double)(con.position.y+p.y)*Methoden_1.getFactor())-editor.scrollY,big,big);
+        }
+        g.dispose();
+    }
+
+    private static void markSelectedCon(Connector con,Color col,Editor editor)
+    {
+        StateList list = editor.stateList;
+        while (list != null)
+        {
+            if (list.head instanceof Or_State)
+            {
+                Or_State os = (Or_State) list.head;
+                ConnectorList clist= os.connectors;
+                while (clist!= null)
+                {
+                    if (clist.head.equals(con))
+                    {
+                        Rectangle r = Methoden_0.abs(editor,list.head);
+                        markSelectedCon(con,new Point(r.x,r.y),col,editor);
+                        return;
+                    }
+                    clist= clist.tail;
+                }
+            }
+            list = list.tail;
+        }
     }
 
     private static void selectOneConnector(int x, int y, Editor editor)
@@ -619,6 +767,7 @@ public class Methoden_1
         con.position = new CPoint(x-r.x,y-r.y);
         ConnectorList clist = new ConnectorList(con,os.connectors);
         os.connectors = clist;
+        editor.setChangedStatechart(true);
         Methoden_0.updateAll(editor);
     }
 /*
@@ -655,6 +804,7 @@ public class Methoden_1
                 selectOneConnector = null;
                 markLast = null;
                 editor.repaint();
+                editor.setChangedStatechart(true);
                 return;
             }
             copy = new ConnectorList(clist.head,copy);
@@ -679,6 +829,7 @@ public class Methoden_1
                         selectOneConnector = null;
                         markLast = null;
                         editor.repaint();
+                        editor.setChangedStatechart(true);
                         return;
                     }
                     copy = new ConnectorList(clist.head,copy);
@@ -746,12 +897,23 @@ public class Methoden_1
     public static void showFullTransName(int x, int y, Editor editor)
     {
         StateList list = editor.stateList;
-        TrList tlist = null,copy=null;
+        TrList tlist = null;
         tlist = ((Or_State)(editor.statechart.state)).trs;
         Rectangle r = editor.statechart.state.rect;
         Rectangle rect = new Rectangle();
         Graphics g = editor.getGraphics();
         g.setColor(editor.gui.getTransitioncolor());
+        int groesse = (int)(Methoden_1.getFactor()*100);
+        if (editor.fontsize != 0) g.setFont(new Font("Serif",Font.PLAIN,editor.fontsize));
+        else{
+        if (groesse < 25) g.setFont(new Font("Serif",Font.PLAIN,8));
+        else if (groesse < 50) g.setFont(new Font("Serif",Font.PLAIN,10));
+        else if (groesse < 100) g.setFont(new Font("Serif",Font.PLAIN,14));
+        else if (groesse < 200) g.setFont(new Font("Serif",Font.PLAIN,16));
+        else if (groesse < 300) g.setFont(new Font("Serif",Font.PLAIN,18));
+        else if (groesse <= 400) g.setFont(new Font("Serif",Font.PLAIN,20));
+        else if (groesse > 400) g.setFont(new Font("Serif",Font.PLAIN,22));
+        }
         while(tlist != null)
         {
             if (tlist.head.label.position != null){
@@ -788,6 +950,219 @@ public class Methoden_1
         }
     }
 
+    public static void startSimulation(Editor editor)
+    {
+        HighlightList list = getHighlightList(editor);
+        findAndSimuList(list,editor);
+    }
+
+    private static HighlightList getHighlightList(Editor editor)
+    {
+        HighlightList list = null;
+        try
+        {
+            Highlight hl = null;
+            int y1,y2,y3,y4;
+            Color col;
+            String s = "";
+            String a="",name,x1,x2,x3,x4,c,neu="";
+            StringTokenizer st, stleer;
+            LineNumberReader r = new LineNumberReader(new InputStreamReader(new FileInputStream("highlight.dat")));
+            while((s = r.readLine()) != null){
+                st = new StringTokenizer(s,"&|&");
+                while(st.hasMoreElements())
+                {
+                    try
+                    {
+                        a = st.nextToken();
+                        stleer = new StringTokenizer(a,"LM");
+                        while(stleer.hasMoreElements())
+                            a = stleer.nextToken();
+                        name = st.nextToken();
+                        x1 = st.nextToken();
+                        x2 = st.nextToken();
+                        x3 = st.nextToken();
+                        x4 = st.nextToken();
+                        c = st.nextToken();
+                        Integer i = new Integer(x1);
+                        y1 = i.intValue();
+                        i = new Integer(x2);
+                        y2 = i.intValue();
+                        i = new Integer(x3);
+                        y3 = i.intValue();
+                        i = new Integer(x4);
+                        y4 = i.intValue();
+                        hl = new Highlight(a,name,y1,y2,y3,y4,getColor(c));
+                        list = new HighlightList (hl,list);
+                    }
+                    catch(NoSuchElementException e) {};
+                }
+            }
+            r.close();
+        }
+        catch(IOException e){}
+        File file = new File("highlight.dat");
+        if (file.exists()) file.delete();
+        return list;
+    }
+
+    private static Color getColor(String s)
+    {
+        if (s.equals("black")) return Color.black;
+        if (s.equals("blue")) return Color.blue;
+        if (s.equals("cyan")) return Color.cyan;
+        if (s.equals("darkGray")) return Color.darkGray;
+        if (s.equals("gray")) return Color.gray;
+        if (s.equals("green")) return Color.green;
+        if (s.equals("lightGray")) return Color.lightGray;
+        if (s.equals("magenta")) return Color.magenta;
+        if (s.equals("orange")) return Color.orange;
+        if (s.equals("red")) return Color.red;
+        if (s.equals("white")) return Color.white;
+        if (s.equals("yellow")) return Color.yellow;
+        return Color.green;
+    }
+
+
+    private static void findAndSimuList(HighlightList hlist, Editor editor)
+    {
+        StateList list = editor.stateList;
+        while (hlist != null)
+        {
+            if (hlist.head.art.equals("Basic_State"))
+            {
+                Basic_State s = findB_State(hlist.head,editor);
+                if (s != null)
+                markState(s,hlist.head.color,editor);
+            }
+            if (hlist.head.art.equals("Or_State"))
+            {
+                Or_State s = findO_State(hlist.head,editor);
+                if (s != null)
+                markState(s,hlist.head.color,editor);
+            }
+            if (hlist.head.art.equals("And_State"))
+            {
+                State s = findA_State(hlist.head,editor);
+                if (s != null)
+                markState(s,hlist.head.color,editor);
+            }
+            if (hlist.head.art.equals("Transition"))
+            {
+                Tr tr = findTr(hlist.head,editor);
+                if (tr != null)
+                markSelectedTr(tr,hlist.head.color,editor);
+            }
+            if (hlist.head.art.equals("Connector"))
+            {
+                Connector con = findCon(hlist.head,editor);
+                if (con != null)
+                markSelectedCon(con,hlist.head.color,editor);
+            }
+            hlist = hlist.tail;
+        }
+    }
+
+    private static Basic_State findB_State(Highlight hl, Editor editor)
+    {
+        StateList list = editor.stateList;
+        Rectangle r = new Rectangle (hl.x1,hl.x2,hl.x3,hl.x4);
+        while (list != null)
+        {
+            if (list.head instanceof Basic_State)
+                if (list.head.name.name.equals(hl.name))
+                    if (list.head.rect.equals(r)) return ((Basic_State)list.head);
+            list = list.tail;
+        }
+        return null;
+    }
+
+    private static Or_State findO_State(Highlight hl, Editor editor)
+    {
+        StateList list = editor.stateList;
+        Rectangle r = new Rectangle (hl.x1,hl.x2,hl.x3,hl.x4);
+        while (list != null)
+        {
+            if (list.head instanceof Or_State)
+                if (list.head.name.name.equals(hl.name))
+                    if (list.head.rect.equals(r)) return ((Or_State)list.head);
+            list = list.tail;
+        }
+        return null;
+    }
+
+    private static And_State findA_State(Highlight hl, Editor editor)
+    {
+        StateList list = editor.stateList;
+        Rectangle r = new Rectangle (hl.x1,hl.x2,hl.x3,hl.x4);
+        while (list != null)
+        {
+            if (list.head instanceof And_State)
+                if (list.head.name.name.equals(hl.name))
+                    if (list.head.rect.equals(r)) return ((And_State)list.head);
+            list = list.tail;
+        }
+        return null;
+
+    }
+
+    private static Tr findTr(Highlight hl, Editor editor)
+    {
+        StateList list = editor.stateList;
+        Point p1 = new Point(hl.x1,hl.x2);
+        Point p2 = new Point(hl.x3,hl.x4);
+        while (list != null)
+        {
+            if (list.head instanceof Or_State)
+            {
+                Or_State os = (Or_State)list.head;
+                TrList tlist = os.trs;
+                while (tlist != null)
+                {
+//                    if (tlist.head.name.name.equals(hl.name))
+                        if (tlist.head.points != null)
+                        {
+                            if (tlist.head.points[0].equals(p1) &
+                                tlist.head.points[1].equals(p2)) return tlist.head;
+                        }
+                    tlist = tlist.tail;
+                }
+            }
+            list = list.tail;
+        }
+        return null;
+    }
+
+    private static Connector findCon(Highlight hl, Editor editor)
+    {
+        StateList list = editor.stateList;
+        Point p1 = new Point(hl.x1,hl.x2);
+        while (list != null)
+        {
+            if (list.head instanceof Or_State)
+            {
+                Or_State os = (Or_State)list.head;
+                ConnectorList clist = os.connectors;
+                while (clist != null)
+                {
+                    if (clist.head.position != null)
+                    {
+                        if (clist.head.position.equals(p1))
+                            return clist.head;
+                    }
+                    clist = clist.tail;
+                }
+            }
+            list = list.tail;
+        }
+        return null;
+    }
+
+    private static void markState(State s, Color col, Editor editor)
+    {
+        Rectangle r = Methoden_0.abs(editor,s);
+        EditorUtils.show(r,col,editor,editor.getGraphics());
+    }
 
 
 /*
@@ -819,4 +1194,34 @@ public class Methoden_1
             }
             if (!isIn)
 */
+}
+
+
+class Highlight
+{
+    String art;
+    String name;
+    int x1,x2,x3,x4;
+    Color color;
+    Highlight(String a,String n,int y1,int y2,int y3,int y4,Color c)
+    {
+        art = a;
+        name = n;
+        x1 = y1;
+        x2 = y2;
+        x3 = y3;
+        x4 = y4;
+        color = c;
+    }
+}
+
+class HighlightList
+{
+    Highlight head;
+    HighlightList tail;
+    HighlightList (Highlight h, HighlightList t)
+    {
+        head = h;
+        tail = t;
+    }
 }
