@@ -123,7 +123,7 @@ Statename trtest = (Statename)tr.source;
 
 if (matrix.akt.rect != null)
 {if (matrix.prev instanceof Basic_State) matrix = PESTdrawutil.getState(root,matrix.x-matrix.akt.rect.x,matrix.y-matrix.akt.rect.y);
-if (matrix.prev.rect != null)
+else if (matrix.prev.rect != null)
 { if (matrix.prev instanceof Or_State & (matrix.prev.rect.x != 0 | matrix.prev.rect.y != 0)) matrix = PESTdrawutil.getState(root,matrix.x-matrix.akt.rect.x,matrix.y-matrix.akt.rect.y);}
 }
 
@@ -133,7 +133,7 @@ if (matrix.prev.rect != null)
 			    if (hier.name.name.compareTo(trtest.name)!=0 &
 				matrix.prev.name.name.compareTo(trtest.name) != 0)
 				{
-		//	System.out.println(hier.name.name+"--1->"+trtest.name);
+			System.out.println(hier.name.name+"--1->"+trtest.name);
 			    Editor.dislocation();}
 			    System.out.println("AND>"+matrix.akt);
 			  System.out.println("AND>"+matrix.akt.name.name);
@@ -143,7 +143,7 @@ if (matrix.prev.rect != null)
 			      {
 				 if (hier.name.name.compareTo(trtest.name)!=0) 
 				     {
-				//System.out.println(hier.name.name+"--2->"+trtest.name);
+				System.out.println(hier.name.name+"--2->"+trtest.name);
 				 Editor.dislocation();
 				 }
 				  tr.source = new Statename(hier.name.name);}
@@ -172,18 +172,10 @@ if (tr.target instanceof UNDEFINED) {h.setColor( Editor.tr_color());
 
 if (matrix.akt.rect != null)
 {if (matrix.prev instanceof Basic_State) matrix = PESTdrawutil.getState(root,matrix.x-matrix.akt.rect.x,matrix.y-matrix.akt.rect.y);
-if (matrix.prev.rect != null)
+else if (matrix.prev.rect != null)
     {if (matrix.prev instanceof Or_State & (matrix.prev.rect.x != 0 | matrix.prev.rect.y != 0)) matrix = PESTdrawutil.getState(root,matrix.x-matrix.akt.rect.x,matrix.y-matrix.akt.rect.y);}
 
-
-System.out.println("T>"+(matrix.x-matrix.akt.rect.x));
-System.out.println("T>"+(matrix.y-matrix.akt.rect.y));
 }
-
-
-
-
-
 
 
 
@@ -193,12 +185,12 @@ System.out.println("T>"+(matrix.y-matrix.akt.rect.y));
 			       if (hier.name.name.compareTo(trtest2.name)!=0 &
 				matrix.prev.name.name.compareTo(trtest2.name) != 0) 
 				  {
-			//	System.out.println(hier.name.name+"--3->"+trtest2.name);
+				System.out.println(hier.name.name+"--3->"+trtest2.name);
 			      Editor.dislocation();}
 			  tr.target = new Statename(matrix.prev.name.name);} else 
 			      {
 				  if (hier.name.name.compareTo(trtest2.name)!=0) {
-			// System.out.println(hier.name.name+"--4->"+trtest2.name);
+			 System.out.println(hier.name.name+"--4->"+trtest2.name);
 				  Editor.dislocation();}
 				  tr.target = new Statename(hier.name.name);}
 			}

@@ -793,7 +793,7 @@ private static Statechart redo() {
       {        Statechart root = nroot;
       //lauf = lauf.next;
 	try {lauf = lauf.next;lauf.chart = (Statechart) root.clone();basis = lauf;}
-	catch (Exception e) {System.out.println("Waere die Absyn korrekt, so funktionierte auch das Undo !!!!");}
+	catch (Exception e) {System.out.println("Waere die Absyn korrekt, so funktionierte auch das Undo !!!!  Stack :"+e);}
 	//basis = lauf;
 System.out.println("lauf : "+lauf);
 	  System.out.println("basis : "+basis);
