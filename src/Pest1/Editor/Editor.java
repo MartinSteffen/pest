@@ -203,6 +203,7 @@ if (root.state == null)
     drawstatus = true;
 th = this;
     menufeld = new Editor("menue");
+    init = true;
     this.setLocation(top,left);                // Koordinaten des Zeichenfensters setzen.
     // ScrollPane pane = new ScrollPane();      // Create a ScrollPane.
     pane.setSize(width,height);                  // Specify its size.
