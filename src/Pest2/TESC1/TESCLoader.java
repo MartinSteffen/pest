@@ -1,10 +1,10 @@
 package TESC1;
 
 /**
- * Schnittstellenklasse für TESC1.
+ * Schnittstellenklasse fuer TESC1.
  * <p>
- * @author Michael Sülzer, Christoph Schütte (swtech20).
- * @version  $Id: TESCLoader.java,v 1.1 1998-12-03 13:08:16 swtech20 Exp $
+ * @author Michael Suelzer, Christoph Schuette (swtech20).
+ * @version  $Id: TESCLoader.java,v 1.2 1998-12-05 18:47:27 swtech20 Exp $
  */   
 
 import java.io.*;
@@ -12,25 +12,25 @@ import Absyn.*;
 
 public class TESCLoader {
 
-  private Statechart statechart = null;
-  private TESCParser parser = null;
+    private Statechart statechart = null;
+    private TESCParser parser = null;
   
 
-  public Statechart getStatechart(FileInputStream fis) {
+    public Statechart getStatechart(FileInputStream fis) {
  
-    parser = new TESCParser();
-    statechart = parser.parseStream(fis);
- 
-    return statechart;
-  }
+	parser = new TESCParser();
+	statechart = parser.parseStream(fis);
+	
+	return Example.getExample();
+    }
 
-  public int getErrorCount() {
-    return parser.getErrorCount();
-  }
+    public int getErrorCount() {
+	return parser.getErrorCount();
+    }
 
-  public String getErrorText(int error) {
-    return parser.getErrorText(error);
-  }
+    public String getErrorText(int error) {
+	return parser.getErrorText(error);
+    }
 
 }
       
