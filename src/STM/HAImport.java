@@ -10,7 +10,7 @@ import util.PrettyPrint;
 import gui.GUIInterface;
 
 /**
- * Die Klasse HAImport dient zur Konvertierung des HA-Formates in einen
+ * Die Klasse HAImport dient zur Konvertierung des HA-Formates in eine
  * PEST-Statechart. Zum Importieren wird ein Filename benutzt, der dem
  * Konstruktor der Klasse uebergeben wird. Mit dem Aufruf der Methode import()
  * wird ein PEST-Statechart erzeugt.
@@ -18,7 +18,7 @@ import gui.GUIInterface;
  * <pre>
  *    GUIInterface myWindow = ...;
  *    Statechart st = null;
- *    BufferedReader buf = new BufferedReader(new FileReader(new File(ha-format.txt)));
+ *    BufferedReader buf = new BufferedReader(new FileReader(new File("ha-format.txt")));
  *    HAImport imp = new HAImport(buf, myWindow);
  *
  *    st = imp.getStatechart();
@@ -40,17 +40,21 @@ import gui.GUIInterface;
  * </STRONG>
  * Keine.
  * <DT><STRONG>
- * Forderungen.
+ * FORDERUNGEN.
  * </STRONG>
  * Wir erwarten ein korrektes HA-Format.
- * <DT><STRONG>Garantien.</STRONG>
- * Es wird ein PEST-StateChart erzeugt, die nur NULL-Pointer
+ * <DT><STRONG>GARANTIEN.</STRONG>
+ * Es wird eine PEST-StateChart erzeugt, die nur NULL-Pointer
  * als Listenterminierung oder als Kennzeichnung f&uuml;r
  * leere Listen enth&auml;lt.
+ * <DT><STRONG>HINWEIS.</STRONG>
+ * Die Methode main dient uns intern zum Testen ohne GUI.
+ * Ein Beispiel mit hardkodiertem Dateinamen wird importiert und &uuml;ber
+ * den PrettyPrinter ausgegeben. 
  * </DL COMPACT>
  *
  * @author  Sven Jorga, Werner Lehmann
- * @version $Id: HAImport.java,v 1.7 1999-01-08 16:49:53 swtech18 Exp $
+ * @version $Id: HAImport.java,v 1.8 1999-01-11 12:00:40 swtech18 Exp $
  */
 public class HAImport implements Patterns {
   Perl5Util perl = new Perl5Util();
@@ -93,7 +97,7 @@ public class HAImport implements Patterns {
         gui.userMessage("STM: Fehler beim Importieren. (" + e.getMessage() + ")");}
   }
 
-  public void initImport(BufferedReader reader) throws Exception {
+  private void initImport(BufferedReader reader) throws Exception {
     String str = new String();
 
     initSuccess = false;
