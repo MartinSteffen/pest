@@ -1,0 +1,9 @@
+PEST1_STUBS_PREPARED PEST2_STUBS_PREPARED
+
+Das ist die erste Baseline.  Die Aufgabe war die Stubs zur Verfuegung zu
+stellen. Die Abstrakte Syntax ist weitgehend vorhanden (Klassen und
+Konstruktore). Es gibt noch kein lauffaehiges Programm. Die Abstrakte
+Syntax ist noch nicht stabil: Konstruktoren muessen verwollstaendigt
+werden. Eine Musterloesung zur Konstruktion eines Syntaxbaums gibt es noch
+nicht. Keine Durchgaengige Benutzung von javadoc-Konventionen (Absyn hat
+damit angefangen).
