@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.104 1999-02-12 08:50:51 swtech00 Exp $
+//	$Id: report_list,v 1.105 1999-02-12 10:26:06 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -1129,4 +1129,17 @@ Check OK
 Wähle PARALLEL
 Halbiere den OR-State MAG
 Result: vollkommen veränderte Chart (Trs verschoben)
+//------------------------------------------------------------------------------
+#Number:	73
+#Autor:		Erich Mikk
+#Subject:	Wieder IT-Probleme
+#Status: 	reported
+#Description: 
+
+STM-Import SAFER/compute_cmd.st
+Check OK
+Editor OK
+Erneut Check: ITs werden gemeldet
+
+Man kann sich die ITs anklicken und sehen, wo das schief geht.
 //------------------------------------------------------------------------------
