@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * List of boolean variables.
  * @author Initially provided by Martin Steffen.
- * @version $Id: BvarList.java,v 1.10 1999-01-12 08:57:27 swtech00 Exp $
+ * @version $Id: BvarList.java,v 1.11 1999-02-09 10:35:03 swtech00 Exp $
  */
 public class BvarList extends Absyn implements Serializable, Cloneable {
 /**
@@ -30,7 +30,8 @@ public class BvarList extends Absyn implements Serializable, Cloneable {
     public Object clone() throws CloneNotSupportedException {
 	BvarList tailclone;
 	if (tail != null) {tailclone = (BvarList) tail.clone();} else {tailclone = null;};
-	return new BvarList((Bvar)head.clone(), tailclone);
+        Bvar headclone = (head == null) ? null : (Bvar)head.clone();
+	return new BvarList(headclone, tailclone);
     };
 
 };
@@ -38,9 +39,23 @@ public class BvarList extends Absyn implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: BvarList.java,v 1.10 1999-01-12 08:57:27 swtech00 Exp $
+//	$Id: BvarList.java,v 1.11 1999-02-09 10:35:03 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.10  1999/01/12 08:57:27  swtech00
+//	Die "Anderungen von gestern in den ``Listen'' r"uckg"angig gemacht.
+//
+//	Grund: Uniformit"at bestimmter Funktionen, insbesondere des PrettyPrinters.
+//	       Dieser nimmt als Argument einen Term der abstrakten Syntax (eine
+//	       instanz der Klasse Absyn) und verzweigt dann mittels instance_of.
+//
+//	       Der Code f"ur derartige Funktionen w"are ansonsten etwas komplexer.
+//	       Allerdings haben nun (wieder) die Listen ein location-Feld durch
+//	       Vererbung aus Absyn, was im Grunde "uberfl"ussig ist.
+//
+//
+//	[Steffen]
+//
 //	Revision 1.9  1999/01/11 17:15:36  swtech00
 //	BvarList erweitert _nicht_ Absyn, da es keine Locations braucht.
 //
