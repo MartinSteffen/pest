@@ -102,6 +102,12 @@ static Statechart nroot = new Statechart(null,null,null,null);
     new Editor(nroot,name,100,100,500,400,null);}
 
 
+/**
+ * Generiert einen Editorfenster ohne GUI-Unterstuetzung 
+ * <ul>
+ * <li>Hinweis: nur als Stub eingfuegt
+ * </ul>
+ */
 public Editor(Statechart root,String name,int top,int left,int width,int height) {
 	nroot = root;
     new Editor(nroot,name,top,left,width,height,null); }
@@ -326,7 +332,6 @@ z16.addActionListener(new ActionListener() {
 /**
  * Diese Methode gibt den derzeitigen Zeichenmodus zurueck 
  */
-
 public static String Editor () {return Buttontype ;}
 
 /**
@@ -361,7 +366,6 @@ public static boolean listenEditor() {
  * <ul>
  * </ul>
  */
-
 public static void Dispose() {
     menufeld.dispose();
     drawfeld.dispose();
@@ -383,14 +387,21 @@ public static void work(boolean arbeit) {
 
 /**
  * Gibt den derzeitigen Menustatus zurueck 
- * <ul>
- * </ul>
  */
 
 public static boolean work() { return workable;}
 
+/**
+ * Gibt den drzeitigen Zeichenstatus zurueck 
+ */
 public static boolean active() { return drawstatus;}
 
+/**
+ * loescht den aktuellen Statechart
+ * <ul>
+ * <li>xroot   : aktueller Statechart 
+ * </ul>
+ */
 private static void Freeit(Statechart xroot) { 	xroot.state = null;
 					xroot.events = null;
 					xroot.bvars = null;
@@ -398,17 +409,35 @@ private static void Freeit(Statechart xroot) { 	xroot.state = null;
 					scribble.repaint();
 					}
 
+/**
+ * Aufruf der Drawdesk-Repaintmethode
+ */
 public static void newdraw() { 
 			scribble.repaint();
 			}
 
+/**
+ * nichtstatischer Aufruf der Drawdesk-Repaintmethode 
+ */
 public Editor(boolean i) { scribble.repaint(); }
 
+/**
+ * Aufruf der Standardzeichenfehlerbehandlung 
+ */
 public static void fehlermeldung1()
 {
   gui.OkDialog("Editor","Fehler beim Zeichnen aufgetreten");
 }
 
+/**
+ * Aufruf des Eingabefensters der GUI
+ * <ul>
+ * <li>a    : Standardausgabe 1 
+ * <li>b    : Standardausgabe 2  
+ * <li>a    : uebergebener String 
+ * <li>type : zu benennendes Objekt aus der AbSyn 
+ * </ul> 
+ */
 public static String Stringeingabe(String a, String b, String c,Absyn type)
     {
 	String tempname=c,tempstring;
@@ -428,6 +457,12 @@ public static String Stringeingabe(String a, String b, String c,Absyn type)
 	return tempstring;
     }
 
+/**
+ * initialisierung der Namenseingabe
+ * <ul>
+ * <li>obj    : zu benennendes Objekt 
+ * </ul> 
+ */
 public static String labelObject (Absyn obj)
     {
 	String name,ausgabe = "",ausgabe2 = "";
@@ -477,15 +512,27 @@ public static void relabeltrans(Tr akttr)
 }
 
 
+/**
+ * Uebergabe der Connectorfarbe 
+ */
 public static Color con_color()
 {return gui.getConnectorcolor();}
 
+/**
+ * Uebergabe der Transitionsfarbe 
+ */
 public static Color tr_color()
 {return gui.getTransitioncolor();}
 
+/**
+ * Uebergabe der Statefarbe 
+ */
 public static Color st_color()
 {return gui.getStatecolor();}
 
+/**
+ * Standardfehlermeldung fuer Koordinatenprobleme 
+ */
 public static void dislocation() {
     if (init == true)
 	{
