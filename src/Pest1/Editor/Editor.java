@@ -434,7 +434,7 @@ public static String labelObject (Absyn obj)
 	Guard gua = null;
 	State stateobj;
 	Tr transobj;
-	TLabel tlab;
+	TLabel tlab ;
 	
 	if (obj instanceof State)
 	    {
@@ -451,8 +451,9 @@ public static String labelObject (Absyn obj)
 		transobj = (Tr) obj;
 		name = transobj.label.caption;
 		ausgabe2 = Stringeingabe("Transition umbenennen","Neuer Name fuer die gewaehlten Transition :",name,obj);  if (ausgabe2 == null) {ausgabe2 = name;}
+		transobj.label.caption = ausgabe2;
 		TESCLoader tl = new TESCLoader(gui);
-		 tlab = tl.getLabel(new BufferedReader(new StringReader(ausgabe2)),nroot);
+		 tlab = tl.getLabel(transobj.label,nroot);
 		if (tlab == null)
 		{tlab = new TLabel(new GuardEmpty(new Dummy()),new ActionEmpty(new Dummy()));}
 
@@ -465,9 +466,10 @@ public static void relabeltrans(Tr akttr)
 {
 	TLabel tlab;
 	TESCLoader tl = new TESCLoader(gui);
-		 tlab = tl.getLabel(new BufferedReader(new StringReader(akttr.label.caption)),nroot);
+		 tlab = tl.getLabel(akttr.label,nroot);
 		if (tlab == null)
-		{tlab = new TLabel(new GuardEmpty(new Dummy()),new ActionEmpty(new Dummy()));}
+		{tlab = new TLabel(new GuardEmpty(new Dummy()),new ActionEmpty(new Dummy()));
+		}
 	akttr.label = tlab;
 
 }
