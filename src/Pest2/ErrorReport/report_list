@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	--------------
 //
-//	$Id: report_list,v 1.47 1999-02-09 16:50:06 swtech23 Exp $
+//	$Id: report_list,v 1.48 1999-02-10 10:31:03 swtech22 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -509,8 +509,10 @@ Import fehl (mit der sprlichen Meldung: FEHLER).
 #Number:	33
 #Autor:		Bernd Weber bwe
 #Subject:	Simulation: Kommt mit Connectoren nicht klar
-#Status:	reported
+#Status:	fixed 
 #Description:
+
+swtech22: Test hierfuer in simu/Test/Fehler33.test
 
 Man erzeuge drei Basic-States und einen Connector. Nun generiert man eine
 Transition von einem der States zum Connector. Es folgen zwei Transitionen vom
@@ -535,8 +537,10 @@ dem man die Transition(en) auswhlen knnen soll. Mir ist dies nicht mglich
 #Number:	35
 #Autor:		Bernd Weber bwe
 #Subject:	Simulation: Kommt i.A. mit Connectoren nicht klar
-#Status:	reported
+#Status:	fixed
 #Description:
+
+swtech22: Test hierfuer in simu/Test/Fehler35.test
 
 Erzeuge zwei States, dazwischen einen Connector und ein Transition vom einen
 State zum Connector und eine vom Connector zum zweiten State. Nach zwei
