@@ -172,9 +172,6 @@ implements GUIInterface
 	pestConfig theConfig = new pestConfig();
 	theConfig.GUIDim = getSize();	
  	theConfig.GUILoc = getLocation();
-	// 	theConfig.GUILoc.x = theConfig.GUILoc.x + (int)(0.2 * getInsets().left);
-// 	theConfig.GUILoc.y = theConfig.GUILoc.y + getInsets().top - (int)(4.8 * getInsets().bottom);
-	//	theConfig.bounds = getBounds();
 
 	theConfig.Dateiname = SBDateiname;
 	theConfig.Pfad = SBPfad;
@@ -278,7 +275,7 @@ implements GUIInterface
 
  	    setSize(theConfig.GUIDim);
   	    setLocation(theConfig.GUILoc);
-// 	    //	    setBounds(theConfig.bounds);
+
 
 	    File file = new File(SBPfad,SBDateiname);
  	    if(file.exists())		
@@ -424,8 +421,6 @@ implements GUIInterface
 
     void setStatechart(Statechart sc,String pfad,String datei)
     {
-	System.out.println(String.valueOf(getAlignmentX()));
-	System.out.println(String.valueOf(getAlignmentY()));
 	SyntaxBaum = sc;
 	SBDateiname = datei;
 	SBPfad = pfad;
@@ -436,6 +431,12 @@ implements GUIInterface
 	    {
 		controlWindow.highLight[5] = true;
 	    }
+	else
+	    {
+		exlis.windowClosing(new WindowEvent(this,WindowEvent.WINDOW_CLOSING));
+		startEditor();
+	    }
+		
 	controlWindow.highLight[6] = false;
 	controlWindow.highLight[7] = true;
 	controlWindow.highLight[8] = false;
