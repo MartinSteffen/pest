@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	--------------
 //
-//	$Id: report_list,v 1.45 1999-02-09 15:15:27 swtech16 Exp $
+//	$Id: report_list,v 1.46 1999-02-09 15:43:15 swtech23 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -486,7 +486,7 @@ zu erzeugen. Das ergibt eine Exception:
 #Number:	31
 #Autor:		Bernd Weber bwe
 #Subject:	Check: Erkennt Schleife an Connector nicht
-#Status:	processing
+#Status:	fixed
 #Description:
 
 Erstellt man einen Connector und darin eine Transition von diesem zu sich
