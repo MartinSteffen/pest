@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.93 1999-02-10 12:42:36 swtech11 Exp $
+//	$Id: report_list,v 1.94 1999-02-10 13:48:33 swtech24 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -882,7 +882,7 @@ nicht auf der Graphik.
 #Number:        60
 #Autor:         Heiko Haller, swtech21
 #Subject:       Exception beim Anzeigen eines importierten TESC-Files.
-#Status:        reported
+#Status:        fixed
 #Description:
 
 Wenn man ~swtech21/tests/tesc/Safer1.tesc importiert und dann den Editor auf-
@@ -939,7 +939,7 @@ java.lang.NullPointerException
 #Number:        61
 #Autor:         Heiko Haller, swtech21
 #Subject:       Editor: Nach Zoom werden States nach dem Zeichnen verschoben
-#Status:        reported
+#Status:        fixed
 #Description:
 
 Man lege ein neues Chart an und oeffne den Editor. Anschliessend zoomt man 
@@ -963,7 +963,7 @@ Wenn das so weitergeht, muss ich bald zum Augenarzt...
 #Number:	63
 #Autor:		check swtech11
 #Subject:	Editor erzeugt unbehandelte Exception:
-#Status: 	reported
+#Status: 	fixed
 #Description: 
 
 Ich habe all.tesc importiert und dann den Editor aufgerufen.
