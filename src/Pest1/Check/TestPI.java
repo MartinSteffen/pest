@@ -7,7 +7,7 @@ import java.util.*;
  *  Test auf doppelte Referenzierung:
  *
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestPI.java,v 1.3 1998-12-29 20:56:26 swtech11 Exp $
+ *  @version  $Id: TestPI.java,v 1.4 1999-01-03 15:14:31 swtech11 Exp $
  */
 class TestPI  {
   ModelCheckMsg msg = new ModelCheckMsg();
@@ -56,7 +56,7 @@ class TestPI  {
       msg.addError(e.get_wert(),FatalMsg);
       msg.addError(99,"uebergebene Statechart");
     }
-    msg.addWarning(6,"uebergebene Statechart");
+    // msg.addWarning(6,"uebergebene Statechart");
     return (msg.getErrorNumber()==0);
   }
 
@@ -283,7 +283,7 @@ class TestPI  {
       }
 
       // Action
-      if (tl.head.label.guard != null) {
+      if (tl.head.label.action != null) {
         if (av.size() > 0) {
           i = av.indexOf(tl.head.label.action);
           if (i!=-1) {

@@ -2,7 +2,7 @@ package check;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: ErrorAndWarningCodes.java,v 1.17 1998-12-29 20:56:23 swtech11 Exp $
+ *  @version  $Id: ErrorAndWarningCodes.java,v 1.18 1999-01-03 15:14:26 swtech11 Exp $
  */
 class ErrorAndWarningCodes {
   ErrorAndWarningCodes() {
@@ -79,7 +79,12 @@ class ErrorAndWarningCodes {
       case 416: {_s = "Der Guard der Transition beinhaltet einen Nichtdetermininsmus."; break;}
       case 417: {_s = "Der Guard der Transition laesst sich nicht spezifizieren."; break;}
       case 418: {_s = "Der Action der Transition laesst sich nicht spezifizieren."; break;}
+      case 419: {_s = "Die Transition ist auf keinem Weg mit einem State verbunden."; break;}
       case 420: {_s = "Die Statechart enthält keine Transitionen."; break; }
+      case 421: {_s = "Dieser Connector ist Teil eines Zyklus."; break;}
+      case 422: {_s = "Die Transition ist an ihrem Startpunkt nicht durch andere Transitionen mit einem Startstate verbunden."; break;}
+      case 423: {_s = "Die Transition ist an ihrem Zielpunkt nicht durch andere Transitionen mit einem Zielstate verbunden."; break;}
+
 
       default:  _s = "Dieser Code wurde noch nicht erfasst.";
     }

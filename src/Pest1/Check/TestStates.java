@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestStates.java,v 1.3 1998-12-29 14:25:50 swtech11 Exp $
+ *  @version  $Id: TestStates.java,v 1.4 1999-01-03 15:14:32 swtech11 Exp $
  */
 
 /** Diese Testklasse testet, ob alle Statenamen deklariert worden sind, 
@@ -88,18 +88,18 @@ class TestStates extends ModelCheckBasics{
 	   if (((Or_State)s).substates==null) {msg.addError(305,"State: "+s.name.name);}
 	   else {
 	        if (Anzahl_States(((Or_State)s).substates)==1) {msg.addWarning(304,"State: "+s.name.name);};
-                nextStateInStateList(((Or_State)s).substates); };};
+                navStateInStateList(((Or_State)s).substates); };};
     if (s instanceof And_State) {
            if (((And_State)s).substates==null) {msg.addError(306,"State: "+s.name.name);}
 	   else {
             if (Anzahl_States(((And_State)s).substates)==1) {msg.addWarning(307,"State: "+s.name.name);};
-            nextStateInStateList(((And_State)s).substates); };};
+            navStateInStateList(((And_State)s).substates); };};
     }
 
-  void nextStateInStateList(StateList sl) {
+  void navStateInStateList(StateList sl) {
     if (sl.head instanceof Or_State) {pruefeState ((Or_State)sl.head); }
     if (sl.head instanceof And_State) {pruefeState ((And_State)sl.head); }
-    if (sl.tail != null) { nextStateInStateList(sl.tail); }
+    if (sl.tail != null) { navStateInStateList(sl.tail); }
   }
 
     int Anzahl_States(StateList sl){

@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestEvents.java,v 1.3 1998-12-29 14:25:49 swtech11 Exp $
+ *  @version  $Id: TestEvents.java,v 1.4 1999-01-03 15:14:30 swtech11 Exp $
  */
 /** Diese Testklasse testet, ob alle Events deklariert worden sind, 
     <br>ob die deklarierten eindeutig sind und ob sie alle verwendet werden.*/
@@ -48,16 +48,16 @@ class TestEvents extends ModelCheckBasics{
 	<br>Es werden alle Eventnamen in einen Vector Soll geschrieben.*/
 
   void erstelle_Soll() {
-    if (sc.state instanceof Or_State) {testTransOrState((Or_State)sc.state, null, ""); }
-    if (sc.state instanceof And_State) {testTransAndState((And_State)sc.state, null, ""); }
+    if (sc.state instanceof Or_State) {navOrState((Or_State)sc.state, null, ""); }
+    if (sc.state instanceof And_State) {navAndState((And_State)sc.state, null, ""); }
 
   };
 
 
- void nextTransInTransList(TrList tl, State _s, String p) {
+ void navTransInTransList(TrList tl, State _s, String p) {
     pruefeGuard(tl.head.label.guard, tl.head, p);
     pruefeAction(tl.head.label.action, tl.head, p);
-    if (tl.tail != null) { nextTransInTransList(tl.tail, _s, p); }
+    if (tl.tail != null) { navTransInTransList(tl.tail, _s, p); }
 
   }  
 

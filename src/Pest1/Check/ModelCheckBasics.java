@@ -5,12 +5,11 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: ModelCheckBasics.java,v 1.3 1998-12-30 18:20:33 swtech11 Exp $
+ *  @version  $Id: ModelCheckBasics.java,v 1.4 1999-01-03 15:14:28 swtech11 Exp $
  */
 class ModelCheckBasics {
   ModelCheckMsg msg = new ModelCheckMsg();
   Statechart sc = new Statechart(null,null,null,null);
-  boolean printOut; // falls true, dann schrittweise Ausgabe der Chart
   static String ts = new String("."); // Trennsymbol im Pfad
 
   ModelCheckBasics() { };
@@ -18,7 +17,6 @@ class ModelCheckBasics {
   ModelCheckBasics(Statechart s, ModelCheckMsg m) {
     sc = s;  
     msg = m;
-    printOut = false;
   }
 
 
@@ -35,94 +33,76 @@ class ModelCheckBasics {
 // ******* Methoden, um sich durch den Baum zu hangeln ********************
 
   // Transition bearbeiten und evtl. naechste aufrufen
-  void nextTransInTransList(TrList tl) {
-    if (printOut == true) {
-      String z1,z2;
-      if (tl.head.source instanceof UNDEFINED) {z1 = new String("UNDEFINED");} else {z1 = new String(((Statename)tl.head.source).name);}
-      if (tl.head.target instanceof UNDEFINED) {z2 = new String("UNDEFINED");} else {z2 = new String(((Statename)tl.head.target).name);}
-      System.out.println("Trans: "+z1+" -> "+z2);
-    }
-    if (tl.tail != null) { nextTransInTransList(tl.tail); }
+  void navTransInTransList(TrList tl) {
+    if (tl.tail != null) { navTransInTransList(tl.tail); }
   }
 
 
 
   // Transition bearbeiten und evtl. naechste aufrufen
-  void nextTransInTransList(TrList tl, State _s, String p) {
+  void navTransInTransList(TrList tl, State _s, String p) {
            // _s enthält den State, indem die Transition liegt
            //  p gibt den Pfad des States _s zurück, indem die Transition liegt
-    if (printOut == true) {
-      String z1,z2;
-      if (tl.head.source instanceof UNDEFINED) {z1 = new String("UNDEFINED");} else {z1 = new String(((Statename)tl.head.source).name);}
-      if (tl.head.target instanceof UNDEFINED) {z2 = new String("UNDEFINED");} else {z2 = new String(((Statename)tl.head.target).name);}
-      System.out.println("Trans: "+z1+" -> "+z2);
-    }
-    if (tl.tail != null) { nextTransInTransList(tl.tail, _s, p); }
+    if (tl.tail != null) { navTransInTransList(tl.tail, _s, p); }
   }
 
 
   // Art des States festellen und evtl. naechsten aufrufen
-  void nextStateInStateList(StateList sl) {
-    if (sl.head instanceof Or_State) {testTransOrState ((Or_State)sl.head); }
-    if (sl.head instanceof And_State) {testTransAndState ((And_State)sl.head); }
-    if (sl.head instanceof Basic_State) {testTransBasicState ((Basic_State)sl.head); }
-    if (sl.tail != null) { nextStateInStateList(sl.tail); }
+  void navStateInStateList(StateList sl) {
+    if (sl.head instanceof Or_State) {navOrState ((Or_State)sl.head); }
+    if (sl.head instanceof And_State) {navAndState ((And_State)sl.head); }
+    if (sl.head instanceof Basic_State) {navBasicState ((Basic_State)sl.head); }
+    if (sl.tail != null) { navStateInStateList(sl.tail); }
   }
 
 
   // Art des States festellen und evtl. naechsten aufrufen
-  void nextStateInStateList(StateList sl, State _s, String p) {
+  void navStateInStateList(StateList sl, State _s, String p) {
           // _s enthält den State, indem der State sl.head liegt
           //  p gibt den Pfad des States _s zurück, indem der State sl.head liegt
-    if (sl.head instanceof Or_State) {testTransOrState ((Or_State)sl.head, _s, p); }
-    if (sl.head instanceof And_State) {testTransAndState ((And_State)sl.head, _s, p); }
-    if (sl.head instanceof Basic_State) {testTransBasicState ((Basic_State)sl.head, _s, p); }
-    if (sl.tail != null) { nextStateInStateList(sl.tail, _s, p); }
+    if (sl.head instanceof Or_State) {navOrState ((Or_State)sl.head, _s, p); }
+    if (sl.head instanceof And_State) {navAndState ((And_State)sl.head, _s, p); }
+    if (sl.head instanceof Basic_State) {navBasicState ((Basic_State)sl.head, _s, p); }
+    if (sl.tail != null) { navStateInStateList(sl.tail, _s, p); }
   }
 
   // Or-State bearbeiten und evtl. Transition und untergeordnete States aufrufen
-  void testTransOrState(Or_State os) {
-    if (printOut == true) { System.out.println("OR-State: "+os.name.name); }
-    if (os.trs != null) { nextTransInTransList(os.trs); }
-    if (os.substates != null) { nextStateInStateList(os.substates); }
+  void navOrState(Or_State os) {
+    if (os.trs != null) { navTransInTransList(os.trs); }
+    if (os.substates != null) { navStateInStateList(os.substates); }
   }
 
   // Or-State bearbeiten und evtl. Transition und untergeordnete States aufrufen
-  void testTransOrState(Or_State os, State _s, String p) {
+  void navOrState(Or_State os, State _s, String p) {
             // _s enthält den State, indem der Or-State os liegt
             //  p enthält den Pfad des States _s zurück, indem  der Or-State os liegt
     String np = getAddPathPart(p, os.name.name);
-    if (printOut == true) { System.out.println("OR-State: "+os.name.name+" ("+np+")"); }
-    if (os.trs != null) { nextTransInTransList(os.trs, os, np); }
-    if (os.substates != null) { nextStateInStateList(os.substates, os, np); }
+    if (os.trs != null) { navTransInTransList(os.trs, os, np); }
+    if (os.substates != null) { navStateInStateList(os.substates, os, np); }
   }
 
   // And-State bearbeiten und evtl. Transition und untergeordnete States aufrufen
-  void testTransAndState(And_State as) {
-    if (printOut == true) { System.out.println("AND-State: "+as.name.name); }
-    if (as.substates != null) { nextStateInStateList(as.substates); }
+  void navAndState(And_State as) {
+    if (as.substates != null) { navStateInStateList(as.substates); }
   }
 
   // And-State bearbeiten und evtl. Transition und untergeordnete States aufrufen
-  void testTransAndState(And_State as, State _s, String p) {
+  void navAndState(And_State as, State _s, String p) {
            // _s enthält den State, indem der And-State as liegt
            //  p enthält den Pfad des States _s zurück, indem  der And-State as liegt
     String np = getAddPathPart(p, as.name.name);
-    if (printOut == true) { System.out.println("AND-State: "+as.name.name+" ("+np+")"); }
-    if (as.substates != null) { nextStateInStateList(as.substates, as, np); }
+    if (as.substates != null) { navStateInStateList(as.substates, as, np); }
   }
 
   // Basic-State bearbeiten
-  void testTransBasicState(Basic_State bs) {
-    if (printOut == true) { System.out.println("BASIC-State: "+bs.name.name); }
+  void navBasicState(Basic_State bs) {
   }
 
   // Basic-State bearbeiten
-  void testTransBasicState(Basic_State bs, State _s, String p) {
+  void navBasicState(Basic_State bs, State _s, String p) {
           // _s enthält den State, indem der Basic-State bs liegt
           //  p enthält den Pfad des States _s zurück, indem  der Basic-State os liegt
     String np = getAddPathPart(p, bs.name.name);
-    if (printOut == true) { System.out.println("BASIC-State: "+bs.name.name+" ("+np+")"); }
   }
 
 
@@ -144,21 +124,21 @@ class ModelCheckBasics {
   void toOrState(Or_State os, String p, Vector plv) {
     String np = getAddPathPart(p, os.name.name);
     plv.addElement(np);
-    if (os.substates != null) { toNextStateInStateList(os.substates, np, plv); }
+    if (os.substates != null) { tonavStateInStateList(os.substates, np, plv); }
   }
   void toAndState(And_State as, String p, Vector plv) {
     String np = getAddPathPart(p, as.name.name);
     plv.addElement(np);
-    if (as.substates != null) { toNextStateInStateList(as.substates, np, plv); }
+    if (as.substates != null) { tonavStateInStateList(as.substates, np, plv); }
   }
-  void toNextStateInStateList(StateList sl, String p, Vector plv) {
+  void tonavStateInStateList(StateList sl, String p, Vector plv) {
     if (sl.head instanceof Or_State) {toOrState ((Or_State)sl.head, p, plv); }
     if (sl.head instanceof And_State) {toAndState ((And_State)sl.head, p, plv); }
     if (sl.head instanceof Basic_State) {
       String np = getAddPathPart(p, sl.head.name.name);
       plv.addElement(np);
     }
-    if (sl.tail != null) { toNextStateInStateList(sl.tail, p, plv); }
+    if (sl.tail != null) { tonavStateInStateList(sl.tail, p, plv); }
   }
 
   boolean Pathequal(Path p1, Path p2){

@@ -4,7 +4,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: ModelCheckMsg.java,v 1.2 1998-12-15 17:51:39 swtech00 Exp $
+ *  @version  $Id: ModelCheckMsg.java,v 1.3 1999-01-03 15:14:29 swtech11 Exp $
  */
 class ModelCheckMsg {
   private Vector ErrorCode;
@@ -89,5 +89,36 @@ class ModelCheckMsg {
   // Ort des Warnings zurückgeben
   String getWarningPath(int _number) {
     return (String)WarningPath.elementAt(_number-1); }
+
+  void sort() {
+    Vector te;
+int j = ErrorCode.size();
+    if (ErrorCode.size()>1) {
+      boolean ok = false;
+      while (ok == false) {
+        ok = true;
+        te = new Vector();
+        for (int i=0;i<(ErrorCode.size());i++) {
+          Integer er1 =  new Integer(  ((Integer)ErrorCode.elementAt(i)).intValue()   );
+System.out.println(er1.intValue());
+          if (ok==true & i<(ErrorCode.size()-1) ) {
+            Integer er2 = new Integer(  ((Integer)ErrorCode.elementAt(i+1)).intValue()   ) ;
+            if ( er1.intValue()>er2.intValue() ) {
+              te.addElement(er2);
+              te.addElement(er1);
+              ok = false;
+            }
+          }
+          else { te.addElement(er1); }
+        }
+System.out.println(j+" "+te.size());
+        ErrorCode.removeAllElements();
+        ErrorCode = te;
+      }
+    }
+
+
+  }
+
 
 }

@@ -39,13 +39,13 @@ import gui.*;
  * Testen, Testen, Testen.<br>Wir müssen den Umgang mit der NULL, nachdem wir
  * die Informationen der anderen Module bekommen haben, entweder kompletieren
  * oder wieder entfernen.
- * <DT><STRONG>Bekannte Fehler: </STRONG>
+ * <DT><STRONG>Bekannte Fehler: </STRONG>Es gibt bestimmt welche, aber siehe STATUS.
  * <DT><STRONG>Temporäre Features: </STRONG>
  * Ausgabe der Dauer der einzelnen Tests in Sekunden.
  * </DL COMPACT>
  *
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: ModelCheck.java,v 1.10 1998-12-29 20:56:24 swtech11 Exp $
+ * @version  $Id: ModelCheck.java,v 1.11 1999-01-03 15:14:27 swtech11 Exp $
  */
 public class ModelCheck {
   private ModelCheckMsg mcm; // Object, um die Fehler und Warnungen zu speichern
@@ -90,8 +90,6 @@ public class ModelCheck {
     long s3=0; long e3=0; long s4=0; long e4=0; long s5=0; long e5=0;
 
     // Test auf Kreisfreiheit und doppelte Referenzierung
-
-
     s0 = getT();
     s1 = getT();
     TestPI tpi = new TestPI(sc, mcm);
@@ -104,6 +102,7 @@ public class ModelCheck {
       }
     }
     else {
+
       // Checkt die States.
       if (sc.state == null) {
         mcm.addError(311,"uebergebene Statechart");
@@ -181,6 +180,7 @@ public class ModelCheck {
     System.out.println("- alles        : " + getS(s0,e0));
     System.out.println("");
 
+    // mcm.sort();
     if ( outputGUI == true ) { outputToGUI(); }
     return result;
   };
@@ -227,6 +227,7 @@ public class ModelCheck {
   }
 
   void outputToGUI() {
+
     if (getErrorNumber()>0) {
       gui.userMessage( "Check: Fehlermeldungen ( Anzahl: " + getErrorNumber() +  " ):");
       for (int i=1;(i<=getErrorNumber());i++) {gui.userMessage("Check: "+getError(i) ); } }
