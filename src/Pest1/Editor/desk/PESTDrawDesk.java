@@ -138,7 +138,7 @@ import tesc2.*;
 					    State todelete = (State)deleteobj;
 					    State father = dc.get_father(root.state, todelete);
 
-					    System.out.println("Zu löschender State: "+ todelete);
+					    System.out.println("Zu l÷schender State: "+ todelete);
 					    System.out.println("Vater "+ father);
 
 					    if (father instanceof Or_State)
@@ -186,7 +186,7 @@ import tesc2.*;
         State todelete = (State)aktcomp;
         State father = dc.get_father(root.state, todelete);
 
-	//    System.out.println("Zu löschender State: "+ todelete);
+	//    System.out.println("Zu l÷schender State: "+ todelete);
 	// System.out.println("Vater "+ father);
 
         dc.delete_State( todelete );
@@ -204,8 +204,8 @@ import tesc2.*;
         Tr todelete = (Tr)aktcomp;
         Or_State father = dc.find_trans(todelete);
 
-	//      System.out.println("Zu löschende Transition: "+ todelete);
-	// System.out.println("Zugehöriger State: "+ father);
+	//      System.out.println("Zu l÷schende Transition: "+ todelete);
+	// System.out.println("Zugeh÷riger State: "+ father);
 
         dc.delete_Trans( todelete );
 
@@ -219,8 +219,8 @@ import tesc2.*;
         Connector todelete = (Connector)aktcomp;
         Or_State father = dc.find_con(todelete);
 
-	//    System.out.println("Zu löschende Transition: "+ todelete);
-	// System.out.println("Zugehöriger State: "+ father);
+	//    System.out.println("Zu l÷schende Transition: "+ todelete);
+	// System.out.println("Zugeh÷riger State: "+ father);
 
         dc.delete_Con( todelete );
 
@@ -240,7 +240,7 @@ import tesc2.*;
         State todelete = (State)aktcomp;
         State father = dc.get_father(root.state, todelete);
 
-	System.out.println("Zu löschender State: "+ todelete);
+	System.out.println("Zu l÷schender State: "+ todelete);
 	    System.out.println("Vater "+ father);
 
 	    if (father instanceof Or_State)
@@ -287,8 +287,8 @@ import tesc2.*;
         Tr todelete = (Tr)aktcomp;
         Or_State father = dc.find_trans(todelete);
 
-	//      System.out.println("Zu löschende Transition: "+ todelete);
-	// System.out.println("Zugehöriger State: "+ father);
+	//      System.out.println("Zu l÷schende Transition: "+ todelete);
+	// System.out.println("Zugeh÷riger State: "+ father);
 
         dc.delete_Trans( todelete );
 
@@ -302,8 +302,8 @@ import tesc2.*;
         Connector todelete = (Connector)aktcomp;
         Or_State father = dc.find_con(todelete);
 
-	//    System.out.println("Zu löschende Transition: "+ todelete);
-	// System.out.println("Zugehöriger State: "+ father);
+	//    System.out.println("Zu l÷schende Transition: "+ todelete);
+	// System.out.println("Zugeh÷riger State: "+ father);
 
         dc.delete_Con( todelete );
 
@@ -801,10 +801,10 @@ private static Statechart redo() {
 
       public static void addundo(Statechart nroot)
       {        Statechart root = nroot;
-      //lauf = lauf.next;
-	try {lauf = lauf.next;lauf.chart = (Statechart) root.clone();basis = lauf;}
+        lauf = lauf.next;
+	try {lauf.chart = (Statechart) root.clone();}
 	catch (Exception e) {System.out.println("Waere die Absyn korrekt, so funktionierte auch das Undo !!!!  Stack :"+e);}
-	//basis = lauf;
+	basis = lauf;
 System.out.println("lauf : "+lauf);
 	  System.out.println("basis : "+basis);
       }
