@@ -5,7 +5,7 @@ import absyn.*;
 import gui.*;
 
 /**
- * Import-Schnittstelle fuer TESC1.        
+ * Import-Schnittstelle fuer TESC.        
  *
  * <p><STRONG>Garantie: </STRONG> <p>
  * Wir garantieren, dass die von unseren Module erzeugten Statecharts folgende 
@@ -31,7 +31,7 @@ import gui.*;
  * Wir verlassen uns darauf, dass die Statecharts, die uns uebergeben werden, folgende 
  * Eigenschaften haben:
  * <ul>
- * <li> Derzeit haben wir keine Anforderungen! (Kommt in Stufe 2)
+ * <li>
  * </ul>
  * <br>
  *
@@ -42,6 +42,10 @@ import gui.*;
  *
  * <p><STRONG>Todo: </STRONG>
  * <ul>
+ * <li> Schnittstelle mit EDITOR/STM absprechen.
+ * <li> Grammatik aktualisieren
+ * <li> Struktur GUARD/ACTION mit STM abstimmen.
+ * <li> Doku TESC
  * <li> Weiteres Bug Fixing.
  * </ul>
  *
@@ -57,17 +61,18 @@ import gui.*;
  * dem Pflichtenheft verwendet werden.
  * <p>
  * <hr>
- * @version  $Id: TESCLoader.java,v 1.10 1999-01-11 12:13:54 swtech20 Exp $
+ * @version  $Id: TESCLoader.java,v 1.11 1999-01-17 17:16:40 swtech20 Exp $
  * @author Michael Suelzer, Christoph Schuette.
  *  
  */   
-public class TESCLoader {
+public final class TESCLoader {
 
-    private static String PACKAGE_NAME = "TESC1: ";
+    private static String PACKAGE_NAME = "TESC1 : ";
     private GUIInterface gui = null;
-    
+    private TESCParser parser = null;
+
     /**
-     * Erzeugt eine Instanz von <code>TESCLoader<code>. 
+     * Erzeugt eine Instanz von <code>TESCLoader</code>. 
      * Fehler waehrend des Parsens werden ueber die GUI-Schnittstelle mitgeteilt.
      */
     public TESCLoader (GUIInterface gui_) {           
@@ -76,23 +81,34 @@ public class TESCLoader {
    
     /**
      * Startet den Parse-Vorgang und liefert bei Erfolg ein Statechart.
+     * Falls im Ktor gui-Objekt uebergeben, erfolgt Fehlerausgabe dort.
      * @return 
      * <ul>
      * <li> Statechart-Instanz bei erfolgreichem Einlesen und Parsen.
-     * <li> <code>null<code> bei Auftreten eines Fehlers.
+     * <li> <code>null</code> bei Auftreten eines Fehlers.
      * </ul>
      * @param br BufferedReader
      * @see tesc1.TESCParser
      */
     public Statechart getStatechart (BufferedReader br) throws IOException {
-	TESCParser parser = new TESCParser();
-	Statechart statechart = parser.readStatechart(br);
 
+	parser = new TESCParser();
+	Statechart statechart = parser.readStatechart(br);
+	
+
+	// Warnungen ausgeben
+	if (gui != null) {
+	    for (int i=0; i < parser.getWarningCount(); i++) {
+		gui.userMessage(PACKAGE_NAME + parser.getWarningText(i));
+	    }
+	}
+
+	// Fehler ausgeben
 	if (parser.getErrorCount() > 0) {
 	    for (int i=0; i < parser.getErrorCount(); i++) {
 		gui.userMessage(PACKAGE_NAME + parser.getErrorText(i));
 	    }
-	    gui.OkDialog("Fehler", "Statechart ist fehlerhaft.");
+	    gui.OkDialog("Fehler huhu", "Statechart ist fehlerhaft.");
 	    return null;
         }
 	else 
@@ -100,24 +116,75 @@ public class TESCLoader {
     }
 
     /**
+     * Startet den Parse-Vorgang und liefert bei Erfolg ein Label.
+     * Falls im Ktor gui-Objekt uebergeben, erfolgt Fehlerausgabe dort.
+     * @return 
+     * <ul>
+     * <li> Label-Instanz mit gesetztem caption-Feld.
+     * <li> <code>null</code> bei Auftreten eines Fehlers.
+     * </ul>
+     * @param br BufferedReader
+     * @param sc Statechart, in dem die Bvar- und Eventlisten gepflegt werden sollen
+     * @see tesc1.TESCParser
+     */
+    public TLabel getLabel (BufferedReader br,Statechart sc) throws IOException {
+	
+	parser = new TESCLabelParser(sc);
+	TLabel label = ((TESCLabelParser)parser).readLabel(br);
+
+	// Warnungen ausgeben
+	if (gui != null) {
+	    for (int i=0; i < parser.getWarningCount(); i++) {
+		gui.userMessage(PACKAGE_NAME + parser.getWarningText(i));
+	    }
+	}
+	else {
+	    for (int i=0; i < parser.getWarningCount(); i++) {
+		System.out.println(PACKAGE_NAME + parser.getWarningText(i));
+	    }
+	}
+
+	// Fehler ausgeben
+	if (parser.getErrorCount() > 0) {
+	    if (gui != null) {
+		for (int i=0; i < parser.getErrorCount(); i++) {
+		    gui.userMessage(PACKAGE_NAME + parser.getErrorText(i));
+		}
+		gui.OkDialog("Fehler huhu", "Statechart ist fehlerhaft.");
+	    }
+	    else {
+		for (int i=0; i < parser.getErrorCount(); i++) {
+		    System.out.println(PACKAGE_NAME + parser.getErrorText(i));
+		}
+	    }
+	    return null;
+        }
+	else 
+	    return label;
+    }
+
+    /**
      * Startet den Parse-Vorgang und liefert bei Erfolg einen Guard.
      * @return 
      * <ul>
      * <li> Guard-Instanz bei erfolgreichem Einlesen und Parsen.
-     * <li> <code>null<code> bei Auftreten eines Fehlers.
+     * <li> <code>null</code> bei Auftreten eines Fehlers.
      * </ul>
      * @param br BufferedReader
+     * @param sc Statechart, in dem die Bvar- und Eventlisten gepflegt werden sollen
      * @see tesc1.TESCParser
      */
-    public Guard getGuard(BufferedReader br) throws IOException {
+    private Guard getGuard(BufferedReader br,Statechart sc) throws IOException {
 	TESCParser parser = new TESCParser();
 	Guard guard = parser.readGuard(br);
 
 	if (parser.getErrorCount() > 0) {
 	    for (int i=0; i < parser.getErrorCount(); i++) {
 		gui.userMessage(PACKAGE_NAME + parser.getErrorText(i));
+		//System.out.println(PACKAGE_NAME + parser.getErrorText(i));
 	    }
 	    gui.OkDialog("Fehler", "Guard ist fehlerhaft.");
+	    //System.out.println("Guard ist fehlerhaft.");
 	    return null;
         }
 	else 
@@ -129,12 +196,13 @@ public class TESCLoader {
      * @return 
      * <ul>
      * <li> Action-Instanz bei erfolgreichem Einlesen und Parsen.
-     * <li> <code>null<code> bei Auftreten eines Fehlers.
+     * <li> <code>null</code> bei Auftreten eines Fehlers.
      * </ul>
      * @param br BufferedReader
+     * @param sc Statechart, in dem die Bvar- und Eventlisten gepflegt werden sollen
      * @see tesc1.TESCParser
      */
-    public Action getAction(BufferedReader br) throws IOException {
+    private Action getAction(BufferedReader br,Statechart sc) throws IOException {
 	TESCParser parser = new TESCParser();
 	Action action = parser.readAction(br);
 
@@ -148,6 +216,40 @@ public class TESCLoader {
 	else 
 	    return action;
     }
+
+    /**
+     * Liefert die Anzahl der Fehler, die beim letzten Parsen
+     * aufgetreten sind.
+     * @return Anzahl der Fehler.
+     */
+    private int getErrorCount() {return parser.errorCount;}
+    
+    
+    /**
+     * Liefert den Fehlertext zum n-ten Fehler, der beim letzen
+     * Parsen aufgetreten ist.
+     * @param n Fehlerindex
+     * @return Fehlertext des n-ten Fehlers.
+     */
+    private String getErrorText(int n) {return (String)parser.errorText.elementAt(n);}
+    
+
+    /**
+     * Liefert die Anzahl der Warnungen, die beim letzten Parsen
+     * aufgetreten sind.
+     * @return Anzahl der Warnungen.
+     */
+    private int getWarningCount() {return parser.warningCount;}
+    
+    
+    /**
+     * Liefert den Warnungstext zur n-ten Warnung, der beim letzen
+     * Parsen aufgetreten ist.
+     * @param n imdex
+     * @return Text.
+     */
+    private String getWarningText(int n) {return (String)parser.warningText.elementAt(n);}
+   
 }
       
 //----------------------------------------------------------------------
@@ -155,6 +257,9 @@ public class TESCLoader {
 //	----------------------
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.10  1999/01/11 12:13:54  swtech20
+//	Bugfixes.
+//
 //	Revision 1.9  1999/01/04 15:25:19  swtech20
 //	Schluesselworte in Bezeichnern werden nicht mehr zugelassen.
 //	Status upgedated.

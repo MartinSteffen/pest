@@ -10,31 +10,42 @@ import util.*;
  * Parser fuer TESC.
  * <p>
  * @author Michael Suelzer, Christoph Schuette.
- * @version  $Id: TESCParser.java,v 1.8 1999-01-11 12:13:55 swtech20 Exp $
+ * @version  $Id: TESCParser.java,v 1.9 1999-01-17 17:16:40 swtech20 Exp $
  */   
 public class TESCParser {
     
-    private static boolean DEBUG = false;  
+    protected static final boolean DEBUG = false;  
 
-    private Statechart statechart;
-    private SEventList eventlist;
-    private BvarList bvarlist;
-    private PathList pathlist;
+    protected static final int createEvent = 1;
+    protected static final int createBvar  = 2;
 
-    private int errorCount = 0;
-    private Vector errorText = null;
-    private TESCTokenizer lexer = null;
-    private Token token = null;
+    protected SEventList eventlist;
+    protected BvarList bvarlist;
+    protected PathList pathlist;
+
+    protected int warningCount = 0;
+    protected Vector warningText = null;
+
+    protected int errorCount = 0;
+    protected Vector errorText = null;
+
+    protected TESCTokenizer lexer = null;
+    protected Token token = null;
+
 
     /**
      * Constructor fuer den TESCParser.
      */
     public TESCParser () {}
+
     
     /**
-     * Startet den Parsevorgang.
+     * Startet den Parsevorgang fuer ein Statechart.
      */
     public Statechart readStatechart(BufferedReader br) throws IOException {
+
+	warningText = new Vector();
+	warningCount = 0 ;
 
 	errorText = new Vector();
 	errorCount = 0 ;
@@ -45,7 +56,7 @@ public class TESCParser {
 	debug("parseTESC");
 
         pathlist = null;
-	statechart = parseTesc();
+	Statechart statechart = parseTesc();
 
 	if (DEBUG) {
 	    (new util.PrettyPrint()).start(statechart);
@@ -54,7 +65,14 @@ public class TESCParser {
 	return statechart;
     }
 
+
+    /**
+     * Startet den Parsevorgang fuer einen Waechter.
+     */
     public Guard readGuard(BufferedReader br) throws IOException {
+
+	warningText = new Vector();
+	warningCount = 0 ;
 
 	errorText = new Vector();
 	errorCount = 0;
@@ -67,7 +85,8 @@ public class TESCParser {
         pathlist = null;
         bvarlist = null;
         eventlist = null;
-	Guard guard = parseGuard();
+
+	Guard guard = parseGuardSTMStyle();
 
 	if (DEBUG) {
 	    (new util.PrettyPrint()).start(guard);
@@ -76,7 +95,15 @@ public class TESCParser {
         return guard;
     }
 
+
+    /**
+     * Startet den Parsevorgang fuer eine Action.
+     */
     public Action readAction(BufferedReader br) throws IOException {
+
+	warningText = new Vector();
+	warningCount = 0 ;
+
 	errorText = new Vector();
 	errorCount = 0;
 
@@ -87,7 +114,8 @@ public class TESCParser {
         pathlist = null;
         bvarlist = null;
         eventlist = null;
-	Action action = parseAction();
+
+	Action action = parseActions();
 
 	if (DEBUG) {
 	    (new util.PrettyPrint()).start(action);
@@ -95,6 +123,7 @@ public class TESCParser {
 
         return action;
     }
+
 
     /**
      * Liefert die Anzahl der Fehler, die beim letzten Parsen
@@ -114,36 +143,67 @@ public class TESCParser {
     
 
     /**
+     * Liefert die Anzahl der Warnungen, die beim letzten Parsen
+     * aufgetreten sind.
+     * @return Anzahl der Warnungen.
+     */
+    public int getWarningCount() {return warningCount;}
+    
+    
+    /**
+     * Liefert den Warnungstext zur n-ten Warnung, der beim letzen
+     * Parsen aufgetreten ist.
+     * @param n imdex
+     * @return Text.
+     */
+    public String getWarningText(int n) {return (String)warningText.elementAt(n);}
+    
+
+    /**
      * Speichert einen Fehlertext.
      * @param msg Fehlertext
      */ 
-    private void Error(String msg) {
-	errorText.addElement("Zeile " + token.getLine() + " : " + msg);
+    protected void Error(String msg) {
+	errorText.addElement("Zeile " + token.getLine() + " : Fehler : " + msg);
         debug ("Zeile " + token.getLine() + " : " + msg);
         errorCount++;
     }
+
+
+    /**
+     * Speichert einen Warnungstext.
+     * @param msg Fehlertext
+     */ 
+    protected void Warning(String msg) {
+	warningText.addElement("Zeile " + token.getLine() + " : Info : " + msg);
+        debug ("Zeile " + token.getLine() + " : Info : " + msg);
+	warningCount++;
+    }
+
 
     /**
      * Gibt einen String aus, falls der Schalter DEBUG gesetzt ist.
      * @param s Text
      * @see DEBUG
      */    
-    private void debug(String s) {
+    protected void debug(String s) {
         if (DEBUG) System.out.println(s);
     }
+
 
     //------------------------------------------------------------------------
     //  Hilsfunktion(en) zum Parsen
     //------------------------------------------------------------------------
+
 
     /**
       * Prueft, ob ein gewuenschtes Token im Eingabestrom vorliegt.
       * Falls ja, wird das naechste Token gelesen.
       * Falls nein, wird ein Fehler ausgegeben und fortgefahren.
       * @param t Zu pruefendes Token 
-      * @exception IOExecption Falls im Tokenizer ein Fehler auftritt.
+      * @exception IOException Falls im Tokenizer ein Fehler auftritt.
       */
-    private void matchToken(Token t) throws IOException{ 
+    protected void matchToken(Token t) throws IOException{ 
 
 	if ((t.getId() == Token.TOK_IDENTIFIER) && 
 	    (Keyword.isReserved(token.getValue()))) {
@@ -166,14 +226,17 @@ public class TESCParser {
 	}
     }
 
+
     /** 
       * Setzt in einem Absyn-Objekt die Zeilennummer ein.
       */ 
-    private Absyn setLoc(Absyn a,Location l) {a.location = l; return a;}
+    protected Absyn setLoc(Absyn a,Location l) {a.location = l; return a;}
+
 
     //------------------------------------------------------------------------
     //  Hilfsfunktion(en) zum Aufbauen des Statecharts
     //------------------------------------------------------------------------
+
 
     /**
      *  Erweitert den Pfad für den weiteren rekursiven Abstieg.
@@ -181,7 +244,7 @@ public class TESCParser {
      *  @param  s    Erweiterung
      *  @return Erweiterter Pfad 
      */
-    private Path extendPath (Path path, String s) {
+    protected Path extendPath (Path path, String s) {
 
         Path pNew;
 
@@ -195,12 +258,13 @@ public class TESCParser {
         return pNew;
     }
 
+
     /**
      *  Haengt an die globale Pfadliste des Statecharts einen
      *  Pfad an.
      *  @param path Anzuhaegender Pfad
      */
-    private void appendPathList (Path path) {
+    protected void appendPathList (Path path) {
        
         if (pathlist == null) {
             pathlist = new PathList(path, null);
@@ -216,13 +280,14 @@ public class TESCParser {
         }
     }
 
+
     /**
      * Prueft, ob ein Connector in einer Liste enthalten ist.
      * @param  s String
      * @param  clIterator Liste
      * @return boolean Gefunden oder nicht
      */
-    private boolean isConnectorName (String s, ConnectorList clIterator) {
+    protected boolean isConnectorName (String s, ConnectorList clIterator) {
 
         if (clIterator == null) { 
             return false;       
@@ -238,13 +303,14 @@ public class TESCParser {
         }
     }
 
+
     /**
      * Prueft, ob ein Event in einer Liste enthalten ist.
      * @param  s String
      * @param  elIterator Liste
      * @return boolean Gefunden oder nicht
      */
-    private boolean isEventName (String s, SEventList elIterator) {
+    protected boolean isEventName (String s, SEventList elIterator) {
 
         if (elIterator == null) { 
             return false;       
@@ -260,13 +326,24 @@ public class TESCParser {
         }
     }
 
+
+    /**
+     * Prueft, ob ein Event in <code>eventlist</code> enthalten ist.
+     * @param  s String
+     * @return boolean Gefunden oder nicht
+     */
+    protected boolean isEventName (String s) {
+	return isEventName (s,eventlist);
+    }
+
+
     /**
      * Prueft, ob eine Variable in einer Liste enthalten ist.
      * @param  s String
      * @param  blIterator Liste
      * @return boolean Gefunden oder nicht. 
      */
-    private boolean isBvarName (String s, BvarList blIterator) {
+    protected boolean isBvarName (String s, BvarList blIterator) {
 
         if (blIterator == null) { 
             return false;       
@@ -282,13 +359,25 @@ public class TESCParser {
         }
     }
 
+
     /**
-     * Clont ein SEvent-Objekt aus Liste und paßt die Location an.
+     * Prueft, ob eine Variable in <code>bvarlist</code> enthalten ist.
+     * @param  s String
+     * @return boolean Gefunden oder nicht. 
+     */
+    protected boolean isBvarName (String s) {
+	return isBvarName (s,bvarlist);
+    }
+
+
+    /**
+     * Clont ein SEvent-Objekt aus einer Liste und paßt die Location an.
+     * Statt cloneEventLocalized sollte eher getEvent verwendet werden.
      * @param  s String
      * @param  elIterator Liste
      * @return SEvent Element aus Liste
      */
-    private SEvent cloneEventLocalized (String s, SEventList elIterator, Location loc) {
+    protected SEvent cloneEventLocalized (String s, SEventList elIterator, Location loc) {
 
         if (elIterator == null) { 
             return null;       
@@ -305,13 +394,15 @@ public class TESCParser {
         }
     }
 
+
     /**
      * Clont Bvar-Objekt aus Liste und paßt die Location an.
+     * Statt cloneBvarLocalized sollte eher getBvar verwendet werden.
      * @param  s String
      * @param  blIterator Liste
      * @return Bvar Element aus Liste 
      */
-    private Bvar cloneBvarLocalized (String s, BvarList blIterator, Location loc) {
+    protected Bvar cloneBvarLocalized (String s, BvarList blIterator, Location loc) {
 
         if (blIterator == null) { 
             return null;       
@@ -327,15 +418,63 @@ public class TESCParser {
             return null;  
         }
     }
-    
+
+
+    /**
+     * Holt ein SEvent aus eventlist oder fuegt eine neues hinzu.
+     * @param  s String
+     * @param  l Location
+     * @return SEvent Element aus Liste
+     */
+    protected SEvent getEvent (String s, Location l) {
+
+	// In der aktuellen Liste nachsehen
+	SEvent event  = cloneEventLocalized (s,eventlist,l);
+
+	// Wenn nicht gefunden, dann Liste um neuen Eintrag per prepend erweitern
+	if (event == null) {
+	    Warning (s + " implizit als Event deklariert");
+
+	    event = (SEvent) setLoc(new SEvent (s),l);
+	    eventlist = new SEventList (event,eventlist);
+	}
+
+	return event;
+    }
+
+
+    /**
+     * Holt eine Bvar aus bvarlist oder fuegt eine neues hinzu.
+     * @param  s String
+     * @param  l Location
+     * @return Bvar Element aus Liste
+     */
+    protected Bvar getBvar (String s, Location loc) {
+
+	// In der aktuellen Liste nachsehen
+	Bvar bvar  = cloneBvarLocalized (s,bvarlist,loc);
+
+	// Wenn nicht gefunden, dann Liste um neuen Eintrag per prepend erweitern
+	if (bvar == null) {
+	    Warning (s + " implizit als Bvar deklariert");
+
+	    bvar = (Bvar) setLoc(new Bvar (s),loc);
+	    bvarlist = new BvarList (bvar,bvarlist);
+	}
+
+	return bvar;
+    }
+
+
     //------------------------------------------------------------------------
     //  Implementierung der TESC-Grammatik
     //------------------------------------------------------------------------
 
+
     /**
      *  TESC ::= VAR EVENT STATE
      */
-    private Statechart parseTesc() throws IOException {
+    protected Statechart parseTesc() throws IOException {
 	debug("Enter parseTESC");
 
 	// VAR
@@ -353,10 +492,11 @@ public class TESCParser {
 	return new Statechart(eventlist, bvarlist, pathlist, rootstate);
     }
 
+
     /**
      * VAR ::= {"var" VARS} 
      */
-    private BvarList parseVar() throws IOException {
+    protected BvarList parseVar() throws IOException {
 
         // {"var" VARS}
         if (token.getId() == Token.TOK_VAR) {
@@ -367,10 +507,11 @@ public class TESCParser {
             return null;
     }
 
+
     /**
      * VARS ::= "identifier" | "(" VARLIST ")"
      */   
-    private BvarList parseVars() throws IOException {
+    protected BvarList parseVars() throws IOException {
         Location loc = new Location(token.getLine());
         debug ("Enter parseVars");
 
@@ -402,10 +543,11 @@ public class TESCParser {
         return bvList;
     }
 
+
     /**
      * VARLIST ::= "identifier" { "," VARLIST }
      */
-    private BvarList parseVarList() throws IOException {
+    protected BvarList parseVarList() throws IOException {
         Location loc = new Location(token.getLine());
         debug ("Enter parseVarList");
 
@@ -428,10 +570,11 @@ public class TESCParser {
 
     }
 
+
     /**
      * EVENT ::= {"var" EVENTS} 
      */
-    private SEventList parseEvent() throws IOException {
+    protected SEventList parseEvent() throws IOException {
 
         // {"var" EVENTS}
         if (token.getId() == Token.TOK_EVENT) {
@@ -442,10 +585,11 @@ public class TESCParser {
             return null;
     }
 
+
     /**
      * EVENTS ::= "identifier" | "(" EVENTLIST ")"
      */   
-    private SEventList parseEvents() throws IOException {
+    protected SEventList parseEvents() throws IOException {
         Location loc = new Location(token.getLine());
         debug ("Enter parseEvents");
 
@@ -477,10 +621,11 @@ public class TESCParser {
         return eList;
     }
 
+
     /**
      * EVENTLIST ::= "identifier" { "," EVENTLIST }
      */
-    private SEventList parseEventList() throws IOException {
+    protected SEventList parseEventList() throws IOException {
         Location loc = new Location(token.getLine());
         debug ("Enter parseEventList");
 
@@ -503,10 +648,11 @@ public class TESCParser {
 
     }
 
+
     /**
      * STATE ::= AND_STATE | OR_STATE | BASIC_STATE
      */
-    private State parseState(Path path) throws IOException {
+    protected State parseState(Path path) throws IOException {
 	debug("Enter parseState");
 
 	State state = null;
@@ -526,17 +672,18 @@ public class TESCParser {
             break;
 
 	default :
-	    Error("Schlüsselwort 'and', 'or' oder 'basic' erwartet");
+	    Error("Schlüsselwort 'and', 'or' oder 'basic' erwartet.");
 	}
 
 	debug("Leave parseState");
 	return state;
     }	    
 	
+
     /**
      *  AND_STATE ::= "and" "identifier" AND_SUBSTATES "end" "identifier"
      */
-    private And_State parseAndState(Path path) throws IOException {
+    protected And_State parseAndState(Path path) throws IOException {
         Location loc = new Location(token.getLine());
 	debug("Enter parseAndState");
 
@@ -565,10 +712,11 @@ public class TESCParser {
 	return state;
     }
 
+
     /**
      * AND_SUBSTATES ::= OR_STATE { AND_SUBSTATES } | BASIC_STATE { AND_SUBSTATES }
      */
-    private StateList parseAndSubStates(Path path) throws IOException {
+    protected StateList parseAndSubStates(Path path) throws IOException {
 	debug("Enter parseAndSubState");
 
 	StateList statelist = null;
@@ -576,7 +724,7 @@ public class TESCParser {
         switch (token.getId()) {
 
 	case Token.TOK_AND   :
-	    Error("And-Zustaende duerfen keine weiteren And-Zustaende enthalten");
+	    Error("And-Zustaende duerfen keine weiteren And-Zustaende enthalten.");
             statelist = new StateList( parseAndState(path),
                                        parseAndSubStates(path)); 
 
@@ -600,6 +748,7 @@ public class TESCParser {
 	return statelist;
     }
 
+
     /**
      *  OR_STATE ::= "or " {"identifier"} 
      *                     OR_SUBSTATES
@@ -608,7 +757,7 @@ public class TESCParser {
      *                     DEFAULTCON
      *               "end" {"identifier"}
      */
-    private Or_State parseOrState(Path path) throws IOException {
+    protected Or_State parseOrState(Path path) throws IOException {
 	Location loc = new Location(token.getLine());
 	debug("Enter parseOrState");
 
@@ -647,10 +796,11 @@ public class TESCParser {
 				 loc);	
     }
 
+
     /**
      * OR_SUBSTATES  ::= STATE { OR_SUBSTATES }
      */
-    private StateList parseOrSubStates(Path path) throws IOException {
+    protected StateList parseOrSubStates(Path path) throws IOException {
 	debug("Enter parseOrSubState");
 
 	StateList statelist = null;
@@ -680,10 +830,11 @@ public class TESCParser {
 	return statelist;
     }
    
+
     /**
      *  BASIC_STATE ::= "basic" "identifier"
      */
-    private Basic_State parseBasicState(Path path) throws IOException {
+    protected Basic_State parseBasicState(Path path) throws IOException {
 	Location loc = new Location(token.getLine());
 	debug("Enter parseBasicState");
 
@@ -701,10 +852,11 @@ public class TESCParser {
 	return (Basic_State) setLoc(new Basic_State(statename),loc);
     }
 
+
     /**
      * CONNECTORS ::= CONNECTOR { CONNECTORS }
      */
-    private ConnectorList parseConnectors() throws IOException {
+    protected ConnectorList parseConnectors() throws IOException {
 	debug("Enter parseConnectors");
 
 	ConnectorList conlist = null;
@@ -724,10 +876,11 @@ public class TESCParser {
 	return conlist;
     }
 
+
     /**
      * CONNECTOR ::= "con" "identifier"
      */
-    private Connector parseConnector() throws IOException {
+    protected Connector parseConnector() throws IOException {
 	Location loc = new Location(token.getLine());
 	debug("Enter parseConnector");
 
@@ -742,10 +895,11 @@ public class TESCParser {
 	return (Connector) setLoc(new Connector(conname),loc);
     }
 
+
     /**
      * TRANSITIONS ::= TRANSITION TRANSITION
      */
-    private TrList parseTransitions (ConnectorList connlist) throws IOException {
+    protected TrList parseTransitions (ConnectorList connlist) throws IOException {
 	debug ("Enter parseTransitions");
 
 	TrList tranlist = null;
@@ -765,10 +919,11 @@ public class TESCParser {
 	return tranlist;
     }
 
+
     /**
      * TRANSITION ::= "from" TRANCHOR "to" TRANCHOR {"on" GUARD} {"do" ACTION}
      */
-    private Tr parseTransition (ConnectorList connlist) throws IOException {
+    protected Tr parseTransition (ConnectorList connlist) throws IOException {
 	Location loc = new Location(token.getLine());
 	debug ("Enter parseTransition");
 
@@ -781,10 +936,10 @@ public class TESCParser {
         TrAnchor taTo = parseTransitionAnchor(connlist);
 	
 	// { "on" GUARD }
-        Guard guard;
+        Guard guard = null;
         if (token.getId() == Token.TOK_ON) {
            matchToken(Token.KeyOn);
-           guard = parseGuard();
+           guard = parseGuardSTMStyle();
         }
         else
            guard = (GuardEmpty) setLoc(new GuardEmpty ((Dummy) setLoc(new Dummy(),loc)),loc); 
@@ -793,19 +948,30 @@ public class TESCParser {
         Action action = null;
         if (token.getId() == Token.TOK_DO) {
           matchToken(Token.KeyDo);
-          action = parseAction();
+          action = parseActions();
         }
         else
           action = (ActionEmpty) setLoc(new ActionEmpty ((Dummy) setLoc(new Dummy(),loc)),loc);
 
+	// Caption fuer TLabel aufbauen.
+	TESCSaver saver = new TESCSaver(null);
+	TLabel label = new TLabel (guard, action, null, loc, null);
+        saver.setCaption(label);
+
+	// Sollt wider Erwarten ein Fehler auftreten, dann merken
+	errorCount += saver.getErrorCount();
+	for (int i=0; i < saver.getErrorCount(); i++) 
+	    Error(saver.getErrorText(i));   
+
 	debug ("Leave parseTransition");
-        return (Tr) setLoc(new Tr( taFrom, taTo, (TLabel) setLoc(new TLabel(guard, action),loc)),loc);
+        return (Tr) setLoc(new Tr( taFrom, taTo, label),loc);
     }
+
 
     /**
      * TRANCHOR ::= "UNDEF" | "identifier"
      */
-    private TrAnchor parseTransitionAnchor(ConnectorList connlist) 
+    protected TrAnchor parseTransitionAnchor(ConnectorList connlist) 
                                                          throws IOException {
 	Location loc = new Location(token.getLine());
         debug ("Enter parseTransitionAnchor");
@@ -837,7 +1003,7 @@ public class TESCParser {
     /** 
      *  DEFAULTCONS ::=  DEFAULTCON { DEFAULTCON }
      */
-    private StatenameList parseDefaultCons() throws IOException {
+    protected StatenameList parseDefaultCons() throws IOException {
 	debug("Enter parseDefaultCons");
 
 	StatenameList snamelist = null;
@@ -857,10 +1023,11 @@ public class TESCParser {
 	return snamelist;
     }
 
+
     /**
      * DEFAULTCON ::= "default" "identifier"
      */
-    private Statename parseDefaultCon() throws IOException {
+    protected Statename parseDefaultCon() throws IOException {
 	Location loc = new Location(token.getLine());
 	debug("Enter parseDefaultCon");
 
@@ -873,28 +1040,70 @@ public class TESCParser {
 	return (Statename) setLoc(new Statename(identifier),loc);
     }
 
+
     //------------------------------------------------------------------------
     //  Implementierung Guard
     //------------------------------------------------------------------------
     
 
+   /**
+     *  GUARD ::= {GUARD} {"[" GUARD "]"}
+     *  Neuer Guard-Aufbau nach Statemate
+     */
+    protected Guard parseGuardSTMStyle() throws IOException {
+ 	Location loc = new Location(token.getLine());
+        debug ("Enter parseGuard");
+        	
+	Guard event = null;
+	Guard bvar = null;
+
+	switch (token.getId()) {
+	case Token.TOK_IDENTIFIER :
+        case Token.TOK_ENTERED    :
+        case Token.TOK_EXITED     :
+        case Token.TOK_IN         :
+        case Token.TOK_NOTOP      :
+        case Token.TOK_LPAR       :
+	    event = parseGuard(createEvent);
+	    break;
+	default:
+	    event = (GuardEmpty) setLoc(new GuardEmpty ((Dummy) setLoc(new Dummy(),loc)),loc);
+        }
+
+	switch (token.getId()) {
+	case Token.TOK_LSPAR :
+	    matchToken(Token.LSPar);
+	    bvar = parseGuard(createBvar);
+	    matchToken(Token.RSPar);
+	    break;
+	default:
+	    bvar = (GuardEmpty) setLoc(new GuardEmpty ((Dummy) setLoc(new Dummy(),loc)),loc);
+	}
+
+        debug ("Leave parseGuard");
+	return (GuardCompg) setLoc(new GuardCompg ((Compguard) setLoc(new Compguard (Compguard.AND,
+										     event,
+										     bvar),loc)),loc);
+    }
+
+
     /**
      *  GUARD ::= GUARDIMPLIES GUARD_REST
      */
-    private Guard parseGuard() throws IOException {
-        debug ("Enter parseGuard");
+    protected Guard parseGuard(int creationType) throws IOException {
+        debug ("Enter parseGuardEvent");
         
-        Guard lhs = parseGuardImplies();
+        Guard lhs = parseGuardImplies(creationType);
 
-        debug ("Leave parseGuard");
-        return parseGuardRest(lhs);
-
+        debug ("Leave parseGuardEvent");
+        return parseGuardRest(lhs,creationType);
     }
+
 
     /**
      *  GUARD_REST ::= {"<=>" GUARDIMPLIES GUARD_REST}
      */
-    private Guard parseGuardRest(Guard lhs) throws IOException {
+    protected Guard parseGuardRest(Guard lhs, int creationType) throws IOException {
  	Location loc = new Location(token.getLine());
 	debug ("Enter parseGuardRest");
 
@@ -903,11 +1112,12 @@ public class TESCParser {
 
         if (token.getId() == Token.TOK_EQUIV) {
             matchToken(Token.Equiv);
-            rhs = parseGuardImplies();
+            rhs = parseGuardImplies(creationType);
             comp = parseGuardRest(
                      (GuardCompg) setLoc(new GuardCompg ((Compguard) setLoc(new Compguard (Compguard.EQUIV,
 											   lhs,
-											   rhs),loc)),loc));
+											   rhs),loc)),loc)
+		     ,creationType);
         }
         else {
             comp = lhs;
@@ -917,22 +1127,24 @@ public class TESCParser {
         return comp;
     }
 
+
     /**
      *  GUARDIMPLIES ::= GUARDOR GUARDIMPLES_REST
      */
-    private Guard parseGuardImplies()  throws IOException {
+    protected Guard parseGuardImplies(int creationType)  throws IOException {
         debug ("Enter parseGuardImplies");
         
-        Guard lhs = parseGuardOr();
+        Guard lhs = parseGuardOr(creationType);
 
         debug ("Leave parseGuardImplies");
-        return parseGuardImpliesRest(lhs);
+        return parseGuardImpliesRest(lhs,creationType);
     }
+
 
     /**
      *  GUARDIMPLIES_REST ::= {"=>" GUARDOR GUARDIMPLIES_REST}
      */
-    private Guard parseGuardImpliesRest(Guard lhs) throws IOException {
+    protected Guard parseGuardImpliesRest(Guard lhs, int creationType) throws IOException {
 	Location loc = new Location(token.getLine());
         debug ("Enter parseGuardImpliesRest");
 
@@ -941,11 +1153,13 @@ public class TESCParser {
 
         if (token.getId() == Token.TOK_IMPLIES) {
             matchToken(Token.Implies);
-            rhs = parseGuardOr();
+            rhs = parseGuardOr(creationType);
             comp = parseGuardImpliesRest(
                      (GuardCompg) setLoc(new GuardCompg ((Compguard) setLoc(new Compguard (Compguard.IMPLIES,
 											   lhs,
-											   rhs),loc)),loc));
+											   rhs),loc)),loc),
+		     creationType
+		     );
         }
         else {
             comp = lhs;
@@ -955,22 +1169,24 @@ public class TESCParser {
         return comp;
     }
 
-     /**
+
+    /**
      *  GUARDOR ::= GUARDAND GUARDOR_REST
      */
-    private Guard parseGuardOr()  throws IOException {
+    protected Guard parseGuardOr(int creationType)  throws IOException {
         debug ("Enter parseGuardOr");
         
-        Guard lhs = parseGuardAnd();
+        Guard lhs = parseGuardAnd(creationType);
 
         debug ("Leave parseGuardOr");
-        return parseGuardOrRest(lhs);
+        return parseGuardOrRest(lhs,creationType);
     }
+
 
     /**
      *  GUARDOR_REST ::= {"|" GUARDAND GUARDOR_REST}
      */
-    private Guard parseGuardOrRest(Guard lhs) throws IOException {
+    protected Guard parseGuardOrRest(Guard lhs,int creationType ) throws IOException {
 	Location loc = new Location(token.getLine());
         debug ("Enter parseGuardOrRest");
 
@@ -979,11 +1195,13 @@ public class TESCParser {
 
         if (token.getId() == Token.TOK_OROP) {
             matchToken(Token.OrOp);
-            rhs = parseGuardAnd();
+            rhs = parseGuardAnd(creationType);
             comp = parseGuardOrRest(
                      (GuardCompg) setLoc(new GuardCompg ((Compguard) setLoc(new Compguard (Compguard.OR,
 											   lhs,
-											   rhs),loc)),loc));
+											   rhs),loc)),loc),
+		     creationType
+		     );
         }
         else {
             comp = lhs;
@@ -993,22 +1211,24 @@ public class TESCParser {
         return comp;
     }
 
+
     /**
      *  GUARDAND ::= GUARDNOT GUARDAND_REST
      */
-    private Guard parseGuardAnd()  throws IOException {
+    protected Guard parseGuardAnd(int creationType)  throws IOException {
         debug ("Enter parseGuardAnd");
         
-        Guard lhs = parseGuardNot();
+        Guard lhs = parseGuardNot(creationType);
 
         debug ("Leave parseGuardAnd");
-        return parseGuardAndRest(lhs);
+        return parseGuardAndRest(lhs,creationType);
     }
+
 
     /**
      *  GUARDAND_REST ::= {"&" GUARDNOT GUARDAND_REST}
      */
-    private Guard parseGuardAndRest(Guard lhs) throws IOException {
+    protected Guard parseGuardAndRest(Guard lhs,int creationType) throws IOException {
 	Location loc = new Location(token.getLine());
         debug ("Enter parseGuardAndRest");
 
@@ -1017,11 +1237,12 @@ public class TESCParser {
 
         if (token.getId() == Token.TOK_ANDOP) {
             matchToken(Token.AndOp);
-            rhs = parseGuardNot();
+            rhs = parseGuardNot(creationType);
             comp = parseGuardAndRest(
                      (GuardCompg) setLoc(new GuardCompg ((Compguard) setLoc(new Compguard (Compguard.AND,
 											   lhs,
-											   rhs),loc)),loc));
+											   rhs),loc)),loc),
+		     creationType);
         }
         else {
             comp = lhs;
@@ -1031,10 +1252,11 @@ public class TESCParser {
         return comp;
     }
 
+
     /**
      *  GUARDNOT ::= {"!"} GUARDID
      */
-    private Guard parseGuardNot() throws IOException {
+    protected Guard parseGuardNot(int creationType) throws IOException {
 	Location loc = new Location(token.getLine());
 	debug ("Enter parseGuardNot");
 
@@ -1042,19 +1264,25 @@ public class TESCParser {
 
 	if (token.getId() == Token.TOK_NOTOP) { 
 	    matchToken (Token.NotOp);
-            g = (GuardNeg) setLoc(new GuardNeg (parseGuardIdentifier()),loc);
+            g = (GuardNeg) setLoc(new GuardNeg (parseGuardIdentifier(creationType)),loc);
 	}
 	else 
-	    g = parseGuardIdentifier();
+	    g = parseGuardIdentifier(creationType);
 
-	debug ("Enter parseGuardNot");
+	debug ("Leave parseGuardNot");
 	return g;
    }
 
+
     /**
      *  GUARDID ::= "identifier" | COMPPATH | "(" GUARD ")"
+     *
+     *  Ueber creationType wird gesteuert, ob EventExpr oder BvarExpr aus
+     *  der Guard-Syntax EventExpr[BvarExpr] erzeugt werden soll:
+     *   - creatEvent erzeugt Events und weist schon definierte Bvars zurueck
+     *   - createBvar erzeugts Bvar und wiest schon definierte Events zurueck
      */
-   private Guard parseGuardIdentifier() throws IOException {
+   protected Guard parseGuardIdentifier (int creationType) throws IOException {
 	Location loc = new Location(token.getLine());
         debug ("Enter parseGuardIdentifier");
 
@@ -1067,23 +1295,25 @@ public class TESCParser {
             String name = token.getValue();
             matchToken(Token.Identifier);
 
-            if (isEventName(name, eventlist)) {
-                g = (GuardEvent) setLoc(new GuardEvent(cloneEventLocalized(name,eventlist,loc)),loc);                 
-            }
-            else if (isBvarName(name, bvarlist)) {
-                g = (GuardBVar) setLoc(new GuardBVar(cloneBvarLocalized(name,bvarlist,loc)),loc); 
-            }
-            else {
-              Error ("Guard enthält weder Event noch Bvar: " + name);
-              g = null;
-            }
-            break;
-	    /*
-	      case Token.TOK_NOTOP      :
-	      matchToken (Token.NotOp);
-	      g = (GuardNeg) setLoc(new GuardNeg (parseGuard()),loc);
-	      break;
-	    */
+	    // Sind wir in EventExpr oder BvarExpr?
+	    switch (creationType) {
+
+	    case createEvent :
+		// Wir sind in der EventExpr des Guards, also nur sind Events erlaubt.
+
+		if (isBvarName (name)) Error ("Event-Teil des Guards enthält Bvar.");
+		else g = (GuardEvent) setLoc(new GuardEvent (getEvent (name,loc)), loc);     
+		break;
+ 
+	    case createBvar :
+		// Wir sind in der BvarExpr des Guards, also nur sind BVar erlaubt.
+
+		if (isEventName (name)) Error ("Bvar-Teil des Guards enthält Event.");
+		else g = (GuardBVar) setLoc(new GuardBVar (getBvar (name,loc)), loc); 
+		break;
+	    }
+	    break;
+	    
         case Token.TOK_ENTERED    :
         case Token.TOK_EXITED     :
         case Token.TOK_IN         :
@@ -1094,7 +1324,7 @@ public class TESCParser {
         case Token.TOK_LPAR       :
 
           matchToken (Token.LPar);
-          g = parseGuard();
+	  g = parseGuard (creationType);
           matchToken (Token.RPar);
           break;
  
@@ -1107,10 +1337,11 @@ public class TESCParser {
         return g;
     }
 
+
     /**
      *  COMPPATH ::= ( IN | ENTERED | EXITED ) "(" PATH ")"
      */ 
-    private Comppath parseCompPath() throws IOException {
+    protected Comppath parseCompPath() throws IOException {
 	Location loc = new Location(token.getLine());
 	debug ("Enter parseCompPath");
 
@@ -1151,11 +1382,12 @@ public class TESCParser {
 	debug("Leave parseCompPath");
         return cp;
     }    
+
  
     /**
      *  PATH := "identifier" {"." PATH} 
      */
-    private Path parsePath() throws IOException {
+    protected Path parsePath() throws IOException {
        
         // "identifier"
         String sHead = token.getValue();
@@ -1172,42 +1404,30 @@ public class TESCParser {
         return new Path (sHead, pTail);
     }
 
- 
-    
+     
     //------------------------------------------------------------------------
     //  Implementierung Action
     //------------------------------------------------------------------------
 
     /**
-     * ACTION ::= "identifier" | BOOLSTMT | "(" ACTIONLIST ")" 
+     *  ACTIONS ::= ( "(" ACTIONLIST ")" ) | ACTION
      */
-    private Action parseAction() throws IOException {
+    protected Action parseActions() throws IOException {
 	Location loc = new Location(token.getLine());
-        debug ("Enter parseAction");
+        debug ("Enter parseActions");
 
-        Action ac = null;
-        
+	Action action = null;
+
         switch (token.getId()) {
 
         case Token.TOK_IDENTIFIER :
-
-            // "identifier"
-            String sName = token.getValue(); 
-
-            if (isEventName(sName, eventlist)) {
-                matchToken (Token.Identifier);
-                ac = (ActionEvt) setLoc(new ActionEvt(cloneEventLocalized(sName,eventlist,loc)),loc);
-            }
-            else {
-                // BOOLSTMT
-                ac = (ActionStmt) setLoc(new ActionStmt(parseBoolStmt()),loc);
-            }
+	    action = parseAction();
             break;
 
         case Token.TOK_LPAR       :
 
             matchToken (Token.LPar);
-            ac = (ActionBlock) setLoc(new ActionBlock(parseActionList()),loc);
+            action = (ActionBlock) setLoc(new ActionBlock(parseActionList()),loc);
             matchToken (Token.RPar);
             break;
 
@@ -1216,118 +1436,122 @@ public class TESCParser {
             Error ("Identifikator oder ( erwartet.");
 
         }
+        debug ("Leave parseActions");
+        return action;
+    }
+    
+
+    /**
+     * ACTION ::= "identifier" | ( "identifier" "=" ( true | false | GUARD ))
+     */
+    protected Action parseAction() throws IOException {
+        debug ("Enter parseAction");
+
+        Action ac = null;
+        
+	// "identifier"
+        switch (token.getId()) {
+
+        case Token.TOK_IDENTIFIER :
+
+            String sName = token.getValue(); 
+	    matchToken (Token.Identifier);
+
+	    if (token.getId() == Token.TOK_ASSIGN) {
+
+		Boolstmt bs = null;
+		
+		matchToken (Token.Assign);
+		Location loc = new Location(token.getLine());
+
+		// ( true | false | GUARD )
+		switch (token.getId()) {
+
+		case Token.TOK_TRUE       :
+
+		    matchToken(Token.KeyTrue);
+
+		    if (!isEventName (sName)) {
+			bs = (MTrue) setLoc(new MTrue (getBvar (sName,loc)),loc);
+		    }
+		    else
+			Error (sName + " ist ein Event.");
+ 
+		    break;
+
+
+		case Token.TOK_FALSE      :
+ 
+		    matchToken(Token.KeyFalse);
+		    if (!isEventName (sName)) {
+			bs = (MFalse) setLoc(new MFalse (getBvar (sName,loc)),loc);
+		    }
+		    else
+			Error (sName + " ist ein Event.");
+		    
+		    break;
+ 
+		case Token.TOK_IDENTIFIER :
+		case Token.TOK_ENTERED    :
+		case Token.TOK_EXITED     :
+		case Token.TOK_IN         :
+		case Token.TOK_NOTOP      :
+		case Token.TOK_LPAR       :
+		    if (!isEventName (sName)) {
+			bs = (BAss) setLoc(new BAss (new Bassign (getBvar (sName,loc),parseGuard(createBvar))),loc);
+		    }
+		    else 
+			Error (sName + " ist ein Event.");
+	    
+		    break;
+
+		default                   :
+        
+		    Error("true, false oder Bvar-Guard erwartet.");
+		}
+		ac = new ActionStmt(bs,loc);
+	    }
+	    else {
+		// Eventgenerierung. Bvar sind hier nicht erlaubt.
+		Location loc = new Location(token.getLine());
+
+		if (isBvarName (sName)) {
+		    Error("Bvar = (true, false oder Bvar-Guard) erwartet.");  
+		}
+		else {
+		    ac = (ActionEvt) setLoc(new ActionEvt(getEvent(sName,loc)),loc);
+		}
+	    }
+	    break;
+
+	default :
+	    Error ("Identifier erwartet statt " + token.getValue() + " erwartet.");
+	}
 
         debug ("Leave parseAction");
         return ac;
     }
 
-    /** 
-     * BOOLSTMT ::= "identifier" "=" ( true | false | GUARD )
-     */
-    private Boolstmt parseBoolStmt() throws IOException {
-	Location loc = new Location(token.getLine());
-
-        // "identifier" ":="
-        String sName = token.getValue();
-        matchToken(Token.Identifier);
-        matchToken(Token.Assign);
-
-        Boolstmt bs = null;
-
-        // ( true | false | GUARD )
-        switch (token.getId()) {
-
-        case Token.TOK_TRUE       :
-
-            matchToken(Token.KeyTrue);
-            if (isBvarName (sName,bvarlist)) {
-                bs = (MTrue) setLoc(new MTrue (cloneBvarLocalized (sName,bvarlist,loc)),loc);
-            }
-            else
-               Error (sName + " ist keine Variable.");
- 
-            break;
-
-        case Token.TOK_FALSE      :
- 
-            matchToken(Token.KeyFalse);
-            if (isBvarName (sName,bvarlist)) {
-                bs = (MFalse) setLoc(new MFalse (cloneBvarLocalized (sName,bvarlist,loc)),loc);
-            }
-            else
-               Error (sName + " ist keine Variable.");
-
-            break;
- 
-        case Token.TOK_IDENTIFIER :
-        case Token.TOK_ENTERED    :
-        case Token.TOK_EXITED     :
-        case Token.TOK_IN         :
-        case Token.TOK_LPAR       :
-	
-	    if (isBvarName (sName,bvarlist)) {
-		bs = (BAss) setLoc(new BAss (
-					     new Bassign (cloneBvarLocalized (sName,bvarlist,loc),
-							  parseGuard())),
-				   loc);
-	    }
-	    else 
-		Error (sName + " ist keine Variable.");
-	    
-            break;
-
-        default                   :
-        
-            Error("true, false oder Guard erwartet.");
-        }
- 
-        return bs;
-    }
- 
 
     /**
-     * ACTIONLIST ::= ( "identifier" | BOOLSTMT ) { "," ACTIONLIST }
+     * ACTIONLIST ::= ACTION { "," ACTIONLIST }
      */
-    private Aseq parseActionList() throws IOException {
-	Location loc = new Location(token.getLine());
+    protected Aseq parseActionList() throws IOException {
         debug ("Enter parseActionList");
 
-        Action ac = null;
+	// { ACTION }
+        Action action = parseAction();
         Aseq asRest = null;
-
-        switch (token.getId()) {
-
-        case Token.TOK_IDENTIFIER :
-
-            // "identifier"
-            String sName = token.getValue();
-
-            if (isEventName(sName, eventlist)) {
-                matchToken (Token.Identifier);
-                ac = (ActionEvt) setLoc(new ActionEvt(cloneEventLocalized(sName,eventlist,loc)),loc);
-            }
-            else {
-                // BOOLSTMT
-                ac = (ActionStmt) setLoc(new ActionStmt(parseBoolStmt()),loc);
-            }
-
-            // { "," ACTIONLIST }
-            if (token.getId() == Token.TOK_KOMMA) {
-              matchToken (Token.Komma);
-              asRest = parseActionList();
-            }
+	
+	// { "," ACTIONLIST }
+	if (token.getId() == Token.TOK_KOMMA) {
+	    matchToken (Token.Komma);
+	    asRest = parseActionList();
+	}
  
-            break;
-
-        default :
-
-            Error("Identifier erwartet.");
-        }
-
         debug ("Leave parseActionList");
-        return new Aseq (ac,asRest);
+        return new Aseq (action,asRest);
     }
-
 }
     
 //----------------------------------------------------------------------
@@ -1335,6 +1559,9 @@ public class TESCParser {
 //      ----------------------------               
 //
 //      $Log: not supported by cvs2svn $
+//      Revision 1.8  1999/01/11 12:13:55  swtech20
+//      Bugfixes.
+//
 //      Revision 1.7  1999/01/04 15:25:20  swtech20
 //      Schluesselworte in Bezeichnern werden nicht mehr zugelassen.
 //      Status upgedated.
