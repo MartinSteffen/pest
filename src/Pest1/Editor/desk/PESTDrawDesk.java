@@ -112,10 +112,10 @@ import Editor.*;
 		    last_x = (short) e.getX(); last_y = (short) e.getY(); 	// Save position.
 		}
 
-	    if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Draw_State"))
+	    if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (editor.editor() =="Draw_State"))
 		{ 
 		    new drawPESTState(g,root,last_x,last_y,e.getX(),e.getY(),Color.blue);
-		    Editor.SetListen();
+		    editor.SetListen();
 		}
 	}
   }
