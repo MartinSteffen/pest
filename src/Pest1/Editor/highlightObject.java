@@ -17,6 +17,14 @@ import Absyn.*;
 
 public class highlightObject {
     
+/**
+ * Generates a change to default color of object 
+ *<ul>
+ * <li>g    : graphic frame   
+ * <li>obj  :  
+ * </ul>
+ */
+
     public highlightObject(Graphics g, Basic_State obj) { }
     public highlightObject(Graphics g, Basic_State obj, Color col) { }
 

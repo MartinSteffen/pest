@@ -29,13 +29,18 @@ import Editor.*;
       protected int width, height;                   		// Groessenvariablen
       protected PopupMenu popup;                     		// pop-up Menue
       protected Frame frame;                        		// Menuefenster
+
+      static Storelist anf;
+      static Storelist lauf;
+      static Storelist basis;
+
       
       Statechart root= new Statechart(null,null,null,null);
 
   /** Initialisierung des Hauptframes*/
 
       public PESTDrawDesk(Frame frame, int width, int height,Statechart nroot) {
-      
+           new newStorelist();
 	  root = nroot;
 
     this.frame = frame;
@@ -48,9 +53,9 @@ import Editor.*;
 
     // Erzeugung der pop-up Menues
     String[] labels = new String[] {
-      "Clear", "Save", "Load"};
+      "Undo", "Restore", "Load"};
     String[] commands = new String[] {
-      "clear", "save", "load"};
+      "undo", "restore", "load"};
     popup = new PopupMenu();                   		// Menueerzeugung
     for(int i = 0; i < labels.length; i++) {
       MenuItem mi = new MenuItem(labels[i]);   	// erzeugt Menueeintrag
@@ -64,7 +69,15 @@ import Editor.*;
 
   public Dimension getPreferredSize() { return new Dimension(width, height); }
 
-  // pop-up Menueabfrage 
+  // pop-up Menueabfrage
+ // pop-up Menueabfrage 
+  public void actionPerformed(ActionEvent event) {
+    String command = event.getActionCommand();
+    if (command.equals("undo")) System.out.println(undo());
+    else if (command.equals("restore")) System.out.println(redo());
+    else if (command.equals("load")) ;
+    
+  } 
 
   // Grafik herstellen
   public void paint(Graphics g) {
@@ -101,7 +114,7 @@ import Editor.*;
 
 	    if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Draw_State"))
 		{ 
-		    // new drawPESTState(g,root,last_x,last_y,e.getX(),e.getY(),Color.blue);
+		    new drawPESTState(g,root,last_x,last_y,e.getX(),e.getY(),Color.blue);
 		    Editor.SetListen();
 		}
 	}
@@ -111,13 +124,7 @@ import Editor.*;
   void clear() {
     repaint();                   		// Bildschirm loeschen
   }
-public void actionPerformed(ActionEvent event) {
-    String command = event.getActionCommand();
-    if (command.equals("clear")) clear();
-    else if (command.equals("save")) ;
-    else if (command.equals("load")) ;
-    
-  }
+
 
       private int schnitt(Rectangle r1,Rectangle r2) {
 	  int test = 0;
@@ -128,6 +135,51 @@ public void actionPerformed(ActionEvent event) {
 	  r1inr2 = r2.intersects(r1);
 
 	  return test;
+      }
+
+      private static class Storelist{
+	  Storelist next;
+	  Storelist prev;
+	  int chart;
+	  private Storelist(Storelist a, Storelist b)
+	  { prev = a;
+	    next = b;
+	      
+	  }
+      }
+
+      private static class newStorelist
+      {
+	  private newStorelist()
+	  {  
+
+	      anf = new Storelist(null,null);
+	      basis = anf;
+	      for (int i = 1;i < 10;++i)
+		  {
+		    lauf = new Storelist(null,null);
+		    lauf.prev = anf;
+		    lauf.chart = i;
+		    anf.next = lauf;
+		    anf = lauf;
+		    
+		  }
+	      anf.next = basis;
+	      basis.prev = anf;
+	      lauf = basis;
+	  }
+      }
+
+      private static int undo()
+      {
+	  lauf = lauf.prev;
+	  return lauf.chart;
+      }
+
+      private static int redo()
+      {
+	  if (lauf != basis) {lauf = lauf.next;}
+	  return lauf.chart;
       }
 
 
