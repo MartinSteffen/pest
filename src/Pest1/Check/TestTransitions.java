@@ -3,34 +3,30 @@ package check;
 import absyn.*;
 import java.util.*;
 
-
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestTransitions.java,v 1.8 1999-01-07 16:48:50 swtech11 Exp $
+ *  @version  $Id: TestTransitions.java,v 1.9 1999-01-10 16:06:37 swtech11 Exp $
  */
 class TestTransitions extends ModelCheckBasics {
   Vector newPLV = new Vector(); // Vector fuer die selbst angelegte PathList der States
-  Vector newCLV = new Vector(); // Vector fuer die selbst angelegte PathList der Connectoren  
-  Vector Guardlist =new Vector();
-  Vector newLTL;
-  Vector newLCL;
+  Vector newCLV = new Vector(); // Vector fuer die selbst angelegte PathList der Connectoren
+  Vector Guardlist = new Vector();
+  Vector newLTL; // lokale Transitionsliste (d.h. Transitionen in EINEM State)
+  Vector newLCL; // lokale Connectorenliste (d.h. Connectoren in EINEM State)
 
-  TestTransitions(Statechart _s, ModelCheckMsg _m) {
+  TestTransitions(Statechart _s, ModelCheckMsg _m) {
     super(_s,_m);
   }
 
+  // Check-Methode für den Transitionen
   boolean check() {
-    int m=msg.getErrorNumber();
+    int m = msg.getErrorNumber();
     newPLV = getPathListFromState(sc.state);
-    newCLV = getConnectorPathListFromState(sc.state);
+    newCLV = getConnectorPathListFromState(sc.state);
     if (sc.state instanceof Or_State) {navOrState ((Or_State)sc.state, null,""); }  // null, da es keinen übergeordneten State gibt
     if (sc.state instanceof And_State) {navAndState ((And_State)sc.state, null,""); }
-    
-
-    
     return ((msg.getErrorNumber()-m)==0);
   }
-
 
   // übergebenen Statenamen in der Pfadliste der Statechart suchen; TRUE wenn gefunden
   boolean StatenameInPathList(Vector pl, String s) {
@@ -39,13 +35,15 @@ class TestTransitions extends ModelCheckBasics {
     int pos;
     for (int i=0; (i<pl.size()) ; i++) {
       sn  = (String)pl.elementAt(i);
-      pos = sn.lastIndexOf(".");
-      if (pos>0) {sn = sn.substring(pos+1); }
-      if (sn.equals(s)){ in = true; }
+//      pos = sn.lastIndexOf(".");
+//      if (pos>0) {sn = sn.substring(pos+1); }
+//      if (sn.equals(s)){ in = true; }
+      if (sn.endsWith(s)){ in = true; }
     }
     return in;
   }
 
+  // Name in der übergebenen StateList finden
   boolean NameInThisStateSubstates(StateList _sl, String _s) {
     boolean in = false;
     if (_sl.head.name.name.equals(_s)) { in = true; }
@@ -53,6 +51,7 @@ class TestTransitions extends ModelCheckBasics {
     return in;
   }
 
+  // Name in der übergebenen ConnectorList finden
   boolean ConnectorNameInThisStateConnectorList(ConnectorList _cl, String _s) {
     boolean in = false;
     if (_cl.head.name.name.equals(_s)) { in = true; }
@@ -68,7 +67,6 @@ class TestTransitions extends ModelCheckBasics {
     String z1 = new String();
     String z2 = new String();
     TransE mtr = new TransE();
-    ConE co;
     ConE co2 = new ConE();
 
     // Startanker der Transition bearbeiten
@@ -160,10 +158,9 @@ class TestTransitions extends ModelCheckBasics {
     Vector clv = new Vector();
     if (_s instanceof Or_State) {gC_OrState ((Or_State)_s, "", clv); }
     if (_s instanceof And_State) {gC_AndState ((And_State)_s, "", clv); }
-
     return clv;
   }
-
+  
   // notwendige Methoden für getConnectorPathListFromState
   void gC_ConnectorInConnectorList(ConnectorList cl, String p, Vector clv) {
     String np = getAddPathPart(p, cl.head.name.name);
@@ -185,13 +182,7 @@ class TestTransitions extends ModelCheckBasics {
     if (sl.tail != null) { gC_StateInStateList(sl.tail, p, clv); }
   }
 
-
-
-  
-
-
-
-    /** Vergleicht die Liste der Guards mit sich selber und sucht nach doppelten Eintraegen.
+  /** Vergleicht die Liste der Guards mit sich selber und sucht nach doppelten Eintraegen.
 	<br> Dadurch moechte man den Nichtdeterminismus finden.*/
   void ND(){
    GuardE g;
@@ -214,8 +205,8 @@ class TestTransitions extends ModelCheckBasics {
    
    };};
 
-    /** Vergleiche zwei Guards mit sich.*/
-    String vergleicheGuards(GuardE _g1, GuardE _g2, String text){
+  /** Vergleiche zwei Guards mit sich.*/
+  String vergleicheGuards(GuardE _g1, GuardE _g2, String text){
    Guard g1=_g1.g;
    Guard g2=_g2.g;
    if ((g1 instanceof GuardEvent) &&  (g2 instanceof GuardEvent)){
@@ -283,21 +274,19 @@ class TestTransitions extends ModelCheckBasics {
     Vector clv = new Vector();
     TransE m;
     ConE co,co2;
-
     // lokale TransitionsList passend umgestelten
-    for (int i=0;i<newLTL.size();i++) {
+    for (int i=0; i<newLTL.size(); i++) {
       m = (TransE)newLTL.elementAt(i);
       // nur folgende Transitionen lohnen einer Überprüfung
       if ( (m.s==1 & m.z==2) | (m.s==2 & m.z==1) | (m.s==2 & m.z==2) ) { tlv.addElement(m); }
     }
-
     // doppelt eingetragene Connectoren entfernen
-    for (int j=0;j<newLCL.size();j++) {
+    for (int j=0; j<newLCL.size(); j++) {
       co = (ConE)newLCL.elementAt(j);
       if (clv.size()==0) { clv.addElement(co); }
       else {
         int c = 0;
-        for (int i=0;i<clv.size();i++) {
+        for (int i=0; i<clv.size(); i++) {
           co2 = (ConE)clv.elementAt(i);
           if ( co2.name.equals(co.name) ) { c++;}
         }
@@ -305,42 +294,39 @@ class TestTransitions extends ModelCheckBasics {
       }
     }
     newLCL = clv;
-
     // nach Verbindung zu einem State in beide Richtungen suchen
-    for (int ii=0;ii<tlv.size();ii++) {
+    for (int ii=0; ii<tlv.size(); ii++) {
       workOnCon(tlv);
-      for (int i=0;i<tlv.size();i++) {
+      for (int i=0; i<tlv.size(); i++) {
         m = (TransE)tlv.elementAt(i);
         if (m.sz == 0) {
-          for (int j=0;j<newLCL.size();j++) {
+          for (int j=0; j<newLCL.size(); j++) {
             co = (ConE)newLCL.elementAt(j);
             if (co.name.equals(m.sn)) { if (co.sz != 0)  { m.sz = co.sz; } }
           }
         }
         if (m.zz == 0) {
-          for (int j=0;j<newLCL.size();j++) {
+          for (int j=0; j<newLCL.size(); j++) {
             co = (ConE)newLCL.elementAt(j);
             if (co.name.equals(m.zn)) { if (co.zz != 0)  { m.zz = co.zz; } }
           }
         }
       }
     }
-
     // Auswertung der Verbundenheit
-    for (int i=0;i<tlv.size();i++) {
+    for (int i=0; i<tlv.size(); i++) {
       m = (TransE)tlv.elementAt(i);
       if ( m.sz==0 & m.zz==0 ) { msg.addError(419,m.d); }
       else if ( m.sz==0 ) { msg.addError(422,m.d); }
       else if ( m.zz==0 ) { msg.addError(423,m.d); }
     }
-
     // Connectorenzyklus
-    for (int i=0;i<newLCL.size();i++) {
+    for (int i=0; i<newLCL.size(); i++) {
       co = (ConE)newLCL.elementAt(i);
       co.count=1;
       testZyklusCon(co,tlv);
       if (co.count>1) { msg.addError(421,co.d); } // Zyklus
-      for (int j=0;j<tlv.size();j++) { // Zaehler wieder auf Null setzen
+      for (int j=0; j<tlv.size(); j++) { // Zaehler wieder auf Null setzen
         m = (TransE)tlv.elementAt(j);
         m.count=0;
       }
@@ -351,11 +337,11 @@ class TestTransitions extends ModelCheckBasics {
   void testZyklusCon(ConE co, Vector tlv) {
     ConE co2;
     TransE m;
-    for (int i=0;i<tlv.size();i++) {
+    for (int i=0; i<tlv.size(); i++) {
       m = (TransE)tlv.elementAt(i);
       if (co.name.equals(m.sn) & m.count<=1 & m.z==2) {
         m.count++;
-        for (int j=0;j<newLCL.size();j++) {
+        for (int j=0; j<newLCL.size(); j++) {
           co2 = (ConE)newLCL.elementAt(j);
           if (m.zn.equals(co2.name)) {
             co2.count++;
@@ -370,10 +356,10 @@ class TestTransitions extends ModelCheckBasics {
   void workOnCon(Vector tlv) {
     ConE co;
     TransE m;
-    for (int i=0;i<newLCL.size();i++) {
+    for (int i=0; i<newLCL.size(); i++) {
       co = (ConE)newLCL.elementAt(i);
       if (co.sz == 0 | co.zz == 0) {
-        for (int j=0;j<tlv.size();j++) {
+        for (int j=0; j<tlv.size(); j++) {
           m = (TransE)tlv.elementAt(j);
           if (m.zn.equals(co.name)) { if (m.sz != 0) { co.sz = m.sz; } }
           if (m.sn.equals(co.name)) { if (m.zz != 0) { co.zz = m.zz; } }

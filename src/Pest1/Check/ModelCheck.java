@@ -48,7 +48,7 @@ import gui.*;
  * </DL COMPACT>
  *
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: ModelCheck.java,v 1.14 1999-01-05 22:05:23 swtech11 Exp $
+ * @version  $Id: ModelCheck.java,v 1.15 1999-01-10 16:06:35 swtech11 Exp $
  */
 public class ModelCheck {
   private ModelCheckMsg mcm; // Object, um die Fehler und Warnungen zu speichern
@@ -89,130 +89,111 @@ public class ModelCheck {
     boolean NoFatalError = false;
     boolean result = false;
 
+    boolean Zeitnahme = true;
     long s0=0; long e0=0; long s1=0; long e1=0; long s2=0; long e2=0;
     long s3=0; long e3=0; long s4=0; long e4=0; long s5=0; long e5=0;
 
     // Test auf Kreisfreiheit und doppelte Referenzierung
-    s0 = getT();
-    s1 = getT();
+    s0 = getTimeC();
+    s1 = getTimeC();
     TestPI tpi = new TestPI(sc, mcm);
     NoFatalError=tpi.check();
-    e1 = getT();
+    e1 = getTimeC();
 
     if ( NoFatalError == false ) {
       if ( outputGUI == true ) {
-        int j = gui.OkDialog("Fataler Fehler","Der beschriebene Fehler führt zum Abbruch des Syntax Checks !");
+        int j = gui.OkDialog("Fataler Fehler","Der Fehler führt zum Abbruch des Syntax Checks !");
       }
     }
     else {
-
       // Checkt die States.
       if (sc.state == null) {
         mcm.addError(311,"uebergebene Statechart");
-        if ( outputGUI == true ) { gui.userMessage("Check: Der Check für die Überprüfung der States wurde nicht ausgeführt."); }
-      }
-      else if (sc.cnames == null) {
-        mcm.addError(310,"uebergebene Statechart");
-        s2 = getT();
-        TestStates ts = new TestStates(sc, mcm);
-        NoStateError = ts.check();
-        e2 = getT();
-        //if ( outputGUI == true ) { gui.userMessage("Check: Der Check für die Überprüfung der States wurde nicht ausgeführt."); }
+        if ( outputGUI == true ) {
+          gui.userMessage("Check: Der Check für die Überprüfung der States wurde nicht ausgeführt.");
+        }
       }
       else {
-        s2 = getT();
+        if (sc.cnames == null) { mcm.addError(310,"uebergebene Statechart"); }
+        s2 = getTimeC();
         TestStates ts = new TestStates(sc, mcm);
         NoStateError = ts.check();
-        e2 = getT();
-        if ( outputGUI == true ) { gui.userMessage("Check: Keine Fehler während der Überprüfung der States gefunden."); }
+        e2 = getTimeC();
+        if ( outputGUI == true & NoStateError == true) { gui.userMessage("Check: Keine Fehler während der Überprüfung der States gefunden."); }
       }
-
       // Checkt die Transitionen.
       if (sc.state == null) {
         mcm.addError(420,"uebergebene Statechart");
-        if ( outputGUI == true ) { gui.userMessage("Check: Der Check für die Überprüfung der Transitionen wurde nicht ausgeführt."); }
+        if ( outputGUI == true ) {
+          gui.userMessage("Check: Der Check für die Überprüfung der Transitionen wurde nicht ausgeführt.");
+        }
       }
       else {
-        s3 = getT();
+        s3 = getTimeC();
         TestTransitions tt = new TestTransitions(sc,mcm);
         NoTransError = tt.check();
-        e3 = getT();
+        e3 = getTimeC();
         if ( outputGUI == true & NoTransError == true ) {
           gui.userMessage("Check: Keine Fehler während der Überprüfung der Transitions gefunden.");
         }
       }
-
       // Checkt die Events.
-      if (sc.events == null) {
-        mcm.addWarning(210,"uebergebene Statechart");
-        s4 = getT();
-        TestEvents te = new TestEvents(sc, mcm);
-        NoEventError = te.check();
-        e4 = getT();
-        //if ( outputGUI == true ) { gui.userMessage("Check: Der Check für die Überprüfung der Events wurde nicht ausgeführt."); }
+      if (sc.events == null) { mcm.addWarning(210,"uebergebene Statechart"); }
+      s4 = getTimeC();
+      TestEvents te = new TestEvents(sc, mcm);
+      NoEventError = te.check();
+      e4 = getTimeC();
+      if ( outputGUI == true & NoEventError == true ) {
+        gui.userMessage("Check: Keine Fehler während der Überprüfung der Events gefunden.");
       }
-      else {
-        s4 = getT();
-        TestEvents te = new TestEvents(sc, mcm);
-        NoEventError = te.check();
-        e4 = getT();
-        if ( outputGUI == true & NoEventError == true ) { gui.userMessage("Check: Keine Fehler während der Überprüfung der Events gefunden."); }
-      }
-
       // Checkt die booleschen Variablen.
-      if (sc.bvars == null) {
-        mcm.addWarning(110,"uebergebene Statechart");
-        s5 = getT();
-        TestBVars tb = new TestBVars(sc, mcm);
-        NoBooleanError = tb.check();
-        e5 = getT();
-        //if ( outputGUI == true ) { gui.userMessage("Check: Der Check für die Überprüfung der Booleschen Variablen wurde nicht ausgeführt."); }
+      if (sc.bvars == null) { mcm.addWarning(110,"uebergebene Statechart"); }
+      s5 = getTimeC();
+      TestBVars tb = new TestBVars(sc, mcm);
+      NoBooleanError = tb.check();
+      e5 = getTimeC();
+      if ( outputGUI == true & NoBooleanError == true) {
+        gui.userMessage("Check: Keine Fehler während der Überprüfung der Booleschen Variablen gefunden.");
       }
-      else {
-        s5 = getT();
-        TestBVars tb = new TestBVars(sc, mcm);
-        NoBooleanError = tb.check();
-        e5 = getT();
-        if ( outputGUI == true & NoBooleanError == true) { gui.userMessage("Check: Keine Fehler während der Überprüfung der Booleschen Variablen gefunden."); }
-      }
-
       // Gesamtergebnis erstellen
       result = ( NoEventError & NoBooleanError & NoTransError & NoStateError );
     }
+    e0 = getTimeC();
 
-    e0 = getT();
-    
-    System.out.println("");
-    System.out.println("Dauer in Sekunden fuer Check auf:");
-    System.out.println("- fatale Fehler: " + getS(s1,e1));
-    if ( NoFatalError == true ) {
-      System.out.println("- States       : " + getS(s2,e2));
-      System.out.println("- Transitionen : " + getS(s3,e3));
-      System.out.println("- Events       : " + getS(s4,e4));
-      System.out.println("- BVars        : " + getS(s5,e5));
+    if ( Zeitnahme == true ) { // Dauer ausgeben
+      System.out.println("");
+      System.out.println("Dauer in Sekunden fuer Check auf:");
+      System.out.println("- fatale Fehler: " + getTimeDif(s1,e1));
+      if ( NoFatalError == true ) {
+        System.out.println("- States       : " + getTimeDif(s2,e2));
+        System.out.println("- Transitionen : " + getTimeDif(s3,e3));
+        System.out.println("- Events       : " + getTimeDif(s4,e4));
+        System.out.println("- BVars        : " + getTimeDif(s5,e5));
+      }
+      System.out.println("=================================");
+      System.out.println("- alles        : " + getTimeDif(s0,e0));
+      System.out.println("");
     }
-    System.out.println("=================================");
-    System.out.println("- alles        : " + getS(s0,e0));
-    System.out.println("");
 
-    mcm.sort();
-    if ( outputGUI == true ) { outputToGUI(); }
+    mcm.sort(); // Meldungen sortieren
+    if ( outputGUI == true ) { outputToGUI(); } // Ausgabe an die GUI
     return result;
   };
 
 
-  private long getT() {
+  // Zeit auslesen
+  private long getTimeC() {
     Date now = new Date();
     return now.getTime();
   }
 
-  private float getS(long s, long e) {
+  // Dauer berechnen
+  private float getTimeDif(long s, long e) {
     float f=0;
     // System.out.println(s + " " + e);
     if ( e != s ) { f = ((float)(e-s))/100; }      //  
     return f;
   }
-
 
 
 /**
@@ -241,14 +222,24 @@ public class ModelCheck {
     catch (Exception e) { System.out.println(e); }
   }
 
+  // Ausgabe an die GUI
   void outputToGUI() {
-
     if (getErrorNumber()>0) {
-      gui.userMessage( "Check: Fehlermeldungen ( Anzahl: " + getErrorNumber() +  " ):");
-      for (int i=1;(i<=getErrorNumber());i++) {gui.userMessage("Check: "+getError(i) ); } }
+      gui.userMessage("Check:");
+      gui.userMessage("Check: Fehlermeldungen ( Anzahl: " + getErrorNumber() +  " ):");
+      for (int i=1; (i<=getErrorNumber()); i++) {
+        gui.userMessage("Check: - "+getErrorMsg(i)+" ("+getErrorCode(i)+")" );
+        gui.userMessage("Check:   ["+getErrorPath(i)+"]");
+      }
+    }
     if (getWarningNumber()>0) {
-      gui.userMessage( "Check: Warnmeldungen ( Anzahl: " + getWarningNumber() +  " ):");
-      for (int i=1;(i<=getWarningNumber());i++) {gui.userMessage("Check: "+getWarning(i) ); } }
+      gui.userMessage("Check:");
+      gui.userMessage("Check: Warnmeldungen ( Anzahl: " + getWarningNumber() +  " ):");
+      for (int i=1; (i<=getWarningNumber()); i++) {
+        gui.userMessage("Check: - "+getWarningMsg(i)+" ("+getWarningCode(i)+")" );
+        gui.userMessage("Check:   ["+getWarningPath(i)+"]");
+      }
+    }
   }
 
 /**
@@ -346,6 +337,7 @@ public class ModelCheck {
  *<TR><TD ALIGN="right">21</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Fataler Fehler: EIN Objekt des Typs Label wird in Transitionen mehrfach referenziert.</TD></TR>
  *<TR><TD ALIGN="right">22</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Fataler Fehler: EIN Objekt des Typs Guard wird in Transitionen mehrfach referenziert.</TD></TR>
  *<TR><TD ALIGN="right">23</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Fataler Fehler: EIN Objekt des Typs Action wird in Transitionen mehrfach referenziert.</TD></TR>
+ *<TR><TD ALIGN="right">24</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Fataler Fehler: EIN Objekt des Typs Aseq ist ein Nullpointer.</TD></TR>
  *<TR><TD ALIGN="right">99</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Aufgrund eines fatalen Fehlers wird der Syntax Check abgebrochen.</TD></TR>
  *<TR><TD ALIGN="right">100</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Doppelte Definition von BVar</TD></TR>
  *<TR><TD ALIGN="right">101</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Keine Deklaration von BVar</TD></TR>
@@ -368,6 +360,10 @@ public class ModelCheck {
  *<TR><TD ALIGN="right">308</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Der Statename ist ein leerer String</TD></TR>
  *<TR><TD ALIGN="right">310</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Die Statechart enthält keine Pfadliste.</TD></TR>
  *<TR><TD ALIGN="right">311</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Die Statechart enthält keine States.</TD></TR>
+ *<TR><TD ALIGN="right">312</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Zu diesem Defaultconnector gibt es keinen State.</TD></TR>
+ *<TR><TD ALIGN="right">313</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Der Defaultconnector ist mehrfach eingetragen.</TD></TR>
+ *<TR><TD ALIGN="right">314</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>In diesem State gibt es keinen Defaultcon.</TD></TR>
+ *<TR><TD ALIGN="right">315</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>IN diesem State gibt es mehr als einen Defaultcon.</TD></TR>
  *<TR><TD ALIGN="right">400</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Der Start-State der Transition ist nicht definiert.</TD></TR>
  *<TR><TD ALIGN="right">401</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Der Ziel-State der Transition ist nicht definiert.</TD></TR>
  *<TR><TD ALIGN="right">402</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Beide States der Transition sind nicht definiert.</TD></TR>
@@ -392,6 +388,7 @@ public class ModelCheck {
  *<TR><TD ALIGN="right">421</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Dieser Connector ist Teil eines Zyklus.</TD></TR>
  *<TR><TD ALIGN="right">422</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Die Transition ist an ihrem Startpunkt nicht durch andere Transitionen mit einem Startstate verbunden.</TD></TR>
  *<TR><TD ALIGN="right">423</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Die Transition ist an ihrem Zielpunkt nicht durch andere Transitionen mit einem Zielstate verbunden.</TD></TR>
+ *<TR><TD ALIGN="right">423</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Der Guard hat den Typ GuardUndet.</TD></TR>
  *<TR><TD ALIGN="right">X</TD><TD ALIGN="center">X</TD><TD ALIGN="center">X</TD><TD>unbekannter Code</TD></TR>
  *</Table>
  * @param _number Index der Warnung (1 bis getWarningNumber() )

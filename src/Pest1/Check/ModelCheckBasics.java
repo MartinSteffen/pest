@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: ModelCheckBasics.java,v 1.6 1999-01-07 15:18:58 swtech11 Exp $
+ *  @version  $Id: ModelCheckBasics.java,v 1.7 1999-01-10 16:06:36 swtech11 Exp $
  */
 class ModelCheckBasics {
   ModelCheckMsg msg = new ModelCheckMsg();
@@ -20,16 +20,6 @@ class ModelCheckBasics {
   }
 
 
-  // gibt den kompletten Pfad des States _n zurueck, d.h. _p + "." +_n
-  String getAddPathPart(String _p, String _n) {   // _p Pfad, _n Name des States
-    String _np = new String();
-    if (_p.equals("")) { _np = _n; } else { _np = _p + ts + _n; }
-    return _np;
-  }
-
-
-
-
 // ******* Methoden, um sich durch den Baum zu hangeln ********************
 
   // Transition bearbeiten und evtl. naechste aufrufen
@@ -37,15 +27,12 @@ class ModelCheckBasics {
     if (tl.tail != null) { navTransInTransList(tl.tail); }
   }
 
-
-
   // Transition bearbeiten und evtl. naechste aufrufen
   void navTransInTransList(TrList tl, State _s, String p) {
            // _s enthält den State, indem die Transition liegt
            //  p gibt den Pfad des States _s zurück, indem die Transition liegt
     if (tl.tail != null) { navTransInTransList(tl.tail, _s, p); }
   }
-
 
   // Art des States festellen und evtl. naechsten aufrufen
   void navStateInStateList(StateList sl) {
@@ -107,10 +94,11 @@ class ModelCheckBasics {
 
 
 // ******* Methoden, um eine Pfadliste aus den bestehenden States einer Statechart zu extrahieren
+// *******       und um auf den Pfaden zu arbeiten
 
+  // ertstellt eine Pathliste
   Vector getPathListFromState(State _s) {
     Vector plv = new Vector();
-
     if (_s instanceof Or_State) {toOrState ((Or_State)_s, "", plv); }
     if (_s instanceof And_State) {toAndState ((And_State)_s, "", plv); }
     if (_s instanceof Basic_State) {
@@ -141,24 +129,29 @@ class ModelCheckBasics {
     if (sl.tail != null) { tonavStateInStateList(sl.tail, p, plv); }
   }
 
-    /** prueft ob zwei Pfade gleich sind.*/
-
+  /** prueft ob zwei Pfade gleich sind.*/
   boolean Pathequal(Path p1, Path p2){
-  boolean b=(p1.head == p2.head);
-  if ((b==true) && (p1.tail!=null) && (p2.tail!=null)) {b=Pathequal(p1.tail, p2.tail);}
-  if ((b==true) &&
-      (((p1.tail!=null) && (p2.tail==null)) ||
-       ((p1.tail==null) && (p2.tail!=null))))  {b=false;}
-  return b;
+    boolean b=(p1.head == p2.head);
+    if ((b==true) && (p1.tail!=null) && (p2.tail!=null)) {b=Pathequal(p1.tail, p2.tail);}
+    if ((b==true) &&
+        (((p1.tail!=null) && (p2.tail==null)) ||
+         ((p1.tail==null) && (p2.tail!=null))))  {b=false;}
+    return b;
   };
-  
-    /** Wandelt einen Pfad in einen String um.*/
-  
-    String PathtoString(Path p) {
+
+  /** Wandelt einen Pfad in einen String um.*/
+  String PathtoString(Path p) {
     String s=p.head;
-       p=p.tail;
-       for(;p!=null; p=p.tail) {s=s+"."+p.head;};
-      return s;
-   }
+    p=p.tail;
+    for(;p!=null; p=p.tail) {s=s+"."+p.head;};
+    return s;
+  }
+
+  // gibt den kompletten Pfad des States _n zurueck, d.h. _p + "." +_n
+  String getAddPathPart(String _p, String _n) {   // _p Pfad, _n Name des States
+    String _np = new String();
+    if (_p.equals("")) { _np = _n; } else { _np = _p + ts + _n; }
+    return _np;
+  }
 
 }

@@ -2,7 +2,7 @@ package check;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: ErrorAndWarningCodes.java,v 1.21 1999-01-08 17:14:40 swtech11 Exp $
+ *  @version  $Id: ErrorAndWarningCodes.java,v 1.22 1999-01-10 16:06:34 swtech11 Exp $
  */
 class ErrorAndWarningCodes {
   ErrorAndWarningCodes() {
@@ -33,7 +33,8 @@ class ErrorAndWarningCodes {
       case  21: { _s = "Fataler Fehler: EIN Objekt des Typs Label wird in Transitionen mehrfach referenziert."; break;  }
       case  22: { _s = "Fataler Fehler: EIN Objekt des Typs Gauard wird in Transitionen mehrfach referenziert."; break;  }
       case  23: { _s = "Fataler Fehler: EIN Objekt des Typs Actions wird in Transitionen mehrfach referenziert."; break;  }
-    case  24: { _s = "Fataler Fehler: EIN Objekt des Typs Aseq ist ein Nullpointer."; break;  }
+
+      case  24: { _s = "Fataler Fehler: EIN Objekt des Typs Aseq ist ein Nullpointer."; break;  }
 
       case  99: { _s = "Aufgrund eines fatalen Fehlers wird der Syntax Check abgebrochen."; break;  }
 
@@ -60,7 +61,7 @@ class ErrorAndWarningCodes {
       case 308: {_s = "Der Statename ist ein leerer String"; break; }
       case 310: {_s = "Die Statechart enthält keine Pfadliste."; break; }
       case 311: {_s = "Die Statechart enthält keine States."; break; }
-    case 312: {_s = "Zu diesem Defaultconnector gibt es keinen State."; break; }
+      case 312: {_s = "Zu diesem Defaultconnector gibt es keinen State."; break; }
       case 313: {_s = "Der Defaultconnector ist mehrfach eingetragen."; break; }
       case 314: {_s = "In diesem State gibt es keinen Defaultcon."; break; }
       case 315: {_s = "IN diesem State gibt es mehr als einen Defaultcon."; break; }
@@ -89,7 +90,7 @@ class ErrorAndWarningCodes {
       case 421: {_s = "Dieser Connector ist Teil eines Zyklus."; break;}
       case 422: {_s = "Die Transition ist an ihrem Startpunkt nicht durch andere Transitionen mit einem Startstate verbunden."; break;}
       case 423: {_s = "Die Transition ist an ihrem Zielpunkt nicht durch andere Transitionen mit einem Zielstate verbunden."; break;}
-    case 424: {_s = "Der Guard hat den Typ GuardUndet."; break;}
+      case 424: {_s = "Der Guard hat den Typ GuardUndet."; break;}
 
       default:  _s = "Dieser Code wurde noch nicht erfasst.";
     }
