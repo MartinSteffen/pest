@@ -4,7 +4,7 @@
  * Created: Fri Dec 04 1998, 00:00:00
  *
  * @author Developed by Eike Schulz for swtech14.
- * @version $Id: AlgorithmException.java,v 1.6 1999-02-11 14:04:20 swtech14 Exp $
+ * @version $Id: AlgorithmException.java,v 1.7 1999-02-12 16:25:59 swtech14 Exp $
  *
  *
  * Exception-Klasse fuer die Fehler-/Exception-Behandlung bzgl. GraphOptimizer.
@@ -13,7 +13,7 @@
 package tesc2;
 
 
-class AlgorithmException extends Exception {
+public class AlgorithmException extends Exception {
 
   // In diesem String wird der uebergebene Fehlertext gespeichert.
   private String Errortext;
@@ -22,7 +22,7 @@ class AlgorithmException extends Exception {
    * Konstuktor fuer Algorithmusfehler-Exception (default).
    */
 
-  AlgorithmException () {
+  public AlgorithmException () {
     super ();
   } // constructor AlgorithmException ()
 
@@ -31,7 +31,7 @@ class AlgorithmException extends Exception {
    * Konstuktor fuer Algorithmusfehler-Exception (String).
    */
 
-  AlgorithmException (String msg) {
+  public AlgorithmException (String msg) {
     super (msg);
     Errortext = msg;
   } // constructor AlgorithmException (String)
