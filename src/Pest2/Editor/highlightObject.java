@@ -12,161 +12,143 @@ package editor;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.io.*;
 import absyn.*;
 
 public class highlightObject {
 
-    Color defaultcolor = Color.red;
-    static Graphics h;
+    static Editor editor = Editor.getRef();
+    static HltList list = null;
+
+    public highlightObject(State obj)
+    {
+         deleteObject(obj);
+    }
+
+    public highlightObject(State obj,Color col)
+    {
+        if (obj instanceof Basic_State)
+            new highlightObject((Basic_State)obj,col);
+        if (obj instanceof Or_State)
+            new highlightObject((Or_State)obj,col);
+        if (obj instanceof And_State)
+            new highlightObject((And_State)obj,col);
+    }
+    public highlightObject(Basic_State obj)
+    {
+        deleteObject(obj);
+    }
     public highlightObject(Basic_State obj, Color col)
     {
         if (obj != null)
-            highlight(obj,col);
+            list = new HltList(new Hlt(obj,col),list);
+        showHlt();
+    }
+
+    public highlightObject(And_State obj)
+    {
+        deleteObject(obj);
     }
     public highlightObject(And_State obj, Color col)
     {
         if (obj != null)
-            highlight(obj,col);
+            list = new HltList(new Hlt(obj,col),list);
+        showHlt();
+    }
+
+    public highlightObject(Or_State obj)
+    {
+        deleteObject(obj);
     }
     public highlightObject(Or_State obj, Color col)
     {
         if (obj != null)
-            highlight(obj,col);
+            list = new HltList(new Hlt(obj,col),list);
+        showHlt();
     }
 
+    public highlightObject(Tr obj)
+    {
+        deleteObject(obj);
+    }
     public highlightObject(Tr obj, Color col)
     {
         if (obj != null)
-        highlight(obj,col);
+            list = new HltList(new Hlt(obj,col),list);
+        showHlt();
     }
 
+    public highlightObject(Connector obj)
+    {
+        deleteObject(obj);
+    }
     public highlightObject(Connector obj, Color col)
     {
         if (obj != null)
-            highlight(obj,col);
+            list = new HltList(new Hlt(obj,col),list);
+        showHlt();
+    }
+    public highlightObject(boolean clear)
+    {
+        if(clear) list = null;
     }
 
-    private void highlight(State obj, Color col)
+    public highlightObject()
     {
-        writeData(obj,col);
+        showHlt();
     }
 
-    private void highlight(Tr obj, Color col)
+    private void deleteObject(Absyn obj)
     {
-        writeData(obj,col);
-    }
-
-    private void highlight(Connector obj, Color col)
-    {
-        writeData(obj,col);
-    }
-
-    private void writeData(State obj, Color col)
-    {
-        File fi = new File("highlight.dat");
-        try
+        HltList hlist = list;
+        while (hlist != null)
         {
-            RandomAccessFile file = new RandomAccessFile (fi,"rw");
-            file.seek(file.length());
-            file.writeUTF(translateToString(obj,col));
-            file.close();
-
+            if (hlist.head.obj.equals(obj))
+            {
+                HltList copy = null;
+                hlist = list;
+                while (hlist != null)
+                {
+                    if (!hlist.head.obj.equals(obj))
+                    {
+                        copy = new HltList(hlist.head,copy);
+                    }
+                    hlist = hlist.tail;
+                }
+                list = copy;
+                return;
+            }
+            hlist = hlist.tail;
         }
-        catch(IOException e){}
+        showHlt();
     }
-
-    private void writeData(Tr obj, Color col)
+    private void showHlt()
     {
-        File fi = new File("highlight.dat");
-        String objType = "";
-        objType = translateToString(obj,col);
-        try
+        HltList hlist = list;
+        while (hlist != null)
         {
-            RandomAccessFile file = new RandomAccessFile (fi,"rw");
-            file.seek(file.length());
-            file.writeUTF(objType);
-            file.close();
+            Methoden_0.showHltObject(hlist.head.obj,hlist.head.color,editor);
+            hlist = hlist.tail;
         }
-        catch(IOException e){}
     }
+}
 
-    private void writeData(Connector obj, Color col)
+class Hlt
+{
+    Absyn obj;
+    Color color;
+    public Hlt(Absyn o, Color c)
     {
-        File fi = new File("highlight.dat");
-        String objType = "";
-
-        if (obj instanceof Connector)
-        {
-            Connector con  = (Connector)obj;
-            objType = translateToString(con,col);
-        }
-        try
-        {
-            RandomAccessFile file = new RandomAccessFile (fi,"rw");
-            file.seek(file.length());
-            file.writeUTF(objType);
-            file.close();
-
-        }
-        catch(IOException e){}
+        obj = o;
+        color = c;
     }
-
-    private String getColorString(Color col)
+}
+class HltList
+{
+    Hlt head;
+    HltList tail;
+    public HltList(Hlt h, HltList t)
     {
-        if (col == Color.black) return "black";
-        if (col == Color.blue) return "blue";
-        if (col == Color.cyan) return "cyan";
-        if (col == Color.darkGray) return "darkGray";
-        if (col == Color.gray) return "gray";
-        if (col == Color.green) return "green";
-        if (col == Color.lightGray) return "lightGray";
-        if (col == Color.magenta) return "magenta";
-        if (col == Color.orange) return "orange";
-        if (col == Color.pink) return "pink";
-        if (col == Color.red) return "red";
-        if (col == Color.white) return "white";
-        if (col == Color.yellow) return "yellow";
-        return "red";
-    }
-
-    private String translateToString(State obj, Color col)
-    {
-        String color = getColorString(col);
-        String stateType = "LMBasic_State";
-        if (obj instanceof Or_State)
-            stateType = "LMOr_State";
-        if (obj instanceof And_State)
-            stateType = "LMAnd_State";
-            State state = (State) obj;
-        if (obj instanceof Or_State | obj instanceof And_State | obj instanceof Basic_State)
-            return(new String(stateType+"&|&"+state.name.name+"&|&"+
-                   state.rect.x+"&|&"+state.rect.y+"&|&"+state.rect.width+
-                   "&|&"+state.rect.height+"&|&"+color+"&|&"+"\n"));
-        return "";
-    }
-
-    private String translateToString(Tr obj, Color col)
-    {
-        String color = getColorString(col);
-        String caption = obj.label.caption;
-        if (caption == "") caption = ".";
-        if (obj instanceof Tr){
-            Tr tr = (Tr)obj;
-            return (new String("LMTransition"+"&|&"+caption+"&|&"+
-                    tr.points[0].x+"&|&"+tr.points[0].y+"&|&"+
-                    tr.points[1].x+"&|&"+tr.points[1].y+"&|&"+color+"&|&"+"\n"));
-        }
-        return "";
-    }
-
-    private String translateToString(Connector obj, Color col)
-    {
-        String color = getColorString(col);
-        String name = obj.name.name;
-        if (name == "") name = ".";
-        return (new String("LMConnector"+"&|&"+name+"&|&"+
-                obj.position.x+"&|&"+obj.position.y+"&|&"+
-                "0"+"&|&"+"0"+"&|&"+color+"&|&"+"\n"));
+        head = h;
+        tail = t;
     }
 }

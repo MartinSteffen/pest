@@ -157,6 +157,7 @@ public class EditorUtils {
             else {
                 orFather.substates = new StateList(newState, orFather.substates);
             }
+	    editor.gui.StateChartHasChanged();
         }
         else {  // Zustand wieder vom Fenster loeschen
                 show(editor.newRect, editor.getBackground(), editor, g);
@@ -497,6 +498,7 @@ public class EditorUtils {
 
             editor.stateList = getSubStateList(editor.statechart.state);
             setPathList(editor.statechart, editor);
+	    editor.gui.StateChartHasChanged();
         }
         else { // action nicht ok
             // loesche eine evtl. schon gezeigte Linie
@@ -514,7 +516,6 @@ public class EditorUtils {
             StateList list = editor.stateList;
             Graphics g = editor.getGraphics();
 
-            g.setColor(Color.red);
             StateList help = list;
             while (help != null) {
                 show(abs(editor, help.head), Color.red, editor, g);
@@ -528,6 +529,8 @@ public class EditorUtils {
 
     public static void show(Rectangle absRect, Color color, Editor editor,
                             Graphics g) {
+        if (color.equals(Color.red))
+             color = editor.gui.getStatecolor();
         g.setColor(color);
         g.drawRoundRect((int)((double)(absRect.x*Methoden_1.getFactor()))
                             -editor.scrollX,
@@ -583,6 +586,8 @@ public class EditorUtils {
     public static void showAndLine(Point start, Point end, Color color, Editor editor, MouseEvent e) {
         // start und end haben absolute Koordinaten bzgl. des abs. Ursprunges
         Graphics g = editor.getGraphics();
+	if (color.equals(Color.red))
+	     color = editor.gui.getStatecolor();
         g.setColor(color);
         double factor = Methoden_1.getFactor();
 
@@ -715,7 +720,7 @@ public class EditorUtils {
         TrList altTrs = null;
         while (trList != null) {
 
-            if (abs(editor,neu).contains(abs(editor,trList.head.points[0],alt)))
+            if (abs(editor,neu,alt).contains(abs(editor,trList.head.points[0],alt)))
                 neu.trs = new TrList(trList.head, neu.trs);
             else altTrs = new TrList(trList.head, altTrs);
             trList = trList.tail;
@@ -829,6 +834,7 @@ public class EditorUtils {
 
         CRectangle fatherAbsRect = abs(editor, state);
 
+	System.out.println("fatherAbsRect:"+fatherAbsRect.x+","+fatherAbsRect.y);
         return new Point(fatherAbsRect.x + point.x,
                          fatherAbsRect.y + point.y);
     }
@@ -965,6 +971,7 @@ public class EditorUtils {
                         = new StateList(new Basic_State(grandFather.name, grandFather.rect), grandGrandFather.substates);
                 }
             }
+	    editor.gui.StateChartHasChanged();
         }
         editor.stateList = getSubStateList(editor.statechart.state);
         setPathList(editor.statechart, editor);
@@ -999,16 +1006,17 @@ public class EditorUtils {
                     else help = help.tail;
                 }
             }
-            if (((Or_State) in).defaults.head.equals(delState.name))
-                ((Or_State) in).defaults = ((Or_State) in).defaults.tail;
-            else {
-                help2 = ((Or_State) in).defaults;
-                while (help2.tail != null) {
-                    if (help2.tail.head.equals(delState.name)) 
-                         help2.tail = help2.tail.tail;
-                    else help2 = help2.tail;
-                }
-            }
+	    if (((Or_State) in).defaults != null)
+              if (((Or_State) in).defaults.head.equals(delState.name))
+                  ((Or_State) in).defaults = ((Or_State) in).defaults.tail;
+              else {
+                  help2 = ((Or_State) in).defaults;
+                  while (help2.tail != null) {
+                      if (help2.tail.head.equals(delState.name)) 
+                           help2.tail = help2.tail.tail;
+                      else help2 = help2.tail;
+                  }
+              }
         }
         if (in instanceof And_State) 
             if (((And_State) in).substates.head.equals(delState))
@@ -1144,6 +1152,7 @@ public class EditorUtils {
             int deltaY = editor.endPoint.y - editor.startPoint.y;
             editor.activeState.rect.x = editor.activeState.rect.x - deltaX;
             editor.activeState.rect.y = editor.activeState.rect.y - deltaY;
+	    editor.gui.StateChartHasChanged();
         }
         editor.repaint();
     }

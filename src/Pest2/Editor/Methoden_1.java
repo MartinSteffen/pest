@@ -60,6 +60,7 @@ public class Methoden_1
             changeTransName(name,x,y,editor);
             editor.repaint();
             editor.setChangedStatechart(true);
+	    editor.gui.StateChartHasChanged();
         }
     }
 
@@ -74,6 +75,7 @@ public class Methoden_1
             changeTransName(name,x,y,editor);
             editor.repaint();
             editor.setChangedStatechart(true);
+	    editor.gui.StateChartHasChanged();
         }
     }
 
@@ -88,6 +90,7 @@ public class Methoden_1
             con.name.name = name;
             editor.repaint();
             editor.setChangedStatechart(true);
+	    editor.gui.StateChartHasChanged();
         }
     }
 
@@ -125,6 +128,7 @@ public class Methoden_1
             trans.label.position = new CPoint(Betrag(r.x,x),Betrag(r.y,y));
             editor.repaint();
             editor.setChangedStatechart(true);
+	    editor.gui.StateChartHasChanged();
         }
     }
 
@@ -218,16 +222,13 @@ public class Methoden_1
 
     public static ObjectList getObjects(Rectangle rect, Editor editor)
     {
-	if (rect == null) return null;
         ObjectList objList = null;
         Or_State os = (Or_State)(editor.statechart.state);
         Rectangle r = Methoden_0.abs(editor,os);
-	if (r == null) return null;
-	ConnectorList clist = os.connectors;
+        ConnectorList clist = os.connectors;
         TrList tlist = os.trs;
         while (clist != null) //fuer root-State
         {
-	    if (clist.head.position == null){clist = clist.tail;continue;}
             if (rect.contains(clist.head.position.x+r.x,clist.head.position.y+r.y))
             {
                 objList = new ObjectList(clist.head, objList);
@@ -252,7 +253,6 @@ public class Methoden_1
                 clist = ((Or_State)(list.head)).connectors;
             while (clist != null)
             {
-		if (clist.head.position == null){clist = clist.tail;continue;}
                 if (rect.contains(clist.head.position.x+r.x,clist.head.position.y+r.y))
                 {
                     objList = new ObjectList(clist.head, objList);
@@ -429,6 +429,7 @@ public class Methoden_1
         TrList list = new TrList(tr,os.trs);
         os.trs = list;
         editor.setChangedStatechart(true);
+       	editor.gui.StateChartHasChanged();
     }
     private static Tr getNewPosTrans(Tr tr, Point p, int x, int y)
     {
@@ -625,6 +626,7 @@ public class Methoden_1
                     markLast = null;
                     editor.repaint();
                     editor.setChangedStatechart(true);
+		    editor.gui.StateChartHasChanged();
                     return;
             }
                 copy = new TrList(tlist.head,copy);
@@ -650,7 +652,8 @@ public class Methoden_1
                         markLast = null;
                         editor.repaint();
                         editor.setChangedStatechart(true);
-                        return;
+			editor.gui.StateChartHasChanged();
+                    return;
                     }
                     copy = new TrList(tlist.head,copy);
                     tlist = tlist.tail;
@@ -770,6 +773,7 @@ public class Methoden_1
         ConnectorList clist = new ConnectorList(con,os.connectors);
         os.connectors = clist;
         editor.setChangedStatechart(true);
+       	editor.gui.StateChartHasChanged();
         Methoden_0.updateAll(editor);
     }
 /*
@@ -807,6 +811,7 @@ public class Methoden_1
                 markLast = null;
                 editor.repaint();
                 editor.setChangedStatechart(true);
+		editor.gui.StateChartHasChanged();
                 return;
             }
             copy = new ConnectorList(clist.head,copy);
@@ -832,7 +837,8 @@ public class Methoden_1
                         markLast = null;
                         editor.repaint();
                         editor.setChangedStatechart(true);
-                        return;
+			editor.gui.StateChartHasChanged();
+			return;
                     }
                     copy = new ConnectorList(clist.head,copy);
                     clist = clist.tail;
@@ -867,7 +873,7 @@ public class Methoden_1
     Parameter: tr: die zuveraendende Transition
                p: absolute Koordinate desjenigen Or_States
 */
-    public static void changeTrAnchorOf(Tr tr, Point p,Editor editor)
+    private static void changeTrAnchorOf(Tr tr, Point p,Editor editor)
     {
         Absyn source = null, target = null;
         TrAnchor s=null,t=null;
@@ -900,7 +906,6 @@ public class Methoden_1
     {
         StateList list = editor.stateList;
         TrList tlist = null;
-	if (!(editor.statechart.state instanceof Or_State)) return;
         tlist = ((Or_State)(editor.statechart.state)).trs;
         Rectangle r = editor.statechart.state.rect;
         Rectangle rect = new Rectangle();
@@ -952,221 +957,6 @@ public class Methoden_1
             list = list.tail;
         }
     }
-
-    public static void startSimulation(Editor editor)
-    {
-        HighlightList list = getHighlightList(editor);
-        findAndSimuList(list,editor);
-    }
-
-    private static HighlightList getHighlightList(Editor editor)
-    {
-        HighlightList list = null;
-        try
-        {
-            Highlight hl = null;
-            int y1,y2,y3,y4;
-            Color col;
-            String s = "";
-            String a="",name,x1,x2,x3,x4,c,neu="";
-            StringTokenizer st, stleer;
-            LineNumberReader r = new LineNumberReader(new InputStreamReader(new FileInputStream("highlight.dat")));
-            while((s = r.readLine()) != null){
-                st = new StringTokenizer(s,"&|&");
-                while(st.hasMoreElements())
-                {
-                    try
-                    {
-                        a = st.nextToken();
-                        stleer = new StringTokenizer(a,"LM");
-                        while(stleer.hasMoreElements())
-                            a = stleer.nextToken();
-                        name = st.nextToken();
-                        x1 = st.nextToken();
-                        x2 = st.nextToken();
-                        x3 = st.nextToken();
-                        x4 = st.nextToken();
-                        c = st.nextToken();
-                        Integer i = new Integer(x1);
-                        y1 = i.intValue();
-                        i = new Integer(x2);
-                        y2 = i.intValue();
-                        i = new Integer(x3);
-                        y3 = i.intValue();
-                        i = new Integer(x4);
-                        y4 = i.intValue();
-                        hl = new Highlight(a,name,y1,y2,y3,y4,getColor(c));
-                        list = new HighlightList (hl,list);
-                    }
-                    catch(NoSuchElementException e) {};
-                }
-            }
-            r.close();
-        }
-        catch(IOException e){}
-        File file = new File("highlight.dat");
-        if (file.exists()) file.delete();
-        return list;
-    }
-
-    private static Color getColor(String s)
-    {
-        if (s.equals("black")) return Color.black;
-        if (s.equals("blue")) return Color.blue;
-        if (s.equals("cyan")) return Color.cyan;
-        if (s.equals("darkGray")) return Color.darkGray;
-        if (s.equals("gray")) return Color.gray;
-        if (s.equals("green")) return Color.green;
-        if (s.equals("lightGray")) return Color.lightGray;
-        if (s.equals("magenta")) return Color.magenta;
-        if (s.equals("orange")) return Color.orange;
-        if (s.equals("red")) return Color.red;
-        if (s.equals("white")) return Color.white;
-        if (s.equals("yellow")) return Color.yellow;
-        return Color.green;
-    }
-
-
-    private static void findAndSimuList(HighlightList hlist, Editor editor)
-    {
-        StateList list = editor.stateList;
-        while (hlist != null)
-        {
-            if (hlist.head.art.equals("Basic_State"))
-            {
-                Basic_State s = findB_State(hlist.head,editor);
-                if (s != null)
-                markState(s,hlist.head.color,editor);
-            }
-            if (hlist.head.art.equals("Or_State"))
-            {
-                Or_State s = findO_State(hlist.head,editor);
-                if (s != null)
-                markState(s,hlist.head.color,editor);
-            }
-            if (hlist.head.art.equals("And_State"))
-            {
-                State s = findA_State(hlist.head,editor);
-                if (s != null)
-                markState(s,hlist.head.color,editor);
-            }
-            if (hlist.head.art.equals("Transition"))
-            {
-                Tr tr = findTr(hlist.head,editor);
-                if (tr != null)
-                markSelectedTr(tr,hlist.head.color,editor);
-            }
-            if (hlist.head.art.equals("Connector"))
-            {
-                Connector con = findCon(hlist.head,editor);
-                if (con != null)
-                markSelectedCon(con,hlist.head.color,editor);
-            }
-            hlist = hlist.tail;
-        }
-    }
-
-    private static Basic_State findB_State(Highlight hl, Editor editor)
-    {
-        StateList list = editor.stateList;
-        Rectangle r = new Rectangle (hl.x1,hl.x2,hl.x3,hl.x4);
-        while (list != null)
-        {
-            if (list.head instanceof Basic_State)
-                if (list.head.name.name.equals(hl.name))
-                    if (list.head.rect.equals(r)) return ((Basic_State)list.head);
-            list = list.tail;
-        }
-        return null;
-    }
-
-    private static Or_State findO_State(Highlight hl, Editor editor)
-    {
-        StateList list = editor.stateList;
-        Rectangle r = new Rectangle (hl.x1,hl.x2,hl.x3,hl.x4);
-        while (list != null)
-        {
-            if (list.head instanceof Or_State)
-                if (list.head.name.name.equals(hl.name))
-                    if (list.head.rect.equals(r)) return ((Or_State)list.head);
-            list = list.tail;
-        }
-        return null;
-    }
-
-    private static And_State findA_State(Highlight hl, Editor editor)
-    {
-        StateList list = editor.stateList;
-        Rectangle r = new Rectangle (hl.x1,hl.x2,hl.x3,hl.x4);
-        while (list != null)
-        {
-            if (list.head instanceof And_State)
-                if (list.head.name.name.equals(hl.name))
-                    if (list.head.rect.equals(r)) return ((And_State)list.head);
-            list = list.tail;
-        }
-        return null;
-
-    }
-
-    private static Tr findTr(Highlight hl, Editor editor)
-    {
-        StateList list = editor.stateList;
-        Point p1 = new Point(hl.x1,hl.x2);
-        Point p2 = new Point(hl.x3,hl.x4);
-        while (list != null)
-        {
-            if (list.head instanceof Or_State)
-            {
-                Or_State os = (Or_State)list.head;
-                TrList tlist = os.trs;
-                while (tlist != null)
-                {
-//                    if (tlist.head.name.name.equals(hl.name))
-                        if (tlist.head.points != null)
-                        {
-                            if (tlist.head.points[0].equals(p1) &
-                                tlist.head.points[1].equals(p2)) return tlist.head;
-                        }
-                    tlist = tlist.tail;
-                }
-            }
-            list = list.tail;
-        }
-        return null;
-    }
-
-    private static Connector findCon(Highlight hl, Editor editor)
-    {
-        StateList list = editor.stateList;
-        Point p1 = new Point(hl.x1,hl.x2);
-        while (list != null)
-        {
-            if (list.head instanceof Or_State)
-            {
-                Or_State os = (Or_State)list.head;
-                ConnectorList clist = os.connectors;
-                while (clist != null)
-                {
-                    if (clist.head.position != null)
-                    {
-                        if (clist.head.position.equals(p1))
-                            return clist.head;
-                    }
-                    clist = clist.tail;
-                }
-            }
-            list = list.tail;
-        }
-        return null;
-    }
-
-    private static void markState(State s, Color col, Editor editor)
-    {
-        Rectangle r = Methoden_0.abs(editor,s);
-        EditorUtils.show(r,col,editor,editor.getGraphics());
-    }
-
 
 /*
     Methode: chechSEventList()

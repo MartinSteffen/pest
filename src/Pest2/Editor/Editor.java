@@ -31,13 +31,13 @@ public class Editor extends Frame implements ActionListener {
     private boolean changedStatechart = false; //fuer listenEditor()
     private String statechartName = "";
 
-    private MenuItem copyOneCon,copyOneTr,insertOne,moveOne,removeOne,moveTransName,simulieren;
+    private MenuItem copyOneCon,copyOneTr,insertOne,moveOne,removeOne,moveTransName;
     private Menu copy = new Menu("Kopieren");
     private Dimension dimension;
     public CheckboxMenuItem cbbezier = new CheckboxMenuItem("Transitionen mit Kurven");
     public int fontsize = 0;
 
-
+    public static Editor edRef = null;
     final Editor editor = this;
 
 /**
@@ -62,10 +62,14 @@ public class Editor extends Frame implements ActionListener {
         setBounds(x,y,width,height);
         gui = gui_interface;
         mainproc();
-        checkHighlight();
+        edRef = this;
+        new highlightObject(true);
     }
 
-
+    public static Editor getRef()
+    {
+        return edRef;
+    }
     private void mainproc() {
 
         EditorUtils.setPathList(statechart, this);
@@ -73,23 +77,11 @@ public class Editor extends Frame implements ActionListener {
         MenuBar mb = new MenuBar();
         setMenuBar(mb);
 
-        Menu datei = new Menu("Datei");
-        mb.add(datei);
-
         Menu bearbeiten = new Menu("Bearbeiten");
         mb.add(bearbeiten);
 
         Menu Extras = new Menu("Extras");
         mb.add(Extras);
-
-        Menu simulation = new Menu("Simulation");
-        mb.add(simulation);
-
-        simulieren = new MenuItem("Simulieren");
-        simulieren.addActionListener(this);
-        simulieren.setActionCommand("Simulieren");
-        simulieren.setEnabled(false);
-        simulation.add(simulieren);
 
         Menu option = new Menu("Option");
         mb.add(option);
@@ -100,13 +92,7 @@ public class Editor extends Frame implements ActionListener {
         Menu Zoom = new Menu("Zoom");
         mb.add(Zoom);
 
-        MenuItem mi = new MenuItem("Neu");
-        mi.addActionListener(this);
-        mi.setActionCommand("Neu");
-        datei.add(mi);
-        datei.addSeparator();
-
-        mi = new MenuItem("Schriftgroesse");
+        MenuItem mi = new MenuItem("Schriftgroesse");
         mi.addActionListener(this);
         mi.setActionCommand("Schriftgroesse");
         option.add(mi);
@@ -442,11 +428,11 @@ public class Editor extends Frame implements ActionListener {
                 }
                 if (status.equals("Zustand benennen"))
                 {
-                    Methoden_1.addStatenameMouseClicked((int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()),(int)((double)(e.getY()+scrollY)/Methoden_1.getFactor())+scrollY,editor);
+                    Methoden_1.addStatenameMouseClicked((int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()),(int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()),editor);
                 }
                 if (status.equals("And_Zustand benennen"))
                 {
-                    Methoden_1.addAndNameMouseClicked((int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()),(int)((double)(e.getY()+scrollY)/Methoden_1.getFactor())+scrollY,editor);
+                    Methoden_1.addAndNameMouseClicked((int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()),(int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()),editor);
                 }
                 if (status.equals("Transition benennen")){
                     Methoden_0.updateAll(editor);
@@ -509,7 +495,7 @@ public class Editor extends Frame implements ActionListener {
                 {
                     Methoden_0.markConMouseMoved((int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()),(int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()),editor);
                 }
-                Methoden_1.showFullTransName((int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()),(int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()),editor);
+	        Methoden_1.showFullTransName((int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()),(int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()),editor);
             }
             public void mouseDragged(MouseEvent e)
             {
@@ -529,11 +515,10 @@ public class Editor extends Frame implements ActionListener {
             public void windowClosing(WindowEvent e) {
                 Window window = e.getWindow();
                 window.dispose();
+                Methoden_1.setFactor(100);
+                new highlightObject(true);
             }
             public void windowActivated(WindowEvent e){
-                File file = new File("highlight.dat");
-                if(file.exists()) simulieren.setEnabled(true);
-                else simulieren.setEnabled(false);
             }
         });
 
@@ -649,8 +634,8 @@ public class Editor extends Frame implements ActionListener {
             try {
                 Statechart help = (Statechart) statechart.clone();
                 if (old.events != null) statechart.events = (SEventList) old.events.clone();
-                if (old.bvars  != null) statechart.bvars  = (BvarList) old.bvars.clone(); 
-                if (old.cnames != null) statechart.cnames = (PathList) old.cnames.clone(); 
+                if (old.bvars  != null) statechart.bvars  = (BvarList) old.bvars.clone();
+                if (old.cnames != null) statechart.cnames = (PathList) old.cnames.clone();
                                         statechart.state  = (State) old.state.clone();
                 old = help;
             }
@@ -666,7 +651,6 @@ public class Editor extends Frame implements ActionListener {
             undo.setLabel("Rueckgaengig:"+command);
             undo.setEnabled(true);
         }
-        if (command.equals("Neu")) {initStatechart();}
 
 //bearbeiten
         if (command.equals("Zustand hinzufuegen")) status = "Zustand hinzufuegen";
@@ -691,9 +675,6 @@ public class Editor extends Frame implements ActionListener {
         if (command.equals("Zustand verschieben")) status = "Zustand verschieben";
 
         if (command.equals("Schriftgroesse")) {setFontSize();repaint();}
-
-        if (command.equals("Simulieren")) {Methoden_1.startSimulation(editor);simulieren.setEnabled(false);}
-
     }
 
     private void setFontSize()
@@ -709,19 +690,6 @@ public class Editor extends Frame implements ActionListener {
             return;
         }
         catch(NumberFormatException e) {fontsize = 0;}
-    }
-
-    private void initStatechart()
-    {
-        if ((gui.YesNoDialog(editor,statechartName,"Aktuelle Statechart wird geloescht")) == 2) return;
-        statechart = new Statechart("UNBENANNT");
-        if (statechart.state == null)  {
-            statechart.state = new Or_State(null, null, null, null, null);
-            statechart.state.name = new Statename("root");
-            statechart.state.rect = new CRectangle(0,0, 4000, 3000);
-        }
-        stateList = EditorUtils.getSubStateList(statechart.state);
-        repaint();
     }
 
     private void initCopy()

@@ -128,6 +128,7 @@ public class Methoden_0
                 EditorUtils.showStates(editor);
                 showAllTrans(editor);
                 editor.setChangedStatechart(true);
+		editor.gui.StateChartHasChanged();
             }
         }
         else if (checkMouseButton(e,3))
@@ -149,6 +150,7 @@ public class Methoden_0
         ConnectorList clist = new ConnectorList(dummy,os.connectors);
         os.connectors = clist;
         editor.setChangedStatechart(true);
+	editor.gui.StateChartHasChanged();
         updateAll(editor);
     }
 
@@ -294,11 +296,8 @@ public class Methoden_0
     {
         StateList list = null;
         Rectangle r = null;
-        Graphics g = null;
         try {
             list = editor.stateList;
-            g = editor.getGraphics();
-            g.setColor(Color.red);
             StateList help = list;
             while (help != null)
             {
@@ -307,7 +306,7 @@ public class Methoden_0
                     Or_State os = (Or_State)help.head;
                     if (os.trs == null) {help = help.tail;continue;}
                     r = abs(editor,help.head);
-                    drawTransition(os.trs,r.x,r.y,editor);
+                    drawTransition(os.trs,r.x,r.y,editor.gui.getTransitioncolor(),editor);
                 }
                 help = help.tail;
             }
@@ -315,10 +314,10 @@ public class Methoden_0
         catch (Exception e) {}
     }
 
-    public static void drawTransition(TrList trlist,int absX, int absY,Editor editor)
+    public static void drawTransition(TrList trlist,int absX, int absY,Color color, Editor editor)
     {
         Graphics g = editor.getGraphics();
-        g.setColor(editor.gui.getTransitioncolor());
+        g.setColor(color);
         TrList dlist = trlist;
         int i=0;
         if (editor.cbbezier.getState())
@@ -460,7 +459,7 @@ public class Methoden_0
                     Or_State os = (Or_State)help.head;
                     if (os.connectors == null) {help = help.tail;continue;}
                     r = abs(editor,help.head);
-                    drawConnectors(os.connectors,r.x,r.y,editor);
+                    drawConnectors(os.connectors,r.x,r.y,editor.gui.getConnectorcolor(),editor);
                 }
                 help = help.tail;
             }
@@ -468,11 +467,11 @@ public class Methoden_0
         catch (Exception e) {}
     }
 
-    private static void drawConnectors(ConnectorList clist, int absX, int absY, Editor editor)
+    private static void drawConnectors(ConnectorList clist, int absX, int absY, Color color, Editor editor)
     {
         ConnectorList list = clist;
         Graphics g = editor.getGraphics();
-        g.setColor(editor.gui.getConnectorcolor());
+        g.setColor(color);
         int big = 10;
         switch((int)(Methoden_1.getFactor()*100))
         {
@@ -625,7 +624,10 @@ public class Methoden_0
                     }
                 }
                 if (help.head instanceof Or_State)
-                    {g.drawString(help.head.name.name,r.x+10-editor.scrollX,r.y+15-editor.scrollY);}
+                    {
+                        if (help.head.name.name.equals("root")) {help = help.tail;continue;}
+                        g.drawString(help.head.name.name,(int)((double)r.x*Methoden_1.getFactor())+10-editor.scrollX,
+                                                      (int)((double)r.y*Methoden_1.getFactor())+15-editor.scrollY);}
                 else
                 if (help.head instanceof Basic_State)
                     {g.drawString(help.head.name.name,(int)((double)r.x*Methoden_1.getFactor())+10-editor.scrollX,
@@ -760,7 +762,6 @@ public class Methoden_0
         // Achtung: state muá im Baum h„ngen. Ist dies nicht der Fall
         // so ist die andere abs-Methode zu benutzen!
 
-	if (state == null) return null;
         if (state.equals(editor.statechart.state))
             return state.rect;
         State father = EditorUtils.getFatherOf(state, editor);
@@ -780,9 +781,8 @@ public class Methoden_0
     public static State getFirstOrStateOf(int x, int y, Editor editor)
     {
         State s = EditorUtils.getInnermostStateOf(x,y,editor);
-	if (s.equals(editor.statechart.state) & !(editor.statechart.state instanceof Or_State)) return null;
+        if (s.equals(editor.statechart.state)) return s;
         Rectangle r = abs(editor,s);
-	if (r == null) return null;
         while (!(s instanceof Or_State))
         {
             s = EditorUtils.getInnermostStateOf(r.x-1,r.y-1,editor);
@@ -824,12 +824,12 @@ public class Methoden_0
                 list = os.defaults;
                 while (list != null)
                 {
-                    if (help.head.name == list.head)
+                    if (help.head.name.name.equals(list.head.name))
                         drawDefaultState(help.head,editor);
                     slist = os.substates;
                     while (slist != null)
                     {
-                        if (list.head == slist.head.name)
+                        if (list.head.name.equals(slist.head.name.name))
                             drawDefaultState(slist.head,editor);
                         slist = slist.tail;
                     }
@@ -843,9 +843,17 @@ public class Methoden_0
     private static void drawDefaultState(State state, Editor editor)
     {
         Rectangle r = abs(editor,state);
-        Point[] p = new Point[2];
-        p[0] = new Point(-15,0);
-        p[1] = new Point(0,15);
+	Point[] p = new Point[2];
+	if (!(state instanceof And_State))
+	  {
+	    p[0] = new Point(-15,0);
+	    p[1] = new Point(0,15);
+	  }
+	else
+	  {
+	    p[0] = new Point(-20,0);
+	    p[1] = new Point(0,20);
+	  }
         bezier(p,r.x,r.y,editor.gui.getStatecolor(),editor);
     }
 
@@ -854,41 +862,123 @@ public class Methoden_0
     {
         State s = EditorUtils.getInnermostStateOf(x,y,editor);
         State s1 = getFirstOrStateOf(x,y,editor);
+        if (s1 == null) return;
         Or_State os = (Or_State)s1;
-        if (os == null) return;
         StatenameList list = os.defaults;
         if (list != null)
         {
-            if (list.head == s.name){
+            if (list.head.name.equals(s.name.name))
+            {
                 StatenameList neu = os.defaults;
                 StatenameList copy = null;
                 while (neu != null){
-                    if (neu.head != s.name)
+                    if (!neu.head.name.equals(s.name.name))
                         copy = new StatenameList(neu.head,copy);
                     neu = neu.tail;
                 }
                 os.defaults = copy;
                 editor.setChangedStatechart(true);
+		editor.gui.StateChartHasChanged();
                 return;
             }
-            while (list.tail != null)
-            {
-                if (list.tail.head == s.name){
-                    StatenameList neu = os.defaults;
-                    StatenameList copy = null;
-                while (neu != null){
-                    if (neu.head != s.name)
-                        copy = new StatenameList(neu.head,copy);
-                    neu = neu.tail;
-                }
-                os.defaults = copy;
-                editor.setChangedStatechart(true);
-                return;
-                }
-                list = list.tail.tail;
-            }
+            list = list.tail;
         }
         os.defaults = new StatenameList(s.name,os.defaults);
+        editor.setChangedStatechart(true);
+	editor.gui.StateChartHasChanged();
+    }
+
+    public static void showHltObject(Absyn obj, Color col, Editor editor)
+    {
+        if (obj == null) return;
+        if (obj instanceof Basic_State)
+        {
+            Rectangle r = abs(editor, (Basic_State)obj);
+            if (r == null) return;
+            EditorUtils.show(r,col,editor,editor.getGraphics());
+        }
+        if (obj instanceof Or_State)
+        {
+            Rectangle r = abs(editor, (Or_State)obj);
+            if (r == null) return;
+            EditorUtils.show(r,col,editor,editor.getGraphics());
+        }
+        if (obj instanceof And_State)
+        {
+            Rectangle r = abs(editor, (And_State)obj);
+            if (r == null) return;
+            EditorUtils.show(r,col,editor,editor.getGraphics());
+        }
+        if (obj instanceof Tr)
+        {
+            showTrans(editor,(Tr)obj, col);
+        }
+        if (obj instanceof Connector)
+        {
+            showCon(editor,(Connector)obj, col);
+        }
+    }
+
+    private static void showTrans(Editor editor, Tr tr, Color col)
+    {
+        StateList list = null;
+        Rectangle r = null;
+        TrList trlist = null;
+        try {
+            list = editor.stateList;
+            StateList help = list;
+            while (help != null)
+            {
+                if (help.head instanceof Or_State)
+                {
+                    Or_State os = (Or_State)help.head;
+                    if (os.trs == null) {help = help.tail;continue;}
+                    trlist = os.trs;
+                    while (trlist != null)
+                    {
+                        if (trlist.head.equals(tr))
+                        {
+                            r = abs(editor,help.head);
+                            drawTransition(new TrList(tr,null),r.x,r.y,col,editor);
+                        }
+                        trlist = trlist.tail;
+                    }
+                }
+                help = help.tail;
+            }
+        }
+        catch (Exception e) {}
+    }
+
+    private static void showCon(Editor editor, Connector con, Color col)
+    {
+        StateList list = null;
+        Rectangle r = null;
+        ConnectorList conlist = null;
+        try {
+            list = editor.stateList;
+            StateList help = list;
+            while (help != null)
+            {
+                if (help.head instanceof Or_State)
+                {
+                    Or_State os = (Or_State)help.head;
+                    if (os.connectors == null) {help = help.tail;continue;}
+                    conlist = os.connectors;
+                    while (conlist != null)
+                    {
+                        if(conlist.head.equals(con))
+                        {
+                            r = abs(editor,help.head);
+                            drawConnectors(os.connectors,r.x,r.y,col,editor);
+                        }
+                        conlist = conlist.tail;
+                    }
+                }
+                help = help.tail;
+            }
+        }
+        catch (Exception e) {}
     }
 
     public static void updateAll(Editor editor)
@@ -899,6 +989,7 @@ public class Methoden_0
         showConNames(editor);
         showTransNames(editor);
         showDefaultState(editor);
+        new highlightObject();
     }
 
 }
