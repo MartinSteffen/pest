@@ -5,11 +5,12 @@ import absyn.*;
 import java.io.*;
 import gui.*;
 import java.lang.*;
+import util.*;
 
 /* Todo/Fragen
  * + Was enthält Path? Nur States oder auch Cons? - Nur States !
  * - Es wird immer ein ActionBlock zurückgeliefert
- * - Kann es mehr als einen defcon geben ? Selbst entscheiden.
+ * + Kann es mehr als einen defcon geben ? Selbst entscheiden. <- nur einer
  * + PathList der Größe nach sortieren
  * + Ist Basic_State als root erlaubt ? - Ja
  * + is_*name über Pfade prüfen !!
@@ -142,11 +143,12 @@ class TESCParser {
 	boolean b = false;
 	SEventList evlist = null;
 	
-	b = match(vTOKEN.EVENTS);
+	b = match(vTOKEN.EVENTS);	
 	b = match(vTOKEN.COLON);
 
 	if (b) {
 	    evlist = eventlist();
+	    
 	}
 	else
 	  addError(makeError(tok,"Syntax Error"));
@@ -157,9 +159,11 @@ class TESCParser {
     private SEventList eventlist() throws IOException {
 	SEvent ev;
 	SEventList evlist = null;
-	
+	Location loc = new Location(tok.linenum);
+
         if (tok.token==vTOKEN.IDENT) {
 	    ev = new SEvent(tok.value_str);
+	    ev.location = loc;
 	    addEventname(tok.value_str);
 	    match(vTOKEN.IDENT);
 	
@@ -183,10 +187,12 @@ class TESCParser {
     // bvarliste aufbauen
     private BvarList bvarlist() throws IOException {
 	Bvar bv;
-	BvarList bvlist = null;
-	
+	BvarList bvlist = null;	
+	Location loc = new Location(tok.linenum);
+
         if (tok.token==vTOKEN.IDENT) {
 	    bv = new Bvar(tok.value_str);
+	    bv.location = loc;
 	    addBvarname(tok.value_str);
 	    match(vTOKEN.IDENT);
 	
@@ -226,7 +232,7 @@ class TESCParser {
     private State state() throws IOException {
 	
 	State st = null;
-
+	Location loc = new Location(tok.linenum);
 
         if (tok.token==vTOKEN.BSTATE) {
 	    match(vTOKEN.BSTATE);
@@ -244,6 +250,8 @@ class TESCParser {
 	    st = astate(null);
 	}
 
+	if (st != null) st.location = loc;
+
 	return st;
     }
 
@@ -251,9 +259,11 @@ class TESCParser {
 	Statename     sn      = null;
 	Basic_State   bs      = null;
 	Path pth = null;
+	Location loc = new Location(tok.linenum);
 
 	if (tok.token == vTOKEN.IDENT) {
 	    sn = new Statename (tok.value_str);
+	    sn.location = loc;
 	    addStatename(tok.value_str, p);
 
 	    if (p == null) {
@@ -269,6 +279,7 @@ class TESCParser {
 	    match(vTOKEN.SCOLON);
 
 	    bs = new Basic_State(sn);
+	    bs.location = loc;
 	}
 
 	return bs;
@@ -284,10 +295,11 @@ class TESCParser {
 	Path pth = null;
 
 	String s = null;
+	Location loc = new Location(tok.linenum);
 
 	if (tok.token == vTOKEN.IDENT) {
 	    sn = new Statename (tok.value_str);
-
+	    sn.location = loc;
 	    // Namen merken
 	    s = new String(tok.value_str);
 	    // In Liste einfügen
@@ -308,25 +320,30 @@ class TESCParser {
 	    // Liste der States innerhalb dieses States 
 	    slist = states(pth);
 	    
+
 	    // Falls defcon, snlist aufbauen
 	    if (tok.token == vTOKEN.DEFCON) {
 		snlist = defcons(pth);
+		
 	    }
 
 	    // Falls danach Connectors, clist aufbauen
 	    if (tok.token == vTOKEN.CONS) {
 		clist = cons(pth);
+		
 	    }
 
 	    // Falls danach Transitionen, trlist aufbauen
 	    if (tok.token == vTOKEN.TRANSITIONS) {
 		trlist = trdef(pth);
+		
 	    }
 
 	    //snlist = makeStatenamelist();
 
 	    os = new Or_State(sn, slist, trlist, snlist, clist);
-	
+	    os.location = loc;
+
 	    match(vTOKEN.END);
 
 	    if (tok.token == vTOKEN.IDENT) {
@@ -361,10 +378,11 @@ class TESCParser {
 	Path pth = null;
 
 	String s = null;
+	Location loc = new Location(tok.linenum);
 
 	if (tok.token == vTOKEN.IDENT) {
 	    sn = new Statename (tok.value_str);
-
+	    sn.location = loc;
 	    // Namen merken
 	    s = new String(tok.value_str);
 	    // In Liste einfügen
@@ -386,7 +404,8 @@ class TESCParser {
 	    slist = astates(pth);
 	    
 	    as = new And_State(sn, slist);
-	
+	    as.location = loc;
+
 	    match(vTOKEN.END);
 
 	    if (tok.token == vTOKEN.IDENT) {
@@ -417,11 +436,13 @@ class TESCParser {
 	StateList sl = null;
 	boolean b = false;
 	//Path pth = null;
+	Location loc = new Location(tok.linenum);
 
         if (tok.token == vTOKEN.BSTATE) {
 	    b = match(vTOKEN.BSTATE);
 	    if (b) {
 		sl = new StateList(bstate(p), astates(p));
+		
 	    }
 	    else {
 		sl = null;	
@@ -433,6 +454,7 @@ class TESCParser {
 	    
 	    if (b) {
 		sl = new StateList(ostate(p), astates(p));
+		
 	    }
 	    else {
 		sl = null;	
@@ -459,6 +481,7 @@ class TESCParser {
 
 	if (b) {
 	    clist = conlist(p);
+	   
 	}
 
 	return clist;
@@ -468,19 +491,25 @@ class TESCParser {
     private ConnectorList conlist(Path p) throws IOException {
 	Connector con;
 	ConnectorList clist = null;
-	
+	Location loc = new Location(tok.linenum);
+
         if (tok.token==vTOKEN.IDENT) {
 	    con = new Connector(new Conname(tok.value_str));
+	    con.location = loc;
+
 	    addConname(tok.value_str, p);
 	    match(vTOKEN.IDENT);
 	
 	    if (tok.token==vTOKEN.COMMA) {
+	       
 		match(vTOKEN.COMMA);
 		clist = new ConnectorList( con, conlist(p));
+		
 	    }
 	    else if (tok.token == vTOKEN.SCOLON) {
 	        match(vTOKEN.SCOLON);
                 clist =  new ConnectorList( con, null);
+		
 	    }
 	    else {
 		addError(makeError(tok,"Fehler in Konnektorenliste"));
@@ -494,13 +523,18 @@ class TESCParser {
     private StatenameList defcons(Path p) throws IOException {
 	boolean b = false;
         StatenameList snlist = null;
-	
+	Statename sn = null;
+	Location loc = new Location(tok.linenum);
+
 	b = match(vTOKEN.DEFCON);
 	b = match(vTOKEN.COLON);
 
 	if (b) {
 	    if (tok.token == vTOKEN.IDENT) {
-		snlist = new StatenameList(new Statename(tok.value_str), null);
+		sn = new Statename(tok.value_str);
+		sn.location = loc;
+		snlist = new StatenameList(sn, null);
+		
 		match(vTOKEN.IDENT);
 	    }
 	    else {
@@ -519,11 +553,16 @@ class TESCParser {
     private Action actionstmt (Path p) throws IOException {
 	Action act = null;
 	//boolean b = false;
+	Aseq al = null;
 
 	if (tok.token == vTOKEN.DO) {
 	    match(vTOKEN.DO);
+	    Location loc = new Location(tok.linenum);
 	    // Auch ActionBlock bei nur einer Action ??
-	    act = new ActionBlock(actionlist(p));
+	    al = actionlist(p);
+	    
+	    act = new ActionBlock(al);
+	    act.location = loc;
 	}
 
 	return act;
@@ -537,9 +576,11 @@ class TESCParser {
 	if (tok.token == vTOKEN.COMMA) {
 	    match(vTOKEN.COMMA);
 	    as = new Aseq(a, actionlist(p));
+	    
 	}
 	else if (tok.token == vTOKEN.SCOLON) {
 	    as =  new Aseq( a, null);
+	    
 	}
 
 	return as;
@@ -547,13 +588,16 @@ class TESCParser {
 
     private Action aktion(Path p) throws IOException {
 	Action a = null;
+	Location loc = new Location(tok.linenum);
 
 	if (tok.token == vTOKEN.IDENT) {
 	    if (is_bvarname(tok.value_str)) {
 		a = bassign(p);
+		a.location = loc;
 	    }
 	    else if( is_eventname(tok.value_str)) {
-		a = new ActionEvt(new SEvent(tok.value_str));
+		a = new ActionEvt((SEvent)setLoc(new SEvent(tok.value_str), loc));
+		a.location = loc;
 		match(vTOKEN.IDENT);
 	    }
 	    else {
@@ -562,7 +606,8 @@ class TESCParser {
 	   
 	}
 	else if (tok.token == vTOKEN.EMPTYEXP) {
-	    a = new ActionEmpty(new Dummy());
+	    a = new ActionEmpty((Dummy)setLoc(new Dummy(), loc));
+	    a.location = loc;
 	    match(vTOKEN.EMPTYEXP);
 	}
 	
@@ -572,39 +617,49 @@ class TESCParser {
     private Action bassign(Path p) throws IOException {
 	Action a = null;
 	Bvar bv = null;
+	Location loc = new Location(tok.linenum);
 
 	if (tok.token == vTOKEN.IDENT) {
 	    bv = new Bvar(tok.value_str);
+	    bv.location = loc;
 	    match(vTOKEN.IDENT);
 	    match(vTOKEN.BASSIGN);
 	    
 	    // boolop
 	    if (tok.token == vTOKEN.TRUE) {
-		a = new ActionStmt(new MTrue(bv));
+		loc = new Location(tok.linenum);
+		a = new ActionStmt((MTrue)setLoc(new MTrue(bv), loc));
+		a.location = loc;
 		match(vTOKEN.TRUE);
 	    }
 	    else if (tok.token == vTOKEN.FALSE) {
-		a = new ActionStmt(new MFalse(bv));	
+		loc = new Location(tok.linenum);
+		a = new ActionStmt((MFalse)setLoc(new MFalse(bv), loc));
+		a.location = loc;
 		match(vTOKEN.FALSE);
 	    }
 	    else {
-		a = new ActionStmt(new BAss(new Bassign(bv, guard(p))));
+		loc = new Location(tok.linenum);
+		a = new ActionStmt((BAss)setLoc(new BAss((Bassign)setLoc(new Bassign(bv, guard(p)),loc) ), loc));
+		a.location = loc;
 	    }
 	}
 
 	return a;
     }
         
-
+    // hier
     // Guards
     private Guard guard(Path p) throws IOException {
 	Guard grd1 = null;
 	Guard grd2 = null;
 	Guard grd = null;
 	int t = 0;
-	
+	Location loc = new Location(tok.linenum);
+
 	grd1 = ocompg(p);
-	grd = grd1;
+	grd = grd1;	
+
 	while (tok.token == vTOKEN.IMPL || tok.token == vTOKEN.AQUI) {
 	    t = tok.token;
 	    switch(t) {
@@ -618,10 +673,12 @@ class TESCParser {
 	    grd2 = ocompg(p);
 	    switch(t) {
 	    case vTOKEN.IMPL:
-		grd = new GuardCompg(new Compguard(Compguard.IMPLIES, grd1, grd2));
+		grd = new GuardCompg((Compguard)setLoc(new Compguard(Compguard.IMPLIES, grd1, grd2), new Location(tok.linenum)));
+		grd.location = loc;
 		break;
 	    case vTOKEN.AQUI:	
-		grd = new GuardCompg(new Compguard(Compguard.EQUIV, grd1, grd2));
+		grd = new GuardCompg((Compguard)setLoc(new Compguard(Compguard.EQUIV, grd1, grd2), new Location(tok.linenum)));
+		grd.location = loc;
 		break;
 	    }
 	}
@@ -635,15 +692,16 @@ class TESCParser {
 	Guard grd2 = null;
 	Guard grd = null;
 	int t = 0;
-	
+	Location loc = new Location(tok.linenum);
+
 	grd1 = acompg(p);
 	grd = grd1;
 	while (tok.token == vTOKEN.OR) {	    	
 	    match(vTOKEN.OR);
 	    grd2 = acompg(p);
 	    	
-	    grd = new GuardCompg(new Compguard(Compguard.OR, grd1, grd2));
-	
+	    grd = new GuardCompg((Compguard)setLoc(new Compguard(Compguard.OR, grd1, grd2), loc));
+	    grd.location = loc;
 	}
 
 	return grd;
@@ -655,15 +713,16 @@ class TESCParser {
 	Guard grd2 = null;
 	Guard grd = null;
 	int t = 0;
-		
+	Location loc = new Location(tok.linenum);
+
 	grd1 = kcompg(p);
 	grd = grd1;
 	while (tok.token == vTOKEN.AND) {	    	
 	    match(vTOKEN.AND);
 	    grd2 = kcompg(p);
 	    	
-	    grd = new GuardCompg(new Compguard(Compguard.AND, grd1, grd2));
-	
+	    grd = new GuardCompg((Compguard)setLoc(new Compguard(Compguard.AND, grd1, grd2), loc));
+	    grd.location = loc;
 	}
 	
 
@@ -673,8 +732,8 @@ class TESCParser {
     // Klammern und nicht-reduzierbares
     private Guard kcompg(Path p) throws IOException {	
 	Guard grd = null;
+	Location loc = new Location(tok.linenum);
 	
-
 	if (tok.token == vTOKEN.NOT) {
 	    // ??
 	    match(vTOKEN.NOT);
@@ -701,7 +760,9 @@ class TESCParser {
 	    grd = guard(p);
 	    match(vTOKEN.RPAR);
 	}
-
+	
+	if (grd != null) grd.location = loc;
+	
 	return grd;
 
     }
@@ -709,26 +770,31 @@ class TESCParser {
     // ???
     private Guard pathop(Path actPath) throws IOException {
 	Guard grd = null;
+	Location loc = new Location(tok.linenum);
+
 	if (actPath!=null) addError(makeError(tok, "Internal Error!"));
 	switch(tok.token) {
 	case vTOKEN.IN:
 	    match (vTOKEN.IN);
 	    match (vTOKEN.LPAR);
-	    grd = new GuardCompp(new Comppath(Comppath.IN, actPath.append(tok.value_str)));
+	    grd = new GuardCompp((Comppath)setLoc(new Comppath(Comppath.IN, actPath.append(tok.value_str)), loc));
+	    grd.location = loc;
 	    match(vTOKEN.IDENT);
 	    match(vTOKEN.RPAR);
 	    break;
 	case vTOKEN.ENTERED:
 	    match (vTOKEN.ENTERED);
 	    match (vTOKEN.LPAR);
-	    grd = new GuardCompp(new Comppath(Comppath.ENTERED, actPath.append(tok.value_str)));
+	    grd = new GuardCompp((Comppath)setLoc(new Comppath(Comppath.ENTERED, actPath.append(tok.value_str)), loc));
+	    grd.location = loc;
 	    match(vTOKEN.IDENT);
 	    match(vTOKEN.RPAR);
 	    break;
 	case vTOKEN.EXITED:
 	    match (vTOKEN.EXITED);
 	    match (vTOKEN.LPAR);
-	    grd = new GuardCompp(new Comppath(Comppath.EXITED, actPath.append(tok.value_str)));
+	    grd = new GuardCompp((Comppath)setLoc(new Comppath(Comppath.EXITED, actPath.append(tok.value_str)), loc));
+	    grd.location = loc;
 	    match(vTOKEN.IDENT);
 	    match(vTOKEN.RPAR);
 	    break;
@@ -736,7 +802,6 @@ class TESCParser {
 
 	return grd;
     }
-
 
     private TrList trdef(Path p) throws IOException {
 	TrList trlist = null;
@@ -757,6 +822,7 @@ class TESCParser {
 	Guard grd;
 	Action act;
 
+	Location loc = new Location(tok.linenum);
 	match(vTOKEN.FROM);
         
 	t1 = sname(p);
@@ -769,7 +835,8 @@ class TESCParser {
 	grd = guard(p);
 	
 	act = actionstmt(p);
-	tr = new Tr(t1, t2, new TLabel(grd, act));
+	tr = new Tr(t1, t2, (TLabel)setLoc(new TLabel(grd, act), loc));
+	tr.location = loc;
 	match(vTOKEN.SCOLON);
 	    
 
@@ -778,19 +845,23 @@ class TESCParser {
 
     private TrAnchor sname(Path p) throws IOException {
 	TrAnchor ta = null;
+	Location loc = new Location(tok.linenum);
 
 	if (tok.token == vTOKEN.UNDEF) {
 	    match(vTOKEN.UNDEF);
 	    ta = new UNDEFINED();
+	    ta.location = loc;
 	}
 	else if (tok.token == vTOKEN.IDENT) {
 	    // Con oder State
 	    if (is_conname(tok.value_str, p)) {
 		ta = new Conname(tok.value_str);
+		ta.location = loc;
 		match(vTOKEN.IDENT);
 	    }
 	    else if(is_statename(tok.value_str, p)) {
 		ta = new Statename(tok.value_str);
+		ta.location = loc;
 		match(vTOKEN.IDENT);
 	    }
 	    else {
@@ -951,6 +1022,10 @@ class TESCParser {
 
 	boolean b = true;
 
+	if (t == vTOKEN.IDENT &&  Keyword.isReserved(tok.value_str)) {
+	    addError(makeError(tok,"Ist Keyword"));
+	}
+
 	if (tok.token == t) {
 	    tok = ts.nextToken();
 	}
@@ -970,6 +1045,14 @@ class TESCParser {
     }
 
     // Tools
+
+    /**
+      * Setzt in einem Absyn-Objekt die Zeilennummer ein.
+      */
+    private Absyn setLoc(Absyn a, Location loc) {
+        a.location = loc;
+        return a;
+    }
 
  
     // Es können connectors und States mit gleichem Namen in unterschiedlichem Kontext 
@@ -1104,8 +1187,11 @@ class TESCParser {
 }
 
 /* TESCParser
- * $Id: TESCParser.java,v 1.7 1998-12-21 16:17:36 swtech13 Exp $
+ * $Id: TESCParser.java,v 1.8 1999-01-04 16:12:02 swtech13 Exp $
  * $Log: not supported by cvs2svn $
+ * Revision 1.7  1998/12/21 16:17:36  swtech13
+ * Fehlermeldungen im Parser -> GUI
+ *
  * Revision 1.6  1998/12/17 11:54:15  swtech13
  * TESCLoader.java auf BufferedReader umgestellt
  *

@@ -14,9 +14,11 @@ import gui.*;
  * <li> Ist noch nicht bekannt.
  * <li> Alle States, Bvars, Events, etc. auf die in z.B. Transition Bezug genommen wird, sind auch vorhanden.
  * <li> Es gibt nur einen DefCon pro Ebene
+ * <li> Keine Schleifen bei Listen.
+ * <li> Keine unartigen Nullpointer.
  * </ul>
  * 
- * Damit ist es nicht notwendig, folgender Checks an unsere Statecharts
+ * Damit ist es nicht notwendig, folgende Checks an unsere Statecharts
  * anzuwenden:
  * 
  * <ul>
@@ -36,8 +38,27 @@ import gui.*;
  * <li> unbekannt
  * </ul>
 
+ * <DL COMPACT>
+ * 
+ * <DT><STRONG>
+ * STATUS
+ * </STRONG>
+ *  
+ * Der Parser ist bis auf Kleinigkeiten (s. TODO) funktionsfaehig.
+ * In tesc1/Test befinden sich mehrere Testdateien. Diese koennen ueber
+ * das GUI-Fenster mittels Import->TESC geladen werden.
+ * 
+ * <DT><STRONG>
+ * TODO.
+ * </STRONG>
+ * 
+ * Undet bei Guards. Verbesserung der Fehlerbehandlung. Testen der Locations.
+ * Fertig am 11.01.99
+ *
+ * </DL COMPACT>
+
  * @author Arne Koch/Mike Rumpf.
- * @version  $Id: TESCLoader.java,v 1.7 1998-12-21 16:17:35 swtech13 Exp $ 
+ * @version  $Id: TESCLoader.java,v 1.8 1999-01-04 16:12:01 swtech13 Exp $ 
  */ 
 public class TESCLoader {
 
@@ -76,6 +97,9 @@ public class TESCLoader {
 
 /* 
  * $Log: not supported by cvs2svn $
+ * Revision 1.7  1998/12/21 16:17:35  swtech13
+ * Fehlermeldungen im Parser -> GUI
+ *
  * Revision 1.6  1998/12/17 11:54:14  swtech13
  * TESCLoader.java auf BufferedReader umgestellt
  *
