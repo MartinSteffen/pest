@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.15 1999-01-19 09:39:23 swtech00 Exp $
+//	$Id: report_list,v 1.16 1999-01-19 09:53:09 swtech24 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -133,7 +133,7 @@ Datei->Import->Statemate lädt.
 #Number:	8
 #Autor:		Heiko Haller swtech21
 #Subject:	PEST1: Transitionen-Label machen Zoom nicht mit
-#Status:	reported
+#Status:	fixed
 #Description:
 
 Wenn ich eine Transition zwischen zwei States mit einem Label versehe
