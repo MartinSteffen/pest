@@ -34,18 +34,17 @@ Statechart root;
 	root = nroot;
 	matrix1 = PESTdrawutil.getState(root,cx1,cy1);
 	matrix2 = PESTdrawutil.getState(root,cx1,cy1+10);
-	if (matrix1.akt == matrix2.akt)
+	if (matrix1.akt.rect != null)
 	{
-	matrix1.akt.name = new Statename(Editor.labelObject(matrix1.akt));
-	} 
-	else
-	{
-	if (matrix2.prev instanceof And_State)
-		{
+	if (matrix2.prev instanceof And_State & matrix1.akt != matrix2.akt)
+	    {
 		matrix2.prev.name = new Statename(Editor.labelObject(matrix2.prev));
-		}
-	}
+	    } else
+		{
+		    matrix1.akt.name = new Statename(Editor.labelObject(matrix1.akt));
+		} 
  
+	}
     }
     
 } // drawPESTState
