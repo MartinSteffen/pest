@@ -266,7 +266,7 @@ find_public_functions()
       error "Illegal package statement in $package_file"
       continue
     fi
-    functions=`grep -hw 'public.*(' $package_file|grep -v "="|find_function_names|add_prefix "$package_file:$package."`
+    functions=`grep -h '^\W*public.*(' $package_file|grep -v "="|find_function_names|add_prefix "$package_file:$package."`
     if [ "$functions" != "" ]; then
       echo "$functions"
     fi
