@@ -695,7 +695,6 @@ public class EditorUtils {
         alt.substates = altSubstates;
         alt.defaults  = altDefaults;
 
-/*
         TrList trList   = alt.trs;
         TrList altTrs = null;
         while (trList != null) {
@@ -706,7 +705,6 @@ public class EditorUtils {
             trList = trList.tail;
         }
         alt.trs = altTrs;
-*/
 
         ConnectorList connectorList          = alt.connectors;
         ConnectorList altConnectors = null;
@@ -1009,6 +1007,130 @@ public class EditorUtils {
             }
         editor.stateList = getSubStateList(editor.statechart.state);
     }    
+
+// **************************************************************************
+
+    public static void dragStateMousePressed(MouseEvent e, Editor editor) {
+        State inState = getInnermostStateOf(getCoordX(e,editor),
+                                            getCoordY(e,editor), editor);
+        if (! inState.equals(editor.statechart.state)) {
+            while (getFatherOf(inState, editor) instanceof And_State) {
+                inState = getFatherOf(inState, editor);
+            }
+            editor.activeState = inState;
+            editor.startPoint = new Point(getCoordX(e,editor), getCoordY(e,editor));
+            editor.endPoint = editor.startPoint;
+            editor.actionOk = true;
+        }
+        else editor.activeState = null;
+    }
+
+// **************************************************************************
+
+    public static void dragStateMouseDragged(MouseEvent e, Editor editor) {
+
+        if (editor.activeState != null) {
+
+        // ueberpruefe, ob sich editor.activeState mit einem anderen
+        // Zustand ueberschneidet.
+
+        int deltaX = getCoordX(e, editor) - editor.endPoint.x;
+        int deltaY = getCoordY(e, editor) - editor.endPoint.y;
+
+        editor.activeState.rect.x = editor.activeState.rect.x + deltaX;
+        editor.activeState.rect.y = editor.activeState.rect.y + deltaY;
+
+        editor.endPoint = new Point(getCoordX(e,editor),
+                                    getCoordY(e,editor));
+
+        StateList list = editor.stateList;
+        editor.actionOk = true;
+
+        while (list != null) {
+            if (!(abs(editor,editor.activeState).intersection(abs(editor,list.head))
+                    .equals(abs(editor,list.head)))
+              & (!(abs(editor,editor.activeState).intersection(abs(editor,list.head))
+                    .equals(abs(editor,editor.activeState))))
+              & (abs(editor,editor.activeState).intersects(abs(editor,list.head)))) 
+
+                 editor.actionOk = false;
+            list = list.tail;
+        }
+        // *** liegt ein fremder State innerhalb von activeState ?
+        // *** „quivalent dazu: liegt noch immer jeder State in seinem
+        // *** Vater ?
+
+        StateList help = editor.stateList;
+        while (help != null) {
+            if (!help.head.equals(editor.statechart.state))
+                if (!getFatherOf(help.head, editor)
+                    .equals(getInnermostStateOf(abs(editor, help.head).x,
+                                           abs(editor, help.head).y, editor)))
+                    editor.actionOk = false;
+            help = help.tail;
+        }
+
+        // *** liegt ein fremder Connector oder TrsAnfang in activeState?
+
+        help = editor.stateList;
+        while (help != null) {
+            if (help.head instanceof Or_State) {
+                TrList trs = ((Or_State) help.head).trs;
+                while (trs != null) {
+                    if (getInnermostStateOf(abs(editor, trs.head.points[0],help.head).x,
+                                            abs(editor, trs.head.points[0],help.head).y,editor)
+                        .equals(editor.activeState))
+                        if (editor.activeState instanceof Or_State) {
+                            TrList trs2 = ((Or_State) editor.activeState).trs;
+                            boolean gef = false;
+                            while (trs2 != null) {
+                                if (trs2.head.equals(trs.head))
+                                    gef = true;
+                                trs2 = trs2.tail;
+                            }
+                            if (!gef) editor.actionOk = false;
+                        }
+                        else editor.actionOk = false;
+                    trs = trs.tail;
+                }
+                ConnectorList conns = ((Or_State) help.head).connectors;
+                while (conns != null) {
+                    if (getInnermostStateOf(abs(editor, conns.head.position,
+                                                help.head).x,
+                                            abs(editor, conns.head.position,
+                                                help.head).y, editor)
+                        .equals(editor.activeState))
+                        if (editor.activeState instanceof Or_State) {
+                            ConnectorList conns2 =
+                                ((Or_State) editor.activeState).connectors;
+                            boolean gef2 = false;
+                            while (conns2 != null) {
+                                if (conns2.head.equals(conns.head))
+                                    gef2 = true;
+                                conns2 = conns2.tail;
+                            }
+                            if (!gef2) editor.actionOk = false;
+                        }
+                        else editor.actionOk = false;
+                    conns = conns.tail;
+                }
+            }
+            help = help.tail;
+        }                    
+        editor.repaint();
+    }}
+
+// **************************************************************************
+
+    public static void dragStateMouseReleased(MouseEvent e, Editor editor) {
+        if (editor.activeState != null & !editor.actionOk) {
+            int deltaX = editor.endPoint.x - editor.startPoint.x;
+            int deltaY = editor.endPoint.y - editor.startPoint.y;
+            editor.activeState.rect.x = editor.activeState.rect.x - deltaX;
+            editor.activeState.rect.y = editor.activeState.rect.y - deltaY;
+        }
+        editor.repaint();
+    }
 
 // **************************************************************************
 }

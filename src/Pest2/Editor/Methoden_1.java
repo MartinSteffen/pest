@@ -8,6 +8,17 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 
+class ObjectList
+{
+    Absyn head;
+    ObjectList tail;
+    public ObjectList(Absyn h, ObjectList t)
+    {
+        head = h;
+        tail = t;
+    }
+}
+
 
 public class Methoden_1
 {
@@ -22,27 +33,31 @@ public class Methoden_1
     public static Connector copyOneConnector = null;
     public static Absyn markLast = null; //das zuletzt markierte Objekt
 
+    public static ObjectList selectList = null,copyList = null;
+
 
 /*
     Methode: addStatenameMouseClicked(int x, int y, Editor editor)
     Funktion: erzeugt ein Dialogfenster fuer die Eingabe von Statename zu dem
               Zustand, der x,y im innersten hat.
 */
-
     public static void addStatenameMouseClicked(int x, int y, Editor editor)
     {
         State s = EditorUtils.getInnermostStateOf(x,y,editor);
+        if (s == null) return;
+/*
         if (s==editor.statechart.state)
         {
-            editor.gui.OkDialog(editor,"Fehler","Zustand kann nicht benannt werden!");
+            editor.gui.OkDialog(editor,"Fehler","Zustand kann nicht umbenannt werden!");
             return;
         }
+*/
         String name = editor.gui.EingabeDialog(editor,"Zustand benennen", "Name fuer Zustand:", s.name.name);
         if (name != null)
         {
             s.name = new Statename(name);
             changeTransName(name,x,y,editor);
-            Methoden_0.updateAll(editor);
+            editor.repaint();
         }
     }
 
@@ -55,7 +70,7 @@ public class Methoden_1
         {
             s.name = new Statename(name);
             changeTransName(name,x,y,editor);
-            Methoden_0.updateAll(editor);
+            editor.repaint();
         }
     }
 
@@ -68,7 +83,7 @@ public class Methoden_1
         if (name != null)
         {
             con.name.name = name;
-            Methoden_0.updateAll(editor);
+            editor.repaint();
         }
     }
 
@@ -81,63 +96,31 @@ public class Methoden_1
 */
     public static void addTransNameMouseClicked(int x, int y, Editor editor)
     {
-        int i = getNullIndex(points);
-        if (i == 0) {points[0] = new CPoint(x,y); return;}
-        else
-        if (i == 1)
-        {
-            State s1 = Methoden_0.getFirstOrStateOf(points[0].x,points[0].y,editor);
-            Or_State os = (Or_State)s1;
-            if (os.trs==null)
-            {
-                editor.gui.OkDialog(editor,"Fehler","Keine Transition vorhanden!");
-                setNullArray(points);
-            }
-            else
-            {
-                Rectangle r = Methoden_0.abs(editor,s1);
-                points[1] = new Point(r.x,r.y);
-                trans = getNearestTransOf(os.trs,points[1],points[0].x,points[0].y,editor);
-                String name = editor.gui.EingabeDialog(editor,"Transition benennen", "Name fuer Transition:",trans.label.caption);
-                if (name == null)
-                {
-                    setNullArray(points);
-                    return;
-                }
-                TESCLoader tesc = new TESCLoader(editor.gui);
-        		TLabel tlabel = null;
-                BufferedReader br = new BufferedReader(new StringReader(name));
-                try
-                {
-                    tlabel = tesc.getLabel(new BufferedReader(br),editor.statechart);
-                }
-                catch (IOException e){}
-                trans.label = tlabel;
-            }
+        if (EditorUtils.getInnermostStateOf(x,y,editor) instanceof Basic_State) return;
+        State s1 = Methoden_0.getFirstOrStateOf(x,y,editor);
+        Or_State os = (Or_State)s1;
+        if (os.trs==null){
+            editor.gui.OkDialog(editor,"Fehler","Keine Transition vorhanden!");
         }
         else
-        if (i == 2)
         {
-            trans.label = new TLabel(trans.label.guard,trans.label.action,
-                                     new CPoint(x+points[1].x,y+points[1].y),trans.label.location,
-                                     trans.label.caption);
-            setNullArray(points);
+            Rectangle r = Methoden_0.abs(editor,s1);
+            trans = getNearestTransOf(os.trs,new Point(r.x,r.y),x,y,editor);
+            String name = editor.gui.EingabeDialog(editor,"Transition benennen", "Name fuer Transition:",trans.label.caption);
+            if (name == null) return;
+
+            TESCLoader tesc = new TESCLoader(editor.gui);
+        	TLabel tlabel = null;
+            BufferedReader br = new BufferedReader(new StringReader(name));
+            try
+            {
+                tlabel = tesc.getLabel(new BufferedReader(br),editor.statechart);
+            }
+            catch (IOException e){}
+            trans.label = tlabel;
+            trans.label.position = new CPoint(Betrag(r.x,x),Betrag(r.y,y));
             editor.repaint();
         }
-    }
-
-    private static int getNullIndex(Point[] p)
-    {
-        int i=0;
-        try {while (p[i] !=null) i++;}
-        catch(ArrayIndexOutOfBoundsException a) {return -1;}
-        catch(NullPointerException a) {}
-        return i;
-    }
-
-    private static void setNullArray(Point[] p)
-    {
-        for(int i=0;i<3;i++) p[i] = null;
     }
 
 /*
@@ -145,29 +128,13 @@ public class Methoden_1
 */
     private static void changeTransName(String name,int x, int y,Editor editor)
     {
-        State s = EditorUtils.getInnermostStateOf(x,y,editor);
+        State s = Methoden_0.getFirstOrStateOf(x,y,editor);//noch And_State beachten!!!
         Rectangle r = Methoden_0.abs(editor,s);
-        if (s instanceof Basic_State)
+        TrList list = ((Or_State)s).trs;
+        while (list != null)
         {
-            s = EditorUtils.getInnermostStateOf(r.x-1,r.y-1,editor);
-            r = Methoden_0.abs(editor,s);
-        }
-        if (s instanceof Or_State & s != editor.statechart.state)
-        {
-            Or_State os = (Or_State)s;
-            TrList list = os.trs;
-            while (list != null)
-            {
-                if (EditorUtils.getInnermostStateOf(x,y,editor) == EditorUtils.getInnermostStateOf(r.x+list.head.points[0].x,r.y+list.head.points[0].y,editor))
-                {
-                    list.head.source = new Statename(name);
-                }
-                if (EditorUtils.getInnermostStateOf(x,y,editor) == EditorUtils.getInnermostStateOf(r.x+list.head.points[1].x,r.y+list.head.points[1].y,editor))
-                {
-                    list.head.target = new Statename(name);
-                }
-                list = list.tail;
-            }
+            changeTrAnchorOf(list.head,new Point(r.x,r.y),editor);
+            list = list.tail;
         }
     } //END changeTransName()
 
@@ -176,7 +143,7 @@ public class Methoden_1
         State s = EditorUtils.getInnermostStateOf(x,y,editor);
         if (s.rect.x == 0 & s.rect.y == 0)
         {
-            StateList list = ((Or_State)(editor.statechart.state)).substates;
+            StateList list = editor.stateList;
             StateList dlist = null;
             while (list != null)
             {
@@ -185,7 +152,7 @@ public class Methoden_1
                     dlist = ((And_State)list.head).substates;
                     while (dlist != null)
                     {
-                        if (dlist.head == s) return list.head;
+                        if (dlist.head.equals(s)) return list.head;
                         dlist = dlist.tail;
                     }
                 }
@@ -239,43 +206,128 @@ public class Methoden_1
         factor = f/100;
     }
 
-    public static void selectMouseDragged(Editor editor)
+    public static void markObjects(Rectangle rect, Editor editor)
     {
-//        Rectangle r = editor.newRect;
-//        if (!contained(r,editor)) return;
+        selectList = getObjects(rect,editor);
     }
 
-    public static void selectOneStateMouseClicked(int x, int y,Editor editor)
+    public static ObjectList getObjects(Rectangle rect, Editor editor)
     {
-        selectOneState = EditorUtils.getInnermostStateOf(x,y,editor);
-    }
-    public static void copyOneState(Editor editor)
-    {
-        try
+        ObjectList objList = null;
+        Or_State os = (Or_State)(editor.statechart.state);
+        Rectangle r = Methoden_0.abs(editor,os);
+        ConnectorList clist = os.connectors;
+        TrList tlist = os.trs;
+        while (clist != null) //fuer root-State
         {
-            if (selectOneState == null) return;
-            if (selectOneState instanceof Basic_State){
-                copyOneState = (Basic_State)(selectOneState.clone());
+            if (rect.contains(clist.head.position.x+r.x,clist.head.position.y+r.y))
+            {
+                objList = new ObjectList(clist.head, objList);
+                markSelectedCon(clist.head,new Point(r.x,r.y),editor);
             }
-            else
-            if (selectOneState instanceof Or_State){
-                copyOneState = (Or_State)(selectOneState.clone());
-            }
-            else copyOneState = (And_State)(selectOneState.clone());
+            clist = clist.tail;
         }
-        catch(CloneNotSupportedException e)
+        while (tlist != null)  //fuer root-State
         {
-            editor.gui.OkDialog(editor,"Fehler","Kopieren nicht moeglich!");
+            if (rect.contains(tlist.head.points[0].x+r.x,tlist.head.points[0].y+r.y))
+            {
+                objList = new ObjectList(tlist.head,objList);
+                markSelectedTr(tlist.head,new Point(r.x,r.y),editor);
+            }
+            tlist = tlist.tail;
+        }
+        StateList list = editor.stateList;
+        while (list != null)
+        {
+            r = Methoden_0.abs(editor,list.head);
+            if (list.head instanceof Or_State)  //noch fuer And_State
+                clist = ((Or_State)(list.head)).connectors;
+            while (clist != null)
+            {
+                if (rect.contains(clist.head.position.x+r.x,clist.head.position.y+r.y))
+                {
+                    objList = new ObjectList(clist.head, objList);
+                    markSelectedCon(clist.head,new Point(r.x,r.y),editor);
+                }
+                clist = clist.tail;
+            }
+            if(list.head instanceof Or_State)  //noch fuer And_State
+                tlist = ((Or_State)(list.head)).trs;
+            while (tlist != null)
+            {
+                if (rect.contains(tlist.head.points[0].x+r.x,tlist.head.points[0].y+r.y))
+                {
+                    objList = new ObjectList(tlist.head,objList);
+                    markSelectedTr(tlist.head,new Point(r.x,r.y),editor);
+                }
+                tlist = tlist.tail;
+            }
+            list = list.tail;
+        }
+        return objList;
+    }
+
+    public static void copyObjects(ObjectList objlist, Editor editor)
+    {
+        while (objlist != null)
+        {
+            if (objlist.head instanceof Connector){
+                try
+                {
+                    Connector con = (Connector)(objlist.head.clone());
+                    copyList = new ObjectList(con,copyList);
+                }
+                catch(CloneNotSupportedException e)
+                {
+                    editor.gui.OkDialog(editor,"Fehler","Kopieren nicht moeglich!");
+                }
+            }
+            if (objlist.head instanceof Tr){
+                Tr neu = (Tr)objlist.head;
+                Tr tr = new Tr(neu.source,neu.target,neu.label,neu.points);
+                copyList = new ObjectList(tr,copyList);
+            }
+            objlist = objlist.tail;
         }
     }
-    public static void insertOneState(State s, int x, int y, Editor editor)
+
+    public static void removeObjects(Editor editor)
     {
-//        Rectangle r = Methoden_0.abs(editor,s);
+        ObjectList list = selectList;
+        while (list != null)
+        {
+            if (list.head instanceof Connector)
+            {
+                markLast = (Connector)list.head;
+                removeOneCon(editor);
+            }
+            if (list.head instanceof Tr)
+            {
+                markLast = (Tr)list.head;
+                removeOneTr(editor);
+            }
+            list = list.tail;
+        }
+        selectList = null;
     }
 
+    public static void selectOne(int x, int y, Editor editor)
+    {
+        if (Methoden_0.getConEnvOf(x,y,editor) != null)
+            selectOneConnector(x,y,editor);
+        else
+            selectOneTr(x,y,editor);
+    }
 
+    public static void insertOne(int x, int y, Editor editor)
+    {
+        if (markLast instanceof Connector)
+            insertOneConnector(x,y,editor);
+        if (markLast instanceof Tr)
+            insertOneTr(x,y,editor);
+    }
 
-    public static void selectOneTr(int x, int y, Editor editor) //p2 ist nicht erforderlich fuer die berechnung
+    private static void selectOneTr(int x, int y, Editor editor) //p2 ist nicht erforderlich fuer die berechnung
     {
         State s = Methoden_0.getFirstOrStateOf(x,y,editor);//noch And_State beachten!!!
         if (s.equals(editor.statechart.state)) selectOneTr = null;
@@ -289,6 +341,7 @@ public class Methoden_1
             {
                 markSelectedTr(selectOneTr,new Point(r.x,r.y),editor);
                 markLast = selectOneTr;
+                selectList = new ObjectList(selectOneTr,selectList);
             }
         }
         if (s instanceof And_State)
@@ -299,11 +352,6 @@ public class Methoden_1
 
     public static void copyOneTr(Editor editor)
     {
-        if (selectOneTr != null)
-        {
-            copyOneTr = new Tr(selectOneTr.source,selectOneTr.target,selectOneTr.label,selectOneTr.points);
-        }
-/*
         try
         {
             if (selectOneTr != null)
@@ -316,29 +364,19 @@ public class Methoden_1
         catch(CloneNotSupportedException e)
         {
             editor.gui.OkDialog(editor,"Fehler","Kopieren nicht moeglich!");
-        }*/
+        }
     }
-    public static void insertOneTr(int x, int y, Editor editor)
+    private static void insertOneTr(int x, int y, Editor editor)
     {
         if (copyOneTr == null) return;
-        if (selectOneTr != null)
-        {
-            copyOneTr = new Tr(selectOneTr.source,selectOneTr.target,selectOneTr.label,selectOneTr.points);
-        }
-
-/*
         try
         {
             copyOneTr = (Tr)(copyOneTr.clone());
-            CPoint p[] = new CPoint[copyOneTr.points.length];
-            for (int i=0;i<copyOneTr.points.length;i++)
-                p[i] = copyOneTr.points[i];
-            copyOneTr.points = p;
         }
         catch(CloneNotSupportedException e)
         {
             editor.gui.OkDialog(editor,"Fehler","Kopieren nicht moeglich!");
-        }*/
+        }
         if (copyOneTr != null)
             addTransition(x,y,editor);
         Methoden_0.updateAll(editor);
@@ -348,8 +386,37 @@ public class Methoden_1
     {
         State s = Methoden_0.getFirstOrStateOf(x,y,editor);
         Rectangle r = Methoden_0.abs(editor,s);
+
+        State s1 = EditorUtils.getInnermostStateOf(x,y,editor);
+        if (s1 != editor.statechart.state)
+        {
+            Rectangle r1 = Methoden_0.abs(editor,s1);
+            if (s1 instanceof Or_State)
+            {
+                if ((Betrag(x,r1.x)<20) || (Betrag(x,r1.x+r1.width) < 20) ||
+                    (Betrag(y,r1.y)<20) || (Betrag(y,r1.y+r1.height) < 20))
+                    switch (Methoden_0.wherePoint(r1,x,y)) //in welchem "Bereich" liegt der Punkt??
+                    {
+                        case 1:{y = r1.y+1;break;}
+                        case 2:{x = r1.x+r1.width-1;break;}
+                        case 3:{y = r1.y+r1.height-1;break;}
+                        case 4:{x = r1.x+1;}
+                    }
+            }
+            if (s1 instanceof Basic_State)
+                switch (Methoden_0.wherePoint(r1,x,y)) //in welchem "Bereich" liegt der Punkt??
+                {
+                    case 1:{y = r1.y+1;break;}
+                    case 2:{x = r1.x+r1.width-1;break;}
+                    case 3:{y = r1.y+r1.height-1;break;}
+                    case 4:{x = r1.x+1;}
+                }
+        }
+
         Tr tr = getNewPosTrans(copyOneTr,new Point(r.x,r.y),x,y);
         Or_State os = (Or_State)s;
+        r = Methoden_0.abs(editor,os); //neue Berechnung fuer changeTrAnchor
+        changeTrAnchorOf(tr,new Point(r.x,r.y),editor); //veraendert die TrAnchor-Felder
         TrList list = new TrList(tr,os.trs);
         os.trs = list;
     }
@@ -359,16 +426,16 @@ public class Methoden_1
         if (tr == null) return tr;
         CPoint[] q = new CPoint[tr.points.length];
         if (selectOneTr != null)
-        {
-            System.out.println("hier");
+/*        {
             copy = new Tr(copyOneTr.source,copyOneTr.target,copyOneTr.label,q);
         }
-
-/*        try
+*/
+        try
         {
             copy = (Tr)(tr.clone());
         }
-        catch(CloneNotSupportedException e){}*/
+        catch(CloneNotSupportedException e){}
+
         int dx,dy;
         dx = x-(p.x+selectOneTr.points[0].x);
         dy = y-(p.y+selectOneTr.points[0].y);
@@ -392,14 +459,17 @@ public class Methoden_1
 */
     private static void markSelectedTr(Tr tr, Point p, Editor editor)
     {
+        if (tr == null | (tr.points.length <2)) return;
         Graphics g = editor.getGraphics();
-        g.setColor(Color.red);
+        if (editor.gui.getTransitioncolor() != Color.blue)
+            g.setColor(Color.blue);
+        else g.setColor(Color.red);
         int i=0;
         try
         {
             for (i=0;i<=tr.points.length-1;i++)
             {
-                if (i==0) g.fillOval((int)((double)(tr.points[0].x+p.x-2)*Methoden_1.getFactor())-editor.scrollX,
+                if (i==0) g.fillOval((int)((double)(tr.points[0].x+p.x)*Methoden_1.getFactor())-2-editor.scrollX,
                            (int)((double)(tr.points[0].y+p.y)*Methoden_1.getFactor())-editor.scrollY,4,4);
                 g.drawLine((int)((double)(tr.points[i].x+p.x)*Methoden_1.getFactor())-editor.scrollX,
                            (int)((double)(tr.points[i].y+p.y)*Methoden_1.getFactor())-editor.scrollY,
@@ -428,7 +498,7 @@ public class Methoden_1
 
     private static void removeOneTr(Editor editor)
     {
-        StateList list = ((Or_State)(editor.statechart.state)).substates;
+        StateList list = editor.stateList;
         TrList tlist = null,copy=null;
         tlist = ((Or_State)(editor.statechart.state)).trs;
         while (tlist != null)
@@ -453,35 +523,64 @@ public class Methoden_1
         }
         while (list != null)
         {
-            tlist = ((Or_State)(list.head)).trs;
-            while(tlist != null)
-            {
-                if (tlist.head.equals(markLast))
+            if (list.head instanceof Or_State){
+                tlist = ((Or_State)(list.head)).trs;
+                while(tlist != null)
                 {
-                    tlist.head = null;
-                    TrList neu = tlist.tail;
-                    while (neu != null)
+                    if (tlist.head.equals(markLast))
                     {
-                        copy = new TrList(neu.head,copy);
-                        neu = neu.tail;
+                        tlist.head = null;
+                        TrList neu = tlist.tail;
+                        while (neu != null)
+                        {
+                            copy = new TrList(neu.head,copy);
+                            neu = neu.tail;
+                        }
+                        ((Or_State)(list.head)).trs = copy;
+                        selectOneTr = null;
+                        markLast = null;
+                        editor.repaint();
+                        return;
                     }
-                    ((Or_State)(list.head)).trs = copy;
-                    selectOneTr = null;
-                    markLast = null;
-                    editor.repaint();
-                    return;
+                    copy = new TrList(tlist.head,copy);
+                    tlist = tlist.tail;
                 }
-                copy = new TrList(tlist.head,copy);
-                tlist = tlist.tail;
             }
+            list = list.tail;
         }
-        list = list.tail;
     }
 
-    public static void selectOneConnector(int x, int y, Editor editor)
+/*
+    Methode: markSelectedCon
+    Funktion: markiert den ausgewaehlte Connector
+    Parameter: con: Connector
+               p : absoluter Punkt fuer con
+*/
+
+    private static void markSelectedCon(Connector con, Point p, Editor editor)
+    {
+        Graphics g = editor.getGraphics();
+        if (editor.gui.getConnectorcolor() != Color.blue)
+            g.setColor(Color.blue);
+        else g.setColor(Color.red);
+        int big = 10;
+        if (Methoden_1.getFactor()*100 < 25) big = 5;
+        else if (Methoden_1.getFactor()*100 > 400) big = 15;
+        else big = 10;
+        if(con != null)
+        {
+            g.fillOval((int)((double)(con.position.x+p.x)*Methoden_1.getFactor())-editor.scrollX,
+                       (int)((double)(con.position.y+p.y)*Methoden_1.getFactor())-editor.scrollY,big,big);
+        }
+        g.dispose();
+    }
+
+    private static void selectOneConnector(int x, int y, Editor editor)
     {
         selectOneConnector =  Methoden_0.getConEnvOf(x,y,editor);
+        if (selectOneConnector == null) return;
         markLast = selectOneConnector;
+        selectList = new ObjectList(selectOneConnector,selectList);
     }
 
     public static void copyOneConnector(Editor editor)
@@ -539,7 +638,7 @@ public class Methoden_1
 */
     private static void removeOneCon(Editor editor)
     {
-        StateList list = ((Or_State)(editor.statechart.state)).substates;
+        StateList list = editor.stateList;
         ConnectorList clist = null,copy=null;
         clist = ((Or_State)(editor.statechart.state)).connectors;
         while(clist != null)
@@ -563,29 +662,31 @@ public class Methoden_1
         }
         while (list != null)
         {
-            clist = ((Or_State)(list.head)).connectors;
-            while(clist != null)
-            {
-                if (clist.head.equals(markLast))
+            if (list.head instanceof Or_State){
+                clist = ((Or_State)(list.head)).connectors;
+                while(clist != null)
                 {
-                    clist.head = null;
-                    ConnectorList neu = clist.tail;
-                    while (neu != null)
+                    if (clist.head.equals(markLast))
                     {
-                        copy = new ConnectorList(neu.head,copy);
-                        neu = neu.tail;
+                        clist.head = null;
+                        ConnectorList neu = clist.tail;
+                        while (neu != null)
+                        {
+                            copy = new ConnectorList(neu.head,copy);
+                            neu = neu.tail;
+                        }
+                        ((Or_State)(list.head)).connectors = copy;
+                        selectOneConnector = null;
+                        markLast = null;
+                        editor.repaint();
+                        return;
                     }
-                    ((Or_State)(list.head)).connectors = copy;
-                    selectOneConnector = null;
-                    markLast = null;
-                    editor.repaint();
-                    return;
+                    copy = new ConnectorList(clist.head,copy);
+                    clist = clist.tail;
                 }
-                copy = new ConnectorList(clist.head,copy);
-                clist = clist.tail;
             }
+            list = list.tail;
         }
-        list = list.tail;
     }
 
     public static void moveOne(int x, int y, Editor editor)
@@ -605,41 +706,117 @@ public class Methoden_1
             editor.repaint();
         }
     }
-//brauche nicht????!!!
-    public static void drawMarkMouseDragged(int x, int y, Editor editor)
-    {
-        if (markLast == null) return;
-        Graphics g = editor.getGraphics();
-        if (markLast instanceof Connector){
-            g.fillOval((int)((double)(x)*Methoden_1.getFactor())-editor.scrollX,
-                       (int)((double)(y)*Methoden_1.getFactor())-editor.scrollY,10,10);
-            editor.repaint();
-        }
-        else
-        if (markLast instanceof Tr){
-            Methoden_0.drawTransition(new TrList((Tr)(markLast),null),points[2].x,
-                       points[2].y,editor);//loeschen
 
-            points[2].x = (int)((double)(points[2].x-((Tr)markLast).points[2].x)*Methoden_1.getFactor())-editor.scrollX;
-            points[2].y = (int)((double)(points[2].y-((Tr)markLast).points[2].y)*Methoden_1.getFactor())-editor.scrollY;
-        }
+/*
+    Methode: changeTrAnchorOf(..)
+    Funktion: beim Verschieben oder Einfuegen muessen die TrAnchor-Felder
+              dieser Transition auch veraendert werden
+    Parameter: tr: die zuveraendende Transition
+               p: absolute Koordinate desjenigen Or_States
+*/
+    private static void changeTrAnchorOf(Tr tr, Point p,Editor editor)
+    {
+        Absyn source = null, target = null;
+        TrAnchor s=null,t=null;
+        source = Methoden_0.getConEnvOf(p.x+tr.points[0].x,p.y+tr.points[0].y,editor);
+        if (source == null)
+            source = EditorUtils.getInnermostStateOf(p.x+tr.points[0].x,p.y+tr.points[0].y,editor);
+
+        target = Methoden_0.getConEnvOf(p.x+tr.points[tr.points.length-1].x,p.y+tr.points[tr.points.length-1].y,editor);
+        if (target == null)
+            target = EditorUtils.getInnermostStateOf(p.x+tr.points[tr.points.length-1].x,p.y+tr.points[tr.points.length-1].y,editor);
+
+        if (source instanceof Connector) s = (TrAnchor)((Conname)((Connector)source).name);
+        else s = (TrAnchor)(((State)source).name);
+        if (target instanceof Connector) t = (TrAnchor)((Conname)((Connector)target).name);
+        else t = (TrAnchor)(((State)target).name);
+
+        tr.source = s;
+        tr.target = t;
     }
 
-
-    private static boolean contained(Rectangle rect, Editor editor)
+    public static void moveTransName(int x, int y, Editor editor)
     {
-        State s = EditorUtils.getInnermostStateOf(rect.x,rect.y,editor);
+        State s = Methoden_0.getFirstOrStateOf(x,y,editor);
         Rectangle r = Methoden_0.abs(editor,s);
-
-        if (s instanceof Basic_State) return false;
-
-        if (s instanceof Or_State)
-        {
-            StateList list = ((Or_State)(s)).substates;
-            while (list != null) //noch zu machen!!!
-            {
-            }
-        }
-        return false;
+        selectOneTr.label.position = new CPoint(Betrag(r.x,x),Betrag(r.y,y));
+        editor.repaint();
     }
+
+    public static void showFullTransName(int x, int y, Editor editor)
+    {
+        StateList list = editor.stateList;
+        TrList tlist = null,copy=null;
+        tlist = ((Or_State)(editor.statechart.state)).trs;
+        Rectangle r = editor.statechart.state.rect;
+        Rectangle rect = new Rectangle();
+        Graphics g = editor.getGraphics();
+        g.setColor(editor.gui.getTransitioncolor());
+        while(tlist != null)
+        {
+            if (tlist.head.label.position != null){
+                rect = new Rectangle(tlist.head.label.position.x+r.x,tlist.head.label.position.y+r.y-10,5*tlist.head.label.caption.length(),10);
+                if (rect.contains(x,y))
+                {
+                    g.drawString(tlist.head.label.caption,(int)((double)(r.x+tlist.head.label.position.x)*Methoden_1.getFactor())-editor.scrollX,
+                                (int)((double)r.y+tlist.head.label.position.y*Methoden_1.getFactor())-editor.scrollY);
+                    return;
+                }
+            }
+            tlist = tlist.tail;
+        }
+        while (list != null)
+        {
+            if (list.head instanceof Or_State){
+                tlist = ((Or_State)(list.head)).trs;
+                r = Methoden_0.abs(editor,list.head);
+                while(tlist != null)
+                {
+                    if (tlist.head.label.position != null){
+                        rect = new Rectangle(tlist.head.label.position.x+r.x,tlist.head.label.position.y+r.y-10,5*tlist.head.label.caption.length(),10);
+                        if (rect.contains(x,y))
+                        {
+                            g.drawString(tlist.head.label.caption,(int)((double)(r.x+tlist.head.label.position.x)*Methoden_1.getFactor())-editor.scrollX,
+                                        (int)((double)r.y+tlist.head.label.position.y*Methoden_1.getFactor())-editor.scrollY);
+                            return;
+                        }
+                    }
+                    tlist = tlist.tail;
+                }
+            }
+            list = list.tail;
+        }
+    }
+
+
+
+/*
+    Methode: chechSEventList()
+    Funktion: prueft, ob durch das Loeschen die events-List noch richtig ist
+*/
+/*
+    private static void checkSEventList(Editor editor)
+    {
+        SEventList sEventList = editor.events;
+        StateList list = null;
+        TrList tlist = null;
+        boolean isIn = false;
+        while(sEventList != null)
+        {
+            while(list != null)
+            {
+                if (list.head instanceof Or_State)
+                {
+                    tlist = ((Or_State)list.head).trs;
+                    while (tlist != null)
+                    {
+                        if (tlist.label.caption.equals(sEventList.head.name))
+                            isIn = true;
+                        tlist = tlist.tail;
+                    }
+                }
+                list = list.tail;
+            }
+            if (!isIn)
+*/
 }

@@ -123,7 +123,7 @@ public class Methoden_0
                 else
                 if (con1 == null & con2 == null)
                 {
-                    dummyTr = new Tr(s2.name,s2.name,tlabeldummy,P);
+                    dummyTr = new Tr(s1.name,s2.name,tlabeldummy,P);
                 }
                 dlist = new TrList(dummyTr,os.trs);
                 os.trs = dlist;
@@ -162,6 +162,9 @@ public class Methoden_0
 
     public static void transitionMouseMoved(State state,int x, int y, Editor editor)
     {
+        State st = editor.statechart.state;
+        if (st == null) return;
+        if (!st.rect.contains(x,y)) return;
         boolean clear = true;
         CRectangle r = null;
         State s = EditorUtils.getInnermostStateOf(x,y,editor);
@@ -198,9 +201,8 @@ public class Methoden_0
         Graphics g = editor.getGraphics();
         g.setColor(editor.getBackground());
         g.drawOval((int)((double)mMoved.x*Methoden_1.getFactor())-editor.scrollX,
-                   (int)((double)mMoved.y*Methoden_1.getFactor())-editor.scrollY,
-                   (int)((double)rad*Methoden_1.getFactor()),
-                   (int)((double)rad*Methoden_1.getFactor()));
+                   (int)((double)mMoved.y*Methoden_1.getFactor())-editor.scrollY,rad,rad);
+
         if (!r.contains(x,y))
         {
             mMoved = new Point(0,0);
@@ -222,9 +224,7 @@ public class Methoden_0
                             break;}
 
                     g.drawOval((int)((double)x*Methoden_1.getFactor())-editor.scrollX,
-                               (int)((double)r.y*Methoden_1.getFactor())-editor.scrollY-2-rad,
-                               (int)((double)rad*Methoden_1.getFactor()),
-                               (int)((double)rad*Methoden_1.getFactor()));
+                               (int)((double)r.y*Methoden_1.getFactor())-editor.scrollY-2-rad,rad,rad);
                     mMoved.x=x;mMoved.y=r.y-2-rad;break;}
             case 2:{
                     if (state instanceof Or_State)
@@ -260,20 +260,25 @@ public class Methoden_0
 
     public static void markConMouseMoved(int x, int y, Editor editor)
     {
+        State state = editor.statechart.state;
+        if (state == null) return;
+        if (!state.rect.contains(x,y)) return;
         Connector con = getConEnvOf(x,y,editor);
         Graphics g = editor.getGraphics();
         if (con != null)
         {
             State s = getFirstOrStateOf(x,y,editor);
             Rectangle r = abs(editor,s);
-            g.setColor(Color.blue);
+            if (editor.gui.getConnectorcolor() != Color.blue)
+                g.setColor(Color.blue);
+            else g.setColor(Color.red);
             g.fillOval((int)((double)(con.position.x+r.x)*Methoden_1.getFactor())-editor.scrollX,
                        (int)((double)(con.position.y+r.y)*Methoden_1.getFactor())-editor.scrollY,10,10);
             conpos = new Point(con.position.x+r.x-editor.scrollX,con.position.y+r.y-editor.scrollY);
             g.dispose();
             return;
         }
-        g.setColor(g.getColor());
+        g.setColor(editor.gui.getConnectorcolor());
         g.fillOval((int)((double)conpos.x*Methoden_1.getFactor()),
                    (int)((double)conpos.y*Methoden_1.getFactor()),10,10);
         conpos = new Point(0,0);
@@ -308,32 +313,38 @@ public class Methoden_0
     public static void drawTransition(TrList trlist,int absX, int absY,Editor editor)
     {
         Graphics g = editor.getGraphics();
+        g.setColor(editor.gui.getTransitioncolor());
         TrList dlist = trlist;
         int i=0;
         while (dlist != null)
         {
             i=0;
+//            bezier(g,dlist.head.points,absX,absY,editor);
+//            dlist = dlist.tail;
+//        }
             try
             {
                 for (i=0;i<=dlist.head.points.length-1;i++)
                 {
-                    if (i==0) g.fillOval((int)((double)(dlist.head.points[0].x+absX-2)*Methoden_1.getFactor())-editor.scrollX,
+                    if (i==0) g.fillOval((int)((double)(dlist.head.points[0].x+absX)*Methoden_1.getFactor())-2-editor.scrollX,
                                (int)((double)(dlist.head.points[0].y+absY)*Methoden_1.getFactor())-editor.scrollY,4,4);
 
                     g.drawLine((int)((double)(dlist.head.points[i].x+absX)*Methoden_1.getFactor())-editor.scrollX,
                                (int)((double)(dlist.head.points[i].y+absY)*Methoden_1.getFactor())-editor.scrollY,
                                (int)((double)(dlist.head.points[i+1].x+absX)*Methoden_1.getFactor())-editor.scrollX,
                                (int)((double)(dlist.head.points[i+1].y+absY)*Methoden_1.getFactor())-editor.scrollY);
+
                 }
                 dlist = dlist.tail;
             }
             catch(NullPointerException e)
             {
                 if (i>=1){
-                Pfeil pfeil = new Pfeil(g,(int)((double)(dlist.head.points[i-1].x+absX)*Methoden_1.getFactor())-editor.scrollX,
+                    Pfeil pfeil = new Pfeil(g,(int)((double)(dlist.head.points[i-1].x+absX)*Methoden_1.getFactor())-editor.scrollX,
                                           (int)((double)(dlist.head.points[i-1].y+absY)*Methoden_1.getFactor())-editor.scrollY,
                                           (int)((double)(dlist.head.points[i].x+absX)*Methoden_1.getFactor())-editor.scrollX,
-                                          (int)((double)(dlist.head.points[i].y+absY)*Methoden_1.getFactor())-editor.scrollY);}
+                                          (int)((double)(dlist.head.points[i].y+absY)*Methoden_1.getFactor())-editor.scrollY);
+                }
                 dlist=dlist.tail;
 
             }
@@ -359,16 +370,65 @@ public class Methoden_0
         }
         catch(NullPointerException e){return;}
         catch(ArrayIndexOutOfBoundsException e){return;}
+
+    }
+
+
+// x,y absolute Koordinate des innersten zustandes
+    private static void bezier(Point[] p1,int x, int y,Editor editor)
+    {
+        Graphics g = editor.getGraphics();
+	    double[] px = new double[p1.length+1];
+	    double[] py = new double[p1.length+1];
+	    int m=p1.length,i=0,count = 0,k=0;
+	    if (m==2) m = 3;
+        double t;
+        Point[] points = new Point[p1.length*50];
+	    for (t = 0; t <= 1; t+=0.1)
+        {
+            for(i=0;i<=p1.length-1;i++){
+                if ( i == 1 & p1.length == 2)
+                {
+                    px[1] = (double)((p1[0].x+p1[1].x)/2+x);
+                    int neu = Betrag(p1[0].y,p1[1].y);
+                    if ( neu < 5) neu = 10;
+                    py[1] = (double)(p1[0].y+neu+y);
+                    px[2] = (double)(p1[1].x+x);
+                    py[2] = (double)(p1[1].y+y);
+                    break;
+                }
+      	        px[i] = (double)p1[i].x+x;
+  	            py[i] = (double)p1[i].y+y;
+  	        }
+
+            m = p1.length;
+            if (m == 2) m = 3;
+            while (m >= 0)
+            {
+                for (int j=0;j<(m-1);j++)
+                {
+                    px[j] = px[j]+(t*(double)(px[j+1]-px[j]));
+                    py[j] = py[j]+(t*(double)(py[j+1]-py[j]));
+	            }
+                m--;
+       	    }
+       	    count++;
+            points[k++] = new Point((int)(px[0]*Methoden_1.getFactor())-editor.scrollX,
+                                    (int)(py[0]*Methoden_1.getFactor())-editor.scrollY);
+        }
+        for (i=0;i<count-1;i++){
+            if (i==0) g.fillOval(points[0].x,points[0].y,4,4);
+            g.drawLine(points[i].x,points[i].y,points[i+1].x,points[i+1].y);
+        }
+        Pfeil pf = new Pfeil(g,points[count-2].x,points[count-2].y,points[count-1].x,points[count-1].y);
     }
 
     private static void showAllConnectors(Editor editor)
     {
         StateList list = null;
         Rectangle r = null;
-        Graphics g = null;
         try {
             list = editor.stateList;
-            g = editor.getGraphics();
             StateList help = list;
             while (help != null)
             {
@@ -389,10 +449,17 @@ public class Methoden_0
     {
         ConnectorList list = clist;
         Graphics g = editor.getGraphics();
+        g.setColor(editor.gui.getConnectorcolor());
+        int big = 10;
+        switch((int)(Methoden_1.getFactor()*100))
+        {
+            case 400 : {big = 15; break;}
+            case 25  : {big = 5;break;}
+        }
         while (list != null)
         {
             g.fillOval((int)((double)(list.head.position.x+absX)*Methoden_1.getFactor())-editor.scrollX,
-                       (int)((double)(list.head.position.y+absY)*Methoden_1.getFactor())-editor.scrollY,10,10);
+                       (int)((double)(list.head.position.y+absY)*Methoden_1.getFactor())-editor.scrollY,big,big);
             list = list.tail;
         }
         g.dispose();
@@ -408,7 +475,7 @@ public class Methoden_0
     //                3 fuer untere Seite
     //                4 fuer linke Seite
 
-    private static int wherePoint(Rectangle r, int x, int y)
+    public static int wherePoint(Rectangle r, int x, int y)
     {
         Rectangle r1 = new Rectangle(r.x,r.y,r.width/2,r.height/2);
         Rectangle r2 = new Rectangle(r.x+r.width/2,r.y,r.width/2,r.height/2);
@@ -487,39 +554,6 @@ public class Methoden_0
         return new Point(editor.scrollX,editor.scrollY);
     }
 
-
-/*
-    Methode: getRelativeCoord(int x, int y,int relX, int relY, StateList sl)
-    Funktion: berechnet die relative Koordinate aus (x,y) zum "innersten Zustand"
-    Parameter: (x,y) Mausklick
-               relX,relY : (0,0)-Punkt (Ursprung)
-               sl : statelist
-    Rueckgabe: Punkt, der absolute Koordinate zum (x,y) darstellt.
-    Bsp: Aufruf: getRelativeCoord(200,100,0,0,editor.statechart.state.substates)
-*/
-
-    private static Point getRelativeCoord(int x, int y,int relX, int relY, StateList sl)
-    {
-        StateList list = sl;
-        int x1=relX, y1=relY;
-        while (list != null)
-        {
-            if (list.head.rect.contains(x,y))
-            {
-                x1 += list.head.rect.x;
-                y1 += list.head.rect.y;
-                if (list.head instanceof Or_State)
-                {
-                    Or_State os = (Or_State)list.head;
-                    if (os.substates != null) return getRelativeCoord(x-list.head.rect.x,y-list.head.rect.y,x1,y1,os.substates);
-                }
-            }
-            list = list.tail;
-        }
-        return new Point(x1,y1);
-    }
-
-
     //Funktion: liefert den Betrag einer Differenz zweier Zahlen
 
     private static int Betrag(int x, int y)
@@ -541,6 +575,16 @@ public class Methoden_0
         try {
             list = editor.stateList;
             g = editor.getGraphics();
+            g.setColor(editor.gui.getStatecolor());
+            int groesse = (int)(Methoden_1.getFactor()*100);
+            Font font = new Font("Serif",Font.PLAIN,14);
+            if (groesse < 25) g.setFont(font = new Font("Serif",Font.PLAIN,8));
+            else if (groesse < 50) g.setFont(font = new Font("Serif",Font.PLAIN,10));
+            else if (groesse < 100) g.setFont(font = new Font("Serif",Font.PLAIN,14));
+            else if (groesse < 200) g.setFont(font = new Font("Serif",Font.PLAIN,16));
+            else if (groesse < 300) g.setFont(font = new Font("Serif",Font.PLAIN,18));
+            else if (groesse < 400) g.setFont(font = new Font("Serif",Font.PLAIN,20));
+            else if (groesse > 400) g.setFont(font = new Font("Serif",Font.PLAIN,20));
             g.setColor(Color.red);
             StateList help = list;
             while (help != null) {
@@ -560,9 +604,15 @@ public class Methoden_0
                 if (help.head instanceof Basic_State)
                     {g.drawString(help.head.name.name,(int)((double)r.x*Methoden_1.getFactor())+10-editor.scrollX,
                                   (int)((double)r.y*Methoden_1.getFactor())+15-editor.scrollY);}
-                else if (help.head instanceof And_State)
-                    {g.drawString(help.head.name.name,(int)((double)r.x*Methoden_1.getFactor())+10-editor.scrollX,
-                                  (int)((double)r.y*Methoden_1.getFactor())-3-editor.scrollY);}
+                else
+                if (help.head instanceof And_State){
+                    int hoehe = font.getSize();
+                    int breite = font.getSize()*help.head.name.name.length();
+                    g.drawRect((int)((double)r.x*Methoden_1.getFactor())+10-editor.scrollX-5,
+                               (int)((double)r.y*Methoden_1.getFactor())-editor.scrollY-hoehe,breite,hoehe);
+                    g.drawString(help.head.name.name,(int)((double)r.x*Methoden_1.getFactor())+10-editor.scrollX,
+                                  (int)((double)r.y*Methoden_1.getFactor())-3-editor.scrollY);
+                }
                 help = help.tail;
             }
         }
@@ -579,6 +629,18 @@ public class Methoden_0
         try {
             list = editor.stateList;
             g = editor.getGraphics();
+            g.setColor(editor.gui.getConnectorcolor());
+            int groesse = (int)(Methoden_1.getFactor()*100);
+            switch(groesse)
+            {
+                case 400 : {g.setFont(new Font("Serif",Font.PLAIN,20));break;}
+                case 300 : {g.setFont(new Font("Serif",Font.PLAIN,18));break;}
+                case 200 : {g.setFont(new Font("Serif",Font.PLAIN,16));break;}
+                case 50 : {g.setFont(new Font("Serif",Font.PLAIN,10));break;}
+                case 25 :  g.setFont(new Font("Serif",Font.PLAIN,8));
+            }
+            if (groesse < 25) g.setFont(new Font("Serif",Font.PLAIN,8));
+            if (groesse > 400) g.setFont(new Font("Serif",Font.PLAIN,20));
             StateList help = list;
             while (help != null)
             {
@@ -618,6 +680,20 @@ public class Methoden_0
         try {
             list = editor.stateList;
             g = editor.getGraphics();
+            g.setColor(editor.gui.getTransitioncolor());
+
+            int groesse = (int)(Methoden_1.getFactor()*100);
+            switch(groesse)
+            {
+                case 400 : {g.setFont(new Font("Serif",Font.PLAIN,20));break;}
+                case 300 : {g.setFont(new Font("Serif",Font.PLAIN,18));break;}
+                case 200 : {g.setFont(new Font("Serif",Font.PLAIN,16));break;}
+                case 50 : {g.setFont(new Font("Serif",Font.PLAIN,10));break;}
+                case 25 :  g.setFont(new Font("Serif",Font.PLAIN,8));
+            }
+            if (groesse < 25) g.setFont(new Font("Serif",Font.PLAIN,8));
+            if (groesse > 400) g.setFont(new Font("Serif",Font.PLAIN,20));
+
             StateList help = list;
             while (help != null)
             {
@@ -636,7 +712,10 @@ public class Methoden_0
                                 continue;
                             }
                         }
-                        g.drawString(tlist.head.label.caption,(int)((double)(r.x+tlist.head.label.position.x)*Methoden_1.getFactor())-editor.scrollX,
+                        String trName = tlist.head.label.caption;
+                        String neuString = trName;
+                        if (trName.length() > 20) neuString = trName.substring(1,20);
+                        g.drawString(neuString,(int)((double)(r.x+tlist.head.label.position.x)*Methoden_1.getFactor())-editor.scrollX,
                                      (int)((double)(r.y+tlist.head.label.position.y)*Methoden_1.getFactor())-editor.scrollY);
                         tlist = tlist.tail;
                     }
@@ -702,6 +781,84 @@ public class Methoden_0
         return null;
     }
 
+    public static void showDefaultState(Editor editor)
+    {
+        StateList help = editor.stateList;
+        Or_State os = null;
+        StatenameList list = null;
+        StateList slist = null;
+        while (help != null)
+        {
+            if (help.head instanceof Or_State)
+            {
+                os = (Or_State)help.head;
+                list = os.defaults;
+                while (list != null)
+                {
+                    if (help.head.name == list.head)
+                        drawDefaultState(help.head,editor);
+                    slist = os.substates;
+                    while (slist != null)
+                    {
+                        if (list.head == slist.head.name)
+                            drawDefaultState(slist.head,editor);
+                        slist = slist.tail;
+                    }
+                    list = list.tail;
+                }
+            }
+            help = help.tail;
+        }
+    }
+
+    private static void drawDefaultState(State state, Editor editor)
+    {
+        Rectangle r = abs(editor,state);
+        Point[] p = new Point[2];
+        p[0] = new Point(-15,0);
+        p[1] = new Point(0,15);
+        bezier(p,r.x,r.y,editor);
+    }
+
+
+    public static void addDefaultMouseClicked(int x, int y, Editor editor)
+    {
+        State s = EditorUtils.getInnermostStateOf(x,y,editor);
+        State s1 = getFirstOrStateOf(x,y,editor);
+        Or_State os = (Or_State)s1;
+        if (os == null) return;
+        StatenameList list = os.defaults;
+        if (list != null)
+        {
+            if (list.head == s.name){
+                StatenameList neu = os.defaults;
+                StatenameList copy = null;
+                while (neu != null){
+                    if (neu.head != s.name)
+                        copy = new StatenameList(neu.head,copy);
+                    neu = neu.tail;
+                }
+                os.defaults = copy;
+                return;
+            }
+            while (list.tail != null)
+            {
+                if (list.tail.head == s.name){
+                    StatenameList neu = os.defaults;
+                    StatenameList copy = null;
+                while (neu != null){
+                    if (neu.head != s.name)
+                        copy = new StatenameList(neu.head,copy);
+                    neu = neu.tail;
+                }
+                os.defaults = copy;
+                return;
+                }
+                list = list.tail.tail;
+            }
+        }
+        os.defaults = new StatenameList(s.name,os.defaults);
+    }
 
     public static void updateAll(Editor editor)
     {
@@ -710,6 +867,7 @@ public class Methoden_0
         showStateNames(editor);
         showConNames(editor);
         showTransNames(editor);
+        showDefaultState(editor);
     }
 
 }

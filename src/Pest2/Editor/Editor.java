@@ -1,3 +1,4 @@
+
 /**
 	package editor
 */
@@ -7,7 +8,9 @@ import absyn.*;
 import gui.*;
 import java.awt.*;
 import java.awt.event.*;
-
+/*
+Aenderungen am 27.01.99 (von long)
+*/
 
 public class Editor extends Frame implements ActionListener {
 
@@ -16,18 +19,20 @@ public class Editor extends Frame implements ActionListener {
     private MenuItem undo = null;
     public Point startPoint = null;
     public Point endPoint = null;
+    public State activeState = null;
     public CRectangle newRect = null;
     public boolean actionOk = false;
     public StateList stateList = null;
     private String status = "";
     private Scrollbar vert,horiz;
-    public int scrollX=0,scrollY=0;
+    public int scrollX=-2,scrollY=-21;
     public GUIInterface gui = null;
     private boolean changedStatechart = false; //fuer listenEditor()
     private String statechartName = "";
 
-    private MenuItem copyOneCon,copyOneTr,insertOne,moveOne,removeOne;
+    private MenuItem copyOneCon,copyOneTr,insertOne,moveOne,removeOne,moveTransName;
     private Menu copy = new Menu("Kopieren");
+    private Dimension dimension;
 
     final Editor editor = this;
 
@@ -80,17 +85,6 @@ public class Editor extends Frame implements ActionListener {
         mi.setActionCommand("Neu");
         datei.add(mi);
         datei.addSeparator();
-
-        mi = new MenuItem("PrettyPrinter");
-        mi.addActionListener(this);
-        mi.setActionCommand("PrettyPrinter");
-        datei.add(mi);
-        datei.addSeparator();
-
-        mi = new MenuItem("Beenden");
-        mi.addActionListener(this);
-        mi.setActionCommand("Beenden");
-        datei.add(mi);
 
         undo = new MenuItem("Rueckgaengig");
         undo.addActionListener(this);
@@ -146,6 +140,11 @@ public class Editor extends Frame implements ActionListener {
         mi.setActionCommand("Connector benennen");
         bearbeiten.add(mi);
 
+        mi = new MenuItem("Als Default setzen");
+        mi.addActionListener(this);
+        mi.setActionCommand("Als Default setzen");
+        bearbeiten.add(mi);
+
     	mi = new MenuItem("Markieren");
         mi.addActionListener(this);
         mi.setActionCommand("Markieren");
@@ -184,7 +183,22 @@ public class Editor extends Frame implements ActionListener {
         removeOne.setEnabled(false);
         Extras.add(removeOne);
 
-    	final CheckboxMenuItem cb25,cb50,cb100,cb200,cb300,cb400;
+    	moveTransName = new MenuItem("Transitionsname verschieben");
+        moveTransName.addActionListener(this);
+        moveTransName.setActionCommand("move Transname");
+        moveTransName.setEnabled(false);
+        Extras.add(moveTransName);
+
+        mi = new MenuItem("Zustand verschieben");
+        mi.addActionListener(this);
+        mi.setActionCommand("Zustand verschieben");
+        Extras.addSeparator();
+        Extras.add(mi);
+
+    	final CheckboxMenuItem cb10,cb25,cb50,cb100,cb200,cb300,cb400,cbper,cbanpassen;
+
+    	cb10 = new CheckboxMenuItem("10%");
+        Zoom.add(cb10);
 
     	cb25 = new CheckboxMenuItem("25%");
         Zoom.add(cb25);
@@ -204,6 +218,14 @@ public class Editor extends Frame implements ActionListener {
     	cb400 = new CheckboxMenuItem("400%");
         Zoom.add(cb400);
 
+        Zoom.addSeparator();
+
+    	cbper = new CheckboxMenuItem("persoenlich ...");
+        Zoom.add(cbper);
+
+    	cbanpassen = new CheckboxMenuItem("Anpassen");
+        Zoom.add(cbanpassen);
+
         add("East",vert = new Scrollbar(Scrollbar.VERTICAL));
         add("South",horiz = new Scrollbar(Scrollbar.HORIZONTAL));
         horiz.setBlockIncrement(400);
@@ -214,8 +236,8 @@ public class Editor extends Frame implements ActionListener {
         {
             public void adjustmentValueChanged(AdjustmentEvent e)
             {
-                scrollX = e.getValue();
-                horiz.setValues(scrollX,40,0,10000);
+                scrollX = e.getValue()-2;
+                horiz.setValues(e.getValue(),40,0,10000);
                 repaint();
             }
         });
@@ -223,9 +245,20 @@ public class Editor extends Frame implements ActionListener {
         {
             public void adjustmentValueChanged(AdjustmentEvent e)
             {
-                scrollY = e.getValue();
-                vert.setValues(scrollY,40,0,10000);
+                scrollY = e.getValue()-21;
+                vert.setValues(e.getValue(),40,0,10000);
                 repaint();
+            }
+        });
+
+        cb10.addItemListener(new ItemListener(){
+            public void itemStateChanged(ItemEvent e){
+                if (cb10.getState()){
+                    Methoden_1.setFactor(10);
+                    setAllDeselected(cb25,cb50,cb100,cb200,cb300,cb400,cbper,cbanpassen);
+                    repaint();
+                }
+                else cb10.setState(true);
             }
         });
 
@@ -233,7 +266,7 @@ public class Editor extends Frame implements ActionListener {
             public void itemStateChanged(ItemEvent e){
                 if (cb25.getState()){
                     Methoden_1.setFactor(25);
-                    setAllDeselected(cb50,cb100,cb200,cb300,cb400);
+                    setAllDeselected(cb10,cb50,cb100,cb200,cb300,cb400,cbper,cbanpassen);
                     repaint();
                 }
                 else cb25.setState(true);
@@ -245,7 +278,7 @@ public class Editor extends Frame implements ActionListener {
                 if(cb50.getState())
                 {
                     Methoden_1.setFactor(50);
-                    setAllDeselected(cb25,cb100,cb200,cb300,cb400);
+                    setAllDeselected(cb10,cb25,cb100,cb200,cb300,cb400,cbper,cbanpassen);
                     repaint();
                 }
                 else cb50.setState(true);
@@ -256,7 +289,7 @@ public class Editor extends Frame implements ActionListener {
             public void itemStateChanged(ItemEvent e){
                 if (cb100.getState()){
                     Methoden_1.setFactor(100);
-                    setAllDeselected(cb25,cb50,cb200,cb300,cb400);
+                    setAllDeselected(cb10,cb25,cb50,cb200,cb300,cb400,cbper,cbanpassen);
                     repaint();
                 }
                 else cb100.setState(true);
@@ -268,7 +301,7 @@ public class Editor extends Frame implements ActionListener {
             {
                 if (cb200.getState()){
                     Methoden_1.setFactor(200);
-                    setAllDeselected(cb25,cb50,cb100,cb300,cb400);
+                    setAllDeselected(cb10,cb25,cb50,cb100,cb300,cb400,cbper,cbanpassen);
                     repaint();
                 }
                 else cb200.setState(true);
@@ -281,7 +314,7 @@ public class Editor extends Frame implements ActionListener {
             {
                 if (cb300.getState()){
                     Methoden_1.setFactor(300);
-                    setAllDeselected(cb25,cb50,cb100,cb200,cb400);
+                    setAllDeselected(cb10,cb25,cb50,cb100,cb200,cb400,cbper,cbanpassen);
                     repaint();
                 }
                 else cb300.setState(true);
@@ -292,19 +325,50 @@ public class Editor extends Frame implements ActionListener {
             public void itemStateChanged(ItemEvent e){
                 if (cb400.getState()){
                     Methoden_1.setFactor(400);
-                    setAllDeselected(cb25,cb50,cb100,cb200,cb300);
+                    setAllDeselected(cb10,cb25,cb50,cb100,cb200,cb300,cbper,cbanpassen);
                     repaint();
                 }
                 else cb400.setState(true);
             }
         });
 
+        cbper.addItemListener(new ItemListener(){
+            public void itemStateChanged(ItemEvent e){
+                if (cbper.getState() | !cbper.getState()){
+
+                    String per = gui.EingabeDialog(editor,"Zoomen","Zoom_Faktor: 1 .. 1000","500");
+                    if (per == null) {cbper.setState(false);return;}
+                    Double z = new Double(per);
+                    double wert = z.doubleValue();
+                    if (wert < 1 | wert > 1000) return;
+                    Methoden_1.setFactor(wert);
+
+                    setAllDeselected(cb10,cb25,cb50,cb100,cb200,cb300,cb400,cbanpassen);
+                    repaint();
+                    cbper.setState(true);
+                }
+            }
+        });
+
+        cbanpassen.addItemListener(new ItemListener(){
+            public void itemStateChanged(ItemEvent e){
+                if (cbanpassen.getState() | !cbanpassen.getState()){
+
+                    Methoden_1.setFactor(getFitToScreen());
+                    setAllDeselected(cb10,cb25,cb50,cb100,cb200,cb300,cb400,cbper);
+                    repaint();
+                    cbanpassen.setState(true);
+                }
+            }
+        });
 
         addMouseListener(new MouseAdapter() {
 
             public void mousePressed(MouseEvent e) {
                 if (status.equals("Zustand hinzufuegen"))
                     EditorUtils.createStateMousePressed(e, editor);
+                if (status.equals("Zustand verschieben"))
+                    EditorUtils.dragStateMousePressed(e, editor);
                 Methoden_0.updateAll(editor);
             }
 
@@ -315,8 +379,19 @@ public class Editor extends Frame implements ActionListener {
                     EditorUtils.andStateMouseReleased(e, editor);
                 if (status.equals("Zustand loeschen"))
                     EditorUtils.deleteStateMouseReleased(e, editor);
+                if (status.equals("Zustand verschieben"))
+                    EditorUtils.dragStateMouseReleased(e, editor);
                 if (status.equals("Verschieben"))
                     Methoden_1.moveOne((int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()),(int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()),editor);
+                if (status.equals("Markieren")){
+                    Methoden_1.markObjects(newRect,editor);
+                    EditorUtils.show(newRect,getBackground(),editor,getGraphics());
+                    initCopy();
+                    initRemove();
+                    initMove();
+                    return;
+                }
+                initCopy();
                 initRemove();
                 initMove();
                 Methoden_0.updateAll(editor);
@@ -335,33 +410,37 @@ public class Editor extends Frame implements ActionListener {
                 {
                     Methoden_1.addAndNameMouseClicked((int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()),(int)((double)(e.getY()+scrollY)/Methoden_1.getFactor())+scrollY,editor);
                 }
-                if (status.equals("Transition benennen"))
-                {
+                if (status.equals("Transition benennen")){
+                    Methoden_0.updateAll(editor);
+                    Methoden_1.selectOne((int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()),(int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()),editor);
                     Methoden_1.addTransNameMouseClicked((int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()),(int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()),editor);
                 }
-                if (status.equals("Connector hinzufuegen"))
-                {
+                if (status.equals("Connector hinzufuegen")){
+                    Methoden_0.updateAll(editor);
                     Methoden_0.addConnectorMouseClicked((int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()),(int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()),editor);
                 }
-                if (status.equals("Connector benennen"))
-                {
+                if (status.equals("Connector benennen")){
+                    Methoden_0.updateAll(editor);
                     Methoden_1.addConNameMouseClicked((int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()),(int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()),editor);
                 }
-                if (status.equals("Markieren"))
-                {
-                    Methoden_1.selectOneConnector((int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()),(int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()),editor);
-                    Methoden_1.selectOneTr((int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()),(int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()),editor);
+                if (status.equals("Als Default setzen")){
+                    Methoden_0.addDefaultMouseClicked((int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()),(int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()),editor);
+                    repaint();
+                }
+                if (status.equals("Markieren")){
+                    Methoden_0.updateAll(editor);
+                    Methoden_1.selectOne((int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()),(int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()),editor);
                     Methoden_0.markConMouseMoved((int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()),(int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()),editor);
-                    initCopyTr();
-                    initCopyCon();
+                    initCopy();
                     initMove();
                     initRemove();
                     return;
                 }
-                if (status.equals("Einfuegen"))
-                {
-                    Methoden_1.insertOneConnector((int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()),(int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()),editor);
-                    Methoden_1.insertOneTr((int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()),(int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()),editor);
+                if (status.equals("Einfuegen")){
+                    Methoden_1.insertOne((int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()),(int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()),editor);
+                }
+                if (status.equals("move Transname")){
+                    Methoden_1.moveTransName((int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()),(int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()),editor);
                 }
                 Methoden_0.updateAll(editor);
 	    }
@@ -376,26 +455,29 @@ public class Editor extends Frame implements ActionListener {
                     EditorUtils.deleteStateMouseMoved(e, editor);
                 if (status.equals("Transition hinzufuegen"))
                 {
-                    Methoden_0.transitionMouseMoved(statechart.state,(int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()),(int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()),editor);
                     Methoden_0.markConMouseMoved((int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()),(int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()),editor);
+                    if (Methoden_1.getFactor() == 1) Methoden_0.transitionMouseMoved(statechart.state,(int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()),(int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()),editor);
+                }
+                if (status.equals("Transition benennen"))
+                {
+                    Methoden_0.updateAll(editor);
+                    Methoden_1.selectOne((int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()),(int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()),editor);
                 }
                 if (status.equals("Connector benennen") | status.equals("Markieren"))
                 {
                     Methoden_0.markConMouseMoved((int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()),(int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()),editor);
                 }
+                Methoden_1.showFullTransName((int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()),(int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()),editor);
             }
             public void mouseDragged(MouseEvent e)
             {
                 if (status.equals("Zustand hinzufuegen"))
                     EditorUtils.createStateMouseDragged(e, editor);
+                if (status.equals("Zustand verschieben"))
+                    EditorUtils.dragStateMouseDragged(e, editor);
                 if (status.equals("Markieren"))
                 {
-//                    EditorUtils.createStateMouseDragged(e,editor);
-                    Methoden_1.selectMouseDragged(editor);
-                }
-                if (status.equals("Verschieben"))
-                {
-//                    Methoden_1.drawMarkMouseDragged((int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()),(int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()),editor);
+                    EditorUtils.createStateMouseDragged(e,editor);
                 }
             }
         });
@@ -408,11 +490,13 @@ public class Editor extends Frame implements ActionListener {
                 window.dispose();
             }
         });
+
         addComponentListener(new ComponentAdapter ()
         {
             public void componentResized(ComponentEvent e)
             {
-                Dimension dimension = getSize();
+                dimension = getSize();
+
                 horiz.setBlockIncrement(dimension.width-100);
                 vert.setBlockIncrement(dimension.height-100);
             }
@@ -471,13 +555,39 @@ public class Editor extends Frame implements ActionListener {
 
     }
 
-    private void setAllDeselected(CheckboxMenuItem c1,CheckboxMenuItem c2,CheckboxMenuItem c3,CheckboxMenuItem c4,CheckboxMenuItem c5)
+    private void setAllDeselected(CheckboxMenuItem c0,CheckboxMenuItem c1,CheckboxMenuItem c2,CheckboxMenuItem c3,CheckboxMenuItem c4,CheckboxMenuItem c5,CheckboxMenuItem c6,CheckboxMenuItem c7)
     {
+        c0.setState(false);
         c1.setState(false);
         c2.setState(false);
         c3.setState(false);
         c4.setState(false);
         c5.setState(false);
+        c6.setState(false);
+        c7.setState(false);
+    }
+
+    private double getFitToScreen()
+    {
+        int max = 0, startX = 0, startY = 0;
+        Rectangle r;
+        StateList list = ((Or_State)(statechart.state)).substates;
+        while(list != null)
+        {
+            r = Methoden_0.abs(editor,list.head);
+            if (r.x > startX) startX = r.x;
+            if (r.y > startY) startY = r.y;
+            if (list.head.rect.width > max) max = list.head.rect.width;
+            if (list.head.rect.height > max) max = list.head.rect.height;
+            list = list.tail;
+        }
+        int maxScreen;
+        if (dimension.width < dimension.height) maxScreen = dimension.height;
+        else maxScreen = dimension.width;
+        if (startX < startY) max += startX;
+        else max += startY;
+        if (max == 0) max = maxScreen;
+        return (((double)(maxScreen)/(double)max)*100);
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -505,11 +615,6 @@ public class Editor extends Frame implements ActionListener {
             undo.setEnabled(true);
         }
         if (command.equals("Neu")) {initStatechart();}
-        if (command.equals("Beenden")) this.dispose();
-        if (command.equals("PrettyPrinter")) {
-            util.PrettyPrint p = new util.PrettyPrint();
-            p.start(statechart);
-        }
 
 //bearbeiten
         if (command.equals("Zustand hinzufuegen")) status = "Zustand hinzufuegen";
@@ -522,13 +627,16 @@ public class Editor extends Frame implements ActionListener {
         if (command.equals("Transition benennen")) status = "Transition benennen";
         if (command.equals("Connector hinzufuegen")) status = "Connector hinzufuegen";
         if (command.equals("Connector benennen")) status = "Connector benennen";
+        if (command.equals("Als Default setzen")) status = "Als Default setzen";
 //extras
         if (command.equals("Markieren")) {status = "Markieren";}
         if (command.equals("Connector")) {status = "Connector";initInsertCon();}
         if (command.equals("Transition")) {status = "Transition";initInsertTr();}
         if (command.equals("Einfuegen")) {status = "Einfuegen";}
         if (command.equals("Verschieben")) {status = "Verschieben";}
-        if (command.equals("Loeschen")) {status = "Loeschen";Methoden_1.removeOne(editor);initRemove();}
+        if (command.equals("Loeschen")) {status = "Loeschen";Methoden_1.removeObjects(editor);initRemove();status = "Markieren";}
+        if (command.equals("move Transname")) {status = "move Transname";}
+        if (command.equals("Zustand verschieben")) status = "Zustand verschieben";
 
 //Zoomen
         if (command.equals("10%")) {Methoden_1.setFactor(10);repaint();}
@@ -553,23 +661,25 @@ public class Editor extends Frame implements ActionListener {
         repaint();
     }
 
-    private void initCopyCon()
+    private void initCopy()
     {
-        if (Methoden_1.selectOneConnector != null){
+        if (Methoden_1.selectOneConnector != null){// | Methoden_1.selectList != null){
             copy.setEnabled(true);
             copyOneCon.setEnabled(true);
         }
         else
             copyOneCon.setEnabled(false);
-    }
-    private void initCopyTr()
-    {
         if (Methoden_1.selectOneTr != null){
             copy.setEnabled(true);
             copyOneTr.setEnabled(true);
+            if (Methoden_1.selectOneTr.label.position != null)
+                moveTransName.setEnabled(true);
         }
         else
+        {
             copyOneTr.setEnabled(false);
+            moveTransName.setEnabled(false);
+        }
     }
     private void initInsertCon()
     {
@@ -581,7 +691,7 @@ public class Editor extends Frame implements ActionListener {
     }
     private void initRemove()
     {
-        if (Methoden_1.markLast != null)
+        if (Methoden_1.markLast != null | Methoden_1.selectList != null)
             removeOne.setEnabled(true);
         else
             removeOne.setEnabled(false);
