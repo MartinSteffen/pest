@@ -47,3 +47,51 @@ Method void start(int)
 
 Die Angleichung der Schnittstellen ist noch nicht abgeschlossen.
 
+PEST1_COMPILABLE PEST2_COMPILABLE 
+
+Ziel diese Baseline war es, kompilierfaehige PESTs zu haben, wo alle
+Teilfunktionalitaeten von der GUI aus aktiviert werden koennen. DAS
+ZIEL WURDE NICHT ERREICHT!
+
+
+STATUS von PEST1
+-----------------
+Deswegen ist diese Baseline lediglich fuer PEST1 kompilierfaehig, aber
+nicht alle Teilfunktionalitaeten sind in GUI eingebunden. Damit
+koennen wir leben, d.h.
+
+(1) Alle Gruppen koennen ihr Teil weiterentwickeln.
+(2) Nur die in GUI eingebundenen Teilfunktionalitaeten koennen von der
+GUI aus aufgerufen werden und Informationen untereinander Austauschen
+(Statecharts uebergeben usw.).
+
+Die Kompilierfaehigkeit von PEST1 wurde z.T. erst dadurch erreicht,
+dass wir Makefiles aendern mussten. Sorry, aber es musste sein. Das
+Problem war, dass nicht alle Makefiles dem Konvention entsprachen,
+dass man die *.class Files (und nur das) durch ein Aufruf von 'make'
+in dem jeweiligen Directory konstruieren kann. (Damit wurde die
+Zustaendigkeit ueber die Makefiles nicht an uns uebertagen.)
+
+Auch mussten wir in PEST1/Simu eine kleine Aenderung vornehmen.
+
+STATUS von PEST2
+----------------
+
+In PEST2 koennen alle Teilgruppen ausser GUI uebersetzt werden. Das
+liegt daran, dass die Schnittstellen noch nicht einheitlich
+sind. Damit kann in PEST2 die GUI nicht gestartet werden.
+
+Auch hier mussten wir Makefiles aendern.
+
+Letzte Aenderungen an der abstrakten Syntax.
+-------------------------------------------
+
+Bernd hat die abstrakte Syntax um Serialization erweitert. Damit steht
+jetzt dem Laden/Speichern von Statecharts unserseits nichts mehr im
+Wege. Martin Steffen hat Point und Rectangle durch entsprechende
+cloneable austauschen muessen. Jetzt sollte die gesamte Absyn
+cloneable sein.
+
+Nach unsere Kenntniss muss nur noch Location mit "Leben gefuellt werden",
+was die TESC1-Leute machen muessten. Sonst durfte in die abstrakte Syntax
+nichts mehr dazukommen.
