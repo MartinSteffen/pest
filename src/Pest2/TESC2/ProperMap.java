@@ -43,12 +43,7 @@ class ProperMap {
 	int countW=W.length;
 	int countX=X.length;
 
-	while (!done) {
-	    /*System.out.println("row="+row);
-	    
-	    System.out.print("W=");
-	    for (int i=0;i<W.length;i++) System.out.print(W[i]+" ");
-	    System.out.println();*/
+	while (!done) {	  
 	    
 	    if (countW == 0) { // W ist leer
 		done = true;
@@ -69,8 +64,7 @@ class ProperMap {
 		    if (X[i] != null) {
 			// pruefen, ob X[i] inzident zu w ist
 			boolean isIncident = false;
-			for (int j=0;(j<transition.length)&&(!isIncident);j++) {
-			    
+			for (int j=0;(j<transition.length)&&(!isIncident);j++) {			    
 			    // Achtung: Vergleich von Objekten, kein Vergleich
 			    // von Zeichenketten fuer Statename und Conname
 			    if ((w.equalAnchor(transition[j].source)&&
@@ -87,9 +81,6 @@ class ProperMap {
 			}
 		    }
 		}
-		/*System.out.print("X=");
-		for (int i=0;i<W.length;i++) System.out.print(X[i]+" ");
-		System.out.println();*/
 
 		if (countX == 0) {
 		    row++; // naechste Ebene beginnen
@@ -105,18 +96,6 @@ class ProperMap {
 	int rows = row; // Anzahl der Ebenen
 	Vector level;
 
-	/*
-	for (int i=0;i<rows;i++) {
-	    level = (Vector) vlevel.elementAt(i);
-	    System.out.print(i+" : ");
-	    
-	    for (int j=0;j<level.size();j++) {
-		System.out.print(level.elementAt(j)+" ");
-	    }
-	    System.out.println();
-	}
-	*/
-
 	// Phase II: Einfuegen der Transitionen
 
 	Vector dummyMapTransition = new Vector();
@@ -125,8 +104,6 @@ class ProperMap {
 	for (int i=0;i<transition.length;i++) {
 	    source = transition[i].source;
 	    target = transition[i].target;
-
-	    //System.out.println("source="+source+" target="+target);
 	    
 	    // Berechnung der Position von source und target
 	    sourceRow = -1;
@@ -185,24 +162,6 @@ class ProperMap {
 	    }
 	}
 
-	// Ausgabe der Ebenen
-	//System.out.println("nach Einfuegen der Transitionen");
-	
-	/*
-	for (int i=0;i<rows;i++) {
-	    level = (Vector) vlevel.elementAt(i);
-	    System.out.print(i+" : ");
-	    
-	    for (int j=0;j<level.size();j++) {
-		System.out.print(level.elementAt(j)+" ");
-	    }
-	    System.out.println();
-	}
-	for (int i=0;i<dummyMapTransition.size();i++) {
-	    System.out.println((MapTransition) dummyMapTransition.elementAt(i));
-	}
-	*/
-
 	// Uebertragen von vlevel und dummyMapTransition 
 	// in map und mapTransition
 
@@ -234,6 +193,9 @@ class ProperMap {
     }
 
     MapElement getElement(int row,int column) {
+	if (map[row][column]==null) {
+	    System.out.println("Element existiert nicht: "+row+","+column);
+	}
 	return map[row][column];
     }
     
@@ -282,6 +244,7 @@ class ProperMap {
 	for (int i=0;i<height-1;i++) 
 	    for (int j=0;j<width;j++)
 		for (int k=0;k<width;k++) M[i][j][k] = 0;
+
 	MapTransition h;
 	int rowL,rowG,colL,colG;
 	for (int i=0;i<mapTransition.length;i++) {
@@ -298,7 +261,6 @@ class ProperMap {
 	    
 	}
 
-
 	/*
 	System.out.println("Ausgabe der Inzidenzmatrizen:");
 	for (int i=0;i<height-1;i++) {
@@ -311,7 +273,6 @@ class ProperMap {
 	}
 	*/
 	
-
 	/* down-Schleife */
 	for (int i=0;i<height-1;i++) {
 	    barycentricMethod(i,i+1,sigma[i],sigma[i+1],M);
@@ -332,25 +293,32 @@ class ProperMap {
 	*/
   
 	/* Umordnen der Knoten und Transitionen */
-       
-	MapElement dummy;
+	
+	MapElement[] dummyRow = new MapElement[width];
 	for (int i=0;i<height;i++) {
 	    for (int j=0;j<width;j++) {
+		dummyRow[j] = map[i][sigma[i][j]];
+		/*
 		if (j<sigma[i][j]) {
 		    dummy = map[i][j];
 		    map[i][j] = map[i][sigma[i][j]];
 		    map[i][sigma[i][j]] = dummy;
 		}
+		*/
 	    }
+	    for (int j=0;j<width;j++) map[i][j] = dummyRow[j];
 	}
-
-	for (int i=0;i<mapTransition.length;i++) {
+	
+	for (int i=0;i<mapTransition.length;i++) {	    
 	    h = mapTransition[i];
+	    //System.out.println("Transition vor Umordnung:"+h);
 	    int j;
 	    for (j=0;sigma[h.startRow][j]!=h.startColumn;j++) ;
 	    h.startColumn = j;
+	    
 	    for (j=0;sigma[h.endRow][j]!=h.endColumn;j++) ;
 	    h.endColumn   = j;
+	    //System.out.println("Transition nach Umordnung:"+h);
 	}
 	
     }
@@ -507,6 +475,22 @@ class ProperMap {
 			    M[minRow][sigmaUpperR[k]]
 			    [sigmaLowerR[alpha]];
 	return KM;
+    }
+
+    public String toString() {
+	String res = "ProperMap("+width+","+height+")\n";
+
+	for (int row=0;row<height;row++) {
+	    for (int column=0;column<width;column++) {
+		res = res + "["+row+","+column+"] "+map[row][column]+"\n";
+	    }
+	}
+
+	for (int i=0;i<mapTransition.length;i++) {
+	    res = res + mapTransition[i]+"\n";
+	}
+
+	return res;
     }
 
 } // ProperMap
