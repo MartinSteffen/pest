@@ -51,6 +51,7 @@ import tesc2.*;
       Graphics bufferGraphics;  
       
      Statechart root= new Statechart(null,null,null,null);
+      static boolean mover = false;
 
   /** Initialisierung des Hauptframes*/
 
@@ -74,9 +75,9 @@ import tesc2.*;
 
     // Erzeugung der pop-up Menues
     String[] labels = new String[] {
-      "Undo", "Restore", "Loeschen","Kopieren"};
+      "Undo", "Restore", "Loeschen","Kopieren","Verschieben"};
     String[] commands = new String[] {
-      "undo", "restore", "loeschen","kopieren"};
+      "undo", "restore", "loeschen","kopieren","verschieben"};
     popup = new PopupMenu();                   		// Menueerzeugung
     for(int i = 0; i < labels.length; i++) {
       MenuItem mi = new MenuItem(labels[i]);   	// erzeugt Menueeintrag
@@ -104,6 +105,12 @@ import tesc2.*;
 					try     {copyobj = (Absyn) deleteobj.clone();}
 				        	catch (Exception e) {System.out.println("Clone-Fehler");}
 					System.out.println("test2 : "+copyobj);
+	}	
+    else if (command.equals("verschieben")) {	System.out.println("test3 : "+copyobj);
+					try     {copyobj = (Absyn) deleteobj.clone();}
+				        	catch (Exception e) {System.out.println("Clone-Fehler");}
+						mover = true;
+					System.out.println("test3 : "+copyobj);
 	}	
     else if (command.equals("loeschen")){ 
        
@@ -495,9 +502,15 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans" & trro
 		// System.out.println("to delete >>>"+deleteobj);
 		}
 
-	if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Select") & (copyobj != null))
+	if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Select") & (copyobj != null) & (mover == false))
 		{ 
 		   copyobj = null;
+		}
+
+	if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Select") & (copyobj != null) & (mover == true))
+		{ 
+		   copyobj = null;
+		   mover = false;
 		}
 
 
