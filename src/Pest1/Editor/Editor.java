@@ -154,10 +154,10 @@ public Editor(Statechart root,String name,int top,int left,int width,int height)
  * <li> Zeichnen von Transitionen 90 %
  * <li> Kennzeichnen von Anfangszustaenden 90 %
  * <li> Labeln von States 75 % (benoetigen nur noch das Fenster von der gui und 5 Zeilen Code)
- * <li> Labeln von Transitionen ??? (zweiter Teil kommt erst im Laufe des Tages)
- * <li> Patternmatcher : ??? (siehe oben)
- * <li> Loeschen von Komponenten ??? (s.o.)
- * <li> Selektieren von Objektgruppen ??? (s.o.)
+ * <li> Labeln von Transitionen fehlt noch
+ * <li> Patternmatcher : uebernimmt TESC 1
+ * <li> Loeschen von Komponenten 80 %
+ * <li> Selektieren von Objektgruppen 75 %
  * <li> Selektieren von Objekten 75 % (Das Selektieren von Transitionen funktioniert noch nicht)
  * <li> highlighten 99 % (nur die Tests stehen noch aus)
  * <li> Zoomen 100 %
