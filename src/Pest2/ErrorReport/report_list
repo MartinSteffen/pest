@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	------------
 //
-//	$Id: report_list,v 1.69 1999-02-17 12:10:04 swtech16 Exp $
+//	$Id: report_list,v 1.70 1999-02-23 13:43:49 swtech22 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -173,7 +173,7 @@ java.lang.ClassCastException: absyn.And_State
 #Number:	9
 #Autor:		Erich Mikk erm
 #Subject:	Simulation highlightet nicht
-#Status: 	processing 
+#Status: 	fixed 
 #Description: 
 
 Importiere TV/tv.st.
@@ -534,7 +534,7 @@ Import fehl (mit der sprlichen Meldung: FEHLER).
 #Number:	33
 #Autor:		Bernd Weber bwe
 #Subject:	Simulation: Kommt mit Connectoren nicht klar
-#Status:	confirmed 
+#Status:	fixed 
 #Description:
 
 swtech22: Test hierfuer in simu/Test/Fehler33.test
@@ -565,7 +565,7 @@ dem man die Transition(en) auswhlen knnen soll. Mir ist dies nicht mglich
 #Number:	35
 #Autor:		Bernd Weber bwe
 #Subject:	Simulation: Kommt i.A. mit Connectoren nicht klar
-#Status:	confirmed
+#Status:	fixed
 #Description:
 
 swtech22: Test hierfuer in simu/Test/Fehler35.test
