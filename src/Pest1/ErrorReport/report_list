@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.68 1999-02-05 13:24:12 swtech01 Exp $
+//	$Id: report_list,v 1.69 1999-02-05 13:50:41 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -806,4 +806,28 @@ geloescht, Zustaende und Transition verschoben).
 
 Das alte Problem mit den Interlevel-Transitionen nach dem Importieren durch STM.
 Ich habe PC/a1.st importiert. Nachdem Aufruf des Editors zeigt der Check zwei Interlevel-Transitionen an.
+//------------------------------------------------------------------------------
+#Number:        56
+#Autor:         Erich Mikk erm
+#Subject:       TESC_Import kann seine eingenes Export-Resultat nicht einlesen.
+#Status:        reported
+#Description:
+
+STM-Import von PC/a2.st
+TESC-Export nach a2.tesc
+TESC-Import von a2.tesc wird abgelehnt:
+
+Tesc1: Zeile 17 - Unbekannter Zustand/Konnektor : Unerwartetes Token 'A2_A2'
+Tesc1: Zeile 17 - Syntax Error : Unerwartetes Token 'A2_A2'
+Tesc1: Zeile 17 - Unbekannter Zustand/Konnektor : Unerwartetes Token 'A2_A2'
+Tesc1: Zeile 17 - Syntax Error : Unerwartetes Token 'A2_A2'
+Tesc1: Zeile 17 - Transitionsdefinition erwartet : Unerwartetes Token 'A2_A2'
+Tesc1: Zeile 17 - Syntax Error : Unerwartetes Token 'A2_A2'
+Tesc1: Zeile 17 - Name ungleich -> MAG <> A2_A2 : Unerwartetes Token 'A2_A2'
+Tesc1: Zeile 17 - Fehler in Zustandsliste : Unerwartetes Token 'A2_A2'
+Tesc1: Zeile 17 - Syntax Error : Unerwartetes Token 'A2_A2'
+Tesc1: Zeile 17 - Syntax Error : Unerwartetes Token 'to'
+Tesc1: Zeile 17 - Syntax Error : Unerwartetes Token 'to'
+GUI   : TESC1 Fehlgeschlagen !
+
 //------------------------------------------------------------------------------
