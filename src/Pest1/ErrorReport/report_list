@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.42 1999-01-29 15:12:26 swtech21 Exp $
+//	$Id: report_list,v 1.43 1999-01-29 15:15:52 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -430,7 +430,20 @@ obiges TESC-File importiert.
 Editor geoeffnet.
 Transition von Init nach P1 geloescht. Bei UNDO wird gesamtes Statechart nicht mehr angezeigt.
 //------------------------------------------------------------------------------
+#Number:	30
+#Autor:		Erich Mikk erm
+#Subject:	Editor erzeugt Interlevel Transitionen (IT)?
+#Status: 	reported
+#Description: 
 
+Import PC/a1.st (STM-Import).
+SyntaxCheck meldet zwar Fehler, aber keine IT-Fehler.
+Start Editor.
+Erneut SyntaxCheck.
+Jetzt werden IT-Fehler gemeldet.
+Offensichtlich wurden die Koordinaaten umberechnet (Editor?).
+
+//------------------------------------------------------------------------------
 
 
 
