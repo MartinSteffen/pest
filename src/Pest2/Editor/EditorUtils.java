@@ -178,7 +178,7 @@ public class EditorUtils {
 
         // *** loesche eine evtl. schon gezeigte Linie
 
-        if (editor.endPoint != null)
+      if (editor.endPoint != null & editor.startPoint != null)
             showAndLine(editor.startPoint, editor.endPoint, editor.getBackground(), editor, e);
 
         // *** In welchem Zustand liegt der Mauszeiger gerade?

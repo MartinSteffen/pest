@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	------------
 //
-//	$Id: report_list,v 1.68 1999-02-13 16:12:21 swtech23 Exp $
+//	$Id: report_list,v 1.69 1999-02-17 12:10:04 swtech16 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -145,7 +145,7 @@ Check mu auf Keywords nicht prfen, weil wir es so vereinbart haben
 #Number:	8
 #Autor:		Erich Mikk erm
 #Subject:	Zoom wirft Exceptions
-#Status: 	processing 
+#Status: 	fixed
 #Description: 
 
 Importiere SE-Systems/cd.st.
@@ -267,7 +267,7 @@ Workaround: Erst Default Connectoren entfernen, dann umbenennen.
 #Number:	17
 #Autor:		Bernd Weber bwe
 #Subject:	GUI/Editor: GUI bekommt Aenderungen in Chart nicht mit.
-#Status:	reported (kein GUI-problem, siehe 2.mal #25 )
+#Status:	reported (kein GUI-problem, siehe 2.mal #25)Editor -> processing und fixed
 #Description:
 
 Pest starten, neue Chart erzeugen, Editor starten und neuen Zustand hinzufgen.
@@ -279,7 +279,7 @@ Aus diesem Grund ist auch SyntaxCheck nur einmal (aus graf. Menu) aufrufbar.
 #Number:	18
 #Autor:		Bernd Weber bwe
 #Subject:	Editor: Alle States auf einem Level bekommen Default Connectoren
-#Status:	processing
+#Status:	fixed
 #Description:
 
 Erzeugt man in einem Or State neue Basic States werden alle Zustaende des
@@ -288,7 +288,7 @@ Or States zu Default States !?!
 #Number:	19
 #Autor:		Bernd Weber bwe
 #Subject:	Editor: erzeugt unbehandelte Exception
-#Status:	processing
+#Status:	fixed
 #Description:
 
 Lscht man die Default-Connectoren in einem Or State und versucht mehr
@@ -310,7 +310,7 @@ als einen State zum Default zu machen, gibt es eine Exception:
 #Number:	20
 #Autor:		Bernd Weber bwe
 #Subject:	Editor: Default Connectoren von Or States nicht zu lschen
-#Status:	processing
+#Status:	fixed
 #Description:
 
 Default Connectoren von Or States koennen nicht geloescht werden. 
@@ -359,7 +359,7 @@ Or State mit mehreren Default Connectoren bzw. gar keinen wird nicht bemngelt.
 #Number:	25
 #Autor:		Bernd Weber bwe
 #Subject:	Editor: Or-State kann nicht in And-State gewandelt werden
-#Status:	processing
+#Status:	fixed
 #Description:
 
 Erzeuge einen Or-State mit zwei Zustanden und einen Basic-State neben dem
@@ -522,7 +522,7 @@ Transitionen hat: keine Warnung, kein Fehler.
 #Number:	32
 #Autor:		Bernd Weber bwe
 #Subject:	Editor: Connector-Namen nicht eindeutig
-#Status:	processing
+#Status:	fixed
 #Description:
 
 Erstellt man mehrere Connectoren in einem State, haben diese alle den gleichen
@@ -680,7 +680,7 @@ TESC2.
 #Number:	43
 #Autor:		Mario Thies swtech23
 #Subject:	Editor runde Transitionen "hauen ab"
-#Status:	reported
+#Status:	fixed
 #Description:
 
 ~swtech12/Examples/ex_undet.pest laden, Editor oeffnen und Kurven bei
