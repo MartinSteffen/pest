@@ -1,0 +1,3 @@
+Der Konstruktoraufruf fuer den Editor erwartet als Parameter einen Statechart
+und einen String. Der String ist der Name des Statecharts.
+
