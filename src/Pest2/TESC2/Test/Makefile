@@ -7,7 +7,8 @@ COPTIONS = -g -deprecation
 ROPTIONS = 
  
 CLASSES = \
-TestProperMap.class
+TestProperMap.class \
+TestGraphAlgorithm.class
 
 .SUFFIXES: .java .class
  
@@ -21,3 +22,6 @@ clean:
 # source files.
 .java.class:
 	$(COMPILER) $(COPTIONS) -classpath "$(CLASSPATH)"  $?
+
+run1:
+	$(VM) -classpath "$(CLASSPATH)" TestGraphAlgorithm

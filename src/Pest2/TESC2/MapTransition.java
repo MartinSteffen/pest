@@ -11,11 +11,11 @@
 
 package tesc2;
 
-public class MapTransition  {
+class MapTransition  {
     
     int startRow,startColumn,endRow,endColumn;
 
-    public MapTransition(int srow,int scolumn,int erow,int ecolumn) {
+    MapTransition(int srow,int scolumn,int erow,int ecolumn) {
 	startRow = srow;
 	startColumn = scolumn;
 	endRow = erow;

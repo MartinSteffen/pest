@@ -10,6 +10,7 @@ LayoutAlgorithm.class \
 ProperMap.class \
 MapElement.class \
 MapTransition.class \
+MapEndTr.class \
 SugiyamaBCMAlgorithm.class
 
 .SUFFIXES: .java .class

@@ -11,9 +11,9 @@
 
 
 
-import Absyn.*;
-import TESC2.*;
-import Util.*;
+import absyn.*;
+import tesc2.*;
+import util.*;
 
 public class TestProperMap {
     
@@ -82,7 +82,7 @@ public class TestProperMap {
 	for (int i=0;i<edges;i++) 
 	    new PrettyPrint().start(transition[i]);
 	
-	TESC2.ProperMap properMap = new TESC2.ProperMap(vertex,transition);
+	tesc2.ProperMap properMap = new tesc2.ProperMap(vertex,transition);
 
 	for (int i=0;i<properMap.getHeight();i++) {
 	    System.out.print(properMap.getWidthOfRow(i));
@@ -93,7 +93,7 @@ public class TestProperMap {
 	    System.out.println();
 	}
 
-	TESC2.MapTransition[] mt = properMap.getMapTransitions();
+	tesc2.MapTransition[] mt = properMap.getMapTransitions();
 	for (int i=0;i<mt.length;i++)
 	    System.out.println(mt[i]);
 

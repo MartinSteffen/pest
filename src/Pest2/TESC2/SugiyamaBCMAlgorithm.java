@@ -76,12 +76,12 @@ class SugiyamaBCMAlgorithm implements LayoutAlgorithm {
 	System.out.println("layoutORState:"+s.name.name);
 
 	while (sl != null) {
-	    anchors.addElement(sl.head.name);
+	    anchors.addElement(new MapState(sl.head));
 	    sl = sl.tail;
 	}
 	ConnectorList cl = s.connectors;
 	while (cl != null) {
-	    anchors.addElement(cl.head.name);
+	    anchors.addElement(new MapConnector(cl.head));
 	    cl = cl.tail;
 	}
 	TrList tl = s.trs;
@@ -91,9 +91,9 @@ class SugiyamaBCMAlgorithm implements LayoutAlgorithm {
 	    transitions.addElement(tl.head);
 	    tl = tl.tail;
 	}
-	TrAnchor[] al = new TrAnchor[anchors.size()];
+	MapElement[] al = new MapElement[anchors.size()];
 	for (int i = 0; i<anchors.size(); i++) {
-	    al[i] = (TrAnchor) anchors.elementAt(i);
+	    al[i] = (MapElement) anchors.elementAt(i);
 	}
 	Tr[] ntl = new Tr[transitions.size()];
 	for (int i = 0; i<transitions.size(); i++) {

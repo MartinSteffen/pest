@@ -14,7 +14,7 @@ package tesc2;
 import java.util.Vector;
 import absyn.*;
 
-public class ProperMap {
+class ProperMap {
 
     private int height = 0;
     private int width = 0;
@@ -23,23 +23,23 @@ public class ProperMap {
 
     // Konstruktor: erzeugt eine ProperMap mit den angegebenen Knoten
     // (Statename,Conname,UNDEFINED) und den angegebenen Transitionen
-    public ProperMap(TrAnchor[] vertex,Tr[] transition) {
+    ProperMap(MapElement[] vertex,Tr[] transition) {
 
 	// Phase I: Verteilen der Knoten auf Ebenen
 	// Initialisierung
 	Vector vlevel = new Vector(vertex.length); // Knoten auf den Ebenen
 	for (int i=0;i<vertex.length;i++) 
 	    vlevel.insertElementAt(new Vector(),i);
-	TrAnchor[] W = new TrAnchor[vertex.length]; // Hilfskopie der Knoten
+	MapElement[] W = new MapElement[vertex.length]; // Hilfskopie der Knoten
 	for (int i=0;i<vertex.length;i++) W[i] = vertex[i];
 	int row = 0; // Zaehler fuer die Ebenen
-	TrAnchor[] X = new TrAnchor[vertex.length]; // Hilfskopie der Knoten
+	MapElement[] X = new MapElement[vertex.length]; // Hilfskopie der Knoten
 	for (int i=0;i<vertex.length;i++) X[i] = vertex[i];
 
 	// Schleife, bis alle Knoten aus W abgearbeitet sind
 	boolean done = false;
 	int indexOfX;
-	TrAnchor w;
+	MapElement w;
 	int countW=W.length;
 	int countX=X.length;
 
@@ -72,10 +72,10 @@ public class ProperMap {
 			
 			// Achtung: Vergleich von Objekten, kein Vergleich
 			// von Zeichenketten fuer Statename und Conname
-			if (((transition[j].source == w)&&
-			     (transition[j].target == X[i]))||
-			    ((transition[j].source == X[i])&&
-			     (transition[j].target == w))) {
+			if (((transition[j].source == w.getAnchor())&&
+			     (transition[j].target == X[i].getAnchor()))||
+			    ((transition[j].source == X[i].getAnchor())&&
+			     (transition[j].target == w.getAnchor()))) {
 			    isIncident = true;
 			}
 		    }
@@ -131,13 +131,16 @@ public class ProperMap {
 	    targetRow = -1;
 	    for (int j=0;(j<rows)&&((sourceRow==-1)||(targetRow==-1));j++) {
 		level = (Vector) vlevel.elementAt(j);
-		if (level.contains(source)) {
-		    sourceRow = j;
-		    sourceColumn = level.indexOf(source);
-		}
-		if (level.contains(target)) {
-		    targetRow = j;
-		    targetColumn = level.indexOf(target);
+		for (int col = 0; (i<level.size())&&((sourceRow==-1)||(targetRow==-1)); col++) {
+		    MapElement el = (MapElement) level.elementAt(col);
+		    if (el.getAnchor() == source) {
+			sourceRow = j;
+			sourceColumn = col;
+		    }
+		    if (el.getAnchor() == target) {
+			targetRow = j;
+			targetColumn = level.indexOf(target);
+		    }
 		}
 	    }
 	    
@@ -147,10 +150,11 @@ public class ProperMap {
 	    int diffRow = Math.abs(sourceRow-targetRow);
 	    if (diffRow <= 1) { // aufeinanderfolgende oder gleiche Ebenen
 		
-		dummyMapTransition.addElement(new MapTransition(sourceRow,
-								sourceColumn,
-								targetRow,
-								targetColumn));
+		dummyMapTransition.addElement(new MapEndTr(sourceRow,
+							   sourceColumn,
+							   targetRow,
+							   targetColumn,
+							   transition[i]));
 	    } else if (diffRow > 1) { // entfernte Ebenen (Dummy-Knoten noetig)
 		
 		int deltaRow;
@@ -165,7 +169,7 @@ public class ProperMap {
 		    
 		    level = (Vector) vlevel.elementAt(j);
 		    int levelSize = level.size();
-		    level.addElement(new UNDEFINED());
+		    level.addElement(new MapUNDEF(new UNDEFINED()));
 		    dummyMapTransition.addElement(new MapTransition(fRow,
 								    fColumn,
 								    j,
@@ -173,10 +177,11 @@ public class ProperMap {
 		    fRow = j;
 		    fColumn = levelSize;
 		}
-		dummyMapTransition.addElement(new MapTransition(fRow,
-								fColumn,
-								targetRow,
-								targetColumn));
+		dummyMapTransition.addElement(new MapEndTr(fRow,
+							   fColumn,
+							   targetRow,
+							   targetColumn,
+							   transition[i]));
 	    }
 	}
 
@@ -219,7 +224,7 @@ public class ProperMap {
 	for (int i=0;i<rows;i++) {
 	    level = (Vector) vlevel.elementAt(i);
 	    for (int j=0;j<level.size();j++) {
-		map[i][j] = new MapElement((TrAnchor) level.elementAt(j));
+		map[i][j] = (MapElement) level.elementAt(j);
 	    }
 	}
     }
@@ -228,7 +233,7 @@ public class ProperMap {
 	map[row][column] = me;
     }
 
-    public MapElement getElement(int row,int column) {
+    MapElement getElement(int row,int column) {
 	return map[row][column];
     }
     
@@ -236,19 +241,19 @@ public class ProperMap {
 	mapTransition = mp;
     }
 
-    public MapTransition[] getMapTransitions() {
+    MapTransition[] getMapTransitions() {
 	return mapTransition;
     }
 
-    public int getHeight() {
+    int getHeight() {
 	return height;
     }
 
-    public int getWidth() {
+    int getWidth() {
 	return width;
     }
 
-    public int getWidthOfRow(int row) {
+    int getWidthOfRow(int row) {
 	int c,res=-1;
 	for (c=0;(c<width)&&(res==-1);c++) {
 	    if (map[row][c] == null) res = c;
