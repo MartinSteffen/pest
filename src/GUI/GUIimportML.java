@@ -49,7 +49,7 @@ public void actionPerformed(ActionEvent e) {
 				  }
 			      else
 				  {
-				      myWindow.userMessage("GUI   : TESC1 Fehlgeschlagen !");
+				      myWindow.OkDialog("Fehler","Der Import ist fehlgeschlagen !");
 				  }
 			  }catch(Exception ime){
 			      myWindow.OkDialog("Fehler",ime.getMessage());		     
@@ -75,6 +75,7 @@ public void actionPerformed(ActionEvent e) {
 				  {
 				      myWindow.setStatechart(Synb,"./","UNBENANNT");
 				      myWindow.setDirty(true);
+				      myWindow.userMessage("GUI   : Statemate erfolgreich");
 
 				  }
 			      

@@ -67,7 +67,7 @@ implements GUIInterface
     ControlWindow controlWindow;
     GUIControlWindowML cwlis;
     GUIexitLis exlis;
-    //check.CheckConfig checkConfig;
+    check.CheckConfig checkConfig;
 
     editor.Editor PEditor = null;
     Dimension EditorDim = null;
@@ -185,7 +185,7 @@ implements GUIInterface
 	theConfig.debug = debugMode;
 
 
-	//	theConfig.checkConfig = checkConfig;
+	theConfig.checkConfig = checkConfig;
 
 	theConfig.stateColorIndex      = stateColorIndex;
 	theConfig.transColorIndex      = transColorIndex;
@@ -267,14 +267,14 @@ implements GUIInterface
 		}
 
 
-// 	    if (theConfig.checkConfig == null)
-// 		{
-// 		    checkConfig = new check.CheckConfig();
-// 		}
-// 	    else
-// 		{
-// 		    checkConfig = theConfig.checkConfig;
-// 		}
+	    if (theConfig.checkConfig == null)
+		{
+		    checkConfig = new check.CheckConfig();
+		}
+	    else
+		{
+		    checkConfig = theConfig.checkConfig;
+		}
 
 
 
@@ -450,6 +450,7 @@ implements GUIInterface
 
     public void StateChartHasChanged()
     {
+	isDirty = true;
 	if (CheckedSC)
 	    {
 		CheckedSC = false;
@@ -473,7 +474,7 @@ implements GUIInterface
     boolean isSaved()
     {
 	boolean resp;
-	if((isDirty()))
+	if(isDirty)
 	    {
 		resp = false;
 		if (!warningOpen)
@@ -527,19 +528,19 @@ implements GUIInterface
     }
 
     public int OkDialog(Frame par, String Titel, String Msg){
-	return new OKDialog(par,par.getGraphics().getFontMetrics(),Titel,Msg).getAnswer();
+	return new OKDialog(par,getGraphics().getFontMetrics(),Titel,Msg).getAnswer();
     }
 
     public int YesNoDialog(Frame par, String Titel, String Msg){
-	return new YesNoDialog(par,par.getGraphics().getFontMetrics(),Titel,Msg).getAnswer();
+	return new YesNoDialog(par,getGraphics().getFontMetrics(),Titel,Msg).getAnswer();
     }
 
     public int YesNoCancelDialog(Frame par, String Titel, String Msg){
-	return new YesNoCancelDialog(par,par.getGraphics().getFontMetrics(),Titel,Msg).getAnswer();
+	return new YesNoCancelDialog(par,getGraphics().getFontMetrics(),Titel,Msg).getAnswer();
     }
 
     public String EingabeDialog(Frame par, String Titel, String Msg, String Defaulttext){
-        return new EingabeDialog(par,par.getGraphics().getFontMetrics(),Titel,Msg,Defaulttext).getEingabe();
+        return new EingabeDialog(par,getGraphics().getFontMetrics(),Titel,Msg,Defaulttext).getEingabe();
     }
 
     public boolean isDebug()
@@ -649,6 +650,8 @@ implements GUIInterface
       		    setDirty(false);
 		    SBPfad = fDialog.getDirectory();
 		    SBDateiname = FileName;
+		    exlis.windowClosing(new WindowEvent(this,WindowEvent.WINDOW_CLOSING));
+		    startEditor();
 		}catch (Exception e)
 		    {
 			OkDialog("Fehler","Die Datei kann nicht gespeichert werden");

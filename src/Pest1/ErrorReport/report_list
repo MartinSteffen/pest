@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.71 1999-02-05 16:40:47 swtech00 Exp $
+//	$Id: report_list,v 1.72 1999-02-06 09:02:08 swtech15 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -412,7 +412,7 @@ Check muß auf Keywords nicht prüfen, weil wir es so vereinbart haben
 #Number:	27
 #Autor:		Heiko Haller, Stefan Lemke, swtech21
 #Subject:	Editzeile beim Labeln zunaechst zu klein
-#Status: 	reported
+#Status:        fixed 
 #Description: 
 
 Wenn man Transitionen oder States labeln will, wird das Labelfenster
@@ -625,13 +625,13 @@ Default-States einer Ebene geloescht.
 #Number:        41
 #Autor:         Bernd Weber bwe
 #Subject:       GUI: Nach Speichern wird Dateiname in Titelleiste nicht aktualisiert
-#Status:        processing
+#Status:        fixed
 #Description:
 //------------------------------------------------------------------------------
 #Number:        42
 #Autor:         Bernd Weber bwe
 #Subject:       GUI: Speichern über graf. Menu wird nicht erkannt
-#Status:        processing
+#Status:        fixed     
 #Description:
 
 Speichert man über die graf. Benutzerführung, meldet GUI beim Versuch,
@@ -834,10 +834,11 @@ GUI   : TESC1 Fehlgeschlagen !
 #Number:        57
 #Autor:         Erich Mikk erm
 #Subject:       Fehlerreports (Import STM und Import TESC) nicht einheitlich.
-#Status:        reported
+#Status:        fixed
 #Description:
 
 Wenn Import->Statemate fehlschlägt, gibt es ein pop-up window.
 Aber wenn Import->TESC fehlschlägt, gibt es kein po-up window.
 Mir gefällt die Variante mit pop-up besser.
-//------------------------------------------------------------------------------
+//----------------------------------------------------------------------------t
+
