@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.82 1999-02-09 08:30:49 swtech00 Exp $
+//	$Id: report_list,v 1.83 1999-02-09 10:38:48 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -812,26 +812,28 @@ Ich habe PC/a1.st importiert. Nachdem Aufruf des Editors zeigt der Check zwei In
 //------------------------------------------------------------------------------
 #Number:        56
 #Autor:         Erich Mikk erm
-#Subject:       TESC_Import kann seine eingenes Export-Resultat nicht einlesen.
-#Status:        withdrawn
+#Subject:       TESC-Import kann sein eigenes Export-Resultat nicht einlesen.
+#Status:        reported
 #Description:
 
-STM-Import von PC/a2.st
-TESC-Export nach a2.tesc
-TESC-Import von a2.tesc wird abgelehnt:
+STM-Import von PC/a1.st
+Starte Editor
+Schliesse Editor
+TESC-Export nach a1.tesc
+TESC-Import von a1.tesc wird abgelehnt:
 
-Tesc1: Zeile 17 - Unbekannter Zustand/Konnektor : Unerwartetes Token 'A2_A2'
-Tesc1: Zeile 17 - Syntax Error : Unerwartetes Token 'A2_A2'
-Tesc1: Zeile 17 - Unbekannter Zustand/Konnektor : Unerwartetes Token 'A2_A2'
-Tesc1: Zeile 17 - Syntax Error : Unerwartetes Token 'A2_A2'
-Tesc1: Zeile 17 - Transitionsdefinition erwartet : Unerwartetes Token 'A2_A2'
-Tesc1: Zeile 17 - Syntax Error : Unerwartetes Token 'A2_A2'
-Tesc1: Zeile 17 - Name ungleich -> MAG <> A2_A2 : Unerwartetes Token 'A2_A2'
-Tesc1: Zeile 17 - Fehler in Zustandsliste : Unerwartetes Token 'A2_A2'
-Tesc1: Zeile 17 - Syntax Error : Unerwartetes Token 'A2_A2'
-Tesc1: Zeile 17 - Syntax Error : Unerwartetes Token 'to'
-Tesc1: Zeile 17 - Syntax Error : Unerwartetes Token 'to'
+Tesc1: Zeile 18 - Syntax Error : Unerwartetes Token 'in'
+Tesc1: Zeile 18 - Syntax Error : Unerwartetes Token 'in'
+Tesc1: Zeile 18 - Fehler in Zustandsliste : Unerwartetes Token 'in'
+Tesc1: Zeile 18 - Syntax Error : Unerwartetes Token 'in'
+Tesc1: Zeile 18 - Syntax Error : Unerwartetes Token 'in'
 GUI   : TESC1 Fehlgeschlagen !
+
+Diagnose: Der Fehler tritt nicht auf, wenn der Editor nicht gestartet wird. 
+Es ist äusserst seltsam, dass beim Aufbau des Editors die Guards umsortiert werden. 
+Wie Marin (swtech24) es mir erklärte, machen es die TESC1-Methoden.
+Bitte TESC1, macht sowas nicht. Wenn ihr gezwungen seit, sowas zu machen,
+dann meldet einen Fehler.
 
 //------------------------------------------------------------------------------
 #Number:        57
