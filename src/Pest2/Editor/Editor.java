@@ -4,7 +4,7 @@
 
 package editor;
 import absyn.*;
-
+import gui.*;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -33,7 +33,7 @@ public class Editor extends Frame implements ActionListener {
 	@param l Ein Bezeichner fuer den Statechart
 */
 
-    public Editor(Statechart st, String l, int x, int y, int width, int height) {
+    public Editor(Statechart st, String l, int x, int y, int width, int height,GUIInterface gui) {
         statechart = st;
         if (statechart.state == null)  {
             statechart.state = new Or_State(null, null, null, null, null);
