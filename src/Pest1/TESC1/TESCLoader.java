@@ -52,8 +52,8 @@ import java.util.*;
  * Der Parser ist bis auf Kleinigkeiten (s. TODO) funktionsfaehig.
  * In tesc1/Test befinden sich mehrere Testdateien. <br>
  * Diese koennen ueber das GUI-Fenster mittels Import->TESC geladen werden. <br>
- * Die TESC-Sprache ist über die <A HREF="../tesc1/Docu/grammatik.txt">Grammatik</A> definiert. <br>
- * Beispiel <A HREF="../tesc1/Test/example.tesc"> example.tesc</A>
+ * Die TESC-Sprache ist über die <A HREF="./tesc1/Docu/grammatik.txt">Grammatik</A> definiert. <br>
+ * Beispiel <A HREF="./tesc1/Test/example.tesc"> example.tesc</A>
  * <br>
  * <DT><STRONG>
  * TODO.
@@ -75,7 +75,7 @@ import java.util.*;
  *
  * <DT><STRONG>
  * <A NAME="options"> Einstellungsmöglichkeiten </A>
- * </STRONG> <A HREF="../tesc1/Docu/Doku.txt"> Doku.txt</A>
+ * </STRONG> <A HREF="./tesc1/Docu/Doku.txt"> Doku.txt</A>
  *
  * <ul>
  * <li> debug
@@ -85,7 +85,7 @@ import java.util.*;
  * </DL COMPACT>
 
  * @author Arne Koch/Mike Rumpf.
- * @version  $Id: TESCLoader.java,v 1.11 1999-01-09 15:51:14 swtech13 Exp $ 
+ * @version  $Id: TESCLoader.java,v 1.12 1999-01-11 11:52:18 swtech13 Exp $ 
  */ 
 public class TESCLoader {
 
@@ -175,6 +175,10 @@ public class TESCLoader {
 
 /* 
  * $Log: not supported by cvs2svn $
+ * Revision 1.11  1999/01/09 15:51:14  swtech13
+ * Schnittstelle erweitert, um methoden zum Parsen von Guards/Actions
+ * Angabe von Optionen
+ *
  * Revision 1.9  1999/01/05 20:58:15  swtech13
  *   - pathop -> absolute Pfade
  *   - Keine Action angegeben -> new ActionEmpty(new Dummy())
