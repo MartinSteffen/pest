@@ -104,6 +104,8 @@ import editor.*;
  *<TR><TD ALIGN="right">313</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Der Defaultconnector ist mehrfach eingetragen.</TD></TR>
  *<TR><TD ALIGN="right">314</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>In diesem State gibt es keinen Defaultconnector.</TD></TR>
  *<TR><TD ALIGN="right">315</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>IN diesem State gibt es mehr als einen Defaultconnector.</TD></TR>
+ *<TR><TD ALIGN="right">316</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Der Statename ist ein leerer String.</TD></TR>
+ *<TR><TD ALIGN="right">317</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Fataler Fehler: Unbekannter Statetyp.</TD></TR>
  *<TR><TD ALIGN="right">400</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Der Start-State der Transition ist nicht definiert.</TD></TR>
  *<TR><TD ALIGN="right">401</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Der Ziel-State der Transition ist nicht definiert.</TD></TR>
  *<TR><TD ALIGN="right">402</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Beide States der Transition sind nicht definiert.</TD></TR>
@@ -133,7 +135,7 @@ import editor.*;
  *</Table>
  * <br>
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: ModelCheck.java,v 1.35 1999-02-01 11:57:00 swtech11 Exp $
+ * @version  $Id: ModelCheck.java,v 1.36 1999-02-01 19:51:16 swtech11 Exp $
  * @see CheckConfig
  */
 public class ModelCheck {
@@ -242,7 +244,7 @@ public class ModelCheck {
       // Checkt die Transitionen.
       l2.setText("Check: Transitionen");
       if (sc.state == null) {
-        mcm.addError(420,"uebergebene Statechart");
+        // mcm.addError(420,"uebergebene Statechart");
         if ( outputGUI == true ) {
           gui.userMessage("Check: Der Check für die Überprüfung der Transitionen wurde nicht ausgeführt."); }
       }

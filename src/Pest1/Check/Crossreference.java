@@ -35,7 +35,7 @@ import java.awt.*;
  * keine
  * </DL COMPACT>
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: Crossreference.java,v 1.17 1999-01-28 20:56:17 swtech11 Exp $
+ * @version  $Id: Crossreference.java,v 1.18 1999-02-01 19:51:13 swtech11 Exp $
  */
 public class Crossreference extends ModelCheckBasics {
   private GUIInterface gui = null;     // Referenz auf die GUI
@@ -92,7 +92,7 @@ public class Crossreference extends ModelCheckBasics {
           ReportItem rp = (ReportItem)items.elementAt(i);
           gui.userMessage("Check:   - "+rp.Pth);
           if (high==true & rp.HiObj!=null) {
-            ho = new highlightObject((Absyn)rp.HiObj,Color.black); // Object highlighten
+            ho = new highlightObject((Absyn)rp.HiObj,cf.color[cf.high_color]); // Object highlighten
   	      }
         }
         if (high==true) {ho = new highlightObject(); }// Highlighten aktivieren
