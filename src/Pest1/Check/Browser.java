@@ -8,7 +8,7 @@ import java.awt.event.*;
  * Browser
  *
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: Browser.java,v 1.1 1999-01-18 23:27:25 swtech11 Exp $
+ *  @version  $Id: Browser.java,v 1.2 1999-01-19 10:46:06 swtech11 Exp $
  */
 public class Browser extends Dialog implements ActionListener {
 
@@ -36,18 +36,22 @@ public class Browser extends Dialog implements ActionListener {
 	  setLocation(p.x + 30 , p.y + 30);
     setLayout(new BorderLayout());
 
+    
+    Panel output = new Panel(new BorderLayout());
 
-    List lst = new List();
+    output.add(new Label("Fehlermeldungen:"),"North");
+    List lst1 = new List();
+    lst1.setMultipleMode(true);
 
     if (mcm.getErrorNumber()>0) {
 
       for (int i=1; (i<=mcm.getErrorNumber()); i++) {
         String s = new String( mcm.getErrorMsg(i)+" ("+mcm.getErrorCode(i)+")" );
-        lst.add(s);
+        lst1.add(s);
         // gui.userMessage("Check:   ["+mcm.etErrorPath(i)+"]");
       }
 
-      add(lst,"Center");
+      output.add(lst1,"Center");
     }
 /**    if (mcm.getWarningNumber()>0) {
       gui.userMessage("Check:");
@@ -59,7 +63,8 @@ public class Browser extends Dialog implements ActionListener {
     }*/
 
 
-
+     
+   add(output,"Center");
 
 
     // Steuerungsbuttons
