@@ -117,9 +117,11 @@ Statename trtest = (Statename)tr.source;
  //System.out.println("AKTRECT>"+matrix.akt.rect);
 
 if (matrix.akt.rect != null)
-    {if (matrix.prev instanceof Basic_State | matrix.prev instanceof Or_State ) 
+    {if ((matrix.prev instanceof Basic_State | matrix.prev instanceof Or_State) & matrix.prev.rect != null ) 
 	{
-	   if (true)
+	    System.out.println("Koord1"+(matrix.x-matrix.akt.rect.x));
+	    System.out.println("Koord2"+(matrix.y-matrix.akt.rect.y));
+	   if ((matrix.prev.rect.x !=0 | matrix.prev.rect.y != 0) )
 	    {
 		matrix = PESTdrawutil.getState(root,matrix.x-matrix.akt.rect.x,matrix.y-matrix.akt.rect.y);
 	    }
@@ -148,7 +150,7 @@ else if (matrix.prev.rect != null)
 			      {
 				 if (hier.name.name.compareTo(trtest.name)!=0) 
 				     {
-				System.out.println(hier.name.name+"--2->"+trtest.name);
+				//System.out.println(hier.name.name+"--2->"+trtest.name);
 				 Editor.dislocation();
 				 }
 				  tr.source = new Statename(hier.name.name);}
@@ -183,9 +185,9 @@ if (tr.target instanceof UNDEFINED) {h.setColor( Editor.tr_color());
 
 if (matrix.akt.rect != null)
 
-    {if (matrix.prev instanceof Basic_State | matrix.prev instanceof Or_State ) 
+    {if ((matrix.prev instanceof Basic_State | matrix.prev instanceof Or_State) & matrix.prev.rect!= null ) 
 	{
-	    if (true)
+	    if ((matrix.prev.rect.x !=0 | matrix.prev.rect.y != 0))
 	    {
 		matrix = PESTdrawutil.getState(root,matrix.x-matrix.akt.rect.x,matrix.y-matrix.akt.rect.y);
 	    }

@@ -565,7 +565,7 @@ public static void drawPar(Graphics g,int cx1, int cy1, int cx2, int cy2, Color 
   // dx = dx == null ? 0 : dx;
   //  dy = dy == null ? 0 : dy;
 
-  System.out.println("verschiebe die Koordinaten um " + dx + " und " + dy);
+  // System.out.println("verschiebe die Koordinaten um " + dx + " und " + dy);
 
     while (trl != null) {
 
