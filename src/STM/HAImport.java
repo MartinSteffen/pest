@@ -21,7 +21,15 @@ import gui.GUIInterface;
  *    BufferedReader buf = new BufferedReader(new FileReader(new File("ha-format.txt")));
  *    HAImport imp = new HAImport(buf, myWindow);
  *
- *    st = imp.getStatechart();
+ *    st = imp.getStatechart(); // Default mit Koordinaten, falls Statechart welche hat,
+ *                              // sonst ohne Koordinaten und Auflösung 640x480.
+ *    st = imp.getStatechart(true); // Koordinaten werden übernommen,
+ *                                  // falls Statechart welche hat.
+ *    st = imp.getStatechart(false); // Koordinaten werden nicht übernommen.
+ *    st = imp.getStatechart(800,600); // Neue Aufloesung 800x600.
+ *    st = imp.getStatechart(false,800,600); // Keine Koordinaten und
+ *                                           // neue Aufloesung 800x600.
+ *
  *    if (st == null) System.out.println("Import fehlgeschlagen!");
  * </pre>
  *
@@ -54,12 +62,15 @@ import gui.GUIInterface;
  * </DL COMPACT>
  *
  * @author  Sven Jorga, Werner Lehmann
- * @version $Id: HAImport.java,v 1.12 1999-01-12 18:49:20 swtech18 Exp $
+ * @version $Id: HAImport.java,v 1.13 1999-01-12 22:21:21 swtech18 Exp $
  */
 public class HAImport implements Patterns {
   Perl5Util perl = new Perl5Util();
 
   private double rFaktor = 1;
+  private boolean parseCoords = true;
+  private int xSize = 640;
+  private int ySize = 480;
   private String mkhaString = null;
   private String eventsString = null;
   private String statesString = null;
@@ -105,13 +116,14 @@ public class HAImport implements Patterns {
     catch ( Exception e) {
       if (gui == null)
         throw e;
-      else
+      else {
         gui.userMessage("STM: Fehler beim Importieren. (" + e.getMessage() + ")");}
+        //e.printStackTrace();
+      }
   }
 
   private void initImport(BufferedReader reader) throws Exception {
     String str = new String();
-    CRectangle cRect = new CRectangle(0,0,0,0);
 
     initSuccess = false;
     while (reader.ready())
@@ -144,15 +156,32 @@ public class HAImport implements Patterns {
         pattern += ",(.*)";
       str = perl.group(2);
     }
+    if (tyString.equals("") || tyString == null)
+      throw new Exception("HA-Format-Fehler: Kein Typing vorhanden!");
+    if (hiString.equals("") || tyString == null)
+      throw new Exception("HA-Format-Fehler: Keine \"hierarchy function\" (Hi) vorhanden!");
+    if (trmapString.equals("") || trmapString == null)
+      throw new Exception("HA-Format-Fehler: Keine Trmap vorhanden!");
+    if (rootString.equals("") || rootString == null)
+      throw new Exception("HA-Format-Fehler: Keine Root-State definiert!");
+    if (initString.equals("") || initString.equals(" ") || initString == null)
+      throw new Exception("HA-Format-Fehler: Keine Initmap vorhanden!");
 
     tyHash = makeTyHash(tyString);
     hiHash = makeHiHash(hiString);
     trHash = makeTrHash(trmapString);
-    coordHash = makeCoordHash(statesString);
     rootString = removeQuotes(rootString);
-    cRect = calcRect((Vector)coordHash.get(rootString));
-    rFaktor = calcResize(640, 480, cRect.width, cRect.height);
-    System.out.println("resizeFaktor: "+rFaktor);
+
+    if (perl.match("/.*mk_coord.*/",statesString) && perl.match("/.*mk_coord.*/",trmapString))
+      parseCoords = true;
+    else
+      parseCoords = false;
+
+    if (parseCoords) {
+      coordHash = makeCoordHash(statesString);
+    }else
+      coordHash = new Hashtable();
+
     initHash = makeInitHash(initString);
     initSuccess = true;
   }
@@ -179,10 +208,14 @@ public class HAImport implements Patterns {
 
   public Statechart getStatechart() throws Exception {
     Statechart st = null;
+    CRectangle cRect = new CRectangle(0,0,0,0);
     if (!initSuccess)
       gui.userMessage("STM: getStatechart - Init fehlgeschlagen.");
     else
       try {
+        cRect = calcRect((Vector)coordHash.get(rootString));
+        rFaktor = calcResize(xSize, ySize, cRect.width, cRect.height);
+        System.out.println("resizeFaktor: "+rFaktor);
         st = new Statechart(getEventList(),getBvarList(),getPathList(),getState()); }
       catch(Exception e) {
         if (gui == null)
@@ -190,6 +223,41 @@ public class HAImport implements Patterns {
         else
           gui.userMessage("STM: Fehler beim Importieren. (" + e.getMessage() + ")");}
     return st;
+  }
+
+  /** Diese Methode liefert die StateChart genau wie getStatechart(),
+   * jedoch kann noch zus&auml;tzlich ein boolean-Parameter &uuml;bergeben
+   * werden, der festlegt, ob die Koordinaten mit &uuml;bernommen werden sollen.
+   */
+
+  public Statechart getStatechart(boolean parseCoords) throws Exception {
+    this.parseCoords = this.parseCoords && parseCoords;
+    return getStatechart();
+  }
+
+  /** Diese Methode liefert die StateChart genau wie getStatechart(),
+   * jedoch können noch zus&auml;tzlich zwei Integer-Parameter,
+   * die die gewünschte Skalierungs-Aufl&ouml;sung angeben, &uuml;bergeben werden.
+   */
+
+  public Statechart getStatechart(int xSize, int ySize) throws Exception {
+    this.xSize = xSize;
+    this.ySize = ySize;
+    return getStatechart();
+  }
+
+  /** Diese Methode liefert die StateChart genau wie getStatechart(),
+   * jedoch kann noch zus&auml;tzlich ein boolean-Parameter &uuml;bergeben
+   * werden, der festlegt, ob die Koordinaten mit &uuml;bernommen werden sollen.
+   * Und zwei Integer-Parameter, die die gewünschte Skalierungs-Aufl&ouml;sung
+   * angeben.
+   */
+
+  public Statechart getStatechart(boolean parseCoords, int xSize, int ySize) throws Exception {
+    this.parseCoords = this.parseCoords && parseCoords;
+    this.xSize = xSize;
+    this.ySize = ySize;
+    return getStatechart();
   }
 
   // Pattern darf nicht in Stringset enthalten sein
@@ -366,32 +434,25 @@ public class HAImport implements Patterns {
     StatenameList snl = null;
     TrList tl = null;
     CRectangle rt = null, rtNew = null;
-    CPoint pointArray[];
+    CPoint pointArray[] = null;
     Double xCoord = null, yCoord = null;
     Double resizedX = null, resizedY = null, resizedWidth = null, resizedHeight = null;
 
     stateName = perl.substitute("s/\"//g",stateName);
     stateType = (String)tyHash.get(stateName);
-    // Rectangle erzeugen
-    pointVec = (Vector)coordHash.get(stateName);
-    rt = calcRect(pointVec);
-    resizedX = new Double((rt.x-baseRect.x) * rFaktor);
-    resizedY = new Double((rt.y-baseRect.y) * rFaktor);
-    resizedWidth = new Double(rt.width * rFaktor);
-    resizedHeight = new Double(rt.height * rFaktor);
-    rtNew = new CRectangle(resizedX.intValue(),
-                           resizedY.intValue(),
-                           resizedWidth.intValue(),
-                           resizedHeight.intValue());
-    /*resizedX = new Double(rt.x * 1.0);
-    resizedY = new Double(rt.y * 1.0);
-    resizedWidth = new Double(rt.width * 1.0);
-    resizedHeight = new Double(rt.height * 1.0);
-    rtNew = new CRectangle(resizedX.intValue()-baseRect.x,
-                           resizedY.intValue()-baseRect.y,
-                           resizedWidth.intValue(),
-                           resizedHeight.intValue());
-    */
+    if (parseCoords) {
+      // Rectangle erzeugen
+      pointVec = (Vector)coordHash.get(stateName);
+      rt = calcRect(pointVec);
+      resizedX = new Double((rt.x-baseRect.x) * rFaktor);
+      resizedY = new Double((rt.y-baseRect.y) * rFaktor);
+      resizedWidth = new Double(rt.width * rFaktor);
+      resizedHeight = new Double(rt.height * rFaktor);
+      rtNew = new CRectangle(resizedX.intValue(),
+                             resizedY.intValue(),
+                             resizedWidth.intValue(),
+                             resizedHeight.intValue());
+    }
     if (stateType.equalsIgnoreCase("BASIC"))
       return new Basic_State(new Statename(stateName),rtNew);
     else if (stateType.equalsIgnoreCase("OR")) {
@@ -407,23 +468,25 @@ public class HAImport implements Patterns {
         if ((trVec = (Vector)trHash.get((String)hiVec.elementAt(i-1))) != null) {
           for (int k=trVec.size(); k>0; k--) {
             Vector currentTrVec = (Vector)trVec.elementAt(k-1);
-            pointVec.removeAllElements(); // pointVec soll jetzt die Koordinaten der Transitionen aufnehmen
-            for (int m=6; m<currentTrVec.size(); m++) {
-              perl.match("/<?mk_coord\\((\\d+),(\\d+)\\)>?/",(String)currentTrVec.elementAt(m));
-              xCoord = new Double((Integer.parseInt(perl.group(1))-rt.x)*rFaktor);
-              yCoord = new Double((Integer.parseInt(perl.group(2))-rt.y)*rFaktor);
-              pointVec.addElement(new CPoint(xCoord.intValue(),yCoord.intValue()));
+            if (parseCoords) {
+              pointVec.removeAllElements(); // pointVec soll jetzt die Koordinaten der Transitionen aufnehmen
+              for (int m=6; m<currentTrVec.size(); m++) {
+                perl.match("/<?mk_coord\\((\\d+),(\\d+)\\)>?/",(String)currentTrVec.elementAt(m));
+                xCoord = new Double((Integer.parseInt(perl.group(1))-rt.x)*rFaktor);
+                yCoord = new Double((Integer.parseInt(perl.group(2))-rt.y)*rFaktor);
+                pointVec.addElement(new CPoint(xCoord.intValue(),yCoord.intValue()));
+              }
+              pointVec = removeDuplicates(pointVec);
+              pointArray = new CPoint[pointVec.size()];
+              pointVec.copyInto(pointArray);
             }
-            pointVec = removeDuplicates(pointVec);
-            pointArray = new CPoint[pointVec.size()];
-            pointVec.copyInto(pointArray);
             tl = new TrList(new Tr(new Statename((String)hiVec.elementAt(i-1)),
                                    new Statename((String)currentTrVec.elementAt(0)),
                                    new TLabel(createGuard((String)currentTrVec.elementAt(3),(String)currentTrVec.elementAt(4)),
                                              createAction((String)currentTrVec.elementAt(5)),
                                              null, // CPoint
                                              null, // Location
-                                             "HALLO"), // Caption
+                                             "Default"),
                                    pointArray),
                             tl); }
           }
