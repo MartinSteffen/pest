@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.60 1999-02-05 09:03:57 swtech01 Exp $
+//	$Id: report_list,v 1.61 1999-02-05 09:32:07 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -22,7 +22,7 @@
 #Number: 	1
 #Autor:   	Erich Mikk erm
 #Subject:	Wiederholtes Starten des Editors nicht möglich
-#Status: 	fixed 
+#Status: 	reported
 #Description: 
 
 Die Hauptinstanz (gui) erkennt es offenbar nicht, wenn der Editor
@@ -49,7 +49,7 @@ werden!). obwohl der Editor geschlossen worden ist.
 #Number: 	2
 #Autor:   	Erich Mikk erm
 #Subject:	Hauptinstanz versucht Statechart zu laden
-#Status: 	fixed 
+#Status: 	confirmed 
 #Description: 
 
 (0) Man führe die Sequenz aus Number 1 aus. 
@@ -370,7 +370,7 @@ history connectors vergisst. Also: Hier fehlt eine Warnung!
 #Number:	26
 #Autor:		Erich Mikk erm
 #Subject:	STM-Import achtet nicht auf Keywords
-#Status: 	reported
+#Status: 	confirmed
 #Description: 
 
 AM 4.2. VOM FIXED AUF REPORTED ZURÜCKGESETZT. 
