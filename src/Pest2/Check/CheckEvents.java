@@ -31,22 +31,16 @@ class CheckEvents {
     this.warning = warning;
     }
 
-  CheckEvents(Statechart _st, State _s, String _path) {
-    statechart = _st;
-    s = _s;
-    path = _path;
-    }
-
   CheckEvents(Statechart _st, State _s, String _path, SyntaxError error, SyntaxWarning warning) {
     statechart = _st;
     s = _s;
     path = _path;
     this.error = error;
     this.warning = warning;
-  }
+    }
 
-  // überprüft, ob alle Events im State s auch in der Statechart
-  // definiert sind. Zurückgegeben wird TRUE, wenn dies der Fall ist.
+  // berprft, ob alle Events im State s auch in der Statechart
+  // definiert sind. Zurckgegeben wird TRUE, wenn dies der Fall ist.
 	public boolean check() {
     SEventList sel = statechart.events;
     SEventList se;
@@ -57,7 +51,7 @@ class CheckEvents {
     boolean ok=true;
     boolean found;
 
-    // nur im Falle eines OrStates überprüfen
+    // nur im Falle eines OrStates berprfen
     if (s instanceof Or_State) {
       os = (Or_State)s;
       substates=os.substates;
@@ -87,14 +81,13 @@ class CheckEvents {
           se = sel;
           found = false;
           while (se != null && found==false) {
-            if (a.event.name == se.head.name) { found = true; }
+            if (a.event.name.equals(se.head.name)) { found = true; }
             se = se.tail;
             }
 
           // Event aus der Transitionsliste wurde nicht gefunden
           if (found == false) {
             error.addError(new ItemError(100,"Event ("+a.event.name+") nicht gefunden", path));
-            //System.out.println(path+"Event("+a.event.name+") nicht gefunden");
             ok = false;
             }
           }
@@ -113,7 +106,7 @@ class CheckEvents {
   while (substates != null) {
     ok = ok && new CheckEvents(statechart,
                               substates.head,
-                              path+"."+substates.head.name.name).check();
+                              path+"."+substates.head.name.name, error, warning).check();
     substates = substates.tail;
     }
 
