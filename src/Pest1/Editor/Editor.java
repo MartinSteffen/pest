@@ -9,15 +9,15 @@
  * @version
  */
 
-package Editor;
+package editor;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
-import Absyn.*;
-import Editor.desk.*;
+import absyn.*;
+import editor.desk.*;
 
-public class editor extends Frame {
+public class Editor extends Frame {
     private static String Buttontype = "";
     private static boolean update = false;
 
@@ -37,10 +37,10 @@ public class editor extends Frame {
  * </ul>
  */
 
-    public editor(Statechart root,String name) {
-    nroot = root; new editor(nroot,name,100,100,500,400);}
+    public Editor(Statechart root,String name) {
+    nroot = root; new Editor(nroot,name,100,100,500,400);}
 
-    public editor (String name) {
+    public Editor (String name) {
 	super(name);
 	this.setLayout(new GridLayout(0,1,5,5));
 	this.setSize(105,260);
@@ -90,9 +90,9 @@ public class editor extends Frame {
  * </ul>
  */
 
-  public editor(Statechart root,String name,int top,int left,int width,int height) {
+  public Editor(Statechart root,String name,int top,int left,int width,int height) {
     super(name);                  // Create the window.
-    new editor("menue");
+    new Editor("menue");
     this.setLocation(top,left);                // Koordinaten des Zeichenfensters setzen.
     ScrollPane pane = new ScrollPane();      // Create a ScrollPane.
     pane.setSize(width,height);                  // Specify its size.

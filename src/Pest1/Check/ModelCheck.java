@@ -1,10 +1,10 @@
-package Check;
+package check;
 
 import java.util.*;
 import java.io.*;
 
-import Absyn.*;
-import GUI.*;
+import absyn.*;
+import gui.*;
 
 /**
  * <b>Syntax Check für Statecharts</b>
@@ -16,7 +16,7 @@ import GUI.*;
  * <br><a href="#Codes">Codes von Fehlern und Warnungen beim Syntax Check</a>
  * <br>
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: ModelCheck.java,v 1.1 1998-12-15 11:41:39 swtech11 Exp $
+ * @version  $Id: ModelCheck.java,v 1.2 1998-12-15 17:51:39 swtech00 Exp $
  */
 public class ModelCheck {
   private ModelCheckMsg mcm; // Object, um die Fehler und Warnungen zu speichern

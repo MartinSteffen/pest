@@ -1,4 +1,4 @@
-package STM;
+package stm;
 
 interface Patterns {
 

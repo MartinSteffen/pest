@@ -1,12 +1,12 @@
-package Check;
+package check;
 
-import Absyn.*;
+import absyn.*;
 import java.util.*;
 
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestTransitions.java,v 1.2 1998-12-15 14:14:39 swtech11 Exp $
+ *  @version  $Id: TestTransitions.java,v 1.3 1998-12-15 17:51:40 swtech00 Exp $
  */
 class TestTransitions extends ModelCheckBasics {
   Vector newPLV = new Vector(); // Vector fuer die selbst angelegte PathList der States

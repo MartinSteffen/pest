@@ -1,4 +1,4 @@
-package GUI;
+package gui;
 // Aufgrund doppelter Klassen in "java.awt.event" und "Absyn"
 // empfiehlt es sich hier NICHT "Absyn" zu importieren !
 
@@ -31,7 +31,7 @@ public void actionPerformed(ActionEvent e) {
 	  myWindow.save();
       }else if (cmd.equals("Neu")) {
 	  myWindow.SBDateiname="UNBENANNT";
-	  myWindow.SyntaxBaum = new Absyn.Statechart(myWindow.SBDateiname);
+	  myWindow.SyntaxBaum = new absyn.Statechart(myWindow.SBDateiname);
 	  myWindow.userMessage("GUI   : Neues Statechart erzeugt");
 	  myMenu.updateMenu();
       }else{

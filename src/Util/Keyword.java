@@ -1,4 +1,4 @@
-package Util;
+package util;
 
 import java.lang.*;
 import java.io.*;
@@ -9,7 +9,7 @@ import java.io.*;
  * die Vorkommen von Schlüsselwörtern in einem String überprüft
  * <p>
  * @author Michael Suelzer, Christoph Schuette.
- * @version  $Id: Keyword.java,v 1.1 1998-12-13 17:33:14 swtech20 Exp $
+ * @version  $Id: Keyword.java,v 1.2 1998-12-15 17:52:00 swtech00 Exp $
  */   
 
 public class Keyword {
@@ -53,6 +53,9 @@ public class Keyword {
 //	---------------------------
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.1  1998/12/13 17:33:14  swtech20
+//	Initial revision
+//
 //
 //
 //----------------------------------------------------------------------

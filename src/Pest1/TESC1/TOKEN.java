@@ -1,4 +1,4 @@
-package TESC1;
+package tesc1;
 
 class TOKEN {
 
@@ -20,6 +20,9 @@ class TOKEN {
 }
 
 /* TOKEN
- * $Id: TOKEN.java,v 1.1 1998-12-07 14:06:41 swtech13 Exp $
+ * $Id: TOKEN.java,v 1.2 1998-12-15 17:51:58 swtech00 Exp $
  * $Log: not supported by cvs2svn $
+ * Revision 1.1  1998/12/07 14:06:41  swtech13
+ * TOKEN-Klasse
+ *
  */

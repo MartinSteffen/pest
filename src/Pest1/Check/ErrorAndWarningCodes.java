@@ -1,8 +1,8 @@
-package Check;
+package check;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: ErrorAndWarningCodes.java,v 1.13 1998-12-14 20:40:28 swtech11 Exp $
+ *  @version  $Id: ErrorAndWarningCodes.java,v 1.14 1998-12-15 17:51:38 swtech00 Exp $
  */
 class ErrorAndWarningCodes {
   ErrorAndWarningCodes() {

@@ -1,6 +1,6 @@
 // Written by Eike Schulz, 04-12-1998.
 
-package TESC2;
+package tesc2;
 
 
 public class AlgorithmException extends Exception {

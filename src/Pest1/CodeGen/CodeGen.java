@@ -3,9 +3,9 @@
  *
  *
  */
-package CodeGen;
+package codegen;
 
-import Absyn.*;
+import absyn.*;
 
 /**
  *
@@ -21,7 +21,7 @@ import Absyn.*;
  * If an error occures, we will throw a CodeGenException.
  *
  * @author Marcel Kyas, Walter Loeser, Andre Paetzold.
- * @version $Id: CodeGen.java,v 1.3 1998-12-14 15:00:52 swtech25 Exp $
+ * @version $Id: CodeGen.java,v 1.4 1998-12-15 17:51:42 swtech00 Exp $
  */
 public class CodeGen
 {

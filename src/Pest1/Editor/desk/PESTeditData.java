@@ -8,7 +8,7 @@
  * @version 1.0
  */
 
-package Editor.desk;
+package editor.desk;
 
 import java.awt.*;               
 import java.awt.datatransfer.*;  

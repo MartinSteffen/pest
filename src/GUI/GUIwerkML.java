@@ -1,10 +1,10 @@
-package GUI;
+package gui;
 // Aufgrund doppelter Klassen in "java.awt.event" und "Absyn"
 // empfiehlt es sich hier NICHT "Absyn" zu importieren !
 
 import java.awt.event.*;
-import Util.PrettyPrint;
-import Absyn.Example;
+import util.PrettyPrint;
+import absyn.Example;
 
 class GUIwerkML
 implements ActionListener
@@ -26,7 +26,7 @@ public void actionPerformed(ActionEvent e) {
   myWindow.userMessage("GUI   : starte "+cmd);
   if(cmd.equals("Editor"))
       {
-	  new Editor.editor(myWindow.SyntaxBaum,myWindow.SBDateiname,100,100,200,200);
+	  new editor.Editor(myWindow.SyntaxBaum,myWindow.SBDateiname,100,100,200,200);
 
       }else if (cmd.equals("SyntaxCheck")) {
 
@@ -36,7 +36,7 @@ public void actionPerformed(ActionEvent e) {
       }else if (cmd.equals("Simulator")) {
 	  if (myWindow.checkSB())
 	      {
-		  new Simu.Simu(myWindow.SyntaxBaum);
+		  new simu.Simu(myWindow.SyntaxBaum);
 		  //myWindow.OkDialog("FEHLER","Wegen fehlender PACKAGE Anweisung in der Klasse Simu nicht implementiert");
 
 	      }
@@ -46,8 +46,8 @@ public void actionPerformed(ActionEvent e) {
 		  //myWindow.OkDialog("FEHLER","Wegen nicht compilierbarem Quelltext nicht implementiert");
 	      	try{
 
-		  new CodeGen.CodeGen(".",myWindow.SyntaxBaum);
-      		}catch(CodeGen.CodeGenException cge)
+		  new codegen.CodeGen(".",myWindow.SyntaxBaum);
+      		}catch(codegen.CodeGenException cge)
 		  {
 		    myWindow.OkDialog("Fehler","Fehler bei Code-Generierung");
 		  }

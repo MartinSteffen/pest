@@ -1,11 +1,11 @@
-package Check;
+package check;
 
-import Absyn.*;
+import absyn.*;
 import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestStates.java,v 1.1 1998-12-15 11:41:42 swtech11 Exp $
+ *  @version  $Id: TestStates.java,v 1.2 1998-12-15 17:51:40 swtech00 Exp $
  */
 
 /** Diese Testklasse testet, ob alle Statenamen deklariert worden sind, 

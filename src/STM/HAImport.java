@@ -1,12 +1,12 @@
-package STM;
+package stm;
 
-import Absyn.*;
+import absyn.*;
 import java.io.*;
 import java.util.*;
 import java.awt.Point;
 import java.awt.Rectangle;
 import com.oroinc.text.perl.*;
-import Util.PrettyPrint;
+import util.PrettyPrint;
 
 /**
  * Die Klasse HAImport dient zur Konvertierung des HA-Formates in einen
@@ -23,7 +23,7 @@ import Util.PrettyPrint;
  * </pre>
  *
  * @author  Sven Jorga, Werner Lehmann
- * @version $Id: HAImport.java,v 1.1 1998-12-15 16:20:02 swtech18 Exp $
+ * @version $Id: HAImport.java,v 1.2 1998-12-15 17:51:55 swtech00 Exp $
  */
 public class HAImport implements Patterns {
   Perl5Util perl = new Perl5Util();
@@ -150,7 +150,7 @@ public class HAImport implements Patterns {
         // Remove (...)
         currentCoord = currentCoord.substring(1,currentCoord.length()-1);
         xyVec = deliSplit(currentCoord,',');
-        pointVec.addElement(new Point(Integer.parseInt((String)xyVec.elementAt(0)),
+        pointVec.addElement(new CPoint(Integer.parseInt((String)xyVec.elementAt(0)),
                                       Integer.parseInt((String)xyVec.elementAt(1))));
       }
       tempHash.put(removeQuotes((String)currentVec.elementAt(0)),pointVec);
@@ -251,20 +251,20 @@ public class HAImport implements Patterns {
     StateList sl = null;
     StatenameList snl = null;
     TrList tl = null;
-    Point pt = null;
-    Rectangle rt = null;
-    Point pointArray[];
+    CPoint pt = null;
+    CRectangle rt = null;
+    CPoint pointArray[];
 
     stateName = perl.substitute("s/\"//g",stateName);
     stateType = (String)tyHash.get(stateName);
     // Rectangle erzeugen
     pointVec = (Vector)coordHash.get(stateName);
     for (int l=0; l < pointVec.size(); l++) {
-      pt = (Point)pointVec.elementAt(l);
+      pt = (CPoint)pointVec.elementAt(l);
       if (rt == null)
-        rt = new Rectangle(pt);
+        rt = new CRectangle(pt);
       else
-        rt = new Rectangle( rt.union(new Rectangle(pt)));
+        rt = new CRectangle((CRectangle)rt.union(new CRectangle(pt)));
     }
     if (stateType.equalsIgnoreCase("BASIC"))
       return new Basic_State(new Statename(stateName),rt);
@@ -284,9 +284,9 @@ public class HAImport implements Patterns {
             pointVec.removeAllElements(); // pointVec soll jetzt die Koordinaten der Transitionen aufnehmen
             for (int m=6; m<currentTrVec.size(); m++) {
               perl.match("/<?mk_coord\\((\\d+),(\\d+)\\)>?/",(String)currentTrVec.elementAt(m));
-              pointVec.addElement(new Point(Integer.parseInt(perl.group(1)),Integer.parseInt(perl.group(2))));
+              pointVec.addElement(new CPoint(Integer.parseInt(perl.group(1)),Integer.parseInt(perl.group(2))));
             }
-            pointArray = new Point[pointVec.size()];
+            pointArray = new CPoint[pointVec.size()];
             pointVec.copyInto(pointArray);
             tl = new TrList(new Tr(new Statename((String)hiVec.elementAt(i-1)),
                                    new Statename((String)currentTrVec.elementAt(0)),

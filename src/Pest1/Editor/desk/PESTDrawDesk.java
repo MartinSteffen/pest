@@ -8,7 +8,7 @@
  * @version 1.0
  */
 
-package Editor.desk;
+package editor.desk;
 
 import java.awt.*;               
 import java.awt.datatransfer.*;  
@@ -17,8 +17,8 @@ import java.io.*;
 import java.util.zip.*;          
 import java.util.Vector;        
 import java.util.Properties;     
-import Absyn.*;
-import Editor.*;
+import absyn.*;
+import editor.*;
 
 
  /* Hauptzeichenfeld (Voreinstellungen & Definitionen) */
@@ -112,10 +112,10 @@ import Editor.*;
 		    last_x = (short) e.getX(); last_y = (short) e.getY(); 	// Save position.
 		}
 
-	    if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (editor.editor() =="Draw_State"))
+	    if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.editor() =="Draw_State"))
 		{ 
 		    new drawPESTState(g,root,last_x,last_y,e.getX(),e.getY(),Color.blue);
-		    editor.SetListen();
+		    Editor.SetListen();
 		}
 	}
   }

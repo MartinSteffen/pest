@@ -1,11 +1,11 @@
-package Check;
+package check;
 
-import Absyn.*;
+import absyn.*;
 import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestEvents.java,v 1.1 1998-12-15 11:41:41 swtech11 Exp $
+ *  @version  $Id: TestEvents.java,v 1.2 1998-12-15 17:51:39 swtech00 Exp $
  */
 /** Diese Testklasse testet, ob alle Events deklariert worden sind, 
     <br>ob die deklarierten eindeutig sind und ob sie alle verwendet werden.*/

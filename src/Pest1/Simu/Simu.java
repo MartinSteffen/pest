@@ -48,7 +48,7 @@ private void makeTab(Statechart Daten) {
  * @param Daten Absyn.Statechart
  * @param eEdit Editor
  */
-public void Simu(Statechart Daten, editor eEdit) {
+public void Simu(Statechart Daten, Editor eEdit) {
 /* Nur fuer Testlaeufe der GUI-Gruppe und Uebergabetests
  * Test, ob das uebergebene Objekt null ist
  */

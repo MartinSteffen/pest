@@ -1,6 +1,6 @@
-package Check;
+package check;
 
-import Absyn.*;
+import absyn.*;
 import java.util.*;
 
 /**
@@ -10,7 +10,7 @@ import java.util.*;
  *  und Label der Transitionen
  *
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestPI.java,v 1.1 1998-12-15 11:41:42 swtech11 Exp $
+ *  @version  $Id: TestPI.java,v 1.2 1998-12-15 17:51:40 swtech00 Exp $
  */
 class TestPI  {
   ModelCheckMsg msg = new ModelCheckMsg();

@@ -1,4 +1,4 @@
-package GUI.popdialoge;
+package gui.popdialoge;
 
 import java.awt.*;
 import java.awt.event.*;

@@ -8,7 +8,7 @@
  * @version 1.0
  */
 
-package Editor.desk;
+package editor.desk;
 
 import java.awt.*;               
 import java.awt.datatransfer.*;  
@@ -17,8 +17,8 @@ import java.io.*;
 import java.util.zip.*;          
 import java.util.Vector;        
 import java.util.Properties;    
-import Absyn.*;
-import GUI.popdialoge.*;
+import absyn.*;
+import gui.popdialoge.*;
 
 
 public class drawPESTState 

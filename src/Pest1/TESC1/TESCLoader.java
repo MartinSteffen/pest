@@ -1,15 +1,15 @@
-package TESC1;
+package tesc1;
 
 //import java.util.*;
-import Absyn.*;
+import absyn.*;
 import java.io.*;
-import GUI.*;
+import gui.*;
 
 /** 
  * TESCLoader. 
  * Schnittstelle zu PEST.
  * @author Arne Koch/Mike Rumpf.
- * @version  $Id: TESCLoader.java,v 1.4 1998-12-07 20:10:15 swtech13 Exp $ 
+ * @version  $Id: TESCLoader.java,v 1.5 1998-12-15 17:51:57 swtech00 Exp $ 
  */ 
 public class TESCLoader {
 
@@ -48,6 +48,9 @@ public class TESCLoader {
 
 /* 
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  1998/12/07 20:10:15  swtech13
+ * Anpassung der Schnittstelle
+ *
  * Revision 1.3  1998/12/07 15:13:21  swtech13
  * Scanner um Kommentare erweitert, Schnittstelle um Konstruktor mit
  * GUIInterface Parameter erweitert.

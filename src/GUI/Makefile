@@ -7,14 +7,14 @@ all:    others $(patsubst %.java,%.class,$(wildcard *.java))
 
 
 others:
-	(cd ../Absyn ; make)
-	(cd ../Editor ; make)
-	(cd ../Check ; make)
-	(cd ../Simu ; make)
-	(cd ../TESC1 ; make)
-	(cd ../TESC2 ; make)
-	(cd ../CodeGen ; make)
-	(cd ../STM ; make)
+	(cd ../absyn ; make)
+	(cd ../editor ; make)
+	(cd ../check ; make)
+	(cd ../simu ; make)
+	(cd ../tesc1 ; make)
+	(cd ../tesc2 ; make)
+	(cd ../codegen ; make)
+	(cd ../stm ; make)
 
 gui:    $(patsubst %.java,%.class,$(wildcard *.java))  
 

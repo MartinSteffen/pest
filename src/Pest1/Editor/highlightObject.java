@@ -8,12 +8,12 @@
  * @version
  */
 
-package Editor;
+package editor;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
-import Absyn.*;
+import absyn.*;
 
 public class highlightObject {
     

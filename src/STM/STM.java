@@ -1,6 +1,6 @@
-package PEST1.STM;
+package stm;
 
-import Absyn.*;
+import absyn.*;
 import java.io.*;
 import java.util.*;
 import com.oroinc.text.perl.*;
@@ -20,7 +20,7 @@ import com.oroinc.text.perl.*;
  * </pre>
  *
  * @author  Sven Jorga, Werner Lehmann
- * @version $Id: STM.java,v 1.1 1998-12-08 15:09:31 swtech18 Exp $
+ * @version $Id: STM.java,v 1.2 1998-12-15 17:51:55 swtech00 Exp $
  */
 public class STM implements Patterns {
   Perl5Util perl = new Perl5Util();

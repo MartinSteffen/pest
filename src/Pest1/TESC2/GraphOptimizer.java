@@ -4,12 +4,12 @@
  * Created: Mon Dec 07 16:43:30 1998
  * 
  * @author swtech14 : Eike Schulz & Martin Poerksen
- * @version $Id: GraphOptimizer.java,v 1.4 1998-12-14 14:51:56 swtech14 Exp $
+ * @version $Id: GraphOptimizer.java,v 1.5 1998-12-15 17:51:59 swtech00 Exp $
  */
 
-package TESC2;
+package tesc2;
 
-import Absyn.*;
+import absyn.*;
 import java.awt.FontMetrics;
 
 public class GraphOptimizer {

@@ -1,12 +1,12 @@
-import Check.*;
-import Absyn.*;
+import check.*;
+import absyn.*;
 import Util.*;
 
 // zum Testen ins Haupdirectory der PEST kopieren
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: t.java,v 1.8 1998-12-15 11:36:43 swtech11 Exp $
+ *  @version  $Id: t.java,v 1.9 1998-12-15 17:51:41 swtech00 Exp $
  */
 public class t {
 

@@ -1,10 +1,10 @@
 // The PrettyPrinter for Absyn-objects.
 // Written by Eike Schulz, 01-12-1998.
 
-package Util;
+package util;
 
 
-import Absyn.*;
+import absyn.*;
 
 public class PrettyPrint {
   private int column; // Offset-Spalte

@@ -1,11 +1,11 @@
-package GUI;
+package gui;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
-import GUI.popdialoge.*;
+import gui.popdialoge.*;
 
-import Absyn.*;
+import absyn.*;
 
 /** Diese Klasse ist die Hauptklasse von PEST
  * und daher ist sie auch startbar (sprich "main" ist adequat 
@@ -69,7 +69,7 @@ implements GUIInterface
     {
 	if(!CheckedSC)
 	    {
-		Check.modelCheck SCchecker = new Check.modelCheck(this);
+		check.ModelCheck SCchecker = new check.ModelCheck(this);
 		ResultSC = SCchecker.checkModel(SyntaxBaum);
 		CheckedSC = true;
 		if (SCchecker.getErrorNumber()==0)

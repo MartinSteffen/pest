@@ -1,6 +1,6 @@
 package PEST1.STM.HAImport;
 
-import Absyn.*;
+import absyn.*;
 import java.io.*;
 import java.util.*;
 import com.oroinc.text.perl.*;
@@ -20,7 +20,7 @@ import com.oroinc.text.perl.*;
  * </pre>
  *
  * @author  Sven Jorga, Werner Lehmann
- * @version $Id: HAImport.java,v 1.1 1998-12-07 15:02:44 swtech18 Exp $
+ * @version $Id: HAImport.java,v 1.2 1998-12-15 17:51:56 swtech00 Exp $
  */
 public class HAImport implements Patterns {
   Perl5Util perl = new Perl5Util();

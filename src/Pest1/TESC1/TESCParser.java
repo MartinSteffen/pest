@@ -1,9 +1,9 @@
-package TESC1;
+package tesc1;
 
 import java.util.*;
-import Absyn.*;
+import absyn.*;
 import java.io.*;
-import GUI.*;
+import gui.*;
 import java.lang.*;
 
 /* Todo/Fragen
@@ -1087,8 +1087,18 @@ class TESCParser {
 }
 
 /* TESCParser
- * $Id: TESCParser.java,v 1.4 1998-12-14 23:58:08 swtech13 Exp $
+ * $Id: TESCParser.java,v 1.5 1998-12-15 17:51:57 swtech00 Exp $
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  1998/12/14 23:58:08  swtech13
+ * Scanner: Teilstrings von keywords werden nicht mehr zurueckgewiesen
+ *
+ * Parser: Erste arbeitende Version
+ * 	Todo:
+ * 	-  Undet bei Guards
+ * 	-  Fehlerbehandlung
+ * 	   => bitte nur Test/simple.tesc als Eingabe verwenden
+ * 	-  Bugfixes
+ *
  * Revision 1.3  1998/12/07 20:10:16  swtech13
  * Anpassung der Schnittstelle
  *

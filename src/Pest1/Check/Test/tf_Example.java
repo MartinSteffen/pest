@@ -1,9 +1,9 @@
-import Absyn.*;
+import absyn.*;
 
 /**
  *  Beispiele für Statecharts mit fatalen Fehlern
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: tf_Example.java,v 1.2 1998-12-13 21:02:54 swtech11 Exp $
+ *  @version  $Id: tf_Example.java,v 1.3 1998-12-15 17:51:42 swtech00 Exp $
  */
 public class tf_Example {
 

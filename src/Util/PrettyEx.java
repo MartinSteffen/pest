@@ -1,11 +1,11 @@
 // Example for using PrettyPrint.
 // Written by Eike Schulz, 03-12-1998.
 
-package Util;
+package util;
 
 
-import Absyn.Example;
-import Util.PrettyPrint;
+import absyn.Example;
+import util.PrettyPrint;
 
 public class PrettyEx {
 

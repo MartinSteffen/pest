@@ -1,11 +1,11 @@
 /**
  * 
  */
-package Util;
+package util;
 
 /**
  * Zufallszahlgenerator nach Donald E. Knuth mit Bereichsanpassung.
- * @version $Id: RandomIntGenerator.java,v 1.1 1998-12-07 14:37:22 swtech25 Exp $
+ * @version $Id: RandomIntGenerator.java,v 1.2 1998-12-15 17:52:01 swtech00 Exp $
  * @author Marcel Kyas, Walter Loeser, Andre Paetzold.
  */
 public class RandomIntGenerator {

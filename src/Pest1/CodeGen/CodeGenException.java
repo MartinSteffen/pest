@@ -2,13 +2,13 @@
  * CodeGenException
  *
  */
-package CodeGen;
+package codegen;
 
 /**
  * This is the exception caused by CodeGen, if we fail to generate code
  * for some reasons.
  * @author Marcel Kyas
- * @version $Id: CodeGenException.java,v 1.2 1998-12-07 12:12:15 swtech25 Exp $
+ * @version $Id: CodeGenException.java,v 1.3 1998-12-15 17:51:43 swtech00 Exp $
  */
 public class CodeGenException extends Exception
 {

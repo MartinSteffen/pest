@@ -1,4 +1,4 @@
-package TESC1;
+package tesc1;
 
 class vTOKEN {
     
@@ -45,8 +45,18 @@ class vTOKEN {
 }
 
 /* vTOKEN
- * $Id: vTOKEN.java,v 1.2 1998-12-14 23:58:09 swtech13 Exp $
+ * $Id: vTOKEN.java,v 1.3 1998-12-15 17:51:58 swtech00 Exp $
  * $Log: not supported by cvs2svn $
+ * Revision 1.2  1998/12/14 23:58:09  swtech13
+ * Scanner: Teilstrings von keywords werden nicht mehr zurueckgewiesen
+ *
+ * Parser: Erste arbeitende Version
+ * 	Todo:
+ * 	-  Undet bei Guards
+ * 	-  Fehlerbehandlung
+ * 	   => bitte nur Test/simple.tesc als Eingabe verwenden
+ * 	-  Bugfixes
+ *
  * Revision 1.1  1998/12/07 14:02:27  swtech13
  * Tokenliste
  *

@@ -1,10 +1,10 @@
-package Check;
+package check;
 
 import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: ModelCheckMsg.java,v 1.1 1998-12-15 12:44:21 swtech11 Exp $
+ *  @version  $Id: ModelCheckMsg.java,v 1.2 1998-12-15 17:51:39 swtech00 Exp $
  */
 class ModelCheckMsg {
   private Vector ErrorCode;

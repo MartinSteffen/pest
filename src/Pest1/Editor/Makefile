@@ -1,16 +1,21 @@
-# Makefile fuer Simulator
+# Makefile fuer Editor
 
 cc = javac
 
 
-all : Editor.class 
+all : $(patsubst %.java,%.class,$(wildcard *.java))
+
+#Editor.class 
+
+%.class:	%.java
+		$(cc) $<
 
 
-Editor.class :
-	$(cc) *.java 
+#Editor.class :
+#	$(cc) *.java 
 
 clean :
-	rm -rf *.class
+	find . -name "*.class" -exec rm {} \;
 
 # Ende Makefile
 
