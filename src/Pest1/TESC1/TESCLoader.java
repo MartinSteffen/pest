@@ -90,7 +90,7 @@ import java.util.*;
  * <br>
  * <hr>
  * @author Arne Koch/Mike Rumpf.
- * @version  $Id: TESCLoader.java,v 1.19 1999-01-19 21:46:20 swtech13 Exp $ 
+ * @version  $Id: TESCLoader.java,v 1.20 1999-01-20 21:39:34 swtech13 Exp $ 
  */ 
 public class TESCLoader {
 
@@ -217,14 +217,70 @@ public class TESCLoader {
     }
 
 
-  /**
-   * <STRONG>NICHT</STRONG> verwenden, liefert null.<br> Diese Methode ist nur aus Kompatibilitätsgründen zu PEST2 da. 
-   * @return null
-   */
-  public TLabel getLabel(BufferedReader br, Statechart sc) {
+    /**
+     * <STRONG>NICHT</STRONG> verwenden, liefert null.<br> Diese Methode ist nur aus Kompatibilitätsgründen zu PEST2 da. 
+     * @return null
+     */
+    public TLabel getLabel(BufferedReader br, Statechart sc) {
 
-    return null;
-  }
+	return null;
+    }
+
+    /**
+     * Liefert um caption erweitertes TLabel
+     * @return TLabel oder null bei Fehler
+     */
+    public TLabel getLabel(TLabel tl_, Statechart sc) {
+
+	String G = getG(tl_.caption);
+	String A = getA(tl_.caption);
+
+	// Vorherige Informationen erhalten
+	TLabel tl = new TLabel(tl_.guard, tl_.action, tl_.position, tl_.location, tl_.caption);
+
+	try {
+	    tl.guard = getGuard(new BufferedReader(new StringReader(G)), sc);
+	    tl.action = getAction(new BufferedReader(new StringReader(A)), sc);
+	}
+	catch (IOException ioe) {
+	    tl = null;
+	}
+
+	return tl;
+    }
+    
+
+     // liefert den Guard-Teil des Labels
+    private String getG(String str) {
+	String s = null;
+
+	int pos = str.indexOf('/');
+	if (pos!=-1) {
+	    s = str.substring(0,pos);
+	    
+	}
+	else {
+	    s = str;
+	}
+
+	// Haben Probleme, falls Länge == 1
+	return new String(s + " ");
+    }
+
+    // liefert den Action-Teil des Labels 
+    private String getA(String str) {
+	String s = null;
+
+	int pos = str.indexOf('/');
+	if (pos!=-1) {
+	    s = str.substring(pos+1);
+	    if (s.length()==0)
+		s = null;
+	}
+
+	// Action muss mit ";" enden; liegt am Parser
+	return new String(s + ";");
+    }
 
     /** 
      * Umwandeln eines  TESC-File aus BufferedReader in Action.<br> <STRONG> Achtung: </STRONG> Der String MUSS mit einem ; abgeschlossen sein<br><STRONG>  Temporär!! </STRONG>
