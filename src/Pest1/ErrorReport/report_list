@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.32 1999-01-27 15:52:38 swtech00 Exp $
+//	$Id: report_list,v 1.33 1999-01-27 15:54:18 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -362,7 +362,7 @@ Was geht hier schief:
 
 In manchen Files des SAFER-Projekts verwendet man history connectors
 (z.B. active_axes.st). PEST unterstützt z.Zt. keine histories!
-Falsch ist, dass der Benutzer nicht gewart wird, dass STM-Import die
+Falsch ist, dass der Benutzer nicht gewarnt wird, dass STM-Import die
 history connectors vergisst. Also: Hier fehlt eine Warnung!
 
 //------------------------------------------------------------------------------
