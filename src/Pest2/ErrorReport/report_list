@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	------------------
 //
-//	$Id: report_list,v 1.15 1999-01-28 13:43:16 swtech00 Exp $
+//	$Id: report_list,v 1.16 1999-01-28 13:48:23 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -169,7 +169,7 @@ Führe Schrittweise Simualtion durch (ein Schritt reicht).
 Im Editor wird nichts gehighlightet.
 //------------------------------------------------------------------------------
 
-#Number:	9
+#Number:	10
 #Autor:		Erich Mikk erm
 #Subject:	Default states nicht erkennbar.
 #Status: 	reported 
