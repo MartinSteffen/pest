@@ -158,6 +158,6 @@ public interface GUIInterface{
      * Gibt das check.CheckConfig-Objekt mit den aktuellen Optionseinstellungen zurueck.
      */
 
-    public check.CheckConfig getCheckConfig();
+    //    public check.CheckConfig getCheckConfig();
 }
 

@@ -35,7 +35,7 @@ public void actionPerformed(ActionEvent e) {
 	 {
 	     GUIColor = new GUIFarbOption(myWindow,this);
       }else if (cmd.equals("SyntaxCheck")) { 
-	  new check.CheckOption(myWindow,myWindow.checkConfig);
+	  //new check.CheckOption(myWindow,myWindow.checkConfig);
       }else if (cmd.equals("Statemate")) {
 	  new stmOption(myWindow);
       }else{  

@@ -67,7 +67,7 @@ implements GUIInterface
     ControlWindow controlWindow;
     GUIControlWindowML cwlis;
     GUIexitLis exlis;
-    check.CheckConfig checkConfig;
+    //check.CheckConfig checkConfig;
 
     editor.Editor PEditor = null;
     Dimension EditorDim = null;
@@ -181,7 +181,7 @@ implements GUIInterface
         theConfig.isDirty = isDirty;
         theConfig.ctrlWin = ctrlWin;
 
-	theConfig.checkConfig = checkConfig;
+	//	theConfig.checkConfig = checkConfig;
 
 	theConfig.stateColorIndex      = stateColorIndex;
 	theConfig.transColorIndex      = transColorIndex;
@@ -240,14 +240,14 @@ implements GUIInterface
 	    stmYSize = theConfig.stmYSize;
 	    stmKoord = theConfig.stmKoord;
 
-	    if (theConfig.checkConfig == null)
-		{
-		    checkConfig = new check.CheckConfig();
-		}
-	    else
-		{
-		    checkConfig = theConfig.checkConfig;
-		}
+// 	    if (theConfig.checkConfig == null)
+// 		{
+// 		    checkConfig = new check.CheckConfig();
+// 		}
+// 	    else
+// 		{
+// 		    checkConfig = theConfig.checkConfig;
+// 		}
 
 	    SBDateiname = theConfig.Dateiname;
 	    SBPfad = theConfig.Pfad;
@@ -521,10 +521,10 @@ implements GUIInterface
     }
     
 
-    public check.CheckConfig getCheckConfig()
-    {
-	return checkConfig;
-    }
+//     public check.CheckConfig getCheckConfig()
+//     {
+// 	return checkConfig;
+//     }
 
     
     BufferedReader load(String titel)

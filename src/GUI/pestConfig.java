@@ -24,5 +24,5 @@ class pestConfig
     int stmYSize;
     boolean stmKoord;
 
-    check.CheckConfig checkConfig;
+    //    check.CheckConfig checkConfig;
 }
