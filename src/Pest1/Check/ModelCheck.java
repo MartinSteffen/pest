@@ -44,7 +44,7 @@ import editor.*;
  * </DL COMPACT>
  *
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: ModelCheck.java,v 1.27 1999-01-22 20:33:23 swtech11 Exp $
+ * @version  $Id: ModelCheck.java,v 1.28 1999-01-25 13:54:23 swtech11 Exp $
  */
 public class ModelCheck {
   private ModelCheckMsg mcm; // Object, um die Fehler und Warnungen zu speichern
@@ -74,6 +74,23 @@ public class ModelCheck {
     edit = _edit;
   }
 
+
+/**
+ * Der Constructor des Syntax Checkers.
+ * @param _gui Referenz auf die GUI
+ * @param _edit Referenz auf den Editor
+ * 
+ */
+  public ModelCheck(GUIInterface _gui, Editor _edit, CheckConfig _cf) {
+    mcm = new ModelCheckMsg();
+    gui = _gui;
+    outputGUI = true;
+    edit = _edit;
+
+  }
+
+
+
 /**
  * Führt den gesamten Syntax Check durch.
  * @return true, falls keine Fehler aufgetreten sind, sonst false
@@ -96,6 +113,8 @@ public class ModelCheck {
     boolean Zeitnahme = true;
     long s0=0; long e0=0; long s1=0; long e1=0; long s2=0; long e2=0;
     long s3=0; long e3=0; long s4=0; long e4=0; long s5=0; long e5=0;
+
+System.out.println(edit);
 
     // Fortschrittsanzeige
     V = new Dialog((pest)gui,"Fortschrittanzeige");
