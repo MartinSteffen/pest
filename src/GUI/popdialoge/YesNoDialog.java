@@ -11,7 +11,7 @@ import java.lang.Math.*;
 * "dialog" die gesamte Funktionalit„t.
 **/
 
-public class YesNoDialog
+class YesNoDialog
 extends dialog
 {
 

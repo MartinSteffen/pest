@@ -11,7 +11,7 @@ import java.lang.Math.*;
 * die Vaterklasse "dialog" die gesamte Funktionalit„t.
 **/
 
-public class YesNoCancelDialog
+class YesNoCancelDialog
 extends dialog
 {
    /**

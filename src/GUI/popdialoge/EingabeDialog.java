@@ -12,7 +12,7 @@ import java.util.*;
 * actionPerformed implementiert sie deren gesamte Funktionalit„t.
 **/
 
-public class EingabeDialog
+class EingabeDialog
 extends Dialog
 implements ActionListener
 {
