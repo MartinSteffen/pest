@@ -1,8 +1,8 @@
 //-----------------------------------------------------------------------------
 //	Fehlerliste von PEST2
-//	--------------
+//	------------
 //
-//	$Id: report_list,v 1.67 1999-02-12 12:52:27 swtech22 Exp $
+//	$Id: report_list,v 1.68 1999-02-13 16:12:21 swtech23 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -703,7 +703,7 @@ gestartet werden).
 #Number:	45
 #Autor:		Erich Mikk erm
 #Subject:	Check erkennt Fehler nicht
-#Status:	processing
+#Status:	fixed
 #Description:
 
 STM-Import SE-Systems/tamagotc.st
