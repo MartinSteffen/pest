@@ -326,7 +326,9 @@ if (matrix1.akt instanceof Basic_State & matrix1.prev instanceof And_State)
 			 
 			} else
 			{
-			trlist4 = trlist2;trlist2 = new TrList(trlist.head,trlist4);
+			trlist4 = trlist2;
+			trlist2 = new TrList(trlist.head,trlist4);
+			trlist2 = move_trans(trlist2, temprect3.x , temprect3.y );
 			}  // hier noch arbeiten	
  	trlist = trlist.tail;
 	}
@@ -551,6 +553,42 @@ public static void drawPar(Graphics g,int cx1, int cy1, int cx2, int cy2, Color 
 	g.drawLine(l2 * 10,cy1+cy2,abg,cy1+cy2);
 	}  
     } 
+
+
+
+ private TrList move_trans ( TrList trl, int dx, int dy ) {
+
+  // Verschiebt die x und y Werte im Array der Transition um dx und dy
+
+  TrList dummylist = trl;
+
+  // dx = dx == null ? 0 : dx;
+  //  dy = dy == null ? 0 : dy;
+
+  System.out.println("verschiebe die Koordinaten um " + dx + " und " + dy);
+
+    while (trl != null) {
+
+    if (trl.head != null) {
+
+      for (int i = 0; i < trl.head.points.length; i++) {
+
+        trl.head.points[i].x = trl.head.points[i].x - dx;
+        trl.head.points[i].y = trl.head.points[i].y - dy;
+
+      } // for
+
+    } // if
+
+    trl = trl.tail;
+
+    } // while
+
+    return dummylist;
+
+
+  } // move_trans
+
     
 } // drawPESTParallel
 
