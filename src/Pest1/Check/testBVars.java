@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: testBVars.java,v 1.6 1998-12-08 14:25:00 swtech11 Exp $
+ *  @version  $Id: testBVars.java,v 1.7 1998-12-09 14:28:51 swtech11 Exp $
  */
 class testBVars extends modelCheckBasics{
   private Vector Ist;
@@ -27,7 +27,7 @@ class testBVars extends modelCheckBasics{
     erstelle_Soll();
     vergleiche();
     //msg.addWarning(5,"Root");
-    return true;
+    return (msg.getErrorNumber()==0);
   }
 
   void erstelle_Ist() {

@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: testStates.java,v 1.5 1998-12-08 14:52:49 swtech11 Exp $
+ *  @version  $Id: testStates.java,v 1.6 1998-12-09 14:28:53 swtech11 Exp $
  */
 class testStates extends modelCheckBasics{
   private Vector Pfad1=new Vector();
@@ -20,7 +20,7 @@ class testStates extends modelCheckBasics{
     vergleiche_Pfade();
     pruefeState(sc.state);
     msg.addWarning(3,"bei allen States");
-    return true;
+    return (msg.getErrorNumber()==0);;
   }
 
     void erstelle_Pfad1(){

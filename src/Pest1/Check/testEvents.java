@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: testEvents.java,v 1.6 1998-12-08 14:25:01 swtech11 Exp $
+ *  @version  $Id: testEvents.java,v 1.7 1998-12-09 14:28:52 swtech11 Exp $
  */
 class testEvents extends modelCheckBasics{
   private Vector Ist;
@@ -28,7 +28,7 @@ class testEvents extends modelCheckBasics{
     erstelle_Soll();
     vergleiche();
     //msg.addWarning(2,"Root");
-    return true;
+    return (msg.getErrorNumber()==0);
   }
   void erstelle_Ist() {
      for(SEventList e=sc.events; e!=null;e=e.tail){

@@ -2,7 +2,7 @@ import Absyn.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: t2_Example.java,v 1.2 1998-12-08 20:48:19 swtech11 Exp $
+ *  @version  $Id: t2_Example.java,v 1.3 1998-12-09 14:28:59 swtech11 Exp $
  */
 public class t2_Example {
   
@@ -37,22 +37,29 @@ Bvar a3 = new Bvar ("A");
             new SEventList (D,
               new SEventList (G,null))));
 
+      
     Path sudp = new Path ("SUD", null);
-    Path p1p  = new Path ("P1", sudp);
-    Path p2p  = new Path ("P2", sudp);
-    Path p3p  = new Path ("P3", sudp);
-    Path q1p  = new Path ("Q1", p3p);
-    Path q2p  = new Path ("Q2", p3p);
-    Path r1p  = new Path ("R1", q2p);
-    Path r2p  = new Path ("R2", q2p);
-    Path s1p  = new Path ("S1", r1p);
-    Path s2p  = new Path ("S2", r1p);
-    Path t1p  = new Path ("T0", r2p);
-    Path t2p  = new Path ("T2", r2p);
+    Path p1p  = sudp.append("P1");
+    Path p2p  = sudp.append("P2");
+    Path p3p  = sudp.append("P3");
+    Path q1p  = p3p.append("Q1");
+    Path q2p  = p3p.append("Q2");
+    Path r1p = q2p.append("R1");
+    Path r2p = q2p.append("R2");
+    Path s1p = r1p.append("S1");
+    Path s2p = r1p.append("S2");
+    Path t1p = r2p.append("T1");
+    Path t2p = r2p.append("T2");
+
+
+
+
+
     PathList pathlist =
     new PathList (sudp,
       new PathList (p1p,
        new PathList (p2p,
+         new PathList (p3p,
            new PathList (q1p,
              new PathList (q2p,
                new PathList (r1p,
@@ -60,7 +67,7 @@ Bvar a3 = new Bvar ("A");
                    new PathList (s1p,
 	             new PathList (s2p,
                        new PathList (t1p,
-                         new PathList (t2p,null)))))))))));
+                         new PathList (t2p,null))))))))))));
 
   Basic_State S1 = new Basic_State (new Statename("S1"));
   Basic_State S2 = new Basic_State (new Statename("S2"));
@@ -140,18 +147,23 @@ Bvar a3 = new Bvar ("A");
 
 public static Statechart getExample_m() {
     
-    Path sudp = new Path ("Sud", null);
-    Path p1p  = new Path ("P1", sudp);
-    Path p2p  = new Path ("P2", sudp);
-    Path p3p  = new Path ("P3", sudp);
-    Path q1p  = new Path ("Q1", p3p);
-    Path q2p  = new Path ("Q2", p3p);
-    Path r1p  = new Path ("R1", q2p);
-    Path r2p  = new Path ("R2", q2p);
-    Path s1p  = new Path ("S1", r1p);
-    Path s2p  = new Path ("S2", r1p);
-    Path t1p  = new Path ("T1", r2p);
-    Path t2p  = new Path ("T2", r2p);
+    Path sudp = new Path ("SUD", null);
+    Path p1p  = sudp.append("P1");
+    Path p2p  = sudp.append("P2");
+    Path p3p  = sudp.append("P3");
+    Path q1p  = p3p.append("Q1");
+    Path q2p  = p3p.append("Q2");
+    Path r1p = q2p.append("R1");
+    Path r2p = q2p.append("R2");
+    Path s1p = r1p.append("S1");
+    Path s2p = r1p.append("S2");
+    Path t1p = r2p.append("T1");
+    Path t2p = r2p.append("T2");
+
+
+
+
+
     PathList pathlist =
     new PathList (sudp,
       new PathList (p1p,
@@ -164,7 +176,8 @@ public static Statechart getExample_m() {
                    new PathList (s1p,
 	             new PathList (s2p,
                        new PathList (t1p,
-                         new PathList (t2p,null))))))))))));
+                         new PathList (t2p,null))))))))))));   
+    
 
 
     Basic_State P1 = new Basic_State (new Statename("P1"));
