@@ -1,5 +1,6 @@
 all:	$(patsubst %.java,%.class,$(wildcard *.java))
 
+
 %.class:	%.java
 		javac $<
 
