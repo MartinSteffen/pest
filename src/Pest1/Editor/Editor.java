@@ -142,6 +142,47 @@ public Editor(Statechart root,String name,int top,int left,int width,int height)
  * <li>width  : Hoehe des Windows
  * <li>height : Breite des Windows
  * </ul>
+ *
+ *
+ *<DL COMPACT>
+ * 
+ *<DT><STRONG>
+ * STATUS.
+ *</STRONG>
+ * <li> Zeichnen von States funktioniert
+ * <li> Zeichnen von Connectoren funktioniert
+ * <li> Zeichnen von Transitionen 90 %
+ * <li> Kennzeichnen von Anfangszustaenden 90 %
+ * <li> Labeln von States 75 % (benoetigen nur noch das Fenster von der gui und 5 Zeilen Code)
+ * <li> Labeln von Transitionen ??? (zweiter Teil kommt erst im Laufe des Tages)
+ * <li> Patternmatcher : ??? (siehe oben)
+ * <li> Loeschen von Komponenten ??? (s.o.)
+ * <li> Selektieren von Objektgruppen ??? (s.o.)
+ * <li> Selektieren von Objekten 75 % (Das Selektieren von Transitionen funktioniert noch nicht)
+ * <li> highlighten 99 % (nur die Tests stehen noch aus)
+ * <li> Zoomen 100 %
+ * <li> Undo 100 % (50 %) (UNDO steht (100 %), funktioniert mit dem derzeitigen Status der Absyn noch nicht korrekt (50 %).
+ *
+ *<DT><STRONG>
+ * TODO.
+ * </STRONG>
+ * <li> Zusammenfassen der beiden Programmteile (bis 08.01)
+ * <li> Speichern von Substatecharts (Termin : Abhaengig von der GUI
+ * <DT><STRONG>
+ *
+ *<DT><STRONG>
+ * BEKANNTE FEHLER.
+ * </STRONG> 
+ * Fehler treten zur Zeit auf, wenn wir keine gui-Referenz bekommen, dann laeuft das Programm, gibt aber Fehlermeldungen aus. 
+ * Das Beispiel der STM laesst sich nicht fehlerfrei laden.
+ * Wird ein Startzustand in ein anderes Objekt umgewandelt, so bleibt es trotzdem Startzustand. 
+ *
+ * <DT><STRONG>
+ * TEMPORÄREN FEATURES.
+ * </STRONG>
+ *  Zeichnen von Transitionen nur vom Anfangs- zum Endpunkt
+ *  Statenames noch nicht variabel 
+ * </DL COMPACT>
  */
 
   public Editor(Statechart root,String name,int top,int left,int width,int height,GUIInterface ngui) {
