@@ -1,6 +1,8 @@
 package Absyn;
 
-public class Statename extends TrAnchor implements Cloneable {
+import java.io.Serializable;
+
+public class Statename extends TrAnchor implements Serializable, Cloneable {
     public String name;
     public Statename (String s) {
 	name = s;
@@ -15,9 +17,12 @@ public class Statename extends TrAnchor implements Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Statename.java,v 1.4 1998-12-11 17:43:01 swtech00 Exp $
+//	$Id: Statename.java,v 1.5 1998-12-15 07:11:11 swtech01 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.4  1998/12/11 17:43:01  swtech00
+//	Cloneable
+//
 //	Revision 1.3  1998/11/27 08:55:15  swtech24
 //	Zu State :  Erweiterung um : public Statename name
 //		    Zweck          : Schnellerer Zugriff auf Statenamen.

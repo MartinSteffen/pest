@@ -1,8 +1,10 @@
 package Absyn;
 
+import java.io.Serializable;
+
 import java.awt.Rectangle;
 
-abstract public class State extends Absyn implements Cloneable {
+abstract public class State extends Absyn implements Serializable, Cloneable {
     public Statename name;
     public Rectangle rect;
 
@@ -15,9 +17,12 @@ abstract public class State extends Absyn implements Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: State.java,v 1.10 1998-12-11 17:43:01 swtech00 Exp $
+//	$Id: State.java,v 1.11 1998-12-15 07:11:10 swtech01 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.10  1998/12/11 17:43:01  swtech00
+//	Cloneable
+//
 //	Revision 1.9  1998/12/02 12:37:16  swtech19
 //	Einfuegen der Positionen.
 //

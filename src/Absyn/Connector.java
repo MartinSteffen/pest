@@ -1,13 +1,15 @@
 package Absyn;
 
+import java.io.Serializable;
+
 import java.awt.Point;
 
 /**
  * Connector.
  * @author Initially provided by Martin Steffen.
- * @version $Id: Connector.java,v 1.6 1998-12-11 17:42:57 swtech00 Exp $
+ * @version $Id: Connector.java,v 1.7 1998-12-15 07:11:08 swtech01 Exp $
  */
-public class Connector  extends Absyn implements Cloneable {
+public class Connector  extends Absyn implements Serializable, Cloneable {
 /**
  * Connector name is used for initial bookkeeping only.
  */
@@ -41,9 +43,12 @@ public class Connector  extends Absyn implements Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Connector.java,v 1.6 1998-12-11 17:42:57 swtech00 Exp $
+//	$Id: Connector.java,v 1.7 1998-12-15 07:11:08 swtech01 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.6  1998/12/11 17:42:57  swtech00
+//	Cloneable
+//
 //	Revision 1.5  1998/12/02 12:35:40  swtech19
 //	Einfuegen der Positionen.
 //

@@ -1,11 +1,13 @@
 package Absyn;
 
+import java.io.Serializable;
+
 /**
  * Connector list.
  * @author Initially provided by Martin Steffen.
- * @version $Id: ConnectorList.java,v 1.5 1998-12-11 17:42:57 swtech00 Exp $
+ * @version $Id: ConnectorList.java,v 1.6 1998-12-15 07:11:08 swtech01 Exp $
  */
-public class ConnectorList extends Absyn implements Cloneable {
+public class ConnectorList extends Absyn implements Serializable, Cloneable {
 /**
  * Head of the list.
  */
@@ -34,9 +36,12 @@ public class ConnectorList extends Absyn implements Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: ConnectorList.java,v 1.5 1998-12-11 17:42:57 swtech00 Exp $
+//	$Id: ConnectorList.java,v 1.6 1998-12-15 07:11:08 swtech01 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.5  1998/12/11 17:42:57  swtech00
+//	Cloneable
+//
 //	Revision 1.4  1998/11/27 16:08:51  swtech00
 //	Ich habe damit angefangen, die Abstrakte Syntax so zu kommentieren, dass
 //	javadoc das auch verstehen kann. Das bereitet die Benutzung von javadoc vor.

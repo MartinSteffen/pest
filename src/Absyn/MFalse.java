@@ -1,11 +1,13 @@
 package Absyn;
 
+import java.io.Serializable;
+
 /**
  * One kind of boolean statement: assigns false to the variable
  * @author Initially provided by Martin Steffen.
- * @version $Id: MFalse.java,v 1.3 1998-12-11 17:42:59 swtech00 Exp $
+ * @version $Id: MFalse.java,v 1.4 1998-12-15 07:11:09 swtech01 Exp $
  */
-public class MFalse extends Boolstmt implements Cloneable {
+public class MFalse extends Boolstmt implements Serializable, Cloneable {
 /**
  * Variable to change.
  */
@@ -27,9 +29,12 @@ public class MFalse extends Boolstmt implements Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: MFalse.java,v 1.3 1998-12-11 17:42:59 swtech00 Exp $
+//	$Id: MFalse.java,v 1.4 1998-12-15 07:11:09 swtech01 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.3  1998/12/11 17:42:59  swtech00
+//	Cloneable
+//
 //	Revision 1.2  1998/12/03 17:10:48  swtech00
 //	Felder public gemacht
 //

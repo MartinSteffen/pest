@@ -1,12 +1,14 @@
 package Absyn;
 
+import java.io.Serializable;
+
 
 /**
  * One kind of guard: composition of guards.
  * @author Initially provided by Martin Steffen.
- * @version $Id: GuardCompg.java,v 1.2 1998-12-11 17:42:58 swtech00 Exp $
+ * @version $Id: GuardCompg.java,v 1.3 1998-12-15 07:11:08 swtech01 Exp $
  */
-public class GuardCompg extends Guard implements Cloneable {
+public class GuardCompg extends Guard implements Serializable, Cloneable {
 /**
  * Contents of compound guard.
  */
@@ -29,9 +31,12 @@ public class GuardCompg extends Guard implements Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: GuardCompg.java,v 1.2 1998-12-11 17:42:58 swtech00 Exp $
+//	$Id: GuardCompg.java,v 1.3 1998-12-15 07:11:08 swtech01 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.2  1998/12/11 17:42:58  swtech00
+//	Cloneable
+//
 //	Revision 1.1  1998/12/01 17:52:54  swtech00
 //	Anderungen in der Abstrakten Syntax:
 //

@@ -1,7 +1,9 @@
 package Absyn;
 
+import java.io.Serializable;
 
-public class Statechart extends Absyn implements Cloneable  {
+
+public class Statechart extends Absyn implements Serializable, Cloneable  {
     public SEventList  events;
     public BvarList    bvars;
     public PathList    cnames;
@@ -35,9 +37,12 @@ public class Statechart extends Absyn implements Cloneable  {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Statechart.java,v 1.9 1998-12-11 17:43:01 swtech00 Exp $
+//	$Id: Statechart.java,v 1.10 1998-12-15 07:11:11 swtech01 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.9  1998/12/11 17:43:01  swtech00
+//	Cloneable
+//
 //	Revision 1.8  1998/12/01 17:46:24  swtech00
 //	Unverandert
 //

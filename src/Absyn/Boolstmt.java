@@ -1,13 +1,14 @@
-
 package Absyn;
+
+import java.io.Serializable;
 
 
 /**
  * Abstract class Boolstmt introduces a union type for boolean statements.
  * @author Initially provided by Martin Steffen.
- * @version $Id: Boolstmt.java,v 1.5 1998-12-11 17:42:56 swtech00 Exp $
+ * @version $Id: Boolstmt.java,v 1.6 1998-12-15 07:11:07 swtech01 Exp $
  */
-public abstract class Boolstmt extends Absyn implements Cloneable {
+public abstract class Boolstmt extends Absyn implements Serializable, Cloneable {
     public abstract Object clone() throws  CloneNotSupportedException;
 };
 
@@ -16,9 +17,12 @@ public abstract class Boolstmt extends Absyn implements Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Boolstmt.java,v 1.5 1998-12-11 17:42:56 swtech00 Exp $
+//	$Id: Boolstmt.java,v 1.6 1998-12-15 07:11:07 swtech01 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.5  1998/12/11 17:42:56  swtech00
+//	Cloneable
+//
 //	Revision 1.4  1998/11/27 16:04:42  swtech00
 //	Ich habe damit angefangen, die Abstrakte Syntax so zu kommentieren, dass
 //	javadoc das auch verstehen kann. Das bereitet die Benutzung von javadoc vor.

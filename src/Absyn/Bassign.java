@@ -1,11 +1,13 @@
 package Absyn;
 
+import java.io.Serializable;
+
 /**
  * Boolean assignment.
  * @author Initially provided by Martin Steffen.
- * @version  $Id: Bassign.java,v 1.6 1998-12-11 17:42:55 swtech00 Exp $
+ * @version  $Id: Bassign.java,v 1.7 1998-12-15 07:11:07 swtech01 Exp $
  */
-public class Bassign extends Absyn implements Cloneable {
+public class Bassign extends Absyn implements Serializable, Cloneable {
 /**
  * Left-hand-side of a boolean assignment.
  */
@@ -35,9 +37,12 @@ public class Bassign extends Absyn implements Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Bassign.java,v 1.6 1998-12-11 17:42:55 swtech00 Exp $
+//	$Id: Bassign.java,v 1.7 1998-12-15 07:11:07 swtech01 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.6  1998/12/11 17:42:55  swtech00
+//	Cloneable
+//
 //	Revision 1.5  1998/12/01 10:35:41  swtech00
 //	Die Selektoren geaendert ("s_") entfernt
 //

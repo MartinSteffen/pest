@@ -1,12 +1,14 @@
 package Absyn;
 
+import java.io.Serializable;
+
 
 /**
  * One kind of boolean statement: assigns true to the variable.
  * @author Initially provided by Martin Steffen.
- * @version $Id: MTrue.java,v 1.3 1998-12-11 17:42:59 swtech00 Exp $
+ * @version $Id: MTrue.java,v 1.4 1998-12-15 07:11:09 swtech01 Exp $
  */
-public class MTrue extends Boolstmt implements Cloneable {
+public class MTrue extends Boolstmt implements Serializable, Cloneable {
 /**
  * Variable to change.
  */
@@ -26,9 +28,12 @@ public class MTrue extends Boolstmt implements Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: MTrue.java,v 1.3 1998-12-11 17:42:59 swtech00 Exp $
+//	$Id: MTrue.java,v 1.4 1998-12-15 07:11:09 swtech01 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.3  1998/12/11 17:42:59  swtech00
+//	Cloneable
+//
 //	Revision 1.2  1998/12/03 17:10:49  swtech00
 //	Felder public gemacht
 //

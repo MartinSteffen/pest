@@ -1,6 +1,8 @@
 package Absyn;
 
-public class TrList { // List of transitions
+import java.io.Serializable;
+
+public class TrList implements Serializable { // List of transitions
     public Tr     head;
     public TrList tail;
     public TrList (Tr h, TrList tl) {
@@ -20,9 +22,12 @@ public class TrList { // List of transitions
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: TrList.java,v 1.5 1998-12-11 17:43:02 swtech00 Exp $
+//	$Id: TrList.java,v 1.6 1998-12-15 07:11:11 swtech01 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.5  1998/12/11 17:43:02  swtech00
+//	Cloneable
+//
 //	Revision 1.4  1998/12/01 09:37:17  swtech00
 //	Small error corrected
 //

@@ -1,13 +1,14 @@
 package Absyn;
 
+import java.io.Serializable;
 
 
 /**
  * Dummy.
  * @author Initially provided by Martin Steffen.
- * @version $Id: Dummy.java,v 1.6 1998-12-13 17:45:32 swtech20 Exp $
+ * @version $Id: Dummy.java,v 1.7 1998-12-15 07:11:08 swtech01 Exp $
  */
-public class Dummy extends Absyn {
+public class Dummy extends Absyn implements Serializable {
 /**
  * Constructor.
  */
@@ -29,9 +30,12 @@ public class Dummy extends Absyn {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Dummy.java,v 1.6 1998-12-13 17:45:32 swtech20 Exp $
+//	$Id: Dummy.java,v 1.7 1998-12-15 07:11:08 swtech01 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.6  1998/12/13 17:45:32  swtech20
+//	extends Absyn
+//
 //	Revision 1.5  1998/12/11 17:42:57  swtech00
 //	Cloneable
 //

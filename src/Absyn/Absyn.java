@@ -1,14 +1,16 @@
 package Absyn;
 
+import java.io.Serializable;
+
 /**
  * Abstract class to provide coordinates and locations.
  * <br> Graphical objects may have coordinates.
  * <br> TESC input language may have locations.
  * <p>
  * @author Initially provided by Martin Steffen.
- * @version  $Id: Absyn.java,v 1.9 1998-12-11 17:38:39 swtech00 Exp $
+ * @version  $Id: Absyn.java,v 1.10 1998-12-15 07:11:05 swtech01 Exp $
  */
-abstract public class Absyn implements Cloneable {
+abstract public class Absyn implements Cloneable, Serializable {
     Location location;
 
     public abstract Object clone() throws  CloneNotSupportedException;
@@ -20,9 +22,12 @@ abstract public class Absyn implements Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Absyn.java,v 1.9 1998-12-11 17:38:39 swtech00 Exp $
+//	$Id: Absyn.java,v 1.10 1998-12-15 07:11:05 swtech01 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.9  1998/12/11 17:38:39  swtech00
+//	Clonable
+//
 //	Revision 1.8  1998/12/02 12:29:02  swtech19
 //	Entfernen der allgemeinen Koordinaten, da nur vier Klassen der abstrakten
 //	Syntax Koordinaten benoetigen.

@@ -1,6 +1,8 @@
 package Absyn;
 
-public class SEventList implements Cloneable {
+import java.io.Serializable;
+
+public class SEventList implements Serializable, Cloneable {
     public SEvent  head;
     public SEventList  tail;
     public SEventList(SEvent h, SEventList tl) {
@@ -20,9 +22,12 @@ public class SEventList implements Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: SEventList.java,v 1.4 1998-12-11 17:43:01 swtech00 Exp $
+//	$Id: SEventList.java,v 1.5 1998-12-15 07:11:10 swtech01 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.4  1998/12/11 17:43:01  swtech00
+//	Cloneable
+//
 //	Revision 1.3  1998/12/01 17:44:03  swtech00
 //	Fehler ausgebessert: head und tail m"ussen public sein
 //

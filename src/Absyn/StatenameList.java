@@ -1,6 +1,8 @@
 package Absyn;
 
-public class StatenameList extends Absyn implements Cloneable {
+import java.io.Serializable;
+
+public class StatenameList extends Absyn implements Serializable, Cloneable {
     public Statename head;
     public StatenameList  tail;
 

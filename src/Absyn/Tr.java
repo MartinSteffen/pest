@@ -1,8 +1,10 @@
 package Absyn;
 
+import java.io.Serializable;
+
 import java.awt.Point;
 
-public class Tr  implements Cloneable {   // Transition
+public class Tr  implements Serializable, Cloneable {   // Transition
     public Point[]  points;
     public TrAnchor source;
     public TrAnchor target;
@@ -40,9 +42,12 @@ public class Tr  implements Cloneable {   // Transition
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Tr.java,v 1.6 1998-12-11 17:43:02 swtech00 Exp $
+//	$Id: Tr.java,v 1.7 1998-12-15 07:11:11 swtech01 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.6  1998/12/11 17:43:02  swtech00
+//	Cloneable
+//
 //	Revision 1.5  1998/12/07 15:08:02  swtech00
 //	- TLabel anstelle Label
 //

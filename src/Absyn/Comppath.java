@@ -1,11 +1,13 @@
 package Absyn;
 
+import java.io.Serializable;
+
 /**
  * Operation on path of statenames.
  * @author Initially provided by Martin Steffen.
- * @version $Id: Comppath.java,v 1.7 1998-12-11 17:42:56 swtech00 Exp $
+ * @version $Id: Comppath.java,v 1.8 1998-12-15 07:11:07 swtech01 Exp $
  */
-public class Comppath extends Absyn implements Cloneable {
+public class Comppath extends Absyn implements Serializable, Cloneable {
 /**
  * Path operation.
  */
@@ -38,9 +40,12 @@ public class Comppath extends Absyn implements Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Comppath.java,v 1.7 1998-12-11 17:42:56 swtech00 Exp $
+//	$Id: Comppath.java,v 1.8 1998-12-15 07:11:07 swtech01 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.7  1998/12/11 17:42:56  swtech00
+//	Cloneable
+//
 //	Revision 1.6  1998/12/01 17:43:07  swtech00
 //	Die operatoren als Konstante Felder mit aufgenommen
 //

@@ -1,8 +1,10 @@
 package Absyn;
 
+import java.io.Serializable;
+
 import java.awt.Rectangle;
 
-public class Or_State extends State implements Cloneable {
+public class Or_State extends State implements Serializable, Cloneable {
     public StateList     substates;
     public TrList        trs;
     public StatenameList defaults;
@@ -57,9 +59,12 @@ public class Or_State extends State implements Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Or_State.java,v 1.6 1998-12-11 17:43:00 swtech00 Exp $
+//	$Id: Or_State.java,v 1.7 1998-12-15 07:11:10 swtech01 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.6  1998/12/11 17:43:00  swtech00
+//	Cloneable
+//
 //	Revision 1.5  1998/12/02 12:41:37  swtech19
 //	Einfuegen der Positionen.
 //
