@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: testBVars.java,v 1.4 1998-12-03 21:58:09 swtech11 Exp $
+ *  @version  $Id: testBVars.java,v 1.5 1998-12-04 11:11:58 swtech11 Exp $
  */
 class testBVars extends modelCheckBasics{
   private Vector Ist;
@@ -26,14 +26,14 @@ class testBVars extends modelCheckBasics{
     erstelle_Ist();
     erstelle_Soll();
     vergleiche();
-    msg.addWarning(5,"Root");
+    //msg.addWarning(5,"Root");
     return true;
   }
 
   void erstelle_Ist() {
          
      for(BvarList b=sc.bvars; b!=null; b=b.tail){
-       if (Ist.contains(b.head.var)) { msg.addError(100,b.head.var);}
+       if (Ist.contains(b.head.var)) { msg.addError(100,"BVar: "+b.head.var);}
                                 else {Ist.addElement(b.head.var);};
         }
    };
@@ -47,38 +47,38 @@ class testBVars extends modelCheckBasics{
 
   void nextTransInTransList(TrList tl) {
     pruefeGuard(tl.head.label.guard, tl.head);
-    // pruefeAction(tl.head.label.action, tl.head);
+    pruefeAction(tl.head.label.action, tl.head);
     if (tl.tail != null) { nextTransInTransList(tl.tail); }
 
   }
     void pruefeGuard(Guard g, Tr t){
-    if (g instanceof GuardBVar)  {pruefeBvar  (((GuardBVar )g).bvar, t);};
+    if (g instanceof GuardBVar)  {pruefeBVar  (((GuardBVar )g).bvar, t);};
     if (g instanceof GuardCompg) {pruefeGuard (((GuardCompg)g).cguard.elhs, t);
                                   pruefeGuard (((GuardCompg)g).cguard.erhs, t); };
     if (g instanceof GuardNeg)   {pruefeGuard (((GuardNeg)g).guard, t);};
     }
 
-  void pruefeBvar(Bvar b, Tr t){
+  void pruefeBVar(Bvar b, Tr t){
       if (Ist.contains(b.var)) {if (!Soll.contains(b.var)) { Soll.addElement(b.var);};}
-      else {msg.addError(101,b.var+":"+((Statename)t.source).name+" -> "+((Statename)t.target).name);};
+      else {msg.addError(101,"BVar: "+b.var+"/ Statename: "+((Statename)t.source).name+" -> "+((Statename)t.target).name);};
   };
 
-    /*     void pruefeAction(Action a, Tr t){
+    void pruefeAction(Action a, Tr t){
     if (a instanceof ActionBlock)  { for(Aseq as=((ActionBlock)a).aseq;as.tail!=null;as=as.tail) 
-	{ //pruefeAction(as.head, t);};}
+	{ pruefeAction(as.head, t);};}
     if (a instanceof ActionStmt) {pruefeBool (((ActionStmt)a).stmt, t);};
-    }*/
+    };
 
   void pruefeBool(Boolstmt b, Tr t) {
-      // if (b instanceof BAss)  {pruefeBVar(((BAss)b).bass.blhs, t); pruefeGuard(((BAss)b).bass.brhs, t);};
-    //  if (b instanceof MTrue)  {pruefeBvar(((MTrue)b).bvar, t);};
-    // if (b instanceof MFalse) {pruefeBvar(((MFalse)b).bvar, t);};
+     if (b instanceof BAss)  {pruefeBVar(((BAss)b).ass.blhs, t); pruefeGuard(((BAss)b).ass.brhs, t);};
+     if (b instanceof MTrue)  {pruefeBVar(((MTrue)b).var, t);};
+     if (b instanceof MFalse) {pruefeBVar(((MFalse)b).var, t);};
     };
 
     void vergleiche(){
 	for( int i=0; i<Soll.size();i++) {
 	    Ist.removeElement(Soll.elementAt(i));};
-        for(int i=0; i<Ist.size(); i++) { msg.addWarning(102,(String)Ist.elementAt(i));};
+        for(int i=0; i<Ist.size(); i++) { msg.addWarning(102,"BVar: "+(String)Ist.elementAt(i));};
 
     };
 }

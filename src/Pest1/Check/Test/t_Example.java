@@ -3,7 +3,7 @@ import Absyn.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: t_Example.java,v 1.2 1998-12-04 08:13:37 swtech11 Exp $
+ *  @version  $Id: t_Example.java,v 1.3 1998-12-04 11:12:13 swtech11 Exp $
  */
 public class t_Example{
 
@@ -68,7 +68,7 @@ public class t_Example{
 							  new GuardEvent(C),
 							  new GuardCompp (new Comppath (Comppath.IN,
 											new Path ("T245"))))),
-					   new ActionEmpty (new Dummy())));
+					   new ActionEvent(C)));
 
 
   Or_State R1 = new Or_State (new Statename ("R1"),
