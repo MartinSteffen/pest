@@ -296,7 +296,8 @@ System.out.println("move");
 			}
 
 
-if ((matrix.akt instanceof Or_State)  & (colist2 != null | templist2 != null | trlist2 != null))
+if ((matrix.akt instanceof Or_State)  & (colist2 != null | templist2 != null | trlist2 != null) &
+   (colist3 != null | templist3 != null | trlist3 != null) )
     {System.out.println("neue Funktion");}
 
 

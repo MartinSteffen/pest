@@ -35,7 +35,7 @@ Statechart root = nroot;
 Statematrix matrix1,matrix2;
 Basic_State btemp1,btemp2;
 Or_State otemp1,otemp2;
-And_State atemp1,atmep2;
+And_State atemp1,atemp2;
 State tempstate,tempstate2,tempstate3,lauf,lauf2;
 StateList templist=null,templist2=null,templist3=null,templist4=null;
 CRectangle temprect1=null,temprect2=null,temprect3=null;
@@ -124,7 +124,43 @@ drawParallel(g,temprect2.x+matrix1.x,temprect2.y+matrix1.y,temprect2.x+temprect2
     }
 
 
+
+
+if (matrix1.akt instanceof Basic_State & matrix1.prev instanceof And_State)
+    {      atemp1 = (And_State) matrix1.prev;
+           temprect1.x = temprect1.x+matrix1.x;
+	   temprect1.y = temprect1.y+matrix1.y;
+
+	   temprect2.x = temprect2.x+matrix1.x;
+	   temprect2.y = temprect2.y+matrix1.y;
+
+	   btemp1 = new Basic_State(new Statename("...Basic_State"+laufname),temprect1);
+	   laufname ++;
+	   btemp2 = new Basic_State(new Statename("...Basic_State"+laufname),temprect2);
+	   laufname ++;
+
+	   templist3 = null;
+
+	   templist = atemp1.substates;
+
+	   while (templist.head != null) {
+	       if (templist.head != matrix1.akt) {templist4 = templist3; templist3 = new StateList(templist.head,templist4);}
+	       templist = templist.tail;
+
+	   }
+
+	   templist2 = new StateList(btemp1,templist3);
+	   templist3 = new StateList(btemp2,templist2);
+	   atemp1.substates = templist3;
+
+    }
+
 }
+
+
+
+
+
 
 	
     public void drawParallel(Graphics g,int cx1, int cy1, int cx2, int cy2, Color c_color) {
