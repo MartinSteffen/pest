@@ -8,21 +8,17 @@ public class EditorUtils {
 
     private static int stateCount = 0;
 
+    private static int getCoordX(MouseEvent e,Editor editor) {
+        return (e.getX()+editor.scrollX);
+    }
+    private static int getCoordY(MouseEvent e, Editor editor) {
+        return (e.getY()+editor.scrollY);
+    }
+
+
         // **************************************************
         // Hier kommen Methoden fÅr MouseEvents
         // **************************************************
-
-    private static int getCoordX(MouseEvent e,Editor editor)
-    {
-	return (e.getX()+editor.scrollX);
-    }
-
-    private static int getCoordY(MouseEvent e, Editor editor)
-    {
-	return (e.getY()+editor.scrollY);
-    }
-
-
 
 
 // **************************************************************************
@@ -41,9 +37,7 @@ public class EditorUtils {
 
         // altes Rectangle loeschen
 
-        g.setColor(editor.getBackground());
-        g.drawRoundRect(editor.newRect.x-editor.scrollX, editor.newRect.y-editor.scrollY,
-                        editor.newRect.width, editor.newRect.height,10,10);
+        show(editor.newRect, editor.getBackground(), editor, g);
 
         // neues rectangle
 
@@ -63,8 +57,7 @@ public class EditorUtils {
         // ueberpruefe, ob sich der neue Zustand mit einem anderen
         // Zustand ueberschneidet.
 
-        g.setColor(Color.red);
-        g.drawRoundRect(editor.newRect.x-editor.scrollX, editor.newRect.y-editor.scrollY, editor.newRect.width, editor.newRect.height,10,10);
+        show(editor.newRect, Color.red, editor, g);
         editor.actionOk = true;
 
         showStates(editor);
@@ -78,8 +71,7 @@ public class EditorUtils {
                     .equals(editor.newRect)))
               & (editor.newRect.intersects(abs(editor,list.head)))) {
 
-                g.setColor(Color.gray);
-                g.drawRoundRect(editor.newRect.x-editor.scrollX, editor.newRect.y-editor.scrollY, editor.newRect.width, editor.newRect.height,10,10);
+                show(editor.newRect, Color.gray, editor, g);
                 editor.actionOk = false;
             }
             list = list.tail;
@@ -169,8 +161,7 @@ public class EditorUtils {
             }
         }
         else {  // Zustand wieder vom Fenster loeschen
-            g.setColor(editor.getBackground());
-            g.drawRoundRect(editor.newRect.x, editor.newRect.y, editor.newRect.width, editor.newRect.height,10,10);
+                show(editor.newRect, editor.getBackground(), editor, g);
         }
 
         editor.startPoint = null;
@@ -178,6 +169,7 @@ public class EditorUtils {
         // alle jetzt bestehenden States zeichnen
 
         editor.stateList = getSubStateList(editor.statechart.state);
+        setPathList(editor.statechart, editor);
         showStates(editor);
     }
 
@@ -350,6 +342,19 @@ public class EditorUtils {
             Or_State bState = new Or_State(new Statename("...defaultName"+stateCount),
                               null, null, null, null);
 
+            // *** Hilfspunkte
+
+            Point point    = null;
+            Point absPoint = null;
+            if (father instanceof And_State) {
+                point = new Point(inState.rect.x, inState.rect.y);
+                absPoint = abs(editor, point, father);
+            }
+            else {
+                point = new Point(0,0);
+                absPoint = abs(editor, point, inState);
+            }
+
             // *** Bestimme Start und Endpunkt der Linie
 
             if (getSideOfVar == 0) {
@@ -365,17 +370,15 @@ public class EditorUtils {
                                               absInStateVar.y
                                               + inState.rect.height);
 
-                aState.rect = new CRectangle(0, 0,
-                                             editor.endPoint.x
-                                             - absInStateVar.x,
+                aState.rect = new CRectangle(point.x, point.y,
+                                             editor.startPoint.x - absPoint.x,
                                              inState.rect.height);
 
-                bState.rect = new CRectangle(editor.startPoint.x
-                                             - absInStateVar.x, 0,
-                                             absInStateVar.x
-                                             + inState.rect.width
-                                             - editor.startPoint.x,
-                                            inState.rect.height);
+                bState.rect = new CRectangle(point.x + aState.rect.width,
+                                             point.y,
+                                             inState.rect.width
+                                             -aState.rect.width,
+                                             inState.rect.height);
             }
             else {
 
@@ -387,16 +390,14 @@ public class EditorUtils {
                                               + inState.rect.width,
                                               getCoordY(e,editor));
 
-                aState.rect = new CRectangle(0, 0,
+                aState.rect = new CRectangle(point.x, point.y,
                                              inState.rect.width,
-                                             editor.endPoint.y
-                                             - absInStateVar.y);
-                bState.rect = new CRectangle(0,
-                                             editor.startPoint.y-absInStateVar.y,
+                                             editor.startPoint.y
+                                             - absPoint.y);
+                bState.rect = new CRectangle(point.x, point.y+aState.rect.height,
                                              inState.rect.width,
-                                             absInStateVar.y
-                                             +inState.rect.height
-                                             -editor.endPoint.y);
+                                             inState.rect.height
+                                             -aState.rect.height);
             }
 
             // *** Weiter nur, wenn inState ein Or_State
@@ -490,6 +491,7 @@ public class EditorUtils {
                 }
 
             editor.stateList = getSubStateList(editor.statechart.state);
+            setPathList(editor.statechart, editor);
         }
         else { // action nicht ok
             // loesche eine evtl. schon gezeigte Linie
@@ -503,26 +505,32 @@ public class EditorUtils {
   // **************************************************************************
 
     public static void showStates(Editor editor) {
-
-        StateList list = null;
-        Graphics g = null;
         try {
-            list = editor.stateList;
-            g = editor.getGraphics();
+            StateList list = editor.stateList;
+            Graphics g = editor.getGraphics();
 
             g.setColor(Color.red);
             StateList help = list;
             while (help != null) {
-                Rectangle r = abs(editor,help.head);
-                g.drawRoundRect(abs(editor,help.head).x-editor.scrollX,
-                                abs(editor,help.head).y-editor.scrollY,
-                                help.head.rect.width,
-                                help.head.rect.height,10,10);
+                show(abs(editor, help.head), Color.red, editor, g);
                 help = help.tail;
             }
         }
         catch (Exception e) {}
     }
+
+// **************************************************************************
+
+    public static void show(Rectangle absRect, Color color, Editor editor,
+                            Graphics g) {
+        g.setColor(color);
+        g.drawRoundRect((int)((double)(absRect.x*Methoden_1.getFactor()))
+                            -editor.scrollX,
+                        (int)((double)(absRect.y*Methoden_1.getFactor()))
+                            -editor.scrollY,
+                        (int)((double)(absRect.width)*Methoden_1.getFactor()),
+                        (int)((double)(absRect.height)*Methoden_1.getFactor()),10,10);
+    }        
 
 // **************************************************************************
 
@@ -687,19 +695,18 @@ public class EditorUtils {
         alt.substates = altSubstates;
         alt.defaults  = altDefaults;
 
-
+/*
         TrList trList   = alt.trs;
         TrList altTrs = null;
         while (trList != null) {
 
-            System.out.println(trList.head.points[0].x);
-	    if (abs(editor,neu).contains(abs(editor,trList.head.points[0],alt)))
+            if (abs(editor,neu).contains(abs(editor,trList.head.points[0],alt)))
                 neu.trs = new TrList(trList.head, neu.trs);
             else altTrs = new TrList(trList.head, altTrs);
             trList = trList.tail;
         }
         alt.trs = altTrs;
-
+*/
 
         ConnectorList connectorList          = alt.connectors;
         ConnectorList altConnectors = null;
@@ -827,6 +834,181 @@ public class EditorUtils {
                               rect.y - fatherAbsRect.y,
                               rect.width, rect.height);
     }
+
+// **************************************************************************
+
+    public static void setPathList(Statechart statechart, Editor editor) {
+
+        statechart.cnames = null;        
+        StateList list    = editor.stateList;
+        Path path         = null;
+        Path help         = null;
+        State state       = null;
+        PathList pathList = null;
+        PathList pathListHelp = null;
+
+        while (list != null) {
+            path = new Path(list.head.name.name, null);
+            state = list.head;
+            while (!state.equals(statechart.state)) {
+                state = getFatherOf(state,editor);
+                path = new Path(state.name.name, path);
+            }
+            pathList = new PathList(path, pathList);
+            list = list.tail;
+        }
+        statechart.cnames = pathList;
+    }
+
+// **************************************************************************
+
+    private static void highlight(State state, Editor editor) {
+        show(abs(editor,state), Color.gray, editor, editor.getGraphics());
+    }
+
+// **************************************************************************
+
+    public static void deleteStateMouseMoved(MouseEvent e, Editor editor) {
+
+        showStates(editor);
+
+        // falls fatherOf(inState) = And_State, highlighte den father
+
+        State inState = getInnermostStateOf(getCoordX(e,editor),
+                                            getCoordY(e,editor), editor);
+
+        StateList list = null;
+
+        if (!inState.equals(editor.statechart.state)) {
+            if (getFatherOf(inState,editor) instanceof And_State) 
+                 list = getSubStateList(getFatherOf(inState, editor));
+            else list = getSubStateList(inState);
+            while (list != null) {
+                highlight(list.head, editor);
+                list = list.tail;
+            }
+        }
+    }
+
+// **************************************************************************
+
+    public static void deleteStateMouseReleased(MouseEvent e, Editor editor) {
+
+        State inState = getInnermostStateOf(getCoordX(e,editor),
+                                            getCoordY(e,editor), editor);
+
+        if (!inState.equals(editor.statechart.state)) {
+
+            State father = getFatherOf(inState,editor);
+
+            if (father instanceof Or_State)
+
+                // *** 1. Fall: Vater wird leer und somit BasicState
+
+                if  (((Or_State) father).substates.tail == null
+                   & ((Or_State) father).trs == null
+                   & ((Or_State) father).connectors == null
+                   & !father.equals(editor.statechart.state)) {
+
+                    Basic_State newFather = new Basic_State(father.name,
+                                                            father.rect);
+                    State grandFather = getFatherOf(father,editor);
+
+                    if (grandFather instanceof And_State) {
+                        deleteStateIn((And_State) grandFather, father, editor);
+                        ((And_State) grandFather).substates
+                                      = new StateList(newFather,
+                                        ((And_State) grandFather).substates);
+                    }
+                    if (grandFather instanceof Or_State) {
+
+                        deleteStateIn(grandFather, father, editor);
+                        ((Or_State) grandFather).substates
+                                      = new StateList(newFather,
+                                        ((Or_State) grandFather).substates);
+                        ((Or_State) grandFather).defaults
+                                      = new StatenameList(newFather.name,
+                                        ((Or_State) grandFather).defaults);
+                    }
+                }
+                else {
+                    // *** 2. Fall: Vater wird nicht leer oder ist root
+
+                    deleteStateIn(father, inState, editor);
+                }
+
+            if (father instanceof And_State) {
+                Or_State grandFather = (Or_State) getFatherOf(father,editor);
+                deleteStateIn(grandFather, father, editor);
+                if (!grandFather.equals(editor.statechart.state) &
+                     grandFather.substates == null &
+                     grandFather.trs == null &
+                     grandFather.connectors == null) {
+
+                     Or_State grandGrandFather = (Or_State) getFatherOf(grandFather,editor);
+                     deleteStateIn(grandGrandFather,grandFather, editor);
+                     grandGrandFather.substates
+                        = new StateList(new Basic_State(grandFather.name, grandFather.rect), grandGrandFather.substates);
+                }
+            }
+        }
+        editor.stateList = getSubStateList(editor.statechart.state);
+        setPathList(editor.statechart, editor);
+        showStates(editor);        
+    }
+
+// **************************************************************************
+
+    private static void deleteStateIn(State in, State delState, Editor editor) {
+
+        // *** entferne zu lîschenden State von der ZeichenflÑche
+
+        StateList list = getSubStateList(delState);
+        while (list != null) {
+            show(abs(editor, list.head), editor.getBackground(), editor, editor.getGraphics());
+            list = list.tail;
+        }
+
+        // *** lîsche ihn aus dem Baum
+
+        StateList help = null;
+        StatenameList help2 = null;
+
+        if (in instanceof Or_State) {
+            if (((Or_State) in).substates.head.equals(delState)) 
+                ((Or_State) in).substates = ((Or_State) in).substates.tail;
+            else {
+                help = ((Or_State) in).substates;
+                while (help.tail != null) {
+                    if (help.tail.head.equals(delState)) 
+                         help.tail = help.tail.tail;
+                    else help = help.tail;
+                }
+            }
+            if (((Or_State) in).defaults.head.equals(delState.name))
+                ((Or_State) in).defaults = ((Or_State) in).defaults.tail;
+            else {
+                help2 = ((Or_State) in).defaults;
+                while (help2.tail != null) {
+                    if (help2.tail.head.equals(delState.name)) 
+                         help2.tail = help2.tail.tail;
+                    else help2 = help2.tail;
+                }
+            }
+        }
+        if (in instanceof And_State) 
+            if (((And_State) in).substates.head.equals(delState))
+                ((And_State) in).substates = ((And_State) in).substates.tail;
+            else {
+                help = ((And_State) in).substates;
+                while (help.tail != null) {
+                    if (help.tail.head.equals(delState))
+                         help.tail = help.tail.tail;
+                    else help = help.tail;
+                }
+            }
+        editor.stateList = getSubStateList(editor.statechart.state);
+    }    
 
 // **************************************************************************
 }

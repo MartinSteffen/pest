@@ -305,7 +305,7 @@ public class Methoden_0
         catch (Exception e) {}
     }
 
-    private static void drawTransition(TrList trlist,int absX, int absY,Editor editor)
+    public static void drawTransition(TrList trlist,int absX, int absY,Editor editor)
     {
         Graphics g = editor.getGraphics();
         TrList dlist = trlist;
@@ -317,6 +317,9 @@ public class Methoden_0
             {
                 for (i=0;i<=dlist.head.points.length-1;i++)
                 {
+                    if (i==0) g.fillOval((int)((double)(dlist.head.points[0].x+absX-2)*Methoden_1.getFactor())-editor.scrollX,
+                               (int)((double)(dlist.head.points[0].y+absY)*Methoden_1.getFactor())-editor.scrollY,4,4);
+
                     g.drawLine((int)((double)(dlist.head.points[i].x+absX)*Methoden_1.getFactor())-editor.scrollX,
                                (int)((double)(dlist.head.points[i].y+absY)*Methoden_1.getFactor())-editor.scrollY,
                                (int)((double)(dlist.head.points[i+1].x+absX)*Methoden_1.getFactor())-editor.scrollX,

@@ -18,8 +18,9 @@ public class Methoden_1
     public static Tr selectOneTr = null;
     public static Connector selectOneConnector = null;
     public static State copyOneState = null;
-    public static Tr copyOneTrans = null;
+    public static Tr copyOneTr = null;
     public static Connector copyOneConnector = null;
+    public static Absyn markLast = null; //das zuletzt markierte Objekt
 
 
 /*
@@ -104,7 +105,7 @@ public class Methoden_1
                     return;
                 }
                 TESCLoader tesc = new TESCLoader(editor.gui);
-		TLabel tlabel = null;
+        		TLabel tlabel = null;
                 BufferedReader br = new BufferedReader(new StringReader(name));
                 try
                 {
@@ -121,7 +122,7 @@ public class Methoden_1
                                      new CPoint(x+points[1].x,y+points[1].y),trans.label.location,
                                      trans.label.caption);
             setNullArray(points);
-            Methoden_0.updateAll(editor);
+            editor.repaint();
         }
     }
 
@@ -269,7 +270,7 @@ public class Methoden_1
     }
     public static void insertOneState(State s, int x, int y, Editor editor)
     {
-//        Rectangle r = Methoden_0.abs(editor.s);
+//        Rectangle r = Methoden_0.abs(editor,s);
     }
 
 
@@ -284,6 +285,11 @@ public class Methoden_1
             if (os.trs==null) return;
             Rectangle r = Methoden_0.abs(editor,os);
             selectOneTr = getNearestTransOf(os.trs,new Point(r.x,r.y),x,y,editor);
+            if (selectOneTr != null)
+            {
+                markSelectedTr(selectOneTr,new Point(r.x,r.y),editor);
+                markLast = selectOneTr;
+            }
         }
         if (s instanceof And_State)
         {
@@ -293,37 +299,56 @@ public class Methoden_1
 
     public static void copyOneTr(Editor editor)
     {
+        if (selectOneTr != null)
+        {
+            copyOneTr = new Tr(selectOneTr.source,selectOneTr.target,selectOneTr.label,selectOneTr.points);
+        }
+/*
         try
         {
             if (selectOneTr != null)
-                copyOneTrans = (Tr)(selectOneTr.clone());
+                copyOneTr = (Tr)(selectOneTr.clone());
+            CPoint p[] = new CPoint[copyOneTr.points.length];
+            for (int i=0;i<copyOneTr.points.length;i++)
+                p[i] = copyOneTr.points[i];
+            copyOneTr.points = p;
         }
         catch(CloneNotSupportedException e)
         {
             editor.gui.OkDialog(editor,"Fehler","Kopieren nicht moeglich!");
-        }
+        }*/
     }
     public static void insertOneTr(int x, int y, Editor editor)
     {
-        selectOneTr = null;
-        if (copyOneTrans == null) return;
+        if (copyOneTr == null) return;
+        if (selectOneTr != null)
+        {
+            copyOneTr = new Tr(selectOneTr.source,selectOneTr.target,selectOneTr.label,selectOneTr.points);
+        }
+
+/*
         try
         {
-            copyOneTrans = (Tr)(copyOneTrans.clone());
+            copyOneTr = (Tr)(copyOneTr.clone());
+            CPoint p[] = new CPoint[copyOneTr.points.length];
+            for (int i=0;i<copyOneTr.points.length;i++)
+                p[i] = copyOneTr.points[i];
+            copyOneTr.points = p;
         }
         catch(CloneNotSupportedException e)
         {
             editor.gui.OkDialog(editor,"Fehler","Kopieren nicht moeglich!");
-        }
-        if (copyOneTrans != null)
+        }*/
+        if (copyOneTr != null)
             addTransition(x,y,editor);
+        Methoden_0.updateAll(editor);
     }
 
     private static void addTransition(int x, int y, Editor editor)
     {
         State s = Methoden_0.getFirstOrStateOf(x,y,editor);
         Rectangle r = Methoden_0.abs(editor,s);
-        Tr tr = getNewPosTrans(copyOneTrans,new Point(r.x,r.y),x,y);
+        Tr tr = getNewPosTrans(copyOneTr,new Point(r.x,r.y),x,y);
         Or_State os = (Or_State)s;
         TrList list = new TrList(tr,os.trs);
         os.trs = list;
@@ -332,28 +357,131 @@ public class Methoden_1
     {
         Tr copy = null;
         if (tr == null) return tr;
-        try
+        CPoint[] q = new CPoint[tr.points.length];
+        if (selectOneTr != null)
+        {
+            System.out.println("hier");
+            copy = new Tr(copyOneTr.source,copyOneTr.target,copyOneTr.label,q);
+        }
+
+/*        try
         {
             copy = (Tr)(tr.clone());
         }
-        catch(CloneNotSupportedException e){}
+        catch(CloneNotSupportedException e){}*/
         int dx,dy;
-        dx = x-(p.x+copy.points[0].x);
-        dy = y-(p.y+copy.points[0].y);
-        copy.points[0].x = Betrag(p.x,x);
-        copy.points[0].y = Betrag(p.y,y);
+        dx = x-(p.x+selectOneTr.points[0].x);
+        dy = y-(p.y+selectOneTr.points[0].y);
+        copy.points[0] = new CPoint(Betrag(p.x,x),Betrag(p.y,y));
         for (int i=1;i<copy.points.length;i++)
         {
-            copy.points[i].x += dx;
-            copy.points[i].y += dy;
+            copy.points[i] = new CPoint(selectOneTr.points[i].x+dx,selectOneTr.points[i].y+dy);
         }
-        System.out.println(dx);
+        //punkt fuer caption
+        if (copy.label.position != null){
+            copy.label.position = new CPoint(selectOneTr.label.position.x+dx,selectOneTr.label.position.y+dy);
+        }
         return copy;
+    }
+
+/*
+    Methode: markSelectedTr
+    Funktion: markiert die ausgewaehlte Transition
+    Parameter: tr:Transition
+               p : absoluter Punkt fuer tr
+*/
+    private static void markSelectedTr(Tr tr, Point p, Editor editor)
+    {
+        Graphics g = editor.getGraphics();
+        g.setColor(Color.red);
+        int i=0;
+        try
+        {
+            for (i=0;i<=tr.points.length-1;i++)
+            {
+                if (i==0) g.fillOval((int)((double)(tr.points[0].x+p.x-2)*Methoden_1.getFactor())-editor.scrollX,
+                           (int)((double)(tr.points[0].y+p.y)*Methoden_1.getFactor())-editor.scrollY,4,4);
+                g.drawLine((int)((double)(tr.points[i].x+p.x)*Methoden_1.getFactor())-editor.scrollX,
+                           (int)((double)(tr.points[i].y+p.y)*Methoden_1.getFactor())-editor.scrollY,
+                           (int)((double)(tr.points[i+1].x+p.x)*Methoden_1.getFactor())-editor.scrollX,
+                           (int)((double)(tr.points[i+1].y+p.y)*Methoden_1.getFactor())-editor.scrollY);
+            }
+         }
+         catch(NullPointerException e)
+         {
+             if (i>=1){
+             Pfeil pfeil = new Pfeil(g,(int)((double)(tr.points[i-1].x+p.x)*Methoden_1.getFactor())-editor.scrollX,
+                                       (int)((double)(tr.points[i-1].y+p.y)*Methoden_1.getFactor())-editor.scrollY,
+                                       (int)((double)(tr.points[i].x+p.x)*Methoden_1.getFactor())-editor.scrollX,
+                                       (int)((double)(tr.points[i].y+p.y)*Methoden_1.getFactor())-editor.scrollY);}
+         }
+         catch(ArrayIndexOutOfBoundsException e)
+         {
+             if (i>=1){
+             Pfeil pfeil = new Pfeil(g,(int)((double)(tr.points[i-1].x+p.x)*Methoden_1.getFactor())-editor.scrollX,
+                                       (int)((double)(tr.points[i-1].y+p.y)*Methoden_1.getFactor())-editor.scrollY,
+                                       (int)((double)(tr.points[i].x+p.x)*Methoden_1.getFactor())-editor.scrollX,
+                                       (int)((double)(tr.points[i].y+p.y)*Methoden_1.getFactor())-editor.scrollY);}
+         }
+         g.dispose();
+    }
+
+    private static void removeOneTr(Editor editor)
+    {
+        StateList list = ((Or_State)(editor.statechart.state)).substates;
+        TrList tlist = null,copy=null;
+        tlist = ((Or_State)(editor.statechart.state)).trs;
+        while (tlist != null)
+        {
+            if (tlist.head.equals(markLast))
+            {
+                    tlist.head = null;
+                    TrList neu = tlist.tail;
+                    while (neu != null)
+                    {
+                        copy = new TrList(neu.head,copy);
+                        neu = neu.tail;
+                    }
+                    ((Or_State)(editor.statechart.state)).trs = copy;
+                    selectOneTr = null;
+                    markLast = null;
+                    editor.repaint();
+                    return;
+            }
+                copy = new TrList(tlist.head,copy);
+                tlist = tlist.tail;
+        }
+        while (list != null)
+        {
+            tlist = ((Or_State)(list.head)).trs;
+            while(tlist != null)
+            {
+                if (tlist.head.equals(markLast))
+                {
+                    tlist.head = null;
+                    TrList neu = tlist.tail;
+                    while (neu != null)
+                    {
+                        copy = new TrList(neu.head,copy);
+                        neu = neu.tail;
+                    }
+                    ((Or_State)(list.head)).trs = copy;
+                    selectOneTr = null;
+                    markLast = null;
+                    editor.repaint();
+                    return;
+                }
+                copy = new TrList(tlist.head,copy);
+                tlist = tlist.tail;
+            }
+        }
+        list = list.tail;
     }
 
     public static void selectOneConnector(int x, int y, Editor editor)
     {
         selectOneConnector =  Methoden_0.getConEnvOf(x,y,editor);
+        markLast = selectOneConnector;
     }
 
     public static void copyOneConnector(Editor editor)
@@ -379,9 +507,10 @@ public class Methoden_1
         catch(CloneNotSupportedException e){}
         if (copyOneConnector != null)
             addConnector(copyOneConnector,x,y,editor);
+        Methoden_0.updateAll(editor);
     }
 
-    public static void addConnector(Connector con, int x, int y, Editor editor)
+    private static void addConnector(Connector con, int x, int y, Editor editor)
     {
         if (Methoden_0.getConEnvOf(x,y,editor) != null) return;
         if (EditorUtils.getInnermostStateOf(x,y,editor) instanceof Basic_State) return;
@@ -392,6 +521,108 @@ public class Methoden_1
         ConnectorList clist = new ConnectorList(con,os.connectors);
         os.connectors = clist;
         Methoden_0.updateAll(editor);
+    }
+/*
+    Methode: removeOne()
+    Funktion: entfernt das markierte Objekt
+*/
+    public static void removeOne(Editor editor)
+    {
+        if (markLast instanceof Connector)
+            removeOneCon(editor);
+        if (markLast instanceof Tr)
+            removeOneTr(editor);
+    }
+/*
+    Methode: removeOneCon()
+    Funktion; entfernt das markierte Objekt:Connector
+*/
+    private static void removeOneCon(Editor editor)
+    {
+        StateList list = ((Or_State)(editor.statechart.state)).substates;
+        ConnectorList clist = null,copy=null;
+        clist = ((Or_State)(editor.statechart.state)).connectors;
+        while(clist != null)
+        {
+            if (clist.head.equals(markLast))
+            {
+                ConnectorList neu = clist.tail;
+                while (neu != null)
+                {
+                    copy = new ConnectorList(neu.head,copy);
+                    neu = neu.tail;
+                }
+                ((Or_State)(editor.statechart.state)).connectors = copy;
+                selectOneConnector = null;
+                markLast = null;
+                editor.repaint();
+                return;
+            }
+            copy = new ConnectorList(clist.head,copy);
+            clist = clist.tail;
+        }
+        while (list != null)
+        {
+            clist = ((Or_State)(list.head)).connectors;
+            while(clist != null)
+            {
+                if (clist.head.equals(markLast))
+                {
+                    clist.head = null;
+                    ConnectorList neu = clist.tail;
+                    while (neu != null)
+                    {
+                        copy = new ConnectorList(neu.head,copy);
+                        neu = neu.tail;
+                    }
+                    ((Or_State)(list.head)).connectors = copy;
+                    selectOneConnector = null;
+                    markLast = null;
+                    editor.repaint();
+                    return;
+                }
+                copy = new ConnectorList(clist.head,copy);
+                clist = clist.tail;
+            }
+        }
+        list = list.tail;
+    }
+
+    public static void moveOne(int x, int y, Editor editor)
+    {
+        if (markLast instanceof Connector){
+            if (markLast == null) return;
+            addConnector((Connector)markLast,x,y,editor);
+            removeOneCon(editor);
+            editor.repaint();
+        }
+        if (markLast instanceof Tr)
+        {
+            if (markLast == null) return;
+            copyOneTr = (Tr)markLast;
+            addTransition(x,y,editor);
+            removeOneTr(editor);
+            editor.repaint();
+        }
+    }
+//brauche nicht????!!!
+    public static void drawMarkMouseDragged(int x, int y, Editor editor)
+    {
+        if (markLast == null) return;
+        Graphics g = editor.getGraphics();
+        if (markLast instanceof Connector){
+            g.fillOval((int)((double)(x)*Methoden_1.getFactor())-editor.scrollX,
+                       (int)((double)(y)*Methoden_1.getFactor())-editor.scrollY,10,10);
+            editor.repaint();
+        }
+        else
+        if (markLast instanceof Tr){
+            Methoden_0.drawTransition(new TrList((Tr)(markLast),null),points[2].x,
+                       points[2].y,editor);//loeschen
+
+            points[2].x = (int)((double)(points[2].x-((Tr)markLast).points[2].x)*Methoden_1.getFactor())-editor.scrollX;
+            points[2].y = (int)((double)(points[2].y-((Tr)markLast).points[2].y)*Methoden_1.getFactor())-editor.scrollY;
+        }
     }
 
 
