@@ -189,7 +189,7 @@ gui = ngui;
 nroot = root;  
 if (root.state == null) 
 {
-System.out.println("default-or");
+    //System.out.println("default-or");
 // root.state = new Or_State(new Statename("root"),null,null,null,null);
 }
     drawfeld = this;

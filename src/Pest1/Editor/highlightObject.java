@@ -38,31 +38,37 @@ public class highlightObject {
     public highlightObject(Basic_State obj, Color col) { temp = drawlist;
 						tempobj = new highLO(obj,col);
 						drawlist = new highLList(tempobj,temp);
-						System.out.println("highlist : "+drawlist.head.type);}
+						//System.out.println("highlist : "+drawlist.head.type);
+}
 
     public highlightObject(And_State obj) { }
     public highlightObject(And_State obj, Color col) { 	temp = drawlist;
 						tempobj = new highLO(obj,col);
 						drawlist = new highLList(tempobj,temp);
-						System.out.println("highlist : "+drawlist.head.type);}
+						//System.out.println("highlist : "+drawlist.head.type);
+}
    
     public highlightObject(Or_State obj) { }
     public highlightObject(Or_State obj, Color col) { 	temp = drawlist;
 						tempobj = new highLO(obj,col);
 						drawlist = new highLList(tempobj,temp);
-						System.out.println("highlist : "+drawlist.head.type);}
+						//System.out.println("highlist : "+drawlist.head.type);
+}
 
     public highlightObject(Tr obj) { }
     public highlightObject(Tr obj, Color col) { 	temp = drawlist;
 					tempobj = new highLO(obj,col);
 					drawlist = new highLList(tempobj,temp);
-					System.out.println("highlist : "+drawlist.head.type);}
+					//System.out.println("highlist : "+drawlist.head.type);
+}
+
 
     public highlightObject(Connector obj) { }
     public highlightObject(Connector obj, Color col) { 	temp = drawlist;
 						tempobj = new highLO(obj,col);
 						drawlist = new highLList(tempobj,temp);
-						System.out.println("highlist : "+drawlist.head.type);}
+						//System.out.println("highlist : "+drawlist.head.type);
+}
     public highlightObject(Absyn obj, Color col) {
 	if (obj instanceof Basic_State) {new highlightObject((Basic_State) obj,col);}
 	if (obj instanceof Or_State) {new highlightObject((Or_State) obj,col);}
@@ -80,7 +86,7 @@ public class highlightObject {
       HighObj rp = new HighObj();
       while (neulist != null)
 	{ 
-               System.out.println("neulist :"+neulist.head.type);
+	    //System.out.println("neulist :"+neulist.head.type);
 	rp.start(root,0,0,true,neulist.head.type,neulist.head.color);
 	neulist = neulist.tail;
 	}
