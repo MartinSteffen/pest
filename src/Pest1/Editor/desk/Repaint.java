@@ -106,7 +106,7 @@ if (tr.source instanceof UNDEFINED) {h.setColor( Editor.tr_color());
 						(int) (((tr.points[0].y+ny)-3)*Editor.ZoomFaktor),
 						(int) (6*Editor.ZoomFaktor),(int) (6*Editor.ZoomFaktor));} else
 	      {localobject = PESTdrawutil.getSmallObject(root,tr.points[0].x+nx,tr.points[0].y+ny);
-//	      System.out.println("aktueller TRAnchor source :"+localobject);
+	    //  System.out.println("aktueller TRAnchor source :"+localobject);
 		   if (localobject instanceof State) {
 		       State hier = (State) localobject;
 		       Statematrix matrix = PESTdrawutil.getState(root,tr.points[0].x+nx,tr.points[0].y+ny);
@@ -115,11 +115,11 @@ if (tr.source instanceof UNDEFINED) {h.setColor( Editor.tr_color());
 	
                   Statename trtest=new Statename("");
 	 if (tr.source instanceof Statename) trtest = (Statename)tr.source; 
-		       if (tr.source instanceof Conname) 
-			   {
-			       Conname cotemp = (Conname)tr.source;
-			       trtest = new Statename(cotemp.name);
-			   } 
+	 //  if (tr.source instanceof Conname) 
+	 //	   {
+	 //	       Conname cotemp = (Conname)tr.source;
+	 //	       trtest = new Conname(cotemp.name);
+	 //	   } 
 
 
 	// Statename trtest = (Statename)tr.source;
@@ -178,6 +178,12 @@ if (matrix2.prev.rect != null)
 				 }
 				  tr.source = new Statename(hier.name.name);}
 		   };
+		   
+		   if (localobject instanceof Connector) {
+		   Connector hhc1 = (Connector) localobject;
+		   String hhs1 = hhc1.name.name;
+		   tr.source = new Conname(hhs1);}
+		   
 	      }
 
 if (tr.target instanceof UNDEFINED) {h.setColor( Editor.tr_color());
@@ -198,11 +204,11 @@ if (tr.target instanceof UNDEFINED) {h.setColor( Editor.tr_color());
 	//Statename trtest = (Statename)tr.source;
 		       Statename trtest2=new Statename("");
 		       if (tr.target instanceof Statename) trtest2 = (Statename)tr.target; 
-		       if (tr.target instanceof Conname) 
-			   {
-			       Conname cotemp = (Conname)tr.target;
-			       trtest2 = new Statename(cotemp.name);
-			   } 
+		       // if (tr.target instanceof Conname) 
+		       //  {
+		       //      Conname cotemp = (Conname)tr.target;
+		       //      trtest2 = new Conname(cotemp.name);
+		       //  } 
 
 
  //System.out.println("AKT2>"+matrix.akt);
@@ -255,6 +261,10 @@ if (matrix2.prev.rect != null)
 				  tr.target = new Statename(hier.name.name);}
 			}
 		   };
+		   if (localobject instanceof Connector) {
+		   		   Connector hhc2 = (Connector) localobject;
+		   		   String hhs2 = hhc2.name.name;
+		   tr.target = new Conname(hhs2);}
 	      }
 
 // erst nur Zweipunktzeichnen
