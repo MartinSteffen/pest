@@ -27,7 +27,7 @@ import absyn.*;
  * </code>
  * <p>
  * @author Michael Sülzer, Christoph Schütte.
- * @version  $Id: TESCTokenizer.java,v 1.4 1998-12-17 11:14:13 swtech20 Exp $
+ * @version  $Id: TESCTokenizer.java,v 1.5 1999-01-03 21:48:20 swtech20 Exp $
  *
  * @see Token
  * @see TESCParser
@@ -266,7 +266,7 @@ public class TESCTokenizer {
 
 	// --- Stream-Ende --------------------------------------------------------------
 	if (input_eof)
-	    return new Token(Token.TOK_EOF,"<EOF>",input_line_number);
+	    return (Token) Token.EOF.clone(input_line_number);
 
 	// --- Kommentare ueberlesen ----------------------------------------------------
 	if (isCommentChar(input_char)) {
@@ -288,17 +288,17 @@ public class TESCTokenizer {
 		    token_value =  new StringBuffer(readIdentifier ());
 		}
 	    }
-	    for (int i=1; i<Token.token_count;i++) {
+	    for (int i=0; i<Token.token_count;i++) {
 		
 		if (Token.token_list[i].getValue().equalsIgnoreCase(token_value.toString()))
-		    return new Token(Token.token_list[i].getId(), token_value.toString(), input_line_number);
+		    return (Token) Token.token_list[i].clone(input_line_number);
 	    }
-	    return new Token(Token.TOK_IDENTIFIER, token_value.toString(), input_line_number);	
+	    return (Token) Token.Identifier.clone(token_value.toString(), input_line_number);	
 	}
 
 	// --- Ungueltiges Zeichen -----------------------------------------------------
 	token_value.append((char)input_char);
-	return new Token(Token.TOK_BADCHAR,token_value.toString(),input_line_number);
+	return (Token) Token.BadChar.clone(token_value.toString(),input_line_number);
     }
 }
 
@@ -307,6 +307,9 @@ public class TESCTokenizer {
 //      ----------------------------               
 //
 //      $Log: not supported by cvs2svn $
+//      Revision 1.4  1998/12/17 11:14:13  swtech20
+//      BufferedReader statt FileInputStream.
+//
 //      Revision 1.3  1998/12/15 18:11:37  swtech00
 //      Towards new naming conventions for PEST2
 //
