@@ -16,6 +16,7 @@ import editor.desk.*;
 import gui.*;
 import gui.popdialoge.*;
 import java.lang.*;
+import tesc1.*;
 
 /**
  * @author Mai / Bestaendig
@@ -43,14 +44,14 @@ import java.lang.*;
  *</STRONG>
  * <li> Zeichnen von States funktioniert
  * <li> Zeichnen von Connectoren funktioniert
- * <li> Zeichnen von Transitionen 98 %
+ * <li> Zeichnen von Transitionen funktioniert
  * <li> Kennzeichnen von Anfangszustaenden 95 %
  * <li> Labeln von States funktioniert
- * <li> Labeln von Transitionen 75 %
+ * <li> Labeln von Transitionen funktioniert
  * <li> Patternmatcher : uebernimmt TESC 1
  * <li> Loeschen von Komponenten 80 %
  * <li> Selektieren von Objektgruppen 75 %
- * <li> Selektieren von Objekten 95 % (Das Selektieren von Transitionen funktioniert noch nicht)
+ * <li> Selektieren von Transitionen funktioniert
  * <li> highlighten funktioniert
  * <li> Zoomen funktioniert
  * <li> Undo 100 % (80 %) (UNDO steht (100 %), funktioniert mit dem derzeitigen Status der Absyn noch nicht korrekt (80 %).
@@ -69,7 +70,7 @@ import java.lang.*;
  * Wird ein Startzustand in ein anderes Objekt umgewandelt, so bleibt es trotzdem Startzustand. 
  *
  * </DT><STRONG>
- * TEMPORÄREN FEATURES.
+ * TEMPORŽREN FEATURES.
  * </STRONG>
  * Derzeit keine.
  * </DL COMPACT>
@@ -200,7 +201,7 @@ System.out.println("default-or");
    // Panel panel = new Panel();
    xpanel = panel;
    //xpanel.setForeground(Color.black);
-    scribble = new PESTDrawDesk(panel, 2400, 2400,nroot); // Create a bigger scribble area.
+    scribble = new PESTDrawDesk(panel, 32000, 32000,nroot); // Create a bigger scribble area.
     pane.add(scribble);                      // Add it to the ScrollPane.
 
     MenuBar menubar = new MenuBar();         // Create a menubar.
@@ -233,8 +234,15 @@ Menu win = new Menu("Window");            // Create a File menu.
     // Set the window size and pop it up.
 
 s1.addActionListener(new ActionListener() {    
-      public void actionPerformed(ActionEvent e) { fehlermeldung1();}
+      public void actionPerformed(ActionEvent e) { System.out.println("Groesse : "+PESTDrawDesk.sizer().width+"x"+PESTDrawDesk.sizer().height);}
     });
+
+s2.addActionListener(new ActionListener() {    
+      public void actionPerformed(ActionEvent e) { 
+				pane.setSize(1000,1000);
+						}
+    });
+
 
    Menu zoom = new Menu("Zoom");            // Create a File menu.
     menubar.add(tools);                       // Add to menubar.
@@ -332,6 +340,7 @@ public static void SetListen() {
 	update = true;
 //  *****************************
 	gui.userMessage("Editor : Update durchgefuehrt");
+	gui.StateChartHasChanged();
  	PESTDrawDesk.addundo(nroot);
 	}
  
@@ -421,8 +430,11 @@ public static String Stringeingabe(String a, String b, String c,Absyn type)
 public static String labelObject (Absyn obj)
     {
 	String name,ausgabe = "",ausgabe2 = "";
+	Action act = null;
+	Guard gua = null;
 	State stateobj;
 	Tr transobj;
+	TLabel tlab;
 	
 	if (obj instanceof State)
 	    {
@@ -439,9 +451,38 @@ public static String labelObject (Absyn obj)
 		transobj = (Tr) obj;
 		name = transobj.label.caption;
 		ausgabe2 = Stringeingabe("Transition umbenennen","Neuer Name fuer die gewaehlten Transition :",name,obj);
+		TESCLoader tl = new TESCLoader(gui);
+		 tlab = tl.getLabel(new BufferedReader(new StringReader(ausgabe2)),nroot);
+		if (tlab == null)
+		{tlab = new TLabel(new GuardEmpty(new Dummy()),new ActionEmpty(new Dummy()));}
+
+		 transobj.label = tlab;
 	   }
 	return ausgabe2;
     }
 
+public static void relabeltrans(Tr akttr)
+{
+	TLabel tlab;
+	TESCLoader tl = new TESCLoader(gui);
+		 tlab = tl.getLabel(new BufferedReader(new StringReader(akttr.label.caption)),nroot);
+		if (tlab == null)
+		{tlab = new TLabel(new GuardEmpty(new Dummy()),new ActionEmpty(new Dummy()));}
+	akttr.label = tlab;
+
 }
+
+
+public static Color con_color()
+{return gui.getConnectorcolor();}
+
+public static Color tr_color()
+{return gui.getTransitioncolor();}
+
+public static Color st_color()
+{return gui.getStatecolor();}
+
+}
+
+
 // Editor 
