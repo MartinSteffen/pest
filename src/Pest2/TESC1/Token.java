@@ -4,12 +4,12 @@ package tesc1;
  * Tokenklasse.
  * <p>
  * @author Michael Sülzer, Christoph Schütte.
- * @version  $Id: Token.java,v 1.3 1999-01-03 21:48:21 swtech20 Exp $
+ * @version  $Id: Token.java,v 1.4 1999-01-17 17:13:04 swtech20 Exp $
  */   
 
-public class Token implements Cloneable {
+class Token implements Cloneable {
 
-    public static final int token_count = 28;
+    public static final int token_count = 31;
 
     public static final int TOK_BADCHAR    = -2;
     public static final int TOK_EOF        = -1;
@@ -43,6 +43,9 @@ public class Token implements Cloneable {
     public static final int TOK_VAR        = 26;
     public static final int TOK_EVENT      = 27;
     public static final int TOK_DOT        = 28;
+    public static final int TOK_LSPAR      = 29;
+    public static final int TOK_RSPAR      = 30; 
+    public static final int TOK_SLASH      = 31;
 
     public static final Token BadChar      = new Token(TOK_BADCHAR);
     public static final Token EOF          = new Token(TOK_EOF, "<EOF>");
@@ -76,6 +79,9 @@ public class Token implements Cloneable {
     public static final Token Dot          = new Token(TOK_DOT    , ".");
     public static final Token LPar         = new Token(TOK_LPAR   , "(");
     public static final Token RPar         = new Token(TOK_RPAR   , ")");
+    public static final Token LSPar        = new Token(TOK_LSPAR  , "[");
+    public static final Token RSPar        = new Token(TOK_RSPAR  , "]");
+    public static final Token Slash        = new Token(TOK_SLASH  , "/");
       
     public static final Token token_list[] = {
         KeyDefault,
@@ -105,7 +111,10 @@ public class Token implements Cloneable {
         Komma,
         Dot,
         LPar,
-        RPar
+        RPar,
+	LSPar,
+        RSPar,
+	Slash
     };
     
 
@@ -169,6 +178,9 @@ public class Token implements Cloneable {
 //      -----------               
 //
 //      $Log: not supported by cvs2svn $
+//      Revision 1.3  1999/01/03 21:48:21  swtech20
+//      Implementierung des Parsers
+//
 //      Revision 1.2  1998/12/15 18:11:37  swtech00
 //      Towards new naming conventions for PEST2
 //

@@ -13,7 +13,7 @@ import absyn.*;
  * Zeichen, die von <code>TESCTokenizer</code> nicht verarbeitet werden koennen
  * werden durch das Token <code>TOK_BADCHAR</code> aufgenommen.<br>
  * Die Einteilung der Zeichen in Klassen wird ueber die Funktionen
- * <code>isIdentitifierChar, isSpecialChar, isWhitespaceChar, isCommentChar</code>.
+ * <code>isIdentitifierChar, isSpecialChar, isWhitespaceChar.
  * vorgenommen.
  * Die Vereinigung dieser vier Klassen ergibt die Menge der gueltige Zeichen.
  * <p>
@@ -27,19 +27,18 @@ import absyn.*;
  * </code>
  * <p>
  * @author Michael Sülzer, Christoph Schütte.
- * @version  $Id: TESCTokenizer.java,v 1.6 1999-01-11 12:13:57 swtech20 Exp $
+ * @version  $Id: TESCTokenizer.java,v 1.7 1999-01-17 17:13:04 swtech20 Exp $
  *
  * @see Token
  * @see TESCParser
  */   
-public class TESCTokenizer {
-
+class TESCTokenizer {
+    
     /**
      * Eingabestrom mit Zwischenpuffer, in den <code>input_look_ahead</code> viele Zeichen
      * zurueckgeschrieben werden koennen.
      * @see TESCTokenizer#input_look_ahead
      */
-    //private PushbackInputStream input;
     private PushbackReader input;
 
     /**
@@ -66,14 +65,18 @@ public class TESCTokenizer {
     private boolean input_eof = false; 
 
     /**
+     * Kommentarzeichen
+     * @see TESCTokenizer#input
+     */
+    private char comment[] = {'/','/'}; 
+
+    /**
      * Erzeugt einen TESCTokenizer. 
      * Der Eingabestrom wird an den PushbackInputStream <code>input</code> uebergeben
      * und der Zeilenzaehler initialisiert.
      */
-    //public TESCTokenizer (FileInputStream fis) throws IOException {
     public TESCTokenizer (BufferedReader r) throws IOException {
-    
-	//input       = new PushbackInputStream(fis,input_look_ahead);
+   
 	input       = new PushbackReader(r,input_look_ahead);
 
 	input_line_number = 1;
@@ -122,7 +125,7 @@ public class TESCTokenizer {
      * Zeichen handelt.
      */
     private boolean isValidChar (int n) {
-	return isIdentifierChar (n) | isSpecialChar (n) | isWhitespaceChar (n) | isCommentChar(n);
+	return isIdentifierChar (n) | isSpecialChar (n) | isWhitespaceChar (n);
     }
 
     /** 
@@ -135,10 +138,10 @@ public class TESCTokenizer {
 
     /** 
      * Prüft, ob es sich um ein Sonderzeichen handelt,
-     * das sind die Zeichen [!"#$%&'()*+,-.:;<=>|]
+     * das sind die Zeichen !"#$%&'()*+,-./:;<=>[]|
      */
     private boolean isSpecialChar(int n) {
-	return (in(n,33,46) | in(n,58,62) | n == 124);
+	return (in(n,33,47) | in(n,58,62) | n == 91 | n == 93 | n == 124);
     }
 
     /** 
@@ -148,15 +151,7 @@ public class TESCTokenizer {
     private boolean isWhitespaceChar(int n) {
 	return (n == '\n') | (n == '\t') | (n == '\r') | ( n== ' ') ;
     }
-
-    /** 
-     * Prüft, ob es sich um das Kommentarzeichen handelt,
-     * das ist das Zeichen [/].
-     */
-    private boolean isCommentChar(int n) {
-	return (n == '/');
-    }
-    
+  
     /**
      * Prüft, ob es sich um einen Token-Praefix handelt.
      * @see Token#token_list
@@ -264,18 +259,30 @@ public class TESCTokenizer {
 	while (isWhitespaceChar(input_char))
 	    input_char = readChar();
 
+	// --- Kommentare ueberlesen ----------------------------------------------------
+	// Ein Kommentar beginnt mit //
+	if (input_char == comment[0]) {
+	    int input_save = input_char;
+	    input_char = readChar();
+	    if (input_char == comment[1]) {
+		while ((input_char != '\n') & !input_eof) {
+		    input_char = readChar();
+		}
+		unreadChar(input_char);
+		return getNextToken();
+
+	    }
+	    else {
+		unreadChar(input_char);
+		unreadChar(input_save);
+		input_char = readChar();
+	    }
+	}
+
 	// --- Stream-Ende --------------------------------------------------------------
 	if (input_eof)
 	    return (Token) Token.EOF.clone(input_line_number);
 
-	// --- Kommentare ueberlesen ----------------------------------------------------
-	if (isCommentChar(input_char)) {
-	    while ((input_char != '\n') & !input_eof) {
-		input_char = readChar();
-	    }
-	    unreadChar(input_char);
-	    return getNextToken();
-	}
    
 	// --- Token ermitteln und zurueckgeben -----------------------------------------
 	if (isValidChar(input_char)) {
@@ -307,6 +314,9 @@ public class TESCTokenizer {
 //      ----------------------------               
 //
 //      $Log: not supported by cvs2svn $
+//      Revision 1.6  1999/01/11 12:13:57  swtech20
+//      Bugfixes.
+//
 //      Revision 1.5  1999/01/03 21:48:20  swtech20
 //      Implementierung des Parsers
 //
