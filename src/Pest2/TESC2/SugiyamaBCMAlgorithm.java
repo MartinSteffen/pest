@@ -140,9 +140,11 @@ class SugiyamaBCMAlgorithm extends GeneralLayoutAlgorithm {
 	for (i = 0; i<pm.getHeight(); i++) {
 	    xpos = WIDTH_BONUS + ((maxWidth - RowWidth[i]) / 2);
 	    maxHeight = 0;
+	    MapElement ame = null;
 	    for (j = pm.getWidthOfRow(i)-1; j>=0; j--) {
-		pm.getElement(i,j).setHeightUpper(ypos, HEIGHT_BONUS);
-		actHeight = pm.getElement(i, j).getRect().height;
+		ame = pm.getElement(i, j);
+		ame.setHeightUpper(ypos);
+		actHeight = ame.getRect().height;
 		if (actHeight>maxHeight) {
 		    maxHeight = actHeight;
 		}
@@ -150,29 +152,58 @@ class SugiyamaBCMAlgorithm extends GeneralLayoutAlgorithm {
 	    ypos = ypos + (counter * HEIGHT_BONUS);
 	    counter = 1;
 	    for (j = 0; j<pm.getWidthOfRow(i); j++) {
-		counter = pm.getElement(i, j).numberLower(counter);
-		actHeight = pm.getElement(i, j).getRect().height;
+		ame = pm.getElement(i, j);
+		counter = counter + ame.countLower();
+		actHeight = ame.getRect().height;
 		p = new CPoint(xpos, ypos + ((maxHeight-actHeight) / 2));
-		pm.getElement(i, j).setPosition(p);
+		ame.setPosition(p);
 
 		/* Plazieren des Substate-Namens */
 		p = new CPoint(p);
 		p.translate(5,10);
-		pm.getElement(i, j).setNamePosition(p);
+		ame.setNamePosition(p);
 
-		xpos = xpos + pm.getElement(i, j).getRect().width + WIDTH_BONUS;
-		xpos = xpos + (pm.getElement(i, j).countLoops() * WIDTH_BONUS);
+		xpos = xpos + ame.getRect().width + WIDTH_BONUS;
+		xpos = xpos + (ame.countLoops() * WIDTH_BONUS);
 
 		/* $Testausgabe */
-		//System.out.println("Position des States "+pm.getElement(i, j));
+		//System.out.println("Position des States "+ ame);
 	    }
-	    ypos = ypos + maxHeight;
+	    ypos = ypos + maxHeight + HEIGHT_BONUS;
 	}
 	s.rect.height = ypos + HEIGHT_BONUS;
 	s.rect.width = maxWidth;
 	
 	/* $Testausgabe */
 	//System.out.println("width="+s.rect.width+" height="+s.rect.height);
+
+
+	/**
+	 * H"ohensortierung der Transitionen
+	 */
+
+	for (i = pm.getHeight()-1; i >= 0; i--) {
+	    counter = 1;
+	    for (j = pm.getWidthOfRow(i)-1; j>=0; j--) {
+		MapElement ame = pm.getElement(i, j);
+		int k = ame.countLower();
+		boolean notstop = true;
+		while ((k > 0) && notstop) {
+		    k--;
+		    Point oep = ame.getEndElementLower(k);
+		    MapElement eme = pm.getElement(oep.x, oep.y);
+		    MapTransition tmt = (MapTransition) ame.lower.elementAt(k);
+		    notstop = (ame.getLowerTransPosition(k).x < 
+			eme.getTransPosition(tmt).x);
+		}
+		if (notstop) { 
+		  k = -1;
+		}
+		counter = ame.numberLower(counter, k);
+		ame.setHeightLower(ame.getHeightLower(), HEIGHT_BONUS);
+	    }
+	}
+
 
 	/**
 	 * Plazieren der Transitionen 

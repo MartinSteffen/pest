@@ -12,6 +12,7 @@ package tesc2;
 
 import absyn.*;
 import java.util.Vector;
+import java.awt.Point;
 
 abstract class MapElement  {
 
@@ -23,6 +24,8 @@ abstract class MapElement  {
     abstract boolean equalAnchor(TrAnchor ta);
     abstract CPoint getPosition();
     abstract CPoint getTransPosition(MapTransition mt);
+    abstract CPoint getUpperTransPosition(int i);
+    abstract CPoint getLowerTransPosition(int i);
     abstract void setPosition(CPoint p);
     abstract void setNamePosition(CPoint p); 
     abstract CRectangle getRect();
@@ -47,37 +50,55 @@ abstract class MapElement  {
 	lower.addElement(mt);
     }
 
-    int numberLower(int start) {
-	int i = 0;
-	boolean search = true;
-	while (search && (i<lower.size())) {
-	    MapTransition mt = (MapTransition) lower.elementAt(i);
-	    if (mt.startRow < mt.endRow) {
-		search = mt.startColumn <= mt.endColumn;
-		i++;
-	    }
-	    else {
-		search = mt.endColumn <= mt.startColumn;
-		i++;
-	    }
-	}
-	if (!search) {
-	    i = i-1;
-	}
-	int j;
-	for (j = 0; j<i; j++) {
-	    ((MapTransition) lower.elementAt(j)).number = j + start;
-	}
-	for (j = 0; j+i<lower.size();j++) {
-	    ((MapTransition) lower.elementAt(lower.size()-j-1)).number=j+i+start;
-	}
-	return j + i + start;
+    int countLower() {
+	return lower.size();
     }
 
-    void setHeightUpper(int height, int bonus) {
+    Point getEndElementLower(int i) {
+	MapTransition mt = (MapTransition) lower.elementAt(i);
+	if (mt.startRow > mt.endRow) {
+	    return new Point(mt.startRow, mt.startColumn);
+	}
+	else {
+	    return new Point(mt.endRow, mt.endColumn);
+	}
+    }
+
+    int numberLower(int j, int turn) {
+	if (lower.size() > 0) {
+	    int i;
+	    for (i = lower.size()-1; i>turn; i--) {
+		((MapTransition) lower.elementAt(i)).number = j;
+		j++;
+	    }
+	    for (i = 0; i<=turn; i++) {
+		((MapTransition) lower.elementAt(i)).number = j;
+		j++;
+	    }
+	}
+	return j;
+    }
+
+    int getHeightLower() {
+	if (lower.size() > 0) {
+	    return ((MapTransition) lower.firstElement()).midheight;
+	}
+	else {
+	    return 0;
+	}
+    }
+
+    void setHeightLower(int height, int bonus) {
+	int i;
+	for (i = lower.size()-1; i>=0; i--) {
+	    ((MapTransition) lower.elementAt(i)).setHeight(height, bonus);
+	}
+    }
+
+    void setHeightUpper(int height) {
 	int i;
 	for (i = upper.size()-1; i>=0; i--) {
-	    ((MapTransition) upper.elementAt(i)).setHeight(height, bonus);
+	    ((MapTransition) upper.elementAt(i)).setHeight(height, 0);
 	}
     }
 

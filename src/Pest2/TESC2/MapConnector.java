@@ -40,6 +40,14 @@ class MapConnector extends MapElement {
     CPoint getTransPosition(MapTransition mt) {
 	return this.getPosition();
     }
+
+    CPoint getUpperTransPosition(int i) {
+	return this.getPosition();
+    }
+
+    CPoint getLowerTransPosition(int i) {
+	return this.getPosition();
+    }
 	
     void setPosition(CPoint p) {
 	con.position = p;

@@ -38,25 +38,35 @@ class MapState extends MapElement {
     }
 
     CPoint getTransPosition(MapTransition mt) {
-	CPoint p = this.getPosition();
 	int pos = loops.indexOf(mt);
 	if (pos <0) {
-	    int count;
 	    pos = upper.indexOf(mt);
 	    if (pos<0) {
-		p.y = p.y + state.rect.height;
 		pos = lower.indexOf(mt);
-		count = lower.size();
+		return getLowerTransPosition(pos);
 	    }
 	    else {
-		count = upper.size();
+		return getUpperTransPosition(pos);
 	    }
-	    p.x = p.x + (pos+1) * ((state.rect.width) / (count+1));
 	}
 	else {
+	    CPoint p = this.getPosition();
 	    p.x = p.x + state.rect.width;
 	    p.y = p.y + (pos+1) * ((state.rect.height) / (1+loops.size()*2));
+	    return p;
 	}
+    }
+
+    CPoint getUpperTransPosition(int i) {
+	CPoint p = this.getPosition();
+	p.x = p.x + (i+1) * ((state.rect.width) / (upper.size()+1));
+	return p;
+    }
+
+    CPoint getLowerTransPosition(int i) {
+	CPoint p = this.getPosition();
+	p.y = p.y + state.rect.height;
+	p.x = p.x + (i+1) * ((state.rect.width) / (lower.size()+1));
 	return p;
     }
 

@@ -39,6 +39,14 @@ class MapUNDEF extends MapElement {
 	return Position;
     }
 
+    CPoint getUpperTransPosition(int i) {
+	return this.getPosition();
+    }
+
+    CPoint getLowerTransPosition(int i) {
+	return this.getPosition();
+    }
+
     void setPosition(CPoint p) {
 	Position = p;
     }
