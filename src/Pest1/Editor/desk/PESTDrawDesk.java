@@ -101,12 +101,12 @@ import tesc2.*;
 	Editor.Buttontype = "Select";
     if (command.equals("undo")) {root = undo();Editor.newdraw();}
     else if (command.equals("restore")) {root = redo();Editor.newdraw();}
-    else if (command.equals("kopieren")) {	System.out.println("test2 : "+copyobj);
+    else if (command.equals("kopieren") & deleteobj != null) {	System.out.println("test2 : "+copyobj);
 					try     {copyobj = (Absyn) deleteobj.clone();}
 				        	catch (Exception e) {System.out.println("Clone-Fehler");}
 					System.out.println("test2 : "+copyobj);
 	}	
-    else if (command.equals("verschieben")) {	System.out.println("test3 : "+copyobj);
+    else if (command.equals("verschieben") & deleteobj != null) {	System.out.println("test3 : "+copyobj);
 					try     {copyobj = (Absyn) deleteobj.clone();}
 				        	catch (Exception e) {System.out.println("Clone-Fehler");}
 						mover = true;
