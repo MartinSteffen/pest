@@ -14,7 +14,9 @@ MapConnector.class \
 MapUNDEF.class \
 ProperMap.class \
 SugiyamaBCMAlgorithm.class \
-GraphOptimizer.class
+GraphOptimizer.class \
+CircleLayoutAlgorithm.class \
+GeneralLayoutAlgorithm.class
 
 .SUFFIXES: .java .class
  
