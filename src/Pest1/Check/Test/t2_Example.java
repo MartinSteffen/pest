@@ -2,7 +2,7 @@ import absyn.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: t2_Example.java,v 1.14 1999-01-07 16:49:01 swtech11 Exp $
+ *  @version  $Id: t2_Example.java,v 1.15 1999-01-08 17:14:52 swtech11 Exp $
  */
 public class t2_Example {
   
@@ -309,9 +309,9 @@ public static Statechart getExample_m() {
 
 
   Or_State R1 = new Or_State (new Statename ("R1"),
-			      new StateList (S1,new StateList (S2,null)),
+			      new StateList (S1, new StateList(S2, null)),
 			      new TrList (tr1, new TrList (tr2, null)),
-			      new StatenameList (new Statename("S1"), null),	
+			      new StatenameList (new Statename("S9"), null),	
 			      null);
   
   Or_State R2 = new Or_State (
@@ -325,7 +325,7 @@ public static Statechart getExample_m() {
 					   new TrList (new Tr (new Statename ("T2"), 
 							       new Statename ("T1"),
 							       new TLabel (new GuardEvent(new SEvent("G")),new ActionEmpty(new Dummy()))),null)),
-			      new StatenameList (new Statename("T1"), null),	
+			      null,	
 			      null);
   
   Basic_State Q1 = new Basic_State (new Statename("Q1"));
@@ -362,7 +362,7 @@ public static Statechart getExample_m() {
 									   new Statename ("P1"), 
 									   new TLabel (new GuardEvent(new SEvent("A")),
 										       new ActionEmpty(new Dummy()))),null))),
-			       new StatenameList (new Statename("P1"), null),
+			       new StatenameList (new Statename("P1"), new StatenameList(new Statename("P1"), null)),
 			       null);  
   
   return new Statechart (statelist,

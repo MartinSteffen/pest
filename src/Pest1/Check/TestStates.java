@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestStates.java,v 1.6 1999-01-07 15:19:02 swtech11 Exp $
+ *  @version  $Id: TestStates.java,v 1.7 1999-01-08 17:14:41 swtech11 Exp $
  */
 
 /** Diese Testklasse testet, ob alle Statenamen deklariert worden sind, 
@@ -26,7 +26,7 @@ class TestStates extends ModelCheckBasics{
     erstelle_Pfad2();
     erstelle_Pfad1();
     vergleiche_Pfade();
-    pruefeState(sc.state);
+    pruefeState(sc.state, null, "");
     return ((msg.getErrorNumber()-m)==0);;
   }
 
@@ -85,24 +85,42 @@ class TestStates extends ModelCheckBasics{
    <br> Wenn kein innere State vorhanden ist, wird ein Fehler ausgegeben. Bei einem inneren State wird gewarnt.
     */
     
-    void pruefeState(State s){
+    void pruefeState(State s, State _s, String p){
+	//System.out.println("pS "+p);
     if (s instanceof Or_State) {
 	   if (((Or_State)s).substates==null) {msg.addError(305,"State: "+s.name.name);}
 	   else {
-	        if (Anzahl_States(((Or_State)s).substates)==1) {msg.addWarning(304,"State: "+s.name.name);};
-                navStateInStateList(((Or_State)s).substates); };};
+                p=getAddPathPart(p, s.name.name);
+	        if (Anzahl_States(((Or_State)s).substates)==1) {msg.addWarning(304,"State: "+p);};
+                Vector dc=defaultcon((Or_State)s,p);
+                navStateInStateList(((Or_State)s).substates, s, p, dc); };};
     if (s instanceof And_State) {
            if (((And_State)s).substates==null) {msg.addError(306,"State: "+s.name.name);}
 	   else {
-            if (Anzahl_States(((And_State)s).substates)==1) {msg.addWarning(307,"State: "+s.name.name);};
-            navStateInStateList(((And_State)s).substates); };};
+            p=getAddPathPart(p, s.name.name);
+            if (Anzahl_States(((And_State)s).substates)==1) {msg.addWarning(307,"State: "+p);};
+            navStateInStateList(((And_State)s).substates, s, p, new Vector()); };};
     }
 
-  void navStateInStateList(StateList sl) {
-    if (sl.head instanceof Or_State) {pruefeState ((Or_State)sl.head); }
-    if (sl.head instanceof And_State) {pruefeState ((And_State)sl.head); }
-    if (sl.tail != null) { navStateInStateList(sl.tail); }
-  }
+  void navStateInStateList(StateList sl, State _s, String p, Vector dc) {
+      boolean b=true;
+     
+      //System.out.println("nav State "+sl.head.name.name);
+      for (int i=0; ((i<dc.size()) && b); i++){
+	  //System.out.println("nav vergleiche "+(String)dc.elementAt(i));
+	  if (((String)dc.elementAt(i)).equals(sl.head.name.name)) {
+	      //System.out.println("nav entfernen "+(String)dc.elementAt(i));
+dc.removeElementAt(i);};};
+
+
+      
+    if (sl.head instanceof Or_State) {pruefeState ((Or_State)sl.head, _s, p); }
+    if (sl.head instanceof And_State) {pruefeState ((And_State)sl.head, _s, p); }
+    if (sl.tail != null) { navStateInStateList(sl.tail, _s, p, dc); }
+    if (sl.tail ==null) {if (dc.size()>0) {
+               for (;dc.size()!=0; dc.removeElementAt(0)) {
+                  msg.addError(312,"Defaultconnector "+(String)dc.elementAt(0)+" in State "+p);};};
+  };}
 
     /** Berechnet die Anzahl der States die in StateList sl vorhandne sind. */
     int Anzahl_States(StateList sl){
@@ -110,6 +128,39 @@ class TestStates extends ModelCheckBasics{
 	 for (; sl.tail!=null; sl=sl.tail) {i++;};
 
       return i;};
+
+    Vector defaultcon(Or_State _s, String p) {
+     Vector v=new Vector();
+     StatenameList sl=_s.defaults;
+     if (sl!=null) { 
+//System.out.println("DFC Pfad "+p);
+
+         for (;sl.tail!=null; sl=sl.tail ) {
+	     //System.out.println("DFC State 2 "+sl.head.name);
+            for(int i=0; i<v.size();i++){
+              if (((String)v.elementAt(i)).equals(sl.head.name)) {msg.addError(313,"Defaultcon: "+sl.head.name+" im State "+p);}
+	      else {v.addElement(sl.head.name);};};
+	    if (v.size()==0) {v.addElement(sl.head.name);}
+              };
+    int s=v.size();
+    for(int i=0; i<s; i++){
+	//System.out.println("drin "+(String)v.elementAt(i)+" draussen "+sl.head.name);
+     if (((String)v.elementAt(i)).equals(sl.head.name)) {msg.addError(313,"Defaultcon: "+sl.head.name+" im State "+p);}
+	      else {v.addElement(sl.head.name);
+	      //System.out.println("DFC State 1 "+sl.head.name);
+};
+};
+    if (s==0) {v.addElement(sl.head.name);};
+
+
+     };
+     if (sl==null) {msg.addError(314,"State "+p);};
+     if (v.size()>1)  {msg.addError(315,"State "+p);};
+     //System.out.println("DFV size "+v.size());
+     return v;
+    }
+
+
 
     /**   gibt den kompletten Pfad des States _n zurueck, d.h. _p + "." +_n
 	  <br> falls eine Statename aus "" besteht wird gewarnt.*/
@@ -120,3 +171,6 @@ class TestStates extends ModelCheckBasics{
     return _np;
   }
 }
+
+
+

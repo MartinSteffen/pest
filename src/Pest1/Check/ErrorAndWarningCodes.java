@@ -2,7 +2,7 @@ package check;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: ErrorAndWarningCodes.java,v 1.20 1999-01-07 16:48:48 swtech11 Exp $
+ *  @version  $Id: ErrorAndWarningCodes.java,v 1.21 1999-01-08 17:14:40 swtech11 Exp $
  */
 class ErrorAndWarningCodes {
   ErrorAndWarningCodes() {
@@ -54,12 +54,16 @@ class ErrorAndWarningCodes {
       case 302: {_s = "Deklarierter State wurde nicht verwendet"; break; }
       case 303: {_s = "Keine Deklaration von Statename"; break; }
       case 304: {_s = "Ein Or-State enthaelt nur einen inneren State"; break; }
-      case 305: {_s = "Ein Or-State enthaelt keinen inneren State"; break; }
-      case 306: {_s = "Ein And-State enthaelt keinen inneren State"; break; }
+      case 305: {_s = "Fataler Fehler: Ein Or-State enthaelt keinen inneren State"; break; }
+      case 306: {_s = "Fataler Fehler: Ein And-State enthaelt keinen inneren State"; break; }
       case 307: {_s = "Ein And-State enthaelt nur einen inneren State"; break; }
       case 308: {_s = "Der Statename ist ein leerer String"; break; }
       case 310: {_s = "Die Statechart enthält keine Pfadliste."; break; }
       case 311: {_s = "Die Statechart enthält keine States."; break; }
+    case 312: {_s = "Zu diesem Defaultconnector gibt es keinen State."; break; }
+      case 313: {_s = "Der Defaultconnector ist mehrfach eingetragen."; break; }
+      case 314: {_s = "In diesem State gibt es keinen Defaultcon."; break; }
+      case 315: {_s = "IN diesem State gibt es mehr als einen Defaultcon."; break; }
 
       case 400: {_s = "Der Start-State der Transition ist nicht definiert."; break; }
       case 401: {_s = "Der Ziel-State der Transition ist nicht definiert."; break; }
