@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.90 1999-02-09 16:42:06 swtech00 Exp $
+//	$Id: report_list,v 1.91 1999-02-10 08:13:11 swtech11 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -859,7 +859,7 @@ Mir gefällt die Variante mit pop-up besser.
 #Number:        58
 #Autor:         Erich Mikk erm
 #Subject:       Message-Browser, varia
-#Status:        reported
+#Status:        processing
 #Description:
 
 (1) Meldungen benutzen Umlaute und stattdessen ae, ue usw.  durcheinander. 
