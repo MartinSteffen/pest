@@ -9,7 +9,7 @@ import java.awt.*;
 import java.awt.event.*;
 import absyn.*;
  
-public class UserInterface {
+public class UserInterface extends Frame{
 	protected Frame f;
 	private Button ivjButton1 = null;
 	private Button ivjButton2 = null;
@@ -328,7 +328,8 @@ private void initialize() {
 	// user code end
 }
 /**
- * This method was created in VisualAge.
+ * START()-Methode. Erwartet keine Parameter. Zur Zeit erfolgt der Start
+ * noch mit initialize().
  * 
  */
 public void start() {
