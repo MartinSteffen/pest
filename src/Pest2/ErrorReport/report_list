@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	--------------
 //
-//	$Id: report_list,v 1.37 1999-02-08 11:49:51 swtech01 Exp $
+//	$Id: report_list,v 1.38 1999-02-08 11:56:31 swtech01 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -585,12 +585,15 @@ beide Basic States als Default angegeben sind. Syntaxcheck meldet keine Fehler.
 //------------------------------------------------------------------------------
 #Number:	38
 #Autor:		Bernd Weber bwe
-#Subject:	Tesc: Falscher Default States wird nicht erkannt
-#Status:	fixed
+#Subject:	Tesc: Falscher Default State wird nicht erkannt
+#Status:	reported
 #Description:
 
 Importiere ~swtech12/Examples/misc/faulty3.tesc2. Ergibt keine Fehler, obwohl
 root als sein eigener default markiert ist. Syntaxcheck meldet keine Fehler.
+
+Zurückgesetzt weil das Beispiel noch immer importierbar ist und keine
+Fehler gemeldet werden.
 //------------------------------------------------------------------------------
 #Number:	39
 #Autor:		Bernd Weber bwe
