@@ -34,7 +34,7 @@ import gui.*;
  *
  * <p><STRONG>Todo: </STRONG>
  * <ul>
- * <li> Weiteres Bug Fixing.
+ * <li>
  * </ul>
  *
  * <p><STRONG>Bekannte Fehler.</STRONG>
@@ -49,7 +49,7 @@ import gui.*;
  * dem Pflichtenheft verwendet werden.
  * <p>
  * <hr>
- * @version  $Id: TESCLoader.java,v 1.15 1999-02-07 11:58:31 swtech20 Exp $
+ * @version  $Id: TESCLoader.java,v 1.16 1999-02-11 16:52:25 swtech20 Exp $
  * @author Michael Suelzer, Christoph Schuette.
  *  
  */   
@@ -254,6 +254,10 @@ public final class TESCLoader {
 //	----------------------
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.15  1999/02/07 11:58:31  swtech20
+//	- ref_state implementiert
+//	- bugs #36,#37 gefixed
+//
 //	Revision 1.14  1999/02/01 11:52:59  swtech20
 //	- globaler Debug-Schalter
 //

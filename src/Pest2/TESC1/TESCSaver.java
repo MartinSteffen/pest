@@ -35,7 +35,7 @@ import gui.*;
  *
  * <p><STRONG>Todo: </STRONG>
  * <ul>
- * <li> Weiteres Bug Fixing
+ * <li>
  * </ul>
  *
  * <p><STRONG>Bekannte Fehler: </STRONG>
@@ -47,7 +47,7 @@ import gui.*;
  * Jedes Statechart, z.B. das <A HREF="./tesc1/Docu/Example.tesc">Beispiel</A> aus
  * dem Pflichtenheft, kann testweise exportiert werden. 
  * <hr>
- * @version  $Id: TESCSaver.java,v 1.6 1999-02-07 11:58:31 swtech20 Exp $
+ * @version  $Id: TESCSaver.java,v 1.7 1999-02-11 16:52:25 swtech20 Exp $
  * @author Michael Suelzer, Christoph Schuette.
  *  
  */   
@@ -181,6 +181,10 @@ public final class TESCSaver {
 //	----------------------
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.6  1999/02/07 11:58:31  swtech20
+//	- ref_state implementiert
+//	- bugs #36,#37 gefixed
+//
 //	Revision 1.5  1999/02/01 11:52:59  swtech20
 //	- globaler Debug-Schalter
 //
