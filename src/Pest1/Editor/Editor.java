@@ -202,7 +202,7 @@ public class Editor extends Frame {
 	this.setLocation(top,left);                // Koordinaten des Zeichenfensters setzen.
 	pane.setSize(width,height);                  // Specify its size.
 	xpanel = panel;
-	scribble = new PESTDrawDesk(panel, 32000, 32000,nroot); // Create a bigger scribble area.
+	scribble = new PESTDrawDesk(panel, 4000, 4000,nroot); // Create a bigger scribble area.
 	pane.add(scribble);                      // Add it to the ScrollPane.
 
 	this.add(pane);                // Add it to the frame.
@@ -245,12 +245,9 @@ public class Editor extends Frame {
 	Menu zoom = new Menu("Zoom");            // Create a File menu.
 
 	// Tool-Menue erzeugen
-	MenuItem z1, z2, z3, z4, z5, z6, z7,z10,z12,z15,z16;
+	MenuItem z1, z2, z3, z4, z5, z6, z7,z10,z12;
 	zoom.add(z10 = new MenuItem("Zoom In"));
 	zoom.add(z12 = new MenuItem("Zoom Out"));
-	zoom.addSeparator();
-	zoom.add(z15 = new MenuItem("Zoom In  10x"));
-	zoom.add(z16 = new MenuItem("Zoom Out 10x"));
 	zoom.addSeparator();
 	zoom.add(z1 = new MenuItem("1/8 x"));
 	zoom.add(z2 = new MenuItem("1/4 x"));
@@ -260,33 +257,115 @@ public class Editor extends Frame {
 	zoom.add(z6 = new MenuItem("4 x "));
 	zoom.add(z7 = new MenuItem("8 x "));
 	menubar.add(zoom);                       // Add to menubar.
+	
+	
+	
+	
 
 	z1.addActionListener(new ActionListener() {    
-	    public void actionPerformed(ActionEvent e) { ZoomFaktor = 0.125; zoomfk = -8; scribble.repaint();}
+	    public void actionPerformed(ActionEvent e) { 
+	      ZoomFaktor = 0.125; 
+	      zoomfk = -8;
+	      pane.remove(scribble);
+	      th.remove(pane);
+	      scribble = new PESTDrawDesk(panel, 500, 500,nroot); // Create a bigger scribble area.
+	      pane.add(scribble);
+	      th.add(pane);
+	      th.pack();
+	      th.show();
+	      scribble.repaint();}
 	});
 	z2.addActionListener(new ActionListener() {    
-	    public void actionPerformed(ActionEvent e) { ZoomFaktor = 0.25; zoomfk = -4;scribble.repaint();}
+	    public void actionPerformed(ActionEvent e) { 
+	      ZoomFaktor = 0.25; 
+	      zoomfk = -4;
+	      pane.remove(scribble);
+	      th.remove(pane);
+	      scribble = new PESTDrawDesk(panel, 1000, 1000,nroot); // Create a bigger scribble area.
+	      pane.add(scribble);
+	      th.add(pane);
+	      th.pack();
+	      th.show();
+	      scribble.repaint();}
 	});
 	z3.addActionListener(new ActionListener() {    
-	    public void actionPerformed(ActionEvent e) { ZoomFaktor = 0.5; zoomfk = -2;scribble.repaint();}
+	    public void actionPerformed(ActionEvent e) { 
+	      ZoomFaktor = 0.5;
+	      zoomfk = -2;
+	      pane.remove(scribble);
+	      th.remove(pane);
+	      scribble = new PESTDrawDesk(panel, 2000, 2000,nroot); // Create a bigger scribble area.
+	      pane.add(scribble);
+	      th.add(pane);
+	      th.pack();
+	      th.show();
+	      scribble.repaint();}
 	});
 	z4.addActionListener(new ActionListener() {    
-	    public void actionPerformed(ActionEvent e) { ZoomFaktor = 1; zoomfk = 1;	scribble.repaint();}
+	    public void actionPerformed(ActionEvent e) { 
+	      ZoomFaktor = 1; 
+	      zoomfk = 1;
+	      pane.remove(scribble);
+	      th.remove(pane);
+	      scribble = new PESTDrawDesk(panel, 4000, 4000,nroot); // Create a bigger scribble area.
+	      pane.add(scribble);
+	      th.add(pane);
+	      th.pack();
+	      th.show();
+	      scribble.repaint();}
 	});
 	z5.addActionListener(new ActionListener() {    
-	    public void actionPerformed(ActionEvent e) { ZoomFaktor = 2; zoomfk = 2;scribble.repaint();}
+	    public void actionPerformed(ActionEvent e) { 
+	      ZoomFaktor = 2; 
+	      zoomfk = 2;
+	      pane.remove(scribble);
+	      th.remove(pane);
+	      scribble = new PESTDrawDesk(panel, 8000, 8000,nroot); // Create a bigger scribble area.
+	      pane.add(scribble);
+	      th.add(pane);
+	      th.pack();
+	      th.show();
+	      scribble.repaint();}
 	});
 	z6.addActionListener(new ActionListener() {    
-	    public void actionPerformed(ActionEvent e) { ZoomFaktor = 4; zoomfk = 4; scribble.repaint();}
+	    public void actionPerformed(ActionEvent e) { 
+	      ZoomFaktor = 4; 
+	      pane.remove(scribble);
+	      th.remove(pane);
+	      scribble = new PESTDrawDesk(panel, 16000, 16000,nroot); // Create a bigger scribble area.
+	      pane.add(scribble);
+	      th.add(pane);
+	      th.pack();
+	      th.show();
+	      zoomfk = 4; 
+	      scribble.repaint();}
 	});
 	z7.addActionListener(new ActionListener() {    
-	    public void actionPerformed(ActionEvent e) { ZoomFaktor = 8; zoomfk = 8; scribble.repaint();}
+	    public void actionPerformed(ActionEvent e) {
+	      ZoomFaktor = 8; 
+	      zoomfk = 8;
+	      pane.remove(scribble);
+	      th.remove(pane);
+	      scribble = new PESTDrawDesk(panel, 32000, 32000,nroot); // Create a bigger scribble area.
+	      pane.add(scribble);
+	      th.add(pane);
+	      th.pack();
+	      th.show();
+	      scribble.repaint();}
 	});
 
 	z10.addActionListener(new ActionListener() {    
 	    public void actionPerformed(ActionEvent e) { zoomfk = zoomfk + 1; if (zoomfk == 0) {zoomfk = 2;}
+	    if (zoomfk > 8) {zoomfk = 8;}
 	    if (zoomfk > -1) {ZoomFaktor = zoomfk;} else
 		{ZoomFaktor = 1/(Math.abs(zoomfk));}
+	    pane.remove(scribble);
+	    th.remove(pane);
+	    scribble = new PESTDrawDesk(panel,(int) (4000*ZoomFaktor),(int) (4000*ZoomFaktor),nroot); // Create a bigger scribble area.
+	    pane.add(scribble);
+	    th.add(pane);
+	    th.pack();
+	    th.show();
 	    scribble.repaint();}
 	});
 
@@ -294,22 +373,15 @@ public class Editor extends Frame {
 	    public void actionPerformed(ActionEvent e) { zoomfk = zoomfk - 1; if (zoomfk == 0) {zoomfk = -2;}
 	    if (zoomfk > -1) {ZoomFaktor = zoomfk;} else
 		{ZoomFaktor = 1/(Math.abs(zoomfk));}
+th.remove(pane);
+	    scribble = new PESTDrawDesk(panel,(int) (4000*ZoomFaktor),(int) (4000*ZoomFaktor),nroot); // Create a bigger scribble area.
+	    pane.add(scribble);
+	    th.add(pane);
+	    th.pack();
+	    th.show();
 	    scribble.repaint();}
 	});
 
-	z15.addActionListener(new ActionListener() {    
-	    public void actionPerformed(ActionEvent e) { zoomfk = zoomfk + 10; if (zoomfk == 0) {zoomfk = 2;}
-	    if (zoomfk > -1) {ZoomFaktor = zoomfk;} else
-		{ZoomFaktor = 1/(Math.abs(zoomfk));}
-	    scribble.repaint();}    
-	});
-
-	z16.addActionListener(new ActionListener() {    
-	    public void actionPerformed(ActionEvent e) { zoomfk = zoomfk - 10; if (zoomfk == 0) {zoomfk = -2;}
-	    if (zoomfk > -1) {ZoomFaktor = zoomfk;} else
-		{ZoomFaktor = 1/(Math.abs(zoomfk));}
-	    scribble.repaint();}
-	});
 
     this.pack();
     this.show();
@@ -411,8 +483,11 @@ public class Editor extends Frame {
      * Aufruf der Standardzeichenfehlerbehandlung 
      */
     public static void fehlermeldung1(){
-	gui.OkDialog("Editor","Fehler beim Zeichnen aufgetreten");
+	gui.OkDialog(th,"Editor","Fehler beim Zeichnen aufgetreten");
     }
+  public static void fehlermeldung2(){
+    gui.OkDialog(th,"Editor","Zeichnen ausserhalb der Zeichenflaeche");
+  }
 
     /**
      * Aufruf des Eingabefensters der GUI
@@ -421,7 +496,8 @@ public class Editor extends Frame {
      * <li>b    : Standardausgabe 2  
      * <li>a    : uebergebener String 
      * <li>type : zu benennendes Objekt aus der AbSyn 
-     * </ul> 
+     * </ul>
+ 
      */
     protected static String Stringeingabe(String a, String b, String c,Absyn type)
     {
