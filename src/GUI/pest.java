@@ -439,7 +439,7 @@ void newStatechart()
 		    }
 		else
 		    {
-			SCchecker = new check.ModelCheck(this,PEditor);
+			SCchecker = new check.ModelCheck(this,PEditor,checkConfig);
 		    }
 		ResultSC = SCchecker.checkModel(SyntaxBaum);
 		CheckedSC = true;

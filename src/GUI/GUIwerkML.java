@@ -59,7 +59,7 @@ public void actionPerformed(ActionEvent e) {
 	      }
 
       }else if (cmd.equals("Crossreferenz")) {
-	  check.Crossreference cr = new check.Crossreference(myWindow,  myWindow.PEditor);
+	  check.Crossreference cr = new check.Crossreference(myWindow,  myWindow.PEditor , myWindow.checkConfig);
 	  cr.report(myWindow.SyntaxBaum);
       } else if (cmd.equals("Neue Koordinaten")){
 	  if (myWindow.isSaved())
