@@ -2,7 +2,7 @@ import Absyn.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: t2_Example.java,v 1.4 1998-12-10 22:23:02 swtech11 Exp $
+ *  @version  $Id: t2_Example.java,v 1.5 1998-12-14 20:39:40 swtech11 Exp $
  */
 public class t2_Example {
   
@@ -224,7 +224,8 @@ public static Statechart getExample_m() {
 						     new TrList (new Tr (new Statename ("P3"), new Statename ("P1"),	new TLabel (null,null)),
                    new TrList (new Tr (new Conname("SUD-1-CON"), new Conname("sud-2-CON"), new TLabel (null,null)),
                      new TrList (new Tr (new Statename ("P2"), new Statename ("P1"), new TLabel (null,null)),
-              null))))),
+                       new TrList (new Tr (new Conname("1-CON"), new Conname("1-CON"), new TLabel (null,null)),
+              null)))))),
 			       new StatenameList (new Statename("P1"), null),
 			       new ConnectorList (new Connector(new Conname("SUD-1-CON")),
                new ConnectorList(new Connector(new Conname("sud-2-CON")), null))    );

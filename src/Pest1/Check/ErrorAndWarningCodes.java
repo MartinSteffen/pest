@@ -2,7 +2,7 @@ package Check;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: ErrorAndWarningCodes.java,v 1.12 1998-12-13 21:03:48 swtech11 Exp $
+ *  @version  $Id: ErrorAndWarningCodes.java,v 1.13 1998-12-14 20:40:28 swtech11 Exp $
  */
 class ErrorAndWarningCodes {
   ErrorAndWarningCodes() {
@@ -65,6 +65,7 @@ class ErrorAndWarningCodes {
       case 412: {_s = "Interlevel-Transition: Der Start-Connenctor liegt falsch."; break; }
       case 413: {_s = "Interlevel-Transition: Der Ziel-Connenctor liegt falsch."; break; }
       case 414: {_s = "Interlevel-Transition: Beide Connenctoren liegten falsch."; break; }
+      case 415: {_s = "Die Transition hat den gleichen Start- und Ziel-Connector."; break; }
 
       default:  _s = "Dieser Code wurde noch nicht erfasst.";
     }

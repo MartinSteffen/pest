@@ -8,16 +8,22 @@ import GUI.*;
 
 /**
  * <b>Syntax Check für Statecharts</b>
+ * <br>
+ * <br><b>Folgender empfohlender Aufruf:</b>
+ * <br>1. Initialisierung:   modelCheck mc = new modelCheck(GUI_Referenz)
+ * <br>2. Aufruf des Checks: boolean = mc.checkModel(Statechart)
+ * <br>
  * <br><a href="#Codes">Codes von Fehlern und Warnungen beim Syntax Check</a>
- * @author   Daniel Wendorff und Magnus Stiller<br><a href="mailto:swtech11@informatik.uni-kiel.de">eMail an uns</a>
- * @version  $Id: modelCheck.java,v 1.13 1998-12-13 21:03:49 swtech11 Exp $
+ * <br>
+ * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
+ * @version  $Id: modelCheck.java,v 1.14 1998-12-14 20:40:29 swtech11 Exp $
  */
 public class modelCheck {
   private modelCheckMsg mcm; // Object, um die Fehler und Warnungen zu speichern
   private boolean warning;   // auch Warnungen ausgeben
   private boolean outputGUI; // Meldungen auf die GUI ausgeben
   private boolean donePI;    // Test auf doppelte Referenzierung ausgeführt ?
-  private boolean NoFatalError;  // existiert kein fataler Fehhler (dopplete Referenzierung)
+  private boolean NoFatalError;  // existiert kein fataler Fehhler (doppelte Referenzierung)
   private GUIInterface gui = null; // Referenz auf die GUI
 
 /**
@@ -138,6 +144,8 @@ public class modelCheck {
     try {
       FileOutputStream fos = new FileOutputStream(_name);
       PrintWriter out = new PrintWriter(fos);
+      out.println("Meldungen des Syntax Check:");
+      out.println();
       out.println("Fehlermeldungen ( Anzahl: " + getErrorNumber() +  " ):");
       if (getErrorNumber()>0) {
         for (int i=1;(i<=getErrorNumber());i++) {
@@ -179,7 +187,7 @@ public class modelCheck {
 /**
  * Liefert alle vorhandenen Fakten über den entsprechenden Fehler.
  * Die Methode gibt alle vorhandenen Fakten über den Fehler mit der entsprechenden Nummer als <b>String</b> zurück.
- * @param _number Index des Fehlers (1 bis #getErrorNumber() )
+ * @param _number Index des Fehlers (1 bis getErrorNumber() )
  * @see           #getErrorNumber()
  */
   public String getError(int _number) { return mcm.getError(_number); }
@@ -285,6 +293,7 @@ public class modelCheck {
  *<TR><TD ALIGN="right">412</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Interlevel-Transition: Der Start-Connenctor liegt falsch.</TD></TR>
  *<TR><TD ALIGN="right">413</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Interlevel-Transition: Der Ziel-Connenctor liegt falsch.</TD></TR>
  *<TR><TD ALIGN="right">414</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Interlevel-Transition: Beide Connenctoren liegten falsch.</TD></TR>
+ *<TR><TD ALIGN="right">415</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Die Transition hat den gleichen Start- und Ziel-Connector.</TD></TR>
  *<TR><TD ALIGN="right">X</TD><TD ALIGN="center">X</TD><TD ALIGN="center">X</TD><TD>unbekannter Code</TD></TR>
  *</Table>
  * @param _number Index der Warnung (1 bis getWarningNumber() )
