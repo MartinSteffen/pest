@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.33 1999-01-27 15:54:18 swtech00 Exp $
+//	$Id: report_list,v 1.34 1999-01-27 17:37:33 swtech13 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -309,7 +309,7 @@ Automaton.java:12: ')' expected.
 #Number:	22
 #Autor:		Erich Mikk
 #Subject:	STM-Import traegt ~ für leere Beschriftung ein.
-#Status:	reported
+#Status:	fixed
 #Description:
 
 Beim Import wird das Feld 'caption' in TLabel von  der STM-Import gefüllt. 
