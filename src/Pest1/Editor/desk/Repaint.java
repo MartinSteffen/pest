@@ -7,6 +7,16 @@ import editor.*;
 import java.lang.*;
 import tesc2.*;
 
+/**
+ * @author Michael Mai / Martin Bestaendig
+ * @version V1.25</dl>
+ *<H3> STATUS:</H3>
+ * <ul>
+ * <li> Neuzeichnen von Objekten funktioniert
+ * <li> TrAnchor werden neu berechnet
+ * <li> Konsistenzueberpruefung ist implementiert
+ * </ul>
+ */
 public class Repaint {
 
   static Graphics h;

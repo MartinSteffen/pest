@@ -23,6 +23,14 @@ import editor.*;
 
 
 
+/**
+ * @author Michael Mai / Martin Bestaendig
+ * @version V1.2</dl>
+ *<H3> STATUS:</H3>
+ * <ul>
+ * <li> Markieren von Anfangszustaenden funktioniert
+ * </ul>
+ */
 public class setDefault 
 {
 Statechart root;

@@ -5,6 +5,16 @@ import absyn.*;
 import java.awt.*;
 import editor.*;
 
+/**
+ * @author Michael Mai / Martin Bestaendig
+ * @version V1.10</dl>
+ *<H3> STATUS:</H3>
+ * <ul>
+ * <li> highlighten von States funktioniert
+ * <li> highlighten Connectoren funktioniert
+ * <li> highlighten von Transitionen funktioniert
+ * </ul>
+ */
 public class HighObj {
 
   static Graphics h;

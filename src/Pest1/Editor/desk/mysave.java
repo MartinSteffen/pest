@@ -8,6 +8,7 @@
  * @version
  */
 
+
 package editor.desk;
 
 import java.awt.*;               
@@ -24,6 +25,14 @@ import java.applet.*;
 import tesc2.*;
 
 
+/**
+ * @author Michael Mai / Martin Bestaendig
+ * @version V1.3</dl>
+ *<H3> STATUS:</H3>
+ * <ul>
+ * <li> eigene Speicherfunktion funktioniert
+ * </ul>
+ */
 public class mysave extends Frame{
     
     FileDialog fDialog = new FileDialog(this);

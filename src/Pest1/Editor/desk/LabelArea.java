@@ -11,6 +11,14 @@ import java.lang.*;
 import tesc1.*;
 
 
+/**
+ * @author Michael Mai / Martin Bestaendig
+ * @version V1.9</dl>
+ *<H3> STATUS:</H3>
+ * <ul>
+ * <li> lange Labels werden unterstuetzt und angezeigt
+ * </ul>
+ */
 public class LabelArea extends Dialog {
 
   static int x,y;
@@ -24,6 +32,7 @@ public class LabelArea extends Dialog {
 	    tf.dispose();
 	}
     };
+
 
 
  public LabelArea(int hx, int hy,String lab)

@@ -19,6 +19,15 @@ import java.util.Vector;
 import java.util.Properties;    
 import absyn.*;
 
+/**
+ * @author Michael Mai / Martin Bestaendig
+ * @version V1.7</dl>
+ *<H3> STATUS:</H3>
+ * <ul>
+ * <li> Werkzeugklasse funktioniert
+ * <li> (Auswahl von Objekten wird unterstuetzt)
+ * </ul>
+ */
 public class PESTdrawutil {
 
 public static Statematrix getState(Statechart nroot, int x1, int y1) {

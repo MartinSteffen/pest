@@ -22,6 +22,14 @@ import editor.desk.*;
 import editor.*;
 
 
+/**
+ * @author Michael Mai / Martin Bestaendig
+ * @version V1.2</dl>
+ *<H3> STATUS:</H3>
+ * <ul>
+ * <li> Zeichnen von Connectoren funktioniert
+ * </ul>
+ */
 public class drawPESTConn 
 {
 Statechart root;

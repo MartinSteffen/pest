@@ -6,6 +6,15 @@ import java.awt.*;
 import util.*;
 import editor.*;
 
+/**
+ * @author Michael Mai / Martin Bestaendig
+ * @version V1.8</dl>
+ *<H3> STATUS:</H3>
+ * <ul>
+ * <li> Neuschreiben der Listen funktioniert
+ * <li> Die absoluten Pfadnamen werden unterstuetzt
+ * </ul>
+ */
 public class Relist {
 
   Statechart root;

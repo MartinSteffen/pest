@@ -25,6 +25,16 @@ import tesc2.*;
 
 
  /* Hauptzeichenfeld (Voreinstellungen & Definitionen) */
+/**
+ * @author Michael Mai / Martin Bestaendig
+ * @version V1.35</dl>
+ *<H3> STATUS:</H3>
+ * <ul>
+ * <li> Menueunterstuetzung funktioniert
+ * <li> Zeichnen von Objekten funktioniert
+ * <li> Die Zeichenflaeche ist groessenveraenderlich
+ * </ul>
+ */
   public class PESTDrawDesk extends Component implements ActionListener {
 
       protected int last_x, last_y,old_x,old_y;                		// letzter Klick

@@ -8,6 +8,7 @@
  * @version 1.0
  */
 
+
 package editor.desk;
 
 import java.awt.*;               
@@ -19,6 +20,14 @@ import java.util.Vector;
 import java.util.Properties;    
 import absyn.*;
 
+/**
+ * @author Michael Mai / Martin Bestaendig
+ * @version V1.4</dl>
+ *<H3> STATUS:</H3>
+ * <ul>
+ * <li> Objektklasse fuer eigenen Datentypen
+ * </ul>
+ */
 public class Statematrix {
 	public State akt;
 	public State prev;

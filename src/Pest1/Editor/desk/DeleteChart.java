@@ -3,6 +3,16 @@
 package editor.desk;
 import absyn.*;
 
+/**
+ * @author Michael Mai / Martin Bestaendig
+ * @version V1.2</dl>
+ *<H3> STATUS:</H3>
+ * <ul>
+ * <li> Loeschen von States funktioniert
+ * <li> Loeschen von Connectoren funktioniert
+ * <li> Loeschen von Transitionen funktioniert
+ * </ul>
+ */
 public class DeleteChart {
 
   private Statechart Tree;

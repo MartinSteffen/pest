@@ -21,6 +21,14 @@ import absyn.*;
 import editor.desk.*;
 import editor.*;
 
+/**
+ * @author Michael Mai / Martin Bestaendig
+ * @version V1.6</dl>
+ *<H3> STATUS:</H3>
+ * <ul>
+ * <li> Kopieren und verschieben von Objekten funktioniert
+ * </ul>
+ */
 public class setcopymove 
 {
 Statechart root;
