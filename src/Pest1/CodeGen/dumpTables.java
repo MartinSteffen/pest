@@ -14,7 +14,7 @@ import java.util.*;
  * an interface to the original textual representations of
  * states, events and conditions.
  *
- * @version $Id: dumpTables.java,v 1.10 1999-01-25 14:43:58 swtech25 Exp $
+ * @version $Id: dumpTables.java,v 1.11 1999-01-25 14:52:40 swtech25 Exp $
  * @author Marcel Kyas
  */
 public class dumpTables
@@ -74,19 +74,19 @@ public class dumpTables
 	};
 
 	private final String[] tail = {
-		"\tstatic boolean[] his_states = new boolean[statenames.length];",
-		"\tstatic boolean[] pre_states = new boolean[statenames.length];",
-		"\tstatic boolean[] post_states = new boolean[statenames.length];",
-		"\tstatic boolean[] pre_events = new boolean[eventnames.length];",
-		"\tstatic boolean[] post_events = new boolean[eventnames.length];",
-		"\tstatic boolean[] pre_cond = new boolean[condition_names.length];",
-		"\tstatic boolean[] post_cond = new boolean[condition_names.length];",
+		"\tboolean[] his_states = new boolean[statenames.length];",
+		"\tboolean[] pre_states = new boolean[statenames.length];",
+		"\tboolean[] post_states = new boolean[statenames.length];",
+		"\tboolean[] pre_events = new boolean[eventnames.length];",
+		"\tboolean[] post_events = new boolean[eventnames.length];",
+		"\tboolean[] pre_cond = new boolean[condition_names.length];",
+		"\tboolean[] post_cond = new boolean[condition_names.length];",
 		"",
 		"\t/**",
 		"\t * This method is generating traces.",
 		"\t * @exception IOException self-explanatory.",
 		"\t */",
-		"\tpublic static void trace(OutputStreamWriter f) throws IOException {",
+		"\tpublic void trace(OutputStreamWriter f) throws IOException {",
 		"\t\tint i;",
 		"",
 		"\t\tf.write(\"(\\n (\");",
@@ -114,7 +114,7 @@ public class dumpTables
 		"\t * This method updates the different fields after",
 		"\t * the completion of a step of the automaton",
 		"\t */",
-		"\tpublic static void finalizeStep() {",
+		"\tpublic void finalizeStep() {",
 		"\t\tpre_cond = post_cond;",
 		"\t\tpost_cond = new boolean[condition_names.length];",
 		"\t\tpre_events = post_events;",
