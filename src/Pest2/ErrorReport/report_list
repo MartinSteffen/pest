@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	--------------
 //
-//	$Id: report_list,v 1.38 1999-02-08 11:56:31 swtech01 Exp $
+//	$Id: report_list,v 1.39 1999-02-08 14:23:35 swtech23 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -317,7 +317,7 @@ wie ein Or State, sonst ist alles hin.
 #Number:	21
 #Autor:		Bernd Weber bwe
 #Subject:	Check: Mehrere oder keine Default States werden nicht erkannt
-#Status:	processing
+#Status:	fixed
 #Description:
 
 Check gibt weder Fehler noch Warnungen aus, obwohl keine bzw. zu viele
@@ -336,7 +336,7 @@ plaziert, wenn man sich ihnen mit dem Mauszeiger nhert.
 #Number:	23
 #Autor:		Bernd Weber bwe
 #Subject:	Crossreferenz funktioniert nicht
-#Status:	processing
+#Status:	fixed
 #Description:
 
 Aufruf von Crossreferenz ergibt Meldungen der GUI:
@@ -347,7 +347,7 @@ Das war's. Mehr passiert nicht.
 #Number:	24
 #Autor:		Bernd Weber bwe
 #Subject:	Check: erkennt multiple bzw. fehlende Default Connectoren nicht
-#Status:	processing
+#Status:	fixed
 #Description:
 
 Or State mit mehreren Default Connectoren bzw. gar keinen wird nicht bemngelt.
@@ -379,7 +379,7 @@ java.lang.NullPointerException:
         at java.awt.Component.dispatchEvent(Component.java:1393)
         at java.awt.EventDispatchThread.run(EventDispatchThread.java:63)
 //------------------------------------------------------------------------------
-#Number:	24
+#Number:	25.1
 #Autor:		Bernd Weber bwe
 #Subject:	Check: erkennt Interlevel-Transition nicht.
 #Status:	processing
@@ -389,18 +389,7 @@ Erzeugt man einen Or-State und einen Basic-State wie in Nr. 24 und zieht eine
 Transition von einem der Basic-States im Or-State zum Basic-State neben dem
 Or-State gibt's beim Syntaxcheck keine Fehler.
 //------------------------------------------------------------------------------
-#Number:	25
-#Autor:		Bernd Weber bwe
-#Subject:	Editor: Nach "Datei-Neu" arbeiten GUI noch mit der alten Chart
-#Status:	reported
-#Description:
-
-Erzeugt man eine Chart und whlt im Datei-Menu "Neu" wirkt sich dies nur auf den
-Editor aus. Hier beginnt man eine neue Chart, whrend der PrettyPrinter noch die
-alte Chart anzeigt. nderungen im Editor haben keine Wirkung, da GUI die Chart
-an weitere Methoden wie Check, Export, Speichern usw. bergibt.
-//------------------------------------------------------------------------------
-#Number:	25
+#Number:	25.2
 #Autor:		Bernd Weber bwe
 #Subject:	Editor: Nach "Datei-Neu" arbeiten GUI noch mit der alten Chart
 #Status:	reported
