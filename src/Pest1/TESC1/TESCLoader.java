@@ -7,9 +7,37 @@ import gui.*;
 
 /** 
  * TESCLoader. 
- * Schnittstelle zu PEST.
+ * <STRONG> Garantie. </STRONG> Wir garantieren, dass die von unseren
+ * Module erzeigten Statecharts folgende Eingenschaften haben:
+ * 
+ * <ul>
+ * <li> Ist noch nicht bekannt.
+ * <li> Alle States, Bvars, Events, etc. auf die in z.B. Transition Bezug genommen wird, sind auch vorhanden.
+ * <li> Es gibt nur einen DefCon pro Ebene
+ * </ul>
+ * 
+ * Damit ist es nicht notwendig, folgender Checks an unsere Statecharts
+ * anzuwenden:
+ * 
+ * <ul>
+ * <li> unbekannt.
+ * </ul>
+ * 
+ * <STRONG> Anforderungen. </STRONG> Wir verlassen uns darauf, dass die
+ * Statecharts, die uns uebergeben werden, folgende Eigenschaften haben: 
+ * 
+ * <ul>
+ * <li> unbekannt, weil erst in Stufe 2 relevant.
+ * </ul>
+ * 
+ * die mit folgenden Checks ueberprueft werden koennen:
+ * 
+ * <ul>
+ * <li> unbekannt
+ * </ul>
+
  * @author Arne Koch/Mike Rumpf.
- * @version  $Id: TESCLoader.java,v 1.6 1998-12-17 11:54:14 swtech13 Exp $ 
+ * @version  $Id: TESCLoader.java,v 1.7 1998-12-21 16:17:35 swtech13 Exp $ 
  */ 
 public class TESCLoader {
 
@@ -48,6 +76,9 @@ public class TESCLoader {
 
 /* 
  * $Log: not supported by cvs2svn $
+ * Revision 1.6  1998/12/17 11:54:14  swtech13
+ * TESCLoader.java auf BufferedReader umgestellt
+ *
  * Revision 1.5  1998/12/15 17:51:57  swtech00
  * Towards new naming conventions in PEST1
  *

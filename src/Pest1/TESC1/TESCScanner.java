@@ -266,7 +266,7 @@ class TESCScanner {
 	else if (s.compareTo((String)"transitions") == 0) i = vTOKEN.TRANSITIONS;
 	else if (s.compareTo((String)"bvars") == 0)       i = vTOKEN.BVARS;
 	
-	else if (s.compareTo((String)"connectors") == 0)  i = vTOKEN.CONS;
+	else if (s.compareTo((String)"cons") == 0)  i = vTOKEN.CONS;
 	else if (s.compareTo((String)":=") == 0)          i = vTOKEN.BASSIGN;
 	else if (s.compareTo((String)"!") == 0)           i = vTOKEN.NOT;
 	else if (s.compareTo((String)"defcon") == 0)      i = vTOKEN.DEFCON;
@@ -395,8 +395,11 @@ class TESCScanner {
 
 
 /* TESCScanner
- * $Id: TESCScanner.java,v 1.7 1998-12-17 11:54:16 swtech13 Exp $
+ * $Id: TESCScanner.java,v 1.8 1998-12-21 16:17:37 swtech13 Exp $
  * $Log: not supported by cvs2svn $
+ * Revision 1.7  1998/12/17 11:54:16  swtech13
+ * TESCLoader.java auf BufferedReader umgestellt
+ *
  * Revision 1.6  1998/12/15 17:51:58  swtech00
  * Towards new naming conventions in PEST1
  *

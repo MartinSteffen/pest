@@ -7,11 +7,11 @@ import gui.*;
 import java.lang.*;
 
 /* Todo/Fragen
- * - Was enthält Path? Nur States oder auch Cons?
+ * + Was enthält Path? Nur States oder auch Cons? - Nur States !
  * - Es wird immer ein ActionBlock zurückgeliefert
- * - Kann es mehr als einen defcon geben ?
+ * - Kann es mehr als einen defcon geben ? Selbst entscheiden.
  * + PathList der Größe nach sortieren
- * - Ist Basic_State als root erlaubt ?
+ * + Ist Basic_State als root erlaubt ? - Ja
  * + is_*name über Pfade prüfen !!
  * + Statenamelist in ostate fehlt noch ! <- defcons
  * - Undet bei Guards
@@ -33,7 +33,7 @@ import java.lang.*;
 
 class TESCParser {
 
-    private BufferedReader is;
+
     private Statechart stchart;
     private int errorCount = 0;   // Anzahl der aufgetretenen Fehler
     private Vector errorList;     // Fehlerliste
@@ -48,7 +48,7 @@ class TESCParser {
 
     private Vector path;          // enthält die Pfade
 
-
+    private BufferedReader is;
     //private static final int NNT = 0;  // NoNextToken
 
     // protected-Methoden für das Package
@@ -77,11 +77,17 @@ class TESCParser {
 	}
 	catch (IOException e) {
 	    // Hier in Fehlervektor eintragen?
-	    System.out.println("Ärger!");
+	    //System.out.println("Ärger!");
+	    addError("Tesc1: Lesefehler im Reader");
 	    gi.OkDialog((String) "Scanner: IOError", (String) "Fehler - bei Lesen des Streams!");
 	}
 
-	return stchart;
+	if (errorCount>0) {
+           outputErrors();
+           return null;
+	}
+        else
+	    return stchart;
     }
 
     protected int getErrorCount() {
@@ -114,23 +120,16 @@ class TESCParser {
 
 	StringBuffer f = new StringBuffer();
 
-	
-	try {
-	    tok = ts.nextToken();
+	tok = ts.nextToken();
 
-	    if (tok.token == vTOKEN.EVENTS) {
-		evlist = events();
-	    }
-	    if (tok.token == vTOKEN.BVARS) {
-		bvlist = bvars();
-	    }
-
-	    st = state();
-
+	if (tok.token == vTOKEN.EVENTS) {
+	    evlist = events();
 	}
-	catch (IOException e) {
-	    System.out.println("Mist!");
+	if (tok.token == vTOKEN.BVARS) {
+	    bvlist = bvars();
 	}
+
+	st = state();
 
 	plist = makePathlist();
 
@@ -149,7 +148,8 @@ class TESCParser {
 	if (b) {
 	    evlist = eventlist();
 	}
-
+	else
+	  addError(makeError(tok,"Syntax Error"));
 	return evlist;
     }
     
@@ -172,7 +172,7 @@ class TESCParser {
                 evlist =  new SEventList( ev, null);
 	    }
 	    else {
-		// error
+		addError(makeError(tok,"Fehler in Eventliste"));
 	    }
 	
 	}
@@ -199,7 +199,7 @@ class TESCParser {
                 bvlist =  new BvarList( bv, null);
 	    }
 	    else {
-		// error
+		addError(makeError(tok,"Fehler bei boolscher Variablenliste"));
 	    }
 	
 	}
@@ -332,10 +332,13 @@ class TESCParser {
 	    if (tok.token == vTOKEN.IDENT) {
 		if (s.compareTo(tok.value_str) != 0) {
 		    //Error
-		    System.out.print("FEHLER - Name ungleich -> ");
-		    System.out.print(s);
-		    System.out.print(" <> ");
-		    System.out.println(tok.value_str);
+		    //addError(makeError(tok,"Unbekannter Zustandsname"));
+		    StringBuffer sb = new StringBuffer();
+		    sb.append("Name ungleich -> ");
+		    sb.append(s);
+		    sb.append(" <> ");
+		    sb.append(tok.value_str);
+		    addError(makeError(tok, sb.toString()));
 		}
 		else {
 		    match(vTOKEN.IDENT);
@@ -389,10 +392,13 @@ class TESCParser {
 	    if (tok.token == vTOKEN.IDENT) {
 		if (s.compareTo(tok.value_str) != 0) {
 		    //Error
-		    System.out.print("FEHLER - Name ungleich -> ");
-		    System.out.print(s);
-		    System.out.print(" <> ");
-		    System.out.println(tok.value_str);
+		    
+		    StringBuffer sb = new StringBuffer();
+		    sb.append("Name ungleich -> ");
+		    sb.append(s);
+		    sb.append(" <> ");
+		    sb.append(tok.value_str);
+		    addError(makeError(tok, sb.toString()));
 		}
 		else {
 		    match(vTOKEN.IDENT);
@@ -437,7 +443,7 @@ class TESCParser {
 	    sl = null;
 	}
 	else {
-	    //Error
+	    addError(makeError(tok,"Fehler in Zustandsliste"));
 	}
 	
 	return sl;
@@ -477,7 +483,7 @@ class TESCParser {
                 clist =  new ConnectorList( con, null);
 	    }
 	    else {
-		// error
+		addError(makeError(tok,"Fehler in Konnektorenliste"));
 	    }
 	
 	}
@@ -498,7 +504,7 @@ class TESCParser {
 		match(vTOKEN.IDENT);
 	    }
 	    else {
-		//error
+		addError(makeError(tok,"Fehler bei Defaultkonnektoren"));
 	    }
 	    match(vTOKEN.SCOLON);
 	}
@@ -551,7 +557,7 @@ class TESCParser {
 		match(vTOKEN.IDENT);
 	    }
 	    else {
-		// Error
+		addError(makeError(tok,"Unbekannter Zustandsname"));
 	    }   
 	   
 	}
@@ -703,7 +709,7 @@ class TESCParser {
     // ???
     private Guard pathop(Path actPath) throws IOException {
 	Guard grd = null;
-	if (actPath!=null) System.out.println("HAllo");
+	if (actPath!=null) addError(makeError(tok, "Internal Error!"));
 	switch(tok.token) {
 	case vTOKEN.IN:
 	    match (vTOKEN.IN);
@@ -788,13 +794,14 @@ class TESCParser {
 		match(vTOKEN.IDENT);
 	    }
 	    else {
-		// Error
+		addError(makeError(tok,"Unbekannter Zustand/Konnektor"));
 	    }
 	    
 	}
 	else {
+            addError(makeError(tok,"Syntax Error"));
 	    // Error
-	    System.out.println("Oops!");
+	    //System.out.println("Oops!");
 	}
 
 	return ta;
@@ -856,9 +863,7 @@ class TESCParser {
 	else if (tok.token == vTOKEN.END) {
 	    sl = null;
 	}
-	else {
-	    //Error
-	}
+	
 	return sl;
     }
 
@@ -893,8 +898,8 @@ class TESCParser {
 
 	if (path.size()>0) {
 	    pfad = makePathString(p);
-	    System.out.print("!!!!! -> ");
-	    System.out.println(pfad);
+	    //System.out.print("!!!!! -> ");
+	    //System.out.println(pfad);
 	    
 	    s = path.size();
 	    
@@ -951,12 +956,13 @@ class TESCParser {
 	}
 	else {
 	    // Error
+	    /*
 	    System.out.print("FEHLER ( ");
 	    System.out.print(tok.linenum);
 	    System.out.print(") - ");
 	    System.out.print(ts.getString(t));
 	    System.out.println(" erwartet!");
-	    
+	    */
 	    b = false;
 	}
 
@@ -965,14 +971,7 @@ class TESCParser {
 
     // Tools
 
-    // hängt Fehlermeldung an die Liste an.
-    private void addError(String txt) {
-	errorList.addElement(txt);
-	errorCount++;
-	System.out.println(txt);
-    }
-
-
+ 
     // Es können connectors und States mit gleichem Namen in unterschiedlichem Kontext 
     // vorhanden sein
     // => Die Pfade muessen geprüft werden.
@@ -986,7 +985,7 @@ class TESCParser {
 
 	while (i<l) {
 	    if (x.compareTo((String)cnlist.elementAt(i)) == 0) {
-		System.out.println("Connname");
+		//System.out.println("Connname");
 		b = true;
 		break;
 	    }
@@ -1004,7 +1003,7 @@ class TESCParser {
 	
 	while (i<l) {
 	    if (x.compareTo((String)snlist.elementAt(i)) == 0) {
-		System.out.println("Statenname");
+		//System.out.println("Statenname");
 		b = true;
 		break;
 	    }
@@ -1022,7 +1021,7 @@ class TESCParser {
 
 	while (i<l) {
 	    if (txt.compareTo((String)bnlist.elementAt(i)) == 0) {
-		System.out.println("Bvarname");
+		//System.out.println("Bvarname");
 		b = true;
 		break;
 	    }
@@ -1039,7 +1038,7 @@ class TESCParser {
 
 	while (i<l) {
 	    if (txt.compareTo((String)enlist.elementAt(i)) == 0) {
-		System.out.println("Eventname");
+		//System.out.println("Eventname");
 		b = true;
 		break;
 	    }
@@ -1070,11 +1069,18 @@ class TESCParser {
 
     }
 
+       // hängt Fehlermeldung an die Liste an.
+    private void addError(String txt) {
+	errorList.addElement(txt);
+	errorCount++;
+	//System.out.println(txt);
+    }
+
     // generiert Fehlerstring
     private String makeError(TOKEN tok_, String txt) {
 	StringBuffer f = new StringBuffer();
 
-	f.append("Zeile ");
+	f.append("Tesc1: Zeile ");
 	f.append(tok_.linenum);
 	f.append(" - ");
 	f.append(txt);
@@ -1084,11 +1090,25 @@ class TESCParser {
 
 	return f.toString();
     }
+
+    private void outputErrors() {
+        String txt;
+        int s = errorList.size();
+	    
+	for(int i=0;i<s;i++) {
+           txt = (String ) errorList.elementAt(i);
+	   gi.userMessage(txt);
+	}
+    }
+
 }
 
 /* TESCParser
- * $Id: TESCParser.java,v 1.6 1998-12-17 11:54:15 swtech13 Exp $
+ * $Id: TESCParser.java,v 1.7 1998-12-21 16:17:36 swtech13 Exp $
  * $Log: not supported by cvs2svn $
+ * Revision 1.6  1998/12/17 11:54:15  swtech13
+ * TESCLoader.java auf BufferedReader umgestellt
+ *
  * Revision 1.5  1998/12/15 17:51:57  swtech00
  * Towards new naming conventions in PEST1
  *
