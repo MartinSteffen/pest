@@ -50,13 +50,13 @@ import editor.*;
  * </DL COMPACT>
  * <br>
  * @author Java Praktikum: <a href="mailto:dw@ks.informatik.uni-kiel.de">Daniel Wendorff</a> und <a href="mailto:Stiller@T-Online.de">Magnus Stiller</a>
- * @version  $Id: ModelCheck.java,v 1.44 1999-02-14 20:56:27 swtech11 Exp $
+ * @version  $Id: ModelCheck.java,v 1.45 1999-02-15 11:19:51 swtech11 Exp $
  * @see CheckConfig
  */
 public class ModelCheck {
   private ModelCheckMsg mcm; // Object, um die Fehler und Warnungen zu speichern
   private boolean outputGUI; // Meldungen auf die GUI ausgeben
-  protected GUIInterface gui = null; // Referenz auf die GUI
+  private GUIInterface gui = null; // Referenz auf die GUI
   private Editor edit = null;
   private CheckConfig cf = new CheckConfig();
 
