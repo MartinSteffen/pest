@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	--------------
 //
-//	$Id: report_list,v 1.66 1999-02-12 12:40:04 swtech23 Exp $
+//	$Id: report_list,v 1.67 1999-02-12 12:52:27 swtech22 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -689,8 +689,11 @@ Transitionen aktivieren, dann gehen von SAFE zwei Linien ins Nichts
 #Number:	44
 #Autor:		Erich Mikk erm
 #Subject:	Nur eine Simulation pro Session möglich
-#Status:	reported
+#Status:	fixed
 #Description:
+
+swtech22: Nach Absprache mit GUI rufen wir jetzt eine Funktion auf,
+          die GUI mitteilt, wann die Simulation beendet wurde.
 
 GUI bekommt es nicht mit, dass die Simulation beendet wurde. 
 Deswegen weigert die GUI die zweite Simulation (Meldung: nur eine Simulation kann 
