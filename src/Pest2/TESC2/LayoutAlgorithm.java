@@ -13,10 +13,7 @@ package tesc2;
 import absyn.*;
 
 interface LayoutAlgorithm {
-    
-    void layoutBasicState(Basic_State s);
-    void layoutORState(Or_State s);
-    void layoutANDState(And_State s);
+
     void layoutStatechart(Statechart sc);
     
 } // LayoutAlgorithm
