@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	------------------
 //
-//	$Id: report_list,v 1.25 1999-02-03 16:58:30 swtech01 Exp $
+//	$Id: report_list,v 1.26 1999-02-04 09:16:13 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -83,7 +83,7 @@ gespeichert wurde.
 #Number:	4
 #Autor:		Erich Mikk erm
 #Subject:	Transitionsbeschriftungen nicht sichtbar
-#Status: 	fixed 
+#Status: 	confirmed
 #Description: 
 
 Import->Statemate lädt swtech12/Examples/TV/tv.st.
