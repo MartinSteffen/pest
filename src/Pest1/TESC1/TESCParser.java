@@ -262,7 +262,7 @@ class TESCParser {
     protected Guard readGuard(BufferedReader br, Statechart st) throws IOException {
 	Guard grd = null;
 
-	debug("readGuard(BufferedReader br, SEventList el, BvarList bl)");
+	debug("readGuard(BufferedReader br, Statechart st)");
 
 	evlist = st.events;
 	bvlist = st.bvars;
@@ -1018,7 +1018,8 @@ class TESCParser {
 	    if (grd_e != null)
 		grd = new GuardCompg((Compguard)setLoc(new Compguard(Compguard.AND, grd_e, grd_b), loc));
 	    else 
-		grd = grd_b;
+		grd = new GuardCompg((Compguard)setLoc(new Compguard(Compguard.AND, new GuardEmpty((Dummy)setLoc(new Dummy(), loc)), grd_b), loc));
+		//grd = grd_b;
 
 	    grd.location  = loc;
 	}
@@ -1871,8 +1872,11 @@ class TESCParser {
 }
 
 /* TESCParser
- * $Id: TESCParser.java,v 1.24 1999-02-08 14:45:07 swtech13 Exp $
+ * $Id: TESCParser.java,v 1.25 1999-02-09 13:38:55 swtech13 Exp $
  * $Log: not supported by cvs2svn $
+ * Revision 1.24  1999/02/08 14:45:07  swtech13
+ * Aufraeumen der Schnittstellen
+ *
  * Revision 1.23  1999/02/05 19:21:20  swtech13
  * Aenderung in der Syntax
  *

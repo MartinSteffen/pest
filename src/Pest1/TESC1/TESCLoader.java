@@ -62,7 +62,7 @@ import java.util.*;
  * <br>
  * <hr>
  * @author Arne Koch/Mike Rumpf.
- * @version  $Id: TESCLoader.java,v 1.23 1999-02-08 14:45:06 swtech13 Exp $ 
+ * @version  $Id: TESCLoader.java,v 1.24 1999-02-09 13:38:55 swtech13 Exp $ 
  */ 
 public class TESCLoader {
 
@@ -138,7 +138,7 @@ public class TESCLoader {
 
 
     /**
-     * Liefert um caption erweitertes TLabel
+     * Liefert um SyntaxBaum (aus tl.caption berechnet) erweitertes TLabel
      * @return TLabel oder null bei Fehler
      */
     public TLabel getLabel(TLabel tl_, Statechart sc) {
@@ -232,6 +232,9 @@ public class TESCLoader {
 
 /* 
  * $Log: not supported by cvs2svn $
+ * Revision 1.23  1999/02/08 14:45:06  swtech13
+ * Aufraeumen der Schnittstellen
+ *
  * Revision 1.22  1999/01/25 13:27:49  swtech13
  * debug auskommentiert
  *
