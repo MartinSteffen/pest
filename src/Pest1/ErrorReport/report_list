@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.76 1999-02-08 11:21:39 swtech01 Exp $
+//	$Id: report_list,v 1.77 1999-02-08 12:19:18 swtech25 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -223,7 +223,7 @@ Das schliessen des Simulators fuehrt zu einer Null-pointer exception.
 #Number:	16
 #Autor:		Marcel Kyas, Walter Loeser, Andre Paetzold swtech25
 #Subject:	Kein Pfad fuer CodeGen.
-#Status:	fixed
+#Status:	confirmed	
 #Description:
 
 Man kann fuer die Code Erzeugung keinen Pfad angeben.  Der Pfad "."
