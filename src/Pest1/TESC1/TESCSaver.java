@@ -204,10 +204,10 @@ public class TESCSaver {
 
 	    if (switches.contains("Trans.useAbsyn")) {
 
-		TESCLabelGen tl = new TESCLabelGen(trans.label.guard, trans.label.action);
+		//TESCLabelGen tl = new TESCLabelGen(trans.label.guard, trans.label.action);
 		
-		guard = tl.getGuard();
-		action = tl.getAction();
+		//guard = tl.getGuard();
+		//action = tl.getAction();
 
 	    }
 	    else {
