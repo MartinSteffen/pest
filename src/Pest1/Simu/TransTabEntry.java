@@ -1,11 +1,12 @@
 package simu;
 
 import absyn.*;
+import java.io.*;
 
 /**
  * Unterklasse fuer TransTab
  */
-public class TransTabEntry {
+public class TransTabEntry implements Serializable{
 	Path tteSource;
 	Path tteTarget;
 	TLabel tteLabel;

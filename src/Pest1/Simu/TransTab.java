@@ -1,11 +1,12 @@
 package simu;
 
 import absyn.*;
+import java.io.*;
 
 /**
  * Ein Eintrag in die transList
  */
-public class TransTab {
+public class TransTab implements Serializable{
 	TransTabEntry transition = null;
 	TrList tListe = null;
 	ConnectorList conn = null;	

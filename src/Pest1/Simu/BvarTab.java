@@ -1,5 +1,6 @@
 package simu;
 
+import java.io.*;
 /**
  * Hilfs-Klasse fuer Tabelle-BVar
  */
@@ -7,7 +8,7 @@ package simu;
 import java.util.*;
 import java.lang.*;
  
-public class BvarTab {
+public class BvarTab implements Serializable{
 	absyn.Bvar bName;
 	boolean bWert;
 

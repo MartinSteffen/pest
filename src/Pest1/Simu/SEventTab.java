@@ -1,9 +1,10 @@
 package simu;
 
+import java.io.*;
 /**
  * Hilfsklasse fuer den Eintrag in die eigene Eventtabelle
  */
-public class SEventTab {
+public class SEventTab implements Serializable{
 	absyn.SEvent bName;
 	boolean bWert;
 
