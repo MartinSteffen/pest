@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	--------------
 //
-//	$Id: report_list,v 1.58 1999-02-11 13:36:18 swtech00 Exp $
+//	$Id: report_list,v 1.59 1999-02-11 14:55:17 swtech23 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -677,4 +677,12 @@ PEST-Format speichert und in PEST1 lädt, dann werden keine IT-Probleme in
 PEST1 gemeldet.  Vielleicht ist das denn doch ein check-Fehler und kein
 TESC2.
 //------------------------------------------------------------------------------
- 
+#Number:	43
+#Autor:		Mario Thies swtech23
+#Subject:	Editor runde Transitionen "hauen ab"
+#Status:	reported
+#Description:
+
+~swtech12/Examples/ex_undet.pest laden, Editor oeffnen und Kurven bei
+Transitionen aktivieren, dann gehen von SAFE zwei Linien ins Nichts
+//------------------------------------------------------------------------------ 
