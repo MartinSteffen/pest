@@ -28,7 +28,7 @@ import gui.*;
  * <a href="#Codes">Codes von Fehlern und Warnungen beim Syntax Check</a><br>
  * <br>
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: ModelCheck.java,v 1.8 1998-12-22 17:30:23 swtech11 Exp $
+ * @version  $Id: ModelCheck.java,v 1.9 1998-12-29 15:27:06 swtech11 Exp $
  */
 public class ModelCheck {
   private ModelCheckMsg mcm; // Object, um die Fehler und Warnungen zu speichern
@@ -123,7 +123,7 @@ public class ModelCheck {
 
       // Checkt die Events.
       if (sc.events == null) {
-        mcm.addError(210,"uebergebene Statechart");
+        mcm.addWarning(210,"uebergebene Statechart");
         if ( outputGUI == true ) { gui.userMessage("Check: Der Check für die Überprüfung der Events wurde nicht ausgeführt."); }
       }
       else {
@@ -136,7 +136,7 @@ public class ModelCheck {
 
       // Checkt die booleschen Variablen.
       if (sc.bvars == null) {
-        mcm.addError(110,"uebergebene Statechart");
+        mcm.addWarning(110,"uebergebene Statechart");
         if ( outputGUI == true ) { gui.userMessage("Check: Der Check für die Überprüfung der Booleschen Variablen wurde nicht ausgeführt."); }
       }
       else {
