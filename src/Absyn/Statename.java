@@ -26,12 +26,7 @@ public class Statename extends TrAnchor implements Serializable, Cloneable {
  * @exception CloneNotSupportedException self-explanatory exception
  */
     public Object clone() throws CloneNotSupportedException {
-      CPoint positionclone;
-      if (position != null) {
-	positionclone = (CPoint)position.clone();
-      } else
-	positionclone = null;
-
+      CPoint positionclone    = (position == null) ? null :  (CPoint)position.clone();
       Location  locationclone  = (location == null) ? null : (Location)location.clone();
 
       return new Statename(name, positionclone,locationclone);
@@ -44,9 +39,12 @@ public class Statename extends TrAnchor implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Statename.java,v 1.10 1999-02-09 11:32:59 swtech00 Exp $
+//	$Id: Statename.java,v 1.11 1999-02-09 13:17:12 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.10  1999/02/09 11:32:59  swtech00
+//	Abfangen von weiteren Null-Pointern beim Klonen
+//
 //	Revision 1.9  1999/01/11 17:23:51  swtech00
 //	Alle Bestandteile der abstrakten Syntax mit Locations (= nicht-abstrakte
 //	Unterklassen von Absyn) in der Form modifiziert, da"s das Locations-Feld

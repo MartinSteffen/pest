@@ -15,19 +15,19 @@ public class SEventList extends Absyn implements Serializable, Cloneable {
     public Object clone() throws CloneNotSupportedException {
 	SEventList tailclone = (tail == null) ? null : (SEventList)tail.clone();
 	SEvent     headclone = (head == null) ? null : (SEvent)head.clone();
-	return new SEventList(
-			      headclone,
-			      tailclone
-			      );
+	return new SEventList(headclone, tailclone);
     };
 };
 //----------------------------------------------------------------------
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: SEventList.java,v 1.9 1999-02-09 11:32:58 swtech00 Exp $
+//	$Id: SEventList.java,v 1.10 1999-02-09 13:17:12 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.9  1999/02/09 11:32:58  swtech00
+//	Abfangen von weiteren Null-Pointern beim Klonen
+//
 //	Revision 1.8  1999/01/12 08:57:29  swtech00
 //	Die "Anderungen von gestern in den ``Listen'' r"uckg"angig gemacht.
 //

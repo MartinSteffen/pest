@@ -17,8 +17,7 @@ public class StateList extends Absyn implements Serializable, Cloneable {
 	StateList tailclone =  (tail == null) ? null : (StateList)tail.clone();
 	State     headclone =  (head == null) ? null : (State) head.clone();
 
-	return new StateList(headclone,
-			     tailclone);
+	return new StateList(headclone, tailclone);
     };
     
 };
@@ -29,9 +28,12 @@ public class StateList extends Absyn implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: StateList.java,v 1.8 1999-02-09 11:32:58 swtech00 Exp $
+//	$Id: StateList.java,v 1.9 1999-02-09 13:17:12 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.8  1999/02/09 11:32:58  swtech00
+//	Abfangen von weiteren Null-Pointern beim Klonen
+//
 //	Revision 1.7  1999/01/12 08:57:29  swtech00
 //	Die "Anderungen von gestern in den ``Listen'' r"uckg"angig gemacht.
 //

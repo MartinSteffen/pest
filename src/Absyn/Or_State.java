@@ -57,27 +57,12 @@ public class Or_State extends State implements Serializable, Cloneable {
  */
     public Object clone() throws CloneNotSupportedException {
 
-	ConnectorList connectorsclone;
-	if (connectors !=null) 
-	    connectorsclone = (ConnectorList)connectors.clone();
-	else
-	    connectorsclone = null;
-
-	StateList substatesclone;
-	if (substates !=null) 
-	    substatesclone = (StateList)substates.clone();
-	else
-	    substatesclone = null;
-	
-	TrList trsclone;
-	if (trs !=null) 
-	    trsclone = (TrList)trs.clone();
-	else
-	    trsclone = null;
-
-	StatenameList defaultsclone = (defaults == null) ? null : (StatenameList)defaults.clone();
-	Location      locationclone = (location == null) ? null : (Location)location.clone();
-	Statename nameclone =         (name == null) ? null : (Statename)name.clone();
+	ConnectorList connectorsclone = (connectors ==null) ? null : (ConnectorList)connectors.clone();
+	StateList      substatesclone = (substates == null) ? null : (StateList)substates.clone();
+	TrList         trsclone       = (trs == null)       ? null : (TrList)trs.clone();
+	StatenameList defaultsclone   = (defaults == null)  ? null : (StatenameList)defaults.clone();
+	Location      locationclone   = (location == null)  ? null : (Location)location.clone();
+	Statename nameclone           =  (name == null)     ? null : (Statename)name.clone();
 	    
 	return new Or_State(nameclone, 
 			    (StateList) substatesclone, 
@@ -95,9 +80,12 @@ public class Or_State extends State implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Or_State.java,v 1.14 1999-02-09 11:32:57 swtech00 Exp $
+//	$Id: Or_State.java,v 1.15 1999-02-09 13:17:11 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.14  1999/02/09 11:32:57  swtech00
+//	Abfangen von weiteren Null-Pointern beim Klonen
+//
 //	Revision 1.13  1999/01/28 10:40:04  swtech00
 //	Erster Parameter (name) geklont.
 //

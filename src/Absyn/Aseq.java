@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Sequence of actions, needed as the contense of a s_block.
  * <br>
  * @author Initially provided by Martin Steffen.
- * @version $Id: Aseq.java,v 1.11 1999-02-09 11:32:54 swtech00 Exp $
+ * @version $Id: Aseq.java,v 1.12 1999-02-09 13:17:10 swtech00 Exp $
  */
 public class Aseq extends Absyn implements Serializable, Cloneable {
 /**
@@ -29,15 +29,10 @@ public class Aseq extends Absyn implements Serializable, Cloneable {
  * @exception CloneNotSupportedException self-explanatory exception
  */
     public Object clone() throws CloneNotSupportedException {
-	Action headclone;
-	if (head != null) {
-	    headclone = (Action)head.clone();
-	}
-	else headclone = null;
-	
-	Aseq tailclone           = (tail == null)     ? null : (Aseq)tail.clone();
+	Action headclone         = (head     == null) ? null : (Action)head.clone();
+	Aseq tailclone           = (tail     == null) ? null : (Aseq)tail.clone();
 	Location  locationclone  = (location == null) ? null : (Location)location.clone();
-	return new Aseq ((Action)headclone,
+	return new Aseq (headclone,
 			 tailclone,
 			 locationclone);
     };
@@ -47,9 +42,12 @@ public class Aseq extends Absyn implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Aseq.java,v 1.11 1999-02-09 11:32:54 swtech00 Exp $
+//	$Id: Aseq.java,v 1.12 1999-02-09 13:17:10 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.11  1999/02/09 11:32:54  swtech00
+//	Abfangen von weiteren Null-Pointern beim Klonen
+//
 //	Revision 1.10  1999/01/11 17:23:47  swtech00
 //	Alle Bestandteile der abstrakten Syntax mit Locations (= nicht-abstrakte
 //	Unterklassen von Absyn) in der Form modifiziert, da"s das Locations-Feld

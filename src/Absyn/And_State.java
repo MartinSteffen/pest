@@ -37,20 +37,10 @@ public class And_State extends State implements Serializable, Cloneable {
  * @exception CloneNotSupportedException self-explanatory exception
  */
    public Object clone() throws CloneNotSupportedException {
-       CRectangle rectclone;
-       if (rect != null) 
-	   rectclone = (CRectangle)rect.clone();
-       else
-	   rectclone = null;
-
-       StateList substatesclone;
-       if (substates != null) 
-	   substatesclone = (StateList)substates.clone();
-       else
-	   substatesclone = null;
-
-       Location  locationclone  = (location == null) ? null : (Location)location.clone();
-       Statename nameclone      = (name == null) ? null : (Statename)name.clone();
+       CRectangle rectclone     = (rect      == null) ? null : (CRectangle)rect.clone();
+       StateList substatesclone = (substates == null) ? null : (StateList)substates.clone();
+       Location  locationclone  = (location  == null) ? null : (Location)location.clone();
+       Statename nameclone      = (name      == null) ? null : (Statename)name.clone();
 
        return new And_State(nameclone, 
 			    substatesclone, 
@@ -62,9 +52,12 @@ public class And_State extends State implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: And_State.java,v 1.14 1999-02-09 10:12:40 swtech00 Exp $
+//	$Id: And_State.java,v 1.15 1999-02-09 13:17:10 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.14  1999/02/09 10:12:40  swtech00
+//	Null-name f"urs Clonen abgefangen
+//
 //	Revision 1.13  1999/01/28 10:40:30  swtech00
 //	Erster Konstruktor-Parameter (name) geklont
 //

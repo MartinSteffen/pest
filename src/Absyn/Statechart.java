@@ -40,25 +40,14 @@ public class Statechart extends Absyn implements Serializable, Cloneable  {
       BvarList bvarsclone      = (bvars == null)    ? null : (BvarList) bvars.clone();
       State    stateclone      = (state == null)    ? null : (State) state.clone();
       Location  locationclone  = (location == null) ? null : (Location)location.clone();
-      SEventList seventsclone;
-      if (events != null)
-	seventsclone = (SEventList) events.clone();
-      else
-	seventsclone = null;
-
-      PathList cnamesclone;
-      if (cnames != null)
-	cnamesclone = (PathList) cnames.clone();
-      else
-	cnamesclone = null;
+      SEventList seventsclone  = (events == null)   ? null : (SEventList) events.clone();
+      PathList cnamesclone     = (cnames == null)   ? null : (PathList) cnames.clone();
       
-
-
-	return new Statechart((SEventList)seventsclone,
-			      (BvarList)bvarsclone,
-			      (PathList)cnamesclone,
-			      (State)stateclone,
-			      locationclone);
+      return new Statechart((SEventList)seventsclone,
+			    (BvarList)bvarsclone,
+			    (PathList)cnamesclone,
+			    (State)stateclone,
+			    locationclone);
     };
 
 };
@@ -66,9 +55,12 @@ public class Statechart extends Absyn implements Serializable, Cloneable  {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Statechart.java,v 1.16 1999-02-09 11:32:59 swtech00 Exp $
+//	$Id: Statechart.java,v 1.17 1999-02-09 13:17:12 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.16  1999/02/09 11:32:59  swtech00
+//	Abfangen von weiteren Null-Pointern beim Klonen
+//
 //	Revision 1.15  1999/02/09 09:53:02  swtech00
 //	nil-Pointer abgefangen, d.h., von nun an sind auch
 //	Statecharts ohne state erlaubt.

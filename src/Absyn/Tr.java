@@ -9,7 +9,7 @@ import java.awt.Point;
 /**
  *Tr.
  * @author Initially provided by Martin Steffen.
- * @version $Id: Tr.java,v 1.13 1999-02-09 11:33:00 swtech00 Exp $
+ * @version $Id: Tr.java,v 1.14 1999-02-09 13:17:13 swtech00 Exp $
  */
 public class Tr extends Absyn implements Serializable, Cloneable {   // Transition
   public CPoint[]  points;
@@ -41,12 +41,11 @@ public class Tr extends Absyn implements Serializable, Cloneable {   // Transiti
  * @exception CloneNotSupportedException self-explanatory exception
  */
   public Object clone () throws CloneNotSupportedException {
-    CPoint [] pointsclone;
-    if (points != null) {pointsclone = (CPoint [])points.clone();} else {pointsclone =null;};
+    CPoint [] pointsclone    = (points == null)   ? null :  (CPoint [])points.clone();
     Location  locationclone  = (location == null) ? null : (Location)location.clone();
-    TrAnchor sourceclone =  (source == null) ? null : (TrAnchor)source.clone();
-    TrAnchor targetclone =  (target == null) ? null : (TrAnchor)target.clone();
-    TLabel   labelclone  =  (label == null)  ? null : (TLabel)label.clone();
+    TrAnchor sourceclone     = (source == null)   ? null : (TrAnchor)source.clone();
+    TrAnchor targetclone     = (target == null)   ? null : (TrAnchor)target.clone();
+    TLabel   labelclone      = (label == null)    ? null : (TLabel)label.clone();
     return new Tr(sourceclone,
 		  targetclone,
 		  labelclone,
@@ -65,9 +64,12 @@ public class Tr extends Absyn implements Serializable, Cloneable {   // Transiti
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Tr.java,v 1.13 1999-02-09 11:33:00 swtech00 Exp $
+//	$Id: Tr.java,v 1.14 1999-02-09 13:17:13 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.13  1999/02/09 11:33:00  swtech00
+//	Abfangen von weiteren Null-Pointern beim Klonen
+//
 //	Revision 1.12  1999/01/11 17:23:52  swtech00
 //	Alle Bestandteile der abstrakten Syntax mit Locations (= nicht-abstrakte
 //	Unterklassen von Absyn) in der Form modifiziert, da"s das Locations-Feld

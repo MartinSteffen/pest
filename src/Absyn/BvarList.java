@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * List of boolean variables.
  * @author Initially provided by Martin Steffen.
- * @version $Id: BvarList.java,v 1.11 1999-02-09 10:35:03 swtech00 Exp $
+ * @version $Id: BvarList.java,v 1.12 1999-02-09 13:17:11 swtech00 Exp $
  */
 public class BvarList extends Absyn implements Serializable, Cloneable {
 /**
@@ -28,9 +28,8 @@ public class BvarList extends Absyn implements Serializable, Cloneable {
  * @exception CloneNotSupportedException self-explanatory exception
  */
     public Object clone() throws CloneNotSupportedException {
-	BvarList tailclone;
-	if (tail != null) {tailclone = (BvarList) tail.clone();} else {tailclone = null;};
-        Bvar headclone = (head == null) ? null : (Bvar)head.clone();
+	BvarList tailclone = (tail == null) ? null : (BvarList) tail.clone();
+        Bvar     headclone = (head == null) ? null : (Bvar)head.clone();
 	return new BvarList(headclone, tailclone);
     };
 
@@ -39,9 +38,12 @@ public class BvarList extends Absyn implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: BvarList.java,v 1.11 1999-02-09 10:35:03 swtech00 Exp $
+//	$Id: BvarList.java,v 1.12 1999-02-09 13:17:11 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.11  1999/02/09 10:35:03  swtech00
+//	null-head f"urs Clonen abgefangen
+//
 //	Revision 1.10  1999/01/12 08:57:27  swtech00
 //	Die "Anderungen von gestern in den ``Listen'' r"uckg"angig gemacht.
 //

@@ -47,6 +47,7 @@ public class Ref_State extends Basic_State {
     return new Ref_State (nameclone,rect, locationclone, 
 			  filename,
 			  filetypeclone);
+    // beachte: filename ist ein string und muss nicht geklont werden
     };
 
 }
@@ -55,9 +56,12 @@ public class Ref_State extends Basic_State {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Ref_State.java,v 1.4 1999-02-09 11:32:58 swtech00 Exp $
+//	$Id: Ref_State.java,v 1.5 1999-02-09 13:17:11 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.4  1999/02/09 11:32:58  swtech00
+//	Abfangen von weiteren Null-Pointern beim Klonen
+//
 //	Revision 1.3  1999/02/02 12:49:16  swtech00
 //	Konstruktoren erg"anzt [Steffen]
 //

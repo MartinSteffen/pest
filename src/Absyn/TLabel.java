@@ -6,7 +6,7 @@ import java.awt.Point;
 /**
  * TLabel.
  * @author Initially provided by Martin Steffen.
- * @version $Id: TLabel.java,v 1.10 1999-01-12 09:21:49 swtech24 Exp $
+ * @version $Id: TLabel.java,v 1.11 1999-02-09 13:17:13 swtech00 Exp $
  */
 public class TLabel extends Absyn implements Serializable, Cloneable {
 /**
@@ -69,18 +69,17 @@ public class TLabel extends Absyn implements Serializable, Cloneable {
  * @exception CloneNotSupportedException self-explanatory exception
  */
     public Object clone() throws CloneNotSupportedException {
-      CPoint positionclone     = (position==null)   ? null : (CPoint)position.clone();
-      Guard  guardclone        = (guard  == null)   ? null : (Guard)guard.clone();
-      Action actionclone       = (action == null)   ? null : (Action)action.clone();
-      Location  locationclone  = (location == null) ? null : (Location)location.clone();
-      String captionclone      = new String(caption);
+      CPoint positionclone     = (position == null)   ? null : (CPoint)position.clone();
+      Guard  guardclone        = (guard    == null)   ? null : (Guard)guard.clone();
+      Action actionclone       = (action   == null)   ? null : (Action)action.clone();
+      Location  locationclone  = (location == null)   ? null : (Location)location.clone();
 
       return new TLabel (guardclone,
 			 actionclone,
 			 positionclone,
 			 locationclone,
-			 captionclone
-			 );
+			 caption);
+      // beachte: caption ist ein String und muss nicht geklont werden
     };
 }
 
@@ -90,8 +89,15 @@ public class TLabel extends Absyn implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: TLabel.java,v 1.10 1999-01-12 09:21:49 swtech24 Exp $
+//	$Id: TLabel.java,v 1.11 1999-02-09 13:17:13 swtech00 Exp $
 //      $Log: not supported by cvs2svn $
+//      Revision 1.10  1999/01/12 09:21:49  swtech24
+//      Erweiterung von TLabel um das Stringfeld caption.
+//
+//      Diese Erweiterung wurde notwendig, da sich aus den BVar- und Eventlisten der
+//      Transitionen der Originaleingabestring nicht wieder herstellen liess.
+//      Aber genau dieser Eingabestring wird fuer die Bildschirmausgabe benoetigt.
+//
 //      Revision 1.9  1999/01/11 17:23:51  swtech00
 //      Alle Bestandteile der abstrakten Syntax mit Locations (= nicht-abstrakte
 //      Unterklassen von Absyn) in der Form modifiziert, da"s das Locations-Feld

@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * One kind of transition action: generation of events.
  * @author Initially provided by Martin Steffen.
- * @version  $Id: ActionEvt.java,v 1.7 1999-02-09 10:10:37 swtech00 Exp $
+ * @version  $Id: ActionEvt.java,v 1.8 1999-02-09 13:17:09 swtech00 Exp $
  */
 
 public class ActionEvt extends Action implements Serializable, Cloneable {
@@ -28,7 +28,7 @@ public class ActionEvt extends Action implements Serializable, Cloneable {
     public Object clone() throws CloneNotSupportedException {
       Location  locationclone  = (location == null) ? null : (Location)location.clone();
       SEvent eventclone = (event == null) ? null : (SEvent) event.clone();
-      return new ActionEvt((SEvent)eventclone, locationclone);
+      return new ActionEvt(eventclone, locationclone);
     };
     
 };
@@ -36,9 +36,12 @@ public class ActionEvt extends Action implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: ActionEvt.java,v 1.7 1999-02-09 10:10:37 swtech00 Exp $
+//	$Id: ActionEvt.java,v 1.8 1999-02-09 13:17:09 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.7  1999/02/09 10:10:37  swtech00
+//	null-SEvent abgefangen
+//
 //	Revision 1.6  1999/01/11 17:23:46  swtech00
 //	Alle Bestandteile der abstrakten Syntax mit Locations (= nicht-abstrakte
 //	Unterklassen von Absyn) in der Form modifiziert, da"s das Locations-Feld
