@@ -49,7 +49,7 @@ public class Editor extends Frame implements ActionListener {
     @param l Ein Bezeichner fuer den Statechart
 */
 
-    protected Editor(Statechart st, String l, int x, int y, int width, int height,GUIInterface gui_interface) {
+    public Editor(Statechart st, String l, int x, int y, int width, int height,GUIInterface gui_interface) {
         statechart = st;
         if (statechart.state == null)  {
             statechart.state = new Or_State(null, null, null, null, null);
