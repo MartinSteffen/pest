@@ -1,8 +1,8 @@
 //-----------------------------------------------------------------------------
 //	Fehlerliste von PEST2
-//	------------------
+//	--------------
 //
-//	$Id: report_list,v 1.33 1999-02-05 10:22:56 swtech01 Exp $
+//	$Id: report_list,v 1.34 1999-02-06 17:28:22 swtech23 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -586,7 +586,7 @@ beide Basic States als Default angegeben sind. Syntaxcheck meldet keine Fehler.
 #Number:	38
 #Autor:		Bernd Weber bwe
 #Subject:	Tesc: Zu viele Default States werden nicht erkannt
-#Status:	reported
+#Status:	fixed
 #Description:
 
 Importiere ~swtech12/Examples/misc/faulty3.tesc2. Ergibt keine Fehler, obwohl
@@ -595,7 +595,7 @@ root als sein eigener default markiert ist. Syntaxcheck meldet keine Fehler.
 #Number:	39
 #Autor:		Bernd Weber bwe
 #Subject:	Check: Terminiert nicht !!!
-#Status:	processing
+#Status:	fixed
 #Description:
 
 Importiere ~swtech12/Examples/misc/bvar-test1.tesc2. Chart wird im Editor
