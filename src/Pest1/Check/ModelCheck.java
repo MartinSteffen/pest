@@ -15,7 +15,11 @@ import gui.*;
  * </ol>
  * <h2>Forderungen an die an den Check übergebene Statechart:</h2>
  * <ul>
- * <li>KEINE
+ * <li>Es darf keine <b>null</b> an Stellen stehen, die dafür nicht vorgesehen
+ * sind (z.B. in TrList.head).
+ * <li>(In der Datenstruktur der Statechart darf kein Zyklus sein.) Zur Zeit
+ * testen wir das noch, aber sobald wir die Garantien der anderen Module haben,
+ * werden wir den Test entfernen.
  * </ul>
  * <h2>Garantien nach der Beendigung des Checks:</h2>
  * <ul>
@@ -29,23 +33,22 @@ import gui.*;
  * <br>
  * <br>
  * <DL COMPACT>
- * <DT><STRONG>STATUS: </STRONG>
+ * <DT><STRONG>STATUS: </STRONG><br>
  * Unserer Syntax Check ist fertig, abgesehen davon,
- * daß wir unseren Test nicht in der Praxis testen können, da die Module ( z.B. Editor )
- * nicht fertig sind, und daß es noch keine genauen Informationen der anderen Module
- * über die Konsequenzen der <b>NULL</b> gab. Ein Test des Syntax Checkers ist über
+ * daß wir unseren Test nicht in der Praxis testen konnten.
+ * Ein Test des Syntax Checkers ist über
  * das selbsterklärende Programm t im Directory check/test möglich.
- * <DT><STRONG>To Do: </STRONG>
- * Testen, Testen, Testen.<br>Wir müssen den Umgang mit der NULL, nachdem wir
- * die Informationen der anderen Module bekommen haben, entweder kompletieren
- * oder wieder entfernen.
- * <DT><STRONG>Bekannte Fehler: </STRONG>Es gibt bestimmt welche, aber siehe STATUS.
- * <DT><STRONG>Temporäre Features: </STRONG>
+ * <DT><STRONG>To Do: </STRONG><br>
+ * Testen, Testen, Testen.<br>Wir müssen noch den Check auf Zyklen in den
+ * Statecharts entfernen, sobald wir die Garantien der anderen haben.
+ * <DT><STRONG>Bekannte Fehler: </STRONG><br>
+ * Es gibt bestimmt welche, aber siehe STATUS.
+ * <DT><STRONG>Temporäre Features: </STRONG><br>
  * Ausgabe der Dauer der einzelnen Tests in Sekunden.
  * </DL COMPACT>
  *
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: ModelCheck.java,v 1.12 1999-01-03 16:28:33 swtech11 Exp $
+ * @version  $Id: ModelCheck.java,v 1.13 1999-01-04 22:36:37 swtech11 Exp $
  */
 public class ModelCheck {
   private ModelCheckMsg mcm; // Object, um die Fehler und Warnungen zu speichern
@@ -180,7 +183,7 @@ public class ModelCheck {
     System.out.println("- alles        : " + getS(s0,e0));
     System.out.println("");
 
-    // mcm.sort();
+    mcm.sort();
     if ( outputGUI == true ) { outputToGUI(); }
     return result;
   };

@@ -4,7 +4,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: ModelCheckMsg.java,v 1.3 1999-01-03 15:14:29 swtech11 Exp $
+ *  @version  $Id: ModelCheckMsg.java,v 1.4 1999-01-04 22:36:39 swtech11 Exp $
  */
 class ModelCheckMsg {
   private Vector ErrorCode;
@@ -90,35 +90,95 @@ class ModelCheckMsg {
   String getWarningPath(int _number) {
     return (String)WarningPath.elementAt(_number-1); }
 
+
   void sort() {
-    Vector te;
-int j = ErrorCode.size();
+    Vector tc,tm,tp;
+    // Fehler sortieren
     if (ErrorCode.size()>1) {
       boolean ok = false;
       while (ok == false) {
         ok = true;
-        te = new Vector();
-        for (int i=0;i<(ErrorCode.size());i++) {
+        tc = new Vector();
+        tm = new Vector();
+        tp = new Vector();
+        int i=0;
+        while (i<ErrorCode.size()) {
           Integer er1 =  new Integer(  ((Integer)ErrorCode.elementAt(i)).intValue()   );
-System.out.println(er1.intValue());
-          if (ok==true & i<(ErrorCode.size()-1) ) {
+          if (i==(ErrorCode.size()-1)) {
+            tc.addElement(er1);
+            tm.addElement(ErrorMsg.elementAt(i));
+            tp.addElement(ErrorPath.elementAt(i));
+          }
+          else {
             Integer er2 = new Integer(  ((Integer)ErrorCode.elementAt(i+1)).intValue()   ) ;
             if ( er1.intValue()>er2.intValue() ) {
-              te.addElement(er2);
-              te.addElement(er1);
+              tc.addElement(er2);
+              tc.addElement(er1);
+              tm.addElement(ErrorMsg.elementAt(i+1));
+              tp.addElement(ErrorPath.elementAt(i+1));
+              tm.addElement(ErrorMsg.elementAt(i));
+              tp.addElement(ErrorPath.elementAt(i));
               ok = false;
+              i++;
+            }
+            else {
+              tc.addElement(er1);
+              tm.addElement(ErrorMsg.elementAt(i));
+              tp.addElement(ErrorPath.elementAt(i));
             }
           }
-          else { te.addElement(er1); }
+          i++;
         }
-System.out.println(j+" "+te.size());
-        ErrorCode.removeAllElements();
-        ErrorCode = te;
+         ErrorCode = tc;
+         ErrorMsg  = tm;
+         ErrorPath = tp;
       }
     }
-
-
+    // Warnungen sortieren
+    if (WarningCode.size()>1) {
+      boolean ok = false;
+      while (ok == false) {
+        ok = true;
+        tc = new Vector();
+        tm = new Vector();
+        tp = new Vector();
+        int i=0;
+        while (i<WarningCode.size()) {
+          Integer er1 =  new Integer(  ((Integer)WarningCode.elementAt(i)).intValue()   );
+          if (i==(WarningCode.size()-1)) {
+            tc.addElement(er1);
+            tm.addElement(WarningMsg.elementAt(i));
+            tp.addElement(WarningPath.elementAt(i));
+          }
+          else {
+            Integer er2 = new Integer(  ((Integer)WarningCode.elementAt(i+1)).intValue()   ) ;
+            if ( er1.intValue()>er2.intValue() ) {
+              tc.addElement(er2);
+              tc.addElement(er1);
+              tm.addElement(WarningMsg.elementAt(i+1));
+              tp.addElement(WarningPath.elementAt(i+1));
+              tm.addElement(WarningMsg.elementAt(i));
+              tp.addElement(WarningPath.elementAt(i));
+              ok = false;
+              i++;
+            }
+            else {
+              tc.addElement(er1);
+              tm.addElement(WarningMsg.elementAt(i));
+              tp.addElement(WarningPath.elementAt(i));
+            }
+          }
+          i++;
+        }
+         WarningCode = tc;
+         WarningMsg  = tm;
+         WarningPath = tp;
+      }
+    }
   }
 
-
+  
 }
+
+
+
