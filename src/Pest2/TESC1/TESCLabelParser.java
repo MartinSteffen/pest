@@ -10,7 +10,7 @@ import util.*;
  * Label-Parser fuer den Editor.
  * <p>
  * @author Michael Suelzer, Christoph Schuette.
- * @version  $Id: TESCLabelParser.java,v 1.4 1999-02-01 11:52:58 swtech20 Exp $
+ * @version  $Id: TESCLabelParser.java,v 1.5 1999-02-07 11:58:30 swtech20 Exp $
  */   
 class TESCLabelParser extends TESCParser {
 
@@ -63,7 +63,7 @@ class TESCLabelParser extends TESCParser {
      *  LABEL ::= {GUARD} {"/" ACTION}
      */
     public TLabel parseLabel () throws IOException {
-	debug ("Enter parseLabel");
+	//debug ("Enter parseLabel");
 
 	Guard guard = parseGuardSTMStyle ();
 	Action action = null;
@@ -85,7 +85,7 @@ class TESCLabelParser extends TESCParser {
 	for (int i=0; i < saver.getErrorCount (); i++) 
 	    Error (saver.getErrorText (i));   
 
-	debug ("Leave parseLabel");
+	//debug ("Leave parseLabel");
         return label;
     }
 }
@@ -95,6 +95,9 @@ class TESCLabelParser extends TESCParser {
 //	------------
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.4  1999/02/01 11:52:58  swtech20
+//	- globaler Debug-Schalter
+//
 //	Revision 1.3  1999/01/20 17:32:10  swtech20
 //	- Status und Doku aktualisiert
 //	- Fehler, dass Anderungen an Bvarlisten ... nicht nach aussen-

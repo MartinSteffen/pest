@@ -13,7 +13,7 @@ import gui.*;
  * Wir garantieren folgende Eigenschaft:
  * <ul>
  * <li> Das erzeugte TESC-Programm ist ueber die TESC-Import-Schnittstelle wieder einlesbar,
- *      sofern des den Anforderungen genuegt.
+ *      sofern es den Anforderungen genuegt.
  * </ul>
  * 
  * <p><STRONG>Anforderungen: </STRONG> <p>
@@ -21,6 +21,7 @@ import gui.*;
  * Eigenschaften haben:
  * <ul>
  * <li> Guards sind aufgebaut wie in Statemate, d.h EventExpr[BvarExpr], wobei die Klammern wie ein UND-Operator wirken 
+ * <li> UNDET-Guards kommen nicht vor.
  * <li> Leere Guards werden intern mit Dummy[Dummy] gekennzeichnet statt NULL
  * <li> Leere Events werden intern mit Dummy gekennzeichnet statt NULL
  * <li> Keywords aus util.Keyword.java kommen nicht in Bezeichnern vor
@@ -30,12 +31,10 @@ import gui.*;
  * <br>
  *
  * <p><STRONG> Status: </STRONG> <p>
- * Momentan koennen Statecharts nur ohne UNDET-Guards exportiert werden. UNDET-Guard werden
- * mit Fehler abgewiesen.
+ * Ref_States werden jetzte erzeugt. 
  *
  * <p><STRONG>Todo: </STRONG>
  * <ul>
- * <li> GuardUndet behandeln
  * <li> Weiteres Bug Fixing
  * </ul>
  *
@@ -48,7 +47,7 @@ import gui.*;
  * Jedes Statechart, z.B. das <A HREF="./tesc1/Docu/Example.tesc">Beispiel</A> aus
  * dem Pflichtenheft, kann testweise exportiert werden. 
  * <hr>
- * @version  $Id: TESCSaver.java,v 1.5 1999-02-01 11:52:59 swtech20 Exp $
+ * @version  $Id: TESCSaver.java,v 1.6 1999-02-07 11:58:31 swtech20 Exp $
  * @author Michael Suelzer, Christoph Schuette.
  *  
  */   
@@ -182,6 +181,9 @@ public final class TESCSaver {
 //	----------------------
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.5  1999/02/01 11:52:59  swtech20
+//	- globaler Debug-Schalter
+//
 //	Revision 1.4  1999/01/20 17:32:12  swtech20
 //	- Status und Doku aktualisiert
 //	- Fehler, dass Anderungen an Bvarlisten ... nicht nach aussen-

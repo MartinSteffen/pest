@@ -8,7 +8,7 @@ import gui.*;
  * Import-Schnittstelle fuer TESC.        
  *
  * <p><STRONG>Garantie: </STRONG> <p>
- * Wir garantieren, dass die von unseren Module erzeugten Statecharts folgende 
+ * Wir garantieren, dass die von unseren Modulen erzeugten Statecharts folgende 
  * Eigenschaften haben:
  * <ul>
  * <li> Ein Absyn-Baum eines Statecharts wird zurueckgeliefert, d.h.
@@ -49,7 +49,7 @@ import gui.*;
  * dem Pflichtenheft verwendet werden.
  * <p>
  * <hr>
- * @version  $Id: TESCLoader.java,v 1.14 1999-02-01 11:52:59 swtech20 Exp $
+ * @version  $Id: TESCLoader.java,v 1.15 1999-02-07 11:58:31 swtech20 Exp $
  * @author Michael Suelzer, Christoph Schuette.
  *  
  */   
@@ -254,6 +254,9 @@ public final class TESCLoader {
 //	----------------------
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.14  1999/02/01 11:52:59  swtech20
+//	- globaler Debug-Schalter
+//
 //	Revision 1.13  1999/01/20 17:32:11  swtech20
 //	- Status und Doku aktualisiert
 //	- Fehler, dass Anderungen an Bvarlisten ... nicht nach aussen-
