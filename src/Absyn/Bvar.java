@@ -6,7 +6,7 @@ import java.io.Serializable;
 /**
  * Boolean variable.
  * @author Initially provided by Martin Steffen.
- * @version $Id: Bvar.java,v 1.8 1998-12-15 16:33:25 swtech00 Exp $
+ * @version $Id: Bvar.java,v 1.9 1999-01-11 17:23:47 swtech00 Exp $
  */
 public class Bvar  extends Absyn  implements Serializable, Cloneable {
 /**
@@ -20,11 +20,18 @@ public class Bvar  extends Absyn  implements Serializable, Cloneable {
 	var = v;
     };
 
+
+    public Bvar (String v, Location l) {
+	var = v;
+	location = l;
+    };
+
 /**
  * @exception CloneNotSupportedException self-explanatory exception
  */
     public Object clone() throws CloneNotSupportedException {
-	return new Bvar(var);
+      Location  locationclone  = (location == null) ? null : (Location)location.clone();
+      return new Bvar(var,locationclone);
     };
 };
 
@@ -32,9 +39,12 @@ public class Bvar  extends Absyn  implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Bvar.java,v 1.8 1998-12-15 16:33:25 swtech00 Exp $
+//	$Id: Bvar.java,v 1.9 1999-01-11 17:23:47 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.8  1998/12/15 16:33:25  swtech00
+//	Towards new package names.
+//
 //	Revision 1.7  1998/12/15 13:38:02  swtech00
 //	exception-tag hinzugefuegt um javadoc sauber durchlaufen zu lassen
 //

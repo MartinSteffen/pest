@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * One kind of guard: guard negation.
  * @author Initially provided by Martin Steffen.
- * @version $Id: GuardNeg.java,v 1.5 1998-12-15 16:33:29 swtech00 Exp $
+ * @version $Id: GuardNeg.java,v 1.6 1999-01-11 17:23:50 swtech00 Exp $
  */
 public class GuardNeg extends Guard implements Serializable, Cloneable {
 /**
@@ -20,12 +20,19 @@ public class GuardNeg extends Guard implements Serializable, Cloneable {
     };
 
 
+    public GuardNeg (Guard g, Location l) {
+      guard = g;
+      location = l;
+    };
+
+
 /**
  * @exception CloneNotSupportedException self-explanatory exception
  */
-    public Object clone() throws CloneNotSupportedException {
-	return new GuardNeg ((Guard)guard.clone());
-    };
+  public Object clone() throws CloneNotSupportedException {
+    Location  locationclone  = (location == null) ? null : (Location)location.clone();
+    return new GuardNeg ((Guard)guard.clone(), locationclone);
+  };
 
 }
 
@@ -33,9 +40,12 @@ public class GuardNeg extends Guard implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: GuardNeg.java,v 1.5 1998-12-15 16:33:29 swtech00 Exp $
+//	$Id: GuardNeg.java,v 1.6 1999-01-11 17:23:50 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.5  1998/12/15 16:33:29  swtech00
+//	Towards new package names.
+//
 //	Revision 1.4  1998/12/15 13:38:05  swtech00
 //	exception-tag hinzugefuegt um javadoc sauber durchlaufen zu lassen
 //

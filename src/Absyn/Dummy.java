@@ -6,7 +6,7 @@ import java.io.Serializable;
 /**
  * Dummy.
  * @author Initially provided by Martin Steffen.
- * @version $Id: Dummy.java,v 1.10 1998-12-15 16:33:27 swtech00 Exp $
+ * @version $Id: Dummy.java,v 1.11 1999-01-11 17:23:48 swtech00 Exp $
  */
 public class Dummy extends Absyn implements Serializable, Cloneable {
 /**
@@ -15,15 +15,18 @@ public class Dummy extends Absyn implements Serializable, Cloneable {
     public Dummy () {
     };
 
+    public Dummy (Location l) {
+      location = l;
+    };
+
     
 /**
  * @exception CloneNotSupportedException self-explanatory exception
  */
-    public Object clone() throws CloneNotSupportedException {
-	return new Dummy();
-    };
-
-
+  public Object clone() throws CloneNotSupportedException {
+    Location  locationclone  = (location == null) ? null : (Location)location.clone();
+    return new Dummy(locationclone);
+  };
 
 };
 
@@ -33,9 +36,12 @@ public class Dummy extends Absyn implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Dummy.java,v 1.10 1998-12-15 16:33:27 swtech00 Exp $
+//	$Id: Dummy.java,v 1.11 1999-01-11 17:23:48 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.10  1998/12/15 16:33:27  swtech00
+//	Towards new package names.
+//
 //	Revision 1.9  1998/12/15 13:38:04  swtech00
 //	exception-tag hinzugefuegt um javadoc sauber durchlaufen zu lassen
 //

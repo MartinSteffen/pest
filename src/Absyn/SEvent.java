@@ -3,17 +3,24 @@ package absyn;
 import java.io.Serializable;
 
 public class SEvent extends Absyn implements Serializable, Cloneable {  
-    public String name;
-    public SEvent (String n) {
-	name = n;
-	
-    }
+  public String name;
+  public SEvent (String n) {
+    name = n;
+    
+  }
+
+  public SEvent (String n, Location l) {
+    name     = n;
+    location = l;
+  }
+
 /**
  * @exception CloneNotSupportedException self-explanatory exception
  */
-    public Object clone() throws CloneNotSupportedException {
-	return new SEvent(name);
-    }
+  public Object clone() throws CloneNotSupportedException {
+    Location  locationclone  = (location == null) ? null : (Location)location.clone();
+    return new SEvent(name, locationclone);
+  }
 };
 
 
@@ -22,9 +29,14 @@ public class SEvent extends Absyn implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: SEvent.java,v 1.8 1999-01-04 15:35:36 swtech00 Exp $
+//	$Id: SEvent.java,v 1.9 1999-01-11 17:23:51 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.8  1999/01/04 15:35:36  swtech00
+//	SEvent als Unterklasse von Absyn (und damit mit Location)
+//
+//	[Martin]
+//
 //	Revision 1.7  1998/12/15 16:33:30  swtech00
 //	Towards new package names.
 //

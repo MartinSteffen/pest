@@ -34,6 +34,22 @@ public class Or_State extends State implements Serializable, Cloneable {
       defaults     = snl;
       connectors   = cl;
     }
+
+    public Or_State(Statename n,
+		    StateList sl,
+		    TrList tl,
+		    StatenameList snl,
+		    ConnectorList cl,
+		    CRectangle r,
+		    Location l) {
+      name         = n;
+      rect         = r;
+      substates    = sl;
+      trs          = tl;
+      defaults     = snl;
+      connectors   = cl;
+      location     = l;
+    }
     
     
 /**
@@ -59,18 +75,17 @@ public class Or_State extends State implements Serializable, Cloneable {
 	else
 	    trsclone = null;
 
-	StatenameList defaultsclone;
-	if (defaults !=null) 
-	    defaultsclone = (StatenameList)defaults.clone();
-	else
-	    defaultsclone = null;
+	StatenameList defaultsclone = (defaults == null) ? null : (StatenameList)defaults.clone();
+	Location      locationclone = (location == null) ? null : (Location)location.clone();
 	    
 	return new Or_State(name, 
 			    (StateList) substatesclone, 
 			    (TrList)trsclone, 
 			    (StatenameList)defaultsclone, 
 			    (ConnectorList)connectorsclone, 
-			    (CRectangle)rect);
+			    (CRectangle)rect,
+			    (Location) locationclone
+			    );
     };
 
 }
@@ -79,9 +94,12 @@ public class Or_State extends State implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Or_State.java,v 1.11 1999-01-09 15:47:54 swtech13 Exp $
+//	$Id: Or_State.java,v 1.12 1999-01-11 17:23:51 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.11  1999/01/09 15:47:54  swtech13
+//	clone() methoden korrigiert (weitere nullpointerabfragen)
+//
 //	Revision 1.10  1998/12/15 16:33:30  swtech00
 //	Towards new package names.
 //

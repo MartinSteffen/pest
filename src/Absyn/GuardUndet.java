@@ -7,7 +7,7 @@ import java.io.Serializable;
  * One kind of guard: untyped identifier.
  * If the type of the identifier can not be determined, this class is used.
  * @author Initially provided by Martin Steffen.
- * @version $Id: GuardUndet.java,v 1.5 1998-12-15 16:33:29 swtech00 Exp $
+ * @version $Id: GuardUndet.java,v 1.6 1999-01-11 17:23:50 swtech00 Exp $
  */
 public class GuardUndet extends Guard implements Serializable, Cloneable {
 /**
@@ -17,26 +17,35 @@ public class GuardUndet extends Guard implements Serializable, Cloneable {
 /**
  * Constructor.
  */
-    public GuardUndet (String u) {
-	undet = u;
-    };
+  public GuardUndet (String u) {
+    undet = u;
+  };
+
+
+  public GuardUndet (String u, Location l) {
+    undet = u;
+    location = l;
+  };
 
 /**
  * @exception CloneNotSupportedException self-explanatory exception
  */
-    public Object clone() throws CloneNotSupportedException {
-	return new GuardUndet (undet);
-    };
-
+  public Object clone() throws CloneNotSupportedException {
+    Location  locationclone  = (location == null) ? null : (Location)location.clone();
+    return new GuardUndet (undet, locationclone);
+  };
 };
 
 //----------------------------------------------------------------------
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: GuardUndet.java,v 1.5 1998-12-15 16:33:29 swtech00 Exp $
+//	$Id: GuardUndet.java,v 1.6 1999-01-11 17:23:50 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.5  1998/12/15 16:33:29  swtech00
+//	Towards new package names.
+//
 //	Revision 1.4  1998/12/15 13:38:05  swtech00
 //	exception-tag hinzugefuegt um javadoc sauber durchlaufen zu lassen
 //

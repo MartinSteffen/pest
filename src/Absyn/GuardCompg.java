@@ -6,27 +6,38 @@ import java.io.Serializable;
 /**
  * One kind of guard: composition of guards.
  * @author Initially provided by Martin Steffen.
- * @version $Id: GuardCompg.java,v 1.5 1998-12-15 16:33:28 swtech00 Exp $
+ * @version $Id: GuardCompg.java,v 1.6 1999-01-11 17:23:49 swtech00 Exp $
  */
 public class GuardCompg extends Guard implements Serializable, Cloneable {
 /**
  * Contents of compound guard.
  */
-    public Compguard cguard;
+  public Compguard cguard;
+
+
 /**
  * Constructor.
  */
-    public GuardCompg(Compguard g) {
-	cguard = g;
-    };
+  public GuardCompg(Compguard g) {
+    cguard = g;
+  };
+
+/**
+ * Constructor.
+ */
+  public GuardCompg(Compguard g, Location l) {
+    cguard = g;
+    location = l;
+  };
 
 /**
  * @exception CloneNotSupportedException self-explanatory exception
  */
-    public Object clone() throws CloneNotSupportedException {
-	return new GuardCompg ((Compguard)cguard.clone());
-    };
-
+  public Object clone() throws CloneNotSupportedException {
+    Location  locationclone  = (location == null) ? null : (Location)location.clone();
+    return new GuardCompg ((Compguard)cguard.clone(), locationclone);
+  };
+  
 };
 
 
@@ -34,9 +45,12 @@ public class GuardCompg extends Guard implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: GuardCompg.java,v 1.5 1998-12-15 16:33:28 swtech00 Exp $
+//	$Id: GuardCompg.java,v 1.6 1999-01-11 17:23:49 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.5  1998/12/15 16:33:28  swtech00
+//	Towards new package names.
+//
 //	Revision 1.4  1998/12/15 13:38:04  swtech00
 //	exception-tag hinzugefuegt um javadoc sauber durchlaufen zu lassen
 //

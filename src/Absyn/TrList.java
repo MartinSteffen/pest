@@ -9,13 +9,17 @@ public class TrList implements Cloneable, Serializable { // List of transitions
 	tail = tl;
     };
 
+    public TrList (Tr h, TrList tl, Location l) {
+	head = h;
+	tail = tl;
+    };
+
 /**
  * @exception CloneNotSupportedException self-explanatory exception
  */
     public Object clone () throws CloneNotSupportedException {
 	TrList tailclone;
 	if (tail != null) {tailclone = (TrList)tail.clone();} else {tailclone = null;};
-
 	return new TrList((Tr)head.clone(), (TrList)tailclone);
     }
 };
@@ -24,9 +28,12 @@ public class TrList implements Cloneable, Serializable { // List of transitions
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: TrList.java,v 1.9 1998-12-15 16:33:32 swtech00 Exp $
+//	$Id: TrList.java,v 1.10 1999-01-11 17:23:52 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.9  1998/12/15 16:33:32  swtech00
+//	Towards new package names.
+//
 //	Revision 1.8  1998/12/15 13:38:09  swtech00
 //	exception-tag hinzugefuegt um javadoc sauber durchlaufen zu lassen
 //

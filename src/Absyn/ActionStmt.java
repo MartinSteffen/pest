@@ -6,7 +6,7 @@ import java.io.Serializable;
 /**
  * One kind of transition action: boolean statement.
  * @author Initially provided by Martin Steffen.
- * @version $Id: ActionStmt.java,v 1.6 1998-12-15 16:33:24 swtech00 Exp $
+ * @version $Id: ActionStmt.java,v 1.7 1999-01-11 17:23:46 swtech00 Exp $
  */
 public class ActionStmt extends Action implements Serializable, Cloneable {
 /**
@@ -17,11 +17,17 @@ public class ActionStmt extends Action implements Serializable, Cloneable {
     stmt = st;
   }
 
+  public ActionStmt  (Boolstmt st, Location l) {
+    stmt      = st;
+    location  = l;
+  }
+
 /**
  * @exception CloneNotSupportedException self-explanatory exception
  */
     public Object clone() throws CloneNotSupportedException {
-	return new ActionStmt ((Boolstmt)stmt.clone());
+      Location  locationclone  = (location == null) ? null : (Location)location.clone();
+      return new ActionStmt ((Boolstmt)stmt.clone(), locationclone);
     };
 
 };
@@ -30,9 +36,12 @@ public class ActionStmt extends Action implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: ActionStmt.java,v 1.6 1998-12-15 16:33:24 swtech00 Exp $
+//	$Id: ActionStmt.java,v 1.7 1999-01-11 17:23:46 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.6  1998/12/15 16:33:24  swtech00
+//	Towards new package names.
+//
 //	Revision 1.5  1998/12/15 13:38:01  swtech00
 //	exception-tag hinzugefuegt um javadoc sauber durchlaufen zu lassen
 //

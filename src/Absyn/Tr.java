@@ -9,39 +9,49 @@ import java.awt.Point;
 /**
  *Tr.
  * @author Initially provided by Martin Steffen.
- * @version $Id: Tr.java,v 1.11 1999-01-04 09:44:53 swtech24 Exp $
+ * @version $Id: Tr.java,v 1.12 1999-01-11 17:23:52 swtech00 Exp $
  */
 public class Tr extends Absyn implements Serializable, Cloneable {   // Transition
-    public CPoint[]  points;
-    public TrAnchor source;
-    public TrAnchor target;
-    public TLabel    label;
-    public Tr (TrAnchor s, TrAnchor t, TLabel l) {
-	points = null;
-	source = s;
-	target = t;
-	label  = l;
-    };
-    public Tr (TrAnchor s, TrAnchor t, TLabel l, CPoint[] p) {
-	points = p;
-	source = s;
-	target = t;
-	label  = l;
-    };
+  public CPoint[]  points;
+  public TrAnchor source;
+  public TrAnchor target;
+  public TLabel    label;
+  public Tr (TrAnchor s, TrAnchor t, TLabel l) {
+    points = null;
+    source = s;
+    target = t;
+    label  = l;
+  };
+  public Tr (TrAnchor s, TrAnchor t, TLabel l, CPoint[] p) {
+    points = p;
+    source = s;
+    target = t;
+    label  = l;
+  };
+  
+  public Tr (TrAnchor s, TrAnchor t, TLabel l, CPoint[] p, Location loc) {
+    points   = p;
+    source   = s;
+    target   = t;
+    label    = l;
+    location = loc;
+  };
 
 /**
  * @exception CloneNotSupportedException self-explanatory exception
  */
-    public Object clone () throws CloneNotSupportedException {
-	CPoint [] pointsclone;
-	if (points != null) {pointsclone = (CPoint [])points.clone();} else {pointsclone =null;};
-	return new Tr(
-		      (TrAnchor)source.clone(),
-		      (TrAnchor)target.clone(),
-		      (TLabel)label.clone(),
-		      pointsclone
-		      );
-    };
+  public Object clone () throws CloneNotSupportedException {
+    CPoint [] pointsclone;
+    if (points != null) {pointsclone = (CPoint [])points.clone();} else {pointsclone =null;};
+    Location  locationclone  = (location == null) ? null : (Location)location.clone();
+    return new Tr(
+		  (TrAnchor)source.clone(),
+		  (TrAnchor)target.clone(),
+		  (TLabel)label.clone(),
+		  pointsclone,
+		  locationclone
+		  );
+  };
 };
 
 
@@ -54,9 +64,12 @@ public class Tr extends Absyn implements Serializable, Cloneable {   // Transiti
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Tr.java,v 1.11 1999-01-04 09:44:53 swtech24 Exp $
+//	$Id: Tr.java,v 1.12 1999-01-11 17:23:52 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.11  1999/01/04 09:44:53  swtech24
+//	*** empty log message ***
+//
 //	Revision 1.10  1998/12/15 16:33:32  swtech00
 //	Towards new package names.
 //

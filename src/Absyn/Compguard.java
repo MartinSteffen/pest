@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Composition of two guards.
  * @author Initially provided by Martin Steffen.
- * @version $Id: Compguard.java,v 1.9 1998-12-15 16:33:26 swtech00 Exp $
+ * @version $Id: Compguard.java,v 1.10 1999-01-11 17:23:48 swtech00 Exp $
  */
 public class Compguard extends Absyn implements Serializable, Cloneable {
 /**
@@ -23,24 +23,36 @@ public class Compguard extends Absyn implements Serializable, Cloneable {
 /**
  * Constants.
  */
-    public final static int AND     = 0;
-    public final static int OR      = 1;
-    public final static int IMPLIES = 2;
-    public final static int EQUIV   = 3;
+  public final static int AND     = 0;
+  public final static int OR      = 1;
+  public final static int IMPLIES = 2;
+  public final static int EQUIV   = 3;
 /**
  * Constructor.
  */
-    public Compguard (int op, Guard g1, Guard g2) {
-	eop = op;
-	elhs = g1;
-	erhs = g2;
-    };
+  public Compguard (int op, Guard g1, Guard g2) {
+    eop = op;
+    elhs = g1;
+    erhs = g2;
+  };
+
+/**
+ * Constructor.
+ */
+  public Compguard (int op, Guard g1, Guard g2, Location l) {
+    eop = op;
+    elhs = g1;
+    erhs = g2;
+    location = l;
+  };
 
 /**
  * @exception CloneNotSupportedException self-explanatory exception
  */
-    public Object clone() throws CloneNotSupportedException {
-	return new Compguard(eop, (Guard)elhs.clone(), (Guard)erhs.clone());
+  public Object clone() throws CloneNotSupportedException {
+    Location  locationclone  = (location == null) ? null : (Location)location.clone();
+    return new Compguard(eop, (Guard)elhs.clone(), (Guard)erhs.clone(),
+			 locationclone);
     };
 
 };
@@ -50,9 +62,12 @@ public class Compguard extends Absyn implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Compguard.java,v 1.9 1998-12-15 16:33:26 swtech00 Exp $
+//	$Id: Compguard.java,v 1.10 1999-01-11 17:23:48 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.9  1998/12/15 16:33:26  swtech00
+//	Towards new package names.
+//
 //	Revision 1.8  1998/12/15 13:38:03  swtech00
 //	exception-tag hinzugefuegt um javadoc sauber durchlaufen zu lassen
 //

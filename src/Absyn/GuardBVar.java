@@ -5,26 +5,33 @@ import java.io.Serializable;
 /**
  * One kind of guard: boolean variable.
  * @author Initially provided by Martin Steffen.
- * @version $Id: GuardBVar.java,v 1.5 1998-12-15 16:33:28 swtech00 Exp $
+ * @version $Id: GuardBVar.java,v 1.6 1999-01-11 17:23:49 swtech00 Exp $
  */
 public class GuardBVar extends Guard implements Serializable, Cloneable {
 /**
  * Contents of variable.
  */
-    public Bvar bvar;
+  public Bvar bvar;
 /**
  * Constructor.
  */
-    public GuardBVar(Bvar v) {
-	bvar = v;
-    };
+  public GuardBVar(Bvar v) {
+    bvar = v;
+  };
+
+
+  public GuardBVar(Bvar v, Location l) {
+    bvar = v;
+    location = l;
+  };
 
 /**
  * @exception CloneNotSupportedException self-explanatory exception
  */
-    public Object clone() throws CloneNotSupportedException {
-	return new GuardBVar ((Bvar)bvar.clone());
-    };
+  public Object clone() throws CloneNotSupportedException {
+    Location  locationclone  = (location == null) ? null : (Location)location.clone();
+    return new GuardBVar ((Bvar)bvar.clone(), locationclone);
+  };
 
 }
 
@@ -32,9 +39,12 @@ public class GuardBVar extends Guard implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: GuardBVar.java,v 1.5 1998-12-15 16:33:28 swtech00 Exp $
+//	$Id: GuardBVar.java,v 1.6 1999-01-11 17:23:49 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.5  1998/12/15 16:33:28  swtech00
+//	Towards new package names.
+//
 //	Revision 1.4  1998/12/15 13:38:04  swtech00
 //	exception-tag hinzugefuegt um javadoc sauber durchlaufen zu lassen
 //

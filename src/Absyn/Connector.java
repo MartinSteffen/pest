@@ -7,7 +7,7 @@ import java.awt.Point;
 /**
  * Connector.
  * @author Initially provided by Martin Steffen.
- * @version $Id: Connector.java,v 1.11 1998-12-17 15:47:17 swtech00 Exp $
+ * @version $Id: Connector.java,v 1.12 1999-01-11 17:23:48 swtech00 Exp $
  */
 public class Connector  extends Absyn implements Serializable, Cloneable {
 /**
@@ -34,26 +34,42 @@ public class Connector  extends Absyn implements Serializable, Cloneable {
     };
 
 /**
- * @exception CloneNotSupportedException self-explanatory exception
+ * Constructor with Position and Location.
  */
-    public Object clone() throws CloneNotSupportedException {
-	CPoint positionclone;
-	if (position != null)
-	    positionclone = (CPoint)position.clone();
-	else
-	    positionclone = null;
-	return new Connector((Conname)name.clone(),
-			     positionclone);
+  public Connector(Conname n, CPoint p, Location l) {
+    name = n;
+    position = p;
+    location = l;
     };
 
+/**
+ * @exception CloneNotSupportedException self-explanatory exception
+ */
+  public Object clone() throws CloneNotSupportedException {
+    CPoint positionclone;
+    if (position != null)
+      positionclone = (CPoint)position.clone();
+    else
+      positionclone = null;
+    
+    Location  locationclone  = (location == null) ? null : (Location)location.clone();
+    return new Connector((Conname)name.clone(),
+			 positionclone,
+			 locationclone);
+  };
+
 }
+
 //----------------------------------------------------------------------
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Connector.java,v 1.11 1998-12-17 15:47:17 swtech00 Exp $
+//	$Id: Connector.java,v 1.12 1999-01-11 17:23:48 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.11  1998/12/17 15:47:17  swtech00
+//	Null-Pointer-Exception nei clone() abgefangen
+//
 //	Revision 1.10  1998/12/15 16:33:26  swtech00
 //	Towards new package names.
 //

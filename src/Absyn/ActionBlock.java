@@ -8,7 +8,7 @@ import java.io.Serializable;
  * One kind of transition action.
  * <br> Collects a sequence of actions into one block.
  * @author Initially provided by Martin Steffen.
- * @version $Id: ActionBlock.java,v 1.6 1998-12-15 16:33:23 swtech00 Exp $
+ * @version $Id: ActionBlock.java,v 1.7 1999-01-11 17:23:46 swtech00 Exp $
  */
 public class ActionBlock extends Action implements Serializable, Cloneable {
 /**
@@ -19,11 +19,18 @@ public class ActionBlock extends Action implements Serializable, Cloneable {
 	aseq = a;
     };
 
+
+    public ActionBlock (Aseq a, Location l) {
+	aseq = a;
+	location = l;
+    };
+
 /**
  * @exception CloneNotSupportedException self-explanatory exception
  */
     public Object clone() throws CloneNotSupportedException {
-	return new ActionBlock((Aseq)aseq.clone());
+	Location  locationclone  = (location == null) ? null : (Location)location.clone();
+	return new ActionBlock((Aseq)aseq.clone(),locationclone);
     };
     
 };
@@ -31,9 +38,12 @@ public class ActionBlock extends Action implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: ActionBlock.java,v 1.6 1998-12-15 16:33:23 swtech00 Exp $
+//	$Id: ActionBlock.java,v 1.7 1999-01-11 17:23:46 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.6  1998/12/15 16:33:23  swtech00
+//	Towards new package names.
+//
 //	Revision 1.5  1998/12/15 13:38:00  swtech00
 //	exception-tag hinzugefuegt um javadoc sauber durchlaufen zu lassen
 //

@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Sequence of actions, needed as the contense of a s_block.
  * <br>
  * @author Initially provided by Martin Steffen.
- * @version $Id: Aseq.java,v 1.9 1999-01-09 15:47:53 swtech13 Exp $
+ * @version $Id: Aseq.java,v 1.10 1999-01-11 17:23:47 swtech00 Exp $
  */
 public class Aseq extends Absyn implements Serializable, Cloneable {
 /**
@@ -20,7 +20,9 @@ public class Aseq extends Absyn implements Serializable, Cloneable {
 /**
  * Constructor.
  */
-    public Aseq (Action h, Aseq tl) {head = h;tail = tl; };
+  
+  public Aseq (Action h, Aseq tl) {head = h;tail = tl; };
+  public Aseq (Action h, Aseq tl, Location l) {head = h;tail = tl; location = l;};
     
     
 /**
@@ -39,8 +41,10 @@ public class Aseq extends Absyn implements Serializable, Cloneable {
 	}
 	else tailclone = null;
 	
+	Location  locationclone  = (location == null) ? null : (Location)location.clone();
 	return new Aseq ((Action)headclone,
-			 (Aseq)tailclone);
+			 (Aseq)tailclone,
+			 locationclone);
     };
 
 };
@@ -48,9 +52,12 @@ public class Aseq extends Absyn implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Aseq.java,v 1.9 1999-01-09 15:47:53 swtech13 Exp $
+//	$Id: Aseq.java,v 1.10 1999-01-11 17:23:47 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.9  1999/01/09 15:47:53  swtech13
+//	clone() methoden korrigiert (weitere nullpointerabfragen)
+//
 //	Revision 1.8  1998/12/15 16:33:24  swtech00
 //	Towards new package names.
 //

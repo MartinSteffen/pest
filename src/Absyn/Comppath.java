@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Operation on path of statenames.
  * @author Initially provided by Martin Steffen.
- * @version $Id: Comppath.java,v 1.10 1998-12-15 16:33:26 swtech00 Exp $
+ * @version $Id: Comppath.java,v 1.11 1999-01-11 17:23:48 swtech00 Exp $
  */
 public class Comppath extends Absyn implements Serializable, Cloneable {
 /**
@@ -25,27 +25,37 @@ public class Comppath extends Absyn implements Serializable, Cloneable {
 /**
  * Constructor.
  */
-    public Comppath(int op, Path p) {
-	pathop  = op;
-	path    = p;
-    };
+  public Comppath(int op, Path p) {
+    pathop  = op;
+    path    = p;
+  };
+
+
+  public Comppath(int op, Path p, Location l) {
+    pathop  = op;
+    path    = p;
+    location = l;
+  };
 
 /**
  * @exception CloneNotSupportedException self-explanatory exception
  */
-    public Object clone() throws CloneNotSupportedException {
-	return new Comppath (pathop, (Path)path.clone());
-    };
-
+  public Object clone() throws CloneNotSupportedException {
+    Location  locationclone  = (location == null) ? null : (Location)location.clone();  
+    return new Comppath (pathop, (Path)path.clone(), locationclone);
+  };
 }
 
 //----------------------------------------------------------------------
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Comppath.java,v 1.10 1998-12-15 16:33:26 swtech00 Exp $
+//	$Id: Comppath.java,v 1.11 1999-01-11 17:23:48 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.10  1998/12/15 16:33:26  swtech00
+//	Towards new package names.
+//
 //	Revision 1.9  1998/12/15 13:38:03  swtech00
 //	exception-tag hinzugefuegt um javadoc sauber durchlaufen zu lassen
 //
