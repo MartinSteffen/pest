@@ -140,5 +140,12 @@ public interface GUIInterface{
      */  
 
     public Color getConnectorcolor();
+
+     /** StateChartHasChanged
+      * Diese Funktion dient dazu der GUI mitzuteilen, dass an den aktuellen Statechart Änderungen
+      * vorgenommen wurden.
+     */  
+
+    public void StateChartHasChanged();
 }
 
