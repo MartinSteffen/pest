@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	------------------
 //
-//	$Id: report_list,v 1.6 1999-01-18 22:51:39 swtech23 Exp $
+//	$Id: report_list,v 1.7 1999-01-19 14:57:21 swtech18 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -22,7 +22,7 @@
 #Number: 	1
 #Autor:   	Michael Suelzer swtech20
 #Subject:	Statemate generiert Bvar mit Leerstring
-#Status: 	reported 
+#Status: 	fixed 
 #Description: 
 Wenn man das Beispiel s1.st per Import->STATEMATE->stm/Test/a1.st importiert,
 erhaelt man eine Bvar mit leerem Bezeichner. Pretty-Printer:
@@ -40,7 +40,7 @@ Probleme gibt es dann spaeter beim Export/Import mit TESC.
 #Subject:	Checker erkennt eingetragene Zustaende nicht
 #Status:	processing
 Description:
-Wenn man Import->TESC->tesc1/Test/simple.tesc und anschließend
+Wenn man Import->TESC->tesc1/Test/simple.tesc und anschliežend
 den Syntax-Checker ausfuehrt, erhaelt man den Fehler:
 
 .A1Event(e2) nicht gefunden
