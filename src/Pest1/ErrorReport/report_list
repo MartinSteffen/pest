@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.45 1999-01-29 20:26:55 swtech00 Exp $
+//	$Id: report_list,v 1.46 1999-02-01 14:28:47 swtech01 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -493,9 +493,98 @@ STM: Fehler beim Importieren. (2 >= 2)
 ist nicht besonders informativ.
 
 //------------------------------------------------------------------------------
+#Number:	34
+#Autor:		Bernd Weber bwe
+#Subject:	Editor erzeugt unbehandelte Exception:
+#Status: 	reported
+#Description: 
 
+Versucht man, ausserhalb aller gezeichneten Zustaende einen AND-State
+zu erzeugen, wird eine Exception erzeugt:
 
+Exception occurred during event dispatching:
+java.lang.NullPointerException
+        at editor.desk.drawPESTParallel.<init>(drawPESTParallel.java:69)
+        at editor.desk.PESTDrawDesk.processMouseEvent(PESTDrawDesk.java:476)
+        at java.awt.Component.processEvent(Component.java:2249)
+        at java.awt.Component.dispatchEventImpl(Component.java:1781)
+        at java.awt.Component.dispatchEvent(Component.java:1708)
+        at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:1559)
+        at java.awt.LightweightDispatcher.processMouseEvent(Container.java:1463)
+        at java.awt.LightweightDispatcher.dispatchEvent(Container.java:1395)
+        at java.awt.Container.dispatchEventImpl(Container.java:910)
+        at java.awt.Component.dispatchEvent(Component.java:1708)
+        at
+java.awt.EventDispatchThread.run(EventDispatchThread.java:81)
 
+Eine andere Exception wird erzeugt, falls man eine Komponente eines
+AND-States labeln will:
+Exception occurred during event dispatching:
+java.lang.ClassCastException: absyn.And_State
+        at editor.desk.labelPESTState.<init>(labelPESTState.java:52)
+        at editor.desk.PESTDrawDesk.processMouseEvent(PESTDrawDesk.java:442)
+        at java.awt.Component.processEvent(Component.java:2249)
+        at java.awt.Component.dispatchEventImpl(Component.java:1781)
+        at java.awt.Component.dispatchEvent(Component.java:1708)
+        at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:1559)
+        at java.awt.LightweightDispatcher.processMouseEvent(Container.java:1459)
+        at java.awt.LightweightDispatcher.dispatchEvent(Container.java:1395)
+        at java.awt.Container.dispatchEventImpl(Container.java:910)
+        at java.awt.Component.dispatchEvent(Component.java:1708)
+        at java.awt.EventDispatchThread.run(EventDispatchThread.java:81)
+//------------------------------------------------------------------------------
+#Number:	35
+#Autor:		Bernd Weber bwe
+#Subject:	Editor-Menu fehlt nach Simulation
+#Status: 	reported
+#Description: 
+
+Nach Beenden einer Simulation taucht das Editor-Menu nicht wieder auf.
+//------------------------------------------------------------------------------
+#Number:	36
+#Autor:		Bernd Weber bwe
+#Subject:	Syntaxfehler in von CodeGen erzeugtem Code
+#Status: 	reported
+#Description: 
+
+Default-Namen (beginnen mit "...") verursachen Syntax-Fehler im
+erzeugten Java-Code.
+//------------------------------------------------------------------------------
+#Number:	37
+#Autor:		Bernd Weber bwe
+#Subject:	Check-Meldungen inkonsistent
+#Status: 	reported
+#Description: 
+
+Beim Check einer leeren Chart, werden 2 Fehler gemeldet:
+ 1) Keine States
+ 2) Keine Transitionen
+Nach dem Erzeugen einer Transistion wird kein Fehler mehr gemeldet
+(sollte zumindest "Keine Transitionen" melden) -> Inkonsistenz. Es
+muessen keine Tr. vorkommen, also ist dies KEIN Fehler.
+//------------------------------------------------------------------------------
+#Number:	37
+#Autor:		Bernd Weber bwe
+#Subject:	Check-Meldungen inkonsistent
+#Status: 	reported
+#Description: 
+
+Beim Check einer leeren Chart, werden 2 Fehler gemeldet:
+ 1) Keine States
+ 2) Keine Transitionen
+Nach dem Erzeugen einer Transistion wird kein Fehler mehr gemeldet
+(sollte zumindest "Keine Transitionen" melden) -> Inkonsistenz. Es
+muessen keine Tr. vorkommen, also ist dies KEIN Fehler.
+//------------------------------------------------------------------------------
+#Number:	38
+#Autor:		Bernd Weber bwe
+#Subject:	TESC-Import nicht mit default-Namen moeglich
+#Status: 	reported
+#Description: 
+
+Exportiere Chart mit TESC-Export, die Default-Namen
+(z.B. ...DefaultState1) enthaelt. Der Import schlaegt dann fehl.
+//------------------------------------------------------------------------------
 
 
 
