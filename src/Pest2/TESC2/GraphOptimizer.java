@@ -19,33 +19,47 @@ public class GraphOptimizer {
     FontMetrics fm;
     int algorithm;
 
+    /**
+     * Die Eintraege des Arrays sind Namen fuer die verwendbaren
+     * Algorithmen. DIe Anzahl der Algorithmen erhaelt man ueber die
+     * Laenge des Array.
+     */
+
     public static final String[] LIST_OF_ALGORITHMS = {
 	"Dummy-Algorithmus"
     };
-    public static final int DUMMY_AR = 0;
 
-    // Default-Konstruktor
+
+    /**
+     * Default-Konstruktor
+     */
     public GraphOptimizer() {
 	sc = null;
 	fm = null;
-	algorithm = DUMMY_AR;
+	algorithm = 0;
     }
     
-    // erzeugt Optimierer fuer Statechart _sc mit FontMetrics _fm
+    /**
+     * erzeugt Optimierer fuer Statechart _sc mit FontMetrics _fm
+     */
     public GraphOptimizer(Statechart _sc,FontMetrics _fm) {
 	sc = _sc;
 	fm = _fm;
-	algorithm = DUMMY_AR;
+	algorithm = 0;
     }
-
-    // optimiert das aktuelle Statechart mit Algorithmus _algorithm
-    public Statechart optimize(int _algorithm) {
+	
+    /**
+     * optimiert das aktuelle Statechart mit Algorithmus _algorithm
+     */
+    public Statechart start(int _algorithm) throws AlgorithmException {
 	algorithm = _algorithm;
-	return optimize();
+	return start();
     };
-
-    // optimiert aktuelles Statechart mit aktuellem Algorithmus
-    public Statechart optimize() {
+	
+    /**
+     * optimiert aktuelles Statechart mit aktuellem Algorithmus
+     */
+    public Statechart start() throws AlgorithmException {
 	// return sc.clone();
 	return sc;
     }
@@ -56,16 +70,27 @@ public class GraphOptimizer {
 	return sc;
     }
 
+    /**
+     * setzt das aktuelle Statechart
+     */
     public void setStatechart(Statechart _sc) {
 	sc = _sc;
     }
 
+    /**
+     * setzt die aktuelle FontMetrics
+     */
     public void setFontMetrics(FontMetrics _fm) {
 	fm = _fm;
     }
 
+    /**
+     * setzt den aktuellen Algorithmus
+     */
     public void setAlgorithm(int _algorithm) {
 	algorithm = _algorithm;
     }
 
 } // GraphOptimizer
+
+
