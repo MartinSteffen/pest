@@ -2,7 +2,7 @@ package check;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: ErrorAndWarningCodes.java,v 1.23 1999-01-13 13:13:42 swtech11 Exp $
+ *  @version  $Id: ErrorAndWarningCodes.java,v 1.24 1999-01-13 17:27:04 swtech11 Exp $
  */
 class ErrorAndWarningCodes {
   ErrorAndWarningCodes() {
@@ -48,8 +48,8 @@ class ErrorAndWarningCodes {
       case 201: {_s = "Keine Deklaration von Event"; break; }
       case 202: {_s = "Deklarierter Event wurde nicht verwendet"; break; }
       case 203: {_s = "Der Pathname in einem GuardComppath ist nicht vorhanden."; break; }
-case 204: {_s = "Das Event von einem Guard wird nie von einem Actionevent ausgeloest.  "; break; }
-case 205: {_s ="Das Event aus einem Action loest keinen Action in einem Guard aus."; break; }
+      case 204: {_s = "Das Guardevent wird nie von einem Actionevent ausgeloest.  "; break; }
+      case 205: {_s = "Das Actionevent loest kein  Guardevent aus."; break; }
       case 210: {_s = "Die Statechart enthält keine Eventliste."; break; }
 
       case 300: {_s = "Mehrfache Definition von Statename"; break; }

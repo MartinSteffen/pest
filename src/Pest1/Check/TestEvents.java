@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestEvents.java,v 1.9 1999-01-13 13:13:43 swtech11 Exp $
+ *  @version  $Id: TestEvents.java,v 1.10 1999-01-13 17:27:05 swtech11 Exp $
  */
 /** Diese Testklasse testet, ob alle Events deklariert worden sind, 
     <br>ob die deklarierten eindeutig sind und ob sie alle verwendet werden.*/
@@ -79,12 +79,18 @@ ASoll=new Vector();
 
   void pruefeEvent(SEvent e, Tr t, String p, int i){
       
-      if (Ist.contains(e.name)) if ((!GSoll.contains(e.name)) && (!ASoll.contains(e.name))) { 
-	  if (i==1) {GSoll.addElement(e.name);}
-          if (i==2) {ASoll.addElement(e.name);}
+      if (equalString(Ist, e.name)) {
+	  //System.out.println("pE "+e.name);
+          if ((!equalString(GSoll,e.name)) && (i==1))  {GSoll.addElement(e.name);
+	  //System.out.println("pEG "+e.name);
+};
 
-;}
+          if ((!equalString(ASoll, e.name)) && (i==2)) {ASoll.addElement(e.name);
+	  //System.out.println("pEA "+e.name);
+	  };}
+	  
       else {msg.addError(201,"Event: "+e.name, t, p);};
+      
   };
 
   /** Ueberprueft den Action auf Verwendung von Events.*/
@@ -92,6 +98,7 @@ ASoll=new Vector();
      void pruefeAction(Action a, Tr t, String p){
 	 if (a instanceof ActionBlock)  { if ((((ActionBlock)a).aseq)!=null) {
             Aseq as=((ActionBlock)a).aseq;
+	    //System.out.println("Aseq");
             for(; (as.tail!=null); as=as.tail) 
 	      { pruefeAction(as.head, t, p);
 	      //System.out.println("Schleife "+p);               
@@ -103,7 +110,8 @@ ASoll=new Vector();
     else {msg.addError(24, t , p);};
     }
     if (a instanceof ActionEvt) {
-      pruefeEvent (((ActionEvt)a).event, t, p,2);};
+	//System.out.println("Ae "+((ActionEvt)a).event.name);
+       pruefeEvent (((ActionEvt)a).event, t, p, 2);};
     }
 
   /** Ueberprueft einen Pfad auf Existenz.*/
@@ -126,13 +134,21 @@ ASoll=new Vector();
 <br>Wenn Events aus dem Vector Ist nicht verwendet werden , wird gewarnt.*/
 
     void vergleiche(){
-	for( int i=0; i<ASoll.size();i++) {
-            if (GSoll.contains(ASoll.elementAt(i))) {GSoll.removeElement(ASoll.elementAt(i));}
-	    else {msg.addWarning(205,(String)ASoll.elementAt(i));};
-	    Ist.removeElement(ASoll.elementAt(i));};
+	//System.out.println("verg A "+ASoll.size());
+	for( int i=0; i<ASoll.size();i++) { 
+           
+	    //System.out.println("verg A "+ASoll.size());
+            if (!equalString_r(GSoll, (String)ASoll.elementAt(i))) {
+                 msg.addWarning(205,(String)ASoll.elementAt(i));};
+	    //equalString_r(Ist, (String)ASoll.elementAt(i));
+};
+
         for(int i=0; i<GSoll.size(); i++) {
-                 Ist.removeElement(GSoll.elementAt(i)); 
+	    //System.out.println("verg G "+GSoll.size());
+                 equalString_r(Ist, (String)GSoll.elementAt(i)); 
                  msg.addWarning(204,(String)GSoll.elementAt(i));};
+	for (int i=0; i<ASoll.size(); i++){
+	    equalString_r(Ist, (String)ASoll.elementAt(i));}
 
             for(int i=0; i<Ist.size(); i++) {
                  
@@ -140,7 +156,30 @@ ASoll=new Vector();
 
 
 
-    };}
+    };
+
+    boolean equalString(Vector v, String s) {
+    boolean b=true;
+    //System.out.println("neuer Verg");
+    for (int j=0; ((j<v.size()) && b); j++) {
+	//System.out.println(" "+(String)v.elementAt(j)+" "+s);
+            if (((String)v.elementAt(j)).equals(s)) {
+		b=false;};};
+    return !b;}
+
+    boolean equalString_r(Vector v, String s) {
+    boolean b=true;
+    for (int j=0; ((j<v.size()) && b); j++) {
+	//System.out.println("r "+(String)v.elementAt(j)+" "+s);
+	//System.out.println("size "+v.size()); 
+            if (((String)v.elementAt(j)).equals(s)) {
+		//System.out.println("gleiche "+s);
+		b=false;
+                v.removeElementAt(j);
+                };};
+    //System.out.println("size "+v.size());
+    return !b;}
+}
 
 
 
