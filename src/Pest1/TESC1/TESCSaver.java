@@ -57,7 +57,7 @@ import util.*;
  * <br>
  * <hr>
  * @author Arne Koch/Mike Rumpf.
- * @version  $Id: TESCSaver.java,v 1.11 1999-02-11 18:51:18 swtech13 Exp $ 
+ * @version  $Id: TESCSaver.java,v 1.12 1999-02-17 21:51:34 swtech13 Exp $ 
  */ 
 
 /* Konventionen:
@@ -171,8 +171,17 @@ public class TESCSaver {
 	return b;
     }
 
+
+    /**
+       Ahem: nur zur leichteren Protierung von TESCCaptionREwriter
+     */
+    protected boolean isDebug() {
+	return switches.contains("debug");
+    }
+
     private void initSwitches() {
-	if (gi.isDebug()) switches.addElement("debug");
+	if (gi != null)
+	    if (gi.isDebug()) switches.addElement("debug");
 	switches.addElement("Trans.useAbsyn");
     }
 

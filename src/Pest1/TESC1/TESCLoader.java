@@ -62,7 +62,7 @@ import java.util.*;
  * <br>
  * <hr>
  * @author Arne Koch/Mike Rumpf.
- * @version  $Id: TESCLoader.java,v 1.24 1999-02-09 13:38:55 swtech13 Exp $ 
+ * @version  $Id: TESCLoader.java,v 1.25 1999-02-17 21:51:33 swtech13 Exp $ 
  */ 
 public class TESCLoader {
 
@@ -110,7 +110,7 @@ public class TESCLoader {
      * @param Referenz auf Statechart
      * @return Liefert Guard oder null bei Fehler.
      */ 
-  private Guard getGuard(BufferedReader br, Statechart sc) throws IOException {
+  protected Guard getGuard(BufferedReader br, Statechart sc) throws IOException {
 	TESCParser parser = new TESCParser(br, gi);
 
 	if (parser != null) {
@@ -204,7 +204,7 @@ public class TESCLoader {
      * @param Referenz auf Statechart
      * @return Liefert Action oder null bei Fehler.
      */ 
-    private Action getAction(BufferedReader br, Statechart st) throws IOException {
+    protected Action getAction(BufferedReader br, Statechart st) throws IOException {
 	TESCParser parser = new TESCParser(br, gi);
 	if (parser != null) {
 	    parser.initSwitches(options);
@@ -232,6 +232,9 @@ public class TESCLoader {
 
 /* 
  * $Log: not supported by cvs2svn $
+ * Revision 1.24  1999/02/09 13:38:55  swtech13
+ * Fehler 56 fixed
+ *
  * Revision 1.23  1999/02/08 14:45:06  swtech13
  * Aufraeumen der Schnittstellen
  *

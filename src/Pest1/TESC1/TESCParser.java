@@ -303,7 +303,8 @@ class TESCParser {
     // private Methoden
 
     private void initSwitches() {
-      if (gi.isDebug()) switches.addElement("debug");
+	if (gi != null)
+	    if (gi.isDebug()) switches.addElement("debug");
 	//switches.addElement("jumpAfterError");
     }
 
@@ -1872,8 +1873,11 @@ class TESCParser {
 }
 
 /* TESCParser
- * $Id: TESCParser.java,v 1.25 1999-02-09 13:38:55 swtech13 Exp $
+ * $Id: TESCParser.java,v 1.26 1999-02-17 21:51:33 swtech13 Exp $
  * $Log: not supported by cvs2svn $
+ * Revision 1.25  1999/02/09 13:38:55  swtech13
+ * Fehler 56 fixed
+ *
  * Revision 1.24  1999/02/08 14:45:07  swtech13
  * Aufraeumen der Schnittstellen
  *
