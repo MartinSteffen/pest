@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: ModelCheckBasics.java,v 1.13 1999-01-22 20:33:25 swtech11 Exp $
+ *  @version  $Id: ModelCheckBasics.java,v 1.14 1999-01-26 12:33:01 swtech11 Exp $
  */
 class ModelCheckBasics {
   ModelCheckMsg msg = new ModelCheckMsg();
@@ -166,13 +166,16 @@ class ModelCheckBasics {
 		            b=false; 
                             
 }
-
+         else { 
+           if ((v.elementAt(j) instanceof StateC) && ((((StateC)v.elementAt(j)).Pfad).equals(s))) {
+		            b=false; 
+                            }
 
            else {
            if ((v.elementAt(j) instanceof EventC) && ((((EventC)v.elementAt(j)).e.name).equals(s))) {
 		            b=false; 
                            
-};};};};       
+};};};};};       
 
 
     
@@ -191,11 +194,14 @@ class ModelCheckBasics {
 		            b=false; 
                             v.removeElementAt(j);}
 
-
+         else { 
+           if ((v.elementAt(j) instanceof StateC) && ((((StateC)v.elementAt(j)).Pfad).equals(s))) {
+		            b=false; 
+                            v.removeElementAt(j);}
            else {
            if ((v.elementAt(j) instanceof EventC) && ((((EventC)v.elementAt(j)).e.name).equals(s))) {
 		            b=false; 
-                            v.removeElementAt(j);};};};};
+                            v.removeElementAt(j);};};};};};
 
     return !b;}
 
