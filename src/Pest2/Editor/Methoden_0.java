@@ -709,12 +709,7 @@ public class Methoden_0
             g.setColor(editor.gui.getTransitioncolor());
 
             int groesse = (int)(Methoden_1.getFactor()*100);
-            if (editor.fontsize != 0) g.setFont(new Font("Serif",Font.PLAIN,editor.fontsize));            public void windowActivated(WindowEvent e){
-                File file = new File("highlight.dat");
-                if(file.exists()) simulieren.setEnabled(true);
-                else simulieren.setEnabled(false);
-            }
-
+            if (editor.fontsize != 0) g.setFont(new Font("Serif",Font.PLAIN,editor.fontsize));
             else{
             if (groesse < 25) g.setFont(new Font("Serif",Font.PLAIN,8));
             else if (groesse < 50) g.setFont(new Font("Serif",Font.PLAIN,10));
