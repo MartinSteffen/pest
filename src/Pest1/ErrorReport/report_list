@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.57 1999-02-04 17:01:23 swtech00 Exp $
+//	$Id: report_list,v 1.58 1999-02-04 17:22:48 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -451,8 +451,11 @@ Transition von Init nach P1 geloescht. Bei UNDO wird gesamtes Statechart nicht m
 #Number:	30
 #Autor:		Erich Mikk erm
 #Subject:	Editor erzeugt Interlevel Transitionen (IT)?
-#Status: 	fixed
+#Status: 	reported
 #Description: 
+
+Man nehme in der folgenden Sequenz statt PC/a1.st SAFER/thrusters.st.
+Dann hat man wieder den Eindruck, dass Editor ITs erzeugt.
 
 Import PC/a1.st (STM-Import).
 SyntaxCheck meldet zwar Fehler, aber keine IT-Fehler.
@@ -496,7 +499,7 @@ TESC-file: ~swtech21/tests/tesc/Safer3.tesc
 #Number:	33
 #Autor:		Erich Mikk erm
 #Subject:	STM-Import nicht möglich (2 >= 2)?
-#Status: 	fixed
+#Status: 	confirmed
 #Description: 
 
 STM-Import von folgenden Charts aus SAFER
