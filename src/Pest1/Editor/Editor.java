@@ -435,7 +435,7 @@ public static String Stringeingabe(String a, String b, String c,Absyn type)
 	{
 	        if (c.length() >= 3) {
 		tempstring = c.substring(0,3);
-		if (tempstring.compareTo("...")==0) {tempname = "";} else {tempname = c;};}
+		if (tempstring.compareTo("___")==0) {tempname = "";} else {tempname = c;};}
 	}
 	if (type instanceof Tr)
 	{

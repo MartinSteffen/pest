@@ -122,7 +122,10 @@ Statename trtest = (Statename)tr.source;
  //System.out.println("AKTRECT>"+matrix.akt.rect);
 
 if (matrix.akt.rect != null)
-{matrix = PESTdrawutil.getState(root,matrix.x-matrix.akt.rect.x,matrix.y-matrix.akt.rect.y);}
+{if (matrix.prev instanceof Basic_State) matrix = PESTdrawutil.getState(root,matrix.x-matrix.akt.rect.x,matrix.y-matrix.akt.rect.y);
+if (matrix.prev.rect != null)
+{ if (matrix.prev instanceof Or_State & (matrix.prev.rect.x != 0 | matrix.prev.rect.y != 0)) matrix = PESTdrawutil.getState(root,matrix.x-matrix.akt.rect.x,matrix.y-matrix.akt.rect.y);}
+}
 
 
 		      if (matrix.prev instanceof And_State) {
@@ -132,8 +135,10 @@ if (matrix.akt.rect != null)
 				{
 		//	System.out.println(hier.name.name+"--1->"+trtest.name);
 			    Editor.dislocation();}
-		//	  System.out.println("AND>"+matrix.prev);
-		//	  System.out.println("AND>"+matrix.prev.name.name);
+			    System.out.println("AND>"+matrix.akt);
+			  System.out.println("AND>"+matrix.akt.name.name);
+			  System.out.println("AND>"+matrix.prev);
+			  System.out.println("AND>"+matrix.prev.name.name);
 			  tr.source = new Statename(matrix.prev.name.name);} else 
 			      {
 				 if (hier.name.name.compareTo(trtest.name)!=0) 
@@ -166,12 +171,25 @@ if (tr.target instanceof UNDEFINED) {h.setColor( Editor.tr_color());
 // System.out.println("AKTRECT2>"+matrix.prev.rect);
 
 if (matrix.akt.rect != null)
-{matrix = PESTdrawutil.getState(root,matrix.x-matrix.akt.rect.x,matrix.y-matrix.akt.rect.y);}
+{if (matrix.prev instanceof Basic_State) matrix = PESTdrawutil.getState(root,matrix.x-matrix.akt.rect.x,matrix.y-matrix.akt.rect.y);
+if (matrix.prev.rect != null)
+    {if (matrix.prev instanceof Or_State & (matrix.prev.rect.x != 0 | matrix.prev.rect.y != 0)) matrix = PESTdrawutil.getState(root,matrix.x-matrix.akt.rect.x,matrix.y-matrix.akt.rect.y);}
+
+
+System.out.println("T>"+(matrix.x-matrix.akt.rect.x));
+System.out.println("T>"+(matrix.y-matrix.akt.rect.y));
+}
+
+
+
+
+
+
 
 
 		       if (matrix.prev instanceof And_State) {
-			//  System.out.println("AND>"+matrix.prev);
-			 // System.out.println("AND>"+matrix.prev.name.name);
+			  System.out.println("AND>"+matrix.prev);
+			  System.out.println("AND>"+matrix.prev.name.name);
 			       if (hier.name.name.compareTo(trtest2.name)!=0 &
 				matrix.prev.name.name.compareTo(trtest2.name) != 0) 
 				  {
