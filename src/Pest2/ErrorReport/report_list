@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	------------
 //
-//	$Id: report_list,v 1.75 1999-03-01 14:20:39 swtech22 Exp $
+//	$Id: report_list,v 1.76 1999-03-02 12:11:33 swtech16 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -420,7 +420,7 @@ Folgende Exception wird erzeugt:
 #Number:	25.2
 #Autor:		Bernd Weber bwe
 #Subject:	Editor: Nach "Datei-Neu" arbeiten GUI noch mit der alten Chart
-#Status:	processing und fixed
+#Status:	canceled
 #Description:
 
 Erzeugt man eine Chart und whlt im Datei-Menu "Neu" wirkt sich dies nur auf den
@@ -457,7 +457,7 @@ Basic-State einen weiteren Zustand. Dann gibt's eine Exception:
 #Number:	27
 #Autor:		Bernd Weber bwe
 #Subject:	Editor: Rckgngig lscht alle Zustnde
-#Status:	reported
+#Status:        canceled	
 #Description:
 
 Man erzeuge eine Chart und darin drei Basic-States nebeneinander. Nun whlt man
@@ -467,7 +467,7 @@ PrettyPrinter).
 #Number:	28
 #Autor:		Bernd Weber bwe
 #Subject:	Editor: Rckgngig lscht alle Transitionen
-#Status:	reported
+#Status:	canceled
 #Description:
 
 Man erzeuge eine Chart und darin drei Basic-States nebeneinander. Nun zeichnet
@@ -477,7 +477,7 @@ Transitionen sind wieder weg (sagt auch PrettyPrinter).
 #Number:	29
 #Autor:		Bernd Weber bwe
 #Subject:	Editor: Rckgngig lscht alle Elemente eines Typs
-#Status:	reported
+#Status:        canceled
 #Description:
 
 Anscheinend lscht Rckgngig wie in Nr. 27 und 28 immer alle Elemente eines
@@ -652,7 +652,7 @@ nicht exportieren kann).
 #Number:	41
 #Autor:		Bernd Weber bwe
 #Subject:	BASIC-State kann nicht benannt werden
-#Status:	reported
+#Status:	processing und fixed
 #Description:
 
 Man importiere ~swtech12/Examples/misc/nondet-test1.tesc2. Dann
