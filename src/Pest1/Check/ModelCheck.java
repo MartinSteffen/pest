@@ -7,22 +7,35 @@ import absyn.*;
 import gui.*;
 
 /**
- * <b>Syntax Check für Statecharts</b>
+ * <h1>Syntax Check für Statecharts</h1>
+ * <h2>Empfohlender Aufruf:</h2>
+ * <ol>
+ * <li>Initialisierung:   ModelCheck mc = new ModelCheck(GUI_Referenz)
+ * <li>Aufruf des Checks: boolean = mc.checkModel(Statechart)
+ * </ol>
+ * <h2>Forderungen an die an den Check übergebene Statechart:</h2>
+ * <ul>
+ * <li>KEINE
+ * </ul>
+ * <h2>Garantien nach der Beendigung des Checks:</h2>
+ * <ul>
+ * <li>Der Check verändert die an ihn übergebene Statechart <b>nicht</b>.
+ * <li>Der Check liefert nur dann <b>true</b> zurück, wenn die Statechart
+ * keine Fehler mehr enthält, die den Simulator oder den CodeGenerator zu
+ * zu falschen Ergebnissen führen würde.
+ * </ul>
  * <br>
- * <br><b>Folgender empfohlender Aufruf:</b>
- * <br>1. Initialisierung:   ModelCheck mc = new ModelCheck(GUI_Referenz)
- * <br>2. Aufruf des Checks: boolean = mc.checkModel(Statechart)
- * <br>
- * <br><a href="#Codes">Codes von Fehlern und Warnungen beim Syntax Check</a>
+ * <a href="#Codes">Codes von Fehlern und Warnungen beim Syntax Check</a><br>
  * <br>
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: ModelCheck.java,v 1.3 1998-12-16 10:21:30 swtech11 Exp $
+ * @version  $Id: ModelCheck.java,v 1.4 1998-12-17 21:16:16 swtech11 Exp $
  */
 public class ModelCheck {
   private ModelCheckMsg mcm; // Object, um die Fehler und Warnungen zu speichern
   private boolean warning;   // auch Warnungen ausgeben
   private boolean outputGUI; // Meldungen auf die GUI ausgeben
   private boolean donePI;    // Test auf doppelte Referenzierung ausgeführt ?
+  private boolean b_ce,b_cb,b_ct, b_cs;
   private boolean NoFatalError;  // existiert kein fataler Fehhler (doppelte Referenzierung)
   private GUIInterface gui = null; // Referenz auf die GUI
 
@@ -35,6 +48,10 @@ public class ModelCheck {
     outputGUI = false;
     warning = true;
     donePI = false;
+    b_ce = false;
+    b_cb = false;
+    b_ct = false;
+    b_cs = false;
     NoFatalError = true;
   }
 
@@ -72,9 +89,12 @@ public class ModelCheck {
     if (donePI == false ) { NoFatalError = checkPI(sc); }
     if (NoFatalError == true) {
       TestEvents te = new TestEvents(sc, mcm);
-      pi = te.check();
+      b_ce = te.check();
+      if (outputGUI==true & b_ce==true) {
+        gui.userMessage("Check: Keine Fehler während der Überprüfung der Events gefunden.");
+      }
     }
-    return pi;
+    return b_ce;
   }
 
 /**
@@ -87,9 +107,12 @@ public class ModelCheck {
     if (donePI == false) { NoFatalError = checkPI(sc); }
     if (NoFatalError == true) {
       TestStates ts = new TestStates(sc, mcm);
-      pi = ts.check();
+      b_cs = ts.check();
+      if (outputGUI==true & b_cs==true) {
+        gui.userMessage("Check: Keine Fehler während der Überprüfung der States gefunden.");
+      }
     }  
-    return pi;
+    return b_cs;
   }
 
 /**
@@ -102,9 +125,12 @@ public class ModelCheck {
     if (donePI == false) { NoFatalError = checkPI(sc); }
     if (NoFatalError == true) {
       TestTransitions tt = new TestTransitions(sc,mcm);
-      pi = tt.check();
+      b_ct = tt.check();
+      if (outputGUI==true & b_ct==true) {
+        gui.userMessage("Check: Keine Fehler während der Überprüfung der Transitions gefunden.");
+      }
     }
-    return pi;
+    return b_ct;
   }
 
 /**
@@ -117,9 +143,12 @@ public class ModelCheck {
     if (donePI == false) { NoFatalError = checkPI(sc); }
     if (NoFatalError == true) {
       TestBVars tb = new TestBVars(sc, mcm);
-      pi = tb.check();
+      b_cb = tb.check();
+      if (outputGUI==true & b_cb==true) {
+        gui.userMessage("Check: Keine Fehler während der Überprüfung der Booleschen Variablen gefunden.");
+      }
     }
-    return pi;
+    return b_cb;
   }
 
 /**
