@@ -1,0 +1,13 @@
+Ablaufplan (Version 1):
+
+1. Woche (23.11. - 29.11): Konkrete Festlegung der Schnittstellen und
+   Ausführung der Klassen als Stubfunktionen mit Rückmeldungen.
+
+2. Woche (30.11. - 06.12): Bestimmung des Auswertungsalgorithmus sowie
+   erste rudimentäre Implementation der Schnittstellen 
+
+3.-4. Woche (7.12. - 20.12.): Implementation des
+      Auswertungsalgorithmus und Anpassung der Schnittstellen an die
+      anderen Gruppen. 
+
+5.-7. Woche (21.12. - 10.01.): Testen des Auswertungsalgorithmus und Verbesserung. 
