@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Connector list.
  * @author Initially provided by Martin Steffen.
- * @version $Id: ConnectorList.java,v 1.10 1999-01-12 08:57:28 swtech00 Exp $
+ * @version $Id: ConnectorList.java,v 1.11 1999-02-09 10:47:44 swtech00 Exp $
  */
 public class ConnectorList extends Absyn implements Serializable, Cloneable {
 /**
@@ -28,9 +28,9 @@ public class ConnectorList extends Absyn implements Serializable, Cloneable {
  * @exception CloneNotSupportedException self-explanatory exception
  */
     public Object clone() throws CloneNotSupportedException {
-	ConnectorList tailclone;
-	if (tail != null) {tailclone = (ConnectorList) tail.clone();} else {tailclone = null;};
-	return new ConnectorList((Connector)head.clone(), (ConnectorList)tailclone);
+      ConnectorList tailclone = (tail == null) ? null :  (ConnectorList)tail.clone();
+      Connector     headclone = (head == null) ? null :  (Connector)head.clone();
+      return new ConnectorList(headclone, tailclone);
     };
 
 }
@@ -39,9 +39,23 @@ public class ConnectorList extends Absyn implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: ConnectorList.java,v 1.10 1999-01-12 08:57:28 swtech00 Exp $
+//	$Id: ConnectorList.java,v 1.11 1999-02-09 10:47:44 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.10  1999/01/12 08:57:28  swtech00
+//	Die "Anderungen von gestern in den ``Listen'' r"uckg"angig gemacht.
+//
+//	Grund: Uniformit"at bestimmter Funktionen, insbesondere des PrettyPrinters.
+//	       Dieser nimmt als Argument einen Term der abstrakten Syntax (eine
+//	       instanz der Klasse Absyn) und verzweigt dann mittels instance_of.
+//
+//	       Der Code f"ur derartige Funktionen w"are ansonsten etwas komplexer.
+//	       Allerdings haben nun (wieder) die Listen ein location-Feld durch
+//	       Vererbung aus Absyn, was im Grunde "uberfl"ussig ist.
+//
+//
+//	[Steffen]
+//
 //	Revision 1.9  1999/01/11 17:12:23  swtech00
 //	Connectorlist ist keine Unterklasse von Absyn, da es keine Location braucht.
 //
