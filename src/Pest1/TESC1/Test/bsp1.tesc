@@ -3,12 +3,18 @@
 # Falls ein Kommentar nicht am Anfang einer Zeile steht, muss er durch ein Space/Tab
 # vom Rest getrennt werden
 
-or S1: 
-	and S2:	
-		basic B1;
-		basic B2;
-	end S2;
+events:	E;
+bvars:	B;
+
+or S1:	
+	basic B1;
+	basic B2;
 
 	defcon : S2;
+
+	cons: C1;	
+
+	transitions:
+	from B1 to B2 on E;	
 
 end S1;
