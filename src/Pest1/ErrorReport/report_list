@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.115 1999-02-28 14:19:16 swtech01 Exp $
+//	$Id: report_list,v 1.116 1999-02-28 18:18:49 swtech26 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -664,7 +664,7 @@ Nach Speichern und Laden meldet der Editor nun ein Koordinatenproblem.
 #Number:        44
 #Autor:         Bernd Weber bwe
 #Subject:       Simu: Keine Funtionalität erkennbar
-#Status:        reported
+#Status:        fixed 
 #Description:
 
 Erzeuge zwei Basic States und eine leere Transition vom Default State
@@ -1023,7 +1023,7 @@ java.lang.NullPointerException:
 #Number:	65
 #Autor:		Bernd Weber bwe
 #Subject:	Editor erzeugt unbehandelte Exception
-#Status: 	reported
+#Status: 	fixed	
 #Description: 
 1. Erzeuge Chart mit zwei Basic States.
 2. Erzeuge ransition von linkem zu rechtem Basic State.
@@ -1047,7 +1047,7 @@ Exception wird erzeugt:
 #Number:	66
 #Autor:		Bernd Weber bwe
 #Subject:	Simulator oeffnet Event-Fenster nicht
-#Status: 	reported
+#Status:  	fixed	
 #Description: 
 Erzeuge States und Transition wie in Nr. 66. Dann starte
 Simulation. Diese oeffnet kein Fenster, um Events zu generieren.
