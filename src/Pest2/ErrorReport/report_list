@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	------------------
 //
-//	$Id: report_list,v 1.19 1999-01-28 14:35:53 swtech00 Exp $
+//	$Id: report_list,v 1.20 1999-01-28 15:53:44 swtech22 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -159,7 +159,7 @@ java.lang.ClassCastException: absyn.And_State
 #Number:	9
 #Autor:		Erich Mikk erm
 #Subject:	Simulation highlightet nicht
-#Status: 	reported 
+#Status: 	processing 
 #Description: 
 
 Importiere TV/tv.st.
