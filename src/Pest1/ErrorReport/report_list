@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.109 1999-02-12 11:21:22 swtech00 Exp $
+//	$Id: report_list,v 1.110 1999-02-15 11:16:21 swtech14 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -997,8 +997,8 @@ java.lang.ClassCastException: absyn.Conname
 #Number:	64
 #Autor:		Bernd Weber bwe
 #Subject:	"Neue Koordinaten" erzeugt Fehler in Statechart ?
-#Status: 	reported
-#Description: 
+#Status: 	fixed
+#Description:
 1. Tesc-Import von ~swtech12/Examples/cyber.tesc1
 2. Editor starten (Koordinaten ok)
 3. Neue Koordinaten starten
@@ -1076,7 +1076,7 @@ hunderte von Exceptions.
 #Number:	69
 #Autor:		Erich Mikk
 #Subject:	Neue Koordinaten - neue Probleme
-#Status: 	reported
+#Status: 	fixed
 #Description: 
 
 STM-Import a1.st
@@ -1091,7 +1091,7 @@ dann wieder TESC-Importieren, dann gibt es das Problem nicht.
 #Number:	70
 #Autor:		Erich Mikk
 #Subject:	TESC2 berechnet Koordinaten, die Editor durcheinanderbringen (IT)
-#Status: 	reported
+#Status: 	fixed
 #Description: 
 
 TESC-Import ~swtech12/Examples/TV/tv_system.pest1.tesc
