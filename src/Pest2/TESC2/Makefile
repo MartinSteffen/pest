@@ -1,6 +1,6 @@
 COMPILER = javac
 VM = java
-COPTIONS = -g -deprecation
+COPTIONS = -deprecation
 ROPTIONS = 
  
 CLASSES = \
@@ -13,10 +13,10 @@ MapState.class \
 MapConnector.class \
 MapUNDEF.class \
 ProperMap.class \
+GeneralLayoutAlgorithm.class \
 SugiyamaBCMAlgorithm.class \
-GraphOptimizer.class \
 CircleLayoutAlgorithm.class \
-GeneralLayoutAlgorithm.class
+GraphOptimizer.class
 
 .SUFFIXES: .java .class
  
