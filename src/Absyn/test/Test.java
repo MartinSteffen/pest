@@ -20,10 +20,17 @@ public class Test {
     //----------------------->    pp.start(sc);
 
     try{
-	//Statechart sc2 = (Statechart)sc.clone();
+      //Statechart sc2 = (Statechart)sc.clone();
+
+      //
 
 
+      System.out.println("-------neuer clone test: Leere Statechart");
+      Statechart sc1 = new Statechart(null,null,null,null);
+      pp.start(sc1);
+      Statechart sc2 = (Statechart)sc1.clone();
 
+      System.out.println("-------ende clone test: Leere Statechart");
 
       CPoint cp = new CPoint(4,5);
       CPoint cpclone = (CPoint) cp.clone();
