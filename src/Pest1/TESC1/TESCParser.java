@@ -19,27 +19,13 @@ import util.*;
 
 /* Todo/Fragen
  * + Was enthält Path? Nur States oder auch Cons? - Nur States !
- * - Es wird immer ein ActionBlock zurückgeliefert
  * + Kann es mehr als einen defcon geben ? Selbst entscheiden. <- nur einer
  * + PathList der Größe nach sortieren
  * + Ist Basic_State als root erlaubt ? - Ja
  * + is_*name über Pfade prüfen !!
  * + Statenamelist in ostate fehlt noch ! <- defcons
- * - Undet bei Guards
  * + Fehlerbehandlung
- * - Wenn in der Tescdatei der Rootzustand geparst wird,
- *   werden evt. noch dahinterstehende Zeilen vom Parser ignoriert.
- *   (eigentlich nicht unbedingt ein Fehler, vielleicht unschoen?)
  * + Bei Ident mit Bezug auf vorhandenes Obejkt immer prüfen, ob auch vorhanden s.u.
- * - Bei Guards: ... on ; liefert GuardEmpty(..). Wg. Editor, falls User nichts angeben will.
- *   Ist das Ok, oder soll es Fehlermeldung geben?
- */
-
-
-/* Letzte Änderungen:
- * 
- * - in actionstmt: erst hier caption + / setzten
- * - in trans : prüfen, ob on da, sonst leerguard => guardangaben koennen weggelassen werden
  */
 
 class TESCParser {
@@ -54,8 +40,6 @@ class TESCParser {
 
     private Vector snlist;        // Liste der bekannten Statenames
     private Vector cnlist;        // Liste der bekannten Connames
-    //private Vector bnlist;        // Liste der bekannten Bvarnames / temporar
-    //private Vector enlist;        // Liste der bekannten Eventnames / temporar
 
     private Vector path;          // enthält die Pfade
 
@@ -1887,8 +1871,11 @@ class TESCParser {
 }
 
 /* TESCParser
- * $Id: TESCParser.java,v 1.23 1999-02-05 19:21:20 swtech13 Exp $
+ * $Id: TESCParser.java,v 1.24 1999-02-08 14:45:07 swtech13 Exp $
  * $Log: not supported by cvs2svn $
+ * Revision 1.23  1999/02/05 19:21:20  swtech13
+ * Aenderung in der Syntax
+ *
  * Revision 1.21  1999/01/28 17:26:15  swtech13
  * Kleine Änderungen
  *

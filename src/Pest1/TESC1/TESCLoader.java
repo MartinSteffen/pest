@@ -1,6 +1,5 @@
 package tesc1;
 
-//import java.util.*;
 import absyn.*;
 import java.io.*;
 import gui.*;
@@ -26,7 +25,7 @@ import java.util.*;
  * anzuwenden:
  * 
  * <ul>
- * <li> TestBVars.pruefeBVar(...)    // AllTESCLoader.javaerdings sollte gecheckt werden, ob überflüssige BVars vorhanden
+ * <li> TestBVars.pruefeBVar(...)    // Allerdings sollte gecheckt werden, ob überflüssige BVars vorhanden
  * <li> TestEvents.pruefeEvent(...)  // Allerdings sollte gecheckt werden, ob überflüssige Events vorhanden
  * <li> TestPI                       // Falls wir das richtig verstanden haben ..
  * </ul>
@@ -51,46 +50,19 @@ import java.util.*;
  * STATUS
  * </STRONG>
  * <br> 
- * Der Parser ist bis auf Kleinigkeiten (s. TODO) funktionsfaehig.
+ * Der Parser ist fertig. <br>
  * In tesc1/Test befinden sich mehrere Testdateien. <br>
  * Diese koennen ueber das GUI-Fenster mittels Import->TESC geladen werden. <br>
  * Die TESC-Sprache ist über die <A HREF="./tesc1/Docu/grammatik.txt">Grammatik</A> definiert. 
  * Siehe auch <A HREF="./tesc1/Docu/Doku.txt"> Doku.txt</A> <br>
  * Beispiel <A HREF="./tesc1/Test/example.tesc"> example.tesc</A>
- * Die Parse-Methoden für den Editor haben in eigenen Tests funktioniert.
  * <br>
- * <DT><STRONG>
- * TODO.
- * </STRONG>
- * <br>
- * <ul>
- * <li> Undet bei Guards (ist wohl nicht nötig)
- * <li> Abschließende Test (z.B. im Editor)
- * <li> Testen der Schnitstelle für den Editor (getAction/getGuard)
- * </ul>
- * 
- * <br>
- * <DT><STRONG>
- * TEMP.
- * </STRONG>
- * <ul>
- * <li> debug-ausgaben ins GUI Fenster.
- * </ul>
- *
- * <DT><STRONG>
- * <A NAME="options"> Einstellungsmöglichkeiten </A>
- * </STRONG> 
- *
- * <ul>
- * <li> debug
- * <li> jumpAfterError
- * </ul>
  *
  * </DL COMPACT>
  * <br>
  * <hr>
  * @author Arne Koch/Mike Rumpf.
- * @version  $Id: TESCLoader.java,v 1.22 1999-01-25 13:27:49 swtech13 Exp $ 
+ * @version  $Id: TESCLoader.java,v 1.23 1999-02-08 14:45:06 swtech13 Exp $ 
  */ 
 public class TESCLoader {
 
@@ -113,15 +85,7 @@ public class TESCLoader {
     // public-Methoden
 
 
-    /** 
-     * <A HREF="#options">Optionen</A> einstellen
-     * @param opt Referenz auf einen Vector, der die <A HREF="#options"> Optionen</A> enthält.
-     */
-    public void initOptions(Vector opt) {
-	options = opt;
-    }
-   
-    /** 
+    /**
      * Umwandeln eines  TESC-File aus BufferedReader in Statechart.
      * @param Referenz auf einen BufferedReader
      * @return Liefert Statechart oder null bei Fehler.
@@ -140,62 +104,13 @@ public class TESCLoader {
 
 
     /** 
-     * Umwandeln eines  TESC-File aus BufferedReader in Guard.<br> Fehlerausgaben werden vom Parser ins gui-Fenster geschrieben.<br><STRONG>  Temporär!! </STRONG>
-     * @param Referenz auf einen BufferedReader
-     * @return Liefert Guard oder null bei Fehler.
-     */ 
-    private Guard getGuard(BufferedReader br) throws IOException {
-	TESCParser parser = new TESCParser(br, gi);
-	parser.initSwitches(options);
-
-	Guard guard = parser.readGuard(br);
-
-	if (parser.getErrorCount() > 0) {	   
-	    gi.OkDialog("Fehler", "Guard ist fehlerhaft.");
-	    return null;
-        }
-	else {
-	    if (guard == null) guard = new GuardEmpty(new Dummy());
-	    return guard;
-	}
-    }
-
-    /** 
-     * Umwandeln eines  TESC-File aus BufferedReader in Guard.<br> <STRONG>  Temporär!! </STRONG>.
-     * @param Referenz auf einen BufferedReader
-     * @param Referenz auf SEventList
-     * @param Referenz auf BvarList
-     * @return Liefert Guard oder null bei Fehler.
-     */ 
-    private Guard getGuard(BufferedReader br, SEventList el, BvarList bl) throws IOException {
-	TESCParser parser = new TESCParser(br, gi);
-	parser.initSwitches(options);
-
-	Guard guard = parser.readGuard(br, el, bl);
-
-	if (parser.getErrorCount() > 0) {	   
-	    if (gi != null) gi.OkDialog("Fehler", "Guard ist fehlerhaft.");
-	    else System.out.println("Fehler: Guard ist fehlerhaft.");
-
-	    return null;
-        }
-	else {
-	    if (guard == null) guard = new GuardEmpty(new Dummy());
-	    evlist = parser.getSEventList();
-	    bvlist = parser.getBvarList();
-
-	    return guard;
-	}
-    }
-
-    /** 
      * Umwandeln eines  TESC-File aus BufferedReader in Guard.
      * <br>Die neuen SEvents/Bvars werden in die Listen des übergebenen Statecharts eingetragen
      * @param Referenz auf einen BufferedReader
      * @param Referenz auf Statechart
      * @return Liefert Guard oder null bei Fehler.
      */ 
-  public Guard getGuard(BufferedReader br, Statechart sc) throws IOException {
+  private Guard getGuard(BufferedReader br, Statechart sc) throws IOException {
 	TESCParser parser = new TESCParser(br, gi);
 
 	if (parser != null) {
@@ -221,15 +136,6 @@ public class TESCLoader {
 	    return null;
     }
 
-
-    /**
-     * <STRONG>NICHT</STRONG> verwenden, liefert null.<br> Diese Methode ist nur aus Kompatibilitätsgründen zu PEST2 da. 
-     * @return null
-     */
-    public TLabel getLabel(BufferedReader br, Statechart sc) {
-
-	return null;
-    }
 
     /**
      * Liefert um caption erweitertes TLabel
@@ -292,60 +198,13 @@ public class TESCLoader {
     }
 
     /** 
-     * Umwandeln eines  TESC-File aus BufferedReader in Action.<br> <STRONG> Achtung: </STRONG> Der String MUSS mit einem ; abgeschlossen sein<br><STRONG>  Temporär!! </STRONG>
-     * @param Referenz auf einen BufferedReader     
-     * @return Liefert Action oder null bei Fehler.
-     */ 
-    private Action getAction(BufferedReader br) throws IOException {
-	TESCParser parser = new TESCParser(br, gi);
-	parser.initSwitches(options);
-	Action action = parser.readAction(br);
-
-	if (parser.getErrorCount() > 0) {	    
-	    gi.OkDialog("Fehler", "Action ist fehlerhaft.");
-	    return null;
-        }
-	else {
-	    if (action == null) action = new ActionEmpty(new Dummy());
-	    return action;
-	}
-    }
-
-    /** 
-     * Umwandeln eines  TESC-File aus BufferedReader in Action.<br> <STRONG> Achtung: </STRONG> Es werden nur Actionstatements akzeptiert, die mit einem ; abgeschlossen sind!<br> <STRONG>  Temporär!! </STRONG>
-     * @param Referenz auf einen BufferedReader
-     * @param Referenz auf SEventList
-     * @param Referenz auf BvarList
-     * @return Liefert Action oder null bei Fehler.
-     */ 
-    private Action getAction(BufferedReader br, SEventList el, BvarList bl) throws IOException {
-	TESCParser parser = new TESCParser(br, gi);
-	parser.initSwitches(options);
-	Action action = parser.readAction(br, el, bl);
-
-	if (parser.getErrorCount() > 0) {	    
-	    if (gi != null) gi.OkDialog("Fehler", "Action ist fehlerhaft.");
-	    else System.out.println("Fehler: Action ist fehlerhaft.");
-	    return null;
-        }
-	else {
-	    if (action == null) action = new ActionEmpty(new Dummy());
-
-	    evlist = parser.getSEventList();
-	    bvlist = parser.getBvarList();
-
-	    return action;
-	}
-    }
-
-    /** 
      * Umwandeln eines  TESC-File aus BufferedReader in Action.<br> <STRONG> Achtung: </STRONG> Es werden nur Actionstatements akzeptiert, die mit einem ; abgeschlossen sind!
      * <br>Die neuen SEvents/Bvars werden in die Listen des übergebenen Statecharts eingetragen
      * @param Referenz auf einen BufferedReader
      * @param Referenz auf Statechart
      * @return Liefert Action oder null bei Fehler.
      */ 
-    public Action getAction(BufferedReader br, Statechart st) throws IOException {
+    private Action getAction(BufferedReader br, Statechart st) throws IOException {
 	TESCParser parser = new TESCParser(br, gi);
 	if (parser != null) {
 	    parser.initSwitches(options);
@@ -369,25 +228,13 @@ public class TESCLoader {
 	    return null;
 	}
     }
-    /** 
-     * Zugriff auf die SEventList des Parsers<br><STRONG>  Temporär!! </STRONG>
-     * @return Liefert SEventList des Parsers.
-     */ 
-    private SEventList getSEventList() {
-	return evlist;
-    }
-
-    /** 
-     * Zugriff auf die BvarList des Parsers<br><STRONG>  Temporär!! </STRONG>
-     * @return Liefert BvarList des Parsers.
-     */ 
-    private BvarList getBvarList() {
-	return bvlist;
-    }
 }
 
 /* 
  * $Log: not supported by cvs2svn $
+ * Revision 1.22  1999/01/25 13:27:49  swtech13
+ * debug auskommentiert
+ *
  * Revision 1.21  1999/01/20 22:07:53  swtech13
  * Haesslichen Fehler in getLabel(TLabel,...) beseitigt
  *

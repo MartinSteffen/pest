@@ -167,7 +167,7 @@ class TESCLabelGen {
 	return s;
     }
 
-    public String getAction() {
+    protected String getAction() {
 	String s = null;
 	inEv = true;
 	inAction = true;
@@ -413,6 +413,7 @@ class TESCLabelGen {
 
 
     // Wozu diese Fkt. ??
+/*
     private boolean secEmpty(Guard g) {
 	boolean b = false;
 
@@ -421,7 +422,7 @@ class TESCLabelGen {
 
 	return b;
     }
-
+*/
 
 
     // ACTIONS

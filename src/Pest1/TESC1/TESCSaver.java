@@ -33,7 +33,7 @@ import util.*;
  * 
  * <ul>
  * <li> 2. TestTransitions
- * <li> 3. ?
+ * <li> 3. TestBVars.pruefeGuard
  * <li> 4.-5. sollte von den Modulen, die Statecharts erzeugen, sowieso garantiert werden.
  * </ul>
 
@@ -48,31 +48,12 @@ import util.*;
  * erhalten, allerdings können bei falscher Syntax exportierte Files nicht reimportiert werden).
  * Falls beim Parsen der Absyn ein GuardUndet auftritt, wird ein GuardEmpty exportiert, und der echte 
  * Guard als Kommentar in die nächste Zeile geschrieben, so daß der User versuchen kann, noch etwas zu retten.
- * Die GuardUndets tauchen z.B. beim stm-import auf, wenn ein stm-file importiert wurde, das Teil einer größeren
- * Statechart ist, die in mehrere Files aufgeteilt wurde, und in Pfad-Operationen auf States in einem anderen File zugrifffen wird.
  * <br>
- * <DT><STRONG>
- * TODO.
- * </STRONG>
- * <br>
- * <ul>
- * <li> Testen.
- * <li> bessere GuardUndet-Behandlung (?, sehen momentan keine Möglichkeit)
- * </ul>
- * 
- * <br>
- * <DT><STRONG>
- * TEMP.
- * </STRONG>
- * <ul>
- * <li> debug-ausgaben ins GUI Fenster.
- * </ul>
- *
  * </DL COMPACT>
  * <br>
  * <hr>
  * @author Arne Koch/Mike Rumpf.
- * @version  $Id: TESCSaver.java,v 1.9 1999-02-05 19:21:22 swtech13 Exp $ 
+ * @version  $Id: TESCSaver.java,v 1.10 1999-02-08 14:45:08 swtech13 Exp $ 
  */ 
 
 /* Konventionen:
@@ -82,11 +63,6 @@ import util.*;
  * Debug      ---"--- : debug
  * Evtl. Fehler       : ???
  *
- */
-
-/* Todo:
- *
- * - add* Funktionen in eigene Klasse auslagern, so daß TESCSaver reine Schnitstelle
  */
 
 public class TESCSaver {
