@@ -65,14 +65,15 @@ import tesc1.TESCSaver;
  * </DL COMPACT>
  *
  * @author  Sven Jorga, Werner Lehmann
- * @version $Id: HAImport.java,v 1.20 1999-02-04 23:04:12 swtech18 Exp $
+ * @version $Id: HAImport.java,v 1.21 1999-02-07 14:17:07 swtech18 Exp $
  */
 public class HAImport implements Patterns {
   Perl5Util perl = new Perl5Util();
 
-  private static final String DEFAULTMESSAGE = "STM: Statename {0} ist reserviertes Schlüsselwort und wurde umbenannt in {1}.";
+  private static final String DEFAULTMESSAGE = "STM: Statename {0} ist reserviertes Schlüsselwort und wurde {1} umbenannt.";
   private double rFaktor = 1;
   private boolean parseCoords = true;
+  private boolean rename = false;
   private boolean parseInitString = true;
   private boolean parseTrmap = true;
   private int xSize = 640;
@@ -179,7 +180,7 @@ public class HAImport implements Patterns {
       throw new Exception("HA-Format-Fehler: Keine \"hierarchy function\" (Hi) vorhanden!");
     if (flathString != null && !flathString.equals(""))
       showWarning("STM: flache Histories sind nicht abgebildet worden!");
-    if (depthString != null && depthString.equals(""))
+    if (depthString != null && !depthString.equals(""))
       showWarning("STM: tiefe Histories sind nicht abgebildet worden!");
     if (trmapString == null || trmapString.equals("") )
       parseTrmap = false;
@@ -286,6 +287,21 @@ public class HAImport implements Patterns {
 
   public Statechart getStatechart(boolean parseCoords, int xSize, int ySize) throws Exception {
     this.parseCoords = this.parseCoords && parseCoords;
+    this.xSize = xSize;
+    this.ySize = ySize;
+    return getStatechart();
+  }
+
+  /** Diese Methode liefert die StateChart genau wie getStatechart(),
+   * jedoch kann noch zus&auml;tzlich zwei boolean-Parameter &uuml;bergeben
+   * werden, die festlegen, ob im StateChart vorkommende PEST-Keywords umbenannt
+   * werden sollen und ob die Koordinaten mit &uuml;bernommen werden sollen.
+   * Und zwei Integer-Parameter, die die gewünschte Skalierungs-Aufl&ouml;sung
+   * angeben.
+   */
+  public Statechart getStatechart(boolean rename, boolean parseCoords, int xSize, int ySize) throws Exception {
+    this.parseCoords = this.parseCoords && parseCoords;
+    this.rename = rename;
     this.xSize = xSize;
     this.ySize = ySize;
     return getStatechart();
@@ -430,7 +446,7 @@ public class HAImport implements Patterns {
     Vector eventsVector = splitStringset(eventsString,"/\",\"/");
     //Vector eventsVector = deliSplit(eventsString,',');
     for (int i=eventsVector.size(); i > 0; i--)
-      list = new SEventList(new SEvent(new String(checkKeyword((String) eventsVector.elementAt(i-1),"STM: SEvent {0} ist reserviertes Schlüsselwort und wurde umbenannt in {1}."))),
+      list = new SEventList(new SEvent(new String(checkKeyword((String) eventsVector.elementAt(i-1),"STM: SEvent {0} ist reserviertes Schlüsselwort und wurde {1} umbenannt."))),
                             list);
     return list;
   }
@@ -439,7 +455,8 @@ public class HAImport implements Patterns {
 
   private State getState() throws Exception {
     State st = createState(rootString, new CRectangle(0,0,0,0));
-    fixAllTrans(st);
+    if (parseCoords)
+      fixAllTrans(st);
     return st;
   }
 
@@ -595,7 +612,10 @@ public class HAImport implements Patterns {
     String tmp = null;
     Object[] args = new Object[2];
     if ( Keyword.isReserved(s) ) {
-      tmp = checkKeyword("_"+s+"_",m);
+      if (rename)
+        tmp = "in "+checkKeyword(s+"_1",m);
+      else
+        tmp = "nicht";
       args[0] = s;
       args[1] = tmp;
       if (m != null)
@@ -692,7 +712,7 @@ public class HAImport implements Patterns {
     String temp = null;
     if (perl.match("/^mk_egen\\((.*)\\)/",actionString)) {
       temp = perl.substitute("s/\"//g",perl.group(1));
-      temp = checkKeyword(temp, "STM: ActionEvt-String {0} enthält reserviertes Schlüsselwort und wurde umbenannt in {1}.");
+      temp = checkKeyword(temp, "STM: ActionEvt-String {0} enthält reserviertes Schlüsselwort und wurde {1} umbenannt.");
       return new ActionEvt(new SEvent(new String(temp))); }
     else if (perl.match("/^mk_block\\(<(.*)>\\)/",actionString)) {
       return new ActionBlock(createAseq(perl.group(1))); }
@@ -725,17 +745,17 @@ public class HAImport implements Patterns {
     String temp = null;
     if (perl.match("/^mk_mtrue\\((.*)\\)/",boolstmtString)) {
       temp = perl.substitute("s/\"//g",perl.group(1));
-      temp = checkKeyword(temp, "STM: Bvar {0} enthält reserviertes Schlüsselwort und wurde umbenannt in {1}.");
+      temp = checkKeyword(temp, "STM: Bvar {0} enthält reserviertes Schlüsselwort und wurde {1} umbenannt.");
       return new MTrue( new Bvar(new String(temp))); }
     else if (perl.match("/^mk_mfalse\\((.*)\\)/",boolstmtString)) {
       temp = perl.substitute("s/\"//g",perl.group(1));
-      temp = checkKeyword(temp, "STM: Bvar {0} enthält reserviertes Schlüsselwort und wurde umbenannt in {1}.");
+      temp = checkKeyword(temp, "STM: Bvar {0} enthält reserviertes Schlüsselwort und wurde {1} umbenannt.");
       return new MFalse( new Bvar(new String(temp))); }
     else if (perl.match("/^mk_bass\\((.*)\\)/",boolstmtString)) {
       // Aufbau: mk_bass("X",...
       Vector vec = perl.split("/,/",perl.group(1));
       temp = perl.substitute("s/\"//g",(String) vec.elementAt(0));
-      temp = checkKeyword(temp, "STM: Bvar {0} enthält reserviertes Schlüsselwort und wurde umbenannt in {1}.");
+      temp = checkKeyword(temp, "STM: Bvar {0} enthält reserviertes Schlüsselwort und wurde {1} umbenannt.");
       return new BAss(new Bassign(new Bvar(new String(temp)),
                                      createGuard("",(String) vec.elementAt(1)))); }
     else {
@@ -754,7 +774,7 @@ public class HAImport implements Patterns {
     if (perl.match("/^mk_emptyexpr\\(.*\\)/",exprStr))
       return new GuardEmpty(new Dummy());
     else if (perl.match("/^mk_basicexpr\\((.*)\\)/",exprStr)) {
-       temp = checkKeyword(removeQuotes(perl.group(1)), "STM: SEvent {0} enthält reserviertes Schlüsselwort und wurde umbenannt in {1}.");
+       temp = checkKeyword(removeQuotes(perl.group(1)), "STM: SEvent {0} enthält reserviertes Schlüsselwort und wurde {1} umbenannt.");
       return new GuardEvent(new SEvent(temp)); }
     else if (perl.match("/^mk_negexpr\\((.*)\\)/",exprStr))
       return new GuardNeg(createGuard(perl.group(1),""));
@@ -768,7 +788,7 @@ public class HAImport implements Patterns {
     if (perl.match("/^mk_emptycond\\(.*\\)/",condStr))
       return new GuardEmpty(new Dummy());
     else if (perl.match("/^mk_istrue\\((.*)\\)/",condStr)) { // ??? ?????????????????
-      temp = checkKeyword(removeQuotes(perl.group(1)), "STM: Bvar {0} enthält reserviertes Schlüsselwort und wurde umbenannt in {1}.");
+      temp = checkKeyword(removeQuotes(perl.group(1)), "STM: Bvar {0} enthält reserviertes Schlüsselwort und wurde {1} umbenannt.");
       return new GuardBVar(new Bvar(temp)); }
     else if (perl.match("/^mk_negcond\\((.*)\\)/",condStr))
       return new GuardNeg(createGuard("",perl.group(1)));
