@@ -45,7 +45,7 @@ import absyn.*;
  * </DL>
  *
  * @author Marcel Kyas, Walter Loeser, Andre Paetzold.
- * @version $Id: CodeGen.java,v 1.9 1999-01-11 13:31:55 swtech25 Exp $
+ * @version $Id: CodeGen.java,v 1.10 1999-01-11 15:10:59 swtech25 Exp $
  */
 public class CodeGen
 {
@@ -110,6 +110,6 @@ public class CodeGen
         public void Generate(String path, Statechart statechart, int options)
 		throws CodeGenException
         {
-		Generate(statechart, path);
+		Generate(path, statechart);
         }
 }
