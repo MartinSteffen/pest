@@ -26,7 +26,10 @@ import util.*;
  * + is_*name über Pfade prüfen !!
  * + Statenamelist in ostate fehlt noch ! <- defcons
  * - Undet bei Guards
- * - Fehlerbehandlung
+ * + Fehlerbehandlung
+ * - Wenn in der Tescdatei ein Basiszustand geparst wird,
+ *   werden evt. noch dahinterstehende Zeilen vom Parser ignoriert.
+ *   (eigentlich nicht unbedingt ein Fehler, vielleicht unschoen?)
  * + Bei Ident mit Bezug auf vorhandenes Obejkt immer prüfen, ob auch vorhanden s.u.
  */
 
@@ -162,33 +165,25 @@ class TESCParser {
     
     // events : 
     private SEventList events() throws IOException {
-	boolean b = false;
 	SEventList evlist = null;
 	
-	b = match(vTOKEN.EVENTS);	
-	b = match(vTOKEN.COLON);
+	match(vTOKEN.EVENTS);	
+	match(vTOKEN.COLON);
 
-	if (b) {
-	    evlist = eventlist();
+        evlist = eventlist();
 	    
-	}
-	else
-	  addError(makeError(tok,"Syntax Error"));
 	return evlist;
     }
     
     // bvars :
     private BvarList bvars() throws IOException {
-	boolean b = false;
 	BvarList bvlist = null;
 
-	b = match(vTOKEN.BVARS);
-	b = match(vTOKEN.COLON);
+	match(vTOKEN.BVARS);
+	match(vTOKEN.COLON);
 
-	if (b) {
-	    bvlist = bvarlist();
-	}
-
+	bvlist = bvarlist();
+	 
 	return bvlist;
     }
 
@@ -308,6 +303,8 @@ class TESCParser {
 	    bs = new Basic_State(sn);
 	    bs.location = loc;
 	}
+	else
+	    addError(makeError(tok,"Identifier erwartet"));
 
 	return bs;
     }
@@ -390,7 +387,8 @@ class TESCParser {
 	    }
 	    
 	}
-
+	else
+	    addError(makeError(tok,"Identifier erwartet"));
 	return os;
     }
 
@@ -449,7 +447,8 @@ class TESCParser {
 	    }
 	    
 	}
-
+	else
+	    addError(makeError(tok,"Identifier erwartet"));
 	return as;
     }
 
@@ -958,13 +957,13 @@ class TESCParser {
 	TrList trlist = null;
 	boolean b = false;
 	
-	//b = match(vTOKEN.FROM);
-	
 	if (tok.token == vTOKEN.FROM) {
 	    trlist = new TrList(trans(p), translist(p));
 	}
+	else if (tok.token==vTOKEN.IDENT) {
+	    addError(makeError(tok,"Transitionsdefinition erwartet"));
+	}
 	else {
-	   
 	    trlist = null;
 	}
 
@@ -1168,7 +1167,7 @@ class TESCParser {
 	    tok = ts.nextToken();
 	}
 	else {
-	    // Error
+	    addError(makeError(tok,"Syntax Error"));
 	    
 	    b = false;
 	}
@@ -1326,8 +1325,11 @@ class TESCParser {
 }
 
 /* TESCParser
- * $Id: TESCParser.java,v 1.10 1999-01-06 13:48:56 swtech13 Exp $
+ * $Id: TESCParser.java,v 1.11 1999-01-06 14:57:24 swtech13 Exp $
  * $Log: not supported by cvs2svn $
+ * Revision 1.10  1999/01/06 13:48:56  swtech13
+ * Neue Fehlermeldung
+ *
  * Revision 1.9  1999/01/05 20:58:17  swtech13
  *   - pathop -> absolute Pfade
  *   - Keine Action angegeben -> new ActionEmpty(new Dummy())
