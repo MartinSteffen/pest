@@ -4,7 +4,7 @@
 //
 //
 //   Letzte Aenderung von:  Mario Thies
-//                          11.01.1999
+//                          24.01.1999
 //
 // ****************************************************************************
 
@@ -67,7 +67,7 @@ class CheckConnectors {
       // kann nicht mit contains geprüft werden
       while (i<pathlist.size() && !found) {
         s = (String)pathlist.elementAt(i);
-        if (con.name==s) { found = true; }
+        if (con.name.compareTo(s)==0) { found = true; }
         i = i+1;
         }
 
@@ -89,7 +89,7 @@ class CheckConnectors {
       if (tl.head.source instanceof Conname) {
         source = (Conname)tl.head.source;
 
-        if (source.name==con.name &&
+        if (source.name.compareTo(con.name)==0 &&
             tl.head.target instanceof Conname) { // Connector con in tl gefunden
 
           ok = ok && checkConnectors(state,(Conname)tl.head.target,next);

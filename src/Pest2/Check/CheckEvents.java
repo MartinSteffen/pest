@@ -63,7 +63,7 @@ class CheckEvents {
           se = sel;
           found = false;
           while (se != null && found==false) {
-            if (g.event.name == se.head.name) { found = true; }
+            if (g.event.name.compareTo(se.head.name)==0) { found = true; }
             se = se.tail;
             }
 
@@ -81,7 +81,7 @@ class CheckEvents {
           se = sel;
           found = false;
           while (se != null && found==false) {
-            if (a.event.name.equals(se.head.name)) { found = true; }
+            if (a.event.name.compareTo(se.head.name)==0) { found = true; }
             se = se.tail;
             }
 

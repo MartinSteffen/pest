@@ -3,8 +3,8 @@
 //   Autor:                 Tobias Kunz, Mario Thies
 //
 //
-//   Letzte Aenderung von:  Tobias Kunz
-//                          11.01.1999
+//   Letzte Aenderung von:  Mario Thies
+//                          24.01.1999
 //
 // ****************************************************************************
 
@@ -68,7 +68,7 @@ class CheckBVars {
           bv = bvl;
           found = false;
           while (bv != null && found==false) {
-            if (g.bvar.var == bv.head.var) { found = true; }
+            if (g.bvar.var.compareTo(bv.head.var)==0) { found = true; }
             bv = bv.tail;
             }
 
@@ -88,7 +88,7 @@ class CheckBVars {
           while (bv != null && found==false) {
             if (a.stmt instanceof BAss) {
               ba = (BAss)a.stmt;
-              if (ba.ass.blhs.var == bv.head.var) { found = true; }
+              if (ba.ass.blhs.var.equals(bv.head.var)) { found = true; }
               bv = bv.tail;
               }
             }

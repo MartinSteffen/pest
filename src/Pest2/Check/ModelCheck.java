@@ -150,7 +150,6 @@ private boolean       OutputToGUI = false;
       CheckBVars  checkBVars  = new CheckBVars(statechart, errors, warnings);
       CheckConnectors checkConnectors = new CheckConnectors(statechart, errors, warnings);
       CheckDupes checkDupes = new CheckDupes(statechart, errors, warnings);
-      // ok = ok && checkDupes.check();
 
       // zu Debugzwecken
       if (!ok) gui.userMessage("Test auf inkonsistente Statenamen ist fehlgeschlagen");
@@ -158,6 +157,7 @@ private boolean       OutputToGUI = false;
       CheckStates cs = new CheckStates(statechart, errors, warnings);
       ok = ok && cs.check();
 
+      // ok = ok && checkDupes.check();
       ok = ok && checkEvents.check();
       ok = ok && checkBVars.check();
       ok = ok && checkConnectors.check();
