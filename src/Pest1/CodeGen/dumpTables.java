@@ -14,7 +14,7 @@ import java.util.*;
  * an interface to the original textual representations of
  * states, events and conditions.
  *
- * @version $Id: dumpTables.java,v 1.14 1999-02-12 15:13:08 swtech25 Exp $
+ * @version $Id: dumpTables.java,v 1.15 1999-02-28 17:34:11 swtech25 Exp $
  * @author Marcel Kyas
  */
 public class dumpTables
@@ -177,7 +177,7 @@ public class dumpTables
   static String generateSymEvent(SEvent e)
   {
     String s = new String("EVENT_" + e.name);
-    return s.replace('.', '$');
+    return s.replace('.', '_');
   }
 
 
@@ -188,7 +188,7 @@ public class dumpTables
   static String generateSymBVar(Bvar b)
   {
     String s = new String("BVAR_" + b.var);
-    return s.replace('.', '$');
+    return s.replace('.', '_');
   }
 
 
@@ -470,10 +470,10 @@ public class dumpTables
    * We need to check, if there is a chance of name
    * clashes.
    */
-  public static String generateSymState(Path path)
+  static String generateSymState(Path path)
   {
-    String s = generateName(path, "_$_");
-    return s.replace('.', '$');
+    String s = generateName(path, "_");
+    return s.replace('.', '_');
   }
 
 

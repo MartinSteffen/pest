@@ -5,37 +5,49 @@ package codegen;
  * code for transitions.
  *
  * @author Marcel Kyas
- * @version $Id: CodeGenTrans.java,v 1.2 1999-02-17 14:02:04 swtech25 Exp $
+ * @version $Id: CodeGenTrans.java,v 1.3 1999-02-28 17:34:09 swtech25 Exp $
  */
 public class CodeGenTrans {
-	/**
-	 * Number of transition.
-	 */
-	public int number;
+  /**
+   * Number of transition.
+   */
+  int number;
 
-	/**
-	 * Name of the source state.
-	 */
-	public String source;
+  /**
+   * Name of the source state.
+   */
+  String source;
 
-	/**
-	 * Code of the guard.
-	 */
-	public String guard;
+  /**
+   * Code of the guard.
+   */
+  String guard;
 
-	/**
-	 * Code for the action.
-	 */
-	public String action;
+  /**
+   * Code for the action.
+   */
+  String action;
 
-	/**
-	 * Name of the target.
-	 */
-	public String target;
+  /**
+   * Name of the target.
+   */
+  String target;
 
-	/**
-	 * Next transition
-	 */
-	public CodeGenTrans next;
+  public CodeGenTrans() {
+    number = 0;
+    source = null;
+    target = null;
+    guard = null;
+    action = null;
+  }
+
+  public CodeGenTrans(int n, String s, String t, String g, String a)
+  {
+    number = n;
+    source = s;
+    target = t;
+    guard = g;
+    action = a;
+  }
 }
 
