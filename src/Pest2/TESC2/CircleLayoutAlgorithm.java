@@ -14,7 +14,7 @@ package tesc2;
 import absyn.*;
 import java.awt.*;
 
-public class CircleLayoutAlgorithm extends GeneralLayoutAlgorithm {
+class CircleLayoutAlgorithm extends GeneralLayoutAlgorithm {
     
     /* Radius eines Kreises für einen Connector */
     static final double CONNECTOR_RADIUS = 10.0;
