@@ -159,7 +159,7 @@ implements GUIInterface
 	if (FileName != null)//Ok gewählt
 	    {
 		try {
-		    BufferedReader  inFile = new BufferedReader(new FileReader(fDialog.getDirectory()+FileName));
+		    		    BufferedReader  inFile = new BufferedReader(new FileReader(fDialog.getDirectory()+FileName));
 		    if(inFile.readLine().equals("zustand"))
 			{
 			    // hier soll noch irgendwie geladen werden

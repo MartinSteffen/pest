@@ -11,7 +11,7 @@ pest myWindow;
 
     Menu M_Export;
 MenuItem M_Speichern, M_Speichernu, M_Editor;
-MenuItem M_Simulator, M_Codegen, M_SyntaxCheck;
+MenuItem M_Simulator, M_Codegen, M_SyntaxCheck,M_PrettyPrint;
 
 
 public GUIMenu(pest myWindow)
@@ -64,6 +64,8 @@ public GUIMenu(pest myWindow)
   M_Simulator   = addMenuItem(m,"Simulator",mlw);
   M_Codegen     = addMenuItem(m,"Codegenerator",mlw);
   M_SyntaxCheck = addMenuItem(m,"SyntaxCheck",mlw);
+  m.addSeparator();
+  M_PrettyPrint = addMenuItem(m,"PrettyPrinter",mlw);
   add(m);
 
   m = new Menu("Hilfe");

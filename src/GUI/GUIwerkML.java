@@ -3,7 +3,8 @@ package GUI;
 // empfiehlt es sich hier NICHT "Absyn" zu importieren !
 
 import java.awt.event.*;
-
+//import Util.PrettyPrint;
+//import Absyn.Example;
 
 class GUIwerkML
 implements ActionListener
@@ -35,8 +36,8 @@ public void actionPerformed(ActionEvent e) {
       }else if (cmd.equals("Simulator")) {
 	  if (myWindow.checkSB())
 	      {
-		  //new Simu.Simu(myWindow.SyntaxBaum);
-		  myWindow.OkDialog("FEHLER","Wegen fehlender PACKAGE Anweisung in der Klasse Simu nicht implementiert");
+		  new Simu.Simu(myWindow.SyntaxBaum);
+		  //myWindow.OkDialog("FEHLER","Wegen fehlender PACKAGE Anweisung in der Klasse Simu nicht implementiert");
 
 	      }
       }else if (cmd.equals("Codegenerator")) {
@@ -47,6 +48,8 @@ public void actionPerformed(ActionEvent e) {
 		  new CodeGen.CodeGen(".",myWindow.SyntaxBaum);
 	      }
 
+      }else if (cmd.equals("PrettyPrint")) {
+	  //	  (new PrettyPrint()).start( Example.getExample() );
       }else{  
 	 myWindow.userMessage("GUI   : NOCH NICHT IMPLEMENTIERT"); 
       }	 

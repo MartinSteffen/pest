@@ -22,10 +22,12 @@ public GUIimportML(GUIMenu myMenu,pest myWindow)
 public void actionPerformed(ActionEvent e) {
   String cmd = e.getActionCommand();
 
-  if(cmd.equals(""))
+  if(cmd.equals("TESC"))
       {
-	  
-      }else if (cmd.equals("")) {
+	  myWindow.OkDialog("Fehler","TESC sollte BufferedReader erwarten - nicht FileInputStream");
+      
+      }else if (cmd.equals("Statemate")) {
+	  myWindow.OkDialog("Fehler","Statemate hat falsche Packageanweisung");
       }else{  
 	 myWindow.userMessage("GUI   : IMPORT NOCH NICHT IMPLEMENTIERT"); 
       }	 
