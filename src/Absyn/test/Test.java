@@ -27,9 +27,7 @@ public class Test {
     //  Test des  Ref_State
     System.out.println("-----------------------Test der Refstates");
     Basic_State S1 = new Basic_State (new Statename("S1"));
-    Ref_State   RS1 = new Ref_State(new Statename("Ref S1"));
-    RS1.filename = "file: ~/abc.code";
-    RS1.filetype = new Pest_CoordSyntax();
+    Ref_State   RS1 = new Ref_State(new Statename("RefS1"), new String ("../../g"), new Pest_CoordSyntax()) ;
     pp.start(S1);
     pp.start(RS1);
     System.out.println("-------End Test der Refstates");
