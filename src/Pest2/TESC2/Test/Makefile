@@ -3,11 +3,10 @@ PEST = .:..:../..
 CLASSPATH = $(PEST):$(JDK)
 COMPILER = javac
 VM = java
-COPTIONS = -g -deprecation
+COPTIONS = -deprecation
 ROPTIONS = 
  
 CLASSES = \
-TestProperMap.class \
 TestGraphAlgorithm.class \
 TestFrame.class
 
