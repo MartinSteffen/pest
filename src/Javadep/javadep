@@ -1,0 +1,386 @@
+#! /bin/sh
+
+# javadep findet und listet alle Abhängigkeiten von Paketen auf.
+#
+# Für ein Paket sind die Abhängigkeiten dieses Pakets die
+# Abhängigkeiten der einzelnen Klassen.
+#
+# Für eine Klasse sind die potentiellen Abhängigkeiten alle
+# öffentlichen Klassen von importierten Paketen.
+
+# 1. Für eine angegebenes Paket:
+# -- Alle Klassen-Dateien nach import-Anweisungen durchsuchen
+# 2. Für alle importierten Pakete;
+# -- Alle public-Klassen im des Pakets finden
+# -- Nach Vorkommen dieser Klassen und Methoden in allen Dateien der
+#    Klasse suchen.
+###########################################################################
+display_usage()
+{
+echo "
+Usage: javadep [options] packagename|java-file
+Where options are:
+ -h         Display this help.
+ -t         Produce text-output rather than html-code
+ -o file    Output to file
+"
+}
+###########################################################################
+error()
+{
+  echo -e "ERROR: $*" >/dev/stderr
+}
+###########################################################################
+warning()
+{
+  echo "WARNING: $*" >/dev/stderr
+}
+###########################################################################
+log()
+{
+  if [ $verbose = 1 ]; then
+    echo "$*" >/dev/stderr
+  fi
+}
+###########################################################################
+split_at_char()
+{
+# erhält als erstes Argument das neue Trennzeichen
+# Die weiteren Argumente werden bei diesem Zeichen getrennt und als
+# Liste einzelner Argumente zurückgegeben
+
+  if [ $# -lt 2 ]; then
+    error "split_at_char falsch aufgerufen."
+    return 1
+  fi
+
+  (
+    IFS=$1
+    shift
+    echo $*
+  )
+}
+###########################################################################
+find_path_dirs()
+{
+  if [ $# != 1 ]; then
+    error "find_path_dirs falsch aufgerufen."
+    return 1
+  fi
+  path=`(split_at_char ":" $1)`
+  
+  
+  for i in $path; do
+    if [ -d $i ]; then
+      echo $i
+    fi
+  done
+  echo $result
+}
+  
+###########################################################################
+find_package_dir()
+{
+  if [ $# != 1 ]; then
+    error "find_package_dir falsch aufgerufen."
+    return 1
+  fi
+  package=$1
+  result=
+  if [ ! -z $CLASSPATH ]; then
+    class_dirs=`(find_path_dirs $CLASSPATH)`
+    for i in $class_dirs; do
+      if [ -d $i/$package ]; then
+        if [ "$result" != "" ] && [ $result != $i/$package ]; then
+          warning "Mehrfaches Vorkommen von $package"
+          log "  $result"
+          log "  $i/$package"
+        else
+          result="$i/$package"
+        fi
+      fi
+    done
+    if [ "$result" = "" ]; then
+      return 1
+    else
+      echo "$result"
+    fi
+  else
+    error "Kein CLASSPATH gesetzt"
+    return 1
+  fi
+}
+###########################################################################
+find_package_files()
+{
+  if [ $# != 1 ]; then
+    error "find_package_files falsch aufgerufen."
+    return 1
+  fi
+
+  package=$1
+  package_dir=`(find_package_dir $package)`
+  if [ "$package_dir" = "" ]; then
+    error "Package-Verzeichnis nicht gefunden: $1"
+    return 1
+  else
+    files=`find $package_dir -type f -name *.java -exec grep -lw "package $package" {} \;`
+#    files=`(grep -l "package $package;"  $package_dir/*.java) 2>/dev/null`
+    echo $files
+  fi
+}
+###########################################################################
+find_public_functions()
+{
+# sucht alle public-Funktionen eines Paketes, die dem Pattern in $1
+# entsprechen 
+
+  if [ $# != 1 ]; then
+    error "find_public_functions falsch aufgerufen."
+    error "$*"
+    return 1
+  fi
+
+  set -f
+  set `split_at_char "." $1`
+  set +f  
+
+  package=$1
+  package_files=`(find_package_files $package)`
+  if [ "$package_files" = "" ]; then
+    error "Keine Package-Files zu $package"
+    return 1
+  fi
+  functions=`grep -hw "public.*(" $package_files`
+  echo "$functions"
+}
+###########################################################################
+find_function_names()
+{
+ (
+  # liest zeilenweise aus stdin und sucht in jeder Zeile 
+  # (Java-Deklaration, die mit public... beginnt) nach dem
+  #  Funktionsnamen
+  read line
+  org_line=$line
+  while [ $? = 0 ]; do
+    IFS="(" 
+    set $line
+    line=$1
+    IFS=" "
+    set $line
+    if [ $# -gt 1 ]; then
+      while [ $# != 1 ]; do
+        shift
+      done
+      echo "$1"
+    else
+      error "Fkt-Namen in folgender Zeile nicht gefunden.\n$org_line"
+    fi
+    read line
+  done
+ )
+}
+###########################################################################
+find_deps()
+{
+  javafile=
+  if [ $# != 1 ]; then
+    error "find_deps falsch aufgerufen"
+    return 1
+  fi
+
+
+  if [ -f $1 ]; then
+    javafile=$1
+    #Versuche package-Namen herauszufinden
+    package=`grep -w "^package .*;" $javafile|awk '{printf $2}'`
+    if [ "$package" = "" ]; then
+      error "Konnte Package-Namen nicht finden."
+      return 1
+    else
+      package_files=$javafile
+    fi
+  else
+    # erstmal alle Dateien des Packages finden
+    package=$1
+    package_files=`find_package_files $package`
+    if [ "$package_files" = "" ]; then 
+      error "Keine Dateien für Paket $package"
+      exit 1
+    fi
+  fi
+
+  if [ $html = 1 ]; then
+    echo "<html>" >$tempfile
+    echo "<body>" >>$tempfile
+    if [ "$javafile" = "" ]; then
+      echo "<h3> List of dependencies for package $package </h3>" >>$tempfile
+    else
+      echo "<h3> List of dependencies for file $javafile </h3>" >>$tempfile
+    fi
+  fi
+
+  # Dateien mit import-Anweisungen finden
+  set -f
+  all_imports=`grep -hw "import .*;" $package_files|grep -v "^//"`
+  all_imports=`echo $all_imports|sed 's/import//g'|sed 's/;//g'|sed 's/\013//g'`
+
+  
+  # Imports zeilenweise ausgeben und mit sort -u doppelte Einträge
+  # entfernen
+  all_imports=`(for i in $all_imports; do
+                  echo $i;
+                done )|sort -u`
+
+  if [ $html = 1 ]; then
+    if [ "$javafile" = "" ]; then
+      echo "<h2> List of all imports in package <b>$package</b>" >>$tempfile
+    else
+      echo "<h2> List of all imports in file <b>$javafile</b>" >>$tempfile
+    fi 
+    for import in $all_imports; do
+      echo "<b>$import</b>" >>$tempfile
+    done
+  else
+    if [ "$javafile" = "" ]; then
+      echo "List of all imports in package $package" >>$tempfile
+    else
+      echo "List of all imports in file $javafile" >>$tempfile
+    fi 
+    for import in $all_imports; do
+      echo "+ $import" >>$tempfile
+    done
+  fi
+
+  new_imports=
+  for import in $all_imports; do
+    set `split_at_char '.' $import`
+    import_package=$1
+    
+    if [ "$import_package" = "java" ]; then
+      log "Ignoriere $import"
+    else
+      new_imports="$new_imports $import"
+    fi
+  done
+  set -f
+  all_imports=$new_imports
+
+  set +f
+
+  for import in $all_imports; do
+    set -f
+    set `split_at_char '.' $import`
+    set +f
+    import_package=$1
+    new_imports=
+    # alle Funktionen des importierten Packets finden und nach
+    # Vorkommen in den Files des zu untersuchenden Pakets finden 
+    package_functions=`(find_public_functions $import)`
+    if [ $? != 0 ]; then
+      error "Keine Dateien zum Import $import gefunden."
+      continue
+    fi
+    function_names=`echo "$package_functions"|find_function_names|sort -u`
+
+    #jetzt in allen Files des Packages nach diesen Funktionen suchen
+    for function_name in $function_names; do
+      if [ "$function_name" = "clone" ]; then
+        continue
+      fi
+#      echo "Suche nach $function_name"
+      if [ "$javafile" = "" ]; then
+        uses=`grep -nw "$function_name\W*(" $package_files|awk -F: '{print $1 ":" $2}'`
+      else
+        uses=`grep -nw "$function_name.*(" $package_files|awk -F: '{print $1}'`
+      fi  
+      if [ "$uses" != "" ]; then
+        if [ $html = 1 ]; then
+          docudir=`find_package_dir pestdocu`
+          if [ $? != 0 ]; then
+            warning "Konnte pestdocu nicht finden."
+	    echo "<h2>$import_package.$function_name</h2>" >>$tempfile
+          else
+            ref_file=$docudir/AllNames.html
+            if [ -f $ref_file ]; then
+              ref=`grep "href=\"$import_package\..*\#$function_name(" $ref_file`
+#              ref=`echo $ref| sed 's/href=\"/href=\"$docudir\//g'`
+              if [ "$ref" != "" ]; then
+                echo "$ref </dt>">>$tempfile
+              fi 
+            else
+              warning "Doku wurde noch nicht erzeugt."
+              echo "<h2>$import_package.$function_name</h2>">>$tempfile
+            fi
+          fi
+        else
+          echo "$import_package.$function_name" >> $tempfile
+          echo "===========================================" >> $tempfile
+        fi
+        if [ "$javafile" = "" ]; then
+          for i in $uses; do echo $i >>$tempfile; done
+        else
+          for i in $uses; do echo "$javafile:$i">>$tempfile; done
+        fi
+      fi       
+    done
+  done
+  if [ $html = 1 ]; then
+    echo "</body>" >> $tempfile
+    echo "</html>" >> $tempfile
+  fi
+}
+###########################################################################
+tempfile=/tmp/javadep.$$
+verbose=0
+html=1
+outfile=
+args=
+
+while [ $# != 0 ]; do
+  case $1 in
+	-h) display_usage
+	    exit 0
+	    ;;
+
+	-t) html=0
+	    shift
+	    ;;
+
+	-o) if [ "$2" != "" ]; then
+              outfile=$2
+            else
+              echo "No outputfile after -o."
+              exit 1
+            fi
+	    shift
+            shift
+	    ;;
+
+	-*) echo "Unknown option: $1"
+	    display_usage;
+	    exit 1
+	    ;;
+
+	 *) args="$args $1"
+            shift
+	    ;;
+  esac
+done
+
+
+for arg in $args; do
+  if [ -f $tempfile ]; then
+    rm -f $tempfile
+  fi
+  find_deps $arg
+done
+
+if [ "$outfile" != "" ]; then
+  cp $tempfile $outfile
+  rm -f $tempfile
+else
+  cat $tempfile
+fi
+
