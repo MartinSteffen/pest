@@ -29,14 +29,15 @@ import absyn.*;
  * </ul>
  */
 public class Statematrix {
-	public State akt;
-	public State prev;
-	public int x;
-	public int y; 
-public Statematrix(State sx, State sy,int ax , int ay) {
+    public State akt;
+    public State prev;
+    public int x;
+    public int y; 
+    public Statematrix(State sx, State sy,int ax , int ay) 
+    {
 	akt = sx;
 	prev = sy;
 	x = ax;
 	y = ay;
-	}
+    }
 }
