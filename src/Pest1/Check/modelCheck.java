@@ -6,8 +6,8 @@ import Absyn.*;
 /**
  * <b>Syntax Check für Statecharts</b>
  * <br><a href="../Check/Docu/ErrorAndWarningCodes.html">Codes von Fehlern und Warnungen beim Syntax Check</a> 
- * @author Daniel Wendorff und Magnus Stiller
- * @version  $Id: modelCheck.java,v 1.6 1998-12-03 14:29:26 swtech11 Exp $
+ * @author   Daniel Wendorff und Magnus Stiller
+ * @version  $Id: modelCheck.java,v 1.7 1998-12-03 21:58:06 swtech11 Exp $
  */
 public class modelCheck {
   private modelCheckMsg mcm;
@@ -25,8 +25,8 @@ public class modelCheck {
  * Führt den gesamten Syntax Check bei der Statechart sc durch, und gibt <b>true</b> zurück, falls keine Fehler oder Warnungen aufgetreten sind, sonst <b>false</b>.
  */
   public boolean checkModel(Statechart sc) {
-    return (checkEvents(sc) | checkStates(sc) |
-            checkTransitions(sc) | checkBVars(sc));
+    return (checkEvents(sc) & checkStates(sc) &
+            checkTransitions(sc) & checkBVars(sc));
   };
 
 /**
@@ -49,8 +49,8 @@ public class modelCheck {
  * Checkt die Transitionen der Statechart sc, und gibt <b>true</b> zurück, falls keine Fehler oder Warnungen aufgetreten sind, sonst <b>false</b>.
  */
   public boolean checkTransitions(Statechart sc) {
-    testTransitions tt = new testTransitions();
-    return tt.check(sc,mcm);
+    testTransitions tt = new testTransitions(sc,mcm);
+    return tt.check();
   }
 
 /**

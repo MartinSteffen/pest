@@ -3,7 +3,11 @@ package Check;
 import Absyn.*;
 import java.util.*;
 
-class testBVars extends test{
+/**
+ *  @author   Daniel Wendorff und Magnus Stiller
+ *  @version  $Id: testBVars.java,v 1.4 1998-12-03 21:58:09 swtech11 Exp $
+ */
+class testBVars extends modelCheckBasics{
   private Vector Ist;
   private Vector Soll;
 

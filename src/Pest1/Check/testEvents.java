@@ -3,7 +3,11 @@ package Check;
 import Absyn.*;
 import java.util.*;
 
-class testEvents extends test{
+/**
+ *  @author   Daniel Wendorff und Magnus Stiller
+ *  @version  $Id: testEvents.java,v 1.4 1998-12-03 21:58:10 swtech11 Exp $
+ */
+class testEvents extends modelCheckBasics{
   private Vector Ist;
   private Vector Soll;
 
