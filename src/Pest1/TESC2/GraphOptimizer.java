@@ -4,82 +4,116 @@
  * Created: Mon Dec 07 16:43:30 1998
  * 
  * @author swtech14 : Eike Schulz & Martin Poerksen
- * @version $Id: GraphOptimizer.java,v 1.7 1998-12-21 13:38:20 swtech14 Exp $
+ * @version $Id: GraphOptimizer.java,v 1.8 1999-01-08 23:09:47 swtech14 Exp $
+ *
+ *
+ * <br>Der GraphOptimizer stellt Algorithmen zur Verfuegung, die die Zuordnung
+ * von Koordinaten fuer einen Statechart uebernehmen. Das String-Konstanten-
+ * Array 'LIST_OF_ALGORITHMS' beinhaltet die Namen der implementierten Algo-
+ * rithmen. Die Groesse dieses Arrays gibt also die Anzahl der verwendbaren Al-
+ * gorithmen an. Mit Hilfe der Methode 'start' wird der Layoutprozess gestar-
+ * tet, Koordinaten werden unabhaengig von evtl. vorher vorhandenen Koordinaten
+ * bestimmt und in eine Kopie des Uebergabe-Statechart-Objektes entsprechend
+ * abgelegt. Als Rueckgabewert dient die mit Koordinaten ausgestattete Kopie,
+ * das Original-Statechart-Objekt bleibt unveraendert.
+ *
+ * <p>Erlaeuterungen zum eigentlichen Algorithmus siehe Datei
+ * 'docu/SpreadAlgorithm.txt'
+
+ * <p>Vorbedingungen:
+ * <br> Das dem Konstruktor uebergebene Statechart-Objekt muss folgende Eigen-
+ * schaften besitzen:
+ * <br> -keine Interlevel-Transitionen,
+ * <br> -keine Schleifen im State-Baum,
+ * <br> -bis auf die Instanzvariablen fuer Koordinaten (und Listen usw.) 
+ * duerfen keine null-Pointer vorkommen
+ *
+ * <p>Nachbedingungen:
+ * <br> Es wird eine vollstaendig mit Koordinaten ausgestattete Kopie des
+ * Uebergabe-Statechart-Objektes zurueckgegeben; das Uebergabe-Objekt bleibt
+ * unveraendert.
+ *
+ * <p>
+ * <dl compact>
+ *
+ * <dt><strong>
+ * STATUS
+ * </strong>
+ * Der 'SpreadAlgorithm' ist weitestgehend fertig; die Anordnung der States
+ * und der Transitionen funktionierte bei diversen Testobjekten einwandfrei.
+ * Es muessen noch die neu hinzugefuegten Elemente (Connectoren) getestet wer-
+ * den. Hierzu benoetigen wir jedoch Testobjekte, die uns evtl. andere Gruppen
+ * zur Verfuegung stellen koennen (z.B. Editor), dann brauchen wir nicht alle
+ * Testobjekte selber programmieren.
+ * <p> Im Verzeichnis tesc2/Test befinden sich die Programme 'Test1' und
+ * 'Test2', durch die einige unserer Testobjekte mit dem PrettyPrinter, bzw.
+ * in einem selbsterzeugten Frame (schematisch) angesehen werden koennen. Bei
+ * den Testobjekten kommt es uns dabei nicht auf die syntaktische Korrektheit
+ * an, sondern auf markante Eigenschaften bzgl. Schachtelungstiefe, Statename-
+ * laengen, etc.
+ *
+ * <dt><strong>
+ * TODO
+ * </strong>
+ * Testen, evtl. Layout-Verbesserung.
+ *
+ * <dt><strong>
+ * BEKANNTE FEHLER
+ * </strong>
+ * Die Laenge der Transitionennamen wird noch nicht beruecksichtigt.
+ *
+ * <dt><strong>
+ * TEMPORAERE FEATURES
+ * </strong>
+ * Zur Zeit keine vorhanden.
+ * 
+ * </dl compact>
+ *
  */
 
 package tesc2;
 
-import absyn.*;
-import java.awt.FontMetrics;
 
-/**
- * Wir erwarten:
- *
- *   Syntaktisch korrektes Statechart-Objekt
- *   (d.h. keine Interlevel-Transitionen; fuer alle Statechart-
- *    komponenten muss ein EINDEUTIGES Objekt vorhanden sein
- *    -> keine kopierten/geclonten Objekte!);
- *   Das Statechart-Objekt wird direkt dem Konstruktor oder der
- *   Methode 'setStatechart' uebergeben.
- *   Wird ein null-Pointer uebergeben, erzeugen wir eine ent-
- *   sprechende Exception.
- *
- *   Wir erwarten keine Fehlermeldung aus dem Syntaxcheck,
- *   die wir zu bearbeiten haben.
- *
- *
- * Wir erzeugen:
- *
- *   Syntaktisch korrektes Statechart-Objekt (sofern uebergeben)
- *   mit Koordinaten fuer alle Komponenten;
- *   es wird KEIN null-Pointer erzeugt.
- *
- *   Fehler-Exception, falls Fehler auftreten (z.B. zu viele
- *   States vorhanden, Zeichenflaechenbegrenzung wird durch
- *   Koordinaten ueberschritten)
- *   Die Fehler-Exception wird von der Gruppe abgefangen, die
- *   unseren Algorithmus aufruft, daher sollte diese Gruppe
- *   evtl. aufgetretene Fehler entsprechend behandeln.
- */
+import absyn.*;
+import java.awt.*;
 
 public class GraphOptimizer {
 
-
   /**
-   * Stringkonstantenfeld zur Bezeichnung der verschiedenen
-   * Algorithmusarten.
+   * Abstandskonstanten.
    */
 
-  public static final String[] LIST_OF_ALGORITHMS =
-  { "LeftRightAlgorithm" };
+  static final int STEPSIZE_SMALL  = 4;
+  static final int STEPSIZE_MEDIUM = STEPSIZE_SMALL * 2;
+  static final int STEPSIZE_LARGE  = STEPSIZE_SMALL * 4;
+
+  static final int BASICSTATE_MINWIDTH  = STEPSIZE_SMALL * 3;
+  static final int BASICSTATE_MINHEIGHT = STEPSIZE_SMALL * 2;
+
+  /**
+   * Width-Konstante fuer Connectoren.
+   */
+
+  public static final int CONNECTOR_SIZE = STEPSIZE_SMALL * 3;
+
+  /**
+   * Stringkonstantenfeld zur Bezeichnung der verschiedenen Algorithmusarten.
+   */
+
+  public static final String[] LIST_OF_ALGORITHMS = { "SpreadAlgorithm" };
 
 
   // 1.  Ergebniswert fuer Graphplazierungsalgorithmus :
   //     errorcode == 0 : Algorithmus korrekt gelaufen,
   //     errorcode != 0 : Fehler aufgetreten -> Fehlercode.
   // 2.  Referenzvariable fuer uebergebenes Statechart-Objekt.
-  // 3.  Referenzvariable fuer 'sChart'-Kopie -> Objekt, das mit
-  //     Koordinaten ausgestattet und zurueckgegeben wird.
-  // 4.  Referenzvariable fuer uebergebenes FontMetrics-Objekt.
-  // 5.  Speicherwert fuer Algorithmus-Art.
-
+  // 3.  Referenzvariable fuer uebergebenes FontMetrics-Objekt.
+  // 4.  Speicherwert fuer Algorithmus-Art.
 
   private int         errorcode;
-  private Statechart  sChart;
-  private Statechart  cChart;
+  private Statechart  sChart, sChartCopy;
   private FontMetrics fMetrics;
-  private int         algorithm;
-
-
-  /**
-   * Default-Konstruktor zur Erzeugung eines Algorithmusobjektes.
-   */
-
-  public GraphOptimizer () {
-    sChart    = null;
-    fMetrics  = null;
-    algorithm = 0;
-  } // constructor GraphOptimizer ()
+  private int         algorithm = 0;
 
 
   /**
@@ -96,6 +130,13 @@ public class GraphOptimizer {
   } // constructor GraphOptimizer (Statechart sc, FontMetrics fm)
 
 
+  /**
+   * Default-Konstruktor zur Erzeugung eines Algorithmusobjektes.
+   */
+
+  public GraphOptimizer () { this (null, null); }
+
+
 
   /**
    * Start des Graphplazierungsalgorithmus.
@@ -103,29 +144,48 @@ public class GraphOptimizer {
 
   public Statechart start () throws AlgorithmException {
     errorcode = 0;           // "Reset" des Fehlercodes
-    //    cChart = (Statechart)sChart.clone(); // Kopiere 'sChart'-Objekt.
-    cChart = sChart;
 
-    // Pruefe, of 'algorithm' einen "sinnvollen" Wert besitzt.
-    // Falls nicht, fuehre Default-Algorithmus aus.
+    // Teste, ob Parameter vollstaendig uebergeben wurden.
 
-    if ((algorithm != 0) && (algorithm != 1))
-      algorithm = 0;
+    if (sChart == null)
+      errorcode = 2;
+    else if (fMetrics == null)
+      errorcode = 3;
+    else if ((sChart == null) && (fMetrics == null))
+      errorcode = 4;
+    else
 
-    switch (algorithm) {
-      case (0) : // Aufruf des Default-Algorithmus.
-	break;
-      case (1) : // Aufruf des Alternativ-Algorithmus.
-	break;
-    }
+      // Erzeuge Kopie von 'sChart', rufe Algorithmus auf.
 
-    // Falls Fehler aufgetreten ist, wirf Exception, sonst gib
-    // Referenz auf 'cChart' zurueck.
+      try {
+        sChartCopy = (Statechart)sChart.clone();
+
+        // Verzweige zu ´algorithm´ entsprechendem Algorithmus.
+
+        switch (algorithm)
+	  {
+	  default : // Aufruf des Default-Algorithmus.
+
+	  case (0) : // Algorithmus_1.
+	    SpreadAlgorithm sa =
+	      new SpreadAlgorithm (sChartCopy, fMetrics, true);
+	    sa.calculate_coordinates();
+	    break;
+
+	    //	case (1) : // Algorithmus_2.
+	    //	  break;
+	}
+      } catch (CloneNotSupportedException e) {
+	errorcode = 1;
+      }
+
+    // Falls ein Fehler aufgetreten ist, wirf Exception, sonst gib Referenz
+    // auf ´sChartCopy´ zurueck.
 
     if (errorOccured())
       throwException();
 
-    return (cChart);
+    return (sChartCopy);
   } // method start ()
 
 
@@ -137,9 +197,10 @@ public class GraphOptimizer {
    */
 
   public Statechart start (int alg) throws AlgorithmException {
-    algorithm = alg;
-    return start();
-  } // method start (int)
+    setAlgorithm (alg);
+    start();
+    return (sChartCopy);
+  } // method start (int alg)
 
 
 
@@ -176,8 +237,8 @@ public class GraphOptimizer {
   // Fehlerueberpruefung 
   //
   // Rueckgabewert:
-  // - true, falls Fehler aufgetreten ist
-  // - false, falls kein Fehler aufgetreten ist
+  //   true, falls Fehler aufgetreten ist
+  //   false, falls kein Fehler aufgetreten ist
 
   private boolean errorOccured () {
     return (errorcode != 0);
@@ -188,27 +249,42 @@ public class GraphOptimizer {
   // Erzeuge ´AlgorithmException´:
   //
   // Rueckgabewert:
-  // - Exception-Objekt
+  //   Exception-Objekt
 
   private void throwException () throws AlgorithmException {
     switch (errorcode)
       {
-      case 1 :
+      case 1:
 	throw
 	  new AlgorithmException
-	  ("Algorithmus aufgrund von Speicherplatzmangel abgebrochen.   ");
-      case 2 :
+	  ("FEHLER: CloneNotSupportedException bei der Optimierung aufgetret" +
+	   "en!        ");
+      case 2:
 	throw
 	  new AlgorithmException
-	  ("Kein Statechart-Objekt zur Optimierung vorhanden.           ");
+	  ("FEHLER: Kein Absyn.Statechart-Objekt zur Optimierung vorhanden. " +
+	   "           ");
+      case 3:
+	throw
+	  new AlgorithmException
+	  ("FEHLER: Kein java.awt.FontMetrics-Objekt vorhanden.             " +
+	   "           ");
+      case 4:
+	throw
+	  new AlgorithmException
+	  ("FEHLER: Keine Absyn.Statechart- und java.awt.FontMetrics-Objekte" +
+	   " vorhanden.");
 
       // (...)
 
       default:
 	throw
 	  new AlgorithmException
-	  ("Unbekannter Fehler aufgetreten.                             ");
+	  ("FEHLER: Unbekannter Fehler aufgetreten.                         " +
+	   "           ");
       } // switch
+
   } // method throwException
+
 
 } // class GraphOptimizer
