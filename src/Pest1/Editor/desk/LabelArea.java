@@ -92,5 +92,40 @@ public class LabelArea extends Dialog {
 	 ta.append("[leer] \n");    
 	 }
 }
+
+public LabelArea(int hx, int hy,Ref_State lab)
+	{
+	super(tf,"Referenzstate",true);
+	// tf = this.frame;
+	this.setSize(250,200);
+	this.setLocation(70,100);
+	this.setLayout(new BorderLayout(3,3));
+	this.setResizable(false);
+
+	ta.setEditable(false);
+	this.add("Center",ta);
+	Button OK = new Button("O.K.");
+	this.add("South",OK);
+
+	ta.setText("");
+     
+	ta.append("-- Dateireferenz -- \n");
+	ta.append("Datei : "+lab.filename+"\n");
+	if (lab.filetype instanceof Pest_CoordSyntax) {ta.append("PEST-Datei mit Koordinaten \n");}
+	if (lab.filetype instanceof Pest_NocoordSyntax) {ta.append("PEST-Datei ohne Koordinaten \n");}
+	if (lab.filetype instanceof Tesc_Syntax) {ta.append("TESC-Datei \n");}
+
+	OK.setActionCommand("O.K.");
+	OK.addActionListener(listener);
+
+	//this.isModal();
+	this.show();
+	
+	//this.setVisible(false);
+	}
+
+ 
+
+
 } // class
   

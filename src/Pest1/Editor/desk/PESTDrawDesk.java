@@ -693,6 +693,10 @@ if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Info"))
 			      }
 			  }// else { textlabel.hide();}
 			}
+			if (test instanceof Ref_State)
+			    {
+				new LabelArea(e.getX(),e.getY(),(Ref_State)test);
+			    }
 		}
 
 
@@ -704,6 +708,7 @@ if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Info"))
 			(int) (e.getY()/Editor.ZoomFaktor)-6,
 			Editor.con_color());
 		     Editor.SetListen();trroot = false;
+		     repaint();
 
 		}
 	}
