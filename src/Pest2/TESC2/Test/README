@@ -1,0 +1,29 @@
+Dokumentation der Tests
+=======================
+Im Verzeichnis Test gibt es eine Klasse
+
+TestFrame.
+
+Dieses Programm kann durch ,make frame' gestartet werden.
+Es wird ein zufaelliges Statechart erzeugt (zufaellig kommt dabei
+manchmal ein Statechart mit nur einem Zustand heraus, womit unser
+Graphplazierer absolut keine Schwierigkeiten hat). Die maximale Tiefe, bis zu
+der das Statechart geschachtelte States besitzt, ist 3. Das Statechart
+besteht aus Basic_States, And_States und Or_States. Die Or_States
+beeinhalten Transitionen mit States, Connectors oder UNDEFINED als
+Anchor.
+
+Nachdem das Statechart erzeugt wurde, wird ein Frame erzeugt und
+angezeigt. Dieses enthaelt ein Scrollfenster fester Groesse.
+
+Dann muss der Benutzer eingeben, mit welchen Algorithmus das Layout
+durchgefuehrt werden soll, worauf das Layout durchgefuehrt wird.
+
+Das Ergebnis wird angezeigt. Die Darstellung des Statechart
+beschraenkt sich auf Zustandsrahmen, Zustandsnamen, Connectoren und
+Transitionen. Es fehlen Transitionsbeschriftungen und
+Default-Transitionen.
+
+Da das Scrollfenster feste Groesse besitzt, kann es passieren, dass
+nicht das gesamte Statechart angezeigt werden kann, wenn die
+Koordinaten zu gross sind.
