@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.54 1999-02-03 09:36:15 swtech01 Exp $
+//	$Id: report_list,v 1.55 1999-02-03 12:16:24 swtech24 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -644,7 +644,7 @@ aktiv).
 #Number:        46
 #Autor:         Bernd Weber bwe
 #Subject:       Editor: Editor erzeugt falsche Transition
-#Status:        reported
+#Status:        processing
 #Description:
 
 Man erstelle zwei Zustaende wie in Number 43. Zeichne eine Transition
@@ -656,7 +656,7 @@ im And State ist Target der Transition geworden.
 #Number:        47
 #Autor:         Bernd Weber bwe
 #Subject:       Editor: Verschieben, Undo, Restore erzeugt inkonsistenten Zustand
-#Status:        reported
+#Status:        processing
 #Description:
 
 Mehrmals ist es mir gelungen, den Editor durch Benutzen der
@@ -701,7 +701,7 @@ usw., also keine erkennbaren Zustandsaenderungen.
 #Number:        49
 #Autor:         Bernd Weber bwe
 #Subject:       Editor: Transitions-Labels werden verschoben
-#Status:        reported
+#Status:        fixed
 #Description:
 
 Erstelle zwei Zustaende mit beschrifteter Trasition. Erzeuge einen
