@@ -77,6 +77,7 @@ import tesc2.*;
     this.height = dim.height;
     this.xpanel.setForeground(Color.black);
     bufferGraphics = xpanel.getGraphics();
+ 
 
     // low-level Implementierungen
     this.enableEvents(AWTEvent.MOUSE_EVENT_MASK);
@@ -98,10 +99,10 @@ import tesc2.*;
     this.add(popup);
     // this.show();
 
-
-  }
-
-       public Dimension getPreferredSize() { return new Dimension(width, height); }
+    
+      }
+    
+    public Dimension getPreferredSize() {   return new Dimension(width, height);  }
 
   // pop-up Menueabfrage
  // pop-up Menueabfrage 
@@ -558,7 +559,7 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans" & trro
 	int try2 = 0;
 	int dx;
 	int dy;
-	short ttemp;
+	int ttemp;
 	double d1,d2,dt;
 
 
@@ -573,12 +574,12 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans" & trro
 	    if (e.getID() == MouseEvent.MOUSE_PRESSED & Editor.Editor() != "Draw_Trans" & Editor.Editor() != "Draw_Conn"  &
 		Editor.Editor() != "Draw_StateLabel")
 		{
-		    last_x = (short) e.getX(); last_y = (short) e.getY(); 	// Save position.
+		    last_x = e.getX(); last_y = e.getY(); 	// Save position.
 		}
 
 	   if (e.getID() == MouseEvent.MOUSE_PRESSED & Editor.Editor() == "Draw_Trans")
 		{
-		if (trroot == false) {trroot = true;last_x = (short) e.getX(); last_y = (short) e.getY();
+		if (trroot == false) {trroot = true;last_x = e.getX(); last_y = e.getY();
 		       laufwaypoint = 0; 
 		       tempwaypoint = new Point[100];
 		       tempwaypoint[0] = new Point ((int) (last_x /Editor.ZoomFaktor), (int) (last_y/Editor.ZoomFaktor) );
@@ -590,7 +591,7 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans" & trro
 			
 			drawPESTTrans.drawTrans(bufferGraphics,last_x,last_y,e.getX(),e.getY(),null,null,this.getBackground());
 			g.setColor(Color.black);g.drawLine(last_x,last_y,e.getX(),e.getY());
-			last_x = (short) e.getX(); last_y = (short) e.getY();
+			last_x =  e.getX(); last_y =  e.getY();
 			
 			tempwaypoint[laufwaypoint] = new Point((int) (last_x/Editor.ZoomFaktor),(int) (last_y/Editor.ZoomFaktor));
 			} else
