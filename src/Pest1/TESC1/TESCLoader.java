@@ -8,7 +8,7 @@ import java.io.*;
  * TESCLoader. 
  * Schnittstelle zu PEST.
  * @author Arne Koch/Mike Rumpf.
- * @version  $Id: TESCLoader.java,v 1.1 1998-12-03 21:26:39 swtech13 Exp $ 
+ * @version  $Id: TESCLoader.java,v 1.2 1998-12-07 13:20:14 swtech13 Exp $ 
  */ 
 public class TESCLoader {
 
@@ -51,3 +51,7 @@ public class TESCLoader {
     }
 
 }
+
+/* 
+ * $Log: not supported by cvs2svn $
+ */
