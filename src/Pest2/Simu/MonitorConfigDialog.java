@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 
-class MonitorConfigDialog extends Dialog implements ActionListener{
+class MonitorConfigDialog extends Dialog implements ActionListener, ItemListener{
 
   Vector elements_selected=null;
   Vector elements_all=null;
@@ -24,7 +24,14 @@ class MonitorConfigDialog extends Dialog implements ActionListener{
     c.insets=new Insets(3,3,3,3);
     setLayout(layout); 
     setSize(200,300);
-    list=new MonitorComponent(elements_all);
+    Checkbox tempcomp=null;
+    for (int i=0; i<elements_all.size();i++){
+      tempcomp=(Checkbox)elements_all.elementAt(i);
+      tempcomp.setState(elements_selected.contains(tempcomp));
+      elements_all.setElementAt(tempcomp,i);
+    }
+	
+    list=new MonitorComponent(elements_all,this);
     list.update();
     c.gridwidth=1;
     c.gridheight=1;
@@ -49,12 +56,16 @@ class MonitorConfigDialog extends Dialog implements ActionListener{
     add(l);
     add(sp1);
     add(b);
+    pack();
   }
 
   public Vector getAnswer(){
     return elements_selected;
   }
  
+
+  public void itemStateChanged(ItemEvent e){
+  }
 
   public void actionPerformed(ActionEvent e){
     Vector selection=list.getVector();

@@ -323,10 +323,10 @@ class Nachfolgermaschine extends Object{
       return false;
    }
 
-   boolean isSatisfied(Guard g){
-      boolean result=false;
-      if (g!=null){
-	Class klasse=g.getClass();
+  public boolean isSatisfied(Guard g){
+    boolean result=false;
+    if (g!=null){
+      Class klasse=g.getClass();
 	String klassenname=klasse.getName();
 	if (klassenname.equals("absyn.GuardUndet")){
 	  result=isSatisfied((GuardUndet)g);
@@ -489,8 +489,8 @@ class Nachfolgermaschine extends Object{
     }
     if (transitionen.size()>0){
       Tr transit=(Tr)transitionen.firstElement();
-      result.transitions.setActive(transit,transit);
       result=progress(path,transit,os,result);
+      result.transitions.setActive(transit,transit);
     }
     if (transitionen.size()==0){
       throw (new ConnectorException());

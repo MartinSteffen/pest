@@ -10,7 +10,9 @@ class BooleanView extends Checkbox{
 
    public BooleanView(Bvar b){
      super("",false);
+     String label=b.var;
      bvar=b;
+     setLabel(label);
    }
 }
 

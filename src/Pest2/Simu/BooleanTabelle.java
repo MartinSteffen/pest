@@ -57,7 +57,8 @@ public class BooleanTabelle extends Object{
       
 
   public boolean isTrue(Bvar b){
-    String value=(String)data.get(b);
+    String name=b.var;
+    String value=(String)data.get(name);
     if (value!=null){
       return (value.equals("true"));
     }
@@ -65,14 +66,26 @@ public class BooleanTabelle extends Object{
       return false;
     }
   }
-    
+   
+ 
   public void setTrue(Bvar b){
-    data.put(b,(new String("true")));
+    String name=b.var;
+    data.put(name,(new String("true")));
   }
 
   public void setFalse(Bvar b){
-    data.put(b,(new String("false")));
+    String name=b.var;
+    data.put(name,(new String("false")));
   }
+  
+  public void setTrue(String name){
+    data.put(name,(new String("true")));
+  }
+
+  public void setFalse(String name){
+    data.put(name,(new String("false")));
+  }
+
 
    public BooleanTabelle verbinde(BooleanTabelle tab) throws RacingException{
     BooleanTabelle result=new BooleanTabelle();

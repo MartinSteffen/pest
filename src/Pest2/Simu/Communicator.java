@@ -8,7 +8,7 @@ import editor.*;
 import gui.*;
 import util.*;
 
-public class Communicator extends Frame implements ActionListener{
+public class Communicator extends Frame implements ActionListener, ItemListener{
   Statechart chart=null;
   Editor editor=null;
   GUIInterface gui=null;
@@ -19,8 +19,10 @@ public class Communicator extends Frame implements ActionListener{
   TextField tf=null;
   int Schrittanzahl=1;
   boolean autodet=false;
+  Vector brkpts=null;
 
   Monitor monitor=null;
+  BreakpointDialog brdialog=null;
 
   List list=null;
   Vector listvector=null;
@@ -33,7 +35,9 @@ public class Communicator extends Frame implements ActionListener{
     prev_status=new Status();
     running=true;
     chart=s;
-    monitor=new Monitor(chart);
+    monitor=new Monitor(chart,this);
+    brdialog=new BreakpointDialog(this,chart,gui,new Vector());
+    brkpts=new Vector();
     buildFrame();
   }
 
@@ -102,7 +106,17 @@ public class Communicator extends Frame implements ActionListener{
       unhighlightPrevTrs();
       highlightAktStates();
       highlightAktTrs();
-      monitor.setStatus(akt_status);
+      monitor.setStatus(akt_status);      
+      brkpts=brdialog.getAnswer();
+      if (brkpts!=null){
+	if (brkpts.size()>0){
+	  for (i=0; i<brkpts.size(); i++){
+	    if (maschine.isSatisfied((Guard)brkpts.elementAt(i))){
+	      System.out.println("Breakpoint erfuellt!!!!");
+	    }
+	  }
+	}
+      }
     }
   }
 
@@ -116,8 +130,8 @@ public class Communicator extends Frame implements ActionListener{
   }
 
   void brpo(){
-    BreakpointDialog dialog=new BreakpointDialog(this,chart,gui);
-    dialog.show();
+    brdialog=new BreakpointDialog(this,chart,gui,brkpts);
+    brdialog.show();
   }
 
   void highlightAktStates(){
@@ -200,17 +214,7 @@ public class Communicator extends Frame implements ActionListener{
 	vor();
       }
     });  
-    tf=new TextField(10);
-    Button b4=new Button("Event setzen");
-    b4.addActionListener(new ActionListener(){
-      public void actionPerformed(ActionEvent e){
-	String text=tf.getText();
-	if ((text!="")&&(text!=null)){
-	  setzeEvent(text);
-	}
-	tf.setText("");
-      }
-    });  
+  
     Button b5=new Button("Monitor");
     b5.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e){
@@ -230,21 +234,17 @@ public class Communicator extends Frame implements ActionListener{
       }
     });
     MenuItem breakpoints=new MenuItem("Breakpoints");
-
-    breakpoints.setEnabled(false);
-
     einstellungen.add(breakpoints);
     breakpoints.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e){
 	brpo();
       }
     });
+    breakpoints.setEnabled(false);
     MenuItem schrittweite=new MenuItem("Schrittweite");
     einstellungen.add(schrittweite);
     schrittweite.addActionListener(this);
     add(b1);
-    add(tf);
-    add(b4);
     add(b5);
     pack();
     setVisible(true);
@@ -255,6 +255,24 @@ public class Communicator extends Frame implements ActionListener{
     dialog.show();
     int result=dialog.getAnswer();
     Schrittanzahl=result;
+  }
+
+    public void itemStateChanged(ItemEvent e){
+    Checkbox box=(Checkbox)e.getItemSelectable();
+    int change=e.getStateChange();
+    if (box instanceof EventView){
+      EventView eview=(EventView)box;
+      SEvent event=eview.event;
+      String name=event.name;
+      if (change==ItemEvent.SELECTED){
+	akt_status.events.set(name,new SEvent(name));
+	monitor.setStatus(akt_status);
+      }
+      if (change==ItemEvent.DESELECTED){
+	akt_status.events.remove(name);
+	monitor.setStatus(akt_status);
+      }
+    }
   }
 
 

@@ -18,7 +18,20 @@ public class EventTabelle extends Object{
   }
 
   public void set(String name, SEvent e){
-    data.put(name,e);
+    if (!(isSet(name))){
+      data.put(name,e);
+    }
+  }
+
+  public void remove(String name){
+    Enumeration enum=data.keys();
+    String temp=null;
+    while (enum.hasMoreElements()){
+      temp=(String)enum.nextElement();
+      if (temp.equals(name)){
+	data.remove(temp);
+      }
+    }
   }
 
   public SEvent getEvent(String name){
