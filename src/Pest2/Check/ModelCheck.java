@@ -112,6 +112,10 @@ private boolean       OutputToGUI = false;
     this(gui);
   }
 
+  public ModelCheck(GUIInterface gui, Editor edit, CheckConfig config) {
+    this(gui);
+  }
+
 // ****************************************************************************
 // private Methoden
 // ****************************************************************************
