@@ -62,13 +62,15 @@ import gui.GUIInterface;
  * </DL COMPACT>
  *
  * @author  Sven Jorga, Werner Lehmann
- * @version $Id: HAImport.java,v 1.13 1999-01-12 22:21:21 swtech18 Exp $
+ * @version $Id: HAImport.java,v 1.14 1999-01-13 22:20:49 swtech18 Exp $
  */
 public class HAImport implements Patterns {
   Perl5Util perl = new Perl5Util();
 
   private double rFaktor = 1;
   private boolean parseCoords = true;
+  private boolean parseInitString = true;
+  private boolean parseTrmap = true;
   private int xSize = 640;
   private int ySize = 480;
   private String mkhaString = null;
@@ -92,6 +94,7 @@ public class HAImport implements Patterns {
   private Hashtable trHash = null;
   private Hashtable coordHash = null;
   private Hashtable initHash = null;
+  private Hashtable pathHash = new Hashtable();
 
   /** Der Konstruktor dient zum Importieren einer StateChart
    * im HA-Format. Es wird erwartet, da&szlig; reader ein
@@ -118,7 +121,7 @@ public class HAImport implements Patterns {
         throw e;
       else {
         gui.userMessage("STM: Fehler beim Importieren. (" + e.getMessage() + ")");}
-        //e.printStackTrace();
+        e.printStackTrace();
       }
   }
 
@@ -161,28 +164,29 @@ public class HAImport implements Patterns {
     if (hiString.equals("") || tyString == null)
       throw new Exception("HA-Format-Fehler: Keine \"hierarchy function\" (Hi) vorhanden!");
     if (trmapString.equals("") || trmapString == null)
-      throw new Exception("HA-Format-Fehler: Keine Trmap vorhanden!");
+      parseTrmap = false;
+      // throw new Exception("HA-Format-Fehler: Keine Trmap vorhanden!");
     if (rootString.equals("") || rootString == null)
       throw new Exception("HA-Format-Fehler: Keine Root-State definiert!");
     if (initString.equals("") || initString.equals(" ") || initString == null)
-      throw new Exception("HA-Format-Fehler: Keine Initmap vorhanden!");
+      parseInitString = false;
 
     tyHash = makeTyHash(tyString);
     hiHash = makeHiHash(hiString);
-    trHash = makeTrHash(trmapString);
+    if (parseTrmap)
+      trHash = makeTrHash(trmapString);
     rootString = removeQuotes(rootString);
 
-    if (perl.match("/.*mk_coord.*/",statesString) && perl.match("/.*mk_coord.*/",trmapString))
+    if (perl.match("/.*mk_coord.*/",statesString) && (!parseTrmap || perl.match("/.*mk_coord.*/",trmapString)))
       parseCoords = true;
     else
       parseCoords = false;
 
-    if (parseCoords) {
+    if (parseCoords)
       coordHash = makeCoordHash(statesString);
-    }else
-      coordHash = new Hashtable();
 
-    initHash = makeInitHash(initString);
+    if (parseInitString)
+      initHash = makeInitHash(initString);
     initSuccess = true;
   }
 
@@ -213,15 +217,20 @@ public class HAImport implements Patterns {
       gui.userMessage("STM: getStatechart - Init fehlgeschlagen.");
     else
       try {
-        cRect = calcRect((Vector)coordHash.get(rootString));
-        rFaktor = calcResize(xSize, ySize, cRect.width, cRect.height);
-        System.out.println("resizeFaktor: "+rFaktor);
+        if (parseCoords) {
+          cRect = calcRect((Vector)coordHash.get(rootString));
+          rFaktor = calcResize(xSize, ySize, cRect.width, cRect.height);
+          System.out.println("resizeFaktor: "+rFaktor);
+        }
         st = new Statechart(getEventList(),getBvarList(),getPathList(),getState()); }
       catch(Exception e) {
         if (gui == null)
           throw e;
-        else
-          gui.userMessage("STM: Fehler beim Importieren. (" + e.getMessage() + ")");}
+        else {
+          gui.userMessage("STM: Fehler beim Importieren. (" + e.getMessage() + ")");
+          e.printStackTrace();
+        }
+      }
     return st;
   }
 
@@ -427,7 +436,7 @@ public class HAImport implements Patterns {
   }
 
   private State createState(String stateName, Rectangle baseRect) throws Exception {
-    String stateType = null;
+    String stateType = null, exprStr = null, condStr = null;
     Vector hiVec = null, trVec = null, pointVec = null;
     Or_State os = null;
     StateList sl = null;
@@ -437,6 +446,7 @@ public class HAImport implements Patterns {
     CPoint pointArray[] = null;
     Double xCoord = null, yCoord = null;
     Double resizedX = null, resizedY = null, resizedWidth = null, resizedHeight = null;
+    Guard newGuard = null;
 
     stateName = perl.substitute("s/\"//g",stateName);
     stateType = (String)tyHash.get(stateName);
@@ -457,7 +467,8 @@ public class HAImport implements Patterns {
       return new Basic_State(new Statename(stateName),rtNew);
     else if (stateType.equalsIgnoreCase("OR")) {
       // Default-SatenameList erzeugen
-      snl = new StatenameList(new Statename((String)initHash.get(stateName)),snl);
+      if (parseInitString)
+        snl = new StatenameList(new Statename((String)initHash.get(stateName)),snl);
       // Liste der Substates
       hiVec = (Vector)hiHash.get(stateName);
       if (hiVec == null)
@@ -465,7 +476,7 @@ public class HAImport implements Patterns {
       for (int i=hiVec.size(); i>0; i--) {
         // StateList erzeugen
         sl = new StateList(createState((String)hiVec.elementAt(i-1),rt),sl);
-        if ((trVec = (Vector)trHash.get((String)hiVec.elementAt(i-1))) != null) {
+        if (parseTrmap && ((trVec = (Vector)trHash.get((String)hiVec.elementAt(i-1))) != null)) {
           for (int k=trVec.size(); k>0; k--) {
             Vector currentTrVec = (Vector)trVec.elementAt(k-1);
             if (parseCoords) {
@@ -480,20 +491,30 @@ public class HAImport implements Patterns {
               pointArray = new CPoint[pointVec.size()];
               pointVec.copyInto(pointArray);
             }
+            exprStr = (String)currentTrVec.elementAt(3);
+            condStr = (String)currentTrVec.elementAt(4);
+            if (!exprStr.equals("") && !condStr.equals(""))  {
+              // System.out.println("exprStr: "+exprStr);
+              // System.out.println("condStr: "+condStr);
+              newGuard = new GuardCompg(new Compguard(Compguard.AND,
+                                          createGuard(exprStr,""),
+                                          createGuard("",condStr)));
+            }else
+              newGuard = createGuard(exprStr, condStr);
             tl = new TrList(new Tr(new Statename((String)hiVec.elementAt(i-1)),
                                    new Statename((String)currentTrVec.elementAt(0)),
-                                   new TLabel(createGuard((String)currentTrVec.elementAt(3),(String)currentTrVec.elementAt(4)),
+                                   new TLabel(newGuard,
                                              createAction((String)currentTrVec.elementAt(5)),
                                              null, // CPoint
                                              null, // Location
                                              "Default"),
                                    pointArray),
-                            tl); }
+                            tl);
           }
+        }
       }
       // ConnectorList entfaellt
       // Or-State erzeugen
-      //System.exit(-1);
       return new Or_State(new Statename(stateName),sl,tl,snl,null,rtNew);
       }
     else if (stateType.equalsIgnoreCase("AND")) {
@@ -573,18 +594,20 @@ public class HAImport implements Patterns {
   }
 
   private Path createPath(String statename) {
-    return null; //new Path(statename);
+    statename = removeQuotes(statename);
+    return (Path) pathHash.get(statename);
   }
 
   private Guard createGuard(String exprStr, String condStr) throws Exception {
     Vector tempVec = null;
+
     if (perl.match("/^mk_emptyexpr\\(.*\\)/",exprStr))
       return new GuardEmpty(new Dummy());
     else if (perl.match("/^mk_basicexpr\\((.*)\\)/",exprStr))
       return new GuardEvent(new SEvent(removeQuotes(perl.group(1))));
     else if (perl.match("/^mk_negexpr\\((.*)\\)/",exprStr))
       return new GuardNeg(createGuard(perl.group(1),""));
-    else if (perl.match("/^mk_compe\\((.*)\\)/",exprStr)) {
+    else if (perl.match("/^mk_compe\\(mk_compexpr\\((.*)\\)\\)/",exprStr)) {
       tempVec = deliSplit(perl.group(1),',');
       String op = (String)tempVec.elementAt(0);
       return new GuardCompg(new Compguard(op.equals("ANDOP")? Compguard.AND : Compguard.OR,
@@ -599,8 +622,9 @@ public class HAImport implements Patterns {
       return new GuardNeg(createGuard("",perl.group(1)));
     else if (perl.match("/^mk_instate\\((.*)\\)/",condStr))
       return new GuardCompp(new Comppath(Comppath.IN,createPath(perl.group(1))));
-    else if (perl.match("/^mk_compc\\((.*)\\)/",condStr)) {
+    else if (perl.match("/^mk_compc\\(mk_compcond\\((.*)\\)\\)/",condStr)) {
       tempVec = deliSplit(perl.group(1),',');
+      // System.out.println("tempVec: "+tempVec);
       String op = (String)tempVec.elementAt(0);
       return new GuardCompg(new Compguard(op.equals("ANDOP")? Compguard.AND : Compguard.OR,
                                           createGuard("",(String)tempVec.elementAt(1)),
@@ -631,6 +655,7 @@ public class HAImport implements Patterns {
     else
       currentPath = currentPath.append(statename);
     pathList = new PathList(currentPath,pathList);
+    pathHash.put(statename,currentPath);
     hiVec = (Vector)hiHash.get(statename);
     if (hiVec != null)
       for (int i=hiVec.size(); i>0; i--)
