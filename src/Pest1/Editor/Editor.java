@@ -202,7 +202,7 @@ public class Editor extends Frame {
 	this.setLocation(top,left);                // Koordinaten des Zeichenfensters setzen.
 	pane.setSize(width,height);                  // Specify its size.
 	xpanel = panel;
-	scribble = new PESTDrawDesk(panel, 100000, 100000,nroot); // Create a bigger scribble area.
+	scribble = new PESTDrawDesk(panel, 32000, 32000,nroot); // Create a bigger scribble area.
 	pane.add(scribble);                      // Add it to the ScrollPane.
 
 	this.add(pane);                // Add it to the frame.
