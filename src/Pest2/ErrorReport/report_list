@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	--------------
 //
-//	$Id: report_list,v 1.62 1999-02-11 17:42:37 swtech23 Exp $
+//	$Id: report_list,v 1.63 1999-02-12 09:14:56 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -695,5 +695,17 @@ Transitionen aktivieren, dann gehen von SAFE zwei Linien ins Nichts
 GUI bekommt es nicht mit, dass die Simulation beendet wurde. 
 Deswegen weigert die GUI die zweite Simulation (Meldung: nur eine Simulation kann 
 gestartet werden).
+
+//------------------------------------------------------------------------------
+#Number:	45
+#Autor:		Erich Mikk erm
+#Subject:	Check erkennt Fehler nicht
+#Status:	reported
+#Description:
+
+STM-Import SE-Systems/tamagotc.st
+Check ist OK.
+Das kann aber nicht sein, weil es ein Event SE_RESET in der Transition 
+von Ready to Ready abgefragt wird.
 
 //------------------------------------------------------------------------------
