@@ -3,8 +3,8 @@ package GUI;
 // empfiehlt es sich hier NICHT "Absyn" zu importieren !
 
 import java.awt.event.*;
-//import Util.PrettyPrint;
-//import Absyn.Example;
+import Util.PrettyPrint;
+import Absyn.Example;
 
 class GUIwerkML
 implements ActionListener
@@ -26,7 +26,7 @@ public void actionPerformed(ActionEvent e) {
   myWindow.userMessage("GUI   : starte "+cmd);
   if(cmd.equals("Editor"))
       {
-	  new Editor.Editor(myWindow.SyntaxBaum,myWindow.SBDateiname,100,100,200,200);
+	  new Editor.editor(myWindow.SyntaxBaum,myWindow.SBDateiname,100,100,200,200);
 
       }else if (cmd.equals("SyntaxCheck")) {
 
@@ -44,12 +44,17 @@ public void actionPerformed(ActionEvent e) {
 	  if (myWindow.checkSB())
 	      {
 		  //myWindow.OkDialog("FEHLER","Wegen nicht compilierbarem Quelltext nicht implementiert");
+	      	try{
 
 		  new CodeGen.CodeGen(".",myWindow.SyntaxBaum);
+      		}catch(CodeGen.CodeGenException cge)
+		  {
+		    myWindow.OkDialog("Fehler","Fehler bei Code-Generierung");
+		  }
 	      }
 
-      }else if (cmd.equals("PrettyPrint")) {
-	  //	  (new PrettyPrint()).start( Example.getExample() );
+      }else if (cmd.equals("PrettyPrinter")) {
+	 	  (new PrettyPrint()).start( Example.getExample() );
       }else{  
 	 myWindow.userMessage("GUI   : NOCH NICHT IMPLEMENTIERT"); 
       }	 
