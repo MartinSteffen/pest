@@ -17,7 +17,7 @@ import util.*;
  * <p>
  * <hr>
  * @author Michael Suelzer, Christoph Schuette.
- * @version  $Id: TESCParser.java,v 1.13 1999-02-07 11:56:29 swtech20 Exp $
+ * @version  $Id: TESCParser.java,v 1.14 1999-02-11 09:12:15 swtech20 Exp $
  */   
 class TESCParser {
     
@@ -290,6 +290,28 @@ class TESCParser {
         }
     }
 
+    /**
+     * Prueft, ob ein State in einer lokalen Liste enthalten ist,
+     * d.h. ob er im kleinsten umfassenden Block definiert ist.
+     * @param  s String
+     * @param  snlIterator Liste
+     * @return boolean Gefunden oder nicht
+     */
+    protected boolean isLocalState (String s, StateList slIterator) {
+
+        if (slIterator == null) { 
+            return false;       
+        }
+        else {
+            while (slIterator != null) {
+                if (slIterator.head.name.name.equalsIgnoreCase(s)) {
+                  return true;
+                }
+                slIterator = slIterator.tail;
+            }
+            return false;  
+        }
+    }
 
     /**
      * Prueft, ob ein Event in einer Liste enthalten ist.
@@ -774,7 +796,7 @@ class TESCParser {
 	TrList tranlist = parseTransitions(connlist);
 
 	// DEFAULTCON
-	StatenameList deflist = parseDefaultCons();
+	StatenameList deflist = parseDefaultCons(statelist);
 	
 	// "end" {"identifier"}
 	matchToken(Token.KeyEnd);
@@ -818,6 +840,10 @@ class TESCParser {
                                        parseOrSubStates(path)); 
             break;
 
+	case Token.TOK_REF :
+	    statelist = new StateList( parseRefState(path), 
+                                       parseOrSubStates(path)); 
+            break;
 	default              : 
             statelist = null;
 	}
@@ -1058,7 +1084,7 @@ class TESCParser {
      *  
      *  DEFAULTCONS ::=  DEFAULTCON { DEFAULTCON }
      */
-    protected StatenameList parseDefaultCons() throws IOException {
+    protected StatenameList parseDefaultCons(StateList local_states) throws IOException {
 	//debug("Enter parseDefaultCons");
 
 	StatenameList snamelist = null;
@@ -1066,9 +1092,14 @@ class TESCParser {
         switch (token.getId()) {
 
 	case Token.TOK_DEFAULT : 
-            snamelist = new StatenameList( parseDefaultCon(), 
-                                           null);
-	    // parseDefaultCons()); 
+            Statename sn = parseDefaultCon();
+            
+            if (isLocalState(sn.name, local_states)) {
+		snamelist = new StatenameList(sn, null);
+	    }
+	    else {
+		Error(sn.name + " ist kein lokaler Zustand.");
+            }
             break;
 
 	default :
@@ -1616,6 +1647,11 @@ class TESCParser {
 //      ----------------------------               
 //
 //      $Log: not supported by cvs2svn $
+//      Revision 1.13  1999/02/07 11:56:29  swtech20
+//      - ref_state
+//      - nur noch ein default-Konnektor, #37
+//      - default-Konnektor ist jetzt Pflicht, #36
+//
 //      Revision 1.12  1999/02/01 11:52:59  swtech20
 //      - globaler Debug-Schalter
 //
