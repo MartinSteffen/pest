@@ -27,7 +27,6 @@ public class Relist {
 	if (ab instanceof And_State) redraw(root,pathlist,path,(And_State) ab);
 	if (ab instanceof Connector) redraw(root,pathlist,path,(Connector) ab);
 
-
     }
 
  
@@ -35,6 +34,8 @@ public class Relist {
 	Statechart root = nroot;
 	PathList pathlist = npathlist;
 	Path path = npath;
+	root.bvars = null;
+	root.events = null;
 	if (sc.state != null) { Relist re = new Relist(); re.start(root,pathlist,path,sc.state);
 	System.out.println("Statechart");
 	}
@@ -70,7 +71,8 @@ public class Relist {
 	Statechart root = nroot;
 	PathList pathlist = npathlist, temppathlist = null;;
 	Path path = npath,temppath = null,temppath2=null,temppath3 = null;
-	
+	Absyn taction,tguard,tlauf;	
+
 	temppathlist = pathlist;
 	temppath = path;
 	path = new Path(co.name.name,temppath);
@@ -88,10 +90,7 @@ public class Relist {
 	System.out.println("Basic_State");
 	//PrettyPrint pp = new PrettyPrint();
   	//pp.start(root);
-
-
     	}
-
 
 
       private void redraw(Statechart nroot,PathList npathlist, Path npath,Or_State os) {
@@ -131,6 +130,13 @@ public class Relist {
 	pathlist = nroot.cnames;
 	Relist re = new Relist(); re.start(root,pathlist,path,colist.head);
 	colist = colist.tail;
+	}
+
+	trlist = os.trs;
+	while (trlist != null)
+	{
+	new makevarlist(root,trlist.head.label);
+	trlist = trlist.tail;
 	}
 
 

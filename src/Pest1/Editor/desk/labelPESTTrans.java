@@ -1,5 +1,5 @@
 /**
- * labelPESTState.java
+ * labelPESTTrans.java
  *
  *
  * Created: Thu Nov  5 10:43:39 1998
@@ -21,31 +21,20 @@ import absyn.*;
 import editor.desk.*;
 import editor.*;
 
-public class labelPESTState 
+public class labelPESTTrans 
 {
 Statechart root;
 
    boolean drawtest = true;  
    static int laufname = 0;
-   Statematrix matrix1,matrix2;
+   static String temptranslabel;
     
-    public labelPESTState(Statechart nroot, int cx1, int cy1) 
+    public labelPESTTrans(Statechart nroot, int cx1, int cy1,Tr akttrans) 
     {
 	root = nroot;
-	matrix1 = PESTdrawutil.getState(root,cx1,cy1);
-	matrix2 = PESTdrawutil.getState(root,cx1,cy1+10);
-	if (matrix1.akt == matrix2.akt)
-	{
-	matrix1.akt.name = new Statename(Editor.labelObject(matrix1.akt));
-	} 
-	else
-	{
-	if (matrix2.prev instanceof And_State)
-		{
-		matrix2.prev.name = new Statename(Editor.labelObject(matrix2.prev));
-		}
-	}
- 
-    }
+	temptranslabel = Editor.labelObject(akttrans);
+
+	System.out.println("Trans:"+akttrans+"  label : "+temptranslabel);    
+}
     
-} // drawPESTState
+} // drawPESTTrans

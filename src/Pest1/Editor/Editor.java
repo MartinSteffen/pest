@@ -404,6 +404,11 @@ public static String Stringeingabe(String a, String b, String c,Absyn type)
 		tempstring = c.substring(0,3);
 		if (tempstring.compareTo("...")==0) {tempname = "";} else {tempname = c;};}
 	}
+	if (type instanceof Tr)
+	{
+	tempstring = c;
+	if (tempstring.compareTo("Default")==0) {tempname = "";} else {tempname = c;}
+	}
 
 	tempstring = gui.EingabeDialog(a,b,tempname);
 	return tempstring;
@@ -424,9 +429,13 @@ public static String labelObject (Absyn obj)
 		} else {ausgabe2 = name;}
 		System.out.println("neuer Statename >"+ausgabe2+"<");
 	    }
+	if (obj instanceof Tr)
+	   {
+		name = "Default";
+		ausgabe2 = Stringeingabe("Transition umbenennen","Neuer Name fuer die gewaehlten Transition :",name,obj);
+	   }
 	return ausgabe2;
     }
-
 
 }
 // Editor 

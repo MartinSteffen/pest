@@ -39,6 +39,8 @@ import editor.*;
       static Point[] tempwaypoint = new Point[100];
       static int laufwaypoint = 0;
       static Absyn deleteobj;
+      static Statematrix aktmatrix = null,aktmatrix2 = null;
+      static State tempstate1=null;
       
      Statechart root= new Statechart(null,null,null,null);
 
@@ -114,6 +116,43 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Select")
         	}
       }
 
+if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_StateLabel")
+      {
+	if (PESTdrawutil.getSmallObject(root,(int) (e.getX()/Editor.ZoomFaktor),(int) (e.getY()/Editor.ZoomFaktor)) != aktcomp) 
+	{
+		aktmatrix = PESTdrawutil.getState(root,(int) (e.getX()/Editor.ZoomFaktor),(int) (e.getY()/Editor.ZoomFaktor));
+		aktmatrix2 = PESTdrawutil.getState(root,(int) (e.getX()/Editor.ZoomFaktor),(int) (e.getY()/Editor.ZoomFaktor)+10);
+		if (aktmatrix.akt != aktmatrix2.akt & aktmatrix2.prev instanceof And_State & aktmatrix.prev != aktmatrix2.akt) 
+			{aktmatrix.akt = aktmatrix2.prev;}
+		System.out.println("Akt. Komponente : "+aktmatrix.akt);
+		if (tempstate1 != aktmatrix.akt)
+		{
+		new highlightObject(true);
+		new highlightObject(aktmatrix.akt,Color.green.darker());
+		new highlightObject();
+		tempstate1 = aktmatrix.akt;
+		}
+        	}
+      }
+
+if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_TransLabel")
+      {
+	if (PESTdrawutil.getSmallObject(root,(int) (e.getX()/Editor.ZoomFaktor),(int) (e.getY()/Editor.ZoomFaktor)) != aktcomp) 
+	{
+		aktcomp = PESTdrawutil.getSmallObject(root,(int) (e.getX()/Editor.ZoomFaktor),(int) (e.getY()/Editor.ZoomFaktor));
+		System.out.println("Akt. Komponente : "+aktcomp);
+		if (aktcomp instanceof Tr)
+		{
+		new highlightObject(true);
+		new highlightObject(aktcomp,Color.yellow.darker());
+		new highlightObject();
+		}
+        	}
+
+      }
+
+
+
 if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans")
       {
 	aktcomp = PESTdrawutil.getSmallObject(root,(int) (e.getX()/Editor.ZoomFaktor),(int) (e.getY()/Editor.ZoomFaktor));
@@ -147,7 +186,8 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans")
 	    {
 	    Graphics g = getGraphics();
 	
-	    if (e.getID() == MouseEvent.MOUSE_PRESSED & Editor.Editor() != "Draw_Trans" & Editor.Editor() != "Draw_Conn") 
+	    if (e.getID() == MouseEvent.MOUSE_PRESSED & Editor.Editor() != "Draw_Trans" & Editor.Editor() != "Draw_Conn"  &
+		Editor.Editor() != "Draw_StateLabel")
 		{
 		    last_x = (short) e.getX(); last_y = (short) e.getY(); 	// Save position.
 		}
@@ -187,14 +227,29 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans")
 		System.out.println("Waylist :"+tempwaypoint+"    lauf : "+laufwaypoint);
 	    }
 
-	    if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Draw_StateLabel"))
+	    if ((e.getID() == MouseEvent.MOUSE_PRESSED) & (Editor.Editor() =="Draw_StateLabel"))
 		{ 
-		    new labelPESTState(root,(int) (last_x/Editor.ZoomFaktor),
-					     (int) (last_y/Editor.ZoomFaktor));
+		    new labelPESTState(root,(int) (e.getX()/Editor.ZoomFaktor),
+					     (int) (e.getY()/Editor.ZoomFaktor));
 		    Editor.SetListen();
 		    trroot = false;
 		   repaint();
 		}
+
+	if ((e.getID() == MouseEvent.MOUSE_PRESSED) & (Editor.Editor() =="Draw_TransLabel"))
+		{ 
+		    Absyn akttrans;
+		    akttrans = PESTdrawutil.getSmallObject(root,(int) (e.getX()/Editor.ZoomFaktor),(int) (e.getY()/Editor.ZoomFaktor)); 
+		   if (akttrans instanceof Tr)
+		  {
+		    new labelPESTTrans(root,(int) (e.getX()/Editor.ZoomFaktor),
+		 		                 (int) (e.getY()/Editor.ZoomFaktor),(Tr) akttrans);
+		    Editor.SetListen();
+		    trroot = false;
+		   repaint();
+		  }
+		}
+
 
 	    if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Draw_State"))
 		{ 
@@ -254,9 +309,6 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans")
 		deleteobj = test;
 		System.out.println(">>>"+PESTdrawutil.getSmallObject(root,last_x,last_y));
 		System.out.println("to delete >>>"+deleteobj);
-
-
-
 		}
 	if ((e.getID() == MouseEvent.MOUSE_PRESSED) & (Editor.Editor() =="Draw_Conn"))
 		{ 
@@ -267,8 +319,6 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans")
 		    Editor.SetListen(); trroot = false;
 
 		}
-
-
 	}
   }
  

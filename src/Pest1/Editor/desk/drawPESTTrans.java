@@ -201,7 +201,66 @@ public static CPoint transpoint(Statechart root,int cx1, int cy1)
 	return temppoint; 
 	}
 
+ public static void  BTrans (Graphics h,Tr tr, int cx1, int cy1,Color def_tr)
+{
+	CPoint[] ta = tr.points;
+	  
+	//CPoint[] ta = Bezier(tp,30);
+	int trsize = ta.length-1;
+	System.out.println("Anzahl ZeigerPunkte : "+(int) (trsize+1));
+	for (int lauf = 0;lauf < (trsize-1);lauf++) {h.setColor(def_tr);h.drawLine(	(int) ((ta[lauf].x+cx1)*Editor.ZoomFaktor),
+									(int) ((ta[lauf].y+cy1)*Editor.ZoomFaktor),
+									(int) ((ta[lauf+1].x+cx1)*Editor.ZoomFaktor),
+									(int) ((ta[lauf+1].y+cy1)*Editor.ZoomFaktor) )
+									;}
 
+ 				drawPESTTrans.drawTrans(h,
+				(int) ((ta[trsize-1].x+cx1)*Editor.ZoomFaktor),
+				(int) ((ta[trsize-1].y+cy1)*Editor.ZoomFaktor),
+				(int) ((ta[trsize].x+cx1)*Editor.ZoomFaktor),
+				(int) ((ta[trsize].y+cy1)*Editor.ZoomFaktor),
+				tr.source,
+				tr.target,
+				def_tr );
+
+}
+
+private static CPoint[] Bezier(CPoint[] r, int genau)
+{
+double[] x = new double[1000];
+double[] y = new double[1000];
+int m;
+int n = r.length-1;
+CPoint[] rt = new CPoint[genau+1];
+
+for (int t = 0; t <= genau; t++)
+	{
+	for (int i = 0;i <= n;i++)
+		{
+		x[i] = (double) r[i].x;
+		y[i] = (double) r[i].y;
+		//x[2*i+1] = (double) r[i].x;
+		//y[2*i+1] = (double) r[i].y;
+
+		}
+	m = n;
+	while (m > 0)
+		{
+		for (int j = 0;j <=(m-1);j++)
+			{
+			x[j] = x[j]+(t/genau)*(x[j+1]-x[j]);
+			y[j] = y[j]+(t/genau)*(y[j+1]-y[j]);
+			}
+		m--;
+		}
+System.out.print("("+(int) Math.round(x[0]));
+System.out.print(","+(int) Math.round(y[0])+")");
+	rt[t] = new CPoint((int) Math.round(x[0]), (int) Math.round(y[0]));
+	//System.out.println((int) Math.round(x[0]));
+	}
+	return rt;
+
+}
 
 } // drawPESTTrans
 
