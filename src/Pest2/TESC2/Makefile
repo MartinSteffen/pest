@@ -1,13 +1,19 @@
-JDK = /opt/jdk/jdk1.1.6/lib/classes.zip
+JDK = /opt/jdk/jdk1.1.6/lib/classes.zip:/usr/lib/jdk1.1.5/lib/classes.zip
 PEST = .:..
 CLASSPATH = $(PEST):$(JDK)
 COMPILER = javac
 VM = java
 COPTIONS = -g -deprecation
-ROPTIONS =
+ROPTIONS = 
  
 CLASSES = \
-GraphOptimizer.class
+GraphOptimizer.class \
+AlgorithmException.class \
+LayoutAlgorithm.class \
+ProperMap.class \
+MapElement.class \
+MapTransition.class \
+SugiyamaBCMAlgorithm.class
 
 .SUFFIXES: .java .class
  
