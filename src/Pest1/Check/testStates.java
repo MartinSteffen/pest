@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: testStates.java,v 1.4 1998-12-08 14:25:02 swtech11 Exp $
+ *  @version  $Id: testStates.java,v 1.5 1998-12-08 14:52:49 swtech11 Exp $
  */
 class testStates extends modelCheckBasics{
   private Vector Pfad1=new Vector();
@@ -44,9 +44,9 @@ class testStates extends modelCheckBasics{
     String s;
     for(PathList p=sc.cnames; p!=null; p=p.tail){
        Path p_=p.head;
-       s=p_.current;
-       p_=p_.outer;
-       for(;p_!=null; p_=p_.outer) {s=p_.current+"."+s;};
+       s=p_.head;
+       p_=p_.tail;
+       for(;p_!=null; p_=p_.tail) {s=s+"."+p_.head;};
    
        if (Pfad2.contains(s)) { msg.addError(300,"State: "+s);}
                                 else {Pfad2.addElement(s);};
