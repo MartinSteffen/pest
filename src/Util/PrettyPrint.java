@@ -78,8 +78,8 @@ public class PrettyPrint {
       output ((Dummy)ab);
     if (ab instanceof Guard)
       output ((Guard)ab);
-    if (ab instanceof Label)
-      output ((Label)ab);
+    if (ab instanceof TLabel)
+      output ((TLabel)ab);
     if (ab instanceof State)
       output ((State)ab);
     if (ab instanceof Statechart)
@@ -172,21 +172,28 @@ public class PrettyPrint {
       System.out.println (whiteSpace (column) + "[PathList] ");
       PrettyPrint ppPList = new PrettyPrint (column + tab, tab);
       while (pListIterator != null) {
-        ppPList.start (pListIterator.head);
-	pListIterator = pListIterator.tail;
+	  System.out.print (whiteSpace (column+tab) + "[Path:] ");
+	  ppPList.start (pListIterator.head);
+	  System.out.println();
+	  pListIterator = pListIterator.tail;
       }
     }
   } // method start (PathList)
 
 
   /**
-   * Starte Ausgabe auf Bildschirm (Path).
+   * Starte Ausgabe auf Bildschirm (Path) = Liste von Namen.
    */
 
   public void start (Path pa) {
-    if (pa != null)
-      System.out.println (whiteSpace (column) + "[Path] " +
-			  pa.name);
+      if (pa != null)        
+	  // das hilft hier nicht viel, denn
+	  // wg. Overloading kommt man hier garnicht her
+      System.out.print (pa.current);
+      if (pa.outer != null) {
+	  System.out.print(".");             // Punkt als Separator
+	  start(pa.outer);
+      }
   } // method start (Path)
 
 
@@ -409,9 +416,9 @@ public class PrettyPrint {
 
   // Starte Ausgabe auf Bildschirm (Label).
 
-  private void output (Label l) {
+  private void output (TLabel l) {
     if (l != null) {
-      System.out.println (whiteSpace (column) + "[Label] ");
+      System.out.println (whiteSpace (column) + "[TLabel] ");
       PrettyPrint ppLab = new PrettyPrint (column + tab, tab);
 
       // Gib Point aus.
@@ -423,7 +430,7 @@ public class PrettyPrint {
       // Gib Action aus.
       ppLab.start (l.action);
     }
-  } // method output (Label)
+  } // method output (TLabel)
 
 
   // Starte Ausgabe auf Bildschirm (Guard).
