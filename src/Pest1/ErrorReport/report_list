@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.78 1999-02-08 14:12:48 swtech18 Exp $
+//	$Id: report_list,v 1.79 1999-02-08 15:20:14 swtech01 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -632,7 +632,7 @@ Default-States einer Ebene geloescht.
 #Number:        42
 #Autor:         Bernd Weber bwe
 #Subject:       GUI: Speichern über graf. Menu wird nicht erkannt
-#Status:        fixed     
+#Status:        confirmed
 #Description:
 
 Speichert man über die graf. Benutzerführung, meldet GUI beim Versuch,
@@ -691,8 +691,7 @@ im And State ist Target der Transition geworden.
 #Number:        47
 #Autor:         Bernd Weber bwe
 #Subject:       Editor: Verschieben, Undo, Restore erzeugt inkonsistenten Zustand
-#Status:        fixed (Alle hier auftretenden Fehler haengen mit Clone-Fehlern 
-		in der AbSyn zusammen)
+#Status:        confirmed (jedenfalls untenstehendes Beispiel)
 #Description:
 
 Mehrmals ist es mir gelungen, den Editor durch Benutzen der
@@ -770,7 +769,7 @@ deswegen, weil Codegen die Default-Namen nicht vertraegt.
 #Number:        53
 #Autor:         Bernd Weber bwe
 #Subject:       Editor: erzeugt Interlevel-Transitionen in AND-Sates
-#Status:        fixed
+#Status:        confirmed
 #Description:
 
 Man erzeuge einen AND-State und in einer der Komponenten zwei Basic-Zustaende
