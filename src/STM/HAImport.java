@@ -63,8 +63,9 @@ import tesc1.TESCSaver;
  * </DL COMPACT>
  *
  * @author  Sven Jorga, Werner Lehmann
- * @version $Id: HAImport.java,v 1.16 1999-01-19 14:49:20 swtech18 Exp $
+ * @version $Id: HAImport.java,v 1.17 1999-01-28 11:30:42 swtech18 Exp $
  */
+
 public class HAImport implements Patterns {
   Perl5Util perl = new Perl5Util();
 
@@ -97,6 +98,8 @@ public class HAImport implements Patterns {
   private Hashtable initHash = null;
   private Hashtable pathHash = new Hashtable();
   private TESCSaver tesc = null;
+  private boolean first = true;
+  private Vector used = null;
 
   /** Der Konstruktor dient zum Importieren einer StateChart
    * im HA-Format. Es wird erwartet, da&szlig; reader ein
@@ -105,6 +108,8 @@ public class HAImport implements Patterns {
 
   public HAImport(BufferedReader reader) throws Exception {
     this.tesc = new TESCSaver(null);
+    first = true;
+    used = new Vector();
     initImport(reader);
   }
 
@@ -118,6 +123,8 @@ public class HAImport implements Patterns {
   public HAImport(BufferedReader reader, GUIInterface gui ) throws Exception {
     this.gui = gui;
     this.tesc = new TESCSaver(gui);
+    first = true;
+    used = new Vector();
     try {
       initImport(reader);}
     catch ( Exception e) {
@@ -212,9 +219,14 @@ public class HAImport implements Patterns {
    * wird dieser ggf. im GUI-Logfenster ausgegeben (falls ein entsprechendes
    * Objekt bei der Konstruktion der Klasse angegeben wurde). Der
    * R&uuml;ckgabewert ist in diesem Fall null.
+   * getStatechart() darf nur einmal aufgerufen werden.
    */
 
   public Statechart getStatechart() throws Exception {
+    if (!first)
+      throw new Exception("getStatechart() darf nur einmal aufgerufen werden!");
+    first = false;
+
     Statechart st = null;
     CRectangle cRect = new CRectangle(0,0,0,0);
     if (!initSuccess)
@@ -224,7 +236,6 @@ public class HAImport implements Patterns {
         if (parseCoords) {
           cRect = calcRect((Vector)coordHash.get(rootString));
           rFaktor = calcResize(xSize, ySize, cRect.width, cRect.height);
-          System.out.println("resizeFaktor: "+rFaktor);
         }
         st = new Statechart(getEventList(),getBvarList(),getPathList(),getState()); }
       catch(Exception e) {
@@ -232,7 +243,7 @@ public class HAImport implements Patterns {
           throw e;
         else {
           gui.userMessage("STM: Fehler beim Importieren. (" + e.getMessage() + ")");
-          // e.printStackTrace();
+          //e.printStackTrace();
         }
       }
     return st;
@@ -371,7 +382,7 @@ public class HAImport implements Patterns {
       for (int j=0; j<mktrVec.size(); j++) {
         // "mk_tr(" und ")" entfernen
         perl.match("/^mk_tr\\((.*)\\)/",(String)mktrVec.elementAt(j));
-        // trVec: 6 Parameter von mk_tr
+        // trVec: 8 Parameter von mk_tr
         trVec = deliSplit(perl.group(1),',');
         trVec.setElementAt(removeQuotes((String)trVec.firstElement()),0);
         // td nicht leer? Interleveltransitionen sind nicht zulässig
@@ -389,7 +400,7 @@ public class HAImport implements Patterns {
 
   private String removeQuotes(String str) { return perl.substitute("s/\"//g",str); }
 
-  /** main dient uns intern zum testen ohne GUI und sollte nicht
+  /** main dient uns intern zum Testen ohne GUI und sollte nicht
    * verwendet werden.
    */
 
@@ -416,14 +427,8 @@ public class HAImport implements Patterns {
 
   // einmal aufzurufen fÆr jeden Import eines HA-Formates
 
-  private State getState() {
-    try {
-      return createState(rootString, new CRectangle(0,0,0,0)); }
-    catch (Exception e) {
-      // e.printStackTrace();
-      System.out.println("schiefgegangen: "+e.getMessage());
-      return null;
-    }
+  private State getState() throws Exception {
+    return createState(rootString, new CRectangle(0,0,0,0));
   }
 
   private CRectangle calcRect(Vector pointVec) {
@@ -446,7 +451,7 @@ public class HAImport implements Patterns {
 
   private State createState(String stateName, Rectangle baseRect) throws Exception {
     String stateType = null, exprStr = null, condStr = null;
-    Vector hiVec = null, trVec = null, pointVec = null;
+    Vector hiVec = null, trVec = null, pointVec = null, tmpVec = null;
     Or_State os = null;
     StateList sl = null;
     StatenameList snl = null;
@@ -457,7 +462,7 @@ public class HAImport implements Patterns {
     Double resizedX = null, resizedY = null, resizedWidth = null, resizedHeight = null;
     Guard newGuard = null;
     TLabel tLabel = null;
-    
+
     stateName = perl.substitute("s/\"//g",stateName);
     stateType = (String)tyHash.get(stateName);
     if (parseCoords) {
@@ -491,11 +496,20 @@ public class HAImport implements Patterns {
             Vector currentTrVec = (Vector)trVec.elementAt(k-1);
             if (parseCoords) {
               pointVec.removeAllElements(); // pointVec soll jetzt die Koordinaten der Transitionen aufnehmen
+              tmpVec = null;
               for (int m=6; m<currentTrVec.size(); m++) {
-                perl.match("/<?mk_coord\\((\\d+),(\\d+)\\)>?/",(String)currentTrVec.elementAt(m));
+                String tmpStr = (String)currentTrVec.elementAt(m);
+                perl.match("/<?mk_coord\\((\\d+),(\\d+)\\)>?/",tmpStr);
+                //rFaktor = 1;
+                //rt.x = rt.y = 0;
                 xCoord = new Double((Integer.parseInt(perl.group(1))-rt.x)*rFaktor);
                 yCoord = new Double((Integer.parseInt(perl.group(2))-rt.y)*rFaktor);
-                pointVec.addElement(new CPoint(xCoord.intValue(),yCoord.intValue()));
+                if (tmpVec == null)
+                  pointVec.addElement(new CPoint(xCoord.intValue(),yCoord.intValue()));
+                else
+                  tmpVec.addElement(new CPoint(xCoord.intValue(),yCoord.intValue()));
+                if (tmpVec == null && tmpStr.endsWith(">") && (m+1 < currentTrVec.size()) )
+                  tmpVec = new Vector();
               }
               pointVec = removeDuplicates(pointVec);
               pointArray = new CPoint[pointVec.size()];
@@ -513,7 +527,7 @@ public class HAImport implements Patterns {
               newGuard = createGuard(exprStr, condStr);
             tLabel =  new TLabel(newGuard,
                                  createAction((String)currentTrVec.elementAt(5)),
-                                 null, // CPoint
+                                 getUnusedPoint(tmpVec), // CPoint
                                  null, // Location
                                  "");
             tesc.setCaption(tLabel);
@@ -540,6 +554,32 @@ public class HAImport implements Patterns {
     else
       throw new Exception("State "+stateName+" hat unbekannten Typ "+stateType);
 
+  }
+
+  private CPoint getUnusedPoint(Vector vec) throws Exception {
+    int i = 0;
+    if (vec == null || vec.size() == 0)
+      return null;
+    for (i=0; (i<vec.size()) && pointInVec(used,(CPoint)vec.elementAt(i)); i++);
+    if (i >= vec.size())
+      throw new Exception("Nicht genug Labelkoordinaten verfuegbar.");
+    else {
+      used.addElement((CPoint)vec.elementAt(i));
+      return (CPoint)used.lastElement();
+    }
+  }
+
+  private boolean pointInVec(Vector vec, CPoint p) {
+    boolean result = false;
+    for (int i=0; !result && i<vec.size();i++) {
+      result = pointEquals(p,(CPoint)vec.elementAt(i));
+    }
+    // for (int i=0; !result && i<vec.size() && (result |= p.equals((Point)vec.elementAt(i))) ;i++);
+    return result;
+  }
+
+  private boolean pointEquals(CPoint a, CPoint b) {
+    return (a.x == b.x) && (a.y == b.y);
   }
 
   private Vector removeDuplicates(Vector vec) {
