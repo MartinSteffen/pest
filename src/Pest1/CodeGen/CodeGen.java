@@ -22,14 +22,16 @@ import absyn.*;
  * correctly yet.
  * <DT><STRONG>To Do</STRONG>
  *   <UL>
- *   <LI>Need to debug the code properly.
  *   <LI>Need to fix code for non-determinism.
- *   <LI>Symbolic names for conditions and events.
- *   <LI>We currently do not produce traces.
+ *   </UL>
  * <DT><STRONG>Known Bugs</STRONG>
  *   <UL>
  *     <LI>Code emission for transition hangs PEST.
- *     <LI>Lookup for symbols does not work correctly.
+ *     <LI>Perhaps we need to check the identifiers and think of
+ *       a way to convert identifiers into valid Java identifiers.
+ *       Question is:  Do we want to restrict the choice of valid
+ *       Identifiers?  This would be simpler, since it would avoid
+ *       name clashes during conversion.
  *   </UL>
  * <A HREF="mailto:swtech25@informatik.uni-kiel.de">swtech25</A>
  * </DL>
@@ -40,7 +42,10 @@ import absyn.*;
  *   <LI>We expect the Statechart to be a complete,  executable and
  *     correct state chart.  We will not announce an error, but instead create
  *     incorrect code (as far as it is possible to talk about incorrect code).
- *   <LI>  The pathname is assumed to be a fully qualified path to an
+ *   <LI>All identifiers should not contain ".".  Perhaps we might fix
+ *     this problem someday.  Currently we expect all identifiers to be
+ *     valid Java identifiers.
+ *   <LI>The pathname is assumed to be a fully qualified path to an
  *     existing directory without trailing "/".
  *   </UL>
  * <DT><STRONG>Assertions:</STRONG>
@@ -50,16 +55,10 @@ import absyn.*;
  * </DL>
  *
  * @author Marcel Kyas, Walter Loeser, Andre Paetzold.
- * @version $Id: CodeGen.java,v 1.13 1999-01-20 18:47:25 swtech25 Exp $
+ * @version $Id: CodeGen.java,v 1.14 1999-01-21 13:46:24 swtech25 Exp $
  */
 public class CodeGen
 {
-	/**
-	 * This is our reserved event keyword.  If it occures,
-	 * the generated code will clean up and exit.
-	 */
-	final String endEvent = "$$stop$$";
-
 	/**
 	 * This is the default option setting
 	 */
