@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.110 1999-02-15 11:16:21 swtech14 Exp $
+//	$Id: report_list,v 1.111 1999-02-16 12:23:50 swtech24 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -159,7 +159,7 @@ werden, das Umbennen-Fenster wurde nicht geoeffnet.
 #Number:	10
 #Autor:		Stefan Lemke swtech21
 #Subject:	PEST1: Bildgroesse im Zoom-Modus
-#Status:	reported
+#Status:	processing
 #Description:
 
 am 9.2.99 zurueckgesetzt: 50-fach aus einem Chart herausgezoomt und ganz unten
