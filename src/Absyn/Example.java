@@ -58,7 +58,7 @@ public class Example {
   
   Tr tr1 = new Tr (new Statename ("S1"), 
 		   new Statename ("S2"),
-		   new TLabel (new GuardEvent(new SEvent("C")),null));
+		   new TLabel (new GuardEvent(new SEvent("C")),new ActionEmpty(new Dummy())));
 
   Tr tr2 = new Tr (new Statename ("S2"), 
 		   new Statename ("S1"),
