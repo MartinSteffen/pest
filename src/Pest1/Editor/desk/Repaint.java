@@ -111,23 +111,34 @@ if (tr.source instanceof UNDEFINED) {h.setColor( Editor.tr_color());
 						(int) (((tr.points[0].y+ny)-3)*Editor.ZoomFaktor),
 						(int) (6*Editor.ZoomFaktor),(int) (6*Editor.ZoomFaktor));} else
 	      {localobject = PESTdrawutil.getSmallObject(root,tr.points[0].x+nx,tr.points[0].y+ny);
-	      //System.out.println("aktueller TRAnchor source :"+localobject);
+//	      System.out.println("aktueller TRAnchor source :"+localobject);
 		   if (localobject instanceof State) {
 		       State hier = (State) localobject;
 		       Statematrix matrix = PESTdrawutil.getState(root,tr.points[0].x+nx,tr.points[0].y+ny);
 Statename trtest = (Statename)tr.source;
+
+// System.out.println("AKT>"+matrix.akt);
+//System.out.println("PREV>"+matrix.prev);
+ //System.out.println("AKTRECT>"+matrix.akt.rect);
+
+if (matrix.akt.rect != null)
+{matrix = PESTdrawutil.getState(root,matrix.x-matrix.akt.rect.x,matrix.y-matrix.akt.rect.y);}
+
+
 		      if (matrix.prev instanceof And_State) {
 			  
 			    if (hier.name.name.compareTo(trtest.name)!=0 &
 				matrix.prev.name.name.compareTo(trtest.name) != 0)
-				{System.out.println(hier.name.name+"--1->"+trtest.name);
+				{
+		//	System.out.println(hier.name.name+"--1->"+trtest.name);
 			    Editor.dislocation();}
-			  //System.out.println("AND>"+matrix.prev);
-			  //System.out.println("AND>"+matrix.prev.name.name);
+		//	  System.out.println("AND>"+matrix.prev);
+		//	  System.out.println("AND>"+matrix.prev.name.name);
 			  tr.source = new Statename(matrix.prev.name.name);} else 
 			      {
 				 if (hier.name.name.compareTo(trtest.name)!=0) 
-				     {System.out.println(hier.name.name+"--2->"+trtest.name);
+				     {
+				//System.out.println(hier.name.name+"--2->"+trtest.name);
 				 Editor.dislocation();
 				 }
 				  tr.source = new Statename(hier.name.name);}
@@ -140,22 +151,36 @@ if (tr.target instanceof UNDEFINED) {h.setColor( Editor.tr_color());
 						(int) (((tr.points[trsize].y+ny)-3)*Editor.ZoomFaktor),
 						(int) (6*Editor.ZoomFaktor),(int) (6*Editor.ZoomFaktor));} 
 	      {localobject = PESTdrawutil.getSmallObject(root,tr.points[trsize].x+nx,tr.points[trsize].y+ny);
-	      //System.out.println("aktueller TRAnchor target :"+localobject);
+	      // System.out.println("aktueller TRAnchor target :"+localobject);
 		   if (localobject instanceof State) {
 		       State hier = (State) localobject;
 			if (hier.rect != null)
 			{
 		       Statematrix matrix = PESTdrawutil.getState(root,tr.points[trsize].x+nx,tr.points[trsize].y+ny);
 		           Statename trtest2 = (Statename)tr.target;
-		       if (matrix.prev instanceof And_State) {//System.out.println("AND>"+matrix.prev);
-			  //System.out.println("AND>"+matrix.prev.name.name);
+
+
+// System.out.println("AKT2>"+matrix.akt);
+// System.out.println("PREV2>"+matrix.prev);
+ // System.out.println("AKTRECT2>"+matrix.akt.rect);
+// System.out.println("AKTRECT2>"+matrix.prev.rect);
+
+if (matrix.akt.rect != null)
+{matrix = PESTdrawutil.getState(root,matrix.x-matrix.akt.rect.x,matrix.y-matrix.akt.rect.y);}
+
+
+		       if (matrix.prev instanceof And_State) {
+			//  System.out.println("AND>"+matrix.prev);
+			 // System.out.println("AND>"+matrix.prev.name.name);
 			       if (hier.name.name.compareTo(trtest2.name)!=0 &
 				matrix.prev.name.name.compareTo(trtest2.name) != 0) 
-				  {System.out.println(hier.name.name+"--3->"+trtest2.name);
+				  {
+			//	System.out.println(hier.name.name+"--3->"+trtest2.name);
 			      Editor.dislocation();}
 			  tr.target = new Statename(matrix.prev.name.name);} else 
 			      {
-				  if (hier.name.name.compareTo(trtest2.name)!=0) {System.out.println(hier.name.name+"--4->"+trtest2.name);
+				  if (hier.name.name.compareTo(trtest2.name)!=0) {
+			// System.out.println(hier.name.name+"--4->"+trtest2.name);
 				  Editor.dislocation();}
 				  tr.target = new Statename(hier.name.name);}
 			}

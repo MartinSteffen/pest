@@ -114,7 +114,7 @@ import tesc2.*;
 	    myroot.state = (State) deleteobj;
 	    Relist rl = new Relist(); rl.start(myroot,null,null,myroot);
 	    new mysave(myroot);
-	    root = myroot;
+	//    root = myroot;
 	}
     }
     else if (command.equals("verschieben") & deleteobj != null) {	System.out.println("test3 : "+copyobj);
@@ -652,7 +652,8 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans" & trro
 
 	if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Select") & (copyobj != null) & (mover == true))
 		{ 
-		   new setcopymove(root,copyobj,e.getX(),e.getY()); 
+		   new setcopymove(root,copyobj,e.getX(),e.getY());
+ 
 		   copyobj = null;
 		   mover = false;
 		}

@@ -53,9 +53,9 @@ public class LabelArea extends Dialog {
        tf.setVisible(true);
 	}
 
-  public void hide() {
-      tf.setVisible(false);
-	}
+ // public void hideit() {
+ //     tf.setVisible(false);
+//	}
  public void text(String txt) {
      int lauf;
      String hs1 = txt,ts1="",ts2="",tt1 = "", tt2 = "";
@@ -76,20 +76,6 @@ public class LabelArea extends Dialog {
      ta.append("-- Liste der Guards -- \n");
      if (ts1.length() != 0)
      {
-	 
-	 if (ts1.indexOf("||") > 0) {lauf = ts1.indexOf("||");}
-	 if (ts1.indexOf("&&") < lauf & ts1.indexOf("&&") > -1) {lauf = ts1.indexOf("&&");}
-	 while (lauf != -1)
-	     {
-		 tt1 = ts1.substring(0,lauf+2);
-		 ts1 = ts1.substring(lauf+2);
-	     //System.out.println("        reported : -"+tt2+"-");
-		 ta.append(tt1+"\n");
-		 // System.out.println("        Teilstring2 : -"+ts1+"-");
-	 
-		 {lauf = ts1.indexOf("&&");}
-		 if (ts1.indexOf("||") > -1 & ts1.indexOf("||") < lauf) {lauf = ts1.indexOf("||");}
-	     }
      ta.append(ts1+"\n");
      } else
 	 {
@@ -100,17 +86,6 @@ public class LabelArea extends Dialog {
      ts2 = ts2.trim();
      if (ts2.length() != 0)
      {
-	 
-	 lauf = ts2.indexOf(",");
-	 while (lauf != -1)
-	     {
-		 tt2 = ts2.substring(0,lauf);
-		 ts2 = ts2.substring(lauf);
-	     //System.out.println("        reported : -"+tt2+"-");
-		 ta.append(tt2+"\n");
-		 // System.out.println("        Teilstring2 : -"+ts2+"-");
-		 lauf = ts2.indexOf(",");
-	     }
      ta.append(ts2+"\n");
      } else
 	 {
