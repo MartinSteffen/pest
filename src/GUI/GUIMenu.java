@@ -71,6 +71,7 @@ public GUIMenu(pest myWindow)
 
   addMenuItem(m,"SyntaxCheck",mle);
   addMenuItem(m,"Statemate",mle);
+  addMenuItem(m,"Codegenerator",mle);
   m.addSeparator();
   cbItem1 = new CheckboxMenuItem("Graphische Benutzerfuehrung",true);
   cbItem1.addItemListener(mle);

@@ -40,12 +40,17 @@ public void actionPerformed(ActionEvent e) {
 	      {
 		  //myWindow.OkDialog("FEHLER","Wegen nicht compilierbarem Quelltext nicht implementiert");
 		  try{
-		    	myWindow.fDialog.setMode(FileDialog.SAVE);
-			myWindow.fDialog.setTitle("Generierten Code speichern");
-			myWindow.fDialog.setVisible(true);
-			new codegen.CodeGen(myWindow.fDialog.getDirectory(),myWindow.SyntaxBaum);
-			myWindow.fDialog.setVisible(false);
-			myWindow.fDialog.dispose();
+// 		    	myWindow.fDialog.setMode(FileDialog.SAVE);
+// 			myWindow.fDialog.setTitle("Generierten Code speichern");			
+// 			myWindow.fDialog.show();
+// 			String path = myWindow.fDialog.getDirectory();
+		        String path = myWindow.EingabeDialog("","Geben Sie bitte einen Pfad an",myWindow.SBPfad);
+			//			System.out.println(path);
+			if (path != null)
+			    {
+				new codegen.CodeGen(path,myWindow.SyntaxBaum);
+			    }
+// 			myWindow.fDialog.dispose();
 
       		}catch(codegen.CodeGenException cge)
 		    {

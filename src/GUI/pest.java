@@ -70,6 +70,7 @@ implements GUIInterface
 //    GUIsimExitLis simexitlis;
     check.CheckConfig checkConfig;
 
+
     editor.Editor PEditor = null;
     Dimension EditorDim = null;
     Point EditorLoc  = null;
@@ -150,6 +151,7 @@ implements GUIInterface
 	setVisible(true);
 	restoreConfig();
 	fDialog = new FileDialog(this);
+	fDialog.setModal(true);
 	theGUIMenu.updateMenu();
 	userMessage("GUI   : PEST initialisiert");
 	repaint();       
@@ -276,38 +278,50 @@ implements GUIInterface
 	    else
 		{
 		    checkConfig = theConfig.checkConfig;
+		    
 		}
 
+// 	    if (theConfig.codeGenConfig == null)
+// 		{
+// 		    codeGenConfigt = new CodeGenConfig();
+// 		}
+// 	    else
+// 		{
+// 		    codeGenConfig = theConfig.codeGenConfig;
+// 		}
 
 
-	    File file = new File(SBPfad,SBDateiname);
- 	    if(file.exists())		
- 		{
- 		    load_named_sc(theConfig.Pfad,theConfig.Dateiname);
-
-		    CheckedSC = theConfig.CheckedSC;
-		    ResultSC = theConfig.ResultSC;
-		    isDirty = theConfig.isDirty;
-		    
-		    controlWindow.highLight[4] = !CheckedSC;
-		    controlWindow.highLight[6] = ResultSC;
-		    controlWindow.highLight[7] = true; 
-		    controlWindow.highLight[8] = ResultSC;
-		    controlWindow.highLight[9] = true;
-		    controlWindow.highLight[11] = true;
-		    EditorLoc = theConfig.EditorLoc;
-		    EditorDim = theConfig.EditorDim;
-		    
-		    if (theConfig.isEditor)
+	    if (SBDateiname != null)
+		{
+		    File file = new File(SBPfad,SBDateiname);
+		    if(file.exists())		
 			{
-			    startEditor();
-			    PEditor.setLocation(EditorLoc.x,EditorLoc.y + PEditor.getInsets().top);
-			    PEditor.setSize(EditorDim);
-			    controlWindow.highLight[5] = false;
-			    if (ResultSC)
+			    load_named_sc(theConfig.Pfad,theConfig.Dateiname);
+			    
+			    CheckedSC = theConfig.CheckedSC;
+			    ResultSC = theConfig.ResultSC;
+			    
+			    controlWindow.highLight[4] = !CheckedSC;
+			    controlWindow.highLight[6] = ResultSC;
+			    controlWindow.highLight[7] = true; 
+			    controlWindow.highLight[8] = ResultSC;
+			    controlWindow.highLight[9] = true;
+			    controlWindow.highLight[11] = true;
+			    EditorLoc = theConfig.EditorLoc;
+			    EditorDim = theConfig.EditorDim;
+			    
+			    if (theConfig.isEditor)
 				{
-				    controlWindow.highLight[10] = true;
+				    startEditor();
+				    PEditor.setLocation(EditorLoc.x,EditorLoc.y + PEditor.getInsets().top);
+				    PEditor.setSize(EditorDim);
+				    controlWindow.highLight[5] = false;
+				    if (ResultSC)
+					{
+					    controlWindow.highLight[10] = true;
+					}
 				}
+			    isDirty = false;
 			}
  		}	    
 	    controlWindow.repaint();
@@ -523,6 +537,7 @@ void newStatechart()
 			if (YesNoDialog("ACHTUNG","Das aktuelle Statechart wurde noch nicht gespeichert ! Trotzdem fortfahren ?") == 1)
 			    {
 				resp = true;
+				SBDateiname = null;
 			    }
 			warningOpen = false;
 		    }
@@ -650,7 +665,7 @@ void newStatechart()
 
 	fDialog.setMode(FileDialog.SAVE);
 	fDialog.setTitle(titel);
-	fDialog.setVisible(true);
+	fDialog.show();
 	String FileName = fDialog.getFile();
 	if (FileName != null)//Ok gewählt
 	    {
@@ -666,7 +681,6 @@ void newStatechart()
 		
 	    }
 	
-	fDialog.setVisible(false);
 	fDialog.dispose();
 	return resp;
     }
@@ -676,7 +690,7 @@ void newStatechart()
     {
 	fDialog.setMode(FileDialog.SAVE);
 	fDialog.setTitle("Statechart speichern");
-	fDialog.setVisible(true);
+	fDialog.show();
 	String FileName = fDialog.getFile();
 	if (FileName != null)//Ok gewählt
 	    {
@@ -688,6 +702,7 @@ void newStatechart()
 		    oos.flush();
 		    oos.close();
 		    SBPfad = fDialog.getDirectory();
+		    System.out.println(SBPfad);
 		    SBDateiname = FileName;
 		    if (PEditor != null)
 			{
@@ -702,7 +717,6 @@ void newStatechart()
 		    }
 	    }
 
-	fDialog.setVisible(false);
 	fDialog.dispose();
     }
 
