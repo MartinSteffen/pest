@@ -3,16 +3,19 @@ package gui;
 // empfiehlt es sich hier NICHT "Absyn" zu importieren !
 
 import java.awt.event.*;
+import java.awt.*;
 
 
 class GUIoptionML
-implements ActionListener
+implements ActionListener,ItemListener
 {
 
 GUIMenu myMenu;
 pest myWindow;
-EditorOption option;
+EditorOption EdColor;
+GUIFarbOption GUIColor;
 boolean isEdOpOpen = false;
+boolean isGUIOPOpen = false;
 
 
 public GUIoptionML(GUIMenu myMenu,pest myWindow)
@@ -25,20 +28,38 @@ public GUIoptionML(GUIMenu myMenu,pest myWindow)
 public void actionPerformed(ActionEvent e) {
   String cmd = e.getActionCommand();
   
-  if(cmd.equals("Farben"))
-      {
-      if (!isEdOpOpen)
-	  {
-	      {
-		  option = new EditorOption(myWindow,this);
-	      }
-	  }
-
-     } else if (cmd.equals("")) {
+    if(cmd.equals("Editor"))
+	{
+	    EdColor = new EditorOption(myWindow,this);
+     }else if(cmd.equals("Graphische Benutzerfuehrung"))
+	 {
+	     GUIColor = new GUIFarbOption(myWindow,this);
+      }else if (cmd.equals("")) { 
       }else if (cmd.equals("")) {
       }else{  
 	 myWindow.userMessage("GUI   : NOCH NICHT IMPLEMENTIERT"); 
       }	
-  
 }
+
+
+public void itemStateChanged(ItemEvent e)
+    {
+	myWindow.ctrlWin =((CheckboxMenuItem)(e.getSource())).getState();
+	if (myWindow.ctrlWin)
+	    {
+		myWindow.MsgWindow.setRows(4);
+		myWindow.add("South",myWindow.MsgWindow);
+		myWindow.add("Center",myWindow.controlWindow);
+	    }
+	else
+	    {
+		myWindow.MsgWindow.setRows(50);
+		myWindow.remove(myWindow.controlWindow);
+		myWindow.add("Center",myWindow.MsgWindow);
+		//	myWindow.add("South",myWindow.controlWindow);
+	    }
+	myWindow.setVisible(true);
+	//myWindow.repaint();
+    }
+  
 }

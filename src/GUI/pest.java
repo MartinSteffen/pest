@@ -5,14 +5,52 @@ import java.awt.event.*;
 import java.io.*;
 import gui.popdialoge.*;
 
+
 import absyn.*;
 
-/** Diese Klasse ist die Hauptklasse von PEST
+/** <h1>Diese Klasse ist die Hauptklasse von PEST</h1>
  * und daher ist sie auch startbar (sprich "main" ist adequat 
  * vorhanden. Sie bildet das Hauptfenster von PEST und implementiert
  * das "GUIInterface". Die einzigen PUBLIC-Elemente sind gegenwärtig
  * die des Interface und die "main"-Methode.
- * Darum wird hier nichts beschrieben.
+ * Darum wird hier nichts beschrieben.<br><br>
+ * <h2>Empfohlender Aufruf:</h2>
+ * <ol>
+ * <li> java pest
+ * </ol>
+ * <h2>Unsere Forderungen:</h2>
+ * <ul>
+ * <li> Alle sollt Ihr compilierbar sein
+ * <li> Alle sollt Ihr funktionell sein
+ * </ul>
+ * <h2>Unsere Garantien:</h2>
+ * <ul>
+ * <li> Die PEST wird über Euch kommen.
+ * <li> 
+ * </ul>
+ * <br>
+ * <a href="mailto:swtech15@informatik.uni-kiel.de">SWTECH15 mailen...</a><br>
+ * <br>
+ * <br>
+ * <DL COMPACT>
+ * <DT><STRONG>STATUS: </STRONG><br>
+ * Alle compilierbaren Pakete können aufgerufen werden.
+ * Die Abhängigkeiten (gemäß unseren Vorgaben) sind implementiert.
+ * Insgesamt sind alle Teilaufgaben (siehe "plan") erfüllt,
+ * mit Ausnahme der Punkte unter ToDo.<br>
+ * <DT><STRONG>To Do: </STRONG><br>
+ * <ul>
+ * <li>Optionendialoge sind zum Teil noch zu machen, sobald diese mit
+ * den Gruppen geklärt sind.<br>
+ * <li>Abhängigkeitstransparente Benutzerführung<br>
+ * <li>Exportaufruf(e)<br>
+ * <li>Das Wiederherstellen der Oberfläche ist noch nicht fehlerfrei.
+ * </ul> 
+ * <DT><STRONG>Temporäre Features: </STRONG><br>
+ * Aufruf des PrettyPrinters<br>
+ * </DL COMPACT>
+ *
+
  * @see GUIInterface
  * @author Christian Spinneker / Ingo Mielsch
  * @version $id:$
@@ -26,6 +64,9 @@ implements GUIInterface
     FileDialog fDialog;
     GUIMenu theGUIMenu;
     TextArea MsgWindow;
+    ControlWindow controlWindow;
+    GUIControlWindowML cwlis;
+    GUIexitLis exlis;
 
     editor.Editor PEditor = null;
     Dimension EditorDim = null;
@@ -37,10 +78,17 @@ implements GUIInterface
     boolean CheckedSC = false;
     boolean ResultSC = false;
     boolean isDirty = false;
+    boolean ctrlWin = false;
+
+    Color color[]; 
 
     int stateColorIndex = 0;
     int conColorIndex = 1;
     int transColorIndex = 2;
+
+    int BgColorIndex = 10;
+    int ActColorIndex = 0;
+    int InactColorIndex = 9;
 
    public static void main(String[] args)
     {
@@ -50,24 +98,46 @@ implements GUIInterface
     public pest()
     {
 	super("Und hier kommt die PEST");
+	controlWindow = new ControlWindow(this);
+	exlis = new GUIexitLis(this);
 	setBackground(Color.lightGray);
 	setSize(500,400);  
 	setLocation(200,100);
 	setFont(new Font("Serif",Font.PLAIN,18));
-	GUIWindowListener lis = new GUIWindowListener();
+	//controlWindow = new ControlWindow(this);
 	theGUIMenu = new GUIMenu(this);
-	setMenuBar(theGUIMenu);
+	setMenuBar(theGUIMenu);	
+	GUIWindowListener lis = new GUIWindowListener();
 	addWindowListener(lis);
+	setLayout(new BorderLayout());
 
-        MsgWindow = new TextArea(200,80);
+	color = new Color[11];
+	color[0] = Color.red;
+	color[1] = Color.blue;
+	color[2] = Color.yellow;
+	color[3] = Color.green;
+	color[4] = Color.orange;
+	color[5] = Color.pink;
+	color[6] = Color.magenta;
+	color[7] = Color.cyan;
+	color[8] = Color.black;
+	color[9] = Color.white;
+	color[10] = Color.lightGray;
+	
+	//	controlWindow = new ControlWindow(this);
+	cwlis = new GUIControlWindowML(this);
+	controlWindow.addMouseListener(cwlis);
+	//add("Center",new Frame("Hallo"));
+	add("Center",controlWindow);
+
+	MsgWindow = new TextArea(4,80);
 	MsgWindow.setFont(new Font("Serif",Font.PLAIN,14));
 	MsgWindow.setEditable(false);
-	add(MsgWindow);
+	add("South",MsgWindow);
 
 	setVisible(true);
-	restoreConfig();
+	//restoreConfig();
 	fDialog = new FileDialog(this);
-
 	theGUIMenu.updateMenu();
 	userMessage("GUI   : PEST initialisiert");
 	repaint();       
@@ -186,12 +256,22 @@ implements GUIInterface
 	if (PEditor == null)
 	    {
 		PEditor = new editor.Editor(SyntaxBaum,SBDateiname,x,y,b,h,this);
+		//		PEditor.addWindowListener(new GUIeditorWinLis(this));
 		if(EditorDim != null)
 		    {
 			PEditor.setSize(EditorDim);
 			PEditor.setLocation(EditorLoc);
 		    }
-		PEditor.addWindowListener(new GUIexitLis(this));
+	// 	PEditor.menufeld.Select.addActionListener(cwlis);
+// 		PEditor.menufeld.State.addActionListener(cwlis);
+// 		PEditor.menufeld.Trans.addActionListener(cwlis);
+// 		PEditor.menufeld.Defconn.addActionListener(cwlis);
+// 		PEditor.menufeld.Par.addActionListener(cwlis);
+// 		PEditor.menufeld.TLabelS.addActionListener(cwlis);
+// 		PEditor.menufeld.TLabelT.addActionListener(cwlis);
+// 		PEditor.menufeld.setdef.addActionListener(cwlis);
+ 		PEditor.addWindowListener(exlis);							  
+// 		PEditor.w2.addActionListener(exlis);
 	    }
 	else
 	    {
@@ -232,10 +312,21 @@ implements GUIInterface
 	if (!ResultSC)
 	    {
 		userMessage("GUI   : SyntaxCheck fehlgeschlagen");
+		controlWindow.highLight[4] = false;
+		controlWindow.repaint();
 	    }
 	else
 	    {
 		userMessage("GUI   : SyntaxCheck erfolgreich :-)");
+		controlWindow.highLight[4] = false;
+		controlWindow.highLight[8] = true;
+		controlWindow.highLight[9] = true;
+		controlWindow.highLight[6] = true;
+		if (PEditor != null)
+		    {
+			controlWindow.highLight[10] = true;
+		    }
+		controlWindow.repaint();
 	    }
 
 	userMessage("GUI   : SyntaxCheck ende");
@@ -251,6 +342,21 @@ implements GUIInterface
 	ResultSC  = false;
 	userMessage("GUI   : Neues Statechart erzeugt");
 	theGUIMenu.updateMenu();	
+    }
+
+
+    public void StateChartHasChanged()
+    {
+	if (CheckedSC)
+	    {
+		CheckedSC = false;
+		ResultSC = false;
+		controlWindow.highLight[4] = true;
+		controlWindow.highLight[6] = false;
+		controlWindow.highLight[8] = false;
+		controlWindow.highLight[9] = false;
+		controlWindow.highLight[10] = false;
+	    }
     }
 
 

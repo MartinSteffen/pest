@@ -13,19 +13,24 @@ pest myWindow;
 MenuItem M_Speichern, M_Editor;
     //MenuItem M_Speichernu;
 MenuItem M_Simulator, M_Codegen, M_SyntaxCheck,M_PrettyPrint;
+GUIdateiML   ml;  
+GUIwerkML    mlw; 
+GUIoptionML  mle; 
+GUIhilfeML   mlh; 
+GUIimportML  mli; 
+GUIexportML  mlex;
 
 
 public GUIMenu(pest myWindow)
   {
   this.myWindow = myWindow;
 
-  GUIdateiML   ml  = new GUIdateiML(this,myWindow);
-  GUIwerkML    mlw = new GUIwerkML(this,myWindow);
-  GUIoptionML  mle = new GUIoptionML(this,myWindow);
-  GUIhilfeML   mlh = new GUIhilfeML(this,myWindow);
-  GUIimportML  mli = new GUIimportML(this,myWindow);
-  GUIexportML  mlex= new GUIexportML(this,myWindow);
-
+  ml  = new GUIdateiML(this,myWindow);
+  mlw = new GUIwerkML(this,myWindow);
+  mle = new GUIoptionML(this,myWindow);
+  mlh = new GUIhilfeML(this,myWindow);
+  mli = new GUIimportML(this,myWindow);
+  mlex= new GUIexportML(this,myWindow);
 
   Menu m = new Menu("Datei");
 
@@ -51,11 +56,19 @@ public GUIMenu(pest myWindow)
   m = new Menu("Einstellungen");
   //addMenuItem(m,"Allgemein",mle);
   //m.addSeparator();
-  addMenuItem(m,"Farben",mle);
+  Menu mf = new Menu("Farben");
+  addMenuItem(mf,"Graphische Benutzerfuehrung",mle);
+  addMenuItem(mf,"Editor",mle);
+  m.add(mf);
   //addMenuItem(m,"Simulator",mle);
   //addMenuItem(m,"SyntaxCheck",mle);
   //addMenuItem(m,"Codegenerator",mle);
   addMenuItem(m,"TESC",mle);
+  m.addSeparator();
+  CheckboxMenuItem cbItem = new CheckboxMenuItem("Graphische Benutzerfuehrung",true);
+  cbItem.addItemListener(mle);
+  m.add(cbItem);
+  //m.add(new MenuItem("Benutzerfuehrung"));
   //addMenuItem(m,"Statemate",mle);
   add(m);
 
@@ -67,7 +80,7 @@ public GUIMenu(pest myWindow)
   m.addSeparator();
   M_PrettyPrint = addMenuItem(M_Werkzeuge,"PrettyPrinter",mlw);
   add(M_Werkzeuge);
-
+  
   m = new Menu("Hilfe");
   addMenuItem(m,"Allgemein",mlh);
   addMenuItem(m,"Info",mlh);

@@ -11,11 +11,13 @@ implements ActionListener
 
 GUIMenu myMenu;
 pest myWindow;
+boolean hil[];
 
 public GUIdateiML(GUIMenu myMenu,pest myWindow)
   {
   this.myMenu = myMenu;
   this.myWindow = myWindow;
+  hil = myWindow.controlWindow.highLight;      
   }
 
 
@@ -33,6 +35,18 @@ public void actionPerformed(ActionEvent e) {
 	  if(myWindow.isSaved())
 	      {
 		  myWindow.load_sc();
+
+		  hil[4] = true;
+		  if (myWindow.PEditor == null)
+		      {
+			  hil[5] = true;
+		      }
+		  hil[6] = false;
+		  hil[7] = true;
+		  hil[8] = false;
+		  hil[9] = false;
+		  hil[10] = false;
+		  myWindow.controlWindow.repaint();
 	      }
       }else if (cmd.equals("Speichern")) {
 	  myWindow.save_sc();
@@ -40,6 +54,17 @@ public void actionPerformed(ActionEvent e) {
 	  if (myWindow.isSaved())
 	      {
 		  myWindow.setStatechart(new absyn.Statechart(myWindow.SBDateiname),"UNBENANNT");
+		  hil[4] = true;
+		  if (myWindow.PEditor == null)
+		      {
+			  hil[5] = true;
+		      }
+		  hil[6] = false;
+		  hil[7] = true;
+		  hil[8] = false;
+		  hil[9] = false;
+		  hil[10] = false;
+		  myWindow.controlWindow.repaint();
 	      }
       }else{
 	  myWindow.userMessage("GUI   : "+cmd+" nicht vorhanden !");
