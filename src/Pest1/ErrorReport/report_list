@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.23 1999-01-22 12:16:04 swtech26 Exp $
+//	$Id: report_list,v 1.24 1999-01-25 10:04:35 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -109,7 +109,7 @@ Falls auf E3 reagiert wird, gibt es gar keine Meldung.
 #Number:        6
 #Autor:         Erich Mikk erm
 #Subject:       Interlevel Transitionen in TV
-#Status:        fixed
+#Status:        confirmed
 #Description:
 
 In ~swtech12/Examples/TV/tv.st ist eine Interlevel-Transition. Folgendes
@@ -120,7 +120,7 @@ als Interlevel-Transition dargestellt werden.
 #Number:        7
 #Autor:         Erich Mikk erm
 #Subject:       Default States im Editor nicht sichtbar.
-#Status:        fixed
+#Status:        confirmed
 #Description:
 
 
@@ -249,7 +249,7 @@ java.lang.Exception: Interleveltransitionen nicht zulässig
 #Number:	18
 #Autor:		Erich Mikk erm
 #Subject:	Start des Simulators gelingt nicht: NullPointerException
-#Status:	fixed
+#Status:	confirmed
 #Description:
 
 Importiere  ~swtech12/Examples/TV/tv.st
@@ -275,3 +275,15 @@ java.lang.NullPointerException
 
 Setzt man in einem leeren Editor einen State und will diesen als Default kennzeichenen, passiert nichts.
 
+//------------------------------------------------------------------------------
+#Number:	20
+#Autor:		Erich Mikk
+#Subject:	STM-Importierten Labels werden nicht angezeigt: Koordinaaten fehlen
+#Status:	reported
+#Description:
+
+Importiere z.B. TV/tv.st und starte Editor.
+Der Editor zeigt keine tr-Labels an.
+Das liegt wahrscheinlich daran, dass STM-Import sie nicht vorfindet 
+und auch selbst nicht erzeugt.
+//------------------------------------------------------------------------------
