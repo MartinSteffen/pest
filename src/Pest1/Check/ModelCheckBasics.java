@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: ModelCheckBasics.java,v 1.7 1999-01-10 16:06:36 swtech11 Exp $
+ *  @version  $Id: ModelCheckBasics.java,v 1.8 1999-01-18 08:00:33 swtech11 Exp $
  */
 class ModelCheckBasics {
   ModelCheckMsg msg = new ModelCheckMsg();
@@ -154,4 +154,21 @@ class ModelCheckBasics {
     return _np;
   }
 
+    boolean equalString(Vector v, String s) {
+    boolean b=true;
+    for (int j=0; ((j<v.size()) && b); j++) {
+            if (((String)v.elementAt(j)).equals(s)) {
+		            b=false;};
+    };
+    return !b;}
+
+    boolean equalString_r(Vector v, String s) {
+    boolean b=true;
+    for (int j=0; ((j<v.size()) && b); j++) {
+            if (((String)v.elementAt(j)).equals(s)) {
+            		b=false;
+                v.removeElementAt(j);
+                };
+    };
+    return !b;}
 }

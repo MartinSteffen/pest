@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestBVars.java,v 1.10 1999-01-07 16:48:49 swtech11 Exp $
+ *  @version  $Id: TestBVars.java,v 1.11 1999-01-18 08:00:34 swtech11 Exp $
  */
 
 /** Diese Testklasse testet, ob alle BVars deklariert worden sind, 
@@ -13,17 +13,20 @@ import java.util.*;
 
 class TestBVars extends ModelCheckBasics{
   private Vector Ist;
-  private Vector Soll;
+  private Vector GSoll;
+  private Vector ASoll;
 
   TestBVars() {
     super();
     Ist=new Vector();
-    Soll=new Vector();
+    GSoll=new Vector();
+    ASoll=new Vector();
   }
   TestBVars(Statechart s, ModelCheckMsg m) {
     super(s,m);
     Ist=new Vector();
-    Soll=new Vector();
+    GSoll=new Vector();
+    ASoll=new Vector();
   }
 
     /** Die Methode check ueberprueft die Statechart auf Fehler bzgl. BVars.*/
@@ -66,7 +69,7 @@ class TestBVars extends ModelCheckBasics{
     /** Ueberprueft den Guard auf Verwendung von BVars und ob der nur Guardelemente verwendet worden sind.*/
 
     void pruefeGuard(Guard g, Tr t, String p){
-    if (g instanceof GuardBVar)  {pruefeBVar  (((GuardBVar )g).bvar, t, p);}
+    if (g instanceof GuardBVar)  {pruefeBVar  (((GuardBVar )g).bvar, t, p, 1);}
       else {
       if (g instanceof GuardCompg) {pruefeGuard (((GuardCompg)g).cguard.elhs, t, p);
                                   pruefeGuard (((GuardCompg)g).cguard.erhs, t, p); }
@@ -85,15 +88,26 @@ class TestBVars extends ModelCheckBasics{
     /** Ueberprueft, ob ein BVar, der in einem Guard oder einem Action verwendet wird, 
 	<br>deklariert worden ist.*/
 
-  void pruefeBVar(Bvar b, Tr t, String p){
-      if (Ist.contains(b.var)) {if (!Soll.contains(b.var)) { Soll.addElement(b.var);};}
-      else { msg.addError(101, "BVar: "+b.var, t, p);};
+  void pruefeBVar(Bvar b, Tr t, String p, int i){
+
+      if (equalString(Ist, b.var)) {
+          if ((!equalString(GSoll,b.var)) && (i==1))  {GSoll.addElement(b.var);
+};
+           if ((!equalString(ASoll, b.var)) && (i==2)) {ASoll.addElement(b.var);
+	  };}
+      else {msg.addError(101,"BVar: "+b.var, t, p);};
   };
+
+
+
    /** Ueberprueft den Action auf Verwendung von BVars und ob nur Actionelemente verwendet werden.*/
 
     void pruefeAction(Action a, Tr t, String p){
-    if (a instanceof ActionBlock)  {if ((((ActionBlock)a).aseq)!=null) for(Aseq as=((ActionBlock)a).aseq;as.tail!=null;as=as.tail) 
-	{ pruefeAction(as.head, t, p);}
+    if (a instanceof ActionBlock)  { if ((((ActionBlock)a).aseq)!=null) {
+            Aseq as=((ActionBlock)a).aseq;
+            for(; (as.tail!=null); as=as.tail) 
+	      { pruefeAction(as.head, t, p);}
+	    pruefeAction(as.head, t, p);}
       else {msg.addError(24, t , p);};
       }
       else {
@@ -106,11 +120,11 @@ class TestBVars extends ModelCheckBasics{
   /** Ueberprueft einen boolschen Block auf Verwendung von BVars.*/
 
   void pruefeBool(Boolstmt b, Tr t, String p) {
-     if (b instanceof BAss)  {pruefeBVar(((BAss)b).ass.blhs, t, p); pruefeGuard(((BAss)b).ass.brhs, t, p);}
+     if (b instanceof BAss)  {pruefeBVar(((BAss)b).ass.blhs, t, p, 2); pruefeGuard(((BAss)b).ass.brhs, t, p);}
        else {
-       if (b instanceof MTrue)  {pruefeBVar(((MTrue)b).var, t, p);}
+       if (b instanceof MTrue)  {pruefeBVar(((MTrue)b).var, t, p, 2);}
          else {
-         if (b instanceof MFalse) {pruefeBVar(((MFalse)b).var, t, p);}
+         if (b instanceof MFalse) {pruefeBVar(((MFalse)b).var, t, p, 2);}
            else { msg.addError(103, t, p);};
      };};};
 
@@ -118,11 +132,18 @@ class TestBVars extends ModelCheckBasics{
 <br>Wenn BVars aus dem Vector Ist nicht verwendet werden , wird gewarnt.*/
 
     void vergleiche(){
-	for( int i=0; i<Soll.size();i++) {
-	    Ist.removeElement(Soll.elementAt(i));};
-        for(int i=0; i<Ist.size(); i++) { msg.addWarning(102,"BVar: "+(String)Ist.elementAt(i));};
+	for( int i=0; i<ASoll.size();i++) { 
+            if (!equalString_r(GSoll, (String)ASoll.elementAt(i))) {
+                 msg.addWarning(105,"BVar: "+(String)ASoll.elementAt(i));};
+};
 
+        for(int i=0; i<GSoll.size(); i++) {
+                 equalString_r(Ist, (String)GSoll.elementAt(i)); 
+                 msg.addWarning(104,"BVar: "+(String)GSoll.elementAt(i));};
+	for (int i=0; i<ASoll.size(); i++){
+	    equalString_r(Ist, (String)ASoll.elementAt(i));}
+            for(int i=0; i<Ist.size(); i++) {
+                 msg.addWarning(102,"BVar: "+(String)Ist.elementAt(i));};
     };
-    
 }
 

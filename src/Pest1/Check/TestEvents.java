@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestEvents.java,v 1.10 1999-01-13 17:27:05 swtech11 Exp $
+ *  @version  $Id: TestEvents.java,v 1.11 1999-01-18 08:00:35 swtech11 Exp $
  */
 /** Diese Testklasse testet, ob alle Events deklariert worden sind, 
     <br>ob die deklarierten eindeutig sind und ob sie alle verwendet werden.*/
@@ -80,13 +80,9 @@ ASoll=new Vector();
   void pruefeEvent(SEvent e, Tr t, String p, int i){
       
       if (equalString(Ist, e.name)) {
-	  //System.out.println("pE "+e.name);
           if ((!equalString(GSoll,e.name)) && (i==1))  {GSoll.addElement(e.name);
-	  //System.out.println("pEG "+e.name);
 };
-
-          if ((!equalString(ASoll, e.name)) && (i==2)) {ASoll.addElement(e.name);
-	  //System.out.println("pEA "+e.name);
+           if ((!equalString(ASoll, e.name)) && (i==2)) {ASoll.addElement(e.name);
 	  };}
 	  
       else {msg.addError(201,"Event: "+e.name, t, p);};
@@ -98,19 +94,12 @@ ASoll=new Vector();
      void pruefeAction(Action a, Tr t, String p){
 	 if (a instanceof ActionBlock)  { if ((((ActionBlock)a).aseq)!=null) {
             Aseq as=((ActionBlock)a).aseq;
-	    //System.out.println("Aseq");
-            for(; (as.tail!=null); as=as.tail) 
-	      { pruefeAction(as.head, t, p);
-	      //System.out.println("Schleife "+p);               
-}
-	    pruefeAction(as.head, t, p);
-	    //System.out.println("Ende "+p);
-}
-
+            for(; (as.tail!=null); as=as.tail)
+	      { pruefeAction(as.head, t, p);}
+	    pruefeAction(as.head, t, p);}
     else {msg.addError(24, t , p);};
     }
     if (a instanceof ActionEvt) {
-	//System.out.println("Ae "+((ActionEvt)a).event.name);
        pruefeEvent (((ActionEvt)a).event, t, p, 2);};
     }
 
@@ -120,12 +109,9 @@ ASoll=new Vector();
       PathList pl=sc.cnames;
       boolean b=false;
  
-      for(; ((pl != null) && (!b)) ; pl=pl.tail){ 
-	  //  if (Pathequal(pl.head, p)) {b=true;};  
+      for(; ((pl != null) && (!b)) ; pl=pl.tail){
       if (PathtoString(pl.head).equals(PathtoString(p))) {b=true;};
        };              
-          
-      
       if (b==false) {msg.addError(203,"Pfad: "+PathtoString(p), t, s);}
      
   };
@@ -133,52 +119,19 @@ ASoll=new Vector();
  /** Die Vectoren Ist und soll werden verglichen. 
 <br>Wenn Events aus dem Vector Ist nicht verwendet werden , wird gewarnt.*/
 
-    void vergleiche(){
-	//System.out.println("verg A "+ASoll.size());
-	for( int i=0; i<ASoll.size();i++) { 
-           
-	    //System.out.println("verg A "+ASoll.size());
-            if (!equalString_r(GSoll, (String)ASoll.elementAt(i))) {
+  void vergleiche(){
+	for( int i=0; i<ASoll.size();i++) {
+        if (!equalString_r(GSoll, (String)ASoll.elementAt(i))) {
                  msg.addWarning(205,(String)ASoll.elementAt(i));};
-	    //equalString_r(Ist, (String)ASoll.elementAt(i));
 };
-
         for(int i=0; i<GSoll.size(); i++) {
-	    //System.out.println("verg G "+GSoll.size());
                  equalString_r(Ist, (String)GSoll.elementAt(i)); 
                  msg.addWarning(204,(String)GSoll.elementAt(i));};
 	for (int i=0; i<ASoll.size(); i++){
 	    equalString_r(Ist, (String)ASoll.elementAt(i));}
-
             for(int i=0; i<Ist.size(); i++) {
-                 
                  msg.addWarning(202,(String)Ist.elementAt(i));};
-
-
-
     };
-
-    boolean equalString(Vector v, String s) {
-    boolean b=true;
-    //System.out.println("neuer Verg");
-    for (int j=0; ((j<v.size()) && b); j++) {
-	//System.out.println(" "+(String)v.elementAt(j)+" "+s);
-            if (((String)v.elementAt(j)).equals(s)) {
-		b=false;};};
-    return !b;}
-
-    boolean equalString_r(Vector v, String s) {
-    boolean b=true;
-    for (int j=0; ((j<v.size()) && b); j++) {
-	//System.out.println("r "+(String)v.elementAt(j)+" "+s);
-	//System.out.println("size "+v.size()); 
-            if (((String)v.elementAt(j)).equals(s)) {
-		//System.out.println("gleiche "+s);
-		b=false;
-                v.removeElementAt(j);
-                };};
-    //System.out.println("size "+v.size());
-    return !b;}
 }
 
 

@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestStates.java,v 1.7 1999-01-08 17:14:41 swtech11 Exp $
+ *  @version  $Id: TestStates.java,v 1.8 1999-01-18 08:00:36 swtech11 Exp $
  */
 
 /** Diese Testklasse testet, ob alle Statenamen deklariert worden sind, 
@@ -86,7 +86,6 @@ class TestStates extends ModelCheckBasics{
     */
     
     void pruefeState(State s, State _s, String p){
-	//System.out.println("pS "+p);
     if (s instanceof Or_State) {
 	   if (((Or_State)s).substates==null) {msg.addError(305,"State: "+s.name.name);}
 	   else {
@@ -104,12 +103,8 @@ class TestStates extends ModelCheckBasics{
 
   void navStateInStateList(StateList sl, State _s, String p, Vector dc) {
       boolean b=true;
-     
-      //System.out.println("nav State "+sl.head.name.name);
       for (int i=0; ((i<dc.size()) && b); i++){
-	  //System.out.println("nav vergleiche "+(String)dc.elementAt(i));
 	  if (((String)dc.elementAt(i)).equals(sl.head.name.name)) {
-	      //System.out.println("nav entfernen "+(String)dc.elementAt(i));
 dc.removeElementAt(i);};};
 
 
@@ -132,11 +127,8 @@ dc.removeElementAt(i);};};
     Vector defaultcon(Or_State _s, String p) {
      Vector v=new Vector();
      StatenameList sl=_s.defaults;
-     if (sl!=null) { 
-//System.out.println("DFC Pfad "+p);
-
-         for (;sl.tail!=null; sl=sl.tail ) {
-	     //System.out.println("DFC State 2 "+sl.head.name);
+     if (sl!=null) {
+        for (;sl.tail!=null; sl=sl.tail ) {
             for(int i=0; i<v.size();i++){
               if (((String)v.elementAt(i)).equals(sl.head.name)) {msg.addError(313,"Defaultcon: "+sl.head.name+" im State "+p);}
 	      else {v.addElement(sl.head.name);};};
@@ -144,10 +136,8 @@ dc.removeElementAt(i);};};
               };
     int s=v.size();
     for(int i=0; i<s; i++){
-	//System.out.println("drin "+(String)v.elementAt(i)+" draussen "+sl.head.name);
      if (((String)v.elementAt(i)).equals(sl.head.name)) {msg.addError(313,"Defaultcon: "+sl.head.name+" im State "+p);}
 	      else {v.addElement(sl.head.name);
-	      //System.out.println("DFC State 1 "+sl.head.name);
 };
 };
     if (s==0) {v.addElement(sl.head.name);};
@@ -156,7 +146,6 @@ dc.removeElementAt(i);};};
      };
      if (sl==null) {msg.addError(314,"State "+p);};
      if (v.size()>1)  {msg.addError(315,"State "+p);};
-     //System.out.println("DFV size "+v.size());
      return v;
     }
 
