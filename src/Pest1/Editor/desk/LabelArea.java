@@ -78,8 +78,8 @@ public class LabelArea extends Dialog {
      ts1 = ts1.trim();
      ts2 = ts2.trim();
      ta.setText("");
-     System.out.println("Teilstring1 : -"+ts1+"-");
-     System.out.println("Teilstring2 : -"+ts2+"-");
+     // System.out.println("Teilstring1 : -"+ts1+"-");
+     // System.out.println("Teilstring2 : -"+ts2+"-");
 
      // ************************** zu bearbeiten
      ta.append("-- Liste der Guards -- \n");

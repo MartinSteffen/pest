@@ -157,7 +157,7 @@ if (matrix2.prev.rect != null)
 			    if (hier.name.name.compareTo(trtest.name)!=0 &
 				matrix.prev.name.name.compareTo(trtest.name) != 0)
 				{
-			System.out.println(hier.name.name+"--1->"+trtest.name);
+				  //System.out.println(hier.name.name+"--1->"+trtest.name);
 			    Editor.dislocation();}
 		//	    System.out.println("AND>"+matrix.akt);
 		//	  System.out.println("AND>"+matrix.akt.name.name);
@@ -233,12 +233,12 @@ if (matrix2.prev.rect != null)
 			       if (hier.name.name.compareTo(trtest2.name)!=0 &
 				matrix.prev.name.name.compareTo(trtest2.name) != 0) 
 				  {
-				System.out.println(hier.name.name+"--3->"+trtest2.name);
+				    //System.out.println(hier.name.name+"--3->"+trtest2.name);
 			      Editor.dislocation();}
 			  tr.target = new Statename(matrix.prev.name.name);} else 
 			      {
 				  if (hier.name.name.compareTo(trtest2.name)!=0) {
-			 System.out.println(hier.name.name+"--4->"+trtest2.name);
+				    //System.out.println(hier.name.name+"--4->"+trtest2.name);
 				  Editor.dislocation();}
 				  tr.target = new Statename(hier.name.name);}
 			}
