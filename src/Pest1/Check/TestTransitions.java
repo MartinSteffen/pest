@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestTransitions.java,v 1.10 1999-01-11 12:17:57 swtech11 Exp $
+ *  @version  $Id: TestTransitions.java,v 1.11 1999-01-11 17:42:41 swtech11 Exp $
  */
 class TestTransitions extends ModelCheckBasics {
   Vector newPLV = new Vector(); // Vector fuer die selbst angelegte PathList der States
@@ -210,6 +210,10 @@ class TestTransitions extends ModelCheckBasics {
   String vergleicheGuards(GuardE _g1, GuardE _g2, String text){
    Guard g1=_g1.g;
    Guard g2=_g2.g;
+    if ((g1 instanceof GuardEmpty) &&  (g2 instanceof GuardEmpty)) {
+                  text=text+"GuardDummy ";
+                   };
+
    if ((g1 instanceof GuardEvent) &&  (g2 instanceof GuardEvent)){
      if (((GuardEvent)g1).event.name.equals(((GuardEvent)g2).event.name)) {
                   text=text+"GuardEvent: "+((GuardEvent)g1).event.name;
