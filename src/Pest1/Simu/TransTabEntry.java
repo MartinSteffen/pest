@@ -3,7 +3,7 @@ package simu;
 import absyn.*;
 
 /**
- * New type, created from HH on INTREPID.
+ * Unterklasse fuer TransTab
  */
 public class TransTabEntry {
 	Path tteSource;
@@ -11,6 +11,12 @@ public class TransTabEntry {
 	TLabel tteLabel;
 /**
  * Hilfsklasse
+ *
+ * @param arg1 absyn.Path
+ * @param arg2 absyn.Path
+ * @param arg3 absyn.TLabel
+ * @return
+ * @version V1 vom 14.01.1999
  */
 public TransTabEntry(Path arg1, Path arg2, TLabel arg3) {
 	tteSource = arg1;
