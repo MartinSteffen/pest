@@ -12,6 +12,34 @@ public class BooleanTabelle extends Object{
     data=new Hashtable();
   }
 
+  public BooleanTabelle filterConditions(BooleanTabelle tab){
+    BooleanTabelle result=new BooleanTabelle();
+    Enumeration keys=null;
+    keys=(data).keys();
+    Bvar tempvar=null;
+    while (keys.hasMoreElements()){
+      tempvar=(Bvar)keys.nextElement();
+      if (isTrue(tempvar)){
+	result.setTrue(tempvar);
+      }
+    }
+    Enumeration tab_keys=(tab.data).keys();
+    Bvar tab_element=null;
+    while (tab_keys.hasMoreElements()){
+      tab_element=(Bvar)tab_keys.nextElement();
+      if (data.containsKey(tab_element)){
+	if (isTrue(tab_element)){
+	  result.setTrue(tab_element);
+	}
+      }
+      else{
+	result.setTrue(tab_element);
+      }
+    }
+    return result;
+  }
+      
+
   public boolean isTrue(Bvar b){
     String value=(String)data.get(b);
     if (value!=null){

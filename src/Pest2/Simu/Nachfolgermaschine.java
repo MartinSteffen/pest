@@ -214,6 +214,7 @@ class Nachfolgermaschine extends Object{
      if (rootstate!=null){
        result=step((new Path((rootstate.name).name,null)),rootstate);
      }
+     result.filterConditions(act_status);
      return result;
    };
 
@@ -558,10 +559,10 @@ class Nachfolgermaschine extends Object{
     if (klassenname.equals("absyn.BAss")){
       result=progress((BAss)stmt,status);
     }
-    if (klassenname.equals("absyn.BAss")){
+    if (klassenname.equals("absyn.MFalse")){
       result=progress((MFalse)stmt,status);
     }
-    if (klassenname.equals("absyn.BAss")){
+    if (klassenname.equals("absyn.MTrue")){
       result=progress((MTrue)stmt,status);
     }
     return result;

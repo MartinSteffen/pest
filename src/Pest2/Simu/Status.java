@@ -21,6 +21,15 @@ public class Status extends Object{
   }
   
 
+  public Status filterConditions(Status s){
+    Status result=new Status();
+    result.states=states;
+    result.transitions=transitions;
+    result.events=events;
+    result.booleans=booleans.filterConditions(s.booleans);
+    return result;
+  }
+
   public Status verbinde(Status s) throws RacingException{
     Status result=new Status();
     result.states=states.verbinde(s.states);
