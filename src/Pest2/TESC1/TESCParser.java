@@ -8,9 +8,16 @@ import util.*;
 
 /**
  * Parser fuer TESC.
+ *
+ * <p><STRONG>Testmoeglichkeiten: </STRONG> <p>
+ * Wer unseren Parser testen moechte, kann sich gemaess der <A HREF="./tesc1/Docu/Grammatik">TESC-Grammatik</A> ein
+ * TESC-Programm schreiben und mittels DATEI|IMPORT|TESC in PEST laden.<p> 
+ * Alternativ kann das <A HREF="./tesc1/Docu/Example.tesc">Beispiel</A> aus
+ * dem Pflichtenheft verwendet werden.
  * <p>
+ * <hr>
  * @author Michael Suelzer, Christoph Schuette.
- * @version  $Id: TESCParser.java,v 1.12 1999-02-01 11:52:59 swtech20 Exp $
+ * @version  $Id: TESCParser.java,v 1.13 1999-02-07 11:56:29 swtech20 Exp $
  */   
 class TESCParser {
     
@@ -455,7 +462,7 @@ class TESCParser {
      *  TESC ::= VAR EVENT STATE
      */
     protected Statechart parseTesc() throws IOException {
-	debug("Enter parseTESC");
+	//debug("Enter parseTESC");
 
 	// VAR
         bvarlist = parseVar();
@@ -468,7 +475,7 @@ class TESCParser {
 
 	matchToken(Token.EOF);
 
-	debug("Leave parseTESC");
+	//debug("Leave parseTESC");
 	return new Statechart(eventlist, bvarlist, pathlist, rootstate);
     }
 
@@ -493,7 +500,7 @@ class TESCParser {
      */   
     protected BvarList parseVars() throws IOException {
         Location loc = new Location(token.getLine());
-        debug ("Enter parseVars");
+        //debug ("Enter parseVars");
 
         BvarList bvList = null;
         
@@ -519,7 +526,7 @@ class TESCParser {
 
         }
 
-        debug ("Leave parseVars");
+        //debug ("Leave parseVars");
         return bvList;
     }
 
@@ -529,7 +536,7 @@ class TESCParser {
      */
     protected BvarList parseVarList() throws IOException {
         Location loc = new Location(token.getLine());
-        debug ("Enter parseVarList");
+        //debug ("Enter parseVarList");
 
         // "identifier" 
         String sName = token.getValue();
@@ -545,7 +552,7 @@ class TESCParser {
 
         BvarList bvList = new BvarList ((Bvar) setLoc(new Bvar (sName),loc),bvRest);
 
-        debug ("Leave parseVarList");
+        //debug ("Leave parseVarList");
         return bvList;
 
     }
@@ -571,7 +578,7 @@ class TESCParser {
      */   
     protected SEventList parseEvents() throws IOException {
         Location loc = new Location(token.getLine());
-        debug ("Enter parseEvents");
+        //debug ("Enter parseEvents");
 
         SEventList eList = null;
         
@@ -597,7 +604,7 @@ class TESCParser {
 
         }
 
-        debug ("Leave parseEvents");
+        //debug ("Leave parseEvents");
         return eList;
     }
 
@@ -607,7 +614,7 @@ class TESCParser {
      */
     protected SEventList parseEventList() throws IOException {
         Location loc = new Location(token.getLine());
-        debug ("Enter parseEventList");
+        //debug ("Enter parseEventList");
 
         // "identifier" 
         String sName = token.getValue();
@@ -623,17 +630,17 @@ class TESCParser {
 
         SEventList eList = new SEventList ((SEvent) setLoc(new SEvent (sName),loc),eRest);
 
-        debug ("Leave parseEventList");
+        //debug ("Leave parseEventList");
         return eList;
 
     }
 
 
     /**
-     * STATE ::= AND_STATE | OR_STATE | BASIC_STATE
+     * STATE ::= AND_STATE | OR_STATE | BASIC_STATE | REF_STATE
      */
     protected State parseState(Path path) throws IOException {
-	debug("Enter parseState");
+	//debug("Enter parseState");
 
 	State state = null;
 
@@ -651,11 +658,16 @@ class TESCParser {
             state = parseBasicState(path); 
             break;
 
+	case Token.TOK_REF :
+            state = parseRefState(path); 
+            break;
+
+
 	default :
 	    Error("Schlüsselwort 'and', 'or' oder 'basic' erwartet.");
 	}
 
-	debug("Leave parseState");
+	//debug("Leave parseState");
 	return state;
     }	    
 	
@@ -665,7 +677,7 @@ class TESCParser {
      */
     protected And_State parseAndState(Path path) throws IOException {
         Location loc = new Location(token.getLine());
-	debug("Enter parseAndState");
+	//debug("Enter parseAndState");
 
 	// "and" "identifier"
 	matchToken(Token.KeyAnd);
@@ -688,16 +700,16 @@ class TESCParser {
 	    Error("Bezeichner stimmt nicht mit voriger Definition ueberein."); 
 	}
 
-	debug("Leave parseAndState");
+	//debug("Leave parseAndState");
 	return state;
     }
 
 
     /**
-     * AND_SUBSTATES ::= OR_STATE { AND_SUBSTATES } | BASIC_STATE { AND_SUBSTATES }
+     * AND_SUBSTATES ::= OR_STATE {AND_SUBSTATES} | BASIC_STATE {AND_SUBSTATES} | REF_STATE {AND_SUBSTATES}
      */
     protected StateList parseAndSubStates(Path path) throws IOException {
-	debug("Enter parseAndSubState");
+	//debug("Enter parseAndSubState");
 
 	StateList statelist = null;
 
@@ -720,11 +732,18 @@ class TESCParser {
             statelist = new StateList( parseBasicState(path), 
                                        parseAndSubStates(path)); 
             break;
+
+	case Token.TOK_REF : 
+            statelist = new StateList( parseRefState(path), 
+                                       parseAndSubStates(path)); 
+            break;
+
+
 	default              : 
             statelist = null;
 	}
 
-	debug("Leave parseAndSubState");
+	//debug("Leave parseAndSubState");
 	return statelist;
     }
 
@@ -736,7 +755,7 @@ class TESCParser {
      */
     protected Or_State parseOrState(Path path) throws IOException {
 	Location loc = new Location(token.getLine());
-	debug("Enter parseOrState");
+	//debug("Enter parseOrState");
 
 	// "or " {"identifier"}
 	matchToken(Token.KeyOr);
@@ -766,7 +785,7 @@ class TESCParser {
 	    Error("Bezeichner stimmt nicht mit voriger Definition ueberein."); 
 	}
 
-	debug("Leave parseOrState");
+	//debug("Leave parseOrState");
 	return (Or_State) setLoc(new Or_State(statename, 
 					      statelist,tranlist,
 					      deflist,connlist),
@@ -778,7 +797,7 @@ class TESCParser {
      * OR_SUBSTATES  ::= STATE { OR_SUBSTATES }
      */
     protected StateList parseOrSubStates(Path path) throws IOException {
-	debug("Enter parseOrSubState");
+	//debug("Enter parseOrSubState");
 
 	StateList statelist = null;
 
@@ -803,7 +822,7 @@ class TESCParser {
             statelist = null;
 	}
 
-	debug("Leave parseOrSubState");	
+	//debug("Leave parseOrSubState");	
 	return statelist;
     }
    
@@ -813,7 +832,7 @@ class TESCParser {
      */
     protected Basic_State parseBasicState(Path path) throws IOException {
 	Location loc = new Location(token.getLine());
-	debug("Enter parseBasicState");
+	//debug("Enter parseBasicState");
 
 	// BASIC_STATE
 	matchToken(Token.KeyBasic);
@@ -825,16 +844,72 @@ class TESCParser {
 	// Pfadliste aktualisieren
         Path new_path = extendPath(path, identifier);
 
-	debug("Leave parseBasicState");
+	//debug("Leave parseBasicState");
 	return (Basic_State) setLoc(new Basic_State(statename),loc);
     }
 
-
     /**
+     *  REF_STATE  ::= "ref" IDENTIFIER "in" STRING "as" ("tesc" | "pest" | "pest_nocoord")
+     */
+    protected Ref_State parseRefState(Path path) throws IOException {
+	Location loc = new Location(token.getLine());
+	//debug("Enter parseRefState");
+
+	// REF_STATE "identifier"
+	matchToken(Token.KeyRef);
+	String identifier = token.getValue();
+	Location locName = new Location(token.getLine());
+	matchToken(Token.Identifier);
+	Statename statename = (Statename) setLoc(new Statename(identifier),locName);
+
+	// Pfadliste aktualisieren
+        Path new_path = extendPath(path, identifier);
+
+        // "in" STRING
+        String filename = null;
+
+        matchToken(Token.KeyIn);
+        if (token.getId() == Token.TOK_STRING) {
+	    filename = token.getValue();
+            matchToken(Token.String);
+	}
+
+        // "as" ("tesc" | "pest" | "pest_nocoord")
+        Syntax_Type type = null;
+       
+        matchToken(Token.KeyAs);
+	Location l = new Location(token.getLine());
+
+	switch (token.getId()) {
+
+	case Token.TOK_TESC   :
+	    matchToken(Token.KeyTesc);
+	    type = new Tesc_Syntax(l);
+	    break;
+
+	case Token.TOK_PEST   :
+	    matchToken(Token.KeyPest);
+	    type = new Pest_CoordSyntax(l);
+	    break;
+
+	case Token.TOK_PEST_NOCOORD   :
+	    matchToken(Token.KeyPestNoCoord);
+	    type = new Pest_NocoordSyntax(l);
+	    break;
+
+	default              :
+	    Error("Ungültiger Statecharttyp");
+	}
+
+	//debug("Leave parseRefState");
+	return new Ref_State(statename,null,loc,filename,type);
+    }
+    /**
+
      * CONNECTORS ::= CONNECTOR { CONNECTORS }
      */
     protected ConnectorList parseConnectors() throws IOException {
-	debug("Enter parseConnectors");
+	//debug("Enter parseConnectors");
 
 	ConnectorList conlist = null;
 
@@ -849,7 +924,7 @@ class TESCParser {
             conlist = null;
 	}
 
-	debug("Leave parseConnectors");
+	//debug("Leave parseConnectors");
 	return conlist;
     }
 
@@ -859,7 +934,7 @@ class TESCParser {
      */
     protected Connector parseConnector() throws IOException {
 	Location loc = new Location(token.getLine());
-	debug("Enter parseConnector");
+	//debug("Enter parseConnector");
 
 	// "con" "identifier"
 	matchToken(Token.KeyCon);
@@ -868,7 +943,7 @@ class TESCParser {
 	matchToken(Token.Identifier);
 	Conname conname = (Conname) setLoc(new Conname(identifier),locConName);
  
-	debug("Leave parseConnector");
+	//debug("Leave parseConnector");
 	return (Connector) setLoc(new Connector(conname),loc);
     }
 
@@ -877,7 +952,7 @@ class TESCParser {
      * TRANSITIONS ::= TRANSITION TRANSITION
      */
     protected TrList parseTransitions (ConnectorList connlist) throws IOException {
-	debug ("Enter parseTransitions");
+	//debug ("Enter parseTransitions");
 
 	TrList tranlist = null;
 
@@ -892,7 +967,7 @@ class TESCParser {
             tranlist = null;
 	}
 
-	debug ("Leave parseTransitions");
+	//debug ("Leave parseTransitions");
 	return tranlist;
     }
 
@@ -902,7 +977,7 @@ class TESCParser {
      */
     protected Tr parseTransition (ConnectorList connlist) throws IOException {
 	Location loc = new Location(token.getLine());
-	debug ("Enter parseTransition");
+	//debug ("Enter parseTransition");
 
 	// "from" TRANCHOR
 	matchToken(Token.KeyFrom);
@@ -940,7 +1015,7 @@ class TESCParser {
 	for (int i=0; i < saver.getErrorCount(); i++) 
 	    Error(saver.getErrorText(i));   
 
-	debug ("Leave parseTransition");
+	//debug ("Leave parseTransition");
         return (Tr) setLoc(new Tr( taFrom, taTo, label),loc);
     }
 
@@ -951,7 +1026,7 @@ class TESCParser {
     protected TrAnchor parseTransitionAnchor(ConnectorList connlist) 
                                                          throws IOException {
 	Location loc = new Location(token.getLine());
-        debug ("Enter parseTransitionAnchor");
+        //debug ("Enter parseTransitionAnchor");
 
 	String name = token.getValue();
         TrAnchor anchor;
@@ -972,16 +1047,19 @@ class TESCParser {
                 anchor = (Statename) setLoc(new Statename(name),loc);
         }
 
-        debug ("Leave parseTransitionAnchor");
+        //debug ("Leave parseTransitionAnchor");
         return anchor;
     }
 
 
     /** 
+     *  DEFAULTCONS ::=  DEFAULTCON
+     *  Nur noch ein Default-Konnektor moeglich.
+     *  
      *  DEFAULTCONS ::=  DEFAULTCON { DEFAULTCON }
      */
     protected StatenameList parseDefaultCons() throws IOException {
-	debug("Enter parseDefaultCons");
+	//debug("Enter parseDefaultCons");
 
 	StatenameList snamelist = null;
 
@@ -989,14 +1067,16 @@ class TESCParser {
 
 	case Token.TOK_DEFAULT : 
             snamelist = new StatenameList( parseDefaultCon(), 
-                                           parseDefaultCons()); 
+                                           null);
+	    // parseDefaultCons()); 
             break;
 
-	default : 
+	default :
+	    Error ("default-Konnektor fehlt.");
             snamelist = null;
 	}
 
-	debug("Leave parseDefaultCons");
+	//debug("Leave parseDefaultCons");
 	return snamelist;
     }
 
@@ -1006,14 +1086,14 @@ class TESCParser {
      */
     protected Statename parseDefaultCon() throws IOException {
 	Location loc = new Location(token.getLine());
-	debug("Enter parseDefaultCon");
+	//debug("Enter parseDefaultCon");
 
 	// "default" "identifier"
 	matchToken(Token.KeyDefault);
 	String identifier = token.getValue();
 	matchToken(Token.Identifier);
 
-	debug("Leave parseDefaultCon");
+	//debug("Leave parseDefaultCon");
 	return (Statename) setLoc(new Statename(identifier),loc);
     }
 
@@ -1029,7 +1109,7 @@ class TESCParser {
      */
     protected Guard parseGuardSTMStyle() throws IOException {
  	Location loc = new Location(token.getLine());
-        debug ("Enter parseGuard");
+        //debug ("Enter parseGuard");
         	
 	Guard event = null;
 	Guard bvar = null;
@@ -1057,7 +1137,7 @@ class TESCParser {
 	    bvar = (GuardEmpty) setLoc(new GuardEmpty ((Dummy) setLoc(new Dummy(),loc)),loc);
 	}
 
-        debug ("Leave parseGuard");
+        //debug ("Leave parseGuard");
 	return (GuardCompg) setLoc(new GuardCompg ((Compguard) setLoc(new Compguard (Compguard.AND,
 										     event,
 										     bvar),loc)),loc);
@@ -1068,11 +1148,11 @@ class TESCParser {
      *  GUARD ::= GUARDIMPLIES GUARD_REST
      */
     protected Guard parseGuard(int creationType) throws IOException {
-        debug ("Enter parseGuardEvent");
+        //debug ("Enter parseGuardEvent");
         
         Guard lhs = parseGuardImplies(creationType);
 
-        debug ("Leave parseGuardEvent");
+        //debug ("Leave parseGuardEvent");
         return parseGuardRest(lhs,creationType);
     }
 
@@ -1082,7 +1162,7 @@ class TESCParser {
      */
     protected Guard parseGuardRest(Guard lhs, int creationType) throws IOException {
  	Location loc = new Location(token.getLine());
-	debug ("Enter parseGuardRest");
+	//debug ("Enter parseGuardRest");
 
         Guard rhs = null;
         Guard comp = null;
@@ -1100,7 +1180,7 @@ class TESCParser {
             comp = lhs;
         }
 
-        debug ("Leave parseGuardRest");
+        //debug ("Leave parseGuardRest");
         return comp;
     }
 
@@ -1109,11 +1189,11 @@ class TESCParser {
      *  GUARDIMPLIES ::= GUARDOR GUARDIMPLES_REST
      */
     protected Guard parseGuardImplies(int creationType)  throws IOException {
-        debug ("Enter parseGuardImplies");
+        //debug ("Enter parseGuardImplies");
         
         Guard lhs = parseGuardOr(creationType);
 
-        debug ("Leave parseGuardImplies");
+        //debug ("Leave parseGuardImplies");
         return parseGuardImpliesRest(lhs,creationType);
     }
 
@@ -1123,7 +1203,7 @@ class TESCParser {
      */
     protected Guard parseGuardImpliesRest(Guard lhs, int creationType) throws IOException {
 	Location loc = new Location(token.getLine());
-        debug ("Enter parseGuardImpliesRest");
+        //debug ("Enter parseGuardImpliesRest");
 
         Guard rhs = null;
         Guard comp = null;
@@ -1142,7 +1222,7 @@ class TESCParser {
             comp = lhs;
         }
 
-        debug ("Leave parseGuardImpliesRest");
+        //debug ("Leave parseGuardImpliesRest");
         return comp;
     }
 
@@ -1151,11 +1231,11 @@ class TESCParser {
      *  GUARDOR ::= GUARDAND GUARDOR_REST
      */
     protected Guard parseGuardOr(int creationType)  throws IOException {
-        debug ("Enter parseGuardOr");
+        //debug ("Enter parseGuardOr");
         
         Guard lhs = parseGuardAnd(creationType);
 
-        debug ("Leave parseGuardOr");
+        //debug ("Leave parseGuardOr");
         return parseGuardOrRest(lhs,creationType);
     }
 
@@ -1165,7 +1245,7 @@ class TESCParser {
      */
     protected Guard parseGuardOrRest(Guard lhs,int creationType ) throws IOException {
 	Location loc = new Location(token.getLine());
-        debug ("Enter parseGuardOrRest");
+        //debug ("Enter parseGuardOrRest");
 
         Guard rhs = null;
         Guard comp = null;
@@ -1184,7 +1264,7 @@ class TESCParser {
             comp = lhs;
         }
 
-        debug ("Leave parseGuardOrRest");
+        //debug ("Leave parseGuardOrRest");
         return comp;
     }
 
@@ -1193,11 +1273,11 @@ class TESCParser {
      *  GUARDAND ::= GUARDNOT GUARDAND_REST
      */
     protected Guard parseGuardAnd(int creationType)  throws IOException {
-        debug ("Enter parseGuardAnd");
+        //debug ("Enter parseGuardAnd");
         
         Guard lhs = parseGuardNot(creationType);
 
-        debug ("Leave parseGuardAnd");
+        //debug ("Leave parseGuardAnd");
         return parseGuardAndRest(lhs,creationType);
     }
 
@@ -1207,7 +1287,7 @@ class TESCParser {
      */
     protected Guard parseGuardAndRest(Guard lhs,int creationType) throws IOException {
 	Location loc = new Location(token.getLine());
-        debug ("Enter parseGuardAndRest");
+        //debug ("Enter parseGuardAndRest");
 
         Guard rhs = null;
         Guard comp = null;
@@ -1225,7 +1305,7 @@ class TESCParser {
             comp = lhs;
         }
 
-        debug ("Leave parseGuardAndRest");
+        //debug ("Leave parseGuardAndRest");
         return comp;
     }
 
@@ -1235,7 +1315,7 @@ class TESCParser {
      */
     protected Guard parseGuardNot(int creationType) throws IOException {
 	Location loc = new Location(token.getLine());
-	debug ("Enter parseGuardNot");
+	//debug ("Enter parseGuardNot");
 
 	Guard g;
 
@@ -1246,7 +1326,7 @@ class TESCParser {
 	else 
 	    g = parseGuardIdentifier(creationType);
 
-	debug ("Leave parseGuardNot");
+	//debug ("Leave parseGuardNot");
 	return g;
    }
 
@@ -1261,7 +1341,7 @@ class TESCParser {
      */
    protected Guard parseGuardIdentifier (int creationType) throws IOException {
 	Location loc = new Location(token.getLine());
-        debug ("Enter parseGuardIdentifier");
+        //debug ("Enter parseGuardIdentifier");
 
         Guard g = null;
 
@@ -1310,7 +1390,7 @@ class TESCParser {
             Error ("Guard erwartet.");
         }
 
-        debug ("Leave parseGuardIdentifier");
+        //debug ("Leave parseGuardIdentifier");
         return g;
     }
 
@@ -1320,7 +1400,7 @@ class TESCParser {
      */ 
     protected Comppath parseCompPath() throws IOException {
 	Location loc = new Location(token.getLine());
-	debug ("Enter parseCompPath");
+	//debug ("Enter parseCompPath");
 
         int pathop;
 
@@ -1356,7 +1436,7 @@ class TESCParser {
         Comppath cp = (Comppath) setLoc(new Comppath(pathop, parsePath()),loc);
         matchToken(Token.RPar);
 
-	debug("Leave parseCompPath");
+	//debug("Leave parseCompPath");
         return cp;
     }    
 
@@ -1391,7 +1471,7 @@ class TESCParser {
      */
     protected Action parseActions() throws IOException {
 	Location loc = new Location(token.getLine());
-        debug ("Enter parseActions");
+        //debug ("Enter parseActions");
 
 	Action action = null;
 
@@ -1413,7 +1493,7 @@ class TESCParser {
             Error ("Identifikator oder ( erwartet.");
 
         }
-        debug ("Leave parseActions");
+        //debug ("Leave parseActions");
         return action;
     }
     
@@ -1422,7 +1502,7 @@ class TESCParser {
      * ACTION ::= "identifier" | ( "identifier" "=" ( true | false | GUARD ))
      */
     protected Action parseAction() throws IOException {
-        debug ("Enter parseAction");
+        //debug ("Enter parseAction");
 
         Action ac = null;
         
@@ -1505,7 +1585,7 @@ class TESCParser {
 	    Error ("Identifier erwartet statt " + token.getValue() + " erwartet.");
 	}
 
-        debug ("Leave parseAction");
+        //debug ("Leave parseAction");
         return ac;
     }
 
@@ -1514,7 +1594,7 @@ class TESCParser {
      * ACTIONLIST ::= ACTION { "," ACTIONLIST }
      */
     protected Aseq parseActionList() throws IOException {
-        debug ("Enter parseActionList");
+        //debug ("Enter parseActionList");
 
 	// { ACTION }
         Action action = parseAction();
@@ -1526,7 +1606,7 @@ class TESCParser {
 	    asRest = parseActionList();
 	}
  
-        debug ("Leave parseActionList");
+        //debug ("Leave parseActionList");
         return new Aseq (action,asRest);
     }
 }
@@ -1536,6 +1616,9 @@ class TESCParser {
 //      ----------------------------               
 //
 //      $Log: not supported by cvs2svn $
+//      Revision 1.12  1999/02/01 11:52:59  swtech20
+//      - globaler Debug-Schalter
+//
 //      Revision 1.11  1999/01/20 17:32:11  swtech20
 //      - Status und Doku aktualisiert
 //      - Fehler, dass Anderungen an Bvarlisten ... nicht nach aussen-
