@@ -2,9 +2,12 @@
 #	javadoc collected HTML pages for all packages: makefile.
 #	--------------------------------------------------------
 #
-#	$Id: Makefile,v 1.4 1999-01-12 13:33:41 swtech00 Exp $
+#	$Id: Makefile,v 1.5 1999-01-19 11:28:18 swtech00 Exp $
 #
 #	$Log: not supported by cvs2svn $
+#	Revision 1.4  1999/01/12 13:33:41  swtech00
+#	Reports inserted.
+#
 #	Revision 1.3  1999/01/11 23:19:05  swtech13
 #	tesc1: cp korrigiert
 #
@@ -36,5 +39,5 @@ tesc1:	../tesc1/Docu/grammatik.txt ../tesc1/Test/example.tesc ../tesc1/Docu/Doku
 	cp ../tesc1/Docu/Doku.txt ./tesc1/Docu/Doku.txt
 
 report_list:	../ErrorReport/report_list
-	cp ../ErrorReport/report_list .
+	cp ../ErrorReport/report_list report_list.txt
 

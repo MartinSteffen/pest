@@ -2,9 +2,12 @@
 #	javadoc collected HTML pages for all packages: makefile.
 #	--------------------------------------------------------
 #
-#	$Id: Makefile,v 1.3 1999-01-12 13:34:34 swtech00 Exp $
+#	$Id: Makefile,v 1.4 1999-01-19 11:28:58 swtech00 Exp $
 #
 #	$Log: not supported by cvs2svn $
+#	Revision 1.3  1999/01/12 13:34:34  swtech00
+#	Reports inserted.
+#
 #	Revision 1.2  1999/01/11 12:08:00  swtech20
 #	Clean Target angelegt.
 #
@@ -32,7 +35,7 @@ tesc1:	$(TESC1DOCU_FROM)/Grammatik $(TESC1DOCU_FROM)/Example.tesc
 	cp $(TESC1DOCU_FROM)/Example.tesc $(TESC1DOCU_TO)/Example.tesc
 
 report_list:	../ErrorReport/report_list
-	cp ../ErrorReport/report_list .
+	cp ../ErrorReport/report_list report_list.txt
 
 
 clean: 
