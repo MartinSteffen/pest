@@ -3,6 +3,7 @@ package stm;
 import absyn.*;
 import java.io.*;
 import java.util.*;
+import java.text.*;
 import java.awt.Point;
 import java.awt.Rectangle;
 import com.oroinc.text.perl.*;
@@ -64,11 +65,12 @@ import tesc1.TESCSaver;
  * </DL COMPACT>
  *
  * @author  Sven Jorga, Werner Lehmann
- * @version $Id: HAImport.java,v 1.19 1999-02-01 19:35:25 swtech18 Exp $
+ * @version $Id: HAImport.java,v 1.20 1999-02-04 23:04:12 swtech18 Exp $
  */
 public class HAImport implements Patterns {
   Perl5Util perl = new Perl5Util();
 
+  private static final String DEFAULTMESSAGE = "STM: Statename {0} ist reserviertes Schlüsselwort und wurde umbenannt in {1}.";
   private double rFaktor = 1;
   private boolean parseCoords = true;
   private boolean parseInitString = true;
@@ -171,16 +173,20 @@ public class HAImport implements Patterns {
         pattern += ",(.*)";
       str = perl.group(2);
     }
-    if (tyString.equals("") || tyString == null)
+    if (tyString == null || tyString.equals(""))
       throw new Exception("HA-Format-Fehler: Kein Typing vorhanden!");
-    if (hiString.equals("") || tyString == null)
+    if (tyString == null || hiString.equals(""))
       throw new Exception("HA-Format-Fehler: Keine \"hierarchy function\" (Hi) vorhanden!");
-    if (trmapString.equals("") || trmapString == null)
+    if (flathString != null && !flathString.equals(""))
+      showWarning("STM: flache Histories sind nicht abgebildet worden!");
+    if (depthString != null && depthString.equals(""))
+      showWarning("STM: tiefe Histories sind nicht abgebildet worden!");
+    if (trmapString == null || trmapString.equals("") )
       parseTrmap = false;
       // throw new Exception("HA-Format-Fehler: Keine Trmap vorhanden!");
-    if (rootString.equals("") || rootString == null)
+    if (rootString == null || rootString.equals(""))
       throw new Exception("HA-Format-Fehler: Keine Root-State definiert!");
-    if (initString.equals("") || initString.equals(" ") || initString == null)
+    if (initString == null || initString.equals("") || initString.equals(" "))
       parseInitString = false;
 
     tyHash = makeTyHash(tyString);
@@ -317,6 +323,7 @@ public class HAImport implements Patterns {
     Vector pointVec = null;
     String currentStr = null;
     String currentCoord = null;
+    String stateName = null;
     Double xCoord = null, yCoord = null;
 
     statesString = perl.substitute("s/mk_gstate//g",statesString);
@@ -338,7 +345,8 @@ public class HAImport implements Patterns {
         yCoord = new Double(Integer.parseInt((String)xyVec.elementAt(1)));
         pointVec.addElement(new CPoint(xCoord.intValue(),yCoord.intValue()));
       }
-      tempHash.put(removeQuotes((String)currentVec.elementAt(0)),pointVec);
+      stateName = removeQuotes((String)currentVec.elementAt(0));
+      tempHash.put(stateName,pointVec);
     }
     return tempHash;
   }
@@ -422,7 +430,8 @@ public class HAImport implements Patterns {
     Vector eventsVector = splitStringset(eventsString,"/\",\"/");
     //Vector eventsVector = deliSplit(eventsString,',');
     for (int i=eventsVector.size(); i > 0; i--)
-      list = new SEventList(new SEvent(new String((String) eventsVector.elementAt(i-1))),list);
+      list = new SEventList(new SEvent(new String(checkKeyword((String) eventsVector.elementAt(i-1),"STM: SEvent {0} ist reserviertes Schlüsselwort und wurde umbenannt in {1}."))),
+                            list);
     return list;
   }
 
@@ -490,8 +499,7 @@ public class HAImport implements Patterns {
     TLabel tLabel = null;
 
     stateName = perl.substitute("s/\"//g",stateName);
-    if ( Keyword.isReserved(stateName) )
-        throw new Exception("Zustandsname ("+ stateName+") ist reserviertes Schlüsselwort.");
+    //stateName = checkKeyword(stateName,DEFAULTMESSAGE);
     stateType = (String)tyHash.get(stateName);
     if (parseCoords) {
       // Rectangle erzeugen
@@ -505,14 +513,14 @@ public class HAImport implements Patterns {
                              resizedY.intValue(),
                              resizedWidth.intValue(),
                              resizedHeight.intValue());
-      rectHash.put(stateName,rtNew);
+      rectHash.put(checkKeyword(stateName,null),rtNew);
     }
     if (stateType.equalsIgnoreCase("BASIC"))
-      return new Basic_State(new Statename(stateName),rtNew);
+      return new Basic_State(new Statename(checkKeyword(stateName,DEFAULTMESSAGE)),rtNew);
     else if (stateType.equalsIgnoreCase("OR")) {
       // Default-SatenameList erzeugen
       if (parseInitString)
-        snl = new StatenameList(new Statename((String)initHash.get(stateName)),snl);
+        snl = new StatenameList(new Statename(checkKeyword((String)initHash.get(stateName),null)),snl);
       // Liste der Substates
       hiVec = (Vector)hiHash.get(stateName);
       if (hiVec == null)
@@ -558,8 +566,8 @@ public class HAImport implements Patterns {
                                  null, // Location
                                  "");
             tesc.setCaption(tLabel);
-            tl = new TrList(new Tr(new Statename((String)hiVec.elementAt(i-1)),
-                                   new Statename((String)currentTrVec.elementAt(0)),
+            tl = new TrList(new Tr(new Statename(checkKeyword((String)hiVec.elementAt(i-1),null)),
+                                   new Statename(checkKeyword((String)currentTrVec.elementAt(0),null)),
                                    tLabel,
                                    pointArray),
                             tl);
@@ -568,7 +576,7 @@ public class HAImport implements Patterns {
       }
       // ConnectorList entfaellt
       // Or-State erzeugen
-      return new Or_State(new Statename(stateName),sl,tl,snl,null,rtNew);
+      return new Or_State(new Statename(checkKeyword(stateName,DEFAULTMESSAGE)),sl,tl,snl,null,rtNew);
       }
     else if (stateType.equalsIgnoreCase("AND")) {
       // Liste der Substates
@@ -577,10 +585,24 @@ public class HAImport implements Patterns {
         throw new Exception("And-State muss Substates enthalten");
       for (int i=hiVec.size(); i>0; i--)
         sl = new StateList(createState((String)hiVec.elementAt(i-1),rt),sl);
-      return new And_State(new Statename(stateName),sl,rtNew);  }
+      return new And_State(new Statename(checkKeyword(stateName,DEFAULTMESSAGE)),sl,rtNew);  }
     else
       throw new Exception("State "+stateName+" hat unbekannten Typ "+stateType);
 
+  }
+
+  private String checkKeyword(String s, String m) {
+    String tmp = null;
+    Object[] args = new Object[2];
+    if ( Keyword.isReserved(s) ) {
+      tmp = checkKeyword("_"+s+"_",m);
+      args[0] = s;
+      args[1] = tmp;
+      if (m != null)
+        showWarning(MessageFormat.format(m,args));
+      return tmp;
+    }
+    return s;
   }
 
   private void fixTrans(CPoint pointVec[], CRectangle src, CRectangle dest) throws Exception{
@@ -670,8 +692,7 @@ public class HAImport implements Patterns {
     String temp = null;
     if (perl.match("/^mk_egen\\((.*)\\)/",actionString)) {
       temp = perl.substitute("s/\"//g",perl.group(1));
-      if ( Keyword.isReserved(temp))
-        throw new Exception("ActionEvt-String (\""+ temp+"\") enthält reserviertes Schlüsselwort.");
+      temp = checkKeyword(temp, "STM: ActionEvt-String {0} enthält reserviertes Schlüsselwort und wurde umbenannt in {1}.");
       return new ActionEvt(new SEvent(new String(temp))); }
     else if (perl.match("/^mk_block\\(<(.*)>\\)/",actionString)) {
       return new ActionBlock(createAseq(perl.group(1))); }
@@ -704,20 +725,17 @@ public class HAImport implements Patterns {
     String temp = null;
     if (perl.match("/^mk_mtrue\\((.*)\\)/",boolstmtString)) {
       temp = perl.substitute("s/\"//g",perl.group(1));
-      if (Keyword.isReserved(temp))
-        throw new Exception("Bvar-String (\""+ temp+"\") enthält reserviertes Schlüsselwort.");
+      temp = checkKeyword(temp, "STM: Bvar {0} enthält reserviertes Schlüsselwort und wurde umbenannt in {1}.");
       return new MTrue( new Bvar(new String(temp))); }
     else if (perl.match("/^mk_mfalse\\((.*)\\)/",boolstmtString)) {
       temp = perl.substitute("s/\"//g",perl.group(1));
-      if (Keyword.isReserved(temp))
-        throw new Exception("Bvar-String (\""+ temp+"\") enthält reserviertes Schlüsselwort.");
+      temp = checkKeyword(temp, "STM: Bvar {0} enthält reserviertes Schlüsselwort und wurde umbenannt in {1}.");
       return new MFalse( new Bvar(new String(temp))); }
     else if (perl.match("/^mk_bass\\((.*)\\)/",boolstmtString)) {
       // Aufbau: mk_bass("X",...
       Vector vec = perl.split("/,/",perl.group(1));
       temp = perl.substitute("s/\"//g",(String) vec.elementAt(0));
-      if (Keyword.isReserved(temp))
-        throw new Exception("Bvar-String (\""+ temp+"\") enthält reserviertes Schlüsselwort.");
+      temp = checkKeyword(temp, "STM: Bvar {0} enthält reserviertes Schlüsselwort und wurde umbenannt in {1}.");
       return new BAss(new Bassign(new Bvar(new String(temp)),
                                      createGuard("",(String) vec.elementAt(1)))); }
     else {
@@ -731,13 +749,13 @@ public class HAImport implements Patterns {
 
   private Guard createGuard(String exprStr, String condStr) throws Exception {
     Vector tempVec = null;
+    String temp = null;
 
     if (perl.match("/^mk_emptyexpr\\(.*\\)/",exprStr))
       return new GuardEmpty(new Dummy());
     else if (perl.match("/^mk_basicexpr\\((.*)\\)/",exprStr)) {
-       if (Keyword.isReserved(perl.group(1)))
-        throw new Exception("SEvent-String (\""+perl.group(1)+"\") enthält reserviertes Schlüsselwort.");
-      return new GuardEvent(new SEvent(removeQuotes(perl.group(1)))); }
+       temp = checkKeyword(removeQuotes(perl.group(1)), "STM: SEvent {0} enthält reserviertes Schlüsselwort und wurde umbenannt in {1}.");
+      return new GuardEvent(new SEvent(temp)); }
     else if (perl.match("/^mk_negexpr\\((.*)\\)/",exprStr))
       return new GuardNeg(createGuard(perl.group(1),""));
     else if (perl.match("/^mk_compe\\(mk_compexpr\\((.*)\\)\\)/",exprStr)) {
@@ -750,9 +768,8 @@ public class HAImport implements Patterns {
     if (perl.match("/^mk_emptycond\\(.*\\)/",condStr))
       return new GuardEmpty(new Dummy());
     else if (perl.match("/^mk_istrue\\((.*)\\)/",condStr)) { // ??? ?????????????????
-      if (Keyword.isReserved(perl.group(1)))
-        throw new Exception("Bvar-String (\""+perl.group(1)+"\") enthält reserviertes Schlüsselwort.");
-      return new GuardBVar(new Bvar(new String(perl.group(1)))); }
+      temp = checkKeyword(removeQuotes(perl.group(1)), "STM: Bvar {0} enthält reserviertes Schlüsselwort und wurde umbenannt in {1}.");
+      return new GuardBVar(new Bvar(temp)); }
     else if (perl.match("/^mk_negcond\\((.*)\\)/",condStr))
       return new GuardNeg(createGuard("",perl.group(1)));
     else if (perl.match("/^mk_instate\\((.*)\\)/",condStr))
@@ -764,10 +781,15 @@ public class HAImport implements Patterns {
       return new GuardCompg(new Compguard(op.equals("ANDOP")? Compguard.AND : Compguard.OR,
                                           createGuard("",(String)tempVec.elementAt(1)),
                                           createGuard("",(String)tempVec.elementAt(2)))); }
-    else if (perl.match("/^mk_rel\\((.*)\\)/",condStr))
+    else if (perl.match("/^mk_cinstate\\(mk_compinstate\\((.*)\\)\\)/",condStr))
+      return new GuardCompp(new Comppath(Comppath.IN,createExternPath(perl.group(1))));
+    else if (perl.match("/^mk_rel\\((.*)\\)/",condStr)) {
+      showWarning("STM: GuardUndet erzeugt! "+condStr);
       return new GuardUndet(condStr);
-    else
+    }else {
+      showWarning("STM: GuardUndet erzeugt! "+condStr);
       return new GuardUndet(exprStr+", "+condStr);
+    }
   }
 
   private BvarList getBvarList() throws Exception {
@@ -775,8 +797,30 @@ public class HAImport implements Patterns {
     Vector bvarsVector = splitStringset(bvarsString,"/\",\"/");
     // Vector bvarsVector = deliSplit(bvarsString,',');
     for (int i=bvarsVector.size(); i > 0; i--)
-      list = new BvarList(new Bvar(new String((String) bvarsVector.elementAt(i-1))),list);
+      list = new BvarList(new Bvar(new String(checkKeyword((String) bvarsVector.elementAt(i-1),null))),
+                          list);
     return list;
+  }
+
+  private void showWarning(String tmpStr) {
+    if (gui != null)
+      gui.userMessage(tmpStr);
+    else
+      if (gui.isDebug())
+        System.out.println(tmpStr);
+  }
+
+  private Path createExternPath(String str) throws Exception{
+    Path newPath = null;
+    Vector tempVec = null;
+    str = perl.substitute("s/<//g",str);
+    str = perl.substitute("s/>//g",str);
+    str = perl.substitute("s/\"//g",str);
+    tempVec = deliSplit(str,',');
+    showWarning("STM: Referenz auf externen StateChartname ("+(String)tempVec.elementAt(0)+") kann in PEST nicht abgebildet werden!");
+    for (int i=tempVec.size()-1; i>0; i--)
+      newPath = new Path((String)tempVec.elementAt(i), newPath);
+    return newPath;
   }
 
   private PathList getPathList() { return getPathList(rootString,null,null); }
@@ -786,15 +830,16 @@ public class HAImport implements Patterns {
     statename = perl.substitute("s/\"//g",statename);
     //System.out.println(statename);
     if (currentPath == null)
-      currentPath = new Path(statename,null);
+      currentPath = new Path(checkKeyword(statename,null),null);
     else
-      currentPath = currentPath.append(statename);
+      currentPath = currentPath.append(checkKeyword(statename,null));
     pathList = new PathList(currentPath,pathList);
     pathHash.put(statename,currentPath);
     hiVec = (Vector)hiHash.get(statename);
     if (hiVec != null)
       for (int i=hiVec.size(); i>0; i--)
-        pathList = getPathList((String)hiVec.elementAt(i-1),currentPath,pathList);
+        pathList = getPathList((String)hiVec.elementAt(i-1),
+                               currentPath,pathList);
     return pathList;
   }
 
