@@ -50,9 +50,10 @@ public class And_State extends State implements Serializable, Cloneable {
 	   substatesclone = null;
 
        Location  locationclone  = (location == null) ? null : (Location)location.clone();
+       Statename nameclone      = (name == null) ? null : (Statename)name.clone();
 
-       return new And_State((Statename)name.clone(), 
-			    (StateList)substatesclone, 
+       return new And_State(nameclone, 
+			    substatesclone, 
 			    rectclone,
 			    locationclone);
     };
@@ -61,9 +62,12 @@ public class And_State extends State implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: And_State.java,v 1.13 1999-01-28 10:40:30 swtech00 Exp $
+//	$Id: And_State.java,v 1.14 1999-02-09 10:12:40 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.13  1999/01/28 10:40:30  swtech00
+//	Erster Konstruktor-Parameter (name) geklont
+//
 //	Revision 1.12  1999/01/11 17:23:46  swtech00
 //	Alle Bestandteile der abstrakten Syntax mit Locations (= nicht-abstrakte
 //	Unterklassen von Absyn) in der Form modifiziert, da"s das Locations-Feld
