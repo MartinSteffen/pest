@@ -5,24 +5,35 @@ import java.io.Serializable;
 /**
  * Location.
  * @author Initially provided by Martin Steffen.
- * @version $Id: Location.java,v 1.7 1998-12-15 16:33:29 swtech00 Exp $
+ * @version $Id: Location.java,v 1.8 1999-01-03 21:42:09 swtech20 Exp $
  */
 public class Location implements Serializable, Cloneable {
+
+    int line;
+
+    public Location(int l) { line = l;}
+
+    public String toString() {
+        return new Integer(line).toString();
+    }
 
 /**
  * @exception CloneNotSupportedException self-explanatory exception
  */
     public Object clone() throws CloneNotSupportedException {
-	return new Location ();
+	return new Location (line);
     };
 };
 //----------------------------------------------------------------------
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Location.java,v 1.7 1998-12-15 16:33:29 swtech00 Exp $
+//	$Id: Location.java,v 1.8 1999-01-03 21:42:09 swtech20 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.7  1998/12/15 16:33:29  swtech00
+//	Towards new package names.
+//
 //	Revision 1.6  1998/12/15 13:38:06  swtech00
 //	exception-tag hinzugefuegt um javadoc sauber durchlaufen zu lassen
 //
