@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.106 1999-02-12 10:37:00 swtech11 Exp $
+//	$Id: report_list,v 1.107 1999-02-12 10:43:47 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -1136,14 +1136,16 @@ Result: vollkommen veränderte Chart (Trs verschoben)
 #Status: 	reported
 #Description: 
 
+
 STM-Import SAFER/compute_cmd.st
 Check OK
 Editor OK
 Erneut Check: ITs werden gemeldet
 
 Man kann sich die ITs anklicken und sehen, wo das schief geht.
+
+Das gleiche Problme in: active_axes.st
 //------------------------------------------------------------------------------
--
 #Number:	74
 #Autor:		Check swtech11
 #Subject:	GUI: SyntaxCheck Optionen Problem
