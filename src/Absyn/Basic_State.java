@@ -25,7 +25,9 @@ public class Basic_State extends State implements Serializable, Cloneable {
  */
   public Object clone() throws CloneNotSupportedException {
     Location  locationclone  = (location == null) ? null : (Location)location.clone();
-    return new Basic_State ((Statename)name.clone(),rect, locationclone);
+    Statename nameclone      = (name == null)  ? null : (Statename)name.clone();
+    CRectangle rectclone     = (rect == null)  ? null : (CRectangle)rect.clone();
+    return new Basic_State (nameclone,rectclone, locationclone);
     };
 
 }
@@ -34,9 +36,19 @@ public class Basic_State extends State implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Basic_State.java,v 1.10 1999-01-11 17:23:47 swtech00 Exp $
+//	$Id: Basic_State.java,v 1.11 1999-02-09 10:18:30 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.10  1999/01/11 17:23:47  swtech00
+//	Alle Bestandteile der abstrakten Syntax mit Locations (= nicht-abstrakte
+//	Unterklassen von Absyn) in der Form modifiziert, da"s das Locations-Feld
+//	mit-geklont wird. =>
+//
+//	     o	Jeweils neuer Kontruktor hinzugef"ugt
+//	     o  clone-Methode angepa"st
+//
+//	[Steffen]
+//
 //	Revision 1.9  1998/12/15 16:33:25  swtech00
 //	Towards new package names.
 //
