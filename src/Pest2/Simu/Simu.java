@@ -7,10 +7,8 @@ import java.io.*;
 
 /**swtech22 - Simulation
  * <P>
- * @author Oliver Otte, Sven Thomsen
- * @version $Id: Simu.java,v 1.16 1999-02-23 12:06:38 swtech22 Exp $
- * <P>
- * <STRONG> Anforderungen. </STRONG> Wir verlassen uns darauf, dass die
+ * <STRONG>ANFORDERUNGEN</STRONG><BR> 
+ * Wir verlassen uns darauf, dass die
  * Statecharts, die uns uebergeben werden, folgende Eigenschaften haben:
  *
  * <ul>
@@ -22,8 +20,8 @@ import java.io.*;
  * <ul>
  * <li> checkModel(Statechart)
  * </ul>
- * <DL COMPACT>
- * <DT><STRONG>
+ * <P>
+ * <STRONG>
  * STATUS
  * </STRONG>
  * <BR>
@@ -32,18 +30,23 @@ import java.io.*;
  * Zum Testen empfehlen wir die Beispiele aus unserem Test-Verzeichnis (weiteres hierzu in dem README).
  * Alle Statusmeldungen auf System.out und System.err sind wie abgesprochen
  * abgeändert worden und tauchen jetzt nur noch bei gesetztem Debugschalter auf.
- * <DT><STRONG>
+ * <P>
+ * <STRONG>
  * TODO.
- * </STRONG>
+ * </STRONG><BR>
  * <UL>
  * <LI> nichts
  * </UL>
- * <DT><STRONG>
+ * <P>
+ * <STRONG>
  * BEKANNTE FEHLER.
- * </STRONG>
+ * </STRONG><BR>
  * <UL>
  * <LI> NullPointer in substates werden nicht abgefangen, d.h ein OR-State muss mindestens einen Substate haben, ansonsten waere es ein Basic-State (ist eigentlich nicht direkt ein Fehler....)</LI>
- * </UL>                    
+ * </UL>        
+ * 
+ * @author Oliver Otte, Sven Thomsen
+ * @version $Id: Simu.java,v 1.17 1999-02-23 13:37:16 swtech22 Exp $
  */
          
 public class Simu extends Object{
