@@ -1,15 +1,16 @@
 package absyn.test;
 
 
-
-import absyn.*;
+import tesc2.*;  // zum Testen der Graphplazierung 
+import absyn.*;  // zum Testen der abstrakten Syntax
 import util.PrettyPrint;
 
 
 public class Test {
 
   /**
-   * main-Methode -> ein paar Tests der abstrakten Syntax
+   * main-Methode -> Tests der 
+   *  - der Graphplazierung
    */
   public static void main (String[] args) {
 
