@@ -112,15 +112,16 @@ import tesc2.*;
 	Editor.Buttontype = "Select";
     if (command.equals("undo")) {undo();Editor.newdraw();}
     else if (command.equals("restore")) {redo();Editor.newdraw();}
-    else if (command.equals("kopieren") & deleteobj != null) {	System.out.println("test2 : "+copyobj);
+    else if (command.equals("kopieren") & deleteobj != null) {	//System.out.println("test2 : "+copyobj);
 					try     {copyobj = (Absyn) deleteobj.clone();}
-				        	catch (Exception e) {System.out.println("Clone-Fehler");}
-					System.out.println("test2 : "+copyobj);
+					catch (Exception e) {//System.out.println("Clone-Fehler");
+					}
+					//System.out.println("test2 : "+copyobj);
 	}	
     else if (command.equals("sub") & deleteobj != null) {
 	if (deleteobj instanceof State)
 	{
-	    System.out.println("speichern");
+	    //System.out.println("speichern");
 	    Statechart myroot = new Statechart(null,null,null,null);
 	    myroot.state = (State) deleteobj;
 	    Relist rl = new Relist(); rl.start(myroot,null,null,myroot);
@@ -128,19 +129,20 @@ import tesc2.*;
 	//    root = myroot;
 	}
     }
-    else if (command.equals("verschieben") & deleteobj != null) {	System.out.println("test3 : "+copyobj);
+    else if (command.equals("verschieben") & deleteobj != null) {	//System.out.println("test3 : "+copyobj);
 					try     {copyobj = (Absyn) deleteobj.clone();}
-				        	catch (Exception e) {System.out.println("Clone-Fehler");}
-						mover = true;
-					System.out.println("test3 : "+copyobj);
+					catch (Exception e) {//System.out.println("Clone-Fehler");
+					}
+					mover = true;
+					//System.out.println("test3 : "+copyobj);
 					if (deleteobj instanceof State) {
-					    System.out.println("rek loeschen");
+					    //  System.out.println("rek loeschen");
 					    DeleteChart dc = new DeleteChart ( root );
 					    State todelete = (State)deleteobj;
 					    State father = dc.get_father(root.state, todelete);
 
-					    System.out.println("Zu l÷schender State: "+ todelete);
-					    System.out.println("Vater "+ father);
+					    //System.out.println("Zu l”schender State: "+ todelete);
+					    //System.out.println("Vater "+ father);
 
 					    if (father instanceof Or_State)
 						{
@@ -149,7 +151,7 @@ import tesc2.*;
 						    while (stlist01 != null)
 							{
 							    if (stlist01.head == todelete) {
-								System.out.println("gefunden");
+								//System.out.println("gefunden");
 								stlist01.head = new Basic_State(new Statename("...temprek"),null);
 								todelete = stlist01.head;
 							    };
@@ -163,7 +165,7 @@ import tesc2.*;
 						    while (stlist01 != null)
 							{
 							    if (stlist01.head == todelete) {
-								System.out.println("gefunden");
+								//System.out.println("gefunden");
 								stlist01.head = new Basic_State(new Statename("...temprek"),null);
 								todelete = stlist01.head;
 							    };
@@ -187,7 +189,7 @@ import tesc2.*;
         State todelete = (State)aktcomp;
         State father = dc.get_father(root.state, todelete);
 
-	//    System.out.println("Zu l÷schender State: "+ todelete);
+	//    System.out.println("Zu l”schender State: "+ todelete);
 	// System.out.println("Vater "+ father);
 
         dc.delete_State( todelete );
@@ -205,8 +207,8 @@ import tesc2.*;
         Tr todelete = (Tr)aktcomp;
         Or_State father = dc.find_trans(todelete);
 
-	//      System.out.println("Zu l÷schende Transition: "+ todelete);
-	// System.out.println("Zugeh÷riger State: "+ father);
+	//      System.out.println("Zu l”schende Transition: "+ todelete);
+	// System.out.println("Zugeh”riger State: "+ father);
 
         dc.delete_Trans( todelete );
 
@@ -220,8 +222,8 @@ import tesc2.*;
         Connector todelete = (Connector)aktcomp;
         Or_State father = dc.find_con(todelete);
 
-	//    System.out.println("Zu l÷schende Transition: "+ todelete);
-	// System.out.println("Zugeh÷riger State: "+ father);
+	//    System.out.println("Zu l”schende Transition: "+ todelete);
+	// System.out.println("Zugeh”riger State: "+ father);
 
         dc.delete_Con( todelete );
 
@@ -236,13 +238,13 @@ import tesc2.*;
        
 	    // ********************
     if (aktcomp instanceof State) {
-	System.out.println("rek loeschen");
+	//System.out.println("rek loeschen");
 	DeleteChart dc = new DeleteChart ( root );
         State todelete = (State)aktcomp;
         State father = dc.get_father(root.state, todelete);
 
-	System.out.println("Zu l÷schender State: "+ todelete);
-	    System.out.println("Vater "+ father);
+	//System.out.println("Zu l”schender State: "+ todelete);
+	//    System.out.println("Vater "+ father);
 
 	    if (father instanceof Or_State)
 		{
@@ -251,7 +253,7 @@ import tesc2.*;
 		    while (stlist01 != null)
 			{
 			    if (stlist01.head == todelete) {
-				System.out.println("gefunden");
+				//System.out.println("gefunden");
 				stlist01.head = new Basic_State(new Statename("...temprek"),null);
 				todelete = stlist01.head;
 			    };
@@ -265,7 +267,7 @@ import tesc2.*;
 		    while (stlist01 != null)
 			{
 			    if (stlist01.head == todelete) {
-				System.out.println("gefunden");
+				//System.out.println("gefunden");
 				stlist01.head = new Basic_State(new Statename("...temprek"),null);
 				todelete = stlist01.head;
 			    };
@@ -288,8 +290,8 @@ import tesc2.*;
         Tr todelete = (Tr)aktcomp;
         Or_State father = dc.find_trans(todelete);
 
-	//      System.out.println("Zu l÷schende Transition: "+ todelete);
-	// System.out.println("Zugeh÷riger State: "+ father);
+	//      System.out.println("Zu l”schende Transition: "+ todelete);
+	// System.out.println("Zugeh”riger State: "+ father);
 
         dc.delete_Trans( todelete );
 
@@ -303,8 +305,8 @@ import tesc2.*;
         Connector todelete = (Connector)aktcomp;
         Or_State father = dc.find_con(todelete);
 
-	//    System.out.println("Zu l÷schende Transition: "+ todelete);
-	// System.out.println("Zugeh÷riger State: "+ father);
+	//    System.out.println("Zu l”schende Transition: "+ todelete);
+	// System.out.println("Zugeh”riger State: "+ father);
 
         dc.delete_Con( todelete );
 
@@ -440,9 +442,7 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_TransLabel")
 
 if ((e.getID() == MouseEvent.MOUSE_DRAGGED) & (Editor.Editor() =="Draw_State"))
 		{
-		//new Repaint(g,root);
-		//Repaint r = new Repaint(); 
-		//r.start(root,0,0,true); 
+		
 		   	bufferGraphics = this.getGraphics();
 		    if (Editor.ZoomFaktor<=1)
 			{
@@ -476,13 +476,9 @@ if ((e.getID() == MouseEvent.MOUSE_DRAGGED) & (Editor.Editor() =="Draw_State"))
 
 						    (int)((int) (e.getY()/Editor.ZoomFaktor)*Editor.ZoomFaktor)-
 						    (int)((int) (last_y/Editor.ZoomFaktor)*Editor.ZoomFaktor)
-
-						    // (int)((int) ((e.getX()-last_x)/Editor.ZoomFaktor)*Editor.ZoomFaktor),
-						    // (int)((int) ((e.getY()-last_y)/Editor.ZoomFaktor)*Editor.ZoomFaktor)
 						    );
 			}
-		    // old_x = e.getX()-last_x;
-		    //old_y = e.getY()-last_y;
+		    
 		    old_x = (int)((int) (e.getX()/Editor.ZoomFaktor)*Editor.ZoomFaktor)-
 			    (int)((int) (last_x/Editor.ZoomFaktor)*Editor.ZoomFaktor);
 
@@ -506,15 +502,6 @@ if ((e.getID() == MouseEvent.MOUSE_DRAGGED) & (Editor.Editor() =="Draw_Par"))
 				py2 = last_y;
 			    }
 
-		    //repaint(last_x,last_y,old_x,old_y);
-		    // g.setColor(Color.black);
-		    // g.drawLine((int) (last_x/Editor.ZoomFaktor),
-		    //      (int) (last_y/Editor.ZoomFaktor),
-
-		    //    (int) ((px2)/Editor.ZoomFaktor),
-		    //    (int) ((py2)/Editor.ZoomFaktor));
-
-
 
 		    ttobj = new tempobj("pa",
 					  (int) (last_x),
@@ -535,12 +522,7 @@ if ((e.getID() == MouseEvent.MOUSE_DRAGGED) & (Editor.Editor() =="Draw_Par"))
 
 
 if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans" & trroot == true)
-      {
-	  //aktcomp = PESTdrawutil.getSmallObject(root,(int) (e.getX()/Editor.ZoomFaktor),(int) (e.getY()/Editor.ZoomFaktor));
-		//new Repaint(g,root);
-		//Repaint r = new Repaint(); 
-		//r.start(root,0,0,true); 
-		
+      {		
 	  bufferGraphics = this.getGraphics();		  
 	  bufferGraphics.setColor(this.getBackground());
 	  int tj = 0;
@@ -603,8 +585,7 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans" & trro
 			if (e.getClickCount() < 2)
 			{
 			    laufwaypoint++;
-			//g.setColor(Editor.tr_color());
-			//g.drawLine(last_x,last_y,e.getX(),e.getY());
+			
 			drawPESTTrans.drawTrans(bufferGraphics,last_x,last_y,e.getX(),e.getY(),null,null,this.getBackground());
 			g.setColor(Color.black);g.drawLine(last_x,last_y,e.getX(),e.getY());
 			last_x = (short) e.getX(); last_y = (short) e.getY();
@@ -617,11 +598,6 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans" & trro
 		//	System.out.println("Pfeilspitze");
 			TrAnchor an1 = null;
 			TrAnchor an2 = null;
-			//drawPESTTrans.drawTrans(g,tempwaypoint[laufwaypoint-1].x
-			//			,tempwaypoint[laufwaypoint-1].y
-			//			,tempwaypoint[laufwaypoint].x
-			//			,tempwaypoint[laufwaypoint].y
-			//			,an1,an2,Editor.tr_color());
 			new drawPESTTrans(g,root,tempwaypoint,laufwaypoint,Color.magenta);
 			Editor.SetListen();trroot = false;
 			repaint();
@@ -743,9 +719,6 @@ if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Info"))
 			{
 			Tr trtmp = (Tr) test;
 			  {
-			      //repaint();
-			      //textlabel.text(trtmp.label.caption);
-			      //textlabel.show(e.getX(),e.getY());
 			      if (trtmp.label.caption.length() >= GraphOptimizer.TLABELLENGTH)
 			      {
 			      new LabelArea(e.getX(),e.getY(),trtmp.label.caption);
@@ -845,14 +818,14 @@ public static void redo() {
       public static void addundo(Statechart nroot)
       {        Statechart root = nroot;
       if (lauf == null) {new newStorelist();}
-      System.out.println("lauf.next :"+lauf);
-      System.out.println("basis.next :"+basis.next);
+      //System.out.println("lauf.next :"+lauf);
+      //System.out.println("basis.next :"+basis.next);
         lauf = lauf.next;
 	try {lauf.chart = (Statechart) root.clone();}
 	catch (Exception e) {System.out.println("Waere die Absyn korrekt, so funktionierte auch das Undo !!!!  Stack :"+e);}
 	basis = lauf;
-System.out.println("lauf : "+lauf);
-	  System.out.println("basis : "+basis);
+	//System.out.println("lauf : "+lauf);
+	//System.out.println("basis : "+basis);
       }
 
 public static Dimension sizer() {return dpanel.getSize();}

@@ -44,9 +44,9 @@ Statechart root;
 	matrix1 = PESTdrawutil.getState(root,cx1,cy1);
 	matrix2 = PESTdrawutil.getState(root,cx1,cy1+10 + (int) (10/Editor.ZoomFaktor));
 	//if (matrix1.akt != null)
-System.out.println("akt1 :"+matrix1.akt);
-System.out.println("akt2 :"+matrix2.akt);
-System.out.println("prev2 :"+matrix2.prev);
+	// System.out.println("akt1 :"+matrix1.akt);
+	// System.out.println("akt2 :"+matrix2.akt);
+	// System.out.println("prev2 :"+matrix2.prev);
 //if (matrix1.akt != null)
 	{
 	    //if (matrix1.akt.rect != null)

@@ -131,8 +131,8 @@ if (tr.source instanceof UNDEFINED) {h.setColor( Editor.tr_color());
 if (matrix.akt.rect != null)
     {if ((matrix.prev instanceof Basic_State | matrix.prev instanceof Or_State) & matrix.prev.rect != null ) 
 	{
-	    System.out.println("Koord1"+(matrix.x-matrix.akt.rect.x));
-	    System.out.println("Koord2"+(matrix.y-matrix.akt.rect.y));
+	    // System.out.println("Koord1"+(matrix.x-matrix.akt.rect.x));
+	    //System.out.println("Koord2"+(matrix.y-matrix.akt.rect.y));
 		matrix = PESTdrawutil.getState(root,matrix.x-matrix.akt.rect.x,matrix.y-matrix.akt.rect.y);
 	}
 }
@@ -142,12 +142,12 @@ if (matrix2.prev.rect != null)
 	if (matrix2.prev.rect.x == 0 & matrix2.prev.rect.y == 0 & matrix2.prev instanceof Or_State & matrix2.prev == matrix3.prev)
 	{
 	matrix = PESTdrawutil.getState(root,tr.points[0].x+nx,tr.points[0].y+ny);
-System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+	//System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
 	}
 	if (matrix2.prev instanceof Or_State & matrix2.akt.rect.x != 0)
 	  {
 	matrix = PESTdrawutil.getState(root,tr.points[0].x+nx,tr.points[0].y+ny);
-System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+	//System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
 	}
 }
 
@@ -217,12 +217,12 @@ if (matrix2.prev.rect != null)
 	if (matrix2.prev.rect.x == 0 & matrix2.prev.rect.y == 0 & matrix2.prev instanceof Or_State & matrix2.prev == matrix3.prev)
 	{
 	matrix = PESTdrawutil.getState(root,tr.points[trsize].x+nx,tr.points[trsize].y+ny);
-System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+	//System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 	}
 	if (matrix2.prev instanceof Or_State & matrix2.akt.rect.x != 0)
 	  {
 	    matrix = PESTdrawutil.getState(root,tr.points[trsize].x+nx,tr.points[trsize].y+ny);
-	    System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+	    //  System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 	}
 }
 

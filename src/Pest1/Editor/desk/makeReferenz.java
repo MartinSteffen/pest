@@ -47,11 +47,11 @@ StateList stlist;
 
 	if (matrix.akt instanceof Basic_State)
 	{  
-		System.out.println("Basic_State gefunden");
+	  // System.out.println("Basic_State gefunden");
 		
 		if (matrix.akt instanceof Ref_State)
 			{
-			System.out.println("Ref_State gefunden");
+			  // System.out.println("Ref_State gefunden");
 			if (matrix.prev instanceof Or_State)
 				{
 				otemp1 = (Or_State) matrix.prev;
@@ -90,8 +90,8 @@ StateList stlist;
 			else
 			{
 			SelectArea sela  = new SelectArea(cx1,cy1);
-			System.out.println("FILENAME : "+sela.FileName);
-			System.out.println("FILETYPE : "+sela.filetype);
+			// System.out.println("FILENAME : "+sela.FileName);
+			// System.out.println("FILETYPE : "+sela.filetype);
 			if (sela.filetype != null & sela.FileName.compareTo("")!=0)
 			{
 				if (matrix.prev instanceof Or_State)
@@ -131,7 +131,8 @@ StateList stlist;
 
 				}
 			}
-	} else
-	{System.out.println("Fehler 101");}
+	} else {
+	  // System.out.println("Fehler 101");
+	}
     }
 } // setDefault

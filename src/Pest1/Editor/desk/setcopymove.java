@@ -103,14 +103,14 @@ if (matrix2.akt == matrix3.akt & matrix1.akt instanceof Basic_State)
                  matrix1 = PESTdrawutil.getStateFrame(root,cx1,cy1,cx1+allstate.rect.width,cy1+allstate.rect.height);
 		 if (matrix2.akt == matrix3.akt & matrix1.akt==null)
 		     {
-System.out.println("nichts");
+		       // System.out.println("nichts");
 		     }
 		if (matrix2.akt == matrix3.akt & matrix1.akt instanceof Or_State)
 		    {
 			allorstate = (Or_State) matrix1.akt;
 			stlist = allorstate.substates;
 			test = true;
-System.out.println("**********");
+			// System.out.println("**********");
 			while (stlist != null)
 			    {
 				
@@ -121,7 +121,7 @@ System.out.println("**********");
 				temprect2 =  new CRectangle(cx1,cy1,allstate.rect.width,allstate.rect.height);
 				if (temprect.intersects(temprect2) == true) {test = false;}
 				
-				System.out.println("test:"+temprect+" "+temprect2+""+test);
+				// System.out.println("test:"+temprect+" "+temprect2+""+test);
 				stlist = stlist.tail;
 			    }
 
@@ -134,12 +134,12 @@ System.out.println("**********");
 				temprect2 =  new CRectangle(cx1,cy1,allstate.rect.width,allstate.rect.height);
 				if (temprect.intersects(temprect2) == true) {test = false;}
 				
-				System.out.println("test:"+temprect+" "+temprect2+""+test);
+				// System.out.println("test:"+temprect+" "+temprect2+""+test);
 				colist = colist.tail;
 			    }
 			if (test == true)
 			    {
-				System.out.println("einfuegen");
+			      // System.out.println("einfuegen");
 				stlist = allorstate.substates;
 				allstate.rect = new CRectangle(cx1-matrix1.x,
 							       cy1-matrix1.y,

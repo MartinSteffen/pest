@@ -61,7 +61,9 @@ boolean ttest;
 		NameList3 = null;
 		 if (ttest == true) {NameList3 = NameList2; NameList2 = new StatenameList(matrix1.akt.name,NameList3);}
 		   otemp1.defaults = NameList2;
-		} else {System.out.println(">>FEHLER in setDefault1<<");}
+		} else { 
+		  // System.out.println(">>FEHLER in setDefault1<<");
+		}
 	
 
 	if ((matrix1.akt instanceof Or_State) & (matrix1.prev instanceof Or_State))
@@ -79,7 +81,9 @@ boolean ttest;
 		NameList3 = null;
 		 if (ttest == true) {NameList3 = NameList2; NameList2 = new StatenameList(matrix1.akt.name,NameList3);}
 		   otemp1.defaults = NameList2;
-		} else {System.out.println(">>FEHLER in setDefault2<<");}
+		} else {
+		  // System.out.println(">>FEHLER in setDefault2<<");
+		}
 
 	if (matrix1.akt == root.state & matrix1.akt.rect != null)
 	  {

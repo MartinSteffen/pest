@@ -59,7 +59,7 @@ root = nroot;
 		} 
 		if (root.state instanceof And_State)
 		{
-		System.out.println("AND");
+		  // System.out.println("AND");
 		if (s_or(root,cx1,cy1,cx2,cy2) == true) {g.setColor(c_color); g.drawRect((int) (cx1*Editor.ZoomFaktor),
 										(int) (cy1*Editor.ZoomFaktor),
 										(int) ((cx2-cx1)*Editor.ZoomFaktor),
@@ -197,7 +197,7 @@ ttest = true;
  		tempstate.rect.y = tempstate.rect.y -cy1;
 		templist = new StateList(tempstate,null);
 		root.state = new Or_State(new Statename("___State"+laufname),templist,null,null,null,new CRectangle(cx1,cy1,cx2-cx1,cy2-cy1));
-		System.out.println("innen");
+		// System.out.println("innen");
 		} else 
 		{	Editor.fehlermeldung1();
 			//System.out.println("Fehler INNEN");
@@ -264,21 +264,25 @@ ttest = true;
 //System.out.println("temppoint2 in : "+ temprect.contains(temppoint2 )  );
 
 
-	    if (temprect.contains(temppoint1) & temprect.contains(temppoint2))
-		{ colist4 = colist2; colist2 = new ConnectorList(colist.head,colist4);System.out.println("con in");
-			colist2.head.position.x = colist.head.position.x-(cx1-matrix.x);
-			    colist2.head.position.y = colist.head.position.y-(cy1-matrix.y);
-		} else
-		    { if (temprect.contains(temppoint1)== false & temprect.contains(temppoint2) == false &
-			  new Rectangle(temppoint1.x,temppoint1.y,12,12).intersects(temprect) == false)
-			{
-			    colist4 = colist3;colist3 = new ConnectorList(colist.head,colist4);			  
-//System.out.println("con out");
-			} else 
-			    { Editor.fehlermeldung1();//System.out.println("Fehler in stateconn");
-			      ttest = false;
-			    }
-		    }
+	    if (temprect.contains(temppoint1) & temprect.contains(temppoint2)) { 
+	      colist4 = colist2; 
+	      colist2 = new ConnectorList(colist.head,colist4);
+	      //System.out.println("con in");
+	      colist2.head.position.x = colist.head.position.x-(cx1-matrix.x);	    
+	      colist2.head.position.y = colist.head.position.y-(cy1-matrix.y);
+		
+	    } else { 
+	      if (temprect.contains(temppoint1)== false & temprect.contains(temppoint2) == false &
+			  new Rectangle(temppoint1.x,temppoint1.y,12,12).intersects(temprect) == false) {
+		colist4 = colist3;
+		colist3 = new ConnectorList(colist.head,colist4);			  
+		//System.out.println("con out");
+	      } else { 
+		Editor.fehlermeldung1();
+		//System.out.println("Fehler in stateconn");
+		ttest = false;	    
+	      }    
+	    }
 	    colist = colist.tail;
 	}
 
@@ -305,7 +309,7 @@ ttest = true;
 			    trlist.head.label.position.x = trlist.head.label.position.x-(cx1-matrix.x);
 			    trlist.head.label.position.y = trlist.head.label.position.y-(cy1-matrix.y);
 			}
-			trlist4 = trlist2; trlist2 = new TrList(trlist.head,trlist4);
+			trlist4 = trlist2; trlist2 = new TrList(trlist.head,trlist4);
 		} else 
 		{trlist4 = trlist3; trlist3 = new TrList(trlist.head,trlist4);}
  
@@ -317,7 +321,11 @@ ttest = true;
            //System.out.println("movexx");
 
               while (templist != null) { 
-	    if  (templist.head.rect.intersects(temprect)== false) {templist4 = templist3; templist3 = new StateList(templist.head,templist4); System.out.println("moveyy"); } 
+	    if  (templist.head.rect.intersects(temprect)== false) {
+	      templist4 = templist3; 
+	      templist3 = new StateList(templist.head,templist4); 
+	      // System.out.println("moveyy"); 
+	    } 
 	    else {ortyp = true;templist4 = templist2; 
 	    templist2 = new StateList(templist.head,templist4);
 	    templist2.head.rect.x = templist.head.rect.x-(cx1-matrix.x);
@@ -342,8 +350,8 @@ if ((matrix.akt instanceof Or_State)  & (colist2 != null | templist2 != null | t
 			otemp.connectors = colist3;
 			otemp.trs = trlist3;
 						}		
-		if ((matrix.akt instanceof Or_State)  & (colist2 != null | templist2 != null | trlist2 != null) & matrix.akt != root.state)
-			{System.out.println("Or ein");
+		if ((matrix.akt instanceof Or_State)  & (colist2 != null | templist2 != null | trlist2 != null) & matrix.akt != root.state) {
+		  // System.out.println("Or ein");
 			tempstate5 = new Or_State(new Statename ("___State"+laufname),templist2,trlist2,null,colist2,new CRectangle(cx1-matrix.x,cy1-matrix.y,cx2-cx1,cy2-cy1));
 			otemp = (Or_State) matrix.akt;
 			templist4 = new StateList(tempstate5,templist3);

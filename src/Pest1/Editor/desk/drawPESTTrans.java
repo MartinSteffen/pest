@@ -172,7 +172,7 @@ movetest = false;
 public static void drawTrans(Graphics g,int cx1, int cy1, int cx2, int cy2,TrAnchor ta1,TrAnchor ta2, Color c_color) {
 	
 	double dx ,dy ,d ,ws ,winkel ,xu ,yu ,wneu;
-	int size = 10;
+	int size = 6;
 	int size2 = 5;
 	int x, y;
 
