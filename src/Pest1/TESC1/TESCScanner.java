@@ -6,7 +6,7 @@ import java.io.*;
 
 class TESCScanner {
 
-    private FileInputStream is;
+    private BufferedReader is;
     private TOKEN token;
 
     private int ln;  // Zeilennummern
@@ -19,7 +19,7 @@ class TESCScanner {
 
     // protected-Methoden für das Package
 	
-    protected TESCScanner(FileInputStream is_) {
+    protected TESCScanner(BufferedReader is_) {
 	token = new TOKEN();
 
 	ln = 1;	
@@ -395,8 +395,11 @@ class TESCScanner {
 
 
 /* TESCScanner
- * $Id: TESCScanner.java,v 1.6 1998-12-15 17:51:58 swtech00 Exp $
+ * $Id: TESCScanner.java,v 1.7 1998-12-17 11:54:16 swtech13 Exp $
  * $Log: not supported by cvs2svn $
+ * Revision 1.6  1998/12/15 17:51:58  swtech00
+ * Towards new naming conventions in PEST1
+ *
  * Revision 1.5  1998/12/14 23:58:09  swtech13
  * Scanner: Teilstrings von keywords werden nicht mehr zurueckgewiesen
  *

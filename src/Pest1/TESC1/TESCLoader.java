@@ -9,11 +9,11 @@ import gui.*;
  * TESCLoader. 
  * Schnittstelle zu PEST.
  * @author Arne Koch/Mike Rumpf.
- * @version  $Id: TESCLoader.java,v 1.5 1998-12-15 17:51:57 swtech00 Exp $ 
+ * @version  $Id: TESCLoader.java,v 1.6 1998-12-17 11:54:14 swtech13 Exp $ 
  */ 
 public class TESCLoader {
 
-    private FileInputStream is;		// InputStream
+    private BufferedReader is;		// InputStream
     private Statechart stchart;		// der aufzubauende Statechart
     private TESCParser parser;          // der Parser
     private GUIInterface gi;            // GUI
@@ -33,7 +33,7 @@ public class TESCLoader {
      * @param Referenz auf einen FileInputStream
      * @return Liefert Statechart oder null bei Fehler.
      */ 
-    public Statechart getStatechart(FileInputStream is_) {
+    public Statechart getStatechart(BufferedReader is_) throws IOException {
 	// initiiert das Laden des Files und Aufbauen des StCharts
 	is = is_;
 	
@@ -48,6 +48,9 @@ public class TESCLoader {
 
 /* 
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  1998/12/15 17:51:57  swtech00
+ * Towards new naming conventions in PEST1
+ *
  * Revision 1.4  1998/12/07 20:10:15  swtech13
  * Anpassung der Schnittstelle
  *

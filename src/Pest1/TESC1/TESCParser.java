@@ -33,7 +33,7 @@ import java.lang.*;
 
 class TESCParser {
 
-    private FileInputStream is;
+    private BufferedReader is;
     private Statechart stchart;
     private int errorCount = 0;   // Anzahl der aufgetretenen Fehler
     private Vector errorList;     // Fehlerliste
@@ -53,7 +53,7 @@ class TESCParser {
 
     // protected-Methoden für das Package
 	
-    protected TESCParser(FileInputStream is_, GUIInterface gi_) {
+    protected TESCParser(BufferedReader is_, GUIInterface gi_) {
 	gi = gi_;
 	is = is_;
 
@@ -1087,8 +1087,11 @@ class TESCParser {
 }
 
 /* TESCParser
- * $Id: TESCParser.java,v 1.5 1998-12-15 17:51:57 swtech00 Exp $
+ * $Id: TESCParser.java,v 1.6 1998-12-17 11:54:15 swtech13 Exp $
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  1998/12/15 17:51:57  swtech00
+ * Towards new naming conventions in PEST1
+ *
  * Revision 1.4  1998/12/14 23:58:08  swtech13
  * Scanner: Teilstrings von keywords werden nicht mehr zurueckgewiesen
  *
