@@ -41,7 +41,7 @@ public class Editor extends Frame implements ActionListener {
     final Editor editor = this;
 
 /**
-	protected Editor(Statechart st, String l)
+	public Editor(Statechart st, String l)
 
     Erzeugt ein Editorobjekt und öffnet ein Editorfenster
 
@@ -456,7 +456,7 @@ public class Editor extends Frame implements ActionListener {
                     Methoden_1.addConNameMouseClicked((int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()),(int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()),editor);
                 }
                 if (status.equals("Als Default setzen")){
-                    Methoden_0.addDefaultMouseClicked((int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()),(int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()),editor);
+                    Methoden_0.addDefaultMouseClicked((int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()),(int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()),e,editor);
                     repaint();
                 }
                 if (status.equals("Markieren")){

@@ -56,6 +56,7 @@ class Methoden_1
         String name = editor.gui.EingabeDialog(editor,"Zustand benennen", "Name fuer Zustand:", s.name.name);
         if (name != null)
         {
+	    changeDefaultName(name,x,y,editor);
             s.name = new Statename(name);
             changeTransName(name,x,y,editor);
             editor.repaint();
@@ -71,6 +72,7 @@ class Methoden_1
         String name = editor.gui.EingabeDialog(editor,"And_Zustand benennen", "Name fuer And_Zustand:", s.name.name);
         if (name != null)
         {
+	    changeDefaultAndName(name,x,y,editor);
             s.name = new Statename(name);
             changeTransName(name,x,y,editor);
             editor.repaint();
@@ -132,6 +134,32 @@ class Methoden_1
         }
     }
 
+    private static void changeDefaultName(String name, int x, int y, Editor editor)
+    {
+      Or_State os = (Or_State)(Methoden_0.getFirstOrStateOf(x,y,editor));
+      State s = EditorUtils.getInnermostStateOf(x,y,editor);
+      if (os == null) return;
+      StatenameList list = os.defaults;
+      while (list != null)
+      {
+	if (list.head.name.equals(s.name.name)) list.head.name = name;
+	list = list.tail;
+      }
+    }
+
+    private static void changeDefaultAndName(String name, int x, int y, Editor editor)
+    {
+      Or_State os = (Or_State)(Methoden_0.getFirstOrStateOf(x,y,editor));
+      State s = getFirstAndOf(x,y,editor);
+      if (os == null) return;
+      StatenameList list = os.defaults;
+      while (list != null)
+      {
+	if (list.head.name.equals(s.name.name)) list.head.name = name;
+	list = list.tail;
+      }
+    }
+
 /*
     Funktion: aendert Transition-> source,target, wenn Zustandsname veraendert wird
 */
@@ -147,7 +175,7 @@ class Methoden_1
         }
     } //END changeTransName()
 
-    private static State getFirstAndOf(int x, int y, Editor editor)
+    protected static State getFirstAndOf(int x, int y, Editor editor)
     {
         State s = EditorUtils.getInnermostStateOf(x,y,editor);
         if (s.rect.x == 0 & s.rect.y == 0)

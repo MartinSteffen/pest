@@ -829,8 +829,20 @@ class Methoden_0
                     slist = os.substates;
                     while (slist != null)
                     {
+		        if (slist.head instanceof And_State)
+			  {
+			    StateList listAnd = ((And_State)slist.head).substates;
+			    while (listAnd != null)
+			      {
+				if (list.head.name.equals(listAnd.head.name.name))
+				  drawDefaultState(listAnd.head,editor);
+				listAnd = listAnd.tail;
+			      }
+			  }
                         if (list.head.name.equals(slist.head.name.name))
+			  {
                             drawDefaultState(slist.head,editor);
+			  }
                         slist = slist.tail;
                     }
                     list = list.tail;
@@ -851,21 +863,23 @@ class Methoden_0
 	  }
 	else
 	  {
-	    p[0] = new Point(-20,0);
-	    p[1] = new Point(0,20);
+	    p[0] = new Point(-30,0);
+	    p[1] = new Point(0,30);
 	  }
         bezier(p,r.x,r.y,editor.gui.getStatecolor(),editor);
     }
 
 
-    protected static void addDefaultMouseClicked(int x, int y, Editor editor)
+    protected static void addDefaultMouseClicked(int x, int y, MouseEvent e, Editor editor)
     {
         State s = EditorUtils.getInnermostStateOf(x,y,editor);
         State s1 = getFirstOrStateOf(x,y,editor);
+	if (checkMouseButton(e,3)) s = Methoden_1.getFirstAndOf(x,y,editor);
+	if (s == null) return;
         if (s1 == null) return;
         Or_State os = (Or_State)s1;
         StatenameList list = os.defaults;
-        if (list != null)
+        while (list != null)
         {
             if (list.head.name.equals(s.name.name))
             {
