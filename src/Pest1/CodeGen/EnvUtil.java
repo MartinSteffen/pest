@@ -14,25 +14,25 @@ public class EnvUtil {
   {
     int i;
 
-    f.write("(\n  (\n");
+    f.write("(\n  (\n    (\n");
     for (i = 0; i < s.statenames.length; ++i) {
       if(s.post_states[i]) {
-	f.write("    " + s.statenames[i] + "\n");
+	f.write("      " + s.statenames[i] + "\n");
       }
     }
-    f.write("  )\n  (\n");
+    f.write("    )\n  (\n");
     for (i = 0; i < eventnames.length; ++i) {
       if(s.post_events[i]) {
-	f.write("    " + s.eventnames[i] + "\n");
+	f.write("      " + s.eventnames[i] + "\n");
       }
     }
-    f.write("  )\n  (\n");
+    f.write("    )\n  (\n");
     for (i = 0		; i < s.condition_names.length; ++i) {
       if(s.post_cond[i]) {
-	f.write("    " + s.condition_names[i] + "\n");
+	f.write("      " + s.condition_names[i] + "\n");
       }
     }
-    f.write("  )\n)");
+    f.write("    )\n  )\n)");
   }
 
 
