@@ -65,7 +65,7 @@ import tesc1.TESCSaver;
  * </DL COMPACT>
  *
  * @author  Sven Jorga, Werner Lehmann
- * @version $Id: HAImport.java,v 1.21 1999-02-07 14:17:07 swtech18 Exp $
+ * @version $Id: HAImport.java,v 1.22 1999-02-11 18:38:54 swtech18 Exp $
  */
 public class HAImport implements Patterns {
   Perl5Util perl = new Perl5Util();
@@ -455,8 +455,10 @@ public class HAImport implements Patterns {
 
   private State getState() throws Exception {
     State st = createState(rootString, new CRectangle(0,0,0,0));
-    if (parseCoords)
+    if (parseCoords) {
       fixAllTrans(st);
+      fixAllStateRects(st);
+    }
     return st;
   }
 
@@ -481,6 +483,58 @@ public class HAImport implements Patterns {
         currState = currState.tail;
       }
     }
+  }
+
+  private void fixAllStateRects(State s) throws Exception {
+    StateList currStateList = null;
+    if (s instanceof And_State) {
+      currStateList = ((And_State)s).substates;
+      while (currStateList != null) {
+        fixRect(currStateList.head, ((And_State)s).substates);
+        fixAllStateRects(currStateList.head);
+        currStateList = currStateList.tail;
+      }
+    }else if (s instanceof Or_State) {
+      currStateList = ((Or_State)s).substates;
+      while (currStateList != null) {
+        fixAllStateRects(currStateList.head);
+        currStateList = currStateList.tail;
+      }
+    }else if (s instanceof Basic_State) {
+      
+    }
+  }
+
+  private void fixRect(State s, StateList sl) {
+    StateList currStateList = sl;
+    while (currStateList != null) {
+      if (inXRange(s,currStateList.head)){
+        s.rect.width = currStateList.head.rect.x - s.rect.x;
+      }
+      if (inYRange(s,currStateList.head)) {
+        s.rect.height = currStateList.head.rect.y - s.rect.y;
+      }
+      currStateList = currStateList.tail;
+    }
+  }
+
+  private boolean inXRange(State s1, State s2) {
+    int size = 25;
+    int pos = s1.rect.x + s1.rect.width;
+    if(pos-size < s2.rect.x && s2.rect.x < pos+size &&
+       s1.rect.y-size < s2.rect.y && s2.rect.y < s1.rect.y+size)
+      return true;
+    else
+      return false;
+  }
+
+  private boolean inYRange(State s1, State s2) {
+    int pos = s1.rect.y + s1.rect.height;
+    if(pos-25 < s2.rect.y && s2.rect.y < pos+25 &&
+       s1.rect.x-25 < s2.rect.x && s2.rect.x < s1.rect.x+25)
+      return true;
+    else
+      return false;
   }
 
   private CRectangle calcRect(Vector pointVec) {
