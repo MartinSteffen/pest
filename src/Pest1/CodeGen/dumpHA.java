@@ -4,7 +4,7 @@
  * This class is responsible for generating our hierarchical
  * automaton.
  *
- * @version $Id: dumpHA.java,v 1.12 1999-01-21 15:35:30 swtech25 Exp $
+ * @version $Id: dumpHA.java,v 1.13 1999-01-25 14:21:49 swtech25 Exp $
  * @author Marcel Kyas
  */
 package codegen;
@@ -16,9 +16,12 @@ import java.util.*;
 public class dumpHA
 {
 	private static final String indentLevel = "    ";
+	private static final float loadFactor = (float) 0.7;
+	private static final int hashTabSize = 1024;
 	private Statechart S;
 	private String path;
 	private dumpTables DT;
+	private Hashtable transitions = new Hashtable(hashTabSize, loadFactor);
 
 	/**
 	 * This will construct a dumb instance of dumpHA.  You will
@@ -233,8 +236,11 @@ public class dumpHA
 			GuardNeg h = (GuardNeg) g;
 			return "!(" + dumpGuard(h.guard) +")";
 		} else if (g instanceof GuardUndet) {
+			return "true" ;
+			/* Emmit a warning here.  Talk with the gui people.
 			throw(new CodeGenException(
 				"Undetermined Guards are not supported"));
+			*/
 		} else {
 			throw(new CodeGenException(
 				"Cannot determine type of guard."
@@ -267,6 +273,7 @@ public class dumpHA
 			printlnPP(f, lvl, "post_states[" +
 				dumpTables.generateSymState(q) +
 				"] = true;");
+			// TODO
 			State v = null;
 			if (v instanceof Or_State) {
 				Or_State u = (Or_State) v;
@@ -307,6 +314,11 @@ public class dumpHA
 					TLabel l = current.head.label;
 
 					trs++;
+					// TODO: Handle non-determinism here
+					// with care.
+					// let the generated code
+					// count the eligible transitions
+					// first and choose one?
 					printlnPP(f, lvl, "if (" +
 						dumpGuard(l.guard)
 						+ ") {");
@@ -362,10 +374,12 @@ public class dumpHA
 				"]) {");
 			dumpTransitions(f, lvl + 1, p, s.trs,
 					current.head.name);
-			printlnPP(f, lvl, "}");
+			printlnPP(f, lvl, "} else");
 			current = current.tail;
 		}
-		iterateStateList(f, lvl, p, s.substates);
+		printlnPP(f, lvl, "{");
+		iterateStateList(f, lvl + 1, p, s.substates);
+		printlnPP(f, lvl, "}");
 	}
 
 
@@ -446,7 +460,10 @@ public class dumpHA
 			dumpTables.generateSymEvent(new SEvent(
 				dumpTables.endEvent
 			)) +
-			"] {");
+			"]) {");
+		printlnPP(f, 3, "// Stutter in this state");
+		printlnPP(f, 3, "post_events[" + dumpTables.generateSymEvent(
+			  new SEvent(dumpTables.endEvent)) + "] = true;");
 		printlnPP(f, 3, "return;");
 		printlnPP(f, 2, "}");
 		if (S.state instanceof And_State) {
