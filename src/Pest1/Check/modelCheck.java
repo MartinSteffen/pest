@@ -33,10 +33,10 @@ public class modelCheck {
     return tb.check(sc,mcm);
   }
 
-  // nach Warnings suchen ?
+    /** nach Warnings suchen ? */
   public void setWarning(boolean _w) { warning = _w;}
 
-  // Ausgabe an die GUI festlegen
+    /** Ausgabe an die GUI festlegen */
   public void setOutputGUI(boolean _w) { outputGUI = _w;}
 
   public int getErrorNumber() { return mcm.getErrorNumber(); }
