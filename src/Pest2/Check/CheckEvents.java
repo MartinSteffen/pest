@@ -19,14 +19,14 @@ import absyn.*;         // abstrakte Syntax
 class CheckEvents {
   Statechart statechart;
   State s;
-  String path;
+  String path = "";
   SyntaxWarning warning;
   SyntaxError error;
 
   CheckEvents(Statechart _st, SyntaxError error, SyntaxWarning warning) {
     statechart = _st;
     s = statechart.state;
-    path = s.name.name;
+    if ((s != null) && (s.name != null)) path = s.name.name;
     this.error = error;
     this.warning = warning;
     }
@@ -41,7 +41,7 @@ class CheckEvents {
 
   // überprüft, ob alle Events im State s auch in der Statechart
   // definiert sind. Zurückgegeben wird TRUE, wenn dies der Fall ist.
-	public boolean check() {
+	boolean check() {
     SEventList sel = statechart.events;
     SEventList se;
     StateList substates = null;

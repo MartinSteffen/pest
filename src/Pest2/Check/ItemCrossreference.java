@@ -22,10 +22,10 @@ class ItemCrossreference {
   Object highlighted_object = null;
   String path               = null;
 
-  public ItemCrossreference() {
+  ItemCrossreference() {
   }
 
-  public ItemCrossreference(Object object,
+  ItemCrossreference(Object object,
                             Object highlighted_object,
                             String path) {
     this.path = path;

@@ -11,7 +11,7 @@
 package check;
 
 import absyn.*;            // abstrakte Syntax
-import java.util.*;        // fr Vector-Klasse ben÷tigt
+import java.util.*;        // fr Vector-Klasse benötigt
 
 /**
  * @author Java Praktikum: <a href="mailto:swtech23@informatik.uni-kiel.de">Gruppe 23</a><br>Mario Thies und Tobias Kunz
@@ -31,11 +31,11 @@ class CheckConnectors {
     }
 
 
-  public boolean check() {
+  boolean check() {
     return check(statechart.state, statechart.state.name.name);
     }
 
-  public boolean check(State state, String _path) {
+  boolean check(State state, String _path) {
     StateList substates = null;
     Or_State os;
     And_State as;

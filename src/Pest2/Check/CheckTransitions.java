@@ -5,7 +5,7 @@
 //
 //
 //   Letzte Aenderung von:  Tobias Kunz
-//                          11.01.1999
+//                          10.02.1999
 //
 // ****************************************************************************
 
@@ -50,7 +50,7 @@ SyntaxWarning warning;
 // Methoden, die nur innerhalb des "packages" zu sehen sind
 // ****************************************************************************
 
-  protected boolean check() {
+  boolean check() {
 
     boolean ok = true;
 
@@ -61,7 +61,7 @@ SyntaxWarning warning;
 
       trl = os.trs;
 
-      while (trl != trl) {
+      while (trl != null) {
 
         Tr trans = trl.head; // Transition
 
@@ -70,11 +70,13 @@ SyntaxWarning warning;
         //    b) Existenz des "Targets"
         //    c) keine "Source", aber ein "Target" -> Warnung
         //    d) kein "Target aber eine "Source" -> Fehler
+        //    e) Interleveltransistionen
 
         // Fall a)
         if (!(trans.source instanceof UNDEFINED)) {
           // suche nach dem "statename" im "state"
-          ok = Contains((Statename)trans.source);
+          if (trans.source instanceof Statename)
+            ok = Contains((Statename)trans.source);
 
           if (!ok) { // Fehler
             error.addError(new ItemError(100, "Transitions Source nicht gefunden",""));
@@ -84,7 +86,8 @@ SyntaxWarning warning;
         // Fall b)
         if (!(trans.target instanceof UNDEFINED)) {
           // suche nach dem "statename" im "state"
-          ok = Contains((Statename)trans.target);
+          if (trans.source instanceof Statename)
+            ok = Contains((Statename)trans.target);
 
           if (!ok) { // Fehler!
             error.addError(new ItemError(100, "Transitions Source nicht gefunden",""));
@@ -105,6 +108,25 @@ SyntaxWarning warning;
           error.addError(new ItemError(100, "Transition hat kein Target aber eine Source",""));
         }
 
+        // Fall e): Ist die Transition eine Interlevel Transition?
+        //          nur dann testen, wenn auch Koordinaten vorhanden sind!
+        if (trans.location != null) {
+
+          // Fall e1) : Anchor
+          if (IsInterlevelTransition(state, trans, true)) {
+            // fehler ausgeben
+            ok = false;
+            error.addError(new ItemError(103, "Quelle: Interleveltransition gefunden",""));
+          }
+
+          // Fall e2) : Dest
+          if (IsInterlevelTransition(state, trans, false)) {
+            // fehler ausgeben
+            ok = false;
+            error.addError(new ItemError(104, "Ziel: Interleveltransition gefunden",""));
+          }
+        }
+
         trl = trl.tail; // nächste Transition
       } // while
 
@@ -115,21 +137,56 @@ SyntaxWarning warning;
 
 
   // such in dem definierten "state" nach dem "statename"
-  protected boolean Contains(Statename statename) {
+  boolean Contains(Statename statename) {
 
     StateList stl = os.substates;
 
     boolean found = false;
-    while ((stl != null) || (found))  {
+    while ((!found) && (stl.head != null))  {
       State s = stl.head;
       // im Augenblick wird case-sensitive verglichen - ggf. auf
       // case insentiv Vergleich "equalsIgnoreCase" aendern
-      if (s.name.name.compareTo(statename.name)==0) found = true;
+      if (s.name != null)
+        if (statename != null)
+          if (s.name.name.compareTo(statename.name)==0) {
+            found = true;
+          }
       // Iteration
       stl = stl.tail;
     } // while
 
     return found;
+  }
+
+  boolean IsInterlevelTransition(State s, Tr t, boolean anchor) {
+    int xt,yt;
+
+    if (!anchor) {
+      int n=t.points.length-1;
+      xt=t.points[n].x;
+      yt=t.points[n].y;
+    }else {
+      xt=t.points[0].x;
+      yt=t.points[0].y;
+    }
+
+    int xs=s.rect.x;
+    int ys=s.rect.y;
+    int hs=s.rect.height;
+    int ws=s.rect.width;
+
+    boolean OK=true;  // ist Interlevel Transition per default
+    if (umgebung(xs,xt) && yt>=ys && yt<=(ys+hs)) OK=false;
+    if (umgebung(ys,yt) && xt>=xs && xt<=(xs+ws)) OK=false;
+    if (umgebung(xs+ws,xt) && yt>=ys && yt<=(ys+ws)) OK=false;
+    if (umgebung(ys+hs,yt) && xt>=xs && xt<=(xs+ws)) OK=false;
+    return OK;  }
+
+  boolean umgebung(int a, int s) {
+    int e=2;
+    boolean b=false;
+    if (((int)Math.abs(a-s))<e) b=true;
+    return b;
   }
 
 }

@@ -17,7 +17,7 @@ package check;
 * @author Java Praktikum: <a href="mailto:swtech23@informatik.uni-kiel.de">Gruppe 23</a><br>Mario Thies und Tobias Kunz
 * @version $id:$
 */
-public class ItemWarning {
+class ItemWarning {
 
   // private Eigenschaften der Klasse
   private int     code        = 0;
@@ -27,11 +27,11 @@ public class ItemWarning {
 // ****************************************************************************
 
   // Konstruktor
-  public ItemWarning() {
+  ItemWarning() {
   }
 
   // Konstruktor
-  public ItemWarning(int code, String description, String place) {
+ ItemWarning(int code, String description, String place) {
     this.code        = code;
     this.description = description;
     this.place       = place;
@@ -40,12 +40,12 @@ public class ItemWarning {
 // ****************************************************************************
 
 	/** liefert einen eindeutigen Warnungscode */
-	public int getCode() {
+	int getCode() {
     return code;
 	}
 
 	/** liefert eine Fehlerbeschreibung */
-	public String getDescription() {
+	String getDescription() {
 	   return description;
         }
 
@@ -53,7 +53,7 @@ public class ItemWarning {
       etwa den Zustand, in dem die Warnung
       aufgetreten ist.
   */
-	public String getPlace() {
+	String getPlace() {
     return place;
 	}
 
@@ -66,7 +66,7 @@ public class ItemWarning {
 // ****************************************************************************
 
   // zum Setzen der Fehlereigenschaften
-  protected void setError(int code, String description, String place) {
+  void setError(int code, String description, String place) {
     this.code        = code;
     this.description = description;
     this.place       = place;

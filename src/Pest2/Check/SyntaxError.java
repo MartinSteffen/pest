@@ -19,24 +19,24 @@ import java.util.*;
 * @author Java Praktikum: <a href="mailto:swtech23@informatik.uni-kiel.de">Gruppe 23</a><br>Mario Thies und Tobias Kunz
 * @version $id:$
 */
-public class SyntaxError extends Vector {
+class SyntaxError extends Vector {
 
 // ****************************************************************************
 
   // fuegt einen Fehler der Fehler-Liste hinzu
-  protected void addError(ItemError error) {
+  void addError(ItemError error) {
     addElement((Object)error);
   }
 
 // ****************************************************************************
 
   // Methode ohne ueber typecasting auf ein Fehler-Element zugreifen zu koennen
-  public ItemError errorAt(int index) {
+  ItemError errorAt(int index) {
     return (ItemError)elementAt(index);
   }
 
   // Liefert die Anzahl der gefundenen Fehler zurueck.
-  public int count() {
+  int count() {
     return elementCount;
   }
 

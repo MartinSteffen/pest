@@ -16,7 +16,7 @@ package check;
 * @author Java Praktikum: <a href="mailto:swtech23@informatik.uni-kiel.de">Gruppe 23</a><br>Mario Thies und Tobias Kunz
 * @version $id:$
 */
-public class ItemError {
+class ItemError {
   // private Eigenschaften der Klasse
   private int     code        = 0;
   private String  description = "";
@@ -25,11 +25,11 @@ public class ItemError {
 // ****************************************************************************
 
   // Konstruktor
-  public ItemError() {
+  ItemError() {
   }
 
   // Konstruktor
-  public ItemError(int code, String description, String place) {
+  ItemError(int code, String description, String place) {
     this.code        = code;
     this.description = description;
     this.place       = place;
@@ -38,12 +38,12 @@ public class ItemError {
 // ****************************************************************************
 
 	/** liefert einen eindeutigen Fehlercode */
-	public int getCode() {
+	int getCode() {
     return code;
 	}
 
 	/** liefert eine Fehlerbeschreibung */
-	public String getDescription() {
+	String getDescription() {
     return description;
 	}
 
@@ -51,7 +51,7 @@ public class ItemError {
       etwa den Zustand, in dem der Fehler
 	    aufgetreten ist.
   */
-	public String getPlace() {
+	String getPlace() {
     return place;
 	}
 
@@ -63,7 +63,7 @@ public class ItemError {
 // ****************************************************************************
 
   // zum Setzen der Fehlereigenschaften
-  protected void setError(int code, String description, String place) {
+  void setError(int code, String description, String place) {
     this.code        = code;
     this.description = description;
     this.place       = place;

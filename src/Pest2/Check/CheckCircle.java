@@ -11,7 +11,7 @@
 package check;
 
 import absyn.*;            // abstrakte Syntax
-import java.util.*;        // für Vector-Klasse benötigt
+import java.util.*;        // für Vector-Klasse ben”tigt
 
 /**
  * @author Java Praktikum: <a href="mailto:swtech23@informatik.uni-kiel.de">Gruppe 23</a><br>Mario Thies und Tobias Kunz
@@ -25,7 +25,7 @@ class CheckCircle {
     statechart = st;
     }
 
-  public boolean check() {
+  boolean check() {
     return check(statechart.state, new Vector());
     }
 

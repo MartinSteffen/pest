@@ -4,7 +4,7 @@
 //
 //
 //   Letzte Aenderung von:  Mario Thies
-//                          24.01.1999
+//                          10.02.1999
 //
 // ****************************************************************************
 
@@ -19,14 +19,14 @@ import absyn.*;         // abstrakte Syntax
 class CheckBVars {
   Statechart statechart;
   State s;
-  String path;
+  String path = "";
   SyntaxWarning warning;
   SyntaxError error;
 
   CheckBVars(Statechart _st, SyntaxError error, SyntaxWarning warning) {
     statechart = _st;
     s = statechart.state;
-    path = s.name.name;
+    if ((s != null) && (s.name != null)) path = s.name.name;
     this.warning = warning;
     this.error = error;
     }
@@ -45,8 +45,8 @@ class CheckBVars {
     this.warning = warning;
   }
 
-//
-	public boolean check() {
+  //
+	boolean check() {
     BvarList bvl = statechart.bvars;
     BvarList bv;
     BAss ba = null;
@@ -86,7 +86,7 @@ class CheckBVars {
           error.addError(new ItemError(100,"Zuviele Defaultstates gesetzt", path));
           ok = false;
           }
- 
+
       // Versuche, den Defaultstate zu finden
       if (ok) {
         found=false;
@@ -95,13 +95,13 @@ class CheckBVars {
           if (sl.head.name.name.compareTo(os.defaults.head.name)==0) { found=true; }
           sl=sl.tail;
 	  }
-       
+
         if (!found) {
           error.addError(new ItemError(100,"Defaultstate ist kein State in diesem Or-State", path));
           ok = false;
           }
         }
- 
+
       trl = os.trs;
       while (trl != null) {
         // Testen, ob die BVars in den Guards auch deklariert sind

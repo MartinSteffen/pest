@@ -11,7 +11,7 @@
 package check;
 
 import absyn.*;            // abstrakte Syntax
-import java.util.*;        // fr Vector-Klasse ben÷tigt
+import java.util.*;        // fr Vector-Klasse benötigt
 
 /**
  * @author Java Praktikum: <a href="mailto:swtech23@informatik.uni-kiel.de">Gruppe 23</a><br>Mario Thies und Tobias Kunz
@@ -38,7 +38,7 @@ class CheckDupes {
   // return check(statechart.cnames, "");
   //  }
 
-  protected boolean check(StateList _sl, String path) {
+  boolean check(StateList _sl, String path) {
     if (_sl == null) {
       return true; }
     else {

@@ -21,13 +21,13 @@ class CheckStates {
     this.warning = warning;
   }
 
-  public boolean check() {
+  boolean check() {
     //System.out.println("Check State!");
     boolean ok = checkState(statechart.state);
     return ok;
   }
 
-  protected boolean checkState(State state) {
+  boolean checkState(State state) {
     boolean ok = true;
     And_State as;
     Or_State os;
@@ -63,7 +63,7 @@ class CheckStates {
   /**
   * ueberprueft einen einzelnen "State"
   */
-  protected boolean checkSingleState(State s) {
+  boolean checkSingleState(State s) {
     boolean ok = true;
 
     // Gueltiger Bezeichner
