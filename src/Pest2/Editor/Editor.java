@@ -77,9 +77,12 @@ public class Editor extends Frame implements ActionListener {
         MenuBar mb = new MenuBar();
         setMenuBar(mb);
 
+	Menu Fenster = new Menu("Fenster");
+	mb.add(Fenster);
+
         Menu bearbeiten = new Menu("Bearbeiten");
         mb.add(bearbeiten);
-
+	
         Menu Extras = new Menu("Extras");
         mb.add(Extras);
 
@@ -97,7 +100,12 @@ public class Editor extends Frame implements ActionListener {
         mi.setActionCommand("Schriftgroesse");
         option.add(mi);
 
-        undo = new MenuItem("Rueckgaengig");
+        mi = new MenuItem("Schliessen");
+        mi.addActionListener(this);
+        mi.setActionCommand("Schliessen");
+        Fenster.add(mi);
+
+	undo = new MenuItem("Rueckgaengig");
         undo.addActionListener(this);
         undo.setActionCommand("Rueckgaengig");
         undo.setEnabled(false);
@@ -387,8 +395,8 @@ public class Editor extends Frame implements ActionListener {
             public void mousePressed(MouseEvent e) {
                 if ((int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()) <= 0 |
                     (int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()) <= 0 |
-                    (int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()) >= 4000 |
-                    (int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()) >= 3000) return;
+                    (int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()) >= statechart.state.rect.width |
+                    (int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()) >= statechart.state.rect.height) return;
                 if (status.equals("Zustand hinzufuegen"))
                     EditorUtils.createStateMousePressed(e, editor);
                 if (status.equals("Zustand verschieben"))
@@ -399,8 +407,8 @@ public class Editor extends Frame implements ActionListener {
             public void mouseReleased(MouseEvent e) {
                 if ((int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()) <= 0 |
                     (int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()) <= 0 |
-                    (int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()) >= 4000 |
-                    (int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()) >= 3000) return;
+                    (int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()) >= statechart.state.rect.width |
+                    (int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()) >= statechart.state.rect.height) return;
                 if (status.equals("Zustand hinzufuegen"))
                     EditorUtils.createStateMouseReleased(e, editor);
                 if (status.equals("And_Zustand erzeugen"))
@@ -420,8 +428,8 @@ public class Editor extends Frame implements ActionListener {
             {
                 if ((int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()) <= 0 |
                     (int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()) <= 0 |
-                    (int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()) >= 4000 |
-                    (int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()) >= 3000) return;
+                    (int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()) >= statechart.state.rect.width |
+                    (int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()) >= statechart.state.rect.height) return;
                 if (status.equals("Transition hinzufuegen"))
                 {
                     Methoden_0.transitionMouseClicked(e,(int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()),(int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()),editor);
@@ -475,8 +483,8 @@ public class Editor extends Frame implements ActionListener {
             public void mouseMoved(MouseEvent e) {
                 if ((int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()) <= 0 |
                     (int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()) <= 0 |
-                    (int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()) >= 4000 |
-                    (int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()) >= 3000) return;
+                    (int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()) >= statechart.state.rect.width |
+                    (int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()) >= statechart.state.rect.height) return;
                 if (status.equals("And_Zustand erzeugen"))
                     EditorUtils.andStateMouseMoved(e, editor);
                 if (status.equals("Zustand loeschen"))
@@ -501,8 +509,8 @@ public class Editor extends Frame implements ActionListener {
             {
                 if ((int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()) <= 0 |
                     (int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()) <= 0 |
-                    (int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()) >= 4000 |
-                    (int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()) >= 3000) return;
+                    (int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()) >= statechart.state.rect.width |
+                    (int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()) >= statechart.state.rect.height) return;
                 if (status.equals("Zustand hinzufuegen"))
                     EditorUtils.createStateMouseDragged(e, editor);
                 if (status.equals("Zustand verschieben"))
@@ -511,13 +519,15 @@ public class Editor extends Frame implements ActionListener {
         });
 
         addWindowListener(new WindowAdapter() {
-
+	  /*  
             public void windowClosing(WindowEvent e) {
-                Window window = e.getWindow();
-                window.dispose();
+	 	gui.editorClosing();
+		// Window window = e.getWindow();
+	        //window.dispose();
+		editor.dispose();
                 Methoden_1.setFactor(100);
                 new highlightObject(true);
-            }
+            }*/
             public void windowActivated(WindowEvent e){
             }
         });
@@ -570,7 +580,11 @@ public class Editor extends Frame implements ActionListener {
        schliesst das Editorfenster
     */
     public static void Dispose() {
+      Methoden_1.setFactor(100);
+      new highlightObject(true);
+      edRef.dispose();
     }
+
 
     /**
        @param boolean b -
@@ -584,12 +598,6 @@ public class Editor extends Frame implements ActionListener {
      */
     public static void work() {
 
-    }
-
-    private void checkHighlight()
-    {
-        File file = new File("highlight.dat");
-        if (file.exists()) file.delete();
     }
 
     private void setAllDeselected(CheckboxMenuItem c0,CheckboxMenuItem c1,CheckboxMenuItem c2,CheckboxMenuItem c3,CheckboxMenuItem c4,CheckboxMenuItem c5,CheckboxMenuItem c6,CheckboxMenuItem c7)
@@ -675,6 +683,7 @@ public class Editor extends Frame implements ActionListener {
         if (command.equals("Zustand verschieben")) status = "Zustand verschieben";
 
         if (command.equals("Schriftgroesse")) {setFontSize();repaint();}
+        if (command.equals("Schliessen")) {gui.editorClosing();editor.dispose();}
     }
 
     private void setFontSize()

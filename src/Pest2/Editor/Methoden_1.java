@@ -904,6 +904,7 @@ public class Methoden_1
 
     public static void showFullTransName(int x, int y, Editor editor)
     {
+        if (editor.gui == null) return;
         StateList list = editor.stateList;
         TrList tlist = null;
         tlist = ((Or_State)(editor.statechart.state)).trs;
@@ -947,7 +948,7 @@ public class Methoden_1
                         if (rect.contains(x,y))
                         {
                             g.drawString(tlist.head.label.caption,(int)((double)(r.x+tlist.head.label.position.x)*Methoden_1.getFactor())-editor.scrollX,
-                                        (int)((double)r.y+tlist.head.label.position.y*Methoden_1.getFactor())-editor.scrollY);
+                                        (int)((double)(r.y+tlist.head.label.position.y)*Methoden_1.getFactor())-editor.scrollY);
                             return;
                         }
                     }
