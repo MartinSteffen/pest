@@ -41,7 +41,6 @@ public GUIMenu(pest myWindow)
 
   M_Export = new Menu("Export");
   addMenuItem(M_Export,"TESC",mlex);
-  addMenuItem(M_Export,"Statemate",mlex);
   m.add(M_Export);
 
   m.addSeparator();

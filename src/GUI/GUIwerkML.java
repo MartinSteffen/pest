@@ -49,7 +49,7 @@ public void actionPerformed(ActionEvent e) {
 		  new codegen.CodeGen(".",myWindow.SyntaxBaum);
       		}catch(codegen.CodeGenException cge)
 		  {
-		    myWindow.OkDialog("Fehler","Fehler bei Code-Generierung");
+		    myWindow.OkDialog("Fehler","Fehler bei der Code-Generierung");
 		  }
 	      }
 
