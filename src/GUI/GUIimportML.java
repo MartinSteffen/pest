@@ -36,11 +36,17 @@ public void actionPerformed(ActionEvent e) {
 		  try{
 		      TESCLoader imp = new TESCLoader(myWindow);
 		      Statechart Synb = imp.getStatechart(stImp);
-		      myWindow.userMessage("GUI   : TESC1 erfolgreich");
-		      GraphOptimizer go = new GraphOptimizer(Synb,myWindow.getGraphics().getFontMetrics());
-		      Synb = go.start();
-		      myWindow.setStatechart(Synb,"UNBENANNT");
-		      
+		      if (Synb != null)
+			{
+			  myWindow.userMessage("GUI   : TESC1 erfolgreich");
+			  GraphOptimizer go = new GraphOptimizer(Synb,myWindow.getGraphics().getFontMetrics());
+			  Synb = go.start();
+			  myWindow.setStatechart(Synb,"UNBENANNT");
+			}
+		      else
+			{
+			  myWindow.userMessage("GUI   : TESC1 Fehlgeschlagen !");
+			}
 		  }catch(Exception ime){
 		      myWindow.OkDialog("Fehler",ime.getMessage());		     
 		  }

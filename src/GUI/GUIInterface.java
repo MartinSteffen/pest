@@ -67,6 +67,18 @@ public interface GUIInterface{
      */
     public int YesNoCancelDialog(String Titel, String Msg);
 
+    /** EingabeDialog
+     *wie OkDialog,jedoch mit OK und Abbrechen.Bietet zusätzlich noch ein
+     *TextField zu Eingabe von Text,ein Defaulttext muss uebergeben werden.
+     *Der Rueckgabewert liefert den aktuellen String des TextFields
+     *BITTE BEACHTEN !
+     *@param Titel       Text fuer Fenstertitel
+     *@param Msg         Nachricht im Fenster
+     *@param Defaulttext Defaulttext fuer TextField
+     */  
+
+    public String EingabeDialog(String Titel, String Msg, String Defaulttext);
+
     
     /** OkDialog
      * Bringt einen modalen Dialog mit dem uebergebenen Titel,
@@ -81,6 +93,8 @@ public interface GUIInterface{
      * @param Titel        Text fuer den Fenstertitel
      * @param Msg          Nachricht im Fenster
      */
+
+ 
     public int OkDialog(Frame par, String Titel, String Msg);
 
     /** YesNoDialog
@@ -94,5 +108,18 @@ public interface GUIInterface{
      * @see OkDialog
      */
     public int YesNoCancelDialog(Frame par, String Titel, String Msg);
+
+     /** EingabeDialog
+     *wie OkDialog,jedoch mit OK und Abbrechen.Bietet zusätzlich noch ein
+     *TextField zu Eingabe von Text,ein Defaulttext muss uebergeben werden.
+     *Der Rueckgabewert liefert den aktuellen String des TextFields
+     *BITTE BEACHTEN !
+     *@param par         Referenz auf das Elternfenster  
+     *@param Titel       Text fuer Fenstertitel
+     *@param Msg         Nachricht im Fenster
+     *@param Defaulttext Defaulttext fuer TextField
+     */  
+
+    public String EingabeDialog( Frame par, String Titel, String Msg, String Defaulttext);
 }
 

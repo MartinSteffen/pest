@@ -61,7 +61,7 @@ implements GUIInterface
 
 	theGUIMenu.updateMenu();
 	userMessage("GUI   : PEST initialisiert");
-	repaint();
+	repaint();       
    
     }
 
@@ -132,6 +132,10 @@ implements GUIInterface
 	return new YesNoCancelDialog(this,getGraphics().getFontMetrics(),Titel,Msg).getAnswer();
     }
 
+    public String EingabeDialog(String Titel, String Msg, String Defaulttext){
+        return new EingabeDialog(this, getGraphics().getFontMetrics(),Titel,Msg,Defaulttext).getEingabe();
+    }
+
     public int OkDialog(Frame par, String Titel, String Msg){
 	return new OKDialog(par,par.getGraphics().getFontMetrics(),Titel,Msg).getAnswer();
     }
@@ -143,6 +147,11 @@ implements GUIInterface
     public int YesNoCancelDialog(Frame par, String Titel, String Msg){
 	return new YesNoCancelDialog(par,par.getGraphics().getFontMetrics(),Titel,Msg).getAnswer();
     }
+
+    public String EingabeDialog(Frame par, String Titel, String Msg, String Defaulttext){
+        return new EingabeDialog(par,par.getGraphics().getFontMetrics(),Titel,Msg,Defaulttext).getEingabe();
+    }
+
 
     
     
@@ -256,6 +265,7 @@ implements GUIInterface
 		    ObjectInputStream ois = new ObjectInputStream(fis);
 		    SyntaxBaum = (absyn.Statechart) ois.readObject();
 		    ois.close();
+		    SBDateiname = fDialog.getDirectory()+FileName;
 		}catch (Exception e)
 		    {
 			OkDialog("Fehler","Das Laden ist fehlgeschlagen !");
