@@ -33,6 +33,7 @@ public void actionPerformed(ActionEvent e) {
 	  if(myWindow.isSaved())
 	      {
 		  myWindow.load_sc();
+		  myWindow.setDirty(false);
 
 	      }
       }else if (cmd.equals("Speichern")) {
@@ -41,6 +42,7 @@ public void actionPerformed(ActionEvent e) {
 	  if (myWindow.isSaved())
 	      {
 		  myWindow.newStatechart();
+		  myWindow.setDirty(false);
 	      }
       }else{
 	  myWindow.userMessage("GUI   : "+cmd+" nicht vorhanden !");

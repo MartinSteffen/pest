@@ -12,7 +12,7 @@ import java.lang.Math.*;
 **/
 
 
-class OKDialog
+public class OKDialog
 extends dialog
 {
 

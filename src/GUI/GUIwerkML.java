@@ -6,6 +6,7 @@ import java.awt.event.*;
 import java.awt.*;
 import util.PrettyPrint;
 import absyn.Example;
+import tesc2.*;
 
 class GUIwerkML
 implements ActionListener
@@ -56,7 +57,25 @@ public void actionPerformed(ActionEvent e) {
 	  check.Crossreference cr = new check.Crossreference(myWindow,  myWindow.PEditor);
 	  cr.report(myWindow.SyntaxBaum);
       } else if (cmd.equals("Neue Koordinaten")){
-	      myWindow.OkDialog("","Muss noch mit Statemate abgesprochen werden");
+	  if (myWindow.isSaved())
+	      {
+		  try
+		      {
+			  GraphOptimizer go = new GraphOptimizer(myWindow.SyntaxBaum,myWindow.getGraphics().getFontMetrics());
+			  myWindow.SyntaxBaum = go.start(myWindow.layoutAlgorithm);
+			  if (myWindow.PEditor != null)
+			      {
+				  myWindow.exlis.windowClosing(new WindowEvent(myWindow,WindowEvent.WINDOW_CLOSING));
+				  myWindow.startEditor();
+			      }
+			  myWindow.setDirty(true);
+		      }
+		  catch (Exception ex)
+		      {
+			  myWindow.OkDialog("Fehler","Es konnten keine neuen Koordinaten berechnet werden");
+		      }
+	      }
+
       }else if (cmd.equals("PrettyPrinter")) {
 	  (new PrettyPrint()).start( myWindow.SyntaxBaum );
       }else{  
