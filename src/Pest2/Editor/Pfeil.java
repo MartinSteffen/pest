@@ -7,7 +7,7 @@ class Pfeil
     private int x1,y1,x2,y2;
     static double alpha = 30,alpha1;
     int b = 10;
-    public Pfeil(Graphics g,int px1,int py1,int px2,int py2)
+    protected Pfeil(Graphics g,int px1,int py1,int px2,int py2)
     {
         x1 = px1;y1 = py1; x2=px2;y2 = py2;
         PfeilSpitze(g);
@@ -53,10 +53,14 @@ class Pfeil
                     p_y = y2 + d_y;}
         }
         int x_1 =(int)((p_x - x2)*Math.cos(toRad(alpha)) - (p_y-y2) * Math.sin(toRad(alpha)) +x2);
+	if (x_1 < 0) x_1 = x1;
         int y_1 =(int)((p_x - x2)*Math.sin(toRad(alpha)) + (p_y-y2) * Math.cos(toRad(alpha)) +y2);
+	if (y_1 < 0) y_1 = y1;
         g.drawLine(x2,y2,x_1,y_1);
         int x_2 =(int)((p_x - x2)*Math.cos(toRad(-alpha)) - (p_y-y2) * Math.sin(toRad(-alpha)) +x2);
         int y_2 =(int)((p_x - x2)*Math.sin(toRad(-alpha)) + (p_y-y2) * Math.cos(toRad(-alpha)) +y2);
+	if (x_2 < 0) x_2 = x2;
+	if (y_2 < 0) y_2 = y2;
         g.drawLine(x2,y2,x_2,y_2);
         g.drawLine(x_1,y_1,x_2,y_2);
     }

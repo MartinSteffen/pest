@@ -9,9 +9,6 @@ import gui.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
-/*
-Aenderungen am 01.02.99 (von long)
-*/
 
 public class Editor extends Frame implements ActionListener {
 
@@ -30,6 +27,7 @@ public class Editor extends Frame implements ActionListener {
     protected GUIInterface gui = null;
     private boolean changedStatechart = false; //fuer listenEditor()
     private String statechartName = "";
+    private static boolean workable = true, mywork = true;
 
     private MenuItem copyOneCon,copyOneTr,insertOne,moveOne,removeOne,moveTransName;
     private Menu copy = new Menu("Kopieren");
@@ -82,7 +80,7 @@ public class Editor extends Frame implements ActionListener {
 
         Menu bearbeiten = new Menu("Bearbeiten");
         mb.add(bearbeiten);
-	
+
         Menu Extras = new Menu("Extras");
         mb.add(Extras);
 
@@ -393,6 +391,8 @@ public class Editor extends Frame implements ActionListener {
         addMouseListener(new MouseAdapter() {
 
             public void mousePressed(MouseEvent e) {
+	      if (!mywork) {mywork = true;return;}
+	      if (!workable) return;
                 if ((int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()) <= 0 |
                     (int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()) <= 0 |
                     (int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()) >= statechart.state.rect.width |
@@ -405,6 +405,12 @@ public class Editor extends Frame implements ActionListener {
             }
 
             public void mouseReleased(MouseEvent e) {
+       	        if (!mywork) {mywork = true;return;}
+                if (!workable)
+		  {
+		      editor.gui.OkDialog(editor,"Warnung","Statechart kann nicht mehr bearbeitet werden!");
+		      return;
+		  }
                 if ((int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()) <= 0 |
                     (int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()) <= 0 |
                     (int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()) >= statechart.state.rect.width |
@@ -414,7 +420,10 @@ public class Editor extends Frame implements ActionListener {
                 if (status.equals("And_Zustand erzeugen"))
                     EditorUtils.andStateMouseReleased(e, editor);
                 if (status.equals("Zustand loeschen"))
+                {
                     EditorUtils.deleteStateMouseReleased(e, editor);
+        		    repaint();
+		        }
                 if (status.equals("Zustand verschieben"))
                     EditorUtils.dragStateMouseReleased(e, editor);
                 if (status.equals("Verschieben"))
@@ -426,6 +435,8 @@ public class Editor extends Frame implements ActionListener {
             }
             public void mouseClicked(MouseEvent e)
             {
+	        if (!mywork) {mywork = true;return;}
+                if (!workable) return;
                 if ((int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()) <= 0 |
                     (int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()) <= 0 |
                     (int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()) >= statechart.state.rect.width |
@@ -481,6 +492,8 @@ public class Editor extends Frame implements ActionListener {
         addMouseMotionListener(new MouseMotionAdapter() {
 
             public void mouseMoved(MouseEvent e) {
+	        if (!mywork) {mywork = true;return;}
+                if (!workable) return;
                 if ((int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()) <= 0 |
                     (int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()) <= 0 |
                     (int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()) >= statechart.state.rect.width |
@@ -503,10 +516,12 @@ public class Editor extends Frame implements ActionListener {
                 {
                     Methoden_0.markConMouseMoved((int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()),(int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()),editor);
                 }
-	        Methoden_1.showFullTransName((int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()),(int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()),editor);
+      	        Methoden_1.showFullTransName((int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()),(int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()),editor);
             }
             public void mouseDragged(MouseEvent e)
             {
+	        if (!mywork) {mywork = true;return;}
+                if (!workable) return;
                 if ((int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()) <= 0 |
                     (int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()) <= 0 |
                     (int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()) >= statechart.state.rect.width |
@@ -519,7 +534,7 @@ public class Editor extends Frame implements ActionListener {
         });
 
         addWindowListener(new WindowAdapter() {
-	  /*  
+	  /*
             public void windowClosing(WindowEvent e) {
 	 	gui.editorClosing();
 		// Window window = e.getWindow();
@@ -581,6 +596,7 @@ public class Editor extends Frame implements ActionListener {
     */
     public static void Dispose() {
       Methoden_1.setFactor(100);
+      mywork = false;
       new highlightObject(true);
       edRef.dispose();
     }
@@ -589,15 +605,16 @@ public class Editor extends Frame implements ActionListener {
     /**
        @param boolean b -
     */
-    public static boolean work(boolean b) {
+    public static boolean  work(boolean b) {
+        workable = b;
 	return b;
     }
 
 
     /**
      */
-    public static void work() {
-
+    public static boolean work() {
+        return workable;
     }
 
     private void setAllDeselected(CheckboxMenuItem c0,CheckboxMenuItem c1,CheckboxMenuItem c2,CheckboxMenuItem c3,CheckboxMenuItem c4,CheckboxMenuItem c5,CheckboxMenuItem c6,CheckboxMenuItem c7)

@@ -11,6 +11,7 @@ class Methoden_0
     private static Point mMoved = new Point(0,0); //enthaehlt absolute Koordinate
     private static Point conpos = new Point(0,0);
     private static CPoint[] pointsTr = new CPoint[50]; //Array fuer addTransitionmouse-Clicked und -Moved
+    private static int nr = 0;
 
 
     protected static void transitionMouseClicked(MouseEvent e,int x,int y,Editor editor)
@@ -44,6 +45,7 @@ class Methoden_0
         if (s != editor.statechart.state)
         {
             r = abs(editor,s);
+            if (r == null) return;
             if (s instanceof Or_State)
             {
                 if ((Betrag(x,r.x)<20) || (Betrag(x,r.x+r.width) < 20) ||
@@ -83,10 +85,12 @@ class Methoden_0
                 CPoint[] P = new CPoint[j+1];
                 s = EditorUtils.getInnermostStateOf(pointsTr[0].x,pointsTr[0].y,editor);
                 r = abs(editor,s);
+                if (r == null) return;
                 if (s instanceof Basic_State)
                 {
                     s = EditorUtils.getInnermostStateOf(r.x-1,r.y-1,editor);
                     r = abs(editor,s);
+                    if (r == null) return;
                 }
 
                 Connector con1 = getConEnvOf(pointsTr[0].x,pointsTr[0].y,editor);
@@ -145,8 +149,9 @@ class Methoden_0
         if (EditorUtils.getInnermostStateOf(x,y,editor) instanceof Basic_State) return;
         State s = getFirstOrStateOf(x,y,editor);
         Rectangle r = abs(editor,s);
+        if (r == null) return;
         Or_State os = (Or_State)s;
-        Connector dummy = new Connector(new Conname("...Connector"),new CPoint(x-r.x,y-r.y));
+        Connector dummy = new Connector(new Conname("...Connector"+(nr++)),new CPoint(x-r.x,y-r.y));
         ConnectorList clist = new ConnectorList(dummy,os.connectors);
         os.connectors = clist;
         editor.setChangedStatechart(true);
@@ -172,6 +177,7 @@ class Methoden_0
         if (s != editor.statechart.state)
         {
             r = abs(editor,s);
+            if (r == null) return;
             markTransitionMouseMoved(s,x,y,editor);
             clear = false;
         }
@@ -199,6 +205,7 @@ class Methoden_0
     {
         int rad = 5;
         CRectangle r = abs(editor,state);
+        if (r == null) return;
         Graphics g = editor.getGraphics();
         g.setColor(editor.getBackground());
         g.drawOval((int)((double)mMoved.x*Methoden_1.getFactor())-editor.scrollX,
@@ -276,6 +283,7 @@ class Methoden_0
         {
             State s = getFirstOrStateOf(x,y,editor);
             Rectangle r = abs(editor,s);
+            if (r == null) return;
             if (editor.gui.getConnectorcolor() != Color.blue)
                 g.setColor(Color.blue);
             else g.setColor(Color.red);
@@ -306,6 +314,7 @@ class Methoden_0
                     Or_State os = (Or_State)help.head;
                     if (os.trs == null) {help = help.tail;continue;}
                     r = abs(editor,help.head);
+                    if (r == null) return;
                     drawTransition(os.trs,r.x,r.y,editor.gui.getTransitioncolor(),editor);
                 }
                 help = help.tail;
@@ -392,39 +401,16 @@ class Methoden_0
 	    double[] px = new double[p1.length+1];
 	    double[] py = new double[p1.length+1];
 	    int m=p1.length,i=0,count = 0,k=0;
-	    if (m==2) m = 3;
         double t;
         Point[] points = new Point[p1.length*50];
 	    for (t = 0; t <= 1; t+=0.1)
         {
             for(i=0;i<=p1.length-1;i++){
-                if ( i == 1 & p1.length == 2)
-                {
-                    if (Betrag(p1[0].x,p1[1].x) < 5 | Betrag(p1[0].y,p1[1].y) < 5)
-                    {
-                        px[1] = (double)((p1[0].x+p1[1].x)/2+x);
-                        py[1] = (double)((p1[0].y+p1[1].y)/2+y);
-                        px[2] = (double)(p1[1].x+x);
-                        py[2] = (double)(p1[1].y+y);
-                    }
-                    else
-                    {
-                        px[1] = (double)((p1[0].x+p1[1].x)/2+x);
-                        if (p1[0].x < p1[1].x)
-                            py[1] = (double)(p1[1].y+y);//0].y+neu+y);
-                        else py[1] = (double)(p1[0].y+y);
-                        px[2] = (double)(p1[1].x+x);
-                        py[2] = (double)(p1[1].y+y);
-                    }
-                    break;
-
-                }
       	        px[i] = (double)p1[i].x+x;
   	            py[i] = (double)p1[i].y+y;
   	        }
 
             m = p1.length;
-            if (m == 2) m = 3;
             while (m >= 0)
             {
                 for (int j=0;j<(m-1);j++)
@@ -459,6 +445,7 @@ class Methoden_0
                     Or_State os = (Or_State)help.head;
                     if (os.connectors == null) {help = help.tail;continue;}
                     r = abs(editor,help.head);
+                    if (r == null) return;
                     drawConnectors(os.connectors,r.x,r.y,editor.gui.getConnectorcolor(),editor);
                 }
                 help = help.tail;
@@ -614,6 +601,7 @@ class Methoden_0
             StateList help = list;
             while (help != null) {
                 r = abs(editor,help.head);
+                if (r == null) return;
                 if (help.head.name.name.length() > 2)
                 {
                     if((help.head.name.name.charAt(0)=='.') & (help.head.name.name.charAt(1)=='.') &
@@ -675,6 +663,7 @@ class Methoden_0
                 if (help.head instanceof Or_State)
                 {
                     r = abs(editor,help.head);
+                    if (r == null) return;
                     clist = ((Or_State)(help.head)).connectors;
                     while (clist != null)
                     {
@@ -728,6 +717,7 @@ class Methoden_0
                 if (help.head instanceof Or_State)
                 {
                     r = abs(editor,help.head);
+                    if (r == null) return;
                     tlist = ((Or_State)(help.head)).trs;
                     while (tlist != null)
                     {
@@ -761,10 +751,13 @@ class Methoden_0
         // liefert das Rectangle von state mit absoluten Koordinaten
         // Achtung: state muá im Baum h„ngen. Ist dies nicht der Fall
         // so ist die andere abs-Methode zu benutzen!
-
+      
+        if (state == null) return null;
         if (state.equals(editor.statechart.state))
             return state.rect;
         State father = EditorUtils.getFatherOf(state, editor);
+
+        if (father == null) return null;
 
         if (father.equals(editor.statechart.state))
             return state.rect;
@@ -783,10 +776,12 @@ class Methoden_0
         State s = EditorUtils.getInnermostStateOf(x,y,editor);
         if (s.equals(editor.statechart.state)) return s;
         Rectangle r = abs(editor,s);
+        if (r == null) return null;
         while (!(s instanceof Or_State))
         {
             s = EditorUtils.getInnermostStateOf(r.x-1,r.y-1,editor);
             r = abs(editor,s);
+            if (r == null) return null;
         }
         return s;
     }
@@ -798,7 +793,9 @@ class Methoden_0
     protected static Connector getConEnvOf(int x, int y, Editor editor)
     {
         State s = getFirstOrStateOf(x,y,editor);
+	if (!(s instanceof Or_State) | s == null) return null;
         Rectangle r = abs(editor,s), rectcon = new Rectangle(x-5,y-5,10,10); //Connector hat durchmesser 10
+        if (r == null) return null;
         Or_State os = (Or_State)s;
         ConnectorList list = os.connectors;
         while (list != null)
@@ -855,17 +852,20 @@ class Methoden_0
     private static void drawDefaultState(State state, Editor editor)
     {
         Rectangle r = abs(editor,state);
-	Point[] p = new Point[2];
-	if (!(state instanceof And_State))
-	  {
-	    p[0] = new Point(-15,0);
-	    p[1] = new Point(0,15);
-	  }
-	else
-	  {
-	    p[0] = new Point(-30,0);
-	    p[1] = new Point(0,30);
-	  }
+        if (r == null) return;
+    	Point[] p = new Point[3];
+	    if (!(state instanceof And_State))
+        {
+    	    p[0] = new Point(-15,0);
+	        p[1] = new Point(-15,15);
+	        p[2] = new Point(0,15);
+        }
+    	else
+	    {
+	        p[0] = new Point(-30,0);
+	        p[1] = new Point(-30,30);
+    	    p[2] = new Point(0,30);
+	    }
         bezier(p,r.x,r.y,editor.gui.getStatecolor(),editor);
     }
 
@@ -914,7 +914,7 @@ class Methoden_0
         if (obj instanceof Or_State)
         {
             Rectangle r = abs(editor, (Or_State)obj);
-            if (r == null) return;
+            if (r == null | col == null) return;
             EditorUtils.show(r,col,editor,editor.getGraphics());
         }
         if (obj instanceof And_State)
@@ -953,6 +953,7 @@ class Methoden_0
                         if (trlist.head.equals(tr))
                         {
                             r = abs(editor,help.head);
+                            if (r == null) return;
                             drawTransition(new TrList(tr,null),r.x,r.y,col,editor);
                         }
                         trlist = trlist.tail;
@@ -984,6 +985,7 @@ class Methoden_0
                         if(conlist.head.equals(con))
                         {
                             r = abs(editor,help.head);
+                            if (r == null) return;
                             drawConnectors(os.connectors,r.x,r.y,col,editor);
                         }
                         conlist = conlist.tail;

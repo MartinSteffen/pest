@@ -6,8 +6,8 @@ import gui.*;
 import tesc1.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.*;
 import java.util.*;
+import java.io.*;
 
 class ObjectList
 {
@@ -932,25 +932,28 @@ class Methoden_1
 
     protected static void showFullTransName(int x, int y, Editor editor)
     {
-        if (editor.gui == null) return;
+        if (editor == null | editor.gui == null) return;
         StateList list = editor.stateList;
         TrList tlist = null;
-        tlist = ((Or_State)(editor.statechart.state)).trs;
-        Rectangle r = editor.statechart.state.rect;
-        Rectangle rect = new Rectangle();
-        Graphics g = editor.getGraphics();
-        g.setColor(editor.gui.getTransitioncolor());
-        int groesse = (int)(Methoden_1.getFactor()*100);
-        if (editor.fontsize != 0) g.setFont(new Font("Serif",Font.PLAIN,editor.fontsize));
-        else{
-        if (groesse < 25) g.setFont(new Font("Serif",Font.PLAIN,8));
-        else if (groesse < 50) g.setFont(new Font("Serif",Font.PLAIN,10));
-        else if (groesse < 100) g.setFont(new Font("Serif",Font.PLAIN,14));
-        else if (groesse < 200) g.setFont(new Font("Serif",Font.PLAIN,16));
-        else if (groesse < 300) g.setFont(new Font("Serif",Font.PLAIN,18));
-        else if (groesse <= 400) g.setFont(new Font("Serif",Font.PLAIN,20));
-        else if (groesse > 400) g.setFont(new Font("Serif",Font.PLAIN,22));
-        }
+	if (editor.statechart.state instanceof Or_State)
+	  {
+	    tlist = ((Or_State)(editor.statechart.state)).trs;
+	  }
+	    Rectangle r = editor.statechart.state.rect;
+	    Rectangle rect = new Rectangle();
+	    Graphics g = editor.getGraphics();
+	    g.setColor(editor.gui.getTransitioncolor());
+	    int groesse = (int)(Methoden_1.getFactor()*100);
+	    if (editor.fontsize != 0) g.setFont(new Font("Serif",Font.PLAIN,editor.fontsize));
+	    else{
+	      if (groesse < 25) g.setFont(new Font("Serif",Font.PLAIN,8));
+	      else if (groesse < 50) g.setFont(new Font("Serif",Font.PLAIN,10));
+	      else if (groesse < 100) g.setFont(new Font("Serif",Font.PLAIN,14));
+	      else if (groesse < 200) g.setFont(new Font("Serif",Font.PLAIN,16));
+	      else if (groesse < 300) g.setFont(new Font("Serif",Font.PLAIN,18));
+	      else if (groesse <= 400) g.setFont(new Font("Serif",Font.PLAIN,20));
+	      else if (groesse > 400) g.setFont(new Font("Serif",Font.PLAIN,22));
+	    }
         while(tlist != null)
         {
             if (tlist.head.label.position != null){

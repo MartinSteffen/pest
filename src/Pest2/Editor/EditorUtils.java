@@ -538,7 +538,7 @@ public class EditorUtils {
                             -editor.scrollY,
                         (int)((double)(absRect.width)*Methoden_1.getFactor()),
                         (int)((double)(absRect.height)*Methoden_1.getFactor()),10,10);
-    }        
+    }
 
 // **************************************************************************
 
@@ -791,6 +791,8 @@ public class EditorUtils {
         if (state.equals(editor.statechart.state))
             return state.rect;
         State father = getFatherOf(state, editor);
+//neu!
+        if (father == null) return null;
 
         if (father.equals(editor.statechart.state))
             return state.rect;
@@ -859,7 +861,7 @@ public class EditorUtils {
 
     public static void setPathList(Statechart statechart, Editor editor) {
 
-        statechart.cnames = null;        
+        statechart.cnames = null;
         StateList list    = editor.stateList;
         Path path         = null;
         Path help         = null;
@@ -900,7 +902,7 @@ public class EditorUtils {
         StateList list = null;
 
         if (!inState.equals(editor.statechart.state)) {
-            if (getFatherOf(inState,editor) instanceof And_State) 
+            if (getFatherOf(inState,editor) instanceof And_State)
                  list = getSubStateList(getFatherOf(inState, editor));
             else list = getSubStateList(inState);
             while (list != null) {
@@ -975,7 +977,7 @@ public class EditorUtils {
         }
         editor.stateList = getSubStateList(editor.statechart.state);
         setPathList(editor.statechart, editor);
-        showStates(editor);        
+        showStates(editor);
     }
 
 // **************************************************************************
@@ -996,12 +998,12 @@ public class EditorUtils {
         StatenameList help2 = null;
 
         if (in instanceof Or_State) {
-            if (((Or_State) in).substates.head.equals(delState)) 
+            if (((Or_State) in).substates.head.equals(delState))
                 ((Or_State) in).substates = ((Or_State) in).substates.tail;
             else {
                 help = ((Or_State) in).substates;
                 while (help.tail != null) {
-                    if (help.tail.head.equals(delState)) 
+                    if (help.tail.head.equals(delState))
                          help.tail = help.tail.tail;
                     else help = help.tail;
                 }
@@ -1012,13 +1014,13 @@ public class EditorUtils {
               else {
                   help2 = ((Or_State) in).defaults;
                   while (help2.tail != null) {
-                      if (help2.tail.head.equals(delState.name)) 
+                      if (help2.tail.head.equals(delState.name))
                            help2.tail = help2.tail.tail;
                       else help2 = help2.tail;
                   }
               }
         }
-        if (in instanceof And_State) 
+        if (in instanceof And_State)
             if (((And_State) in).substates.head.equals(delState))
                 ((And_State) in).substates = ((And_State) in).substates.tail;
             else {
@@ -1030,7 +1032,7 @@ public class EditorUtils {
                 }
             }
         editor.stateList = getSubStateList(editor.statechart.state);
-    }    
+    }
 
 // **************************************************************************
 
@@ -1075,7 +1077,7 @@ public class EditorUtils {
                     .equals(abs(editor,list.head)))
               & (!(abs(editor,editor.activeState).intersection(abs(editor,list.head))
                     .equals(abs(editor,editor.activeState))))
-              & (abs(editor,editor.activeState).intersects(abs(editor,list.head)))) 
+              & (abs(editor,editor.activeState).intersects(abs(editor,list.head))))
 
                  editor.actionOk = false;
             list = list.tail;
@@ -1140,7 +1142,7 @@ public class EditorUtils {
                 }
             }
             help = help.tail;
-        }                    
+        }
         editor.repaint();
     }}
 
