@@ -2,7 +2,7 @@ package Check;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: ErrorAndWarningCodes.java,v 1.8 1998-12-08 14:24:59 swtech11 Exp $
+ *  @version  $Id: ErrorAndWarningCodes.java,v 1.9 1998-12-08 20:49:12 swtech11 Exp $
  */
 class ErrorAndWarningCodes {
   ErrorAndWarningCodes() {
@@ -17,10 +17,10 @@ class ErrorAndWarningCodes {
       case   3: { _s = "Der State Check funktioniert noch nicht einwandfrei."; break;  }
       case   4: { _s = "Der Transition Check funktioniert noch nicht einwandfrei."; break;  }
       case   5: { _s = "Der BVars Check funktioniert noch nicht einwandfrei."; break;  }
-      case   6: { _s = "Der Check auf Kreiheitfreiheit funktioniert noch nicht einwandfrei."; break;  }
+      case   6: { _s = "Der Check auf Fehler der Programmierer funktioniert noch nicht einwandfrei."; break;  }
 
-      case  10: { _s = "Fataler Fehler: Kreise in den Listen der States"; break;  }
-      case  11: { _s = "Fataler Fehler: Kreise in den Listen der Transitionen"; break;  }
+      case  10: { _s = "Fataler Fehler: EIN Objekt des Types State wird mehrfach referenziert"; break;  }
+      case  11: { _s = "Fataler Fehler: EIN Objekt des Types Transition wird mehrfach referenziert"; break;  }
 
       case 100: {_s = "Doppelte Definition von BVar"; break; }
       case 101: {_s = "Keine Deklaration von BVar"; break; }

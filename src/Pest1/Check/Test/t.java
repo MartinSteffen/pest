@@ -1,11 +1,12 @@
 import Check.*;
 import Absyn.*;
+import Util.*;
 
 // zum Testen ins Haupdirectory der PEST kopieren
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: t.java,v 1.4 1998-12-08 14:25:14 swtech11 Exp $
+ *  @version  $Id: t.java,v 1.5 1998-12-08 20:48:18 swtech11 Exp $
  */
 public class t {
 
@@ -54,14 +55,15 @@ public class t {
         t2_Example t = new t2_Example();
         sc = t.getExample_m();
       }
-      /*if (argv[0].equalsIgnoreCase("m2")) {
+      if (argv[0].equalsIgnoreCase("m2")) {
         t2_Example t = new t2_Example();
         sc = t.getExample_m2();
-	}*/
-      /*if (argv[0].equalsIgnoreCase("m3")) {
+	    }
+      if (argv[0].equalsIgnoreCase("m3")) {
         t2_Example t = new t2_Example();
         sc = t.getExample_m3();
-	}*/
+	    }
+
       // Check auswählen
       if (argv.length >= 2) {
         if (argv[1].equalsIgnoreCase("a")) { ok = mc.checkModel(sc); }
@@ -73,6 +75,10 @@ public class t {
         if (argv[1].equalsIgnoreCase("be")) { ok = (mc.checkBVars(sc) & mc.checkEvents(sc)); }
       }
       else { ok = mc.checkModel(sc); } // kein Check ausgewählt, also alles
+
+      // PrettyPrint pp = new PrettyPrint();
+      // pp.start(sc);
+
       System.out.println("Fehlermeldungen ( " + mc.getErrorNumber() +  " Stueck ):");
       if (mc.getErrorNumber()>0) {
         for (int i=1;(i<=mc.getErrorNumber());i++) {

@@ -5,14 +5,15 @@ import Absyn.*;
 
 /**
  * <b>Syntax Check für Statecharts</b>
- * <br><a href="#Codes">Codes von Fehlern und Warnungen beim Syntax Check</a> 
- * @author   Daniel Wendorff und Magnus Stiller
- * @version  $Id: modelCheck.java,v 1.9 1998-12-08 00:08:53 swtech11 Exp $
+ * <br><a href="#Codes">Codes von Fehlern und Warnungen beim Syntax Check</a>
+ * @author   Daniel Wendorff und Magnus Stiller<br><a href="mailto:swtech11@informatik.uni-kiel.de">eMail an uns</a>
+ * @version  $Id: modelCheck.java,v 1.10 1998-12-08 20:49:13 swtech11 Exp $
  */
 public class modelCheck {
   private modelCheckMsg mcm;
   private boolean warning = true;
   private boolean outputGUI = true;
+  private boolean donePI = false;
 
 /**
  * Constructor des Syntax Checkers,
@@ -46,8 +47,13 @@ public class modelCheck {
  * und gibt <b>true</b> zurück, falls keine Fehler aufgetreten sind, sonst <b>false</b>.
  */
   public boolean checkEvents(Statechart sc) {
-    testEvents te = new testEvents(sc, mcm);
-    return te.check();
+    boolean pi = true;
+    if (donePI == false) { pi = checkPI(sc); }
+    if (pi == true) {
+      testEvents te = new testEvents(sc, mcm);
+      pi = te.check();
+    }
+    return pi;
   }
 
 /**
@@ -55,8 +61,13 @@ public class modelCheck {
  * und gibt <b>true</b> zurück, falls keine Fehler aufgetreten sind, sonst <b>false</b>.
  */
   public boolean checkStates(Statechart sc) {
-    testStates ts = new testStates(sc, mcm);
-    return ts.check();
+    boolean pi = true;
+    if (donePI == false) { pi = checkPI(sc); }
+    if (pi == true) {
+      testStates ts = new testStates(sc, mcm);
+      pi = ts.check();
+    }  
+    return pi;
   }
 
 /**
@@ -64,8 +75,13 @@ public class modelCheck {
  * und gibt <b>true</b> zurück, falls keine Fehler aufgetreten sind, sonst <b>false</b>.
  */
   public boolean checkTransitions(Statechart sc) {
-    testTransitions tt = new testTransitions(sc,mcm);
-    return tt.check();
+    boolean pi = true;
+    if (donePI == false) { pi = checkPI(sc); }
+    if (pi == true) {
+      testTransitions tt = new testTransitions(sc,mcm);
+      pi = tt.check();
+    }
+    return pi;
   }
 
 /**
@@ -73,8 +89,13 @@ public class modelCheck {
  * und gibt <b>true</b> zurück, falls keine Fehler aufgetreten sind, sonst <b>false</b>.
  */
   public boolean checkBVars(Statechart sc) {
-    testBVars tb = new testBVars(sc, mcm);
-    return tb.check();
+    boolean pi = true;
+    if (donePI == false) { pi = checkPI(sc); }
+    if (pi == true) {
+      testBVars tb = new testBVars(sc, mcm);
+      pi = tb.check();
+    }
+    return pi;
   }
 
 /**
@@ -82,8 +103,9 @@ public class modelCheck {
  * und gibt <b>true</b> zurück, falls keine Fehler aufgetreten sind, sonst <b>false</b>.
  */
   public boolean checkPI(Statechart sc) {
-    testPI pi = new testPI(sc, mcm);
-    return pi.check();
+    testPI tpi = new testPI(sc, mcm);
+    donePI=true;
+    return tpi.check();
   }
 
 /**
