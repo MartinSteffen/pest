@@ -3,7 +3,7 @@ import Absyn.*;
 /**
  *  Beispiele für Statecharts mit fatalen Fehlern
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: tf_Example.java,v 1.1 1998-12-10 22:23:03 swtech11 Exp $
+ *  @version  $Id: tf_Example.java,v 1.2 1998-12-13 21:02:54 swtech11 Exp $
  */
 public class tf_Example {
 
@@ -189,6 +189,144 @@ public class tf_Example {
     return new Statechart (null, null, null, SUD);
   }
 
+  public static Statechart getExample_f6() {
+
+    Path sudp = new Path ("SUD", null);
+    Path p1p  = new Path ("P1", sudp);
+    Path p2p  = new Path ("P2", sudp);
+    Path p3p  = new Path ("P3", sudp);
+    Path q1p  = new Path ("Q1", p3p);
+    Path q2p  = new Path ("Q2", p3p);
+    Path r1p  = new Path ("R1", q2p);
+    Path r2p  = new Path ("R2", q2p);
+    Path s1p  = new Path ("S1", r1p);
+    Path s2p  = new Path ("S2", r1p);
+    Path t1p  = new Path ("T0", r2p);
+    Path t2p  = new Path ("T2", r2p);
+
+
+    PathList pt =
+    new PathList (sudp,
+      new PathList (p1p,
+       new PathList (p2p,
+           new PathList (q1p,
+             new PathList (q2p,
+               new PathList (r1p,
+                   new PathList (s1p,
+	                  new PathList (s2p,
+                       new PathList (t1p, null)))))))));
+
+    pt.tail.tail.tail = pt;
+
+    return new Statechart (null, null, pt, null);
+  }
+
+  public static Statechart getExample_f7() {
+
+    Path sudp = new Path ("SUD", null);
+    Path p1p  = new Path ("P1", sudp);
+    Path p2p  = new Path ("P2", sudp);
+    Path p3p  = new Path ("P3", sudp);
+    Path q1p  = new Path ("Q1", p3p);
+    Path q2p  = new Path ("Q2", p3p);
+    Path r1p  = new Path ("R1", q2p);
+    Path r2p  = new Path ("R2", q2p);
+    Path s1p  = new Path ("S1", r1p);
+    Path s2p  = new Path ("S2", r1p);
+    Path t1p  = new Path ("T0", r2p);
+    Path t2p  = new Path ("T2", r2p);
+
+
+    Path _a = new Path("A",null);
+    Path _b = new Path("B",_a);
+    Path _c = new Path("C",_b);
+    _c.tail.tail=_c;
+
+    PathList pt =
+    new PathList (sudp,
+      new PathList (p1p,
+       new PathList (_c,
+           new PathList (q1p,
+             new PathList (q2p,
+               new PathList (r1p,
+                   new PathList (s1p,
+	                  new PathList (s2p,
+                       new PathList (t1p, null)))))))));
+
+    return new Statechart (null, null, pt, null);
+  }
+
+  public static Statechart getExample_f8() {
+
+    SEvent A = new SEvent ("A");
+    SEvent B = new SEvent ("B");
+    SEvent C = new SEvent ("o");
+    SEvent D = new SEvent ("D");
+    SEvent G = new SEvent ("G");
+
+    SEventList elist =
+      new SEventList (A,
+        new SEventList (B,
+            new SEventList (D,
+              new SEventList (G,null))));
+    elist.tail.tail=elist;
+
+
+    return new Statechart (elist, null, null, null);
+  }
+
+  public static Statechart getExample_f9() {
+
+    SEvent A = new SEvent ("A");
+    SEvent B = new SEvent ("B");
+    SEvent C = new SEvent ("o");
+    SEvent D = new SEvent ("D");
+    SEvent G = new SEvent ("G");
+
+    SEventList elist =
+      new SEventList (A,
+        new SEventList (B,
+            new SEventList (A,
+              new SEventList (G,null))));
+
+    return new Statechart (elist, null, null, null);
+  }
+
+  public static Statechart getExample_f10() {
+
+    Bvar a3 = new Bvar ("A");
+    Bvar a4 = new Bvar ("A");
+    Bvar a5 = new Bvar ("B");
+    Bvar a6 = new Bvar ("B");
+    Bvar a7 = new Bvar ("F");
+
+    BvarList blist =
+      new BvarList (a3,
+        new BvarList (a4,
+          new BvarList (a6,
+            new BvarList (a5,null))));
+
+    blist.tail.tail=blist;
+
+    return new Statechart (null, blist, null, null);
+  }
+
+  public static Statechart getExample_f11() {
+
+    Bvar a3 = new Bvar ("A");
+    Bvar a4 = new Bvar ("A");
+    Bvar a5 = new Bvar ("B");
+    Bvar a6 = new Bvar ("B");
+    Bvar a7 = new Bvar ("F");
+
+    BvarList blist =
+      new BvarList (a3,
+        new BvarList (a4,
+          new BvarList (a6,
+            new BvarList (a3,null))));
+
+    return new Statechart (null, blist, null, null);
+  }
 
 }
 

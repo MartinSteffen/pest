@@ -2,7 +2,7 @@ package Check;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: ErrorAndWarningCodes.java,v 1.11 1998-12-10 22:24:06 swtech11 Exp $
+ *  @version  $Id: ErrorAndWarningCodes.java,v 1.12 1998-12-13 21:03:48 swtech11 Exp $
  */
 class ErrorAndWarningCodes {
   ErrorAndWarningCodes() {
@@ -25,7 +25,11 @@ class ErrorAndWarningCodes {
       case  13: { _s = "Fataler Fehler: EIN Objekt des Types Transition wird mehrfach referenziert."; break;  }
       case  14: { _s = "Fataler Fehler: EIN Objekt des Types TransitionList wird mehrfach referenziert."; break;  }
       case  15: { _s = "Fataler Fehler: EIN Objekt des Types PathList wird mehrfach referenziert."; break;  }
-      case  16: { _s = "Fataler Fehler: EIN Objekt des Types Path wird mehrfach referenziert."; break;  }
+      case  16: { _s = "Fataler Fehler: EIN Objekt des Types Path wird in EINER PathList mehrfach referenziert."; break;  }
+      case  17: { _s = "Fataler Fehler: EIN Objekt des Types EventList wird mehrfach referenziert."; break;  }
+      case  18: { _s = "Fataler Fehler: EIN Objekt des Types Event wird in der EventList mehrfach referenziert."; break;  }
+      case  19: { _s = "Fataler Fehler: EIN Objekt des Types BVarList wird mehrfach referenziert."; break;  }
+      case  20: { _s = "Fataler Fehler: EIN Objekt des Types BVar wird in der BVarList mehrfach referenziert."; break;  }
       case  99: { _s = "Aufgrund eines fatalen Fehlers wird der Syntax Check abgebrochen."; break;  }
 
       case 100: {_s = "Doppelte Definition von BVar"; break; }

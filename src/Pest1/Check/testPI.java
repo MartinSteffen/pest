@@ -4,8 +4,13 @@ import Absyn.*;
 import java.util.*;
 
 /**
+ *  Test auf doppelte Referenzierung:
+ *  es fehlt auf jeden Fall noch der Check
+ *  auf mehrfach referenzierte Koordinatenangaben
+ *  und Label der Transitionen
+ *
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: testPI.java,v 1.2 1998-12-10 22:24:08 swtech11 Exp $
+ *  @version  $Id: testPI.java,v 1.3 1998-12-13 21:03:51 swtech11 Exp $
  */
 class testPI  {
   modelCheckMsg msg = new modelCheckMsg();
@@ -19,6 +24,14 @@ class testPI  {
   Vector tvn = new Vector(); // Vektor um den Pfad der Transitions zu speichern
   Vector tlv = new Vector(); // Vektor um Transitions zu speichern
   Vector tlvn= new Vector(); // Vektor um den Pfad der Transitions zu speichern
+  Vector plv = new Vector(); // Vektor um PathList zu speichern
+  Vector pv  = new Vector(); // Vektor um Path zu speichern
+  Vector elv = new Vector(); // Vektor um EventList zu speichern
+  Vector ev  = new Vector(); // Vektor um Event zu speichern
+  Vector blv = new Vector(); // Vektor um BVarList zu speichern
+  Vector bv  = new Vector(); // Vektor um BVar zu speichern
+
+
 
 
   testPI(Statechart _s, modelCheckMsg _m) {
@@ -28,8 +41,12 @@ class testPI  {
 
   boolean check() {
     try {
+      // BVars testen
+      if (sc.bvars != null) { controlBVarList(sc.bvars); }
+      // Event testen
+      if (sc.events != null) { controlEventList(sc.events); }
       // Pfade testen
-
+      if (sc.cnames != null) { controlPathList(sc.cnames); }
       // States und Transitions auf doppelte Referenzierung testen
       if (sc.state instanceof Or_State) {controlOrState ((Or_State)sc.state, null, ""); }
       if (sc.state instanceof And_State) {controlAndState ((And_State)sc.state, null, ""); }
@@ -42,12 +59,94 @@ class testPI  {
     return (msg.getErrorNumber()==0);
   }
 
-  // void Pfadliste
+  // BVars testen
+  void controlBVarList(BvarList bl) throws PIException {
+    if (blv.size()>0) {
+      if (blv.contains(bl)) {
+        FatalMsg = "in den BVarList der Statechart";
+        throw (new PIException(19));
+      }
+      else {
+        blv.addElement(bl);
+      }
+    }
+    else { blv.addElement(bl); }
+    if (bl.head != null) {
+      if (bv.size()>0) {
+        if (bv.contains(bl.head)) {
+          FatalMsg = "in den BVars der Statechart";
+          throw (new PIException(20));
+        }
+        else {
+          bv.addElement(bl.head);
+        }
+      }
+      else { bv.addElement(bl.head); }
+    }
+    if (bl.tail != null) { controlBVarList(bl.tail); }
+  }
 
+  // Event testen
+  void controlEventList(SEventList el) throws PIException {
+    if (elv.size()>0) {
+      if (elv.contains(el)) {
+        FatalMsg = "in den EventList der Statechart";
+        throw (new PIException(17));
+      }
+      else {
+        elv.addElement(el);
+      }
+    }
+    else { elv.addElement(el); }
+    if (el.head != null) {
+      if (ev.size()>0) {
+        if (ev.contains(el.head)) {
+          FatalMsg = "in den Events der Statechart";
+          throw (new PIException(18));
+        }
+        else {
+          ev.addElement(el.head);
+        }
+      }
+      else { ev.addElement(el.head); }
+    }
+    if (el.tail != null) { controlEventList(el.tail); }
+  }
 
+  // Pfade testen
+  void controlPathList(PathList pl) throws PIException {
+    if (plv.size()>0) {
+      if (plv.contains(pl)) {
+        FatalMsg = "in den PathList der Statechart";
+        throw (new PIException(15));
+      }
+      else {
+        plv.addElement(pl);
+      }
+    }
+    else { plv.addElement(pl); }
+    if (pl.head != null) {
+      pv = new Vector();
+      controlPath(pl.head);
+    }
+    if (pl.tail != null) { controlPathList(pl.tail); }
+  }
 
+  void controlPath(Path p) throws PIException {
+    if (pv.size()>0) {
+      if (pv.contains(p.head)) {
+        FatalMsg = "in den Path der Statechart";
+        throw (new PIException(16));
+      }
+      else {
+        pv.addElement(p.head);
+      }
+    }
+    else { pv.addElement(p.head); }
+    if (p.tail != null) { controlPath(p.tail); }
+  }
 
-
+  // States tsten
   void inputState(State _s, String _np, int _ex) throws PIException {
     if (sv.size()>0) {
       int i = sv.indexOf(_s);
