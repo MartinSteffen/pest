@@ -5,7 +5,7 @@
 //
 //
 //   Letzte Aenderung von:  Tobias Kunz
-//                          07.12.1998
+//                          09.01.1998
 //
 // ****************************************************************************
 
@@ -41,12 +41,12 @@ public class ItemWarning {
 
 	/** liefert einen eindeutigen Warnungscode */
 	public int getCode() {
-           return 0;
+    return code;
 	}
 
 	/** liefert eine Fehlerbeschreibung */
 	public String getDescription() {
-	   return "";
+	   return description;
         }
 
 	/** liefert erweiterte Informationen -
@@ -54,12 +54,12 @@ public class ItemWarning {
       aufgetreten ist.
   */
 	public String getPlace() {
-           return "";
+    return place;
 	}
 
   /** liefert komplette Fehlermeldung als String zurueck */
   public String toString() {
-    return Integer.toString(code)+" "+getDescription()+", "+getPlace();
+    return "Warnung: "+Integer.toString(code)+" "+getDescription()+", "+getPlace();
   }
 
 

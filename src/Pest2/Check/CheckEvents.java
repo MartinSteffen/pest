@@ -4,7 +4,7 @@
 //
 //
 //   Letzte Aenderung von:  Tobias Kunz
-//                          21.12.1998
+//                          11.01.1999
 //
 // ****************************************************************************
 
@@ -23,10 +23,12 @@ class CheckEvents {
   SyntaxWarning warning;
   SyntaxError error;
 
-  CheckEvents(Statechart _st) {
+  CheckEvents(Statechart _st, SyntaxError error, SyntaxWarning warning) {
     statechart = _st;
     s = statechart.state;
     path = "";
+    this.error = error;
+    this.warning = warning;
     }
 
   CheckEvents(Statechart _st, State _s, String _path) {
@@ -73,7 +75,7 @@ class CheckEvents {
 
           // Event aus der Transitionsliste wurde nicht gefunden
           if (found == false) {
-            warning.addWarning(new ItemWarning(100,"Event ("+g.event.name+") nicht gefunden", path));
+            error.addError(new ItemError(100,"Event ("+g.event.name+") nicht gefunden", path));
             //System.out.println(path+"Event("+g.event.name+") nicht gefunden");
             ok = false;
             }
@@ -91,7 +93,7 @@ class CheckEvents {
 
           // Event aus der Transitionsliste wurde nicht gefunden
           if (found == false) {
-            warning.addWarning(new ItemWarning(100,"Event ("+a.event.name+") nicht gefunden", path));
+            error.addError(new ItemError(100,"Event ("+a.event.name+") nicht gefunden", path));
             //System.out.println(path+"Event("+a.event.name+") nicht gefunden");
             ok = false;
             }

@@ -5,7 +5,7 @@
 //
 //
 //   Letzte Aenderung von:  Tobias Kunz
-//                          07.12.1998
+//                          09.01.1998
 //
 // ****************************************************************************
 
@@ -39,12 +39,12 @@ public class ItemError {
 
 	/** liefert einen eindeutigen Fehlercode */
 	public int getCode() {
-    return 0;
+    return code;
 	}
 
 	/** liefert eine Fehlerbeschreibung */
 	public String getDescription() {
-    return "";
+    return description;
 	}
 
 	/** liefert erweiterte Informationen -
@@ -52,12 +52,12 @@ public class ItemError {
 	    aufgetreten ist.
   */
 	public String getPlace() {
-    return "";
+    return place;
 	}
 
   /** liefert komplette Fehlermeldung als String zurueck */
   public String toString() {
-    return Integer.toString(code)+" "+getDescription()+", "+getPlace();
+    return "Fehler: "+Integer.toString(code)+" "+getDescription()+", "+getPlace();
   }
 
 // ****************************************************************************

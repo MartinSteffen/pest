@@ -4,7 +4,7 @@
 //
 //
 //   Letzte Aenderung von:  Mario Thies
-//                          19.12.1998
+//                          11.01.1999
 //
 // ****************************************************************************
 
@@ -23,8 +23,10 @@ class CheckConnectors {
   SyntaxError error;
 
   // Konstruktor
-  CheckConnectors(Statechart st) {
+  CheckConnectors(Statechart st, SyntaxError error, SyntaxWarning warning) {
     statechart = st;
+    this.warning = warning;
+    this.error = error;
     }
 
   public boolean check() {

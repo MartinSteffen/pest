@@ -5,7 +5,7 @@
 //
 //
 //   Letzte Aenderung von:  Tobias Kunz
-//                          21.12.1998
+//                          11.01.1999
 //
 // ****************************************************************************
 
@@ -72,7 +72,7 @@ SyntaxWarning warning;
         //    d) kein "Target aber eine "Source" -> Fehler
 
         // Fall a)
-        if (trans.source != null) {
+        if (!(trans.source instanceof UNDEFINED)) {
           // suche nach dem "statename" im "state"
           ok = Contains((Statename)trans.source);
 
@@ -82,7 +82,7 @@ SyntaxWarning warning;
         }
 
         // Fall b)
-        if (trans.target != null) {
+        if (!(trans.target instanceof UNDEFINED)) {
           // suche nach dem "statename" im "state"
           ok = Contains((Statename)trans.target);
 
@@ -92,14 +92,14 @@ SyntaxWarning warning;
         }
 
         // Fall c)
-        if ((trans.source == null) && (trans.target != null)) {
+        if ((trans.source instanceof UNDEFINED) && (!(trans.target instanceof UNDEFINED))) {
           // warnung ausgeben
           warning.addWarning(new ItemWarning(101, "Transition hat keine Source, aber ein Target",""));
           ok = false;
         }
 
         // Fall d)
-        if ((trans.source != null) && (trans.target == null)) {
+        if ((!(trans.source instanceof UNDEFINED)) && (trans.target instanceof UNDEFINED)) {
           // fehler ausgeben
           ok = false;
           error.addError(new ItemError(100, "Transition hat kein Target aber eine Source",""));

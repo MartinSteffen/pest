@@ -4,7 +4,7 @@
 //
 //
 //   Letzte Aenderung von:  Tobias Kunz
-//                          12.12.1998
+//                          11.01.1999
 //
 // ****************************************************************************
 
@@ -23,10 +23,12 @@ class CheckBVars {
   SyntaxWarning warning;
   SyntaxError error;
 
-  CheckBVars(Statechart _st) {
+  CheckBVars(Statechart _st, SyntaxError error, SyntaxWarning warning) {
     statechart = _st;
     s = statechart.state;
     path = "";
+    this.warning = warning;
+    this.error = error;
     }
 
   CheckBVars(Statechart _st, State _s, String _path) {
@@ -73,7 +75,7 @@ class CheckBVars {
           // BVar aus der Transitionsliste wurde nicht gefunden
           if (found == false) {
             //System.out.println(path+"BVar("+g.bvar.var+") nicht gefunden");
-            warning.addWarning(new ItemWarning(100,"BVar ("+g.bvar.var+") nicht gefunden", path));
+            error.addError(new ItemError(100,"BVar ("+g.bvar.var+") nicht gefunden", path));
             ok = false;
             }
           }
@@ -94,7 +96,7 @@ class CheckBVars {
           // Event aus der Transitionsliste wurde nicht gefunden
           if (found == false) {
             //System.out.println(path+"BVar("+ba.ass.blhs.var+") nicht gefunden");
-            warning.addWarning(new ItemWarning(100,"BVar ("+ba.ass.blhs.var+") nicht gefunden", path));
+            error.addError(new ItemError(100,"BVar ("+ba.ass.blhs.var+") nicht gefunden", path));
             ok = false;
             }
           }
