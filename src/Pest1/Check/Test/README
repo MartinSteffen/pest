@@ -1,0 +1,13 @@
+README Datei der Testergebnisse von PEST1/check
+
+Autoren: Magnus Stiller und Daniel Wendorff
+@version  $Id: README,v 1.1 1999-02-09 13:45:00 swtech11 Exp $
+
+Um unsere Testergebnisse reproduzieren zu koennen, muss t.java kompiliert werden. t.java benoetig die Dateien t2_Example.java und absyn/Example.java. Nach dem Starten von t.java werden folgende Statecharts produziert: BeispielAbsSyn.sc, Daniel1.sc, Daniel2.sc, Magnus1.sc, Magnus2.sc und Magnus3.sc.
+
+Diese Statecharts koennen mit PEST geoeffnet und gecheckt werden. Sie duerfen im Allgemeinen nicht mit anderen Tools von PEST bearbeitet werden, da viele relevante Informationen, wie z.B. Koordinaten nicht vorhanden sind. Die Fehler- und Warnmeldungen von X.sc stehen zum Vergleich in X.txt. 
+
+Beim Testen des Checkers will man auch seltene Faelle und Beispiele konstruieren koennen. Diese Beispiele sind manchmal mit den anderen Tools nur schwer zu erstellen, daher haben wir die Datei t2_Example.java geschrieben. In dieser Datei stehen Daniel1-2 und Magnus1-3. Diese Beispiele koennen gemaess der Abstrakten Syntax veraendert werden, um den gewuenschten Fehler zu erzeugen.
+
+VORSICHT: Man kann auf diese Weise Schleifen und Null-Pointer erzeugen. Diese werden nicht abgefangen.
+

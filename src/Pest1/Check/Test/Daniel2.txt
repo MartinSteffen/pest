@@ -1,0 +1,21 @@
+Meldungen des Syntax Check:
+
+Fehlermeldungen ( Anzahl: 9 ):
+[] Der Name des BVars ist ein leerer String. (106)
+[aus Def.Liste] Der Name des Events ist ein leerer String. (206)
+[State: SUD.P3.] Deklarierter State wurde nicht verwendet (302)
+[State: SUD.P3.Q1] Keine Deklaration von Statename (303)
+[Defaultconnector S9 in State SUD.P3.Q2.R1] Zu diesem Defaultconnector gibt es keinen State. (312)
+[Defaultcon: P1 im State SUD] Der Defaultconnector ist mehrfach eingetragen. (313)
+[State SUD.P3.Q2.R2] In diesem State gibt es keinen Defaultconnector. (314)
+[Pfadliste] Der Statename ist ein leerer String. (316)
+[Trans: Q1 -> Q2 in State: SUD.P3] Der Start-State der Transition ist unbekannt. (403)
+
+Warnmeldungen ( Anzahl: 7 ):
+[BVar:  : Def.Liste] Definierte BVar wurde nicht verwendet (102)
+[Event: B : Def.Liste] Deklarierter Event wurde nicht verwendet (202)
+[Event:  : Def.Liste] Deklarierter Event wurde nicht verwendet (202)
+[Pfad: SUD.P1.T2 Trans: P1 -> P2 in State: SUD] Der Pathname in einem GuardComppath ist nicht vorhanden. (203)
+[Event: A Trans: P1 -> P3 in State: SUD] Das Guardevent wird nie von einem Actionevent ausgeloest.   (204)
+[Event: G Trans: T2 -> T1 in State: SUD.P3.Q2.R2] Das Guardevent wird nie von einem Actionevent ausgeloest.   (204)
+[GuardEvent: A Trans: P1 -> P3 Trans: P1 -> P1 in State: SUD] Der Guard der Transition beinhaltet einen Nichtdetermininsmus. (416)

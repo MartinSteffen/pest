@@ -1,0 +1,10 @@
+Meldungen des Syntax Check:
+
+Fehlermeldungen ( Anzahl: 0 ):
+
+Warnmeldungen ( Anzahl: 5 ):
+[uebergebene Statechart] Die Statechart enthält keine Liste der booleschen Variablen. (110)
+[Event: A Trans: P1 -> P3 in State: SUD] Das Guardevent wird nie von einem Actionevent ausgeloest.   (204)
+[Event: B Trans: P3 -> P1 in State: SUD] Das Guardevent wird nie von einem Actionevent ausgeloest.   (204)
+[Event: G Trans: S2 -> S1 in State: SUD.P3.Q2.R1] Das Guardevent wird nie von einem Actionevent ausgeloest.   (204)
+[Event: D Trans: T1 -> T2 in State: SUD.P3.Q2.R2] Das Guardevent wird nie von einem Actionevent ausgeloest.   (204)

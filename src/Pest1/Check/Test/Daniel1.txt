@@ -1,0 +1,26 @@
+Meldungen des Syntax Check:
+
+Fehlermeldungen ( Anzahl: 15 ):
+[BVar: A] Doppelte Definition von BVar (100)
+[BVar: B] Doppelte Definition von BVar (100)
+[Event: o Trans: P1 -> P2 in State: SUD] Keine Deklaration von Event (201)
+[Event: o Trans: Q1 -> Q2 in State: SUD.P3] Keine Deklaration von Event (201)
+[State: SUD.P3.Q2.R1] Deklarierter State wurde nicht verwendet (302)
+[State: SUD.P3.Q2.R2] Deklarierter State wurde nicht verwendet (302)
+[State: SUD.P3.Q2.R1.S1] Deklarierter State wurde nicht verwendet (302)
+[State: SUD.P3.Q2.R1.S2] Deklarierter State wurde nicht verwendet (302)
+[State: SUD.P3.Q2.R2.T1] Deklarierter State wurde nicht verwendet (302)
+[State: SUD.P3.Q2.R2.T2] Deklarierter State wurde nicht verwendet (302)
+[State: Q2] Fataler Fehler: Ein And-State enthaelt keinen inneren State. (306)
+[ Trans: P3 -> P1 in State: SUD] Der Guard der Transition laesst sich nicht spezifizieren. (417)
+[ Trans: P1 -> P2 in State: SUD] Der Action der Transition laesst sich nicht spezifizieren. (418)
+[ Trans: P1 -> P3 in State: SUD] Der Action der Transition laesst sich nicht spezifizieren. (418)
+[ Trans: P3 -> P1 in State: SUD] Der Action der Transition laesst sich nicht spezifizieren. (418)
+
+Warnmeldungen ( Anzahl: 6 ):
+[BVar: A : Def.Liste] Definierte BVar wurde nicht verwendet (102)
+[BVar: B : Def.Liste] Definierte BVar wurde nicht verwendet (102)
+[Event: B : Def.Liste] Deklarierter Event wurde nicht verwendet (202)
+[Event: D : Def.Liste] Deklarierter Event wurde nicht verwendet (202)
+[Event: G : Def.Liste] Deklarierter Event wurde nicht verwendet (202)
+[Event: A Trans: P1 -> P3 in State: SUD] Das Guardevent wird nie von einem Actionevent ausgeloest.   (204)

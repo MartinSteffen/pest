@@ -135,7 +135,7 @@ import editor.*;
  *</Table>
  * <br>
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: ModelCheck.java,v 1.37 1999-02-08 23:38:57 swtech11 Exp $
+ * @version  $Id: ModelCheck.java,v 1.38 1999-02-09 13:46:26 swtech11 Exp $
  * @see CheckConfig
  */
 public class ModelCheck {
@@ -281,7 +281,7 @@ public class ModelCheck {
       }
       else { outputToGUI(); } // Ausgabe an die GUI
     }
-
+      //outputToFile("test.txt");
     return result;
   };
 
