@@ -26,7 +26,7 @@ class TESCScanner {
 	lah = new StringBuffer();	
     }
 
-    protected TOKEN nextToken() {
+    protected TOKEN nextToken() throws IOException {
 	scan_forward();
 
 	return token;
@@ -69,22 +69,6 @@ class TESCScanner {
     private boolean is_sep(String s) {
 	boolean ret = false;
 
-	/*
-	switch (c) {
-	case ',':
-	case ';':
-	case ':':
-	case '(':
-	case ')':
-	    ret = true;
-	    break;
-	default:
-	    ret = false;
-	    break;
-	}
-
-	*/
-
 	if      (s.compareTo((String)",") == 0)   ret = true;
 	else if (s.compareTo((String)";") == 0)   ret = true;
 	else if (s.compareTo((String)":") == 0)   ret = true;
@@ -94,7 +78,6 @@ class TESCScanner {
 
 	return ret;
     }
-
 
     // Prüft, ob s ein Trenner ist, d.h. ein Token das andere Token trennt, 
     // ohne dass whitechars dazwischen sein muessen. ( z.B. x=(a&&b) )
@@ -117,79 +100,9 @@ class TESCScanner {
 
 	return ret;
     }
-
-    // spezielles read: fügt blanks vor trennern ein, die auch keys sind. <- Läuft jetzt anders
-    // dadurch einfacher Scanner möglich 
-    /*
-    private int readStream()  { // throws IOExecption
-	int b = -1;
-	
-	StringBuffer sb = new StringBuffer();
-
-	if (lastb == '\n') ln++;
-
-	try {
-	    // Falls noch kein char gelesen, eins lesen
-	    if (la == 0) {
-		 
-		b = is.read();
-	      
-		if (b != -1) {
-		    ready = 0;
-		    sb.append((char)b);
-		    
-		    // Bei Sep soll dieses von Blanks umschlossen werden
-		    if (is_partOfSep(sb.toString())) {
-			pos.write((int)' ');
-			la++;
-			while (is_partOfSep(sb.toString()) && b!=-1) {
-			    pos.write(b);
-			    la++;
-			
-			    b = is.read();
-			    if (b != -1) sb.append((char)b);
-			   
-			}			
-		      			       
-			pos.write((int)' ');
-			la++;
-			// Sep korrekt "geklammert"; la gibt an wieviele chars schon im Stream,
-			// so dass beim nächsten Lesen nicht aus dem FileInputStream gelesen werden muss
-		    }
-		
-		    // falls sep wird ein char zu weit gelesen
-		    pos.write(b);
-		    la++;
-		}
-		else ready = -1;
-	    }
-	}
-	catch (IOException e) {
-	    // Bla
-	    System.out.println("Ärger!");
-	}
-
-	try {
-
-	    // Endgültiges Lesen des Chars
-	    if (ready == -1 && pis.available()==0) b = -1;
-	    else {
-		la--;  // Zeichen gelesen => la dekrementieren
-		b = pis.read();
-	    }
-	}
-	catch (IOException e) {
-	    // Bla
-	    System.out.println("Ärger2!");
-	}
-
-	lastb = b;
-	return b;
-    }
-    */
     
     // "klammert" Trenner mit Spaces. Liefert den nächsten char aus dem Stream oder Space
-    private int trim(int b) {
+    private int trim(int b) throws IOException {
 
 	try {
 
@@ -228,50 +141,43 @@ class TESCScanner {
 
 
     // spezielles read. Formatiert den Text so, dass Token immer von whitechars umgeben sind
-    private int readStream() {
+    private int readStream() throws IOException {
 	int b = -1;
 	StringBuffer sb = new StringBuffer();
 	String buf;
 
 	if (lastb == '\n') ln++;
 
-	try {
-
-	    // Falls schon chars gelesen, diese aus Buffer lesen
-	    if (lah.length()!=0) {
-		// erstes char konsumieren
-		b = lah.charAt(0);
-		buf = lah.toString().substring(1);
-		lah.setLength(0);
-		lah.append(buf);
-
-		// Falls das dem Trenner folgende char wieder ein Trenenr ist, 
-		// dieses wieder space-klammern
-		if (lah.length()==0 && is_partOfSep(buf.valueOf((char)b))) b = trim(b);
-	    }
-	    else {
-		// sonst aus Stream lesen
-		b = is.read(); 
-
-		// Zusatzfeature des Scanners: Alles nach # ist comment
-		if (b=='#') while (b!='\n' && b != -1) b = is.read();
-
-		// und sicherstellen, dass volständige Space-Klammerung
-		b = trim(b);
-	    }
+	// Falls schon chars gelesen, diese aus Buffer lesen
+	if (lah.length()!=0) {
+	    // erstes char konsumieren
+	    b = lah.charAt(0);
+	    buf = lah.toString().substring(1);
+	    lah.setLength(0);
+	    lah.append(buf);
 	    
+	    // Falls das dem Trenner folgende char wieder ein Trenenr ist, 
+	    // dieses wieder space-klammern
+	    if (lah.length()==0 && is_partOfSep(buf.valueOf((char)b))) b = trim(b);
 	}
-	catch (IOException e) {
-	    // Bla
-	    System.out.println("Ärger!");
+	else {
+	    // sonst aus Stream lesen
+	    b = is.read(); 
+	    
+	    // Zusatzfeature des Scanners: Alles nach # ist comment
+	    if (b=='#') while (b!='\n' && b != -1) b = is.read();
+	    
+	    // und sicherstellen, dass volständige Space-Klammerung
+	    b = trim(b);
 	}
-
+	
+	
 	lastb = b;
 	return b;
     }
     
 
-    private int scan_forward() {
+    private int scan_forward() throws IOException {
 	int b=0;
 	StringBuffer sb = new StringBuffer();
 
@@ -301,31 +207,7 @@ class TESCScanner {
 	return b;
     }
 
-    /*
-    private boolean is_key(String s) {
-	boolean ret = false;
-
-	if      (s.compareTo((String)"basic") == 0)   ret = true;
-	else if (s.compareTo((String)"or") == 0)      ret = true;
-	else if (s.compareTo((String)"amd") == 0)     ret = true;
-	else if (s.compareTo((String)"from") == 0)    ret = true;
-	else if (s.compareTo((String)"on") == 0)      ret = true;	
-	else if (s.compareTo((String)"to") == 0)      ret = true;	
-	else if (s.compareTo((String)"do") == 0)      ret = true;
-	else if (s.compareTo((String)"end") == 0)     ret = true;
-	else if (s.compareTo((String)"true") == 0)    ret = true;
-	else if (s.compareTo((String)"(") == 0)       ret = true;
-	else if (s.compareTo((String)")") == 0)       ret = true;
-	else if (s.compareTo((String)":") == 0)       ret = true;
-	else if (s.compareTo((String)";") == 0)       ret = true;
-	else if (s.compareTo((String)"events") == 0)  ret = true;
-	else if (s.compareTo((String)",") == 0)       ret = true;
-	else if (s.compareTo((String)"<=>") == 0)     ret = true;
-	else if (s.compareTo((String)"=>") == 0)      ret = true;
-
-	return ret;
-    }
-    */
+  
 
     private int typeOfToken(String s) {
 	int i = vTOKEN.DUMMY;
@@ -375,8 +257,12 @@ class TESCScanner {
 
 
 /* TESCScanner
- * $Id: TESCScanner.java,v 1.3 1998-12-07 15:13:23 swtech13 Exp $
+ * $Id: TESCScanner.java,v 1.4 1998-12-07 20:10:17 swtech13 Exp $
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  1998/12/07 15:13:23  swtech13
+ * Scanner um Kommentare erweitert, Schnittstelle um Konstruktor mit
+ * GUIInterface Parameter erweitert.
+ *
  * Revision 1.2  1998/12/07 13:20:16  swtech13
  * Scanner geht, aber noch nicht vollstaendig,
  * Parser nix,
