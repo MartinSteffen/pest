@@ -12,9 +12,28 @@ public class Ref_State extends Basic_State {
    */
   public Syntax_Type filetype;
   
-  public Ref_State (Statename n)                           {super(n);}
-  public Ref_State (Statename n, CRectangle r)             {super(n,r);}
-  public Ref_State (Statename n, CRectangle r, Location l) {super(n,r,l);}
+  public Ref_State (Statename n, String fn, Syntax_Type t) {
+    super(n);
+    filename = fn;
+    filetype = t;
+  }
+  public Ref_State (Statename n, 
+		    CRectangle r, 
+		    String fn, 
+		    Syntax_Type t) {
+    super(n,r);
+    filename = fn;
+    filetype = t;
+  }
+  public Ref_State (Statename n, 
+		    CRectangle r, 
+		    Location l,
+		    String fn, 
+		    Syntax_Type t) {
+    super(n,r,l);
+    filename = fn;
+    filetype = t;
+  }
 
   
 
@@ -23,7 +42,10 @@ public class Ref_State extends Basic_State {
  */
   public Object clone() throws CloneNotSupportedException {
     Location  locationclone  = (location == null) ? null : (Location)location.clone();
-    return new Ref_State ((Statename)name.clone(),rect, locationclone);
+    Syntax_Type filetypeclone  = (filetype == null) ? null : (Syntax_Type)filetype.clone();
+    return new Ref_State ((Statename)name.clone(),rect, locationclone, 
+			  filename,
+			  filetypeclone);
     };
 
 }
@@ -32,9 +54,12 @@ public class Ref_State extends Basic_State {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Ref_State.java,v 1.2 1999-02-01 13:41:15 swtech00 Exp $
+//	$Id: Ref_State.java,v 1.3 1999-02-02 12:49:16 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.2  1999/02/01 13:41:15  swtech00
+//	public eingefuegt [Steffen]
+//
 //	Revision 1.1  1999/01/31 17:23:37  swtech00
 //	Neuen ``Zustand'' (state) hinzugef"ugt:
 //
