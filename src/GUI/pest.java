@@ -69,7 +69,7 @@ implements GUIInterface
     GUIexitLis exlis;
 //    GUIsimExitLis simexitlis;
     check.CheckConfig checkConfig;
-    codegen.CodeGenOpt codeGenConfig;
+    codegen.CodeGenOpt codeGenConfig = new codegen.CogeGenOpt();
 
     editor.Editor PEditor = null;
     Dimension EditorDim = null;
