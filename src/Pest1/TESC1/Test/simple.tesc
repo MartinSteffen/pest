@@ -3,16 +3,19 @@
 # Falls ein Kommentar nicht am Anfang einer Zeile steht, muss er durch ein Space/Tab
 # vom Rest getrennt werden
 
-events: 	e1, e2;	
-bvars:		C;
-
 or S3: 
 	or S4:
 		or StateY:
 			basic B1;
 			basic B2;
-		end StateY;	
+			defcon : B1;
+			transitions:
+				from B1 to B2 on ~ ;
+		end StateY;
+		basic B;
+		defcon : B;
 	end S4;
+
 	and S2:	
 		basic B1;
 		basic B2;
@@ -25,7 +28,7 @@ or S3:
 	cons: c1, c2;
 
 	transitions:
-	from S4 to S2 on e2 [C]  do C := e1 && e2 || C , e2;
-	from S2 to S4 on e2 do ~ ;
+	from S4 to S2 on e2 [C]  do C := B1 && B2 || A , e1;
+	from S2 to S4 on e1 do ~ ;
 	
 end S3;

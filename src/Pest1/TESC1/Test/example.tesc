@@ -1,7 +1,7 @@
 # Beispiel aus dem Pflichtenheft
 # ohne Fehler ( /A bei defcon / Interleveltransition von Q2->P2 )
 
-events: A, B, C, D, G;
+#events: A, B, C, D, G;
 
 or SUD:
 	basic P1;
@@ -46,6 +46,3 @@ or SUD:
 	from P3 to P1 on B;
 	
 end SUD;
-
-
-
