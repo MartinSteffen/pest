@@ -118,27 +118,27 @@ implements GUIInterface
     }
 
     public int OkDialog(String Titel, String Msg){
-	return new OKDialog(this,Titel,Msg).getAnswer();
+	return new OKDialog(this,getGraphics().getFontMetrics(),Titel,Msg).getAnswer();
     }
 
     public int YesNoDialog(String Titel, String Msg){
-	return new YesNoDialog(this,Titel,Msg).getAnswer();
+	return new YesNoDialog(this,getGraphics().getFontMetrics(),Titel,Msg).getAnswer();
     }
 
     public int YesNoCancelDialog(String Titel, String Msg){
-	return new YesNoCancelDialog(this,Titel,Msg).getAnswer();
+	return new YesNoCancelDialog(this,getGraphics().getFontMetrics(),Titel,Msg).getAnswer();
     }
 
     public int OkDialog(Frame par, String Titel, String Msg){
-	return new OKDialog(par,Titel,Msg).getAnswer();
+	return new OKDialog(par,par.getGraphics().getFontMetrics(),Titel,Msg).getAnswer();
     }
 
     public int YesNoDialog(Frame par, String Titel, String Msg){
-	return new YesNoDialog(par,Titel,Msg).getAnswer();
+	return new YesNoDialog(par,par.getGraphics().getFontMetrics(),Titel,Msg).getAnswer();
     }
 
     public int YesNoCancelDialog(Frame par, String Titel, String Msg){
-	return new YesNoCancelDialog(par,Titel,Msg).getAnswer();
+	return new YesNoCancelDialog(par,par.getGraphics().getFontMetrics(),Titel,Msg).getAnswer();
     }
 
     

@@ -5,10 +5,10 @@ import java.awt.event.*;
 import java.lang.Math.*;
 
 /**
-* Erstellt ein Fenster zur Ausgabe von Texte variabler Länge.
+* Erstellt ein Fenster zur Ausgabe von Texte variabler L„nge.
 * Bis auf die untere Fensterleiste mit den Buttons "Yes", "No"
 * und "Cancel" sowie der Methode actionPerformed implementiert
-* die Vaterklasse "dialog" die gesamte Funktionalität.
+* die Vaterklasse "dialog" die gesamte Funktionalit„t.
 **/
 
 public class YesNoCancelDialog
@@ -19,16 +19,16 @@ extends dialog
    * mit den Buttons des Dialogfensters versehen. 
    **/
 
-   public YesNoCancelDialog(Frame parent , String title , String text)
+   public YesNoCancelDialog(Frame parent, FontMetrics fm, String title , String text)
    {
-      super(parent , title , text);
-      Button button = new Button("Yes");
+      super(parent, fm, title , text);
+      Button button = new Button("Ja");
       button.addActionListener(this);
       super.panel.add(button);
-      button = new Button("No");
+      button = new Button("Nein");
       button.addActionListener(this);
       super.panel.add(button);
-      button = new Button("Cancel");
+      button = new Button("Abbrechen");
       button.addActionListener(this);
       super.panel.add(button);
       //super.pack();
@@ -41,10 +41,10 @@ extends dialog
 
    public void actionPerformed(ActionEvent event)
    {
-      if (event.getActionCommand().equals("Yes")){
+      if (event.getActionCommand().equals("Ja")){
          answer = YES ;
          }
-      else if (event.getActionCommand().equals("No")){
+      else if (event.getActionCommand().equals("Nein")){
          answer = NO;
          }
       else{
@@ -53,4 +53,3 @@ extends dialog
       endDialog();
    }
 }
-

@@ -3,8 +3,8 @@
 #----------------------------------------------------------------------
 
 
-all:
-	javac *.java
+all:    $(patsubst %.java,%.class,$(wildcard *.java))  
+
 	make -C ../Absyn
 	make -C ../Editor
 	make -C ../Check
@@ -14,8 +14,12 @@ all:
 	make -C ../CodeGen
 	make -C ../STM
 
-gui:
-	javac *.java
+gui:    $(patsubst %.java,%.class,$(wildcard *.java))  
+
+%.class: %.java 
+	javac $< 
+
+
 clean:
 	cd ..
 	rm -rf *.class *~

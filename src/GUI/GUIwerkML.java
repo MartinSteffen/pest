@@ -25,7 +25,7 @@ public void actionPerformed(ActionEvent e) {
   myWindow.userMessage("GUI   : starte "+cmd);
   if(cmd.equals("Editor"))
       {
-	  new Editor.Editor(myWindow.SyntaxBaum,myWindow.SBDateiname);
+	  new Editor.Editor(myWindow.SyntaxBaum,myWindow.SBDateiname,100,100,200,200);
 
       }else if (cmd.equals("SyntaxCheck")) {
 

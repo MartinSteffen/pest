@@ -4,15 +4,15 @@ import java.awt.*;
 import java.awt.event.*;
 import java.lang.Math.*;
 import java.util.*;
-import java.io.*;
+
 
 /**
 * Die Klasse "dialog" ist die Vaterklasse unserer Dialogfenster.
 * Bis auf die Buttons der unteren Fensterleiste und der Methode
-* actionPerformed implementiert sie deren gesamte Funktionalit‰t.
+* actionPerformed implementiert sie deren gesamte FunktionalitÑt.
 **/
 
-abstract public class dialog
+abstract class dialog
 extends Dialog
 implements ActionListener
 {
@@ -24,21 +24,24 @@ implements ActionListener
    int count;
    Panel panel;
    String Line[];
+   FontMetrics fm;
 
 
-   public dialog(Frame parent ,String title ,String text)
+   public dialog(Frame parent, FontMetrics fm, String title ,String text)
    {
 
        // Festsetzung des Layout und der Lage des Dialogfensters.
 
-       super(parent , title , true);
+       super(parent, title, true);
+       this.fm = fm ;
+       setFont(fm.getFont());
        Point p = parent.getLocation();
        setLocation(p.x + 30 , p.y + 30);
        Line = new String[100];
-       p = WindowSize(text);
-       setSize(p.x , p.y);
        setBackground(Color.lightGray);
        setLayout(new BorderLayout());
+       p = WindowSize(text);
+       setSize(p.x , p.y);
        Panel panel1 = new Panel();
        panel1.setLayout(new GridLayout((count + 3) ,1));
        panel1.add(new Label(""));
@@ -46,30 +49,26 @@ implements ActionListener
        {
           panel1.add( new Label(Line[i], Label.CENTER));
        }
-       panel1.add(new Label());
+       //panel1.add(new Label());
        add("Center",panel1);
 
        /**
-       * Die Funktionalit‰t von "panel" wird in der jeweiligen
+       * Die FunktionalitÑt von "panel" wird in der jeweiligen
        * Kindklasse implementiert.
        **/
        panel = new Panel();
-//       panel.setBackground(SystemColor.textHighlight);
+       //panel.setBackground(SystemColor.textHighlight);
        panel.setLayout(new FlowLayout(FlowLayout.CENTER));
-       add("South" ,panel);
-       //add("West", new Label(" "));
-       //add("East", new Label(" "));
-
-       //pack();
+       add("South" , panel);
        setResizable(false);
-
    }
 
+   
    public void actionPerformed(ActionEvent event)
    {
    }
 
-   // Schlieﬂt das Dialogfenster.
+   // Schlieòt das Dialogfenster.
 
    public void endDialog()
    {
@@ -80,8 +79,8 @@ implements ActionListener
    }
 
    /**
-   * Liefert als Integerwert den bet‰tigten Button. Die Variable "answer"
-   * erh‰lt ihren Wert inder Methode actionPerformed der jeweiligen
+   * Liefert als Integerwert den betÑtigten Button. Die Variable "answer"
+   * erhÑlt ihren Wert inder Methode actionPerformed der jeweiligen
    * Kindklasse.
    **/
 
@@ -91,33 +90,45 @@ implements ActionListener
    }
 
    /**
-   * Berechnet aus der L‰nge des ¸bergebenen Textes als R¸ckgabewert die Grˆﬂe des
+   * Berechnet aus der LÑnge des Åbergebenen Textes als RÅckgabewert die Gr˜òe des
    * Dialogfensters. Weiterhin wird der Text in Zeilen zerlegt und diese im
    * Stringarray Line abgelegt.
    **/
 
    public Point WindowSize(String text)
    {
-
-      int charPerLine = (int)(3*Math.sqrt((double)text.length()));
-      if (charPerLine < 40){
-          charPerLine = 40;
+      int charPerLine = (int)(Math.PI*Math.sqrt((double)text.length()));
+      if (charPerLine < 30){
+          charPerLine = 30;
           }
+
       StringTokenizer tok = new StringTokenizer(text);
       count = 0 ;
+      int lineWidth = 0;
+      int lineHeight = 0 ;
       String s;
+    
+      Line[0] = "";
       while (tok.hasMoreTokens()){
           s = " " + tok.nextToken();
-          if (((Line[count]+ s).length()- 5) > charPerLine){
-              Line[count] = "  " + Line[count].substring(5) + "  ";
-              ++count;
+          if (((Line[count]+ s).length()) > charPerLine){
+              Line[count] = "       " + Line[count] + "       ";
+              if (fm.stringWidth(Line[count]) > lineWidth){
+                 lineWidth = fm.stringWidth(Line[count]);
+	      } 
+              Line[++count] = "";
               }
           Line[count] += s ;
           }
-       Line[count] = "  " + Line[count].substring(5);
+       Line[count] = "    " + Line[count] + "    ";
+       if (lineWidth == 0){
+           lineWidth = fm.stringWidth("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+       }    
+       lineHeight = fm.getHeight();
+       
        Point p = new Point();
-       p.x = (int)((charPerLine + 2) * 6.25);
-       p.y = ((count + 3)* 18) + 45;
+       p.x = lineWidth ;
+       p.y = ((count + 8 )* lineHeight) ;
        return p;
    }
 }    

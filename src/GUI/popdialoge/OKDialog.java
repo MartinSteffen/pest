@@ -5,10 +5,10 @@ import java.awt.event.*;
 import java.lang.Math.*;
 
 /**
-* Erstellt ein Fenster zur Ausgabe von Texte variabler Länge.
+* Erstellt ein Fenster zur Ausgabe von Texte variabler L„nge.
 * Bis auf die untere Fensterleiste mit dem Button "OK" sowie
 * der Methode actionPerformed implementiert die Vaterklasse
-* "dialog" die gesamte Funktionalität.
+* "dialog" die gesamte Funktionalit„t.
 **/
 
 
@@ -21,13 +21,13 @@ extends dialog
    * mit den Buttons des Dialogfensters versehen.
    **/
 
-   public OKDialog(Frame parent , String title , String text)
+   public OKDialog(Frame parent, FontMetrics fm, String title , String text)
    {
-      super(parent , title , text);
+      super(parent, fm, title , text);
       Button button = new Button("OK");
       button.addActionListener(this);
-      panel.add(button);
-      setVisible(true);
+      super.panel.add(button);
+      super.setVisible(true);
   }
 
   /**
@@ -42,5 +42,4 @@ extends dialog
          endDialog();
       }
    }
-}
-   
+}   
