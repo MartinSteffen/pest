@@ -1,8 +1,8 @@
-# $Id: Makefile,v 1.10 1999-02-28 17:34:09 swtech25 Exp $
+# $Id: Makefile,v 1.11 1999-03-11 15:37:02 swtech25 Exp $
 JAVAC=javac
 JAVACFLAGS=-deprecation -depend -g
 JAVADOC=javadoc
-JAVADOCFLAGS=-author -version -private
+JAVADOCFLAGS=-author -version -private -verbose
 files=CodeGen.java CodeGenException.java CodeGenOpt.java dumpHA.java dumpTables.java
 
 all: $(files:.java=.class)
@@ -15,4 +15,4 @@ clean:
 	$(JAVAC) $(JAVACFLAGS)  $(JAVACOPTS) $<
 
 localdocu: $(files)
-	$(JAVADOC) $(JAVADOCFLAGS) $(files)
+	$(JAVADOC) $(JAVADOCFLAGS) -d Docu codegen
