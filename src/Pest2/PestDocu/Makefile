@@ -2,9 +2,12 @@
 #	javadoc collected HTML pages for all packages: makefile.
 #	--------------------------------------------------------
 #
-#	$Id: Makefile,v 1.4 1999-01-19 11:28:58 swtech00 Exp $
+#	$Id: Makefile,v 1.5 1999-01-26 09:49:03 swtech00 Exp $
 #
 #	$Log: not supported by cvs2svn $
+#	Revision 1.4  1999/01/19 11:28:58  swtech00
+#	Minor correction.
+#
 #	Revision 1.3  1999/01/12 13:34:34  swtech00
 #	Reports inserted.
 #
@@ -43,3 +46,38 @@ clean:
 	\rm -f images
 	 \rm -f $(TESC1DOCU_TO)/*
 	\rmdir -p $(TESC1DOCU_TO)
+#----------------------------------------------------------------------
+
+DEP_FILES=check-dep.html codegen-dep.html editor-dep.html gui-dep.html simu-dep.html stm-dep.html tesc1-dep.html  tesc2-dep.html
+
+DEP:	$(DEP_FILES)
+
+clean_dep:	
+	rm -rf $(DEP_FILES)
+
+check-dep.html:
+	(cd .. ; javadep -i -n -o pestdocu/check-dep.html check editor codegen gui simu stm tesc1 tesc2)
+
+codegen-dep.html:
+	(cd .. ; javadep -i -n -o pestdocu/codegen-dep.html codegen editor check gui simu stm tesc1 tesc2)
+
+editor-dep.html:
+	(cd .. ; javadep -i -n -o pestdocu/editor-dep.html editor check codegen gui simu stm tesc1 tesc2)
+
+gui-dep.html:
+	(cd .. ; javadep -i -n -o pestdocu/gui-dep.html gui editor codegen check simu stm tesc1 tesc2)
+
+simu-dep.html:
+	(cd .. ; javadep -i -n -o pestdocu/simu-dep.html simu editor codegen check gui stm tesc1 tesc2)
+
+stm-dep.html:
+	(cd .. ; javadep -i -n -o pestdocu/stm-dep.html stm editor codegen check gui simu tesc1 tesc2)
+
+tesc1-dep.html:
+	(cd .. ; javadep -i -n -o pestdocu/tesc1-dep.html tesc1 editor codegen check gui simu stm  tesc2)
+
+tesc2-dep.html:
+	(cd .. ; javadep -i -n -o pestdocu/tesc2-dep.html tesc2 editor codegen check gui simu stm  tesc1)
+
+absyn-dep.html:
+	(cd .. ; javadep -i -n -o pestdocu/absyn-dep.html absyn  editor codegen check gui simu stm tesc1 tesc2)
