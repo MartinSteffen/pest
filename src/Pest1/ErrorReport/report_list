@@ -1,0 +1,76 @@
+//-----------------------------------------------------------------------------
+//	Fehlerliste von PEST1
+//	---------------------
+//
+//	$Id: report_list,v 1.2 1999-01-12 13:27:30 swtech00 Exp $
+//
+//------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------
+// Das ist ein Kommentar
+// Muster
+//
+// #Number: 	<Error number> 
+// #Autor: 	<name> <e-mail>
+// #Subject: 	<short title>
+// #Status: 	reported | processing | fixed | confirmed
+// #Description: 
+// <long description how to generate>
+//------------------------------------------------------------------------------
+
+
+#Number: 	1
+#Autor:   	Erich Mikk erm
+#Subject:	Wiederholtes Starten des Editors nicht möglich
+#Status: 	reported 
+#Description: 
+
+Die Hauptinstanz (gui) erkennt es offenbar nicht, wenn der Editor
+geschlossen worden ist. Folgende Sequenz führt zu dem Fehler:
+
+(1) Starte PEST:
+cd PEST1/gui
+java gui.pest
+
+(2) Importiere ein Statechart über File->Import->Statemate
+Man nehme z.B. /home/swtech12/Examples/TV/remote_control.st
+
+(3) Starte Editor: Werkzeuge->Editor
+
+(4) Schließe Editor: Im Editor Window->Schliessen
+
+(5) Versuche Editor zu starten: Werkzeuge->Editor
+
+FEHLER: Es erscheint eine Fehlermeldung (Es kann nur ein Editor gestartet
+werden!). obwohl der Editor geschlossen worden ist.
+
+//------------------------------------------------------------------------------
+
+#Number: 	2
+#Autor:   	Erich Mikk erm
+#Subject:	Hauptinstanz versucht Statechart zu laden
+#Status: 	reported 
+#Description: 
+
+(0) Man führe die Sequenz aus Number 1 aus. 
+(1) Man schließe PEST: Datei-> Beenden. I
+Im Dialog (etwa: Statechart ist nicht gespeichert, fortfahren?) 
+die Statechart NICHT speichern!
+(2) Starte PEST erneut.
+(3) Jetzt sieht man ein Fenster: 
+Das Laden ist fehlgeschlagen! (ERSTER FEHLER, warum laden)?
+(4) Antwort OK. Danach wird Editor gestartet (ZWEITER FEHLER, wieso?)
+
+//------------------------------------------------------------------------------
+
+#Number: 	3
+#Autor:   	Erich Mikk erm
+#Subject:	Menüs nicht einheitlich
+#Status: 	reported 
+#Description: 
+
+Das linke obere Menü hießt in der Hauptinstanz und im Editor anders. Auch
+die Menüpunkte heißen verschieden, obwohl die gleiche Funktionalität
+dahinter verbergt ist.
+//------------------------------------------------------------------------------
+
