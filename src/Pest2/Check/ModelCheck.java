@@ -5,7 +5,7 @@
 //
 //
 //   Letzte Aenderung von:  Tobias Kunz
-//                          11.01.1999
+//                          12.01.1999
 //
 // ****************************************************************************
 
@@ -13,6 +13,7 @@ package check;
 
 import absyn.*;         // abstrakte Syntax
 import gui.*;           // GUI Interface
+import editor.*;        // Editor zwecks Highlight Funktionalitaet
 
 
 /**
@@ -108,6 +109,10 @@ private boolean       OutputToGUI = false;
      OutputToGUI = true;
   }
 
+  public ModelCheck(GUIInterface gui, Editor edit) {
+    this(gui);
+  }
+
 // ****************************************************************************
 // private Methoden
 // ****************************************************************************
@@ -152,11 +157,6 @@ private boolean       OutputToGUI = false;
       ok = ok && checkEvents.check();
       ok = ok && checkBVars.check();
       ok = ok && checkConnectors.check();
-
-      // ueberpruefen eine Zustandes, darunter fallen
-      //   a) Transitionen
-      //   b) Connectoren
-      //   c) der State selber
 
       // Fehlerausgabe, falls "gui" zugewiesen ist
       if (gui != null) {
