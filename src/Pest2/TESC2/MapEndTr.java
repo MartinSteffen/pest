@@ -22,4 +22,7 @@ class MapEndTr extends MapTransition {
 	transition = trans;
     }
 
+    public String toString() {
+	return "MapEndTr("+startRow+","+startColumn+","+endRow+","+endColumn+")";
+    }
 } // MapEndTr
