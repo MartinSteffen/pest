@@ -72,7 +72,7 @@ import util.*;
  * <br>
  * <hr>
  * @author Arne Koch/Mike Rumpf.
- * @version  $Id: TESCSaver.java,v 1.8 1999-02-04 20:15:25 swtech13 Exp $ 
+ * @version  $Id: TESCSaver.java,v 1.9 1999-02-05 19:21:22 swtech13 Exp $ 
  */ 
 
 /* Konventionen:
@@ -245,7 +245,7 @@ public class TESCSaver {
 	boolean b = false;
 
 	bw.write(whiteSpace(tiefe * TAB));
-	bw.write("@");
+	bw.write("ref ");
 	savestatename(st.name);
 	bw.write(" in ");
 	bw.write(st.filename);

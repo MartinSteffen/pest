@@ -462,8 +462,8 @@ class TESCParser {
 
 	    st = astate(null);
 	}
-	else if (tok.token==vTOKEN.AT) {
-	    match(vTOKEN.AT);
+	else if (tok.token==vTOKEN.REF) {
+	    match(vTOKEN.REF);
 
 	    st = refstate(null);
 	}
@@ -763,8 +763,8 @@ class TESCParser {
 	    }
 
 	}
-	else if (tok.token == vTOKEN.AT) {
-	    b = match(vTOKEN.AT);
+	else if (tok.token == vTOKEN.REF) {
+	    b = match(vTOKEN.REF);
 	    
 	    if (b) {
 		sl = new StateList(refstate(p), astates(p));
@@ -1536,8 +1536,8 @@ class TESCParser {
 		sl = null;	
 	    }
 	}
-	else if (tok.token == vTOKEN.AT) {
-	    b = match(vTOKEN.AT);
+	else if (tok.token == vTOKEN.REF) {
+	    b = match(vTOKEN.REF);
 	    if (b) {
 		sl = new StateList(refstate(p), states(p));
 	    }
@@ -1887,7 +1887,7 @@ class TESCParser {
 }
 
 /* TESCParser
- * $Id: TESCParser.java,v 1.22 1999-02-04 20:15:24 swtech13 Exp $
+ * $Id: TESCParser.java,v 1.23 1999-02-05 19:21:20 swtech13 Exp $
  * $Log: not supported by cvs2svn $
  * Revision 1.21  1999/01/28 17:26:15  swtech13
  * Kleine Änderungen

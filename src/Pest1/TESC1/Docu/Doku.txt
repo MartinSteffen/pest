@@ -33,7 +33,7 @@ end <Name>;
 
 basic <Name>;
 
-@<Name> in <file> type <type>;
+ref <Name> in <file> type <type>;
 
 ----------------------------
 
@@ -53,7 +53,7 @@ Ein and-State kann nur basic- oder or-States enthalten.
 
 ----------------------------
 
-Ref-State (gekennzeichnet durch @):
+Ref-State:
 
 type: tesc , pest_coord, pest_nocoord
 

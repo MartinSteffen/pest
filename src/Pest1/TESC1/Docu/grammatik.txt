@@ -1,4 +1,4 @@
-/* Grammatik fuer Tesc - $Id: grammatik.txt,v 1.9 1999-02-04 20:15:40 swtech13 Exp $ 
+/* Grammatik fuer Tesc - $Id: grammatik.txt,v 1.10 1999-02-05 19:21:43 swtech13 Exp $ 
  *
  * $Log: not supported by cvs2svn $
  * Revision 1.8  1999/01/29 20:50:36  swtech13
@@ -86,7 +86,7 @@
 
 <BASICSTATE>  ::= basic <STRING>;
 
-<REFSTATE>    ::= @<STRING> in <STRING> type <TYPE>;
+<REFSTATE>    ::= ref <STRING> in <STRING> type <TYPE>;
 
 <TYPE>	      ::= tesc | pest_coord | pest_nocoord
 

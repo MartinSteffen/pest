@@ -83,7 +83,7 @@ class TESCScanner {
 	else if (s.compareTo((String)"!") == 0)   ret = true;
 	else if (s.compareTo((String)"]") == 0)   ret = true;
 	else if (s.compareTo((String)"[") == 0)   ret = true;
-	else if (s.compareTo((String)"@") == 0)   ret = true;
+	
 
 	else if (s.compareTo((String)"<=>") == 0 )  ret = true;
 	else if (s.compareTo((String) "=>") == 0 )  ret = true;
@@ -108,7 +108,7 @@ class TESCScanner {
 	else if (s.compareTo((String)"!") == 0)   ret = true;	
 	else if (s.compareTo((String)"]") == 0)   ret = true;
 	else if (s.compareTo((String)"[") == 0)   ret = true;
-	else if (s.compareTo((String)"@") == 0)   ret = true;
+	
 
 	// Mehstellige Trenner
 	else if (s.regionMatches(0, (String)"<=>", 0, s.length()))   ret = true;
@@ -282,7 +282,7 @@ class TESCScanner {
 	else if (s.compareTo((String)"defcon") == 0)      i = vTOKEN.DEFCON;
 	else if (s.compareTo((String)"[") == 0)       i = vTOKEN.LPAR_E;
 	else if (s.compareTo((String)"]") == 0)       i = vTOKEN.RPAR_E;
-	else if (s.compareTo((String)"@") == 0)       i = vTOKEN.AT;
+	else if (s.compareTo((String)"ref") == 0)       i = vTOKEN.REF;
 	else if (s.compareTo((String)"type") == 0)    i = vTOKEN.TYPE;
 
 	else i = vTOKEN.IDENT;
@@ -401,7 +401,7 @@ class TESCScanner {
 	    s = new String("]");
 	    break;
 	case 35:
-	    s = new String("@");
+	    s = new String("ref");
 	    break;
 	case 36:
 	    s = new String("type");
@@ -422,7 +422,7 @@ class TESCScanner {
 
 
 /* TESCScanner
- * $Id: TESCScanner.java,v 1.11 1999-02-04 20:15:25 swtech13 Exp $
+ * $Id: TESCScanner.java,v 1.12 1999-02-05 19:21:23 swtech13 Exp $
  * $Log: not supported by cvs2svn $
  * Revision 1.10  1999/01/18 16:44:33  swtech13
  * Verbesserung von setCaption

@@ -41,7 +41,7 @@ class vTOKEN {
     static final int DEFCON      = 32;
     static final int LPAR_E      = 33;
     static final int RPAR_E      = 34;
-    static final int AT          = 35;
+    static final int REF         = 35;
     static final int TYPE        = 36;
 
     // Nichtschlüsselwörter
@@ -49,7 +49,7 @@ class vTOKEN {
 }
 
 /* vTOKEN
- * $Id: vTOKEN.java,v 1.5 1999-02-04 20:15:25 swtech13 Exp $
+ * $Id: vTOKEN.java,v 1.6 1999-02-05 19:21:24 swtech13 Exp $
  * $Log: not supported by cvs2svn $
  * Revision 1.4  1999/01/11 20:10:33  swtech13
  * An geaenderte Grammatik angepasst.
