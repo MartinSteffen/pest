@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.17 1999-01-19 14:11:48 swtech24 Exp $
+//	$Id: report_list,v 1.18 1999-01-19 14:53:11 swtech18 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -229,7 +229,7 @@ ist leider nicht brauchbar zum ordentlichen testen.
 #Number:	17
 #Autor:		Erich Mikk erm
 #Subject:	stm generiert ein Exception, den keiner fängt
-#Status:	reported
+#Status:	not processing (ist keine Exception, StackTrace auskommentiert) 
 #Description:
 
 Versuche Statecharts zu Importieren wie in Number 1 (wichtig; tv.st).
