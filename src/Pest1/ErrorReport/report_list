@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.88 1999-02-09 16:11:36 swtech00 Exp $
+//	$Id: report_list,v 1.89 1999-02-09 16:38:48 swtech21 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -158,8 +158,13 @@ werden, das Umbennen-Fenster wurde nicht geoeffnet.
 #Number:	10
 #Autor:		Stefan Lemke swtech21
 #Subject:	PEST1: Bildgroesse im Zoom-Modus
-#Status:	fixed
+#Status:	reported
 #Description:
+
+am 9.2.99 zurueckgesetzt: 50-fach aus einem Chart herausgezoomt und ganz unten
+ein State gezeichnet. Anschliessend 70-fach wieder eingezoomt: Der gezeichnete
+Zustand kann mit den Slidern nicht erreicht werden.
+
 
 In eine Chart gezommt.
 Die rechte untere Ecke des Charts ist nicht mit den Slidern erreichbar.
@@ -169,7 +174,7 @@ Die rechte untere Ecke des Charts ist nicht mit den Slidern erreichbar.
 #Number:	11
 #Autor:		Stefan Lemke swtech21
 #Subject:	PEST1: Loeschen von States
-#Status:	fixed
+#Status:	confirmed
 #Description:
 
 State erstellt. Das Loeschen ist nicht moeglich. Auswahl der Funktion aus dem
@@ -412,7 +417,7 @@ Check muß auf Keywords nicht prüfen, weil wir es so vereinbart haben
 #Number:	27
 #Autor:		Heiko Haller, Stefan Lemke, swtech21
 #Subject:	Editzeile beim Labeln zunaechst zu klein
-#Status:        fixed 
+#Status:        confirmed
 #Description: 
 
 Wenn man Transitionen oder States labeln will, wird das Labelfenster
@@ -423,7 +428,7 @@ Eingabebereich.
 #Number:	28
 #Autor:		Heiko Haller, Stefan Lemke, swtech21
 #Subject:	Grafisches Menue laesst SyntaxCheck nicht zu
-#Status: 	fixed
+#Status: 	confirmed
 #Description: 
 
 TESC importiert.
@@ -437,7 +442,7 @@ ueber das normale Menue jedoch schon.
 #Number:	29
 #Autor:		Heiko Haller, Stefan Lemke, swtech21
 #Subject:	Editor: Nach Undo kein chart mehr
-#Status: 	fixed (alle weiteren Fehler ligen als Clone-Fehler in der
+#Status: 	confirmed (alle weiteren Fehler ligen als Clone-Fehler in der
 		AbSyn)
 #Description: 
 
@@ -848,6 +853,8 @@ dann meldet einen Fehler.
 Wenn Import->Statemate fehlschlägt, gibt es ein pop-up window.
 Aber wenn Import->TESC fehlschlägt, gibt es kein po-up window.
 Mir gefällt die Variante mit pop-up besser.
+
+
 //----------------------------------------------------------------------------
 #Number:        58
 #Autor:         Erich Mikk erm
@@ -870,5 +877,75 @@ Speicherfunktion, wo man die Fehler in eine File abspeichern kann).
 Nach dem ein Editor geschlossen  worden ist,
 kann man den Editor nur über Werkzeuge->Editor starten, aber
 nicht auf der Graphik.
-//----------------------------------------------------------------------------
 
+//----------------------------------------------------------------------------
+#Number:        60
+#Autor:         Heiko Haller, swtech21
+#Subject:       Exception beim Anzeigen eines importierten TESC-Files.
+#Status:        reported
+#Description:
+
+Wenn man ~swtech21/tests/tesc/Safer1.tesc importiert und dann den Editor auf-
+ruft, so erhaelt man unten abgebildete Meldung.
+Interessanterweise wird das Chart dennoch gezeichnet, aber nicht vollstaendig:
+Es werden alle States gezeichnet, aber dann nur die Transition von Init nach P1.
+
+TESC-File:
+~~~~~~~~~~
+
+# Safer in mehreren Schritten
+# Erster Schritt: Nur abbilden der Phasen
+# events: P1Ready, P2Ready;
+ 
+or Safer:
+        basic Init;
+        basic P1;
+        basic P2;
+        
+        defcon: Init;
+ 
+        transitions:
+        from Init to P1 on;
+        from P1 to P2 on P1Ready;
+        from P2 to P1 on P2Ready;
+        
+end Safer;
+
+
+Meldung:
+~~~~~~~~
+
+
+lauf.next :editor.desk.PESTDrawDesk$Storelist@1dc6106a
+basis.next :editor.desk.PESTDrawDesk$Storelist@1dc6106f
+lauf : editor.desk.PESTDrawDesk$Storelist@1dc6106f
+basis : editor.desk.PESTDrawDesk$Storelist@1dc6106f
+Exception occurred during event dispatching:
+java.lang.NullPointerException
+        at editor.desk.Repaint.redraw(Repaint.java:136)
+        at editor.desk.Repaint.start(Repaint.java:48)
+        at editor.desk.Repaint.redraw(Repaint.java:294)
+        at editor.desk.Repaint.start(Repaint.java:45)
+        at editor.desk.Repaint.redraw(Repaint.java:55)
+        at editor.desk.Repaint.start(Repaint.java:43)
+        at editor.desk.PESTDrawDesk.paint(PESTDrawDesk.java:327)
+        at java.awt.Container.paint(Container.java:703)
+        at sun.awt.motif.MComponentPeer.handleEvent(MComponentPeer.java:193)
+        at java.awt.Component.dispatchEventImpl(Component.java:1834)
+        at java.awt.Container.dispatchEventImpl(Container.java:923)
+        at java.awt.Component.dispatchEvent(Component.java:1708)
+        at java.awt.EventDispatchThread.run(EventDispatchThread.java:81)
+//----------------------------------------------------------------------------
+#Number:        61
+#Autor:         Heiko Haller, swtech21
+#Subject:       Editor: Nach Zoom werden States nach dem Zeichnen verschoben
+#Status:        reported
+#Description:
+
+Man lege ein neues Chart an und oeffne den Editor. Anschliessend zoomt man 
+10-fach hinein.
+Beim Zeichnen von States werden diese verschoben, wenn man sie loslaesst.
+Interessanterweise verstaerkt sich dieser Effekt, je weiter man hineinzoomt.
+
+//----------------------------------------------------------------------------
+ 
