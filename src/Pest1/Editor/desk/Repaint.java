@@ -72,10 +72,19 @@ private void redraw(Tr tr,int nx, int ny, boolean drawflag) {
 	if (tr.label.position != null)
 	{
 	h.setColor(def_text);
-	h.drawString(tr.label.caption,
-		     (int) ((tr.label.position.x+nx)*Editor.ZoomFaktor),
-		     (int) ((tr.label.position.y+ny)*Editor.ZoomFaktor)
-		     );
+	if (tr.label.caption.length() < 20)
+	{
+	    h.drawString(tr.label.caption,
+			 (int) ((tr.label.position.x+nx)*Editor.ZoomFaktor),
+			 (int) ((tr.label.position.y+ny)*Editor.ZoomFaktor)
+			 );
+	} else
+	    {
+		h.drawString("<LongLabel>",
+			 (int) ((tr.label.position.x+nx)*Editor.ZoomFaktor),
+			 (int) ((tr.label.position.y+ny)*Editor.ZoomFaktor)
+			 );
+	    }
 	}
 	// System.out.println("Anzahl ZeigerPunkte : "+(int) (trsize+1));
 	//for (int lauf = 0;lauf < (trsize-1);lauf++) {h.setColor(def_tr);h.drawLine(	(int) ((tr.points[lauf].x+nx)*Editor.ZoomFaktor),

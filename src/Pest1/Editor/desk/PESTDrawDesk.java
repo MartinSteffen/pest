@@ -98,11 +98,56 @@ import java.applet.*;
     if (command.equals("undo")) {root = undo();Editor.newdraw();}
     else if (command.equals("restore")) {root = redo();Editor.newdraw();}
     else if (command.equals("loeschen")){ 
-	if (deleteobj instanceof State) { 
-	    System.out.println(">>>in delete"+deleteobj);
-	    //    Deleter.delete((State) deleteobj,root);
-	}
-                                        }
+       
+	    // ********************
+    if (aktcomp instanceof State) {
+
+        DeleteChart dc = new DeleteChart ( root );
+        State todelete = (State)aktcomp;
+        State father = dc.get_father(root.state, todelete);
+
+	      System.out.println("Zu löschender State: "+ todelete);
+        System.out.println("Vater "+ father);
+
+        dc.delete_State( todelete );
+
+        repaint();
+
+
+	    }
+
+      if (aktcomp instanceof Tr) {
+
+        DeleteChart dc = new DeleteChart ( root );
+        Tr todelete = (Tr)aktcomp;
+        Or_State father = dc.find_trans(todelete);
+
+	      System.out.println("Zu löschende Transition: "+ todelete);
+        System.out.println("Zugehöriger State: "+ father);
+
+        dc.delete_Trans( todelete );
+
+        repaint();
+
+    }
+
+    if (aktcomp instanceof Connector) {
+
+        DeleteChart dc = new DeleteChart ( root );
+        Connector todelete = (Connector)aktcomp;
+        Or_State father = dc.find_con(todelete);
+
+	      System.out.println("Zu löschende Transition: "+ todelete);
+        System.out.println("Zugehöriger State: "+ father);
+
+        dc.delete_Con( todelete );
+
+        repaint();
+
+    }
+	    // ********************
+    Editor.SetListen();
+    }                                      
     
   }
  
