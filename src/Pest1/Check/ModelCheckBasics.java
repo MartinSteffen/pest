@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: ModelCheckBasics.java,v 1.10 1999-01-20 15:26:45 swtech11 Exp $
+ *  @version  $Id: ModelCheckBasics.java,v 1.11 1999-01-21 22:39:17 swtech11 Exp $
  */
 class ModelCheckBasics {
   ModelCheckMsg msg = new ModelCheckMsg();
@@ -198,6 +198,23 @@ class ModelCheckBasics {
                             v.removeElementAt(j);};};};};
 
     return !b;}
+
+
+  String getTrSourceName(Tr t) {
+    String s=new String();
+    if (t.source instanceof Statename)      { s=((Statename)t.source).name;}
+    else if (t.source instanceof Conname)   { s=((Conname)t.source).name;}
+    else if (t.source instanceof UNDEFINED) { s="UNDEFINED";}
+    return s;
+  }
+
+  String getTrTargetName(Tr t) {
+    String s=new String();
+    if (t.target instanceof Statename)      { s=((Statename)t.target).name;}
+    else if (t.target instanceof Conname)   { s=((Conname)t.target).name;}
+    else if (t.target instanceof UNDEFINED) { s="UNDEFINED";}
+    return s;
+  }
 }
 
  class BVarC {

@@ -18,9 +18,7 @@ import editor.*;
  * <ul>
  * <li>Es darf keine <b>null</b> an Stellen stehen, die dafür nicht vorgesehen
  * sind (z.B. in TrList.head).
- * <li>(In der Datenstruktur der Statechart darf kein Zyklus sein.) Zur Zeit
- * testen wir das noch, aber sobald wir die Garantien der anderen Module haben,
- * werden wir den Test entfernen.
+ * <li>In der Datenstruktur der Statechart darf kein Zyklus sein.
  * </ul>
  * <h2>Garantien nach der Beendigung des Checks:</h2>
  * <ul>
@@ -49,7 +47,7 @@ import editor.*;
  * </DL COMPACT>
  *
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: ModelCheck.java,v 1.25 1999-01-20 15:06:49 swtech11 Exp $
+ * @version  $Id: ModelCheck.java,v 1.26 1999-01-21 22:39:16 swtech11 Exp $
  */
 public class ModelCheck {
   private ModelCheckMsg mcm; // Object, um die Fehler und Warnungen zu speichern
@@ -105,7 +103,7 @@ public class ModelCheck {
     boolean NoFatalError = false;
     boolean result = false;
 
-    boolean BrowserOut = false; //true; //   
+    boolean BrowserOut = true; // false; //  
 
     boolean Zeitnahme = true;
     long s0=0; long e0=0; long s1=0; long e1=0; long s2=0; long e2=0;
@@ -114,9 +112,11 @@ public class ModelCheck {
     // Test auf Kreisfreiheit und doppelte Referenzierung
     s0 = getTimeC();
     s1 = getTimeC();
-    TestPI tpi = new TestPI(sc, mcm);
-    NoFatalError=tpi.check();
+    // TestPI tpi = new TestPI(sc, mcm);
+    // NoFatalError=tpi.check();
+    NoFatalError=true;
     e1 = getTimeC();
+
 
     if ( NoFatalError == false ) {
       if ( outputGUI == true ) {
@@ -197,7 +197,7 @@ public class ModelCheck {
 
     if (BrowserOut==true) {
 	//CheckOption co = new CheckOption((pest)gui,new CheckConfig()); // zu Testzwecken
-      Browser b = new Browser((pest)gui,mcm);
+      Browser b = new Browser((pest)gui,edit,mcm);
     }
     else if ( outputGUI == true ) { outputToGUI(); } // Ausgabe an die GUI
 

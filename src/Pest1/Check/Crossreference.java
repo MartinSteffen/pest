@@ -35,10 +35,11 @@ import java.awt.*;
  * keine
  * </DL COMPACT>
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: Crossreference.java,v 1.9 1999-01-21 17:14:17 swtech11 Exp $
+ * @version  $Id: Crossreference.java,v 1.10 1999-01-21 22:39:15 swtech11 Exp $
  */
 public class Crossreference extends ModelCheckBasics {
   private GUIInterface gui = null; // Referenz auf die GUI
+  private Editor edit = null;
   public String such = new String("");
   private Vector items = new Vector();
   private boolean infix=false;
@@ -47,6 +48,7 @@ public class Crossreference extends ModelCheckBasics {
 
   public Crossreference(GUIInterface _gui, Editor _edit) {
     gui = _gui;
+    edit = _edit;
   }
 
   public Crossreference(GUIInterface _gui) {
@@ -57,9 +59,9 @@ public class Crossreference extends ModelCheckBasics {
   public void report(Statechart _sc) {
     sc=_sc;
     // Eingabe
-    such = gui.EingabeDialog("Crossreference","Zu suchendes Element eingeben;",such);
+    such = gui.EingabeDialog("Crossreference","Zu suchendes Element eingeben:",such);
     if (such!=null) {
-    System.out.println(such);
+    //System.out.println(such);
     int suchl=such.length();
     if ((such.substring(suchl-1,suchl).equals("*")) && (such.substring(0,1).equals("*"))) {infix=true; praefix=false; postfix=false;};
     if ((!such.substring(suchl-1,suchl).equals("*")) && (such.substring(0,1).equals("*"))) {infix=false; praefix=false; postfix=true;};
@@ -73,16 +75,17 @@ public class Crossreference extends ModelCheckBasics {
     if (sc.state instanceof Basic_State) {navBasicState ((Basic_State)sc.state, null,""); }
 
     // Ausgabe
+    highlightObject ho;
     if (items.size()>0) {
-      highlightObject ho = new highlightObject(true); // Highlighten vorbereiten
+      if (edit!=null) { ho = new highlightObject(true); }// Highlighten vorbereiten
       gui.userMessage("Check: "+such+" ist ein:");
       for (int i=0; i<items.size(); i++) {
         ReportItem rp = (ReportItem)items.elementAt(i);
         gui.userMessage("Check:   - "+rp.Pth);
-        if (rp.HiObj!=null) {
+        if (edit!=null & rp.HiObj!=null) {
         ho = new highlightObject((Absyn)rp.HiObj,Color.black); // Object highlighten
 	};}
-      ho = new highlightObject(); // Highlighten aktivieren
+      if (edit!=null) {ho = new highlightObject(); }// Highlighten aktivieren
     }
     else {
       gui.userMessage("Check: "+such+" wurde nicht gefunden.");
@@ -131,27 +134,13 @@ public class Crossreference extends ModelCheckBasics {
   }
 
   void navTransInTransList(TrList tl, State _s, String p) {
-    String z1 = new String();
-    String z2 = new String();
+    String z1 = getTrSourceName(tl.head);
+    String z2 = getTrTargetName(tl.head);
     
     // Ueberpruefe Guards und Actions
     pruefeString(tl.head.label, tl.head, p); //ueberprueft den Caption auf infixStrings
     pruefeGuard(tl.head.label.guard, tl.head, p);
     pruefeAction(tl.head.label.action, tl.head, p);
-
-    // Namen der Anker rausfinden
-    if (tl.head.source instanceof UNDEFINED)
-      { z1 = new String("UNDEFINED"); }
-    else if (tl.head.source instanceof Statename)
-      { z1 = new String(((Statename)tl.head.source).name); }
-    else if (tl.head.source instanceof Conname)
-      { z1 = new String(((Conname)tl.head.source).name); }
-    if (tl.head.target instanceof UNDEFINED)
-      { z2 = new String("UNDEFINED"); }
-    else if (tl.head.target instanceof Statename)
-      { z2 = new String(((Statename)tl.head.target).name); }
-    else if (tl.head.target instanceof Conname)
-      { z2 = new String(((Conname)tl.head.target).name); }
 
     // Auswertung der Anker  
     if (tl.head.source instanceof Statename) {

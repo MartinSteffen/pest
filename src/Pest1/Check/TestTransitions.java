@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestTransitions.java,v 1.13 1999-01-20 13:46:02 swtech11 Exp $
+ *  @version  $Id: TestTransitions.java,v 1.14 1999-01-21 22:39:19 swtech11 Exp $
  */
 class TestTransitions extends ModelCheckBasics {
   Vector newPLV = new Vector(); // Vector fuer die selbst angelegte PathList der States
@@ -64,28 +64,26 @@ class TestTransitions extends ModelCheckBasics {
     boolean v1 = false; boolean v2 = false; boolean w1 = false; boolean w2 = false;
     boolean i1 = false; boolean i2 = false; boolean j1 = false; boolean j2 = false;
     boolean con1 = false;
-    String z1 = new String();
-    String z2 = new String();
     TransE mtr = new TransE();
     ConE co2 = new ConE();
+
+    String z1 = getTrSourceName(tl.head);
+    String z2 = getTrTargetName(tl.head);    
 
     // Startanker der Transition bearbeiten
     if (tl.head.source instanceof UNDEFINED) { // undefiniert ?
       mtr.s = 0;
-      z1 = new String("UNDEFINED");
       u1 = true;
     }
     else if (tl.head.source instanceof Statename) { // State ?
       mtr.s = 1;
       mtr.sz = 1;
-      z1 = new String(((Statename)tl.head.source).name);
       v1 = !StatenameInPathList(newPLV, z1); // State -> nicht vorhanden ?
       if (v1==false) { i1 = !NameInThisStateSubstates(((Or_State)_s).substates, z1); } // State -> Interlevel ?
     }
     else if (tl.head.source instanceof Conname) { // Connector ?
       mtr.s = 2;
       con1 = true;
-      z1 = new String(((Conname)tl.head.source).name);
       co2 = new ConE();
       co2.name = z1;
       co2.d = "Connector: " +z1 + " in State: " + p;
@@ -98,19 +96,16 @@ class TestTransitions extends ModelCheckBasics {
     // Zielanker der Transition bearbeiten
     if (tl.head.target instanceof UNDEFINED) { // undefiniert ?
       mtr.z = 0;
-      z2 = new String("UNDEFINED");
       u2 = true;
     }
     else if (tl.head.target instanceof Statename) { // State ?
       mtr.z = 1;
       mtr.zz = 1;
-      z2 = new String(((Statename)tl.head.target).name);
       v2 = !StatenameInPathList(newPLV, z2); // State -> nicht vorhanden ?
       if (v2==false) { i2 = !NameInThisStateSubstates(((Or_State)_s).substates, z2); } // State -> Interleven ?
     }
     else if (tl.head.target instanceof Conname) { // Connector ?
       mtr.z = 2;
-      z2 = new String(((Conname)tl.head.target).name);
       co2 = new ConE();
       co2.name = z2;
       co2.d = "Connector: " +z2 + " in State: " + p;
@@ -128,25 +123,25 @@ class TestTransitions extends ModelCheckBasics {
     newLTL.addElement(mtr);
 
     // Auswertung auf undefiniert
-    if (u1==true & u2==false) { msg.addError(400,t); }
-    else if (u1==false & u2==true) { msg.addError(401,t); }
-    else if (u1==true & u2==true) { msg.addError(402,t); }
+    if (u1==true & u2==false) { msg.addError(400,t,tl.head); }
+    else if (u1==false & u2==true) { msg.addError(401,t,tl.head); }
+    else if (u1==true & u2==true) { msg.addError(402,t,tl.head); }
     // Auswertung auf Nicht-Vorhandenheit von State
-    if (v1==true & v2==false) { msg.addError(403,t); }
-    else if (v1==false & v2==true) { msg.addError(404,t); }
-    else if (v1==true & v2==true)  { msg.addError(405,t); }
+    if (v1==true & v2==false) { msg.addError(403,t,tl.head); }
+    else if (v1==false & v2==true) { msg.addError(404,t,tl.head); }
+    else if (v1==true & v2==true)  { msg.addError(405,t,tl.head); }
     // Auswertung auf Interlevel von State
-    if (i1==true & i2==false) { msg.addError(406,t); }
-    else if (i1==false & i2==true) { msg.addError(407,t); }
-    else if (i1==true & i2==true)  { msg.addError(408,t); }
+    if (i1==true & i2==false) { msg.addError(406,t,tl.head); }
+    else if (i1==false & i2==true) { msg.addError(407,t,tl.head); }
+    else if (i1==true & i2==true)  { msg.addError(408,t,tl.head); }
     // Auswertung auf Nicht-Vorhandenheit von Connectoren
-    if (w1==true & w2==false) { msg.addError(409,t); }
-    else if (w1==false & w2==true) { msg.addError(410,t); }
-    else if (w1==true & w2==true)  { msg.addError(411,t); }
+    if (w1==true & w2==false) { msg.addError(409,t,tl.head); }
+    else if (w1==false & w2==true) { msg.addError(410,t,tl.head); }
+    else if (w1==true & w2==true)  { msg.addError(411,t,tl.head); }
     // Auswertung auf Interlevel von Connectoren
-    if (j1==true & j2==false) { msg.addError(412,t); }
-    else if (j1==false & j2==true) { msg.addError(413,t); }
-    else if (j1==true & j2==true)  { msg.addError(414,t); }
+    if (j1==true & j2==false) { msg.addError(412,t,tl.head); }
+    else if (j1==false & j2==true) { msg.addError(413,t,tl.head); }
+    else if (j1==true & j2==true)  { msg.addError(414,t,tl.head); }
 
     if (tl.head.label.guard!=null)  {Guardlist.addElement(new GuardE(tl.head.label.guard, tl.head, p));} // DW
     if (tl.tail != null) { navTransInTransList(tl.tail, _s,p); }

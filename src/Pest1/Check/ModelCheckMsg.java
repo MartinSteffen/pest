@@ -5,24 +5,28 @@ import absyn.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: ModelCheckMsg.java,v 1.8 1999-01-20 15:06:53 swtech11 Exp $
+ *  @version  $Id: ModelCheckMsg.java,v 1.9 1999-01-21 22:39:18 swtech11 Exp $
  */
 class ModelCheckMsg {
   private Vector ErrorCode;
   private Vector ErrorMsg;
   private Vector ErrorPath;
   private Vector WarningCode;
+  private Vector ErrorHiObj;
   private Vector WarningMsg;
   private Vector WarningPath;
+  private Vector WarningHiObj;
   private ErrorAndWarningCodes ewc = new ErrorAndWarningCodes();
 
   ModelCheckMsg() {
     ErrorCode = new Vector();
     ErrorMsg = new Vector();
     ErrorPath = new Vector();
+    ErrorHiObj = new Vector();
     WarningCode = new Vector();
     WarningMsg = new Vector();
     WarningPath = new Vector();
+    WarningHiObj = new Vector();
   };
 
   // liefert die Anzahl der Fehler zurueck
@@ -34,12 +38,21 @@ class ModelCheckMsg {
     ErrorCode.addElement(ic);
     ErrorMsg.addElement(ewc.codeToString(_code));
     ErrorPath.addElement(_path);
+    ErrorHiObj.addElement(null);
   }
 
-    /** Error hinzufuegen.*/
- void addError(int n, Tr t, String p) {
-  
-  this.addError(n,"", t, p);
+  void addError(int _code, String _path, Object _ho) {
+    Integer ic = new Integer(_code);
+    ErrorCode.addElement(ic);
+    ErrorMsg.addElement(ewc.codeToString(_code));
+    ErrorPath.addElement(_path);
+    ErrorHiObj.addElement(_ho);
+  }
+
+
+
+  void addError(int n, Tr t, String p) {
+    this.addError(n,"", t, p);
   }
 
     /** Error hinzufuegen*/
@@ -72,11 +85,9 @@ class ModelCheckMsg {
   if (t2.target instanceof Conname)  { s4=((Conname)t2.target).name;};
   if (t2.source instanceof UNDEFINED)  { s3="UNDEFINED";};
   if (t2.target instanceof UNDEFINED)  { s4="UNDEFINED";};
-
-
-
   this.addError(n,p1 +" Trans: "+s1+" -> "+s2+" Trans: "+s3+" -> "+s4+" in State: "+p);
   }
+
   // gesamte Error-Meldung des _number. Errors
   // zurueckmelden, der erste Index ist 1 nicht 0
   String getError(int _number) {
@@ -99,6 +110,10 @@ class ModelCheckMsg {
   String getErrorPath(int _number) {
     return (String)ErrorPath.elementAt(_number-1); }
 
+  // Object des Fehlers zurückgeben
+  Object getErrorHiObj(int _number) {
+    return (Object)ErrorHiObj.elementAt(_number-1); }
+
   // liefert die Anzahl der Warnings zurueck
   int getWarningNumber() { return WarningCode.size(); }
 
@@ -108,11 +123,19 @@ class ModelCheckMsg {
     WarningCode.addElement(ic);
     WarningMsg.addElement(ewc.codeToString(_code));
     WarningPath.addElement(_path);
+    WarningHiObj.addElement(null);
+  }
+
+  void addWarning(int _code, String _path, Object _ho) {
+    Integer ic = new Integer(_code);
+    WarningCode.addElement(ic);
+    WarningMsg.addElement(ewc.codeToString(_code));
+    WarningPath.addElement(_path);
+    WarningHiObj.addElement(_ho);
   }
 
     /** Warnung hinzufuegen.*/
  void addWarning(int n, Tr t, String p) {
-  
   this.addWarning(n,"", t, p);
   }
 
@@ -147,8 +170,6 @@ class ModelCheckMsg {
   if (t2.source instanceof UNDEFINED)  { s3="UNDEFINED";};
   if (t2.target instanceof UNDEFINED)  { s4="UNDEFINED";};
 
-
-
   this.addWarning(n,p1 +" Trans: "+s1+" -> "+s2+" Trans: "+s3+" -> "+s4+" in State: "+p);
   }
 
@@ -174,9 +195,12 @@ class ModelCheckMsg {
   String getWarningPath(int _number) {
     return (String)WarningPath.elementAt(_number-1); }
 
+  // Object des Warnings zurückgeben
+  Object getWarningHiObj(int _number) {
+    return (Object)WarningHiObj.elementAt(_number-1); }
 
   void sort() {
-    Vector tc,tm,tp;
+    Vector tc,tm,tp,to;
     // Fehler sortieren
     if (ErrorCode.size()>1) {
       boolean ok = false;
@@ -185,6 +209,7 @@ class ModelCheckMsg {
         tc = new Vector();
         tm = new Vector();
         tp = new Vector();
+        to = new Vector();
         int i=0;
         while (i<ErrorCode.size()) {
           Integer er1 =  new Integer(  ((Integer)ErrorCode.elementAt(i)).intValue()   );
@@ -192,6 +217,7 @@ class ModelCheckMsg {
             tc.addElement(er1);
             tm.addElement(ErrorMsg.elementAt(i));
             tp.addElement(ErrorPath.elementAt(i));
+            to.addElement(ErrorHiObj.elementAt(i));
           }
           else {
             Integer er2 = new Integer(  ((Integer)ErrorCode.elementAt(i+1)).intValue()   ) ;
@@ -199,9 +225,12 @@ class ModelCheckMsg {
               tc.addElement(er2);
               tc.addElement(er1);
               tm.addElement(ErrorMsg.elementAt(i+1));
-              tp.addElement(ErrorPath.elementAt(i+1));
               tm.addElement(ErrorMsg.elementAt(i));
+              tp.addElement(ErrorPath.elementAt(i+1));
               tp.addElement(ErrorPath.elementAt(i));
+              to.addElement(ErrorHiObj.elementAt(i+1));
+              to.addElement(ErrorHiObj.elementAt(i));
+
               ok = false;
               i++;
             }
@@ -209,6 +238,7 @@ class ModelCheckMsg {
               tc.addElement(er1);
               tm.addElement(ErrorMsg.elementAt(i));
               tp.addElement(ErrorPath.elementAt(i));
+              to.addElement(ErrorHiObj.elementAt(i));
             }
           }
           i++;
@@ -216,6 +246,7 @@ class ModelCheckMsg {
          ErrorCode = tc;
          ErrorMsg  = tm;
          ErrorPath = tp;
+         ErrorHiObj= to;
       }
     }
     // Warnungen sortieren
@@ -226,6 +257,7 @@ class ModelCheckMsg {
         tc = new Vector();
         tm = new Vector();
         tp = new Vector();
+        to = new Vector();
         int i=0;
         while (i<WarningCode.size()) {
           Integer er1 =  new Integer(  ((Integer)WarningCode.elementAt(i)).intValue()   );
@@ -233,6 +265,7 @@ class ModelCheckMsg {
             tc.addElement(er1);
             tm.addElement(WarningMsg.elementAt(i));
             tp.addElement(WarningPath.elementAt(i));
+            to.addElement(WarningHiObj.elementAt(i));
           }
           else {
             Integer er2 = new Integer(  ((Integer)WarningCode.elementAt(i+1)).intValue()   ) ;
@@ -243,6 +276,8 @@ class ModelCheckMsg {
               tp.addElement(WarningPath.elementAt(i+1));
               tm.addElement(WarningMsg.elementAt(i));
               tp.addElement(WarningPath.elementAt(i));
+              to.addElement(WarningHiObj.elementAt(i+1));
+              to.addElement(WarningHiObj.elementAt(i));
               ok = false;
               i++;
             }
@@ -250,6 +285,7 @@ class ModelCheckMsg {
               tc.addElement(er1);
               tm.addElement(WarningMsg.elementAt(i));
               tp.addElement(WarningPath.elementAt(i));
+              to.addElement(WarningHiObj.elementAt(i));
             }
           }
           i++;
@@ -257,6 +293,7 @@ class ModelCheckMsg {
          WarningCode = tc;
          WarningMsg  = tm;
          WarningPath = tp;
+         WarningHiObj= to;
       }
     }
   }
