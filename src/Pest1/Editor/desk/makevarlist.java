@@ -85,6 +85,8 @@ public class makevarlist{
 	{
 	Statechart root = nroot;
 	Aseq lauf = evt;
+	if (lauf != null)
+	 {
 	if (lauf.head != null) 
 	  {
  	  Action taction;
@@ -94,6 +96,7 @@ public class makevarlist{
 	  if (taction instanceof ActionStmt) {new makevarlist(root,(ActionStmt) taction);}
 	  new makevarlist (root,(Aseq)lauf.tail);
 	  }
+	}
 	}
 
 
