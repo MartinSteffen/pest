@@ -516,7 +516,7 @@ class TESCParser {
 	Location loc = new Location(tok.linenum);
 
         if (tok.token==vTOKEN.IDENT) {
-	    con = new Connector(new Conname(tok.value_str));
+	    con = new Connector((Conname)setLoc(new Conname(tok.value_str), loc));
 	    con.location = loc;
 
 	    addConname(tok.value_str, p);
@@ -585,7 +585,9 @@ class TESCParser {
 	}
 	else {
 	    // keine Action angegeben
-	    act = new ActionEmpty(new Dummy());
+	     Location loc = new Location(tok.linenum);
+	    act = new ActionEmpty((Dummy)setLoc(new Dummy(), loc));
+	    act.location = loc;
 	}
 
 	return act;
@@ -594,16 +596,18 @@ class TESCParser {
     private Aseq actionlist(Path p) throws IOException {
 	Aseq as = null;
 	Action a;
-
+	
+	//Location loc = new Location(tok.linenum);
 	a = aktion(p);
 	if (tok.token == vTOKEN.COMMA) {
 	    match(vTOKEN.COMMA);
+	    //as = (Aseq)setLoc(new Aseq(a, actionlist(p)), loc);
 	    as = new Aseq(a, actionlist(p));
 	    
 	}
 	else if (tok.token == vTOKEN.SCOLON) {
 	    as =  new Aseq( a, null);
-	    
+	    //as.location = loc;
 	}
 
 	return as;
@@ -769,17 +773,17 @@ class TESCParser {
 	}
 	else if(tok.token == vTOKEN.EMPTYEXP) {
 	    // Rekursion ??? oder kann ~ nur für sich stehen ?
-	    grd = new GuardEmpty(new Dummy()); 
+	    grd = new GuardEmpty((Dummy)setLoc(new Dummy(), loc)); 
 	}
 	else if(tok.token == vTOKEN.IN || tok.token == vTOKEN.ENTERED || tok.token == vTOKEN.EXITED) {
 	    grd = pathop(p);
 	}
 	else if (tok.token == vTOKEN.IDENT) {
 	    if (is_bvarname(tok.value_str)) {
-		grd = new GuardBVar(new Bvar(tok.value_str));
+		grd = new GuardBVar((Bvar)setLoc(new Bvar(tok.value_str), loc));
 	    }
 	    else if (is_eventname(tok.value_str)) {
-		grd = new GuardEvent(new SEvent(tok.value_str));
+		grd = new GuardEvent((SEvent)setLoc(new SEvent(tok.value_str), loc));
 	    }
 	    else {
 		addError(makeError(tok,"Unbekannter Identifikator"));
@@ -1325,8 +1329,11 @@ class TESCParser {
 }
 
 /* TESCParser
- * $Id: TESCParser.java,v 1.11 1999-01-06 14:57:24 swtech13 Exp $
+ * $Id: TESCParser.java,v 1.12 1999-01-07 20:52:01 swtech13 Exp $
  * $Log: not supported by cvs2svn $
+ * Revision 1.11  1999/01/06 14:57:24  swtech13
+ * Fehlerbehandlung verbessert
+ *
  * Revision 1.10  1999/01/06 13:48:56  swtech13
  * Neue Fehlermeldung
  *

@@ -56,8 +56,7 @@ import gui.*;
  * </STRONG>
  * <ul>
  * <li> Undet bei Guards. 
- * <li> Verbesserung der Fehlerbehandlung.
- * <li> Testen der Locations.
+ * <li> Abschließende Test (z.B. im Editor, noch nicht möglich, da der GraphAlg noch nichts tut)
  * </ul>
  * Fertig am 11.01.99
  *
@@ -82,7 +81,7 @@ import gui.*;
  * </DL COMPACT>
 
  * @author Arne Koch/Mike Rumpf.
- * @version  $Id: TESCLoader.java,v 1.9 1999-01-05 20:58:15 swtech13 Exp $ 
+ * @version  $Id: TESCLoader.java,v 1.10 1999-01-07 20:52:00 swtech13 Exp $ 
  */ 
 public class TESCLoader {
 
@@ -121,6 +120,12 @@ public class TESCLoader {
 
 /* 
  * $Log: not supported by cvs2svn $
+ * Revision 1.9  1999/01/05 20:58:15  swtech13
+ *   - pathop -> absolute Pfade
+ *   - Keine Action angegeben -> new ActionEmpty(new Dummy())
+ *   - Schaltermechanismus eingebaut.
+ *   - debugmechanismus eingebaut.
+ *
  * Revision 1.8  1999/01/04 16:12:01  swtech13
  * Locations hinzugefuegt. Pruefen auf Keywords.
  *
