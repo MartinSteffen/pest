@@ -6,7 +6,7 @@ import java.awt.Point;
 /**
  * TLabel.
  * @author Initially provided by Martin Steffen.
- * @version $Id: TLabel.java,v 1.9 1999-01-11 17:23:51 swtech00 Exp $
+ * @version $Id: TLabel.java,v 1.10 1999-01-12 09:21:49 swtech24 Exp $
  */
 public class TLabel extends Absyn implements Serializable, Cloneable {
 /**
@@ -21,6 +21,12 @@ public class TLabel extends Absyn implements Serializable, Cloneable {
  * Righ-hand-side of the label: action
  */
     public Action action;
+
+/**
+ * Caption of the label: caption
+ */
+    public String caption = "";
+
 /**
  * Constructor.
  */
@@ -49,6 +55,17 @@ public class TLabel extends Absyn implements Serializable, Cloneable {
     };
 
 /**
+ * Constructor with Position, Location and Caption.
+ */
+    public TLabel (Guard g, Action a, CPoint p, Location l, String c) {
+	position = p;
+	guard = g;
+	action = a;
+	location = l;
+	caption = c;
+    };
+
+/**
  * @exception CloneNotSupportedException self-explanatory exception
  */
     public Object clone() throws CloneNotSupportedException {
@@ -56,11 +73,13 @@ public class TLabel extends Absyn implements Serializable, Cloneable {
       Guard  guardclone        = (guard  == null)   ? null : (Guard)guard.clone();
       Action actionclone       = (action == null)   ? null : (Action)action.clone();
       Location  locationclone  = (location == null) ? null : (Location)location.clone();
+      String captionclone      = new String(caption);
 
       return new TLabel (guardclone,
 			 actionclone,
 			 positionclone,
-			 locationclone
+			 locationclone,
+			 captionclone
 			 );
     };
 }
@@ -71,8 +90,18 @@ public class TLabel extends Absyn implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: TLabel.java,v 1.9 1999-01-11 17:23:51 swtech00 Exp $
+//	$Id: TLabel.java,v 1.10 1999-01-12 09:21:49 swtech24 Exp $
 //      $Log: not supported by cvs2svn $
+//      Revision 1.9  1999/01/11 17:23:51  swtech00
+//      Alle Bestandteile der abstrakten Syntax mit Locations (= nicht-abstrakte
+//      Unterklassen von Absyn) in der Form modifiziert, da"s das Locations-Feld
+//      mit-geklont wird. =>
+//
+//           o	Jeweils neuer Kontruktor hinzugef"ugt
+//           o  clone-Methode angepa"st
+//
+//      [Steffen]
+//
 //      Revision 1.8  1999/01/11 11:50:00  swtech14
 //      nullpointer-Abfrage hinzugefuegt.
 //
