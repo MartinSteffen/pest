@@ -1,4 +1,4 @@
-/** 
+/**
 	package editor
 */
 
@@ -21,6 +21,7 @@ public class Editor extends Frame implements ActionListener {
     private String status = "";
     private Scrollbar vert,horiz;
     public int scrollX=0,scrollY=0;
+    public GUIInterface gui = null;
 
     final Editor editor = this;
 
@@ -29,11 +30,11 @@ public class Editor extends Frame implements ActionListener {
 
     Erzeugt ein Editorobjekt und öffnet ein Editorfenster
 
-	@param st Eine Statechart-Instanz, die angezeigt werden soll und dann bearbeitet werden kann. 
+	@param st Eine Statechart-Instanz, die angezeigt werden soll und dann bearbeitet werden kann.
 	@param l Ein Bezeichner fuer den Statechart
 */
 
-    public Editor(Statechart st, String l, int x, int y, int width, int height,GUIInterface gui) {
+    public Editor(Statechart st, String l, int x, int y, int width, int height,GUIInterface gui_interface) {
         statechart = st;
         if (statechart.state == null)  {
             statechart.state = new Or_State(null, null, null, null, null);
@@ -43,6 +44,7 @@ public class Editor extends Frame implements ActionListener {
         stateList = EditorUtils.getSubStateList(statechart.state);
         label = l;
         setBounds(x,y,400,300);
+        gui = gui_interface;
         mainproc();
     }
 
@@ -53,35 +55,45 @@ public class Editor extends Frame implements ActionListener {
         MenuBar mb = new MenuBar();
         setMenuBar(mb);
 
-        Menu datei = new Menu("File");
+        Menu datei = new Menu("Datei");
         mb.add(datei);
-        Menu editieren = new Menu("Edit");
-        mb.add(editieren);
-     
+        Menu bearbeiten = new Menu("Bearbeiten");
+        mb.add(bearbeiten);
+
 	MenuItem mi = new MenuItem("PrettyPrint");
         mi.addActionListener(this);
-        mi.setActionCommand("prettyPrint");
+        mi.setActionCommand("PrettyPrint");
         datei.add(mi);
 
-        mi = new MenuItem("Exit");
+        mi = new MenuItem("Beenden");
         mi.addActionListener(this);
-        mi.setActionCommand("exit");
+        mi.setActionCommand("Beenden");
         datei.add(mi);
 
-        mi = new MenuItem("Add State");
+        mi = new MenuItem("Zustand hinzufuegen");
         mi.addActionListener(this);
-        mi.setActionCommand("addState");
-        editieren.add(mi);
+        mi.setActionCommand("Zustand hinzufuegen");
+        bearbeiten.add(mi);
 
-        mi = new MenuItem("Add Transition");
+        mi = new MenuItem("Transition hinzufuegen");
         mi.addActionListener(this);
-        mi.setActionCommand("add Transition");
-        editieren.add(mi);
+        mi.setActionCommand("Transition hinzufuegen");
+        bearbeiten.add(mi);
 
-        mi = new MenuItem("Pointed Line");
+        mi = new MenuItem("Andstate erzeugen");
         mi.addActionListener(this);
-        mi.setActionCommand("pointedLine");
-        editieren.add(mi);
+        mi.setActionCommand("Andstate erzeugen");
+        bearbeiten.add(mi);
+
+        mi = new MenuItem("Zustand benennen");
+        mi.addActionListener(this);
+        mi.setActionCommand("Zustand benennen");
+        bearbeiten.add(mi);
+
+        mi = new MenuItem("Transition benennen");
+        mi.addActionListener(this);
+        mi.setActionCommand("Transition benennen");
+        bearbeiten.add(mi);
 
         add("East",vert = new Scrollbar(Scrollbar.VERTICAL));
         add("South",horiz = new Scrollbar(Scrollbar.HORIZONTAL));
@@ -93,7 +105,8 @@ public class Editor extends Frame implements ActionListener {
             public void adjustmentValueChanged(AdjustmentEvent e)
             {
                 scrollX = e.getValue();
-                horiz.setValues(scrollX,30,0,1000);
+                horiz.setValues(scrollX,40,0,1000);
+                horiz.setUnitIncrement(20);
                 repaint();
             }
         });
@@ -102,7 +115,8 @@ public class Editor extends Frame implements ActionListener {
             public void adjustmentValueChanged(AdjustmentEvent e)
             {
                 scrollY = e.getValue();
-                vert.setValues(scrollY,30,0,1000);
+                vert.setValues(scrollY,40,0,1000);
+                vert.setUnitIncrement(20);
                 repaint();
             }
         });
@@ -111,21 +125,31 @@ public class Editor extends Frame implements ActionListener {
         addMouseListener(new MouseAdapter() {
 
             public void mousePressed(MouseEvent e) {
-                if (status.equals("addState"))
+                if (status.equals("Zustand hinzufuegen"))
                     EditorUtils.createStateMousePressed(e, editor);
+                Methoden_0.updateAll(editor);
             }
 
             public void mouseReleased(MouseEvent e) {
-                if (status.equals("addState"))
+                if (status.equals("Zustand hinzufuegen"))
                     EditorUtils.createStateMouseReleased(e, editor);
-                if (status.equals("pointedLine"))
+                if (status.equals("Andstate erzeugen"))
                     EditorUtils.andStateMouseReleased(e, editor);
+                Methoden_0.updateAll(editor);
             }
             public void mouseClicked(MouseEvent e)
             {
-                if (status.equals("add Transition"))
+                if (status.equals("Transition hinzufuegen"))
                 {
-                    Methoden.transitionMouseClicked(e,e.getX()+scrollX,e.getY()+scrollY,editor);
+                    Methoden_0.transitionMouseClicked(e,e.getX()+scrollX,e.getY()+scrollY,editor);
+                }
+                if (status.equals("Zustand benennen"))
+                {
+                    Methoden_1.addStatenameMouseClicked(e.getX()+scrollX,e.getY()+scrollY,editor);
+                }
+                if (status.equals("Transition benennen"))
+                {
+                    Methoden_1.addTransNameMouseClicked(e.getX()+scrollX,e.getY()+scrollY,editor);
                 }
 	    }
         });
@@ -133,21 +157,19 @@ public class Editor extends Frame implements ActionListener {
         addMouseMotionListener(new MouseMotionAdapter() {
 
             public void mouseMoved(MouseEvent e) {
-                if (status.equals("pointedLine"))
+                if (status.equals("Andstate erzeugen"))
                     EditorUtils.andStateMouseMoved(e, editor);
-                if (status.equals("add Transition"))
+                if (status.equals("Transition hinzufuegen"))
                 {
-                    Methoden.transitionMouseMoved(statechart.state,e.getX()+scrollX,e.getY()+scrollY,editor);
+                    Methoden_0.transitionMouseMoved(statechart.state,e.getX()+scrollX,e.getY()+scrollY,editor);
                 }
             }
             public void mouseDragged(MouseEvent e) {
-                if (status.equals("addState"))
+                if (status.equals("Zustand hinzufuegen"))
                     EditorUtils.createStateMouseDragged(e, editor);
             }
         });
-  
 
-        // EditorUtils.printStatechart(statechart.state, new Point(0,0), this);
         addWindowListener(new WindowAdapter() {
 
             public void windowClosing(WindowEvent e) {
@@ -184,14 +206,14 @@ public class Editor extends Frame implements ActionListener {
 
 
     /**
-    */   
+    */
     public boolean listenEditor() {
         return false;
     }
 
     /**
        schliesst das Editorfenster
-    */   
+    */
     public static void Dispose() {
     }
 
@@ -206,28 +228,28 @@ public class Editor extends Frame implements ActionListener {
     /**
      */
     public static void work() {
-       
+
     }
 
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
-        if (command.equals("addState")) status = "addState";
-        if (command.equals("exit")) System.exit(0);
-        if (command.equals("pointedLine")) status = "pointedLine";
-        if (command.equals("add Transition")) status = "add Transition";
-        if (command.equals("prettyPrint")) {
+        if (command.equals("Zustand hinzufuegen")) status = "Zustand hinzufuegen";
+        if (command.equals("Beenden")) this.dispose();
+        if (command.equals("Andstate erzeugen")) status = "Andstate erzeugen";
+        if (command.equals("Transition hinzufuegen")) status = "Transition hinzufuegen";
+        if (command.equals("Zustand benennen")) status = "Zustand benennen";
+        if (command.equals("Transition benennen")) status = "Transition benennen";
+        if (command.equals("PrettyPrint")) {
             util.PrettyPrint p = new util.PrettyPrint();
             p.start(statechart);
         }
-	    
     }
 
     public void paint(Graphics g) {
-        EditorUtils.showStates(this);
-        Methoden.drawAllTransition(editor);
+        try {
+            EditorUtils.showStates(this);
+            Methoden_0.updateAll(this);
+        }
+        catch (Exception e) {}
     }
 }
-
-
-
-
