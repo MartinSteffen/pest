@@ -123,13 +123,50 @@ class TESCParser {
     }
 
 
+    // sobald Einstellungsdlge verfügbar sind, können die Einstellungen 
+    // hiermit an den Parser übergeben werden.
+    protected void initSwitches(Vector v) {
+	if (v!=null) switches = v;
+	else initSwitches();
+    }
+
+    protected Action readAction(BufferedReader br) throws IOException {
+	Action act = null;
+
+	ts = new TESCScanner(br);
+
+	tok = ts.nextToken();
+	
+	act = actionstmt(null);
+
+	if (errorCount>0) {
+           outputErrors();
+	}
+
+	return act;
+    }
+
+    public Guard readGuard(BufferedReader br) throws IOException {
+	Guard grd = null;
+
+	ts = new TESCScanner(br);
+
+	tok = ts.nextToken();
+
+	grd = guard(null);
+
+	if (errorCount>0) {
+           outputErrors();
+	}
+
+	return grd;
+    }
 
     // private Methoden
 
-
     private void initSwitches() {
-	//switches.addElement("debug");
-	//switches.addElement("UsePathRef");
+	switches.addElement("debug");
+	//switches.addElement("jumpAfterError");
     }
 
     /** Das erste Token kann sein:
@@ -191,6 +228,7 @@ class TESCParser {
     private SEventList eventlist() throws IOException {
 	SEvent ev;
 	SEventList evlist = null;
+	boolean b;
 	Location loc = new Location(tok.linenum);
 
         if (tok.token==vTOKEN.IDENT) {
@@ -200,17 +238,19 @@ class TESCParser {
 	    match(vTOKEN.IDENT);
 	
 	    if (tok.token==vTOKEN.COMMA) {
-		match(vTOKEN.COMMA);
-		evlist = new SEventList( ev, eventlist());
+		b = match(vTOKEN.COMMA);
+		if (b) evlist = new SEventList( ev, eventlist());
 	    }
 	    else if (tok.token == vTOKEN.SCOLON) {
-	        match(vTOKEN.SCOLON);
-                evlist =  new SEventList( ev, null);
+	        b = match(vTOKEN.SCOLON);
+                if (b) evlist =  new SEventList( ev, null);
 	    }
 	    else {
 		addError(makeError(tok,"Fehler in Eventliste"));
-	    }
-	
+	    }	
+	}
+	else {
+	    addError(makeError(tok,"Fehler in Eventliste"));
 	}
 
 	return evlist;
@@ -341,9 +381,18 @@ class TESCParser {
 
 	    match(vTOKEN.IDENT);
 	    match(vTOKEN.COLON);
+
 	    // Liste der States innerhalb dieses States 
+	    int le = errorCount;
 	    slist = states(pth);
-	    
+	    le = errorCount - le;
+
+	    if (le>0 && switches.contains("jumpAfterError")) {
+		debug("Aha");
+		findNextTok(vTOKEN.END);
+		match(vTOKEN.END);
+		findNextTok(vTOKEN.END);
+	    }
 
 	    // Falls defcon, snlist aufbauen
 	    if (tok.token == vTOKEN.DEFCON) {
@@ -362,7 +411,7 @@ class TESCParser {
 		trlist = trdef(pth);
 		
 	    }
-
+	    
 	    //snlist = makeStatenamelist();
 
 	    os = new Or_State(sn, slist, trlist, snlist, clist);
@@ -802,7 +851,7 @@ class TESCParser {
 
     }
 
-    // ??? SyntaxChecker meckert. In Example.java wird eine REferenz auf einen schon vorhandenen Path verwendet.
+    // ??? In Example.java wird eine REferenz auf einen schon vorhandenen Path verwendet.
     // Was ist richtig?
     private Guard pathop(Path actPath) throws IOException {
 	Guard grd = null;
@@ -816,18 +865,9 @@ class TESCParser {
 	    match (vTOKEN.LPAR);
 	    //grd = new GuardCompp((Comppath)setLoc(new Comppath(Comppath.IN, actPath.append(tok.value_str)), loc));
 	    // S. comment oben
-	    if (switches.contains("UsePathRef")) {
-		debug("pathop: Verwende PathRef. ACHTUNG: Nur Referenzen auf vorher eingegebene States mögl.!");
-		Path p = findPath(tok.value_str);
-		if (p != null)
-		    grd = new GuardCompp((Comppath)setLoc(new Comppath(Comppath.IN, p), loc));	
-		else 
-		    addError(makeError(tok,"Unbekannter Path"));
-	    }
-	    else {
-		debug("pathop: Erstelle neues Path-Obj.");
-		grd = new GuardCompp((Comppath)setLoc(new Comppath(Comppath.IN, StringToPath(tok.value_str)), loc));
-	    }
+	    
+	    grd = new GuardCompp((Comppath)setLoc(new Comppath(Comppath.IN, StringToPath(tok.value_str)), loc));
+	    
 	    grd.location = loc;
 	    match(vTOKEN.IDENT);
 	    match(vTOKEN.RPAR);
@@ -836,18 +876,9 @@ class TESCParser {
 	    match (vTOKEN.ENTERED);
 	    match (vTOKEN.LPAR);
 	    //grd = new GuardCompp((Comppath)setLoc(new Comppath(Comppath.ENTERED, actPath.append(tok.value_str)), loc));
-	    if (switches.contains("UsePathRef")) {
-		debug("pathop: Verwende PathRef.");
-		Path p = findPath(tok.value_str);
-		if (p != null)
-		    grd = new GuardCompp((Comppath)setLoc(new Comppath(Comppath.ENTERED, p), loc));
-		else 
-		    addError(makeError(tok,"Unbekannter Path"));
-	    }
-	    else {
-		debug("pathop: Erstelle neues Path-Obj.");
-		grd = new GuardCompp((Comppath)setLoc(new Comppath(Comppath.ENTERED, StringToPath(tok.value_str)), loc));
-	    }
+	    
+	    grd = new GuardCompp((Comppath)setLoc(new Comppath(Comppath.ENTERED, StringToPath(tok.value_str)), loc));
+	    
 	    grd.location = loc;
 	    match(vTOKEN.IDENT);
 	    match(vTOKEN.RPAR);
@@ -856,18 +887,9 @@ class TESCParser {
 	    match (vTOKEN.EXITED);
 	    match (vTOKEN.LPAR);
 	    //grd = new GuardCompp((Comppath)setLoc(new Comppath(Comppath.EXITED, actPath.append(tok.value_str)), loc));
-	    if (switches.contains("UsePathRef")) {
-		debug("pathop: Verwende PathRef.");
-		Path p = findPath(tok.value_str);
-		if (p != null)
-		    grd = new GuardCompp((Comppath)setLoc(new Comppath(Comppath.EXITED, p), loc));
-		else 
-		    addError(makeError(tok,"Unbekannter Path"));
-	    }
-	    else {
-		debug("pathop: Erstelle neues Path-Obj.");
-		grd = new GuardCompp((Comppath)setLoc(new Comppath(Comppath.EXITED, StringToPath(tok.value_str)), loc));
-	    }
+	    
+	    grd = new GuardCompp((Comppath)setLoc(new Comppath(Comppath.EXITED, StringToPath(tok.value_str)), loc));
+	    
 	    grd.location = loc;
 	    match(vTOKEN.IDENT);
 	    match(vTOKEN.RPAR);
@@ -979,7 +1001,7 @@ class TESCParser {
 	StateList sl = null;
 	State st = null;
 	boolean b = false;
-
+	
         if (tok.token == vTOKEN.BSTATE) {
 	    b = match(vTOKEN.BSTATE);
 	    if (b) {
@@ -1013,6 +1035,7 @@ class TESCParser {
 	else if (tok.token == vTOKEN.END) {
 	    sl = null;
 	}
+	
 	
 	return sl;
     }
@@ -1158,11 +1181,25 @@ class TESCParser {
 	return p;
     }
 
+    // findet das nächste Token t
+    // bei Fehlern kann so bis zum erwarteten Token gesprungen werden.
+    private boolean findNextTok(int t) throws IOException {
+	
+	while (tok.token != vTOKEN.EOF && tok.token != t) {
+	    tok = ts.nextToken();
+	}
+
+	// hiernach sind wir auf einem neuen Konstrukt
+	//return match(vTOKEN.SCOLON);
+	return true;
+    }
+
     // Match
     private boolean match(int t) throws IOException {
 
 	boolean b = true;
 
+	// Pruefen, ob Identifikator Keyword (eines anderen Packages) ist.
 	if (t == vTOKEN.IDENT &&  Keyword.isReserved(tok.value_str)) {
 	    addError(makeError(tok,"Ist Keyword"));
 	}
@@ -1174,6 +1211,11 @@ class TESCParser {
 	    addError(makeError(tok,"Syntax Error"));
 	    
 	    b = false;
+
+	    if (switches.contains("jumpAfterError")) {
+		debug("Suche ;");
+		b = findNextTok(vTOKEN.SCOLON);
+	    }
 	}
 
 	return b;
@@ -1329,7 +1371,7 @@ class TESCParser {
 }
 
 /* TESCParser
- * $Id: TESCParser.java,v 1.12 1999-01-07 20:52:01 swtech13 Exp $
+ * $Id: TESCParser.java,v 1.13 1999-01-09 15:51:14 swtech13 Exp $
  * $Log: not supported by cvs2svn $
  * Revision 1.11  1999/01/06 14:57:24  swtech13
  * Fehlerbehandlung verbessert

@@ -4,11 +4,12 @@ package tesc1;
 import absyn.*;
 import java.io.*;
 import gui.*;
+import java.util.*;
 
 /** 
- * TESCLoader. 
- * <STRONG> Garantie. </STRONG> Wir garantieren, dass die von unseren
- * Module erzeigten Statecharts folgende Eingenschaften haben:
+ *  
+ * <STRONG> Garantie. </STRONG> <br> Wir garantieren, dass die von unseren
+ * Modulen erzeugten Statecharts folgende Eingenschaften haben:
  * 
  * <ul>
  * <li> Alle Bvars, Events, etc. auf die in z.B. Transition Bezug genommen wird, sind auch vorhanden. 
@@ -28,7 +29,8 @@ import gui.*;
  * <li> TestPI                       // Falls wir das richtig verstanden haben ..
  * </ul>
  * 
- * <STRONG> Anforderungen. </STRONG> Wir verlassen uns darauf, dass die
+ * <STRONG> Anforderungen. </STRONG> <br>
+ * Wir verlassen uns darauf, dass die
  * Statecharts, die uns uebergeben werden, folgende Eigenschaften haben: 
  * 
  * <ul>
@@ -46,42 +48,44 @@ import gui.*;
  * <DT><STRONG>
  * STATUS
  * </STRONG>
- *  
+ * <br> 
  * Der Parser ist bis auf Kleinigkeiten (s. TODO) funktionsfaehig.
- * In tesc1/Test befinden sich mehrere Testdateien. Diese koennen ueber
- * das GUI-Fenster mittels Import->TESC geladen werden.
- * 
+ * In tesc1/Test befinden sich mehrere Testdateien. <br>
+ * Diese koennen ueber das GUI-Fenster mittels Import->TESC geladen werden. <br>
+ * Die TESC-Sprache ist über die <A HREF="../tesc1/Docu/grammatik.txt">Grammatik</A> definiert. <br>
+ * Beispiel <A HREF="../tesc1/Test/example.tesc"> example.tesc</A>
+ * <br>
  * <DT><STRONG>
  * TODO.
  * </STRONG>
+ * <br>
  * <ul>
- * <li> Undet bei Guards. 
+ * <li> Undet bei Guards (evtl. nicht nötig). 
  * <li> Abschließende Test (z.B. im Editor, noch nicht möglich, da der GraphAlg noch nichts tut)
+ * <li> Einstellungsmodul.
  * </ul>
- * Fertig am 11.01.99
- *
+ * 
+ * <br>
  * <DT><STRONG>
  * TEMP.
  * </STRONG>
  * <ul>
- * <li> in pathop: bei GuardCompp kann eine Referenz auf schon vorhandenes Path-Obj benutzt werden, oder
- *      es wird ein neues Path-Obj angelet. Verhalten ueber switch einstellbar
- * <li> debug-ausgaben ins GUI Fenster sind ebenfalls ueber switch einstellbar.
+ * <li> debug-ausgaben ins GUI Fenster.
  * </ul>
  *
  * <DT><STRONG>
- * Einstellungsmöglichkeiten
- * </STRONG>
+ * <A NAME="options"> Einstellungsmöglichkeiten </A>
+ * </STRONG> <A HREF="../tesc1/Docu/Doku.txt"> Doku.txt</A>
  *
  * <ul>
- * <li> UsePathRef
  * <li> debug
+ * <li> jumpAfterError
  * </ul>
  *
  * </DL COMPACT>
 
  * @author Arne Koch/Mike Rumpf.
- * @version  $Id: TESCLoader.java,v 1.10 1999-01-07 20:52:00 swtech13 Exp $ 
+ * @version  $Id: TESCLoader.java,v 1.11 1999-01-09 15:51:14 swtech13 Exp $ 
  */ 
 public class TESCLoader {
 
@@ -89,6 +93,7 @@ public class TESCLoader {
     private Statechart stchart;		// der aufzubauende Statechart
     private TESCParser parser;          // der Parser
     private GUIInterface gi;            // GUI
+    private Vector options = null;             // enthält Optionen
 
     /** 
      * Nach der Instanzierung von TESCLoader getStatechart(...) aufrufen
@@ -99,10 +104,19 @@ public class TESCLoader {
     }
 
     // public-Methoden
+
+
+    /** 
+     * <A HREF="#options">Optionen</A> einstellen
+     * @param Referenz auf einen Vector, der die <A HREF="#options"> Optionen</A> enthält.
+     */
+    public void initOptions(Vector opt) {
+	options = opt;
+    }
    
     /** 
      * Umwandeln eines  TESC-File aus is_ in Statechart.
-     * @param Referenz auf einen FileInputStream
+     * @param Referenz auf einen BufferedReader
      * @return Liefert Statechart oder null bei Fehler.
      */ 
     public Statechart getStatechart(BufferedReader is_) throws IOException {
@@ -110,10 +124,51 @@ public class TESCLoader {
 	is = is_;
 	
 	parser = new TESCParser(is, gi);
+	parser.initSwitches(options);
 	
 	stchart = parser.parse();
 	
 	return stchart;
+    }
+
+
+    /** 
+     * Umwandeln eines  TESC-File aus is_ in Guard. <br>
+     * Die Funktion wurde noch nicht getestet! Fehlerausgaben werden vom Parser ins gui-Fenster geschrieben.
+     * @param Referenz auf einen BufferedReader
+     * @return Liefert Guard oder null bei Fehler.
+     */ 
+    public Guard getGuard(BufferedReader br) throws IOException {
+	TESCParser parser = new TESCParser(br, gi);
+	parser.initSwitches(options);
+
+	Guard guard = parser.readGuard(br);
+
+	if (parser.getErrorCount() > 0) {	   
+	    gi.OkDialog("Fehler", "Guard ist fehlerhaft.");
+	    return null;
+        }
+	else 
+	    return guard;
+    }
+
+    /** 
+     * Umwandeln eines  TESC-File aus is_ in Action. <br>
+     * Die Funktion wurde noch nicht getestet!
+     * @param Referenz auf einen BufferedReader
+     * @return Liefert Action oder null bei Fehler.
+     */ 
+    public Action getAction(BufferedReader br) throws IOException {
+	TESCParser parser = new TESCParser(br, gi);
+	parser.initSwitches(options);
+	Action action = parser.readAction(br);
+
+	if (parser.getErrorCount() > 0) {	    
+	    gi.OkDialog("Fehler", "Action ist fehlerhaft.");
+	    return null;
+        }
+	else 
+	    return action;
     }
 
 }
