@@ -5,7 +5,7 @@
 //
 //
 //   Letzte Aenderung von:  Tobias Kunz
-//                          07.12.1998
+//                          13.12.1998
 //
 // ****************************************************************************
 
@@ -58,6 +58,10 @@ private SyntaxError   errors;
 	}
 
 // ****************************************************************************
+// private Methoden
+// ****************************************************************************
+
+// ****************************************************************************
 // öffentliche Instanzmethoden
 // ****************************************************************************
 
@@ -65,18 +69,41 @@ private SyntaxError   errors;
   // Rueckgabe der Methode ist TRUE, wenn keine Fehler oder Warnungen vorhanden
   // sind, FALSE sonst.
 	public boolean checkModel(Statechart statechart) {
-    return true;
-	}
+    boolean ok = true;
+    CheckEvents checkEvents = new CheckEvents(statechart);
+    CheckBVars  checkBVars  = new CheckBVars(statechart);
 
+    ok = ok && checkEvents.check();
+    ok = ok && checkBVars.check();
+
+    // ueberpruefen aller Transitionen
+
+
+
+    return ok;
+	}
 
 	// ueberprüft alle Events, die innerhalb der "Statechart" definiert sind
 	// ueberflüssige Events koennten "Warnungen" sein.
   // Rueckgabe der Methode ist TRUE, wenn keine Fehler oder Warnungen vorhanden
   // sind, FALSE sonst.
 	public boolean checkEvents(Statechart statechart) {
-    return true;
-	}
+    boolean ok = true;
 
+    CheckEvents checkEvents = new CheckEvents(statechart);
+    ok = checkEvents.check();
+
+    return ok;
+  }
+
+  public boolean checkBVars(Statechart statechart) {
+    boolean ok = true;
+
+    CheckBVars  checkBVars  = new CheckBVars(statechart);
+    ok = checkBVars.check();
+
+    return ok;
+  }
 
 	// ueberprüft den Zustand, sowie alle Subzustaende, damit ist es moeglich
   // nur Teile der Statechart zu ueberprüfen
@@ -91,7 +118,12 @@ private SyntaxError   errors;
   // Rueckgabe der Methode ist TRUE, wenn keine Fehler oder Warnungen vorhanden
   // sind, FALSE sonst.
 	public boolean checkTransitions(State s) {
-    return true;
+    boolean ok = true;
+
+    CheckTransitions checkTrans = new CheckTransitions(s);
+    ok = checkTrans.check();
+
+    return ok;
 	}
 
 
