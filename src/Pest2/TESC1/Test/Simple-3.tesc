@@ -1,8 +1,5 @@
 //
-// $Id: Simple-2.tesc,v 1.3 1999-02-11 09:21:47 swtech20 Exp $
-
-var (v1,v2)
-event (e1,e2)
+// $Id: Simple-3.tesc,v 1.1 1999-02-11 09:21:47 swtech20 Exp $
 
 or A
     basic B1
