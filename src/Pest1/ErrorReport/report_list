@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.3 1999-01-12 21:46:22 swtech13 Exp $
+//	$Id: report_list,v 1.4 1999-01-12 22:33:03 swtech18 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -74,7 +74,21 @@ die Menüpunkte heißen verschieden, obwohl die gleiche Funktionalität
 dahinter verbergt ist.
 //------------------------------------------------------------------------------
 
-#Number:        4
+//------------------------------------------------------------------------------
+
+#Number:        4 
+#Autor:         Sven Jorga, Werner Lehmann swtech18
+#Subject:       HA-Format Fehler 
+#Status:        reported
+#Description:
+
+Die Dateien ~/swtech12/Examples/SE-Systems/cd.st und ~/swtech12/Examples/TV/system.st
+sind fehlerhaft: cd.st hat keine Initmap und system.st hat keine Trmap.
+//-----------------------------------------------------------------------------
+
+//-----------------------------------------------------------------------------
+
+#Number:        5
 #Autor:         Arne Koch swtech13
 #Subject:       Warnings bei SyntaxCheck
 #Status:        reported
@@ -93,3 +107,4 @@ Falls auf E3 reagiert wird, gibt es gar keine Meldung.
 
 (Import->TESC->tesc1/Test/bsp1.tesc->SyntaxCheck)
 //------------------------------------------------------------------------------
+
