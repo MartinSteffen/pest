@@ -4,7 +4,7 @@
  * Created: Mon Dec 07 16:43:30 1998
  * 
  * @author swtech14 : Eike Schulz & Martin Poerksen
- * @version $Id: GraphOptimizer.java,v 1.9 1999-01-22 21:56:30 swtech14 Exp $
+ * @version $Id: GraphOptimizer.java,v 1.10 1999-01-25 12:04:29 swtech14 Exp $
  *
  *
  * <br>Der GraphOptimizer stellt Algorithmen zur Verfuegung, die die Zuordnung
@@ -83,28 +83,21 @@ public class GraphOptimizer {
    * Abstandskonstanten.
    */
 
-  /*
-  static final int STEPSIZE_SMALL  = 2;
-  static final int STEPSIZE_MEDIUM = STEPSIZE_SMALL * 2;
-  static final int STEPSIZE_LARGE  = STEPSIZE_SMALL * 4;
+  static final int STEPSIZE_SMALL  = 6;
+  static final int STEPSIZE_MEDIUM = 8;
+  static final int STEPSIZE_LARGE  = 12;
 
-  static final int BASICSTATE_MINWIDTH  = STEPSIZE_SMALL * 3;
-  static final int BASICSTATE_MINHEIGHT = STEPSIZE_SMALL * 2;
-  */
+  static final int BASICSTATE_MINWIDTH  = 9;
+  static final int BASICSTATE_MINHEIGHT = 6;
 
-  static final int STEPSIZE_SMALL  = 1;
-  static final int STEPSIZE_MEDIUM = STEPSIZE_SMALL * 1;
-  static final int STEPSIZE_LARGE  = STEPSIZE_SMALL * 3;
-
-  static final int BASICSTATE_MINWIDTH  = STEPSIZE_SMALL * 2;
-  static final int BASICSTATE_MINHEIGHT = STEPSIZE_SMALL * 1;
 
   /**
    * Width-Konstante fuer Connectoren (nach Absprache mit der Editor-Gruppe
    * auf "12" gesetzt).
    */
 
-  public static final int CONNECTOR_SIZE = 4;
+  public static final int CONNECTOR_SIZE = 12;
+
 
   /**
    * Stringkonstantenfeld zur Bezeichnung der verschiedenen Algorithmusarten.
