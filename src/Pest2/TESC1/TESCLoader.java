@@ -6,7 +6,7 @@ import GUI.*;
 
 /**
  * Schnittstellenklasse fuer TESC1. 
- * @version  $Id: TESCLoader.java,v 1.3 1998-12-07 19:55:16 swtech20 Exp $
+ * @version  $Id: TESCLoader.java,v 1.4 1998-12-13 17:49:05 swtech20 Exp $
  * @author Michael Suelzer, Christoph Schuette.
  */   
 public class TESCLoader {
@@ -33,7 +33,7 @@ public class TESCLoader {
      * @param fis FileInputStream
      * @see TESC1.TESCParser
      */
-    public Statechart getStatechart(FileInputStream fis) {
+    public Statechart getStatechart(FileInputStream fis) throws IOException {
  
 	parser = new TESCParser();
 	statechart = parser.parseStream(fis);
@@ -54,6 +54,9 @@ public class TESCLoader {
 //	----------------------
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.3  1998/12/07 19:55:16  swtech20
+//	Wir geben Fehlermeldungen jetzt direkt an die GUI.
+//
 //	Revision 1.2  1998/12/05 18:47:27  swtech20
 //	Rueckgabe des Beispiel-StateCharts.
 //
