@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.91 1999-02-10 08:13:11 swtech11 Exp $
+//	$Id: report_list,v 1.92 1999-02-10 12:10:39 swtech11 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -958,4 +958,35 @@ Interessanterweise verstaerkt sich dieser Effekt, je weiter man hineinzoomt.
 das Bild der graphishen Benutzerführung wird jedes mal, wenn die maus 
 das Fenster der Haupinstanz verlässt, neu gezeichnet. 
 Wenn das so weitergeht, muss ich bald zum Augenarzt...
-//----------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------
+#Number:	63
+#Autor:		check swtech11
+#Subject:	Editor erzeugt unbehandelte Exception:
+#Status: 	reported
+#Description: 
+
+Ich habe all.tesc importiert und dann den Editor aufgerufen.
+Folgendes wurde ausgegeben.
+
+AND>absyn.Basic_State@1dc62668
+AND>Y
+AND>absyn.And_State@1dc6265e
+AND>A2
+Exception occurred during event dispatching:
+java.lang.ClassCastException: absyn.Conname
+        at editor.desk.Repaint.redraw(Repaint.java:175)
+        at editor.desk.Repaint.start(Repaint.java:48)
+        at editor.desk.Repaint.redraw(Repaint.java:294)
+        at editor.desk.Repaint.start(Repaint.java:45)
+        at editor.desk.Repaint.redraw(Repaint.java:287)
+        at editor.desk.Repaint.start(Repaint.java:45)
+        at editor.desk.Repaint.redraw(Repaint.java:55)
+        at editor.desk.Repaint.start(Repaint.java:43)
+        at editor.desk.PESTDrawDesk.paint(PESTDrawDesk.java:327)
+        at java.awt.Container.paint(Container.java:703)
+        at sun.awt.motif.MComponentPeer.handleEvent(MComponentPeer.java:193)
+        at java.awt.Component.dispatchEventImpl(Component.java:1834)
+        at java.awt.Container.dispatchEventImpl(Container.java:923)
+        at java.awt.Component.dispatchEvent(Component.java:1708)
+        at java.awt.EventDispatchThread.run(EventDispatchThread.java:81)
