@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.116 1999-02-28 18:18:49 swtech26 Exp $
+//	$Id: report_list,v 1.117 1999-03-11 15:32:39 swtech25 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -219,7 +219,7 @@ Ihr Source ist Standby und ihr Target Working. Die Koordinaten des Linienzuges s
 #Number:	15
 #Autor:		Marcel Kyas, Walter Loeser, Andre Paetzold swtech25
 #Subject:	Simulator laesst sich nicht schliessen.
-#Status:	reported
+#Status:	confirmed
 #Description:
 
 Das schliessen des Simulators fuehrt zu einer Null-pointer exception.
@@ -721,7 +721,7 @@ einmal restore) und PrettyPrinter zeigt keine Veraenderungen mehr.
 #Number:        48
 #Autor:         Bernd Weber bwe
 #Subject:       Codegen: Keine Schritte erkennbar
-#Status:        processing
+#Status:        fixed
 #Description:
 
 1. Importiere TV.st mit STM-Import
@@ -756,7 +756,7 @@ parent state aussenrum. Dabei werden die Labels nach unten verschoben.
 #Number:        50
 #Autor:         Bernd Weber bwe
 #Subject:       Codegen: Implementierung nicht korrekt
-#Status:        processing
+#Status:        fixed
 #Description:
 
 1. Lade Chart ~swtech12/Examples/misc/abc.pest bzw. importiere
@@ -1104,7 +1104,7 @@ Laut Auskunft von Martin B. (swtech24) ist das eine klare Indiz für falsche Koor
 #Number:	71
 #Autor:		Erich Mikk
 #Subject:	Fehler bei Codegenerierung
-#Status: 	reported
+#Status: 	fixed
 #Description: 
 
 Datei->Oeffnen ~swtech12/Examples/TV/tv_system.pest
