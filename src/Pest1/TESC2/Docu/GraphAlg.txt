@@ -1,0 +1,39 @@
+		     DOKUMENTATION FUER TESC2-STUBS:
+		     ===============================
+
+Gruppe   :   4
+Account  :   swtech14
+Member   :   Eike Schulz & Martin Poerksen
+
+
+Betrifft: Klasse ´GraphAlg´ unter dem Paket ´TESC2´
+
+´GraphAlg´ enthaelt die wesentlichen Konstanten und Methoden, um den
+von uns zu implementierenden Graphplazierungsalgorithmus aufrufen zu
+koennen.
+
+Mittels Konstruktor ´GraphAlg´ wird ein Algorithmus-Objekt erzeugt,
+dem als Parameter das jeweilige Statechart-Objekt uebergeben wird,
+dessen Koordinaten berechnet werden sollen.
+
+Der Aufruf des eigentlichen Algorithmus erfolgt dann mit der ´start´-
+Methode. Da wir versuchen wollen, mindestens zwei verschiedene Plazie-
+rungsalgorithmen zu implementieren, muss dieser Methode zusaetzlich
+ein Algorithmus-Parameter uebergeben werden, der angibt, welcher Algo-
+rithmus zur Bestimmung der Koordinaten durchgefuehrt werden soll. Zu
+diesem Zweck sind in der beschriebenen Klasse zusaetzlich zwei "sta-
+tic" Konstanten (´ALGORITHM_0´ und ´ALGORITHM_1´) vorhanden, die als
+Uebergabeparameter fuer ´start´ genutzt werden sollten.
+Wird ein ungueltiger Parameter uebergeben, so wird standardmaessig der
+erste Algorithmus ausgefuehrt.
+Das uebergebene Statechart-Objekt sollte bei fehlerfreier Durchfueh-
+rung anschliessend mit entsprechenden Koordinaten ausgestattet sein...
+
+Wurde der aufgerufene Algorithmus erfolgreich beendet, ist ´errorcode´
+auf 0 gesetzt. Dieses kann mit der Methode ´errorOccured´ abgefragt
+werden. Ist ein Fehler aufgetreten, so liefert ´errorOccured´ "true".
+
+Mit ´getErrorMsg´ kann die entsprechende Fehlermeldung in Form eines
+Strings abgerufen werden (erforderlich z.B. fuer Dialogfenster, etc.)
+
+				  * * *

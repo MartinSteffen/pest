@@ -1,0 +1,37 @@
+                        D O K U M E N T A T I O N
+                        =========================
+
+                        Group       :   4
+                        Account     :   swtech14
+                        Member      :   Eike Schulz & Martin Poerksen
+                        Project     :   PEST1/TESC2  
+                        Date        :   30.11.1998
+
+
+1. Allgemeiner Teil :
+=====================
+
+Unser Java-Programm wird spaeter vom Editor aufgerufen. In der Menueleiste
+der Entwicklungsumgebung wird man spaeter eine Auswahl von mehreren Algorithmen
+finden, die sich nur bezueglich der Aesthetik unterscheiden.
+
+In den Algorithmen werden die Koordinaten der Statecharts-Komponenten berechnet.
+Erlaubt sind als Eingaben zum Beispiel isolierte Zustaende und Transitionen,
+jedoch sind Interlevel-Transitionen und Endlosschleifen verboten. 
+
+Wie bereits im Kurzvortrag am Montag, den 23.11.98, erwaehnt, gibt es mehrere
+Kriterien, einen Graphen optimal zu plazieren, wobei der Begriff "optimal" sehr
+subjektiv ist :
+
+a.) Die Transitionen sollen sich moeglichst nicht ueberschneiden.
+b.) Die Transitionen sollen eher waagerecht als senkrecht verlaufen.
+c.) Zustaende sollen so klein wie moeglich dargestellt werden.
+d.) Das ganze Zeichenblatt soll gleichmaessig ausgefuellt werden, was
+    eventuell einer Skalierung bedarf.
+e.) Um die Lesbarkeit zu erhoehen, sollte nicht zuviel Text im Graph stehen.
+    Geeignete Abkuerzungen sind zu waehlen. Bei Bedarf kann man eine Legende
+    am Blattrand einfuegen.
+f.) Ausserdem sollten die Kanten von verschachtelten Zustaenden einen Mindestabstand
+    haben, um die Lesbarkeit zu verbessern.
+
+u.s.w. 
