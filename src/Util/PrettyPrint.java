@@ -590,8 +590,8 @@ public class PrettyPrint {
       output ((ActionBlock)a);
     if (a instanceof ActionEmpty)
       output ((ActionEmpty)a);
-    if (a instanceof ActionEvent)
-      output ((ActionEvent)a);
+    if (a instanceof ActionEvt)
+      output ((ActionEvt)a);
     if (a instanceof ActionStmt)
       output ((ActionStmt)a);
   } // method output (Action)
@@ -623,17 +623,17 @@ public class PrettyPrint {
   } // method output (ActionEmpty)
 
 
-  // Starte Ausgabe auf Bildschirm (ActionEvent).
+  // Starte Ausgabe auf Bildschirm (ActionEvt).
 
-  private void output (ActionEvent aev) {
+  private void output (ActionEvt aev) {
     if (aev != null) {
-      System.out.println (whiteSpace (column) + "[ActionEvent] ");
+      System.out.println (whiteSpace (column) + "[ActionEvt] ");
       PrettyPrint ppAev = new PrettyPrint (column + tab, tab);
 
       // Gib SEvent aus.
       ppAev.start (aev.event);
     }
-  } // method output (ActionEvent)
+  } // method output (ActionEvt)
 
 
   // Starte Ausgabe auf Bildschirm (ActionStmt).
