@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	--------------
 //
-//	$Id: report_list,v 1.48 1999-02-10 10:31:03 swtech22 Exp $
+//	$Id: report_list,v 1.49 1999-02-10 11:15:13 swtech22 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -527,8 +527,11 @@ PEST irgendwann gekillt AFAIK.
 #Number:	34
 #Autor:		Bernd Weber bwe
 #Subject:	Simulation: Transition bei Nicht-Determinismus nicht whlbar
-#Status:	reported
+#Status:	fixed
 #Description:
+
+swtech22: Noch nicht schoen (genug), funktioniert jetzt aber besser
+          Test hierfuer in simu/Test/Fehler34.test
 
 Tritt in der Simulation ein Nicht-Determinismus auf, erscheint ein Fenster, in
 dem man die Transition(en) auswhlen knnen soll. Mir ist dies nicht mglich
