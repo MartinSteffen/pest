@@ -14,7 +14,7 @@ import java.util.*;
  * an interface to the original textual representations of
  * states, events and conditions.
  *
- * @version $Id: dumpTables.java,v 1.4 1999-01-18 15:55:25 swtech25 Exp $
+ * @version $Id: dumpTables.java,v 1.5 1999-01-20 18:47:26 swtech25 Exp $
  * @author Marcel Kyas
  */
 public class dumpTables
@@ -27,7 +27,8 @@ public class dumpTables
 	};
 
 	private final String[] state_tail = {
-		"}"
+		"};",
+		""
 	};
 
 	private final String[] event_head = {
@@ -35,15 +36,17 @@ public class dumpTables
 	};
 
 	private final String[] event_tail = {
-		"}"
+		"};",
+		""
 	};
 
 	private final String[] cond_head = {
-		"static final String condition_names = {"
+		"static final String[] condition_names = {"
 	};
 
 	private final String[] cond_tail = {
-		"}"
+		"};",
+		""
 	};
 
 	private final String[] head = {
@@ -61,7 +64,8 @@ public class dumpTables
 		"boolean[] post_events = new boolean[eventnames.length];",
 		"boolean[] pre_cond = new boolean[condition_names.length];",
 		"boolean[] post_cond = new boolean[condition_names.length];",
-		"};"
+		"}",
+		""
 	};
 
 
@@ -204,7 +208,7 @@ public class dumpTables
 		e = events_sym.keys();
 		while (e.hasMoreElements()) {
 			p = (SEvent) e.nextElement();
-			i = (Integer) states_sym.get(p);
+			i = (Integer) events_sym.get(p);
 			System.out.println(p.name + ": " + i);
 			events[i.intValue()] = p.name;
 		}
@@ -217,16 +221,16 @@ public class dumpTables
 	private void generateCondArray()
 	{
 		Enumeration e;
-		String p;
+		Bvar p;
 		Integer i;
 
 		cond = new String[cond_sym.size()];
 		e = cond_sym.keys();
 		while (e.hasMoreElements()) {
-			p = (String) e.nextElement();
-			i = (Integer) states_sym.get(p);
-			System.out.println(p + ": " + i);
-			cond[i.intValue()] = p;
+			p = (Bvar) e.nextElement();
+			i = (Integer) cond_sym.get(p);
+			System.out.println(p.var + ": " + i);
+			cond[i.intValue()] = p.var;
 		}
 	}
 
@@ -241,16 +245,16 @@ public class dumpTables
 		int i;
 
 		// This is a bit nasty:
-		f.write("/**");
+		f.write("/**\n");
 		f.write(" * The numbers belonging to the textual represen" +
-			"tations.");
-		f.write(" */");
+			"tations.\n");
+		f.write(" */\n");
 		for(i = 0; i < states.length; ++i) {
 			f.write("public static final int " +
 				generateSymState(states[i]) +
-				" = " + i + ";");
+				" = " + i + ";\n");
 		}
-		f.write("");
+		f.write("\n");
 	}
 
 
@@ -264,18 +268,18 @@ public class dumpTables
 		int i;
 
 		for(i = 0; i < state_head.length; ++i) {
-			f.write(state_head[i]);
+			f.write(state_head[i] + "\n");
 		}
 		for(i = 0; i < states.length - 1; ++i) {
-			f.write("\"" + generateTextState(states[i]) + "\",");
+			f.write("\"" + generateTextState(states[i]) + "\",\n");
 		}
 		if (states.length > 0) {
 			f.write("\"" +
 				 generateTextState(states[states.length - 1]) +
-				 "\"");
+				 "\"\n");
 		}
 		for(i = 0; i < state_tail.length; ++i) {
-			f.write(state_tail[i]);
+			f.write(state_tail[i] + "\n");
 		}
 	}
 
@@ -290,16 +294,16 @@ public class dumpTables
 		int i;
 
 		for(i = 0; i < event_head.length; ++i) {
-			f.write(event_head[i]);
+			f.write(event_head[i] + "\n");
 		}
 		for(i = 0; i < events.length - 1; ++i) {
-			f.write("\"" + events[i] + "\",");
+			f.write("\"" + events[i] + "\",\n");
 		}
 		if (events.length > 0) {
-			f.write("\"" + events[events.length - 1] + "\"");
+			f.write("\"" + events[events.length - 1] + "\"\n");
 		}
 		for(i = 0; i < event_tail.length; ++i) {
-			f.write(event_tail[i]);
+			f.write(event_tail[i] + "\n");
 		}
 	}
 
@@ -314,16 +318,16 @@ public class dumpTables
 		int i;
 
 		for(i = 0; i < cond_head.length; ++i) {
-			f.write(cond_head[i]);
+			f.write(cond_head[i] + "\n");
 		}
 		for(i = 0; i < cond.length - 1; ++i) {
-			f.write("\"" + cond[i] + "\",");
+			f.write("\"" + cond[i] + "\",\n");
 		}
 		if (cond.length > 0) {
-			f.write("\"" + cond[cond.length - 1] + "\"");
+			f.write("\"" + cond[cond.length - 1] + "\"\n");
 		}
 		for(i = 0; i < cond_tail.length; ++i) {
-			f.write(cond_tail[i]);
+			f.write(cond_tail[i] + "\n");
 		}
 	}
 
@@ -357,16 +361,15 @@ public class dumpTables
 		int i;
 
 		for(i = 0; i < head.length; ++i) {
-			f.write(head[i]);
+			f.write(head[i] + "\n");
 		}
 		dumpStateSymbolTable(f);
 		dumpStateNames(f);
 		dumpEventNames(f);
 		dumpCondNames(f);
-		for(i = 0; i < head.length; ++i) {
-			f.write(tail[i]);
+		for(i = 0; i < tail.length; ++i) {
+			f.write(tail[i] + "\n");
 		}
-
 	}
 
 
@@ -387,4 +390,3 @@ public class dumpTables
 		dumpSymbolTable(f);
 	}
 }
-

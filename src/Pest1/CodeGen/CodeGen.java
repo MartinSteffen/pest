@@ -28,7 +28,8 @@ import absyn.*;
  *   <LI>We currently do not produce traces.
  * <DT><STRONG>Known Bugs</STRONG>
  *   <UL>
- *     <LI>Null pointer exception in generateEventArray()
+ *     <LI>Code emission for transition hangs PEST.
+ *     <LI>Lookup for symbols does not work correctly.
  *   </UL>
  * <A HREF="mailto:swtech25@informatik.uni-kiel.de">swtech25</A>
  * </DL>
@@ -49,7 +50,7 @@ import absyn.*;
  * </DL>
  *
  * @author Marcel Kyas, Walter Loeser, Andre Paetzold.
- * @version $Id: CodeGen.java,v 1.12 1999-01-18 15:58:02 swtech25 Exp $
+ * @version $Id: CodeGen.java,v 1.13 1999-01-20 18:47:25 swtech25 Exp $
  */
 public class CodeGen
 {

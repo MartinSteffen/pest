@@ -4,7 +4,7 @@
  * This class is responsible for generating our hierarchical
  * automaton.
  *
- * @version $Id: dumpHA.java,v 1.8 1999-01-18 15:56:11 swtech25 Exp $
+ * @version $Id: dumpHA.java,v 1.9 1999-01-20 18:47:26 swtech25 Exp $
  * @author Marcel Kyas
  */
 package codegen;
@@ -100,6 +100,7 @@ public class dumpHA
 	private void dumpStatement(OutputStreamWriter f, Boolstmt b)
 		throws CodeGenException, IOException
 	{
+		System.out.println("dumpStatement");
 		if (b instanceof BAss) {
 			BAss c = (BAss) b;
 			Integer i = (Integer) DT.cond_sym.get(c.ass.blhs.var);
@@ -130,6 +131,7 @@ public class dumpHA
 	private void dumpNewEvents(OutputStreamWriter f, Action a)
 		 throws CodeGenException, IOException
 	{
+		System.out.println("dumpNewEvent");
 		if (a instanceof ActionBlock) {
 			ActionBlock b = (ActionBlock) a;
 			Aseq current = b.aseq;
@@ -161,6 +163,7 @@ public class dumpHA
 	private String dumpGuard(Guard g)
 		throws CodeGenException
 	{
+		System.out.println("dumpGuard");
 		if (g instanceof GuardBVar) {
 			GuardBVar h = (GuardBVar) g;
 			Integer i = (Integer) DT.cond_sym.get(h.bvar.var);
@@ -228,8 +231,9 @@ public class dumpHA
 	private void dumpNextState(OutputStreamWriter f, TrList tl, TrAnchor t)
 		throws CodeGenException, IOException
 	{
+		System.out.println("dumpNextState");
 		if (t instanceof Conname) {
-			dumpTransitions(f, tl, t);
+			//dumpTransitions(f, tl, t);
 		} else if (t instanceof Statename) {
 			Statename s = (Statename) t;
 			Integer i = (Integer) DT.states_sym.get(s.name);
@@ -261,6 +265,7 @@ public class dumpHA
 	{
 		TrList current = tl;
 
+		System.out.println("dumpTransition");
 		while(current != null) {
 			if (current.head.source == s) {
 				f.write("if (" +
@@ -281,6 +286,7 @@ public class dumpHA
 	private void dumpBasicState(OutputStreamWriter f, Basic_State s)
 		throws CodeGenException
 	{
+		System.out.println("dumpBasicState");
 		// No code for a basic state.  They are already handled
 		// in And and Or states.
 	}
@@ -297,11 +303,12 @@ public class dumpHA
 		StateList current = s.substates;
 		TrList currTr = s.trs;
 
+		System.out.println("dumpOrState");
 		while (current != null) {
 			f.write("if (pre_states[" +
 				current.head +
 				"]) {");
-			dumpTransitions(f, s.trs, current.head.name);
+			//dumpTransitions(f, s.trs, current.head.name);
 			f.write("}");
 			current = current.tail;
 		}
@@ -318,6 +325,7 @@ public class dumpHA
 	private void dumpAndState(OutputStreamWriter f, And_State s)
 		throws IOException, CodeGenException
 	{
+		System.out.println("dumpAndState");
 		iterateStateList(f, s.substates);
 	}
 
@@ -334,6 +342,7 @@ public class dumpHA
 	{
 		StateList current = sl;
 
+		System.out.println("Iterating state list");
 		while (current != null) {
 			if (current.head instanceof And_State) {
 				dumpAndState(f, (And_State) current.head);
@@ -357,6 +366,7 @@ public class dumpHA
 	private void dumpAutomaton(OutputStreamWriter f)
 		throws CodeGenException, IOException
 	{
+		System.out.println("Dumping Automaton");
 		f.write("/**\n * This code was automatically generated\n */");
 		f.write("public class Automaton extends SymbolTable\n{");
 		if (S.state instanceof And_State) {
@@ -379,7 +389,6 @@ public class dumpHA
 	 */
 	void dump() throws CodeGenException
 	{
-		Runtime rt = Runtime.getRuntime(); // Horror, horror, eh?
 		FileWriter fw;
 
 		System.out.println("Dumping chart to " + path);
@@ -389,13 +398,11 @@ public class dumpHA
 			DT.dump(fw);
 			fw.flush();
 			fw.close();
-			rt.gc();
 			System.out.println("Dumped Symbol Table");
 			fw = new FileWriter(path + "/Automaton.java");
 			dumpAutomaton(fw);
 			fw.flush();
 			fw.close();
-			rt.gc();
 			System.out.println("Dumped Automaton");
 		}
 		catch (IOException e) {
