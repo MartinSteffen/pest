@@ -6,8 +6,6 @@
  *
  */
 
-
-
 package editor;
 
 import java.awt.*;
@@ -28,6 +26,7 @@ import java.lang.*;
  * <li> eine syntaktisch korrekte Statechart  
  * <li> diese Statechart soll mindestens so aussehen : Statechart(null,null,null,null)  
  * <li> die Koordinaten der Statechart-Objekt muessen korrekt und relativ sein
+ * <li> alle Listen muessen vorschriftsmaessig gefuehrt sein
  * </ul>
  *
  * Wir bieten :
@@ -44,22 +43,21 @@ import java.lang.*;
  *</STRONG>
  * <li> Zeichnen von States funktioniert
  * <li> Zeichnen von Connectoren funktioniert
- * <li> Zeichnen von Transitionen 90 %
- * <li> Kennzeichnen von Anfangszustaenden 90 %
- * <li> Labeln von States 75 % (benoetigen nur noch das Fenster von der gui und 5 Zeilen Code)
- * <li> Labeln von Transitionen fehlt noch
+ * <li> Zeichnen von Transitionen 98 %
+ * <li> Kennzeichnen von Anfangszustaenden 95 %
+ * <li> Labeln von States funktioniert
+ * <li> Labeln von Transitionen 75 %
  * <li> Patternmatcher : uebernimmt TESC 1
  * <li> Loeschen von Komponenten 80 %
  * <li> Selektieren von Objektgruppen 75 %
- * <li> Selektieren von Objekten 75 % (Das Selektieren von Transitionen funktioniert noch nicht)
- * <li> highlighten 99 % (nur die Tests stehen noch aus)
- * <li> Zoomen 100 %
- * <li> Undo 100 % (50 %) (UNDO steht (100 %), funktioniert mit dem derzeitigen Status der Absyn noch nicht korrekt (50 %).
+ * <li> Selektieren von Objekten 95 % (Das Selektieren von Transitionen funktioniert noch nicht)
+ * <li> highlighten funktioniert
+ * <li> Zoomen funktioniert
+ * <li> Undo 100 % (80 %) (UNDO steht (100 %), funktioniert mit dem derzeitigen Status der Absyn noch nicht korrekt (80 %).
  *
  *<DT><STRONG>
  * TODO.
  * </STRONG>
- * <li> Zusammenfassen der beiden Programmteile (bis 08.01)
  * <li> Speichern von Substatecharts (Termin : Abhaengig von der GUI
  * <DT><STRONG>
  *
@@ -70,15 +68,14 @@ import java.lang.*;
  * Das Beispiel der STM laesst sich nicht fehlerfrei laden.
  * Wird ein Startzustand in ein anderes Objekt umgewandelt, so bleibt es trotzdem Startzustand. 
  *
- * <DT><STRONG>
+ * </DT><STRONG>
  * TEMPORÄREN FEATURES.
  * </STRONG>
- *  Zeichnen von Transitionen nur vom Anfangs- zum Endpunkt
- *  Statenames noch nicht variabel 
+ * Derzeit keine.
  * </DL COMPACT>
  */
 public class Editor extends Frame {
-    private static String Buttontype = "";
+    public static String Buttontype = "";
     private static boolean update = false;
     private static Editor menufeld = null;
     private static Editor drawfeld = null;
@@ -110,7 +107,6 @@ static Statechart nroot = new Statechart(null,null,null,null);
  * <li>name   : windowname 
  * </ul>
  */
-
     public Editor(Statechart root,String name) {
  
 
@@ -129,8 +125,6 @@ public Editor(Statechart root,String name,int top,int left,int width,int height)
  * <li>name   : windowname 
  * </ul>
  */
-
-
     public Editor (String name) {
 	super(name);
 	this.setLayout(new GridLayout(0,1,5,5));
@@ -174,7 +168,6 @@ public Editor(Statechart root,String name,int top,int left,int width,int height)
 	this.show();
     } 
 
-
 /**
  * Generiert einen drawframe
  *<ul>
@@ -185,17 +178,17 @@ public Editor(Statechart root,String name,int top,int left,int width,int height)
  * <li>width  : Hoehe des Windows
  * <li>height : Breite des Windows
  * </ul>
- *
- *
-
  */
-
   public Editor(Statechart root,String name,int top,int left,int width,int height,GUIInterface ngui) {
   super(name);                  // Create the window.
 gui = ngui;
 // Statechart root = new Statechart(null,null,null,null);
 nroot = root;  
-
+if (root.state == null) 
+{
+System.out.println("default-or");
+// root.state = new Or_State(new Statename("root"),null,null,null,null);
+}
     drawfeld = this;
     drawstatus = true;
     menufeld = new Editor("menue");
@@ -206,6 +199,7 @@ nroot = root;
     
    // Panel panel = new Panel();
    xpanel = panel;
+   //xpanel.setForeground(Color.black);
     scribble = new PESTDrawDesk(panel, 2400, 2400,nroot); // Create a bigger scribble area.
     pane.add(scribble);                      // Add it to the ScrollPane.
 
@@ -250,8 +244,8 @@ s1.addActionListener(new ActionListener() {
     zoom.add(z10 = new MenuItem("Zoom In"));
     zoom.add(z12 = new MenuItem("Zoom Out"));
     zoom.addSeparator();
-    zoom.add(z15 = new MenuItem("Zoom In 10x"));
-    zoom.add(z16 = new MenuItem("Zoom Out10x"));
+    zoom.add(z15 = new MenuItem("Zoom In  10x"));
+    zoom.add(z16 = new MenuItem("Zoom Out 10x"));
     zoom.addSeparator();
     zoom.add(z1 = new MenuItem("1/8 x"));
     zoom.add(z2 = new MenuItem("1/4 x"));
@@ -260,9 +254,7 @@ s1.addActionListener(new ActionListener() {
     zoom.add(z5 = new MenuItem("2 x"));
     zoom.add(z6 = new MenuItem("4 x "));
     zoom.add(z7 = new MenuItem("8 x "));
-
     menubar.add(zoom);                       // Add to menubar.
-
 
 z1.addActionListener(new ActionListener() {    
       public void actionPerformed(ActionEvent e) { ZoomFaktor = 0.125; zoomfk = -8; scribble.repaint();}
@@ -319,11 +311,8 @@ z16.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) { ; }
     });
 
-
-
     this.pack();
     this.show();
-
   }
 
 /**
