@@ -1,19 +1,20 @@
 Grammatik von TESC
-$Id: Grammatik,v 1.3 1999-01-20 17:32:37 swtech20 Exp $
+$Id: Grammatik,v 1.4 1999-02-07 11:54:18 swtech20 Exp $
 -----------------------------------------------------------------------
 
 Tokenklassen für den Scanner
 
-<character>     ::= {a..z,A..Z,.}
-<digits>        ::= {0..9}
-<sidentifier>   ::= <character>+(<character>+<digits>)*
-<identifier>    ::= <sidentifier>(<dot><sidentifier>)*
-<pathop>        ::= {in|entered|exited}
-<op>            ::= {&,|,->,<=>}
+<any char>      ::= <Ascii-Zeichen>
+<character>     ::= {a..z,A..Z,0..9,_}
+<identifier>    ::= <character>*
+<string>        ::= {"} (<any char>* {"}
+<keywords>      ::= {default,basic,false,undef,from,true,and,
+	             con,end,entered,exited,in,do,on,or,to
+                     ref,as,tesc,pest,pest_nocoord}
+<dot>           ::= {.}
+<op>            ::= {&,|,->,<=>,=,!}
 <parentesis>    ::= {(,)}
 <komma>         ::= {,}
-<not>           ::= {!}
-<equal>		::= {=}
 <whitespace>    ::= {TAB, SPACE, ENTER}
 <EOF>           ::= {EOF}
 <comment>       ::= {//}
@@ -22,12 +23,11 @@ Legende
 {.} = Menge
  |  = Auswahl
  *  = bel. Wiederholung
- +  = Auswahl
 
 -----------------------------------------------------------------------
 
 TESC              ::= VAR EVENT STATE
-  
+
 VAR               ::= {"var" VARS}
 
 VARS              ::= IDENTIFIER | "(" VARLIST ")"
@@ -40,16 +40,16 @@ EVENTS            ::= IDENTIFIER | "(" EVENTLIST ")"
 
 EVENTLIST         ::= IDENTIFIER {"," EVENTLIST}
 
-STATE             ::= AND_STATE | OR_STATE | BASIC_STATE
+STATE             ::= AND_STATE | OR_STATE | BASIC_STATE | REF_STATE
 
 AND_STATE         ::= "and" IDENTIFIER 
                             AND_SUBSTATES 
                       "end" IDENTIFIER
 
-AND_SUBSTATES     ::= OR_STATE {AND_SUBSTATES} | BASIC_STATE {AND_SUBSTATES}
+AND_SUBSTATES     ::= OR_STATE {AND_SUBSTATES} | BASIC_STATE {AND_SUBSTATES} | REF_STATE {AND_SUBSTATES}
 
-OR_STATE          ::= "or " IDENTIFIER
-                            OR_SUBSTATES CONNECTORS TRANSITIONS DEFAULTCON
+OR_STATE          ::= "or"  IDENTIFIER
+                            OR_SUBSTATES CONNECTORS TRANSITIONS DEFAULTCONS
                       "end" IDENTIFIER
 
 OR_SUBSTATES      ::= STATE {OR_SUBSTATES}
@@ -57,6 +57,8 @@ OR_SUBSTATES      ::= STATE {OR_SUBSTATES}
 OR_SUBSTATES      ::= STATE {OR_SUBSTATES}
 
 BASIC_STATE       ::= "basic" IDENTIFIER
+
+REF_STATE         ::= "ref" IDENTIFIER "in" STRING "as" ("tesc" | "pest" | "pest_nocoord")
 
 CONNECTORS        ::= CONNECTOR {CONNECTORS}
 
@@ -68,7 +70,7 @@ TRANSITION        ::= "from" TRANCHOR "to" TRANCHOR {"on" GUARD_STM} {"do" ACTIO
 
 TRANCHOR          ::= "UNDEF" | IDENTIFIER
 
-DEFAULTCONS       ::=  DEFAULTCON {DEFAULTCON}
+DEFAULTCONS       ::=  DEFAULTCON
 
 DEFAULTCON        ::= "default" IDENTIFIER
 
@@ -104,7 +106,9 @@ ACTION            ::= IDENTIFIER | ( IDENTIFIER "=" ( true | false | GUARD_STM )
 
 ACTIONLIST        ::= ACTION { "," ACTIONLIST }
 
-IDENTIFIER        ::= <Zeichen-/Ziffernkette>
+IDENTIFIER        ::= <identifier>
+
+STRING            ::= <string>
 
 -----------------------------------------------------------------------
 
@@ -115,12 +119,15 @@ Guard nur Events und im zweiten nur Bvars verwendet werden.
 
 Legende 
  .  = Nichterminal
-"." = Token
+"." = Token/Schluesselwort
 {.} = Optional
  |  = Auswahl
 
 -----------------------------------------------------------------------
 
 $Log: not supported by cvs2svn $
+Revision 1.3  1999/01/20 17:32:37  swtech20
+- Grammatik und Doku aktualisiert
+
 Revision 1.2  1999/01/11 12:14:22  swtech20
 Updates.
