@@ -5,7 +5,7 @@ import absyn.*;
 import gui.*;
 
 /**
- * Schnittstellenklasse fuer TESC1.        
+ * Import-Schnittstelle fuer TESC1.        
  *
  * <p><STRONG>Garantie: </STRONG> <p>
  * Wir garantieren, dass die von unseren Module erzeugten Statecharts folgende 
@@ -14,7 +14,13 @@ import gui.*;
  * <li> Ein Absyn-Baum eines Statecharts wird zurueckgeliefert, d.h.
  *    <ul>
  *    <li> der Baum ist nicht notwendigerweise als Statechart darstellbar
- *    <li> das Statechart ist nicht notwendigerweise semantisch korrekt 
+ *    <li> das Statechart ist nicht notwendigerweise semantisch korrekt
+ *    <ul>
+ *    <li> Ungueltige State-Verweise
+ *    <li> Ungueltige Pfade
+ *    <li> Nicht referenzierte Variablen, Events und Zustaende
+ *    <li> Leere Zustaende
+ *    </ul> 
  *    </ul>
  * <li> Leere Events und Guards werden mit Dummy gekennzeichnet statt NULL
  * <li> Keywords aus util.Keyword.java kommen nicht in Bezeichnern vor
@@ -36,23 +42,22 @@ import gui.*;
  *
  * <p><STRONG>Todo: </STRONG>
  * <ul>
- * <li> In die Absyn-Objekte muessen noch die Zeilennummern eingetragen werden.
- * <li> Bug Fixing.
+ * <li> Weiteres Bug Fixing.
  * </ul>
  *
  * <p><STRONG>Bekannte Fehler.</STRONG>
  * <ul>
- * <li> GUI erkennt fehlerhaftes Einlesen nicht. (Behoben bis 5.1.99)
+ * <li>
  * </ul>
  *
  * <p><STRONG>Testmoeglichkeiten: </STRONG> <p>
  * Wer unseren Parser testen moechte, kann sich gemaess der <A HREF="./tesc1/Docu/Grammatik">TESC-Grammatik</A> ein
  * TESC-Programm schreiben und mittels DATEI|IMPORT|TESC in PEST laden.<p> 
- * Alternativ kann das <A HREF="./tesc1/Docu/example.tesc">Beispiel</A> aus
+ * Alternativ kann das <A HREF="./tesc1/Docu/Example.tesc">Beispiel</A> aus
  * dem Pflichtenheft verwendet werden.
  * <p>
  * <hr>
- * @version  $Id: TESCLoader.java,v 1.9 1999-01-04 15:25:19 swtech20 Exp $
+ * @version  $Id: TESCLoader.java,v 1.10 1999-01-11 12:13:54 swtech20 Exp $
  * @author Michael Suelzer, Christoph Schuette.
  *  
  */   
@@ -63,7 +68,7 @@ public class TESCLoader {
     
     /**
      * Erzeugt eine Instanz von <code>TESCLoader<code>. 
-     * Fehler waehrend des Parsens werden ueber die GUI-Schnitstelle mitgeteilt.
+     * Fehler waehrend des Parsens werden ueber die GUI-Schnittstelle mitgeteilt.
      */
     public TESCLoader (GUIInterface gui_) {           
 	gui = gui_; 
@@ -78,7 +83,6 @@ public class TESCLoader {
      * </ul>
      * @param br BufferedReader
      * @see tesc1.TESCParser
-
      */
     public Statechart getStatechart (BufferedReader br) throws IOException {
 	TESCParser parser = new TESCParser();
@@ -95,6 +99,16 @@ public class TESCLoader {
 	    return statechart;
     }
 
+    /**
+     * Startet den Parse-Vorgang und liefert bei Erfolg einen Guard.
+     * @return 
+     * <ul>
+     * <li> Guard-Instanz bei erfolgreichem Einlesen und Parsen.
+     * <li> <code>null<code> bei Auftreten eines Fehlers.
+     * </ul>
+     * @param br BufferedReader
+     * @see tesc1.TESCParser
+     */
     public Guard getGuard(BufferedReader br) throws IOException {
 	TESCParser parser = new TESCParser();
 	Guard guard = parser.readGuard(br);
@@ -110,6 +124,16 @@ public class TESCLoader {
 	    return guard;
     }
 
+    /**
+     * Startet den Parse-Vorgang und liefert bei Erfolg eine Action.
+     * @return 
+     * <ul>
+     * <li> Action-Instanz bei erfolgreichem Einlesen und Parsen.
+     * <li> <code>null<code> bei Auftreten eines Fehlers.
+     * </ul>
+     * @param br BufferedReader
+     * @see tesc1.TESCParser
+     */
     public Action getAction(BufferedReader br) throws IOException {
 	TESCParser parser = new TESCParser();
 	Action action = parser.readAction(br);
@@ -131,6 +155,10 @@ public class TESCLoader {
 //	----------------------
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.9  1999/01/04 15:25:19  swtech20
+//	Schluesselworte in Bezeichnern werden nicht mehr zugelassen.
+//	Status upgedated.
+//
 //	Revision 1.8  1999/01/03 21:48:18  swtech20
 //	Implementierung des Parsers
 //

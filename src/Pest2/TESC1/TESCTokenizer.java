@@ -27,7 +27,7 @@ import absyn.*;
  * </code>
  * <p>
  * @author Michael Sülzer, Christoph Schütte.
- * @version  $Id: TESCTokenizer.java,v 1.5 1999-01-03 21:48:20 swtech20 Exp $
+ * @version  $Id: TESCTokenizer.java,v 1.6 1999-01-11 12:13:57 swtech20 Exp $
  *
  * @see Token
  * @see TESCParser
@@ -127,10 +127,10 @@ public class TESCTokenizer {
 
     /** 
      * Prüft, ob es sich um ein Identifikator-Zeichen handelt,
-     * das sind die Zeichen [A-Za-z0-9_.].
+     * das sind die Zeichen [A-Za-z0-9_].
      */
     private boolean isIdentifierChar(int n) {
-	return (in(n,65,90) | in(n,97,122) | in(n,48,57) | n == 46 | n == 95);  
+	return (in(n,65,90) | in(n,97,122) | in(n,48,57) || n == 95);  
     }
 
     /** 
@@ -199,7 +199,7 @@ public class TESCTokenizer {
 	StringBuffer s2 = new StringBuffer(s);
 
 	// Naechstes Zeichen lesen und an alten Prefix anhaengen
-	int input_char_rek = input.read();
+	int input_char_rek = readChar();
 	s2.append((char)input_char_rek);
 
 	if (isTokenPrefix(s2.toString())) {
@@ -273,7 +273,7 @@ public class TESCTokenizer {
 	    while ((input_char != '\n') & !input_eof) {
 		input_char = readChar();
 	    }
-	    input.unread(input_char);
+	    unreadChar(input_char);
 	    return getNextToken();
 	}
    
@@ -307,6 +307,9 @@ public class TESCTokenizer {
 //      ----------------------------               
 //
 //      $Log: not supported by cvs2svn $
+//      Revision 1.5  1999/01/03 21:48:20  swtech20
+//      Implementierung des Parsers
+//
 //      Revision 1.4  1998/12/17 11:14:13  swtech20
 //      BufferedReader statt FileInputStream.
 //
