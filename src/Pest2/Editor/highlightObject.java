@@ -15,7 +15,7 @@ import java.awt.event.*;
 import java.io.*;
 import absyn.*;
 
-class highlightObject {
+public class highlightObject {
 
     Color defaultcolor = Color.red;
     static Graphics h;
