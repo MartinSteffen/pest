@@ -4,7 +4,7 @@
  * Created: Fri Jan 01 1999, 02:34:05
  *
  * @author Developed by Eike Schulz for swtech14.
- * @version $Id: Test2.java,v 1.2 1999-01-22 21:59:20 swtech14 Exp $
+ * @version $Id: Test2.java,v 1.3 1999-02-04 11:33:56 swtech14 Exp $
  *
  *
  * Diese Klasse dient zum Testen der mit dem Graphplazierungsalgorithmus
@@ -19,6 +19,7 @@ import java.awt.*;
 import tesc2.GraphOptimizer;
 import tesc2.AlgorithmException;
 import java.applet.Applet;
+import editor.Editor;
 import util.PrettyPrint;
 
 public class Test2 {
@@ -91,16 +92,16 @@ class TestOutput2 extends Applet {
   Statechart sc;
 
   private static Frame f = new Frame();
-  private Font font = new Font ("TimesRoman", Font.BOLD, 6);
+  private Font font = new Font ("TimesRoman", Font.BOLD, 12);
   private FontMetrics fm;
 
   private final int OFFSET_X = 32;
   private final int OFFSET_Y = 32;
 
-  private  final Color COLOR_STATE      = Color.white;//red;
-  private  final Color COLOR_TRANSITION = Color.white;//green;
+  private  final Color COLOR_STATE      = Color.red;
+  private  final Color COLOR_TRANSITION = Color.green;
   private  final Color COLOR_COLLECTOR  = Color.white;
-  private  final Color COLOR_LABEL      = Color.white;//orange;
+  private  final Color COLOR_LABEL      = Color.orange;
 
 
   public synchronized void start () {
@@ -229,11 +230,18 @@ class TestOutput2 extends Applet {
 	    g.drawLine (t.points[i].x, t.points[i].y + OFFSET_Y,
 			t.points[i+1].x, t.points[i+1].y + OFFSET_Y);
 
-      g.setColor (COLOR_LABEL);
-      if ((t.label != null) && (t.label.position != null))
-	g.drawString ("Testlabel",
-		      t.label.position.x, t.label.position.y + OFFSET_Y);
-
+      if ((t.label != null) && (t.label.position != null)
+	  && (t.label.caption != null)) {
+	g.setColor (COLOR_LABEL);
+	if ((t.label.caption).length() < GraphOptimizer.TLABELLENGTH)
+	  g.drawString (t.label.caption,
+			t.label.position.x,
+			t.label.position.y + OFFSET_Y);
+	else
+	  g.drawString (Editor.LongLabel,
+			t.label.position.x,
+			t.label.position.y + OFFSET_Y);
+      }
     } // if t != null
 
   } // method abs_drawTransition
@@ -334,9 +342,14 @@ class TestOutput2 extends Applet {
       if ((t.label != null) && (t.label.position != null)
 	  && (t.label.caption != null)) {
 	g.setColor (COLOR_LABEL);
-	g.drawString (t.label.caption,
-		      t.label.position.x + coo_x,
-		      t.label.position.y + coo_y);
+	if ((t.label.caption).length() < GraphOptimizer.TLABELLENGTH)
+	  g.drawString (t.label.caption,
+			t.label.position.x + coo_x,
+			t.label.position.y + coo_y);
+	else
+	  g.drawString (Editor.LongLabel,
+			t.label.position.x + coo_x,
+			t.label.position.y + coo_y);
       }
     } // if t != null
 
