@@ -129,8 +129,12 @@ class Nachfolgermaschine extends Object{
 	/* ENDE HACK....                                                               */
 	if (transitionen.size()>0){                  /* Gibt es denn mindestens eine?              */
 	  Tr transit=(Tr)transitionen.firstElement();
-	  result.transitions.setActive(transit,transit);
-	  result=progress(path,transit,os,result);    /* Führe die Transition aus. */
+	  try{
+	    result=progress(path,transit,os,result);    /* Führe die Transition aus. */
+	    result.transitions.setActive(transit,transit);
+	  }
+	  catch (ConnectorException e){
+	  }
 	}
 	/* Dann fuer den aktiven State step ausfuehren                        */
 	/* Aktiven State bestimmen: (1)                                       */
@@ -403,20 +407,32 @@ class Nachfolgermaschine extends Object{
   }
 
   TrList getTrsFromConnectorname(String name, TrList list){
+    if (gui.isDebug()){
+      System.out.println("getTrsFromConnectorname: "+name);
+    }
     TrList result=null;
     Tr head=list.head;
     TrAnchor headsource=head.source;
     TrList tail=list.tail;
-    String headname=((Conname)headsource).name;
-    if (headname.equals(name)){
-      result=new TrList(head,result);
-    }
-    while (tail!=null){
-      head=tail.head;
-      headsource=head.source;
+    String headname=null;
+    if (headsource instanceof Conname){
       headname=((Conname)headsource).name;
       if (headname.equals(name)){
 	result=new TrList(head,result);
+      }
+    }
+    while (tail!=null){
+      if (gui.isDebug()){
+	System.out.println("getTrsFromConnectorname: Schleife");
+      }
+      head=tail.head;
+      tail=tail.tail;
+      headsource=head.source;
+      if (headsource instanceof Conname){
+	headname=((Conname)headsource).name;
+	if (headname.equals(name)){
+	  result=new TrList(head,result);
+	}
       }
     }
     return result;
@@ -441,7 +457,7 @@ class Nachfolgermaschine extends Object{
   }
   
   /* Progress fuer Transitionen von einem State zu einem Connector */ 
-  Status progress (Path path, Or_State os, Tr t, Statename from, Conname to, Status status){
+  Status progress (Path path, Or_State os, Tr t, Statename from, Conname to, Status status) throws ConnectorException{
     Status result=new Status();
     try{
       result=result.verbinde(status);
@@ -450,7 +466,6 @@ class Nachfolgermaschine extends Object{
       result=comm.solveBVarRacing(e);
     }
     TLabel tl=t.label;
-    result.states.setInActive(path.append(from.name));
     Action action=tl.action;
     result=progress(action,result);
     TrList possibles=getTrsFromConnectorname(to.name,os.trs);
@@ -474,8 +489,13 @@ class Nachfolgermaschine extends Object{
     }
     if (transitionen.size()>0){
       Tr transit=(Tr)transitionen.firstElement();
+      result.transitions.setActive(transit,transit);
       result=progress(path,transit,os,result);
     }
+    if (transitionen.size()==0){
+      throw (new ConnectorException());
+    }
+    result.states.setInActive(path.append(from.name));
     return result;
   }
 
@@ -496,7 +516,7 @@ class Nachfolgermaschine extends Object{
   }
 
    /* Progress fuer Transitionen von einem Connector zu einem Connector */ 
-  Status progress (Path path, Or_State os, Tr t, Conname from, Conname to, Status status){
+  Status progress (Path path, Or_State os, Tr t, Conname from, Conname to, Status status) throws ConnectorException{
     Status result=new Status();
     try{
       result=result.verbinde(status);
@@ -530,6 +550,9 @@ class Nachfolgermaschine extends Object{
       Tr transit=(Tr)transitionen.firstElement();
       result=progress(path,transit,os,result);
     }
+    if (transitionen.size()==0){
+      throw (new ConnectorException());
+    }
     return result;
   }
   
@@ -539,7 +562,7 @@ class Nachfolgermaschine extends Object{
 
   /* Progress führt die Transition t auf status aus, indem rekursiv die action aufgeloest wird, */
   /* und liefert einen lokal veränderten Status zurück */
-  Status progress(Path path, Tr t, Or_State os, Status status){
+  Status progress(Path path, Tr t, Or_State os, Status status) throws ConnectorException{
     if (gui.isDebug()){
       System.out.println("Progress....");
     }
@@ -558,7 +581,11 @@ class Nachfolgermaschine extends Object{
 	result=progress(path,os,t,(Statename)from,(Statename)to,status);
       }
       if (to instanceof Conname){
-	result=progress(path,os,t,(Statename)from,(Conname)to,status);
+	try{
+	  result=progress(path,os,t,(Statename)from,(Conname)to,status);
+	}
+	catch (ConnectorException e){
+	}
       }
     }
     if (from instanceof Conname){

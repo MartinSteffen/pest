@@ -14,7 +14,7 @@ public class NonDeterminismDialog extends Dialog implements ActionListener{
 
   NonDeterminismDialog(Frame parent,Vector v){
     super(parent,"Nichtdeterminismus",true);
-    setLayout(new FlowLayout());
+    setLayout(new GridLayout(2,1));
     result=new Vector(1);
     Tr transition;
     TrAnchor von=null;
@@ -26,6 +26,9 @@ public class NonDeterminismDialog extends Dialog implements ActionListener{
     int listsize=0;
     if (count>10){
       listsize=10;
+    }
+    if (count<5){
+      listsize=5;
     }
     else{
       listsize=count;

@@ -3,6 +3,9 @@ package simu;
 
 import java.util.Enumeration;
 import java.util.Hashtable;
+
+import java.util.StringTokenizer; 
+
 import absyn.*;
 
 public class BooleanTabelle extends Object{
@@ -11,6 +14,19 @@ public class BooleanTabelle extends Object{
   public BooleanTabelle(){
     data=new Hashtable();
   }
+
+
+  public BooleanTabelle insert(String s){
+    Bvar b=null;
+    BooleanTabelle result=new BooleanTabelle();
+    StringTokenizer strtok=new StringTokenizer(s," ");
+    while (strtok.hasMoreTokens()){
+      /* hier BVars einfuegen */
+    }
+    return result;
+  }
+    
+      
 
   public BooleanTabelle filterConditions(BooleanTabelle tab){
     BooleanTabelle result=new BooleanTabelle();
