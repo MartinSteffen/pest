@@ -31,6 +31,8 @@ import util.*;
  *   werden evt. noch dahinterstehende Zeilen vom Parser ignoriert.
  *   (eigentlich nicht unbedingt ein Fehler, vielleicht unschoen?)
  * + Bei Ident mit Bezug auf vorhandenes Obejkt immer prüfen, ob auch vorhanden s.u.
+ * - Bei Guards: ... on ; liefert GuardEmpty(..). Wg. Editor, falls User nichts angeben will.
+ *   Ist das Ok, oder soll es Fehlermeldung geben?
  */
 
 
@@ -46,8 +48,8 @@ class TESCParser {
 
     private Vector snlist;        // Liste der bekannten Statenames
     private Vector cnlist;        // Liste der bekannten Connames
-    private Vector bnlist;        // Liste der bekannten Bvarnames
-    private Vector enlist;        // Liste der bekannten Eventnames
+    //private Vector bnlist;        // Liste der bekannten Bvarnames / temporar
+    //private Vector enlist;        // Liste der bekannten Eventnames / temporar
 
     private Vector path;          // enthält die Pfade
 
@@ -67,8 +69,8 @@ class TESCParser {
 	errorList = new Vector();
 	snlist = new Vector();
 	cnlist = new Vector();
-	bnlist = new Vector();
-	enlist = new Vector();
+	//bnlist = new Vector();
+	//enlist = new Vector();
 
 	evlist = null;
 	bvlist = null;
@@ -371,7 +373,7 @@ class TESCParser {
 		pth = p.append(tok.value_str);
 	    }
 	    addPath(pth);
-	    
+
 
 	    match(vTOKEN.IDENT);
 	    match(vTOKEN.COLON);
@@ -773,6 +775,9 @@ class TESCParser {
 
 	    grd.location  = loc;
 	}
+	
+	if (grd == null) grd = new GuardEmpty((Dummy)setLoc(new Dummy(), loc)); 
+
 	return grd;
     }
     
@@ -867,6 +872,7 @@ class TESCParser {
 	    grd = new GuardNeg(kcompg_e(p));
 	}
 	else if(tok.token == vTOKEN.EMPTYEXP) {
+	    match(vTOKEN.EMPTYEXP);
 	    // Rekursion ??? oder kann ~ nur für sich stehen ?
 	    grd = new GuardEmpty((Dummy)setLoc(new Dummy(), loc)); 
 	}
@@ -1042,6 +1048,7 @@ class TESCParser {
 	    grd = new GuardNeg(kcompg_b(p));
 	}
 	else if(tok.token == vTOKEN.EMPTYEXP) {
+	    match(vTOKEN.EMPTYEXP);
 	    // Rekursion ??? oder kann ~ nur für sich stehen ?
 	    grd = new GuardEmpty((Dummy)setLoc(new Dummy(), loc)); 
 	}
@@ -1547,8 +1554,13 @@ class TESCParser {
 }
 
 /* TESCParser
- * $Id: TESCParser.java,v 1.14 1999-01-11 20:10:32 swtech13 Exp $
+ * $Id: TESCParser.java,v 1.15 1999-01-11 23:20:10 swtech13 Exp $
  * $Log: not supported by cvs2svn $
+ * Revision 1.14  1999/01/11 20:10:32  swtech13
+ * An geaenderte Grammatik angepasst.
+ * Wir koennen jetzt den Typ der Variablen bei Guards/Actions aus dem Kontext
+ * bestimmen.
+ *
  * Revision 1.11  1999/01/06 14:57:24  swtech13
  * Fehlerbehandlung verbessert
  *

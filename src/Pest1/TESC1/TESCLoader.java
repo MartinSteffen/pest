@@ -52,7 +52,8 @@ import java.util.*;
  * Der Parser ist bis auf Kleinigkeiten (s. TODO) funktionsfaehig.
  * In tesc1/Test befinden sich mehrere Testdateien. <br>
  * Diese koennen ueber das GUI-Fenster mittels Import->TESC geladen werden. <br>
- * Die TESC-Sprache ist über die <A HREF="./tesc1/Docu/grammatik.txt">Grammatik</A> definiert. <br>
+ * Die TESC-Sprache ist über die <A HREF="./tesc1/Docu/grammatik.txt">Grammatik</A> definiert. 
+ * Siehe auch <A HREF="./tesc1/Docu/Doku.txt"> Doku.txt</A> <br>
  * Beispiel <A HREF="./tesc1/Test/example.tesc"> example.tesc</A>
  * <br>
  * <DT><STRONG>
@@ -60,9 +61,9 @@ import java.util.*;
  * </STRONG>
  * <br>
  * <ul>
- * <li> Undet bei Guards (evtl. nicht nötig). 
- * <li> Abschließende Test (z.B. im Editor, noch nicht möglich, da der GraphAlg noch nichts tut)
- * <li> Einstellungsmodul.
+ * <li> Undet bei Guards (ist wohl nicht nötig)
+ * <li> Abschließende Test (z.B. im Editor)
+ * <li> Testen der Schnitstelle für den Editor (getAction/getGuard)
  * </ul>
  * 
  * <br>
@@ -75,7 +76,7 @@ import java.util.*;
  *
  * <DT><STRONG>
  * <A NAME="options"> Einstellungsmöglichkeiten </A>
- * </STRONG> <A HREF="./tesc1/Docu/Doku.txt"> Doku.txt</A>
+ * </STRONG> 
  *
  * <ul>
  * <li> debug
@@ -83,9 +84,10 @@ import java.util.*;
  * </ul>
  *
  * </DL COMPACT>
-
+ * <br>
+ * <hr>
  * @author Arne Koch/Mike Rumpf.
- * @version  $Id: TESCLoader.java,v 1.13 1999-01-11 20:24:29 swtech13 Exp $ 
+ * @version  $Id: TESCLoader.java,v 1.14 1999-01-11 23:20:09 swtech13 Exp $ 
  */ 
 public class TESCLoader {
 
@@ -115,7 +117,7 @@ public class TESCLoader {
     }
    
     /** 
-     * Umwandeln eines  TESC-File aus is_ in Statechart.
+     * Umwandeln eines  TESC-File aus BufferedReader in Statechart.
      * @param Referenz auf einen BufferedReader
      * @return Liefert Statechart oder null bei Fehler.
      */ 
@@ -133,8 +135,25 @@ public class TESCLoader {
 
 
     /** 
-     * Umwandeln eines  TESC-File aus is_ in Guard. <br>
-     * Die Funktion wurde noch nicht getestet! Fehlerausgaben werden vom Parser ins gui-Fenster geschrieben.
+     * Export eines Syntaxbaums in ein Tesc-File. 
+     * @return 
+     * <ul> 
+     * <li> <code>true</code>  : Export erfolgreich 
+     * <li> <code>false</code> : Export fehlgeschlagen 
+     * </ul> 
+     * @param bw BufferedWriter 
+     * @param sc Statechart 
+     */ 
+    public boolean saveStatechart (BufferedWriter bw, Statechart sc) throws IOException { 
+	
+	
+	return true; 
+    } 
+ 
+
+
+    /** 
+     * Umwandeln eines  TESC-File aus BufferedReader in Guard.<br>  Die Funktion wurde noch nicht getestet! Fehlerausgaben werden vom Parser ins gui-Fenster geschrieben.
      * @param Referenz auf einen BufferedReader
      * @return Liefert Guard oder null bei Fehler.
      */ 
@@ -155,8 +174,7 @@ public class TESCLoader {
     }
 
     /** 
-     * Umwandeln eines  TESC-File aus is_ in Action. <br>
-     * Die Funktion wurde noch nicht getestet!
+     * Umwandeln eines  TESC-File aus BufferedReader in Action.<br> Die Funktion wurde noch nicht getestet!
      * @param Referenz auf einen BufferedReader
      * @return Liefert Action oder null bei Fehler.
      */ 
@@ -179,6 +197,9 @@ public class TESCLoader {
 
 /* 
  * $Log: not supported by cvs2svn $
+ * Revision 1.13  1999/01/11 20:24:29  swtech13
+ * Liefern jetzt Dummies, bei readAction/Guard(..), falls diese leer.
+ *
  * Revision 1.12  1999/01/11 11:52:18  swtech13
  * Links korrigiert
  *
