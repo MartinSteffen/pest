@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestBVars.java,v 1.6 1999-01-05 22:05:25 swtech11 Exp $
+ *  @version  $Id: TestBVars.java,v 1.7 1999-01-06 12:56:29 swtech11 Exp $
  */
 
 /** Diese Testklasse testet, ob alle BVars deklariert worden sind, 
@@ -73,12 +73,10 @@ class TestBVars extends ModelCheckBasics{
         else {
         if (g instanceof GuardNeg)   {pruefeGuard (((GuardNeg)g).guard, t, p);}
           else {
-          if ((g instanceof GuardEmpty) || (g instanceof GuardEvent) ||
+          if ((g instanceof GuardEmpty) || (g instanceof GuardUndet) || (g instanceof GuardEvent) ||
              (g instanceof GuardCompp)) {}
-            else {
-            if (g instanceof GuardUndet) {ausgabe(416, t, p, false);}
-              else {ausgabe(417, t, p, true); };
-    };};};};};
+            else {msg.addError(417, t, p); };
+    };};};};
 
 
 
@@ -87,8 +85,7 @@ class TestBVars extends ModelCheckBasics{
 
   void pruefeBVar(Bvar b, Tr t, String p){
       if (Ist.contains(b.var)) {if (!Soll.contains(b.var)) { Soll.addElement(b.var);};}
-      else {msg.addError(101,"BVar: "+b.var+
-                  "Trans: "+((Statename)t.source).name+" -> "+((Statename)t.target).name+" in State: "+p);};
+      else { msg.addError(101, "BVar: "+b.var, t, p);};
   };
    /** Ueberprueft den Action auf Verwendung von BVars.*/
 
@@ -99,7 +96,7 @@ class TestBVars extends ModelCheckBasics{
       if (a instanceof ActionStmt) {pruefeBool (((ActionStmt)a).stmt, t, p);}
         else {
           if ((a instanceof ActionEvt) || (a instanceof ActionEmpty)) {}
-            else {ausgabe(418, t, p, true);};
+            else {msg.addError(418, t, p);};
     }; }; };
 
   /** Ueberprueft einen boolschen Block auf Verwendung von BVars.*/
@@ -110,8 +107,7 @@ class TestBVars extends ModelCheckBasics{
        if (b instanceof MTrue)  {pruefeBVar(((MTrue)b).var, t, p);}
          else {
          if (b instanceof MFalse) {pruefeBVar(((MFalse)b).var, t, p);}
-           else {msg.addError(103,"Trans: "+
-                ((Statename)t.source).name+" -> "+((Statename)t.target).name+" in State: "+p);};
+           else { msg.addError(103, t, p);};
      };};};
 
     /** Die Vectoren Ist und soll werden verglichen. 
@@ -123,17 +119,6 @@ class TestBVars extends ModelCheckBasics{
         for(int i=0; i<Ist.size(); i++) { msg.addWarning(102,"BVar: "+(String)Ist.elementAt(i));};
 
     };
-    void ausgabe(int n, Tr t, String p, boolean b) {
-  String s1="";
-  String s2="";
-  if (t.source instanceof Statename) { s1=((Statename)t.source).name;};
-  if (t.target instanceof Statename) { s2=((Statename)t.target).name;};
-  if (t.source instanceof Conname)  { s1=((Conname)t.source).name;};
-  if (t.target instanceof Conname)  { s2=((Conname)t.target).name;};
-  if (t.source instanceof UNDEFINED)  { s1="UNDEFINED";};
-  if (t.target instanceof UNDEFINED)  { s2="UNDEFINED";};
-  if (b) {msg.addError(n,"Trans: "+s1+" -> "+s2+" in State: "+p);}
-     else {msg.addWarning(n,"Trans: "+s1+" -> "+s2+" in State: "+p);};
-  }
+    
 }
 

@@ -1,10 +1,11 @@
 package check;
 
 import java.util.*;
+import absyn.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: ModelCheckMsg.java,v 1.4 1999-01-04 22:36:39 swtech11 Exp $
+ *  @version  $Id: ModelCheckMsg.java,v 1.5 1999-01-06 12:56:27 swtech11 Exp $
  */
 class ModelCheckMsg {
   private Vector ErrorCode;
@@ -33,6 +34,24 @@ class ModelCheckMsg {
     ErrorCode.addElement(ic);
     ErrorMsg.addElement(ewc.codeToString(_code));
     ErrorPath.addElement(_path);
+  }
+
+
+ void addError(int n, Tr t, String p) {
+  
+  this.addError(n,"", t, p);
+  }
+
+ void addError(int n, String p1, Tr t, String p) {
+  String s1="";
+  String s2="";
+  if (t.source instanceof Statename) { s1=((Statename)t.source).name;};
+  if (t.target instanceof Statename) { s2=((Statename)t.target).name;};
+  if (t.source instanceof Conname)  { s1=((Conname)t.source).name;};
+  if (t.target instanceof Conname)  { s2=((Conname)t.target).name;};
+  if (t.source instanceof UNDEFINED)  { s1="UNDEFINED";};
+  if (t.target instanceof UNDEFINED)  { s2="UNDEFINED";};
+  this.addError(n,p1 +" Trans: "+s1+" -> "+s2+" in State: "+p);
   }
 
   // gesamte Error-Meldung des _number. Errors
@@ -67,6 +86,25 @@ class ModelCheckMsg {
     WarningMsg.addElement(ewc.codeToString(_code));
     WarningPath.addElement(_path);
   }
+
+
+ void addWarning(int n, Tr t, String p) {
+  
+  this.addWarning(n,"", t, p);
+  }
+
+ void addWarning(int n, String p1, Tr t, String p) {
+  String s1="";
+  String s2="";
+  if (t.source instanceof Statename) { s1=((Statename)t.source).name;};
+  if (t.target instanceof Statename) { s2=((Statename)t.target).name;};
+  if (t.source instanceof Conname)  { s1=((Conname)t.source).name;};
+  if (t.target instanceof Conname)  { s2=((Conname)t.target).name;};
+  if (t.source instanceof UNDEFINED)  { s1="UNDEFINED";};
+  if (t.target instanceof UNDEFINED)  { s2="UNDEFINED";};
+  this.addWarning(n,p1 +" Trans: "+s1+" -> "+s2+" in State: "+p);
+  }
+
 
   // gesamte Warning-Meldung des _number. Warnings zurueckmelden,
   // der erste Index ist 1 nicht 0

@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestEvents.java,v 1.5 1999-01-06 08:15:13 swtech11 Exp $
+ *  @version  $Id: TestEvents.java,v 1.6 1999-01-06 12:56:31 swtech11 Exp $
  */
 /** Diese Testklasse testet, ob alle Events deklariert worden sind, 
     <br>ob die deklarierten eindeutig sind und ob sie alle verwendet werden.*/
@@ -75,9 +75,7 @@ class TestEvents extends ModelCheckBasics{
 
   void pruefeEvent(SEvent e, Tr t, String p){
       if (Ist.contains(e.name)) {if (!Soll.contains(e.name)) { Soll.addElement(e.name);};}
-      else {msg.addError(201,"Event: "+e.name+
-                           "/ Trans: "+((Statename)t.source).name+" -> "+((Statename)t.target).name+
-                           " in State: "+p);};
+      else {msg.addError(201,"Event: "+e.name, t, p);};
   };
 
   /** Ueberprueft den Action auf Verwendung von Events.*/
@@ -93,15 +91,22 @@ class TestEvents extends ModelCheckBasics{
   void pruefePath(Path p, Tr t, String s){
       PathList pl=sc.cnames;
       Path p1;
-      boolean b=true;
-      for(; ((pl != null) && b) ; pl=pl.tail){ 
+      //Path p2;
+      System.out.println(PathtoString(p));
+      boolean b1=true;
+      boolean b2=true;
+      for(; ((pl != null) && b1) ; pl=pl.tail){ 
           p1=p;
-          for( Path p2=pl.head; ((p2 != null) && (p1!=null) && b); p2=p2.tail) {  
-	  if (p1.head!=p2.head) {b=false;} else {p1=p1.tail;};};};
+          b2=true;
+          for(Path p2=pl.head; ((p2 != null) && (p1!=null) && b2); p2=p2.tail) { 
+          System.out.println("Guard /"+p1.head+"/ Pfad /"+p2.head+"/"); 
+          System.out.println(PathtoString(p1)+" "+PathtoString(p2));
+	  if (p1.head != p2.head) {System.out.println("f"); b2=false;} 
+              else {System.out.println("t"); p1=p1.tail;};};
+      b1=!b2; 
+      };
       
-      if (b) {msg.addError(203,"Statename: "+(Path)p+"/ Trans: "
-                               +((Statename)t.source).name+" -> "+((Statename)t.target).name+
-                           " in State: "+s);}
+      if (b1==false) {msg.addError(203,"Pfad: "+PathtoString(p), t, s);}
      
   };
 
@@ -114,9 +119,5 @@ class TestEvents extends ModelCheckBasics{
         for(int i=0; i<Ist.size(); i++) { msg.addWarning(202,(String)Ist.elementAt(i));};
 
     };}
-
-
-
-
 
 

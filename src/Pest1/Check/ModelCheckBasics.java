@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: ModelCheckBasics.java,v 1.4 1999-01-03 15:14:28 swtech11 Exp $
+ *  @version  $Id: ModelCheckBasics.java,v 1.5 1999-01-06 12:56:25 swtech11 Exp $
  */
 class ModelCheckBasics {
   ModelCheckMsg msg = new ModelCheckMsg();
@@ -149,5 +149,12 @@ class ModelCheckBasics {
        ((p1.tail==null) && (p2.tail!=null))))  {b=false;}
   return b;
   };
+  
+    String PathtoString(Path p) {
+    String s=p.head;
+       p=p.tail;
+       for(;p!=null; p=p.tail) {s=s+"."+p.head;};
+      return s;
+   }
 
 }

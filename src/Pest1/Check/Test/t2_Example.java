@@ -2,7 +2,7 @@ import absyn.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: t2_Example.java,v 1.12 1999-01-04 17:29:58 swtech11 Exp $
+ *  @version  $Id: t2_Example.java,v 1.13 1999-01-06 12:56:41 swtech11 Exp $
  */
 public class t2_Example {
   
@@ -78,7 +78,7 @@ Bvar a3 = new Bvar ("A");
 		   new Statename ("S1"),
 		   new TLabel (new GuardCompg (new Compguard (Compguard.AND,
 							  new GuardEvent(B),
-							  new GuardCompp (new Comppath (Comppath.IN,t2p)))),
+							  new GuardCompp (new Comppath (Comppath.IN,(new Path("SUD", null)).append("P4"))))),
 					   new ActionEmpty (new Dummy())));
 
 
@@ -274,6 +274,8 @@ public static Statechart getExample_m() {
     Path t1p = r2p.append("T1");
     Path t2p = r2p.append("T2");
 
+    Path sudk = new Path ("sud", null);
+    Path ttt =sudk.append("01").append("r6");
 
     PathList pathlist =
     new PathList (sudp,
@@ -341,7 +343,7 @@ public static Statechart getExample_m() {
 			      new StateList (Q1,new StateList (Q2,null)),
 			      new TrList (new Tr (new Statename ("Q1"), 
 						  new Statename ("Q2"),
-						  new TLabel (new GuardCompp(new Comppath(Comppath.IN,p2p)),
+						  new TLabel (new GuardEmpty(new Dummy()),
 							                     new ActionEvt (new SEvent("C")))),
 					  null),
 			      new StatenameList( new Statename("Q1"), null),	
@@ -352,7 +354,7 @@ public static Statechart getExample_m() {
 			       new StateList (P1,new StateList (P2,new StateList (P3,null))),
 			       new TrList (new Tr (new Statename ("P1"), 
 						   new Statename ("P2"),
-						   new TLabel (new GuardCompp(new Comppath(Comppath.IN,p3p)),new ActionEmpty(new Dummy()))),
+						   new TLabel (new GuardCompp(new Comppath(Comppath.IN,ttt)),new ActionEmpty(new Dummy()))),
 					   new TrList (new Tr (new Statename ("P1"), 
 							       new Statename ("P3"), 
 							       new TLabel (new GuardEvent(new SEvent("A")),new ActionEmpty(new Dummy()))),
