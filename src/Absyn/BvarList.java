@@ -5,9 +5,9 @@ import java.io.Serializable;
 /**
  * List of boolean variables.
  * @author Initially provided by Martin Steffen.
- * @version $Id: BvarList.java,v 1.9 1999-01-11 17:15:36 swtech00 Exp $
+ * @version $Id: BvarList.java,v 1.10 1999-01-12 08:57:27 swtech00 Exp $
  */
-public class BvarList implements Serializable, Cloneable {
+public class BvarList extends Absyn implements Serializable, Cloneable {
 /**
  * Head of the list.
  */
@@ -38,9 +38,12 @@ public class BvarList implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: BvarList.java,v 1.9 1999-01-11 17:15:36 swtech00 Exp $
+//	$Id: BvarList.java,v 1.10 1999-01-12 08:57:27 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.9  1999/01/11 17:15:36  swtech00
+//	BvarList erweitert _nicht_ Absyn, da es keine Locations braucht.
+//
 //	Revision 1.8  1998/12/15 16:33:25  swtech00
 //	Towards new package names.
 //

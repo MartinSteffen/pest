@@ -2,7 +2,7 @@ package absyn;
 
 import java.io.Serializable;
 
-public class StateList implements Serializable, Cloneable {
+public class StateList extends Absyn implements Serializable, Cloneable {
     public State head;
     public StateList tail;
     public StateList(State h, StateList tl) {
@@ -29,9 +29,12 @@ public class StateList implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: StateList.java,v 1.6 1998-12-15 16:33:31 swtech00 Exp $
+//	$Id: StateList.java,v 1.7 1999-01-12 08:57:29 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.6  1998/12/15 16:33:31  swtech00
+//	Towards new package names.
+//
 //	Revision 1.5  1998/12/15 13:38:07  swtech00
 //	exception-tag hinzugefuegt um javadoc sauber durchlaufen zu lassen
 //

@@ -5,9 +5,9 @@ import java.io.Serializable;
 /**
  * Connector list.
  * @author Initially provided by Martin Steffen.
- * @version $Id: ConnectorList.java,v 1.9 1999-01-11 17:12:23 swtech00 Exp $
+ * @version $Id: ConnectorList.java,v 1.10 1999-01-12 08:57:28 swtech00 Exp $
  */
-public class ConnectorList implements Serializable, Cloneable {
+public class ConnectorList extends Absyn implements Serializable, Cloneable {
 /**
  * Head of the list.
  */
@@ -39,9 +39,15 @@ public class ConnectorList implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: ConnectorList.java,v 1.9 1999-01-11 17:12:23 swtech00 Exp $
+//	$Id: ConnectorList.java,v 1.10 1999-01-12 08:57:28 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.9  1999/01/11 17:12:23  swtech00
+//	Connectorlist ist keine Unterklasse von Absyn, da es keine Location braucht.
+//
+//
+//	[Steffen]
+//
 //	Revision 1.8  1998/12/15 16:33:27  swtech00
 //	Towards new package names.
 //

@@ -1,7 +1,7 @@
 package absyn;
 import java.io.Serializable;
 
-public class TrList implements Cloneable, Serializable { // List of transitions
+public class TrList extends Absyn implements Cloneable, Serializable { // List of transitions
     public Tr     head;
     public TrList tail;
     public TrList (Tr h, TrList tl) {
@@ -28,9 +28,19 @@ public class TrList implements Cloneable, Serializable { // List of transitions
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: TrList.java,v 1.10 1999-01-11 17:23:52 swtech00 Exp $
+//	$Id: TrList.java,v 1.11 1999-01-12 08:57:29 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.10  1999/01/11 17:23:52  swtech00
+//	Alle Bestandteile der abstrakten Syntax mit Locations (= nicht-abstrakte
+//	Unterklassen von Absyn) in der Form modifiziert, da"s das Locations-Feld
+//	mit-geklont wird. =>
+//
+//	     o	Jeweils neuer Kontruktor hinzugef"ugt
+//	     o  clone-Methode angepa"st
+//
+//	[Steffen]
+//
 //	Revision 1.9  1998/12/15 16:33:32  swtech00
 //	Towards new package names.
 //

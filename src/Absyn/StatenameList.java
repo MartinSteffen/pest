@@ -2,7 +2,7 @@ package absyn;
 
 import java.io.Serializable;
 
-public class StatenameList implements Serializable, Cloneable {
+public class StatenameList extends Absyn implements Serializable, Cloneable {
     public Statename head;
     public StatenameList  tail;
 

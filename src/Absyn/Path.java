@@ -3,7 +3,7 @@ package absyn;
 import java.io.Serializable;
 
 
-public class Path  implements Serializable, Cloneable {
+public class Path  extends Absyn implements Serializable, Cloneable {
     public String head;
     public Path   tail;
     public Path (String h, Path tl) {
@@ -34,9 +34,12 @@ public class Path  implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Path.java,v 1.8 1998-12-15 16:33:30 swtech00 Exp $
+//	$Id: Path.java,v 1.9 1999-01-12 08:57:28 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.8  1998/12/15 16:33:30  swtech00
+//	Towards new package names.
+//
 //	Revision 1.7  1998/12/15 13:38:06  swtech00
 //	exception-tag hinzugefuegt um javadoc sauber durchlaufen zu lassen
 //
