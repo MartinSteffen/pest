@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.79 1999-02-08 15:20:14 swtech01 Exp $
+//	$Id: report_list,v 1.80 1999-02-08 16:14:11 swtech11 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -325,7 +325,7 @@ Sein soll: ein String der Länge null.
 #Number:	23
 #Autor:		Daniel Wendorff Magnus Stiller swtech11
 #Subject:	falsches Einsortieren von Transitionen durch Editor
-#Status:	fixed
+#Status:	confirmed
 #Description:
 
 Man importiert mit TESC examples ein. Dann einen SyntaxCheck, der
