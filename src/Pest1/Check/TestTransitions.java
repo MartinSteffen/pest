@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestTransitions.java,v 1.11 1999-01-11 17:42:41 swtech11 Exp $
+ *  @version  $Id: TestTransitions.java,v 1.12 1999-01-18 12:14:21 swtech11 Exp $
  */
 class TestTransitions extends ModelCheckBasics {
   Vector newPLV = new Vector(); // Vector fuer die selbst angelegte PathList der States
