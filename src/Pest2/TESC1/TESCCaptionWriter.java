@@ -11,11 +11,11 @@ import java.util.*;
  * Abgeleitet von TESCWriter. Ueberlaedt output(BufferedWriter,TLabel) fuer
  * die Statemate-Darstellung eines Transitionslabels.
  * <hr>
- * @version  $Id: TESCCaptionWriter.java,v 1.1 1999-01-17 17:19:25 swtech20 Exp $
+ * @version  $Id: TESCCaptionWriter.java,v 1.2 1999-01-18 17:08:51 swtech20 Exp $
  * @author Michael Suelzer, Christoph Schuette.
  *  
- */   
-public class TESCCaptionWriter extends TESCWriter {
+ */
+class TESCCaptionWriter extends TESCWriter {
 
     /**
      *  Ausgabe Label in der Statemate Notation EventExpr[BvarExpr] / Action.

@@ -49,7 +49,7 @@ import gui.*;
  * <p><STRONG>Testmoeglichkeiten: </STRONG> <p>
  * <p>
  * <hr>
- * @version  $Id: TESCSaver.java,v 1.2 1999-01-17 17:19:24 swtech20 Exp $
+ * @version  $Id: TESCSaver.java,v 1.3 1999-01-18 17:08:53 swtech20 Exp $
  * @author Michael Suelzer, Christoph Schuette.
  *  
  */   
@@ -95,7 +95,7 @@ public final class TESCSaver {
 		for (int i=0; i < writer.getErrorCount(); i++) {
 		    gui.userMessage(PACKAGE_NAME + writer.getErrorText(i));
 		}
-		gui.OkDialog("Fehler", "Export fehlerhaft abgebrochen.");
+		gui.userMessage(PACKAGE_NAME + "Export fehlerhaft abgebrochen.");
 	    }
 	    return false;
         }
@@ -135,7 +135,6 @@ public final class TESCSaver {
 		for (int i=0; i < writer.getErrorCount(); i++) {
 		    gui.userMessage(PACKAGE_NAME + writer.getErrorText(i));
 		}
-		gui.OkDialog("Fehler", "Label ist fehlerhaft.");
 	    }
 	    return false;
         }
@@ -184,6 +183,10 @@ public final class TESCSaver {
 //	----------------------
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.2  1999/01/17 17:19:24  swtech20
+//	Implementierung der Export-Funktionen. Neue Funktion zum Erzeugen
+//	einer textuellen Darstellung eines TLabels mit Syntax Guard / Action.
+//
 //	Revision 1.1  1999/01/11 12:13:56  swtech20
 //	Bugfixes.
 //

@@ -61,7 +61,7 @@ import gui.*;
  * dem Pflichtenheft verwendet werden.
  * <p>
  * <hr>
- * @version  $Id: TESCLoader.java,v 1.11 1999-01-17 17:16:40 swtech20 Exp $
+ * @version  $Id: TESCLoader.java,v 1.12 1999-01-18 17:08:52 swtech20 Exp $
  * @author Michael Suelzer, Christoph Schuette.
  *  
  */   
@@ -95,21 +95,32 @@ public final class TESCLoader {
 	parser = new TESCParser();
 	Statechart statechart = parser.readStatechart(br);
 	
-
 	// Warnungen ausgeben
 	if (gui != null) {
 	    for (int i=0; i < parser.getWarningCount(); i++) {
 		gui.userMessage(PACKAGE_NAME + parser.getWarningText(i));
 	    }
 	}
+        else {
+            for (int i=0; i < parser.getWarningCount(); i++) {
+                System.out.println(PACKAGE_NAME + parser.getWarningText(i));
+            }
+        }
 
 	// Fehler ausgeben
 	if (parser.getErrorCount() > 0) {
-	    for (int i=0; i < parser.getErrorCount(); i++) {
-		gui.userMessage(PACKAGE_NAME + parser.getErrorText(i));
+	    if (gui != null) {
+	        for (int i=0; i < parser.getErrorCount(); i++) {
+		    gui.userMessage(PACKAGE_NAME + parser.getErrorText(i));
+	        }
+	        gui.userMessage(PACKAGE_NAME + "Statechart ist fehlerhaft.");
 	    }
-	    gui.OkDialog("Fehler huhu", "Statechart ist fehlerhaft.");
-	    return null;
+            else {
+                for (int i=0; i < parser.getErrorCount(); i++) {
+                    System.out.println(PACKAGE_NAME + parser.getErrorText(i));
+                }
+            }
+            return null;
         }
 	else 
 	    return statechart;
@@ -150,7 +161,7 @@ public final class TESCLoader {
 		for (int i=0; i < parser.getErrorCount(); i++) {
 		    gui.userMessage(PACKAGE_NAME + parser.getErrorText(i));
 		}
-		gui.OkDialog("Fehler huhu", "Statechart ist fehlerhaft.");
+		gui.userMessage(PACKAGE_NAME + "Statechart ist fehlerhaft.");
 	    }
 	    else {
 		for (int i=0; i < parser.getErrorCount(); i++) {
@@ -181,10 +192,8 @@ public final class TESCLoader {
 	if (parser.getErrorCount() > 0) {
 	    for (int i=0; i < parser.getErrorCount(); i++) {
 		gui.userMessage(PACKAGE_NAME + parser.getErrorText(i));
-		//System.out.println(PACKAGE_NAME + parser.getErrorText(i));
 	    }
-	    gui.OkDialog("Fehler", "Guard ist fehlerhaft.");
-	    //System.out.println("Guard ist fehlerhaft.");
+	    gui.userMessage(PACKAGE_NAME + "Guard ist fehlerhaft.");
 	    return null;
         }
 	else 
@@ -210,7 +219,7 @@ public final class TESCLoader {
 	    for (int i=0; i < parser.getErrorCount(); i++) {
 		gui.userMessage(PACKAGE_NAME + parser.getErrorText(i));
 	    }
-	    gui.OkDialog("Fehler", "Action ist fehlerhaft.");
+	    gui.userMessage(PACKAGE_NAME + "Action ist fehlerhaft.");
 	    return null;
         }
 	else 
@@ -257,6 +266,10 @@ public final class TESCLoader {
 //	----------------------
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.11  1999/01/17 17:16:40  swtech20
+//	Umstellung der Guard-Syntax auf Statemate-Style, Implementierung des
+//	LabelParsers fuer den Editor. Anpassung der Schnittstelle.
+//
 //	Revision 1.10  1999/01/11 12:13:54  swtech20
 //	Bugfixes.
 //

@@ -10,9 +10,9 @@ import util.*;
  * Parser fuer TESC.
  * <p>
  * @author Michael Suelzer, Christoph Schuette.
- * @version  $Id: TESCParser.java,v 1.9 1999-01-17 17:16:40 swtech20 Exp $
+ * @version  $Id: TESCParser.java,v 1.10 1999-01-18 17:08:52 swtech20 Exp $
  */   
-public class TESCParser {
+class TESCParser {
     
     protected static final boolean DEBUG = false;  
 
@@ -1559,6 +1559,10 @@ public class TESCParser {
 //      ----------------------------               
 //
 //      $Log: not supported by cvs2svn $
+//      Revision 1.9  1999/01/17 17:16:40  swtech20
+//      Umstellung der Guard-Syntax auf Statemate-Style, Implementierung des
+//      LabelParsers fuer den Editor. Anpassung der Schnittstelle.
+//
 //      Revision 1.8  1999/01/11 12:13:55  swtech20
 //      Bugfixes.
 //
