@@ -41,9 +41,10 @@ public class Ref_State extends Basic_State {
  * @exception CloneNotSupportedException self-explanatory exception
  */
   public Object clone() throws CloneNotSupportedException {
-    Location  locationclone  = (location == null) ? null : (Location)location.clone();
+    Location  locationclone    = (location == null) ? null : (Location)location.clone();
     Syntax_Type filetypeclone  = (filetype == null) ? null : (Syntax_Type)filetype.clone();
-    return new Ref_State ((Statename)name.clone(),rect, locationclone, 
+    Statename nameclone        = (name  == null)    ? null : (Statename)name.clone();
+    return new Ref_State (nameclone,rect, locationclone, 
 			  filename,
 			  filetypeclone);
     };
@@ -54,9 +55,12 @@ public class Ref_State extends Basic_State {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Ref_State.java,v 1.3 1999-02-02 12:49:16 swtech00 Exp $
+//	$Id: Ref_State.java,v 1.4 1999-02-09 11:32:58 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.3  1999/02/02 12:49:16  swtech00
+//	Konstruktoren erg"anzt [Steffen]
+//
 //	Revision 1.2  1999/02/01 13:41:15  swtech00
 //	public eingefuegt [Steffen]
 //

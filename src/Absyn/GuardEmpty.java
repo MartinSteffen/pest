@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * One kind of guard: empty guard.
  * @author Initially provided by Martin Steffen.
- * @version $Id: GuardEmpty.java,v 1.6 1999-01-11 17:23:49 swtech00 Exp $
+ * @version $Id: GuardEmpty.java,v 1.7 1999-02-09 11:32:56 swtech00 Exp $
  */
 public class GuardEmpty extends Guard implements Serializable, Cloneable {
 /**
@@ -29,7 +29,8 @@ public class GuardEmpty extends Guard implements Serializable, Cloneable {
  */
   public Object clone() throws CloneNotSupportedException {
     Location  locationclone  = (location == null) ? null : (Location)location.clone();
-    return new GuardEmpty((Dummy)dummy.clone(), locationclone);
+    Dummy     dummyclone     = (dummy    == null) ? null : (Dummy)dummy.clone();
+    return new GuardEmpty(dummyclone, locationclone);
   };
   
 }
@@ -38,9 +39,19 @@ public class GuardEmpty extends Guard implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: GuardEmpty.java,v 1.6 1999-01-11 17:23:49 swtech00 Exp $
+//	$Id: GuardEmpty.java,v 1.7 1999-02-09 11:32:56 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.6  1999/01/11 17:23:49  swtech00
+//	Alle Bestandteile der abstrakten Syntax mit Locations (= nicht-abstrakte
+//	Unterklassen von Absyn) in der Form modifiziert, da"s das Locations-Feld
+//	mit-geklont wird. =>
+//
+//	     o	Jeweils neuer Kontruktor hinzugef"ugt
+//	     o  clone-Methode angepa"st
+//
+//	[Steffen]
+//
 //	Revision 1.5  1998/12/15 16:33:28  swtech00
 //	Towards new package names.
 //

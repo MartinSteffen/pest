@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * One kind of boolean statement: assigns false to the variable
  * @author Initially provided by Martin Steffen.
- * @version $Id: MFalse.java,v 1.7 1999-01-11 17:23:50 swtech00 Exp $
+ * @version $Id: MFalse.java,v 1.8 1999-02-09 11:32:57 swtech00 Exp $
  */
 public class MFalse extends Boolstmt implements Serializable, Cloneable {
 /**
@@ -30,7 +30,8 @@ public class MFalse extends Boolstmt implements Serializable, Cloneable {
  */
   public Object clone () throws CloneNotSupportedException {
     Location  locationclone  = (location == null) ? null : (Location)location.clone();
-    return new MFalse((Bvar)var.clone(), locationclone);
+    Bvar varclone            = (var     == null)  ? null : (Bvar)var.clone();
+    return new MFalse(varclone, locationclone);
   };
 }
 
@@ -38,9 +39,19 @@ public class MFalse extends Boolstmt implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: MFalse.java,v 1.7 1999-01-11 17:23:50 swtech00 Exp $
+//	$Id: MFalse.java,v 1.8 1999-02-09 11:32:57 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.7  1999/01/11 17:23:50  swtech00
+//	Alle Bestandteile der abstrakten Syntax mit Locations (= nicht-abstrakte
+//	Unterklassen von Absyn) in der Form modifiziert, da"s das Locations-Feld
+//	mit-geklont wird. =>
+//
+//	     o	Jeweils neuer Kontruktor hinzugef"ugt
+//	     o  clone-Methode angepa"st
+//
+//	[Steffen]
+//
 //	Revision 1.6  1998/12/15 16:33:29  swtech00
 //	Towards new package names.
 //

@@ -20,13 +20,11 @@ public class StatenameList extends Absyn implements Serializable, Cloneable {
  * @exception CloneNotSupportedException self-explanatory exception
  */
     public Object clone() throws CloneNotSupportedException {
-	StatenameList tailclone;
-	if (tail != null)
-	    tailclone = (StatenameList)tail.clone();
-	else
-	    tailclone = null;
-	return new StatenameList((Statename)head.clone(),
-				 (StatenameList)tailclone);
+      StatenameList tailclone =  (tail == null) ? null :  (StatenameList)tail.clone();
+      Statename    headclone  = (head == null) ? null :  (Statename)head.clone();
+
+      return new StatenameList(headclone,
+				tailclone);
     };
 
 

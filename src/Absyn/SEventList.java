@@ -13,10 +13,10 @@ public class SEventList extends Absyn implements Serializable, Cloneable {
  * @exception CloneNotSupportedException self-explanatory exception
  */
     public Object clone() throws CloneNotSupportedException {
-	SEventList tailclone;
-	if (tail != null) {tailclone = (SEventList)tail.clone();} else {tailclone = null;};
+	SEventList tailclone = (tail == null) ? null : (SEventList)tail.clone();
+	SEvent     headclone = (head == null) ? null : (SEvent)head.clone();
 	return new SEventList(
-			      (SEvent)head.clone(),
+			      headclone,
 			      tailclone
 			      );
     };
@@ -25,9 +25,23 @@ public class SEventList extends Absyn implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: SEventList.java,v 1.8 1999-01-12 08:57:29 swtech00 Exp $
+//	$Id: SEventList.java,v 1.9 1999-02-09 11:32:58 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.8  1999/01/12 08:57:29  swtech00
+//	Die "Anderungen von gestern in den ``Listen'' r"uckg"angig gemacht.
+//
+//	Grund: Uniformit"at bestimmter Funktionen, insbesondere des PrettyPrinters.
+//	       Dieser nimmt als Argument einen Term der abstrakten Syntax (eine
+//	       instanz der Klasse Absyn) und verzweigt dann mittels instance_of.
+//
+//	       Der Code f"ur derartige Funktionen w"are ansonsten etwas komplexer.
+//	       Allerdings haben nun (wieder) die Listen ein location-Feld durch
+//	       Vererbung aus Absyn, was im Grunde "uberfl"ussig ist.
+//
+//
+//	[Steffen]
+//
 //	Revision 1.7  1998/12/15 16:33:30  swtech00
 //	Towards new package names.
 //

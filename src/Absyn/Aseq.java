@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Sequence of actions, needed as the contense of a s_block.
  * <br>
  * @author Initially provided by Martin Steffen.
- * @version $Id: Aseq.java,v 1.10 1999-01-11 17:23:47 swtech00 Exp $
+ * @version $Id: Aseq.java,v 1.11 1999-02-09 11:32:54 swtech00 Exp $
  */
 public class Aseq extends Absyn implements Serializable, Cloneable {
 /**
@@ -35,15 +35,10 @@ public class Aseq extends Absyn implements Serializable, Cloneable {
 	}
 	else headclone = null;
 	
-	Aseq tailclone;
-	if (tail != null) {
-	    tailclone = (Aseq)tail.clone();
-	}
-	else tailclone = null;
-	
+	Aseq tailclone           = (tail == null)     ? null : (Aseq)tail.clone();
 	Location  locationclone  = (location == null) ? null : (Location)location.clone();
 	return new Aseq ((Action)headclone,
-			 (Aseq)tailclone,
+			 tailclone,
 			 locationclone);
     };
 
@@ -52,9 +47,19 @@ public class Aseq extends Absyn implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Aseq.java,v 1.10 1999-01-11 17:23:47 swtech00 Exp $
+//	$Id: Aseq.java,v 1.11 1999-02-09 11:32:54 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.10  1999/01/11 17:23:47  swtech00
+//	Alle Bestandteile der abstrakten Syntax mit Locations (= nicht-abstrakte
+//	Unterklassen von Absyn) in der Form modifiziert, da"s das Locations-Feld
+//	mit-geklont wird. =>
+//
+//	     o	Jeweils neuer Kontruktor hinzugef"ugt
+//	     o  clone-Methode angepa"st
+//
+//	[Steffen]
+//
 //	Revision 1.9  1999/01/09 15:47:53  swtech13
 //	clone() methoden korrigiert (weitere nullpointerabfragen)
 //

@@ -20,6 +20,7 @@ public class SEvent extends Absyn implements Serializable, Cloneable {
   public Object clone() throws CloneNotSupportedException {
     Location  locationclone  = (location == null) ? null : (Location)location.clone();
     return new SEvent(name, locationclone);
+    // Beachte: name als String muss nicht geklont werden.
   }
 };
 
@@ -29,9 +30,19 @@ public class SEvent extends Absyn implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: SEvent.java,v 1.9 1999-01-11 17:23:51 swtech00 Exp $
+//	$Id: SEvent.java,v 1.10 1999-02-09 11:32:58 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.9  1999/01/11 17:23:51  swtech00
+//	Alle Bestandteile der abstrakten Syntax mit Locations (= nicht-abstrakte
+//	Unterklassen von Absyn) in der Form modifiziert, da"s das Locations-Feld
+//	mit-geklont wird. =>
+//
+//	     o	Jeweils neuer Kontruktor hinzugef"ugt
+//	     o  clone-Methode angepa"st
+//
+//	[Steffen]
+//
 //	Revision 1.8  1999/01/04 15:35:36  swtech00
 //	SEvent als Unterklasse von Absyn (und damit mit Location)
 //

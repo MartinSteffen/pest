@@ -6,7 +6,7 @@ import java.io.Serializable;
 /**
  * One kind of guard: composition of guards.
  * @author Initially provided by Martin Steffen.
- * @version $Id: GuardCompg.java,v 1.6 1999-01-11 17:23:49 swtech00 Exp $
+ * @version $Id: GuardCompg.java,v 1.7 1999-02-09 11:32:55 swtech00 Exp $
  */
 public class GuardCompg extends Guard implements Serializable, Cloneable {
 /**
@@ -35,7 +35,8 @@ public class GuardCompg extends Guard implements Serializable, Cloneable {
  */
   public Object clone() throws CloneNotSupportedException {
     Location  locationclone  = (location == null) ? null : (Location)location.clone();
-    return new GuardCompg ((Compguard)cguard.clone(), locationclone);
+    Compguard cguardclone    = (cguard   == null) ? null : (Compguard)cguard.clone();
+    return new GuardCompg (cguardclone, locationclone);
   };
   
 };
@@ -45,9 +46,19 @@ public class GuardCompg extends Guard implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: GuardCompg.java,v 1.6 1999-01-11 17:23:49 swtech00 Exp $
+//	$Id: GuardCompg.java,v 1.7 1999-02-09 11:32:55 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.6  1999/01/11 17:23:49  swtech00
+//	Alle Bestandteile der abstrakten Syntax mit Locations (= nicht-abstrakte
+//	Unterklassen von Absyn) in der Form modifiziert, da"s das Locations-Feld
+//	mit-geklont wird. =>
+//
+//	     o	Jeweils neuer Kontruktor hinzugef"ugt
+//	     o  clone-Methode angepa"st
+//
+//	[Steffen]
+//
 //	Revision 1.5  1998/12/15 16:33:28  swtech00
 //	Towards new package names.
 //

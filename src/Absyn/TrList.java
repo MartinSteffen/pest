@@ -18,9 +18,9 @@ public class TrList extends Absyn implements Cloneable, Serializable { // List o
  * @exception CloneNotSupportedException self-explanatory exception
  */
     public Object clone () throws CloneNotSupportedException {
-	TrList tailclone;
-	if (tail != null) {tailclone = (TrList)tail.clone();} else {tailclone = null;};
-	return new TrList((Tr)head.clone(), (TrList)tailclone);
+	TrList tailclone = (tail == null) ? null :  tailclone = (TrList)tail.clone();
+	Tr     headclone = (head == null) ? null :  headclone = (Tr)head.clone();
+	return new TrList(headclone, tailclone);
     }
 };
 
@@ -28,9 +28,23 @@ public class TrList extends Absyn implements Cloneable, Serializable { // List o
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: TrList.java,v 1.11 1999-01-12 08:57:29 swtech00 Exp $
+//	$Id: TrList.java,v 1.12 1999-02-09 11:33:00 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.11  1999/01/12 08:57:29  swtech00
+//	Die "Anderungen von gestern in den ``Listen'' r"uckg"angig gemacht.
+//
+//	Grund: Uniformit"at bestimmter Funktionen, insbesondere des PrettyPrinters.
+//	       Dieser nimmt als Argument einen Term der abstrakten Syntax (eine
+//	       instanz der Klasse Absyn) und verzweigt dann mittels instance_of.
+//
+//	       Der Code f"ur derartige Funktionen w"are ansonsten etwas komplexer.
+//	       Allerdings haben nun (wieder) die Listen ein location-Feld durch
+//	       Vererbung aus Absyn, was im Grunde "uberfl"ussig ist.
+//
+//
+//	[Steffen]
+//
 //	Revision 1.10  1999/01/11 17:23:52  swtech00
 //	Alle Bestandteile der abstrakten Syntax mit Locations (= nicht-abstrakte
 //	Unterklassen von Absyn) in der Form modifiziert, da"s das Locations-Feld

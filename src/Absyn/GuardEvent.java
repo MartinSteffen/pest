@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * One kind of guard: event.
  * @author Initially provided by Martin Steffen.
- * @version $Id: GuardEvent.java,v 1.6 1999-01-11 17:23:49 swtech00 Exp $
+ * @version $Id: GuardEvent.java,v 1.7 1999-02-09 11:32:56 swtech00 Exp $
  */
 public class GuardEvent extends Guard implements Serializable, Cloneable {
 /**
@@ -29,7 +29,8 @@ public class GuardEvent extends Guard implements Serializable, Cloneable {
  */
     public Object clone() throws CloneNotSupportedException {
       Location  locationclone  = (location == null) ? null : (Location)location.clone();
-      return new GuardEvent((SEvent)event.clone(), locationclone);
+      SEvent    eventclone     = (event    == null) ? null : (SEvent)event.clone();
+      return new GuardEvent(eventclone, locationclone);
     };
 
 }
@@ -37,9 +38,19 @@ public class GuardEvent extends Guard implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: GuardEvent.java,v 1.6 1999-01-11 17:23:49 swtech00 Exp $
+//	$Id: GuardEvent.java,v 1.7 1999-02-09 11:32:56 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.6  1999/01/11 17:23:49  swtech00
+//	Alle Bestandteile der abstrakten Syntax mit Locations (= nicht-abstrakte
+//	Unterklassen von Absyn) in der Form modifiziert, da"s das Locations-Feld
+//	mit-geklont wird. =>
+//
+//	     o	Jeweils neuer Kontruktor hinzugef"ugt
+//	     o  clone-Methode angepa"st
+//
+//	[Steffen]
+//
 //	Revision 1.5  1998/12/15 16:33:28  swtech00
 //	Towards new package names.
 //

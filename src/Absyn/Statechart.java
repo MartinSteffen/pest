@@ -37,8 +37,8 @@ public class Statechart extends Absyn implements Serializable, Cloneable  {
  * @exception CloneNotSupportedException self-explanatory exception
  */
     public Object clone () throws CloneNotSupportedException {
-      BvarList bvarsclone = (bvars == null) ? null : (BvarList) bvars.clone();
-      State    stateclone = (state == null) ? null : (State) state.clone();
+      BvarList bvarsclone      = (bvars == null)    ? null : (BvarList) bvars.clone();
+      State    stateclone      = (state == null)    ? null : (State) state.clone();
       Location  locationclone  = (location == null) ? null : (Location)location.clone();
       SEventList seventsclone;
       if (events != null)
@@ -66,9 +66,13 @@ public class Statechart extends Absyn implements Serializable, Cloneable  {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Statechart.java,v 1.15 1999-02-09 09:53:02 swtech00 Exp $
+//	$Id: Statechart.java,v 1.16 1999-02-09 11:32:59 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.15  1999/02/09 09:53:02  swtech00
+//	nil-Pointer abgefangen, d.h., von nun an sind auch
+//	Statecharts ohne state erlaubt.
+//
 //	Revision 1.14  1999/01/11 17:23:51  swtech00
 //	Alle Bestandteile der abstrakten Syntax mit Locations (= nicht-abstrakte
 //	Unterklassen von Absyn) in der Form modifiziert, da"s das Locations-Feld

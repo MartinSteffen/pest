@@ -2,9 +2,12 @@
 #	javadoc collected HTML pages for all packages: makefile.
 #	--------------------------------------------------------
 #
-#	$Id: Makefile,v 1.6 1999-01-25 15:46:31 swtech00 Exp $
+#	$Id: Makefile,v 1.7 1999-02-09 11:33:02 swtech00 Exp $
 #
 #	$Log: not supported by cvs2svn $
+#	Revision 1.6  1999/01/25 15:46:31  swtech00
+#	Dependencies
+#
 #	Revision 1.5  1999/01/19 11:28:18  swtech00
 #	Minor correction.
 #
@@ -46,7 +49,7 @@ report_list:	../ErrorReport/report_list
 
 #----------------------------------------------------------------------
 
-DEP_FILES="check-dep.html codegen-dep.html editor-dep.html gui-dep.html simu-dep.html stm-dep.html tesc1-dep.html  tesc2-dep.html"
+DEP_FILES=check-dep.html codegen-dep.html editor-dep.html gui-dep.html simu-dep.html stm-dep.html tesc1-dep.html  tesc2-dep.html
 
 DEP:	$(DEP_FILES)
 
@@ -78,4 +81,4 @@ tesc2-dep.html:
 	(cd .. ; javadep -i -n -o pestdocu/tesc2-dep.html tesc2 editor codegen check gui simu stm  tesc1)
 
 absyn-dep.html:
-	(cd .. ; javadep -i -n -o pestdocu/absyn.html absyn  editor codegen check gui simu stm tesc1 tesc2)
+	(cd .. ; javadep -i -n -o pestdocu/absyn-dep.html absyn  editor codegen check gui simu stm tesc1 tesc2)
