@@ -18,8 +18,8 @@ abstract class GeneralLayoutAlgorithm implements LayoutAlgorithm {
     /**
      * Klassenkonstanten
      */
-    static final int WIDTH_BONUS = 10;
-    static final int HEIGHT_BONUS = 10;
+    static final int WIDTH_BONUS = 15;
+    static final int HEIGHT_BONUS = 15;
 
     /**
      * Instanzvariablen
@@ -230,6 +230,12 @@ abstract class GeneralLayoutAlgorithm implements LayoutAlgorithm {
 	    substateList = substateList.tail;
 	}
     };
+    
+    /**
+     * F&uuml;hrt das Layout f&uuml;r einen Or_State durch
+     */
+    abstract public void layoutORState(Or_State s);
+
 
     /**
      * Führt das Layout für einen beliebigen State durch
