@@ -93,7 +93,8 @@ movetest = false;
 	} else {temppoint[1] = new CPoint(cx2-matrix1.x,cy2-matrix1.y);}
       
 
-  transtemp = new Tr(name1,name2,null,temppoint); // source, target, label
+  transtemp = new Tr(name1,name2,new TLabel(new GuardEmpty(new Dummy()),new ActionEmpty(new Dummy())),
+		     temppoint); // source, target, label
   otemp1.trs = new TrList(transtemp,trtemp);
 
 System.out.println("tempp1 :"+temppoint[0]);
