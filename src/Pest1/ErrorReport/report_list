@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.96 1999-02-11 07:57:22 swtech01 Exp $
+//	$Id: report_list,v 1.97 1999-02-11 09:24:11 swtech11 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -963,7 +963,7 @@ Wenn das so weitergeht, muss ich bald zum Augenarzt...
 #Number:	63
 #Autor:		check swtech11
 #Subject:	Editor erzeugt unbehandelte Exception:
-#Status: 	fixed
+#Status: 	confirmed
 #Description: 
 
 Ich habe all.tesc importiert und dann den Editor aufgerufen.
