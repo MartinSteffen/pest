@@ -10,10 +10,10 @@ import java.util.*;
  *  und Label der Transitionen
  *
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: testPI.java,v 1.3 1998-12-13 21:03:51 swtech11 Exp $
+ *  @version  $Id: TestPI.java,v 1.1 1998-12-15 11:41:42 swtech11 Exp $
  */
-class testPI  {
-  modelCheckMsg msg = new modelCheckMsg();
+class TestPI  {
+  ModelCheckMsg msg = new ModelCheckMsg();
   Statechart sc = new Statechart(null,null,null,null);
   static String ts = new String("."); // Trennsymbol im Pfad
 
@@ -34,7 +34,7 @@ class testPI  {
 
 
 
-  testPI(Statechart _s, modelCheckMsg _m) {
+  TestPI(Statechart _s, ModelCheckMsg _m) {
     sc = _s;
     msg = _m;
   }

@@ -6,13 +6,13 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: testTransitions.java,v 1.4 1998-12-08 00:08:54 swtech11 Exp $
+ *  @version  $Id: TestTransitions.java,v 1.1 1998-12-15 11:41:43 swtech11 Exp $
  */
-class testTransitions extends modelCheckBasics {
+class TestTransitions extends ModelCheckBasics {
   Vector newPLV = new Vector(); // Vector fuer die selbst angelegte PathList der States
   Vector newCLV = new Vector(); // Vector fuer die selbst angelegte PathList der Connectoren
 
-  testTransitions(Statechart _s, modelCheckMsg _m) {
+  TestTransitions(Statechart _s, ModelCheckMsg _m) {
     super(_s,_m);
     // printOut = true;
   }

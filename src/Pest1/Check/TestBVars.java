@@ -5,22 +5,22 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: testBVars.java,v 1.8 1998-12-10 11:40:12 swtech11 Exp $
+ *  @version  $Id: TestBVars.java,v 1.1 1998-12-15 11:41:40 swtech11 Exp $
  */
 
 /** Diese Testklasse testet, ob alle BVars deklariert worden sind, 
     <br>ob die Deklarierten eindeutig sind und ob sie alle verwendet werden.*/
 
-class testBVars extends modelCheckBasics{
+class TestBVars extends ModelCheckBasics{
   private Vector Ist;
   private Vector Soll;
 
-  testBVars() {
+  TestBVars() {
     super();
     Ist=new Vector();
     Soll=new Vector();
   }
-  testBVars(Statechart s, modelCheckMsg m) {
+  TestBVars(Statechart s, ModelCheckMsg m) {
     super(s,m);
     Ist=new Vector();
     Soll=new Vector();

@@ -16,10 +16,10 @@ import GUI.*;
  * <br><a href="#Codes">Codes von Fehlern und Warnungen beim Syntax Check</a>
  * <br>
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: modelCheck.java,v 1.15 1998-12-14 21:55:56 swtech11 Exp $
+ * @version  $Id: ModelCheck.java,v 1.1 1998-12-15 11:41:39 swtech11 Exp $
  */
-public class modelCheck {
-  private modelCheckMsg mcm; // Object, um die Fehler und Warnungen zu speichern
+public class ModelCheck {
+  private ModelCheckMsg mcm; // Object, um die Fehler und Warnungen zu speichern
   private boolean warning;   // auch Warnungen ausgeben
   private boolean outputGUI; // Meldungen auf die GUI ausgeben
   private boolean donePI;    // Test auf doppelte Referenzierung ausgeführt ?
@@ -30,8 +30,8 @@ public class modelCheck {
  * Der Constructor des Syntax Checkers.
  * Es wird keine Ausgabe auf die GUI ermöglicht.
  */
-  public modelCheck() {
-    mcm = new modelCheckMsg();
+  public ModelCheck() {
+    mcm = new ModelCheckMsg();
     outputGUI = false;
     warning = true;
     donePI = false;
@@ -44,7 +44,7 @@ public class modelCheck {
  * @param _gui Referenz auf die GUI
  * @see        #setOutputGUI(boolean)
  */
-  public modelCheck(GUIInterface _gui) {
+  public ModelCheck(GUIInterface _gui) {
     this();
     gui = _gui;
     outputGUI = true;
@@ -71,7 +71,7 @@ public class modelCheck {
     boolean pi = false;
     if (donePI == false ) { NoFatalError = checkPI(sc); }
     if (NoFatalError == true) {
-      testEvents te = new testEvents(sc, mcm);
+      TestEvents te = new TestEvents(sc, mcm);
       pi = te.check();
     }
     return pi;
@@ -86,7 +86,7 @@ public class modelCheck {
     boolean pi = false;
     if (donePI == false) { NoFatalError = checkPI(sc); }
     if (NoFatalError == true) {
-      testStates ts = new testStates(sc, mcm);
+      TestStates ts = new TestStates(sc, mcm);
       pi = ts.check();
     }  
     return pi;
@@ -101,7 +101,7 @@ public class modelCheck {
     boolean pi = false;
     if (donePI == false) { NoFatalError = checkPI(sc); }
     if (NoFatalError == true) {
-      testTransitions tt = new testTransitions(sc,mcm);
+      TestTransitions tt = new TestTransitions(sc,mcm);
       pi = tt.check();
     }
     return pi;
@@ -116,7 +116,7 @@ public class modelCheck {
     boolean pi = false;
     if (donePI == false) { NoFatalError = checkPI(sc); }
     if (NoFatalError == true) {
-      testBVars tb = new testBVars(sc, mcm);
+      TestBVars tb = new TestBVars(sc, mcm);
       pi = tb.check();
     }
     return pi;
@@ -131,7 +131,7 @@ public class modelCheck {
  * @param sc  die zu checkende Statechart
  */
   public boolean checkPI(Statechart sc) {
-    testPI tpi = new testPI(sc, mcm);
+    TestPI tpi = new TestPI(sc, mcm);
     NoFatalError=tpi.check();
     donePI = true;
     return NoFatalError;

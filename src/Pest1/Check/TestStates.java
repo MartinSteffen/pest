@@ -5,17 +5,17 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: testStates.java,v 1.7 1998-12-10 11:40:14 swtech11 Exp $
+ *  @version  $Id: TestStates.java,v 1.1 1998-12-15 11:41:42 swtech11 Exp $
  */
 
 /** Diese Testklasse testet, ob alle Statenamen deklariert worden sind, 
     <br>ob die Deklarierten eindeutig sind und ob sie alle verwendet werden.*/
 
-class testStates extends modelCheckBasics{
+class TestStates extends ModelCheckBasics{
   private Vector Pfad1=new Vector();
   private Vector Pfad2=new Vector();
 
-  testStates(Statechart _s, modelCheckMsg _m) {
+  TestStates(Statechart _s, ModelCheckMsg _m) {
     super(_s,_m);
   }
 

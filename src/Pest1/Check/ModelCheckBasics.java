@@ -5,17 +5,17 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: modelCheckBasics.java,v 1.3 1998-12-07 11:42:37 swtech11 Exp $
+ *  @version  $Id: ModelCheckBasics.java,v 1.1 1998-12-15 11:41:40 swtech11 Exp $
  */
-class modelCheckBasics {
-  modelCheckMsg msg = new modelCheckMsg();
+class ModelCheckBasics {
+  ModelCheckMsg msg = new ModelCheckMsg();
   Statechart sc = new Statechart(null,null,null,null);
   boolean printOut; // falls true, dann schrittweise Ausgabe der Chart
   static String ts = new String("."); // Trennsymbol im Pfad
 
-  modelCheckBasics() { };
+  ModelCheckBasics() { };
 
-  modelCheckBasics(Statechart s, modelCheckMsg m) {
+  ModelCheckBasics(Statechart s, ModelCheckMsg m) {
     sc = s;  
     msg = m;
     printOut = false;

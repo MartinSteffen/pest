@@ -6,13 +6,13 @@ import Util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: t.java,v 1.7 1998-12-13 21:02:52 swtech11 Exp $
+ *  @version  $Id: t.java,v 1.8 1998-12-15 11:36:43 swtech11 Exp $
  */
 public class t {
 
   public static void main(String argv[]) {
     Statechart sc = new Statechart(null,null,null,null);
-    modelCheck mc = new modelCheck();
+    ModelCheck mc = new ModelCheck();
     boolean ok = false;
 
     // for (int i=0; i<argv.length; i++) { System.out.println(i + " " + argv[i]); }
