@@ -13,11 +13,14 @@ import absyn.*;
  *
  * <DL COMPACT>
  * <DT><STRONG>Status</STRONG>
- * Most of the code is implemented.  Non-determinism is not handled
- * correctly yet.
+ * <UL>
+ * <LI>First beta release.  Have fun testing.
+ * <LI>Code for connectors is not generated.
+ * </UL>
  * <DT><STRONG>To Do</STRONG>
  *   <UL>
- *   <LI>Fix various bugs.
+ *   <LI> More testing.
+ *   <LI> Fix a problem with connectors.
  *   </UL>
  * <DT><STRONG>Known Bugs</STRONG>
  *   <UL>
@@ -47,7 +50,7 @@ import absyn.*;
  * </DL>
  *
  * @author Marcel Kyas, Walter Loeser, Andre Paetzold.
- * @version $Id: CodeGen.java,v 1.19 1999-03-01 17:38:34 swtech25 Exp $
+ * @version $Id: CodeGen.java,v 1.20 1999-03-11 15:41:54 swtech25 Exp $
  */
 public class CodeGen
 {
