@@ -134,7 +134,7 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_StateLabel")
 		if (tempstate1 != aktmatrix.akt)
 		{
 		new highlightObject(true);
-		new highlightObject(aktmatrix.akt,Color.green.darker());
+		new highlightObject(aktmatrix.akt,Color.black);
 		new highlightObject();
 		tempstate1 = aktmatrix.akt;
 		}
@@ -150,7 +150,7 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_TransLabel")
 		if (aktcomp instanceof Tr)
 		{
 		new highlightObject(true);
-		new highlightObject(aktcomp,Color.yellow.darker());
+		new highlightObject(aktcomp,Color.black);
 		new highlightObject();
 		} else {	new highlightObject(true);}
 	repaint();
@@ -210,7 +210,7 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans")
 			if (e.getClickCount() < 2)
 			{
 			    laufwaypoint++;
-			g.setColor(Color.magenta);
+			g.setColor(Editor.tr_color());
 			g.drawLine(last_x,last_y,e.getX(),e.getY());last_x = (short) e.getX(); last_y = (short) e.getY();		
 			tempwaypoint[laufwaypoint] = new Point((int) (last_x/Editor.ZoomFaktor),(int) (last_y/Editor.ZoomFaktor));
 			} else
@@ -224,7 +224,7 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans")
 						,tempwaypoint[laufwaypoint-1].y
 						,tempwaypoint[laufwaypoint].x
 						,tempwaypoint[laufwaypoint].y
-						,an1,an2,Color.magenta);
+						,an1,an2,Editor.tr_color());
 			new drawPESTTrans(g,root,tempwaypoint,laufwaypoint,Color.magenta);
 			Editor.SetListen();trroot = false;
 			repaint();
@@ -265,7 +265,7 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans")
 					     (int) (last_y/Editor.ZoomFaktor),
 					     (int) (e.getX()/Editor.ZoomFaktor),
 					     (int) (e.getY()/Editor.ZoomFaktor),
-						Color.green);
+						Editor.st_color());
 		    Editor.SetListen();trroot = false;
 
 		}
@@ -275,7 +275,7 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans")
 					     (int) (last_y/Editor.ZoomFaktor),
 					     (int) (e.getX()/Editor.ZoomFaktor),
 					     (int) (e.getY()/Editor.ZoomFaktor),
-					     Color.green);
+					     Editor.st_color());
 		    Editor.SetListen();trroot = false;
 		    repaint();
 		}
@@ -284,7 +284,7 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans")
 	    { // Editor.SetListen();
 		    new setDefault(g,root,(int) (last_x/Editor.ZoomFaktor),
 					     (int) (last_y/Editor.ZoomFaktor),
-					     Color.magenta);
+					     Editor.tr_color());
 		    Editor.SetListen();trroot = false;
 
 		    repaint();
@@ -306,7 +306,7 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans")
 		    new drawPESTConn(g,root,
 			(int) (e.getX()/Editor.ZoomFaktor)-6,
 			(int) (e.getY()/Editor.ZoomFaktor)-6,
-			Color.blue);
+			Editor.con_color());
 		     Editor.SetListen();trroot = false;
 
 		}

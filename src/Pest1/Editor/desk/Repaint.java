@@ -10,10 +10,10 @@ public class Repaint {
 
   static Graphics h;
    
-    static Color def_state = Color.green;
-    static Color def_conn = Color.red;
+    // static Color def_state = Editor.st_color();
+    //static Color def_conn = Color.red;
     static Color def_text = Color.black;
-    static Color def_tr = Color.magenta;
+    //static Color def_tr = Color.magenta;
     static Statechart root;
     static Absyn localobject;
 
@@ -71,7 +71,7 @@ private void redraw(Tr tr,int nx, int ny, boolean drawflag) {
 	int trsize = tr.points.length-1;
 	if (tr.label.position != null)
 	{
-	h.setColor(Color.black);
+	h.setColor(def_text);
 	h.drawString(tr.label.caption,
 		     (int) ((tr.label.position.x+nx)*Editor.ZoomFaktor),
 		     (int) ((tr.label.position.y+ny)*Editor.ZoomFaktor)
@@ -92,9 +92,9 @@ private void redraw(Tr tr,int nx, int ny, boolean drawflag) {
 	//			tr.source,
 	//			tr.target,
 	//			def_tr );
-	drawPESTTrans.BTrans(h,tr,nx,ny,def_tr);
+	drawPESTTrans.BTrans(h,tr,nx,ny, Editor.tr_color());
 
-if (tr.source instanceof UNDEFINED) {h.setColor(def_tr);
+if (tr.source instanceof UNDEFINED) {h.setColor( Editor.tr_color());
 				h.fillOval(	(int) (((tr.points[0].x+nx)-3)*Editor.ZoomFaktor),
 						(int) (((tr.points[0].y+ny)-3)*Editor.ZoomFaktor),
 						(int) (6*Editor.ZoomFaktor),(int) (6*Editor.ZoomFaktor));} else
@@ -110,7 +110,7 @@ if (tr.source instanceof UNDEFINED) {h.setColor(def_tr);
 		   };
 	      }
 
-if (tr.target instanceof UNDEFINED) {h.setColor(def_tr);
+if (tr.target instanceof UNDEFINED) {h.setColor( Editor.tr_color());
  
 				h.fillOval(	(int) (((tr.points[trsize].x+nx)-3)*Editor.ZoomFaktor),
 						(int) (((tr.points[trsize].y+ny)-3)*Editor.ZoomFaktor),
@@ -146,9 +146,9 @@ if (tr.target instanceof UNDEFINED) {h.setColor(def_tr);
 						(int) ((bs.rect.y+neuy) * Editor.ZoomFaktor),
 						(int) (bs.rect.width* Editor.ZoomFaktor),
 						(int) (bs.rect.height* Editor.ZoomFaktor),
-						def_state);
+						 Editor.st_color());
 		}
-		else {h.setColor(def_state);h.drawRect((int) ((bs.rect.x+neux) * Editor.ZoomFaktor),
+		else {h.setColor( Editor.st_color());h.drawRect((int) ((bs.rect.x+neux) * Editor.ZoomFaktor),
 							(int) ((bs.rect.y+neuy) * Editor.ZoomFaktor),
 							(int) (bs.rect.width* Editor.ZoomFaktor),
 							(int) (bs.rect.height* Editor.ZoomFaktor)
@@ -178,11 +178,11 @@ if (tr.target instanceof UNDEFINED) {h.setColor(def_tr);
 						(int) ((os.rect.y+neuy) * Editor.ZoomFaktor),
 						(int) (os.rect.width* Editor.ZoomFaktor),
 						(int) (os.rect.height* Editor.ZoomFaktor),
-						def_state);
+						 Editor.st_color());
 		    }
 		else 
 		    {
-		    h.setColor(def_state);h.drawRect((int) ((os.rect.x+neux) * Editor.ZoomFaktor),
+		    h.setColor( Editor.st_color());h.drawRect((int) ((os.rect.x+neux) * Editor.ZoomFaktor),
 							(int) ((os.rect.y+neuy) * Editor.ZoomFaktor),
 							(int) (os.rect.width* Editor.ZoomFaktor),
 							(int) (os.rect.height* Editor.ZoomFaktor)
@@ -215,7 +215,7 @@ if (tr.target instanceof UNDEFINED) {h.setColor(def_tr);
 	    {
 		if (colist.head.position != null) 
 		{
-		h.setColor(def_conn);
+		h.setColor( Editor.con_color());
 		h.fillOval((int) ((colist.head.position.x+neux)*Editor.ZoomFaktor),
 			(int) ((colist.head.position.y+neuy)*Editor.ZoomFaktor),
 			(int) (12*Editor.ZoomFaktor),
@@ -230,9 +230,11 @@ if (tr.target instanceof UNDEFINED) {h.setColor(def_tr);
 	templist = os.substates;	
 	while (templist != null)
 	    {
-	                if (templist.head.name == tempstatelist.head) {
-		//System.out.println("Default : "+templist.head.name);
-		h.setColor(def_state);
+		//System.out.println("Default : "+templist.head.name.name+"|"+tempstatelist.head.name);
+
+	                if (templist.head.name.name.compareTo(tempstatelist.head.name) == 0) {
+		
+		h.setColor( Editor.st_color());
 		h.drawRect((int) ((templist.head.rect.x+neux)*Editor.ZoomFaktor)+2,
 			(int) ((templist.head.rect.y+neuy)*Editor.ZoomFaktor)+2,
 			(int) ((templist.head.rect.width)*Editor.ZoomFaktor)-4,
@@ -266,7 +268,7 @@ if (tr.target instanceof UNDEFINED) {h.setColor(def_tr);
 	
 	if (as.rect != null & drawflag)
 	    {
-		h.setColor(def_state);
+		h.setColor( Editor.st_color());
 	//	h.drawRect(as.rect.x+neux,as.rect.y+neuy,as.rect.width,as.rect.height);
 	
 		h.drawRect((int) ((as.rect.x+neux) * Editor.ZoomFaktor),
