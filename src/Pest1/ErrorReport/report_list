@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.86 1999-02-09 14:43:32 swtech00 Exp $
+//	$Id: report_list,v 1.87 1999-02-09 15:58:11 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -848,4 +848,18 @@ dann meldet einen Fehler.
 Wenn Import->Statemate fehlschlägt, gibt es ein pop-up window.
 Aber wenn Import->TESC fehlschlägt, gibt es kein po-up window.
 Mir gefällt die Variante mit pop-up besser.
-//----------------------------------------------------------------------------t
+//----------------------------------------------------------------------------
+#Number:        58
+#Autor:         Erich Mikk erm
+#Subject:       Message-Browser, varia
+#Status:        reported
+#Description:
+
+(1) Meldungen benutzen Umlaute und stattdessen ae, ue usw.  durcheinander. 
+Bitte vollständig auf ae, ue usw. umsteigen, wegen rest-PEST.
+(2) Es ist nicht möglich, Fehlermeldungen aufzuheben (Selektieren ist
+nicht möglich weil es ein Browser ist, aber dann hätte ich gerne eine 
+Speicherfunktion, wo man die Fehler in eine File abspeichern kann).
+//----------------------------------------------------------------------------
+
+
