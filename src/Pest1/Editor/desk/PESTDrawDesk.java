@@ -28,22 +28,22 @@ import Editor.*;
       protected Color current_color = Color.black;   	        // aktueller Farbe
       protected int width, height;                   		// Groessenvariablen
       protected PopupMenu popup;                     		// pop-up Menue
-      protected Frame frame;                        		// Menuefenster
+      protected Panel panel;                        		// Menuefenster
 
       static Storelist anf;
       static Storelist lauf;
       static Storelist basis;
 
       
-      Statechart root= new Statechart(null,null,null,null);
+     Statechart root= new Statechart(null,null,null,null);
 
   /** Initialisierung des Hauptframes*/
 
-      public PESTDrawDesk(Frame frame, int width, int height,Statechart nroot) {
+      public PESTDrawDesk(Panel panel, int width, int height,Statechart nroot) {
            new newStorelist();
 	  root = nroot;
 
-    this.frame = frame;
+    this.panel = panel;
     this.width = width;
     this.height = height;
 
@@ -73,8 +73,8 @@ import Editor.*;
  // pop-up Menueabfrage 
   public void actionPerformed(ActionEvent event) {
     String command = event.getActionCommand();
-    if (command.equals("undo")) System.out.println(undo());
-    else if (command.equals("restore")) System.out.println(redo());
+    if (command.equals("undo")) root = undo();
+    else if (command.equals("restore")) root = redo();
     else if (command.equals("load")) ;
     
   } 
@@ -140,7 +140,7 @@ import Editor.*;
       private static class Storelist{
 	  Storelist next;
 	  Storelist prev;
-	  int chart;
+	  Statechart chart;
 	  private Storelist(Storelist a, Storelist b)
 	  { prev = a;
 	    next = b;
@@ -159,7 +159,7 @@ import Editor.*;
 		  {
 		    lauf = new Storelist(null,null);
 		    lauf.prev = anf;
-		    lauf.chart = i;
+		    lauf.chart = new Statechart(null,null,null,null);
 		    anf.next = lauf;
 		    anf = lauf;
 		    
@@ -170,16 +170,21 @@ import Editor.*;
 	  }
       }
 
-      private static int undo()
+      private static Statechart undo()
       {
 	  lauf = lauf.prev;
 	  return lauf.chart;
       }
 
-      private static int redo()
+      private static Statechart redo()
       {
 	  if (lauf != basis) {lauf = lauf.next;}
 	  return lauf.chart;
+      }
+
+      public static void addundo(Statechart nroot)
+      {
+	 
       }
 
 

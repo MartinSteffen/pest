@@ -48,24 +48,24 @@ g.setColor(c_color);
 	{
 		if (root.state instanceof Basic_State)
 		{
-		Rectangle brect = new Rectangle(cx1,cx1,cx2-cx1,cy2-cy1);
+		Rectangle brect = new CRectangle(cx1,cx1,cx2-cx1,cy2-cy1);
 		Basic_State btemp,btemp2;
 		btemp = (Basic_State)root.state;
 		if (btemp.rect.contains(cx1,cy1) & btemp.rect.contains(cx2,cy2))
 			{
-			btemp2 = new Basic_State(null,new Rectangle(cx1,cy1,cx2-cx1,cy2-cy1) );
+			btemp2 = new Basic_State(null,new CRectangle(cx1,cy1,cx2-cx1,cy2-cy1) );
 			root.state = new Or_State(null,new StateList(btemp2,null),null,null,null,btemp.rect);
 			}
 		if (brect.contains(btemp.rect.x,btemp.rect.y) & brect.contains(btemp.rect.x+btemp.rect.width,btemp.rect.y+btemp.rect.height))
 			{
 			btemp2 = (Basic_State) root.state;
-			root.state = new Or_State(null,new StateList(btemp2,null),null,null,null,new Rectangle(cx1,cy1,cx2-cx1,cy2-cy1) );
+			root.state = new Or_State(null,new StateList(btemp2,null),null,null,null,new CRectangle(cx1,cy1,cx2-cx1,cy2-cy1) );
 			}
 
 		if (brect.contains(btemp.rect.x,btemp.rect.y) == false & brect.contains(btemp.rect.x+btemp.rect.width,btemp.rect.y+btemp.rect.height) == false
 			& btemp.rect.intersects(brect)==false)
 			{
-			btemp2 = new Basic_State(null,new Rectangle(cx1,cy1,cx2-cx1,cy2-cy1) );
+			btemp2 = new Basic_State(null,new CRectangle(cx1,cy1,cx2-cx1,cy2-cy1) );
 			StateList blist = new StateList(btemp2,null);
 			blist = new StateList(btemp,blist);
 			root.state = new Or_State(null,blist,null,null,null );
@@ -76,7 +76,8 @@ g.setColor(c_color);
 	}
 	else
 	{
-	root.state = new Basic_State(new Statename("BASE"),new Rectangle(cx1,cy1,cx2-cx1,cy2-cy1));
+	root.state = new Basic_State(new Statename("BASE"),new CRectangle(cx1,cy1,cx2-cx1,cy2-cy1));
+	System.out.println(" neu : "+root.state);
 	}
 
 State akt,prev,all;
@@ -86,7 +87,7 @@ all = PESTdrawutil.getStateframe(root,cx1,cy1,cx2,cy2);
 
 	System.out.println("akt : "+PESTdrawutil.getState(root,cx1,cy1).akt);
 	System.out.println("prev : "+PESTdrawutil.getState(root,cx1,cy1).prev);
-System.out.println("all : "+PESTdrawutil.getStateframe(root,cx1,cy1,cx2,cy2));
+	System.out.println("all : "+PESTdrawutil.getStateframe(root,cx1,cy1,cx2,cy2));
 	g.setColor(Color.red);
 	if (akt != null) {g.drawRect(akt.rect.x,akt.rect.y,akt.rect.width,akt.rect.height);}
 	g.setColor(Color.green);
@@ -97,7 +98,7 @@ g.setColor(Color.magenta);
 
        }
 
- private boolean schnitt(Rectangle r1,Rectangle r2) {
+ private boolean schnitt(CRectangle r1,CRectangle r2) {
 	  int test = 0;
 	  boolean  r2inr1;
 
