@@ -1,3 +1,4 @@
+package GUI;
 // Aufgrund doppelter Klassen in "java.awt.event" und "Absyn"
 // empfiehlt es sich hier NICHT "Absyn" zu importieren !
 

@@ -1,4 +1,4 @@
-
+package GUI;
 class testClass{
 
 GUIInterface gt;
