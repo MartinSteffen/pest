@@ -49,11 +49,15 @@ import util.*;
  * Falls beim Parsen der Absyn ein GuardUndet auftritt, wird ein GuardEmpty exportiert, und der echte 
  * Guard als Kommentar in die n‰chste Zeile geschrieben, so daﬂ der User versuchen kann, noch etwas zu retten.
  * <br>
+ * Testen kann man den Export durch importieren/laden der tesc bzw. st/pest files in unserem 
+ * Test-Verzeichnis und anschlieﬂendem Export. Daraufhin kann man sich das Export-File ansehen 
+ * oder importieren.
+ * <br> 
  * </DL COMPACT>
  * <br>
  * <hr>
  * @author Arne Koch/Mike Rumpf.
- * @version  $Id: TESCSaver.java,v 1.10 1999-02-08 14:45:08 swtech13 Exp $ 
+ * @version  $Id: TESCSaver.java,v 1.11 1999-02-11 18:51:18 swtech13 Exp $ 
  */ 
 
 /* Konventionen:
