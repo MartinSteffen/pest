@@ -9,6 +9,7 @@ debug:	; make JAVACOPTS="-g" all
 
 others:
 	(cd ../absyn ; make)
+	(cd ../util ; make) 
 	(cd ../editor ; make)
 	(cd ../check ; make)
 	(cd ../simu ; make)
