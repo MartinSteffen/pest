@@ -7,10 +7,10 @@ import absyn.*;
 import util.*;
 
 /**
- * Parser für TESC.
+ * Parser fuer TESC.
  * <p>
- * @author Michael Sülzer, Christoph Schütte.
- * @version  $Id: TESCParser.java,v 1.6 1999-01-03 21:48:19 swtech20 Exp $
+ * @author Michael Suelzer, Christoph Schuette.
+ * @version  $Id: TESCParser.java,v 1.7 1999-01-04 15:25:20 swtech20 Exp $
  */   
 public class TESCParser {
     
@@ -27,7 +27,7 @@ public class TESCParser {
     private Token token = null;
 
     /**
-     * Constructor für den TESCParser.
+     * Constructor fuer den TESCParser.
      */
     public TESCParser () {}
     
@@ -37,7 +37,7 @@ public class TESCParser {
     public Statechart readStatechart(BufferedReader br) throws IOException {
 
 	errorText = new Vector();
-	errorCount = 0;
+	errorCount = 0 ;
 
 	lexer = new TESCTokenizer(br);
 	debug("parseTESC");
@@ -141,8 +141,16 @@ public class TESCParser {
     private void matchToken(Token t) throws IOException{ 
 
 	if (token.getId() == t.getId()) {
-	    debug("Match: " + token.getValue());
-	    token = lexer.getNextToken();
+            if ((token.getId() == Token.TOK_IDENTIFIER) && 
+                (Keyword.isReserved(token.getValue()))) {
+                Error("Fehler. " + token.getValue() + " ist reserviert.");
+                debug("Fehler. " + token.getValue() + " ist reserviert.");
+	        token = lexer.getNextToken();
+            }
+            else {
+                debug("Match: " + token.getValue());
+	        token = lexer.getNextToken();
+            }
 	}
 	else {
 	    Error("Syntaxfehler. " + t.getValue() + " statt " +
@@ -1275,6 +1283,9 @@ public class TESCParser {
 //      ----------------------------               
 //
 //      $Log: not supported by cvs2svn $
+//      Revision 1.6  1999/01/03 21:48:19  swtech20
+//      Implementierung des Parsers
+//
 //      Revision 1.5  1998/12/17 11:14:11  swtech20
 //      BufferedReader statt FileInputStream.
 //

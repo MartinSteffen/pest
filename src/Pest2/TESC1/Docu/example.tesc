@@ -1,10 +1,10 @@
 // Beispiel aus dem Pflichtenheft
 //
-// $Id
+// $Id: example.tesc,v 1.2 1999-01-04 15:26:26 swtech20 Exp $
 
   event (A,B,C,D,G)
 
-  or SUD 
+  or SUD
       basic P1
       basic P2
       or P3
@@ -39,3 +39,6 @@
 //	------------------------------
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.1  1999/01/03 21:49:32  swtech20
+//	Doku und Testdaten
+//
