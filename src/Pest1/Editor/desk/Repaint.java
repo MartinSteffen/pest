@@ -128,15 +128,20 @@ if (tr.source instanceof UNDEFINED) {h.setColor( Editor.tr_color());
 //System.out.println("PREV>"+matrix.prev);
  //System.out.println("AKTRECT>"+matrix.akt.rect);
 
-if (matrix.akt.rect != null & matrix.prev.rect != null)
-    {if ((matrix.prev instanceof Basic_State | matrix.prev instanceof Or_State) & matrix.prev.rect != null ) 
-	{
-	    // System.out.println("Koord1"+(matrix.x-matrix.akt.rect.x));
-	    //System.out.println("Koord2"+(matrix.y-matrix.akt.rect.y));
-		matrix = PESTdrawutil.getState(root,matrix.x-matrix.akt.rect.x,matrix.y-matrix.akt.rect.y);
-	}
-}
+		       if (matrix.akt != null & matrix.prev != null)
+		       {
+			 if (matrix.akt.rect != null & matrix.prev.rect != null)
+			   {if ((matrix.prev instanceof Basic_State | matrix.prev instanceof Or_State) & matrix.prev.rect != null ) 
+			     {
+			       // System.out.println("Koord1"+(matrix.x-matrix.akt.rect.x));
+			       //System.out.println("Koord2"+(matrix.y-matrix.akt.rect.y));
+			       matrix = PESTdrawutil.getState(root,matrix.x-matrix.akt.rect.x,matrix.y-matrix.akt.rect.y);
+			     }
+			   }
+		       }
 
+		       if (matrix.prev != null)
+		       {
 if (matrix2.prev.rect != null)
 {
 	if (matrix2.prev.rect.x == 0 & matrix2.prev.rect.y == 0 & matrix2.prev instanceof Or_State & matrix2.prev == matrix3.prev)
@@ -150,6 +155,7 @@ if (matrix2.prev.rect != null)
 	//System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
 	}
 }
+		       }
 
 
 		      if (matrix.prev instanceof And_State) {
@@ -204,6 +210,8 @@ if (tr.target instanceof UNDEFINED) {h.setColor( Editor.tr_color());
   //System.out.println("AKTRECT2>"+matrix.akt.rect);
  //System.out.println("AKTRECT2>"+matrix.prev.rect);
 
+		       if (matrix.akt != null & matrix.prev != null)
+		       {
 if (matrix.akt.rect != null & matrix.prev.rect != null)
     {if ((matrix.prev instanceof Basic_State | matrix.prev instanceof Or_State) & matrix.prev.rect!= null ) 
 	{
@@ -211,7 +219,10 @@ if (matrix.akt.rect != null & matrix.prev.rect != null)
 	
 	}
 }
+		       }
 
+		       if (matrix.prev != null)
+		       {
 if (matrix2.prev.rect != null)
 {
 	if (matrix2.prev.rect.x == 0 & matrix2.prev.rect.y == 0 & matrix2.prev instanceof Or_State & matrix2.prev == matrix3.prev)
@@ -225,6 +236,7 @@ if (matrix2.prev.rect != null)
 	    //  System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 	}
 }
+		       }
 
 
 		       if (matrix.prev instanceof And_State) {
