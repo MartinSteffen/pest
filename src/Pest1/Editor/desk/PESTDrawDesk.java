@@ -167,6 +167,9 @@ import tesc2.*;
 		Repaint r = new Repaint(); 
 		r.start(root,0,0,true);
 		new highlightObject(g,root);
+		//System.out.println(Editor.init);  
+		Editor.init = false;
+		//System.out.println(Editor.init);  
    		//	System.out.println("repaint beendet");  
   }
   

@@ -29,6 +29,7 @@ public class Repaint {
     public void start (Absyn ab,int nx, int ny, boolean drawflag) {
 	int neux = nx;
 	int neuy = ny;
+
 	if (ab instanceof Statechart) redraw((Statechart) ab,neux,neuy,drawflag);
 	if (ab instanceof Basic_State) redraw((Basic_State) ab,neux,neuy,drawflag);
 	if (ab instanceof Or_State) redraw((Or_State) ab,neux,neuy,drawflag);
@@ -41,7 +42,8 @@ public class Repaint {
     private void redraw(Statechart sc, int nx, int ny, boolean drawflag) {
 	int neux = nx;
 	int neuy = ny;
-	if (sc.state != null) { Repaint re = new Repaint(); re.start(sc.state,neux,neuy,true);}
+	if (sc.state != null) { Repaint re = new Repaint(); re.start(sc.state,neux,neuy,true);
+	Editor.init = false;}
 	// die anderen folgen spaeter
     }
 
