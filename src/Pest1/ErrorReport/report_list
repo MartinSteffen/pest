@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.69 1999-02-05 13:50:41 swtech00 Exp $
+//	$Id: report_list,v 1.70 1999-02-05 15:04:00 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -830,4 +830,14 @@ Tesc1: Zeile 17 - Syntax Error : Unerwartetes Token 'to'
 Tesc1: Zeile 17 - Syntax Error : Unerwartetes Token 'to'
 GUI   : TESC1 Fehlgeschlagen !
 
+//------------------------------------------------------------------------------
+#Number:        57
+#Autor:         Erich Mikk erm
+#Subject:       Fehlerreports (Import STM und Import TESC) nicht einheitlich.
+#Status:        reported
+#Description:
+
+Wenn Import->Statemate fehlschlägt, gibt es ein pop-up window.
+Aber wenn Import->TESC fehlschlägt, gibt es kein po-up window.
+Mir gefällt die Variante mit pop-up besser.
 //------------------------------------------------------------------------------
