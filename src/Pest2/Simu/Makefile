@@ -1,7 +1,7 @@
 JDK = /opt/jdk/jdk1.1.6/lib/classes.zip
 COMPILER = javac
 VM = java
-COPTIONS = -g -deprecation
+COPTIONS = -deprecation
 ROPTIONS =
  
 CLASSES = \
