@@ -27,4 +27,5 @@ class pestConfig
     boolean stmKoord;
 
     check.CheckConfig checkConfig;
+    codegen.CodeGenOpt codeGenConfig;
 }

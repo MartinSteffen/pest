@@ -6,6 +6,7 @@ import java.awt.event.*;
 import java.awt.*;
 import util.PrettyPrint;
 import absyn.Example;
+import absyn.*;
 import tesc2.*;
 
 class GUIwerkML
@@ -35,32 +36,123 @@ public void actionPerformed(ActionEvent e) {
 	  
       }else if (cmd.equals("Simulator")) {
 	  myWindow.startSimulator();
+
+
+
       }else if (cmd.equals("Codegenerator")) {
-	  if (myWindow.checkSB(false))
+	  GUIcodegenML cml = new GUIcodegenML(myWindow,this);
+	  String label = cml.getLabel();
+	  if (label.equals("Aktuelles Statechart"))
 	      {
-		  try{
- 		    	myWindow.fDialog.setMode(FileDialog.SAVE);
- 			myWindow.fDialog.setTitle("Generierten Code speichern");
-                        myWindow.fDialog.setFile("<OUTFILES>");			
- 			myWindow.fDialog.show();
- 			String path = myWindow.fDialog.getDirectory();
-//		        String path = myWindow.EingabeDialog("","Geben Sie bitte einen Pfad an",myWindow.SBPfad);
-			System.out.println(path);
-			if (path != null)
-			    {
-				new codegen.CodeGen(myWindow.SyntaxBaum);
-			    }
- 			myWindow.fDialog.dispose();
-
-	      		}catch(codegen.CodeGenException cge)
-		    {
-		      myWindow.OkDialog("Fehler","Fehler bei der Code-Generierung");
+		  if (myWindow.SyntaxBaum != null)
+		      {
+			  if (myWindow.checkSB(false))
+			      {
+				  try{
+				      // 			      myWindow.fDialog.setMode(FileDialog.SAVE);
+				      // 			      myWindow.fDialog.setTitle("Generierten Code speichern");
+				      // 			      myWindow.fDialog.setFile("<OUTFILES>");			
+				      // 			      myWindow.fDialog.show();
+				      // 			      String path = myWindow.fDialog.getDirectory();
+				      // 			      //		        String path = myWindow.EingabeDialog("","Geben Sie bitte einen Pfad an",myWindow.SBPfad);
+				      // 			      System.out.println(path);
+				      // 			      if (path != null)
+				      // 				  {
+				      new codegen.CodeGen(myWindow.SyntaxBaum,myWindow.codeGenConfig);
+				      // 				  }
+				      // 			      myWindow.fDialog.dispose();
+				      
+				  }catch(codegen.CodeGenException cge)
+				      {
+					  myWindow.OkDialog("Fehler",cge.getMessage());
+				      }	      
+			      }
+		      }
+		  else
+		      {
+			  myWindow.OkDialog("Fehler","Es ist noch kein Statechart geladen");
+		      }
+	      }else
+		  {
+		      //		      Statechart sc_save = myWindow.SyntaxBaum;
+		      Statechart sc1 = null;
+		      Statechart sc2 = null;
+		      if (myWindow.isSaved())
+			  {
+			      myWindow.OkDialog("Codegenerator","Bitte Laden Sie das erste Statechart");
+			      myWindow.load_sc();
+			      myWindow.checkSB(true);		  
+			      sc1 = myWindow.SyntaxBaum;
+			      int cont = 1;
+			      while ((cont == 1) && (myWindow.ResultSC == false))
+				  {
+				      cont = myWindow.YesNoDialog("Codegenerator","Das ausgewählte Statechart ist fehlerhaft. Wollen Sie es erneut versuchen ?");
+				      if (cont == 1)
+					  {
+					      myWindow.load_sc();
+					      myWindow.checkSB(true);		  
+					      sc1 = myWindow.SyntaxBaum;
+					  }
+				      else
+					  {
+					      cont = myWindow.OkDialog("Codegenerator","Sie haben die Codegenerierung abgebrochen.");
+					  }
+				  }
+			      
+			      if (cont != 0)
+				  {
+				      myWindow.OkDialog("Codegenerator","Bitte Laden Sie das zweite Statechart");
+				      myWindow.load_sc();
+				      myWindow.checkSB(true);		  
+				      sc2 = myWindow.SyntaxBaum;
+				      cont = 1;
+				      while ((cont == 1) && (myWindow.ResultSC == false))
+					  {
+					      cont = myWindow.YesNoDialog("Codegenerator","Das ausgewählte Statechart ist fehlerhaft. Wollen Sie es erneut versuchen ?");
+					      if (cont == 1)
+						  {
+						      myWindow.load_sc();
+						      myWindow.checkSB(true);		  
+						      sc2 = myWindow.SyntaxBaum;
+						  }
+					      else
+						  {
+						      cont = myWindow.OkDialog("Codegenerator","Sie haben die Codegenerierung abgebrochen.");
+						      
+						  }
+					  }
+				      
+				  }
+			      
+			      if ((cont != 0) && (sc2 != null) && (sc1 != null))
+				  {
+				      try{
+					  // 			      myWindow.fDialog.setMode(FileDialog.SAVE);
+					  // 			      myWindow.fDialog.setTitle("Generierten Code speichern");
+					  // 			      myWindow.fDialog.setFile("<OUTFILES>");			
+					  // 			      myWindow.fDialog.show();
+					  // 			      String path = myWindow.fDialog.getDirectory();
+					  // 			      //		        String path = myWindow.EingabeDialog("","Geben Sie bitte einen Pfad an",myWindow.SBPfad);
+					  // 			      System.out.println(path);
+					  // 			      if (path != null)
+					  // 				  {
+					  new codegen.CodeGen(sc1,sc2,myWindow.codeGenConfig);
+					  // 				  }
+					  // 			      myWindow.fDialog.dispose();
+					  
+				      }catch(codegen.CodeGenException cge)
+					  {
+					      myWindow.OkDialog("Fehler",cge.getMessage());
+					  }
+				  }
+			      			      
+			  }
 		  }
-	      }
+		      
 
-      }else if (cmd.equals("Crossreferenz")) {
-	  check.Crossreference cr = new check.Crossreference(myWindow,  myWindow.PEditor , myWindow.checkConfig);
-	  cr.report(myWindow.SyntaxBaum);
+	  }else if (cmd.equals("Crossreferenz")) {
+	      check.Crossreference cr = new check.Crossreference(myWindow,  myWindow.PEditor , myWindow.checkConfig);
+	      cr.report(myWindow.SyntaxBaum);
       } else if (cmd.equals("Neue Koordinaten")){
 	  if (myWindow.isSaved())
 	      {

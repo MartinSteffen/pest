@@ -49,7 +49,7 @@ extends Canvas
 	    {
 		highLight[i] = false;
 	    }
-	
+	highLight[6] = true;
 
 	repaint();
     }

@@ -69,7 +69,7 @@ implements GUIInterface
     GUIexitLis exlis;
 //    GUIsimExitLis simexitlis;
     check.CheckConfig checkConfig;
-
+    codegen.CodeGenOpt codeGenConfig;
 
     editor.Editor PEditor = null;
     Dimension EditorDim = null;
@@ -149,7 +149,16 @@ implements GUIInterface
 	add("South",MsgWindow);
 
 	setVisible(true);
-	restoreConfig();
+	File f = new File(".","pest.cfg");
+	if (f.exists())
+	    {
+		restoreConfig();
+	    }
+	else 
+	    {
+		codeGenConfig = new codegen.CodeGenOpt();
+		codeGenConfig = new codegen.CodeGenOpt();
+	    }
 	fDialog = new FileDialog(this);
 	fDialog.setModal(true);
 	theGUIMenu.updateMenu();
@@ -290,6 +299,17 @@ implements GUIInterface
 // 		    codeGenConfig = theConfig.codeGenConfig;
 // 		}
 
+           if (theConfig.codeGenConfig == null)
+               {
+                   codeGenConfig = new codegen.CodeGenOpt();
+               }
+           else
+               {
+                   codeGenConfig = theConfig.codeGenConfig;
+               }
+
+
+
 
 	    if (SBDateiname != null)
 		{
@@ -302,7 +322,7 @@ implements GUIInterface
 			    ResultSC = theConfig.ResultSC;
 			    
 			    controlWindow.highLight[4] = !CheckedSC;
-			    controlWindow.highLight[6] = ResultSC;
+			    //			    controlWindow.highLight[6] = ResultSC;
 			    controlWindow.highLight[7] = true; 
 			    controlWindow.highLight[8] = ResultSC;
 			    controlWindow.highLight[9] = true;
@@ -461,7 +481,7 @@ void newStatechart()
 		userMessage("GUI   : SyntaxCheck erfolgreich :-)");
 		controlWindow.highLight[4] = false;
 		controlWindow.highLight[8] = true;
-		controlWindow.highLight[6] = true;
+		//		controlWindow.highLight[6] = true;
 		if (PEditor != null)
 		    {
 			controlWindow.highLight[10] = true;
@@ -492,7 +512,7 @@ void newStatechart()
 		startEditor();
 	    }
 		
-	controlWindow.highLight[6] = false;
+	//	controlWindow.highLight[6] = false;
 	controlWindow.highLight[7] = true;
 	controlWindow.highLight[8] = false;
 	controlWindow.highLight[9] = true;
@@ -512,7 +532,7 @@ void newStatechart()
 		CheckedSC = false;
 		ResultSC = false;
 		controlWindow.highLight[4] = true;
-		controlWindow.highLight[6] = false;
+		//		controlWindow.highLight[6] = false;
 		controlWindow.highLight[8] = false;
 		controlWindow.highLight[10] = false;
 		controlWindow.repaint();
