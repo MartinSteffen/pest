@@ -63,7 +63,7 @@ import tesc1.TESCSaver;
  * </DL COMPACT>
  *
  * @author  Sven Jorga, Werner Lehmann
- * @version $Id: HAImport.java,v 1.15 1999-01-18 16:11:01 swtech18 Exp $
+ * @version $Id: HAImport.java,v 1.16 1999-01-19 14:49:20 swtech18 Exp $
  */
 public class HAImport implements Patterns {
   Perl5Util perl = new Perl5Util();
@@ -125,7 +125,7 @@ public class HAImport implements Patterns {
         throw e;
       else {
         gui.userMessage("STM: Fehler beim Importieren. (" + e.getMessage() + ")");}
-        e.printStackTrace();
+        // e.printStackTrace();
       }
   }
 
@@ -232,7 +232,7 @@ public class HAImport implements Patterns {
           throw e;
         else {
           gui.userMessage("STM: Fehler beim Importieren. (" + e.getMessage() + ")");
-          e.printStackTrace();
+          // e.printStackTrace();
         }
       }
     return st;
@@ -420,7 +420,7 @@ public class HAImport implements Patterns {
     try {
       return createState(rootString, new CRectangle(0,0,0,0)); }
     catch (Exception e) {
-      e.printStackTrace();
+      // e.printStackTrace();
       System.out.println("schiefgegangen: "+e.getMessage());
       return null;
     }
