@@ -5,7 +5,7 @@
 //
 //
 //   Letzte Aenderung von:  Tobias Kunz
-//                          12.01.1999
+//                          18.01.1999
 //
 // ****************************************************************************
 
@@ -25,7 +25,7 @@ import editor.*;        // Editor zwecks Highlight Funktionalitaet
 *    <tr>
 *       <td>Initialisierung:</td>
 *        <td><font face="Courier">ModelCheck check = new
-*        ModelCheck(GUIInterface);</font></td>
+*        ModelCheck(GUIInterface, Editor);</font></td>
 *    </tr>
 *    <tr>
 *        <td>Ausführung:</td>
@@ -45,7 +45,7 @@ import editor.*;        // Editor zwecks Highlight Funktionalitaet
 *<p>Was wir unbedingt brauchen sind ein brauchbarer funktionaler
 *Editor, um Statecharts zum Testen zu erzeugen.</p>
 *
-*<h2>Status (11.01.1999)</h2>
+*<h2>Status (18.01.1999)</h2>
 *
 *<p>Implementierte Feature</p>
 *
@@ -54,14 +54,13 @@ import editor.*;        // Editor zwecks Highlight Funktionalitaet
 *    <li>Event Test (beta)</li>
 *    <li>Transistions Test (beta)</li>
 *    <li>Connectoren Test (beta)</li>
-*    <li>Test eines einzelnen States (alpha)</li>
+*    <li>Test eines einzelnen States (beta)</li>
 *</ul>
 *
 *<h2>Todo</h2>
 *
-*<p>Im Vordergrund diese Woche stehen bei uns der Test des
-*Syntaxchecks, neben der Vervollständigung der Implementierung
-*des State-Tests</p>
+*<p>Im Vordergrund diese Woche stehen bei uns die Tests und die
+*Implementierung der Klasse Crossreference</p>
 *
 *<h2>Anmerkungen</h2>
 *
@@ -150,6 +149,11 @@ private boolean       OutputToGUI = false;
       CheckEvents checkEvents = new CheckEvents(statechart, errors, warnings);
       CheckBVars  checkBVars  = new CheckBVars(statechart, errors, warnings);
       CheckConnectors checkConnectors = new CheckConnectors(statechart, errors, warnings);
+      CheckDupes checkDupes = new CheckDupes(statechart, errors, warnings);
+      ok = ok && checkDupes.check();
+
+      // zu Debugzwecken
+      if (!ok) gui.userMessage("Test auf inkonsistente Statenamen ist fehlgeschlagen");
 
       CheckStates cs = new CheckStates(statechart, errors, warnings);
       ok = ok && cs.check();
