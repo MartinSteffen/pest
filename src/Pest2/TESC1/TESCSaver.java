@@ -47,7 +47,7 @@ import gui.*;
  * Jedes Statechart, z.B. das <A HREF="./tesc1/Docu/Example.tesc">Beispiel</A> aus
  * dem Pflichtenheft, kann testweise exportiert werden. 
  * <hr>
- * @version  $Id: TESCSaver.java,v 1.7 1999-02-11 16:52:25 swtech20 Exp $
+ * @version  $Id: TESCSaver.java,v 1.8 1999-02-18 09:57:08 swtech20 Exp $
  * @author Michael Suelzer, Christoph Schuette.
  *  
  */   
@@ -142,6 +142,39 @@ public final class TESCSaver {
 
 
     /**
+     * Caption fuer ein gesamtes Statechart aufbauen. 
+     * Falls im Ktor gui-Objekt uebergeben, erfolgt Fehlerausgabe dort.
+     * @return 
+     * <ul>
+     * <li> <code>true</code>  : Setzen erfolgreich
+     * <li> <code>false</code> : Setzen fehlgeschlagen
+     * </ul>
+     * @param l Label
+     */
+    public boolean setCaption(Statechart sc) throws IOException {
+
+	TESCCaptionRewriter rewriter = new TESCCaptionRewriter(sc);
+	// Warnungen ausgeben
+	if (gui != null) {
+	    for (int i=0; i < rewriter.getWarningCount(); i++) {
+		gui.userMessage(PACKAGE_NAME + rewriter.getWarningText(i));
+	    }
+	}
+
+	// Fehler ausgeben
+	if (rewriter.getErrorCount() > 0) {
+	    if (gui != null) {
+		for (int i=0; i < rewriter.getErrorCount(); i++) {
+		    gui.userMessage(PACKAGE_NAME + rewriter.getErrorText(i));
+		}
+	    }
+	    return false;
+        }
+	else 
+	    return true;
+    }
+
+    /**
      * Liefert die Anzahl der Fehler, die beim letzten Parsen
      * aufgetreten sind.
      * @return Anzahl der Fehler.
@@ -181,6 +214,9 @@ public final class TESCSaver {
 //	----------------------
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.7  1999/02/11 16:52:25  swtech20
+//	Kosmetik.
+//
 //	Revision 1.6  1999/02/07 11:58:31  swtech20
 //	- ref_state implementiert
 //	- bugs #36,#37 gefixed
