@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.100 1999-02-11 10:56:26 swtech00 Exp $
+//	$Id: report_list,v 1.101 1999-02-11 11:15:53 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -1096,6 +1096,21 @@ SyntaxCheck ist OK
 Starte Editor (alles klar)
 Erneut SyntaxCheck (es werden Interlevel-Trs gemeldet)
 Laut Auskunft von Martin B. (swtech24) ist das eine klare Indiz für falsche Koordinaten.
+
+//------------------------------------------------------------------------------
+#Number:	71
+#Autor:		Erich Mikk
+#Subject:	Fehler bei Codegenerierung
+#Status: 	reported
+#Description: 
+
+Datei->Oeffnen ~swtech12/Examples/TV/tv_system.pest
+SyntaxCheck ist OK
+Starte Editor (alles klar)
+Simuliere (alles klar)
+Erneut SyntaxCheck 
+Codegenerator:
+ meldet einen Fehler.
 
 //------------------------------------------------------------------------------
 
