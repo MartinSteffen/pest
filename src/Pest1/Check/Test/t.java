@@ -6,7 +6,7 @@ import Util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: t.java,v 1.9 1998-12-15 17:51:41 swtech00 Exp $
+ *  @version  $Id: t.java,v 1.10 1998-12-20 17:21:16 swtech11 Exp $
  */
 public class t {
 
@@ -17,10 +17,10 @@ public class t {
 
     // for (int i=0; i<argv.length; i++) { System.out.println(i + " " + argv[i]); }
 
-    if (argv.length<2) { // Hilfssystem
+    if (argv.length<1) { // Hilfssystem
       System.out.println();
       System.out.println("t - Das Testsystem fuer den Syntax Check");
-      System.out.println("Aufruf: t op1 op2 [#]");
+      System.out.println("Aufruf: t op1 [#]");
       System.out.println("  op1 enthaelt die zucheckende Statechart und muss angegeben werden:");
       System.out.println("      s  = Standard Beispiel aus der abstrakten Syntax");
       System.out.println("      d  = Beispiel 1 von Daniel fuer BVars und Events");
@@ -31,16 +31,7 @@ public class t {
       System.out.println("                     mit mehrfacher Referenzierung");
       System.out.println("               * = 1,2,3,4,5,6,7,8,9,10,11  ");
       System.out.println();
-      System.out.println("  op2 ruft den entsprechenden Check auf:");
-      System.out.println("      a  = kompletter Model Check");
-      System.out.println("      b  = BVars checken");
-      System.out.println("      e  = Events checken");
-      System.out.println("      s  = States checken");
-      System.out.println("      t  = Transitionen checken");
-      System.out.println("      p  = Statechart auf mehrfache Referenzierung checken");
-      System.out.println("      be = BVars und Events checken");
-      System.out.println();
-      System.out.println("  # gibt die Meldungen zusaetzlich in eine Textdatei aus.");       
+      System.out.println("  # gibt die Meldungen zusaetzlich in eine Textdatei aus.");
     }
     else if (argv.length >= 1) {
       // Statecharts auswählen
@@ -109,18 +100,8 @@ public class t {
 	    }
 
       // Check auswählen
-      if (argv.length >= 2) {
-        if (argv[1].equalsIgnoreCase("a")) { ok = mc.checkModel(sc); }
-        else if (argv[1].equalsIgnoreCase("b")) { ok = mc.checkBVars(sc); }
-        else if (argv[1].equalsIgnoreCase("e")) { ok = mc.checkEvents(sc); }
-        else if (argv[1].equalsIgnoreCase("s")) { ok = mc.checkStates(sc); }
-        else if (argv[1].equalsIgnoreCase("t")) { ok = mc.checkTransitions(sc); }
-        else if (argv[1].equalsIgnoreCase("p")) { ok = mc.checkPI(sc); }
-        else if (argv[1].equalsIgnoreCase("be")) { ok = (mc.checkBVars(sc) & mc.checkEvents(sc)); }
-        else { ok = mc.checkModel(sc); } // kein Check ausgewählt, also alles
-      }
+      ok = mc.checkModel(sc);
 
-      
       // PrettyPrint pp = new PrettyPrint();
       // pp.start(sc);
       
@@ -134,8 +115,8 @@ public class t {
         for (int i=1;(i<=mc.getWarningNumber());i++) {
           System.out.println("* "+mc.getWarningCode(i)+ ": " + mc.getWarningMsg(i)+ "\n  Ort: " +mc.getWarningPath(i)); } }
 
-      if (argv.length >= 3) {
-        if (argv[2].equalsIgnoreCase("#")) {
+      if (argv.length >= 2) {
+        if (argv[1].equalsIgnoreCase("#")) {
           mc.outputToFile(new String("syntax.txt"));
         }
       }

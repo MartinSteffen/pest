@@ -28,15 +28,11 @@ import gui.*;
  * <a href="#Codes">Codes von Fehlern und Warnungen beim Syntax Check</a><br>
  * <br>
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: ModelCheck.java,v 1.5 1998-12-18 07:23:29 swtech11 Exp $
+ * @version  $Id: ModelCheck.java,v 1.6 1998-12-20 17:21:01 swtech11 Exp $
  */
 public class ModelCheck {
   private ModelCheckMsg mcm; // Object, um die Fehler und Warnungen zu speichern
-  private boolean warning;   // auch Warnungen ausgeben
   private boolean outputGUI; // Meldungen auf die GUI ausgeben
-  private boolean donePI;    // Test auf doppelte Referenzierung ausgeführt ?
-  private boolean b_ce,b_cb,b_ct, b_cs;
-  private boolean NoFatalError;  // existiert kein fataler Fehhler (doppelte Referenzierung)
   private GUIInterface gui = null; // Referenz auf die GUI
 
 /**
@@ -46,13 +42,6 @@ public class ModelCheck {
   public ModelCheck() {
     mcm = new ModelCheckMsg();
     outputGUI = false;
-    warning = true;
-    donePI = false;
-    b_ce = false;
-    b_cb = false;
-    b_ct = false;
-    b_cs = false;
-    NoFatalError = true;
   }
 
 /** 
@@ -73,101 +62,45 @@ public class ModelCheck {
  * @param sc  die zu checkende Statechart
  */
   public boolean checkModel(Statechart sc) {
-    boolean m = (checkEvents(sc) & checkStates(sc) &
-                   checkTransitions(sc) & checkBVars(sc));
-    if (outputGUI==true) { outputToGUI(); }
-    return m;
-  };
+    boolean NoEventError, NoBooleanError, NoTransError, NoStateError, NoFatalError;
+    boolean result = false;
 
-/**
- * Checkt die Events.
- * Die Methode gibt <b>true</b> zurück, falls keine Fehler aufgetreten sind, sonst <b>false</b>.
- * @param sc  die zu checkende Statechart
- */
-  public boolean checkEvents(Statechart sc) {
-    boolean pi = false;
-    if (donePI == false ) { NoFatalError = checkPI(sc); }
-    if (NoFatalError == true) {
-      TestEvents te = new TestEvents(sc, mcm);
-      b_ce = te.check();
-      if (outputGUI==true & b_ce==true) {
-        gui.userMessage("Check: Keine Fehler während der Überprüfung der Events gefunden.");
-      }
-    }
-    return b_ce;
-  }
-
-/**
- * Checkt die States.
- * Die Methode gibt <b>true</b> zurück, falls keine Fehler aufgetreten sind, sonst <b>false</b>.
- * @param sc  die zu checkende Statechart
- */
-  public boolean checkStates(Statechart sc) {
-    boolean pi = false;
-    if (donePI == false) { NoFatalError = checkPI(sc); }
-    if (NoFatalError == true) {
-      TestStates ts = new TestStates(sc, mcm);
-      b_cs = ts.check();
-      if (outputGUI==true & b_cs==true) {
-        gui.userMessage("Check: Keine Fehler während der Überprüfung der States gefunden.");
-      }
-    }  
-    return b_cs;
-  }
-
-/**
- * Checkt die Transitionen.
- * Die Methode gibt <b>true</b> zurück, falls keine Fehler aufgetreten sind, sonst <b>false</b>.
- * @param sc  die zu checkende Statechart
- */
-  public boolean checkTransitions(Statechart sc) {
-    boolean pi = false;
-    if (donePI == false) { NoFatalError = checkPI(sc); }
-    if (NoFatalError == true) {
-      TestTransitions tt = new TestTransitions(sc,mcm);
-      b_ct = tt.check();
-      if (outputGUI==true & b_ct==true) {
-        gui.userMessage("Check: Keine Fehler während der Überprüfung der Transitions gefunden.");
-      }
-    }
-    return b_ct;
-  }
-
-/**
- * Checkt die booleschen Variablen.
- * Die Methode gibt <b>true</b> zurück, falls keine Fehler aufgetreten sind, sonst <b>false</b>.
- * @param sc  die zu checkende Statechart
- */
-  public boolean checkBVars(Statechart sc) {
-    boolean pi = false;
-    if (donePI == false) { NoFatalError = checkPI(sc); }
-    if (NoFatalError == true) {
-      TestBVars tb = new TestBVars(sc, mcm);
-      b_cb = tb.check();
-      if (outputGUI==true & b_cb==true) {
-        gui.userMessage("Check: Keine Fehler während der Überprüfung der Booleschen Variablen gefunden.");
-      }
-    }
-    return b_cb;
-  }
-
-/**
- * Checkt auf schwerwiegende Fehler der Programmierer.
- * Bei diesem Check geht es darum, Fehler zu finden, die den Syntax Checker zu falschen Ergebnissen führen würde
- * (z.B. Zyklen in den Statelisten oder States).
- * <br>Diese Methode wird <b>einmalig</b> aufgerufen, wenn ein oder mehrere Tests ausgeführt werden.
- * Die Methode gibt <b>true</b> zurück, falls keine Fehler aufgetreten sind, sonst <b>false</b>.
- * @param sc  die zu checkende Statechart
- */
-  public boolean checkPI(Statechart sc) {
+    // Test auf Kreisfreiheit und doppelte Referenzierung
     TestPI tpi = new TestPI(sc, mcm);
     NoFatalError=tpi.check();
-    donePI = true;
-    if (outputGUI==true & NoFatalError==false) {
-      int j = gui.OkDialog("Fataler Fehler","Der beschriebene Fehler führt zum Abbruch des Syntax Checks !");
+
+    if ( NoFatalError == false ) {
+      if ( outputGUI == true ) {
+        int j = gui.OkDialog("Fataler Fehler","Der beschriebene Fehler führt zum Abbruch des Syntax Checks !");
+      }
     }
-    return NoFatalError;
-  }
+    else {
+      // Checkt die States.
+      TestStates ts = new TestStates(sc, mcm);
+      NoStateError = ts.check();
+      // Checkt die Transitionen.
+      TestTransitions tt = new TestTransitions(sc,mcm);
+      NoTransError = tt.check();
+      // Checkt die Events.
+      TestEvents te = new TestEvents(sc, mcm);
+      NoEventError = te.check();
+      // Checkt die booleschen Variablen.
+      TestBVars tb = new TestBVars(sc, mcm);
+      NoBooleanError = tb.check();
+
+      result = ( NoEventError & NoBooleanError & NoTransError & NoStateError );
+
+      if ( outputGUI == true ) {
+        outputToGUI();
+        if ( NoStateError == true ) { gui.userMessage("Check: Keine Fehler während der Überprüfung der States gefunden."); }
+        if ( NoTransError == true ) { gui.userMessage("Check: Keine Fehler während der Überprüfung der Transitions gefunden."); }
+        if ( NoEventError == true ) { gui.userMessage("Check: Keine Fehler während der Überprüfung der Events gefunden."); }
+        if ( NoBooleanError == true) { gui.userMessage("Check: Keine Fehler während der Überprüfung der Booleschen Variablen gefunden."); }
+      }
+    }
+
+    return result;
+  };
 
 
 /**
@@ -196,7 +129,6 @@ public class ModelCheck {
     catch (Exception e) { System.out.println(e); }
   }
 
-
   void outputToGUI() {
     if (getErrorNumber()>0) {
       gui.userMessage("Check	: Fehlermeldungen ( Anzahl: " + getErrorNumber() +  " ):");
@@ -207,12 +139,6 @@ public class ModelCheck {
       for (int i=1;(i<=getWarningNumber());i++) {
         gui.userMessage("Check	: "+getWarning(i) ); } }
   }
-
-/**
- *
- */
-  public void setWarning(boolean _w) { warning = _w;}
-
 
 /**
  * Legt fest, ob die Fehler und Warnungen auf der GUI erscheinen sollen.
