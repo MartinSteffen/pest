@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.66 1999-02-05 11:40:07 swtech24 Exp $
+//	$Id: report_list,v 1.67 1999-02-05 12:00:43 swtech24 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -578,7 +578,7 @@ Nach Beenden einer Simulation taucht das Editor-Menu nicht wieder auf.
 #Number:	36
 #Autor:		Bernd Weber bwe
 #Subject:	Syntaxfehler in von CodeGen erzeugtem Code
-#Status: 	processing
+#Status: 	fixed
 #Description: 
 
 Default-Namen (beginnen mit "...") verursachen Syntax-Fehler im
