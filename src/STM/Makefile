@@ -1,10 +1,10 @@
 HTMLDIR = Docu
 DOCCFLAGS = -author -version -d $(HTMLDIR)
 DOCC = javadoc $(DOCCFLAGS) $(CLASSES)
-CLASSES = -classpath "$$CLASSPATH":"$$HOME"/PEST1/STM/PerlTools.jar:"$$HOME"/PEST2/STM/PerlTools.jar
+CLASSES =-classpath $$CLASSPATH:./HAImport/PerlTools.jar
 CC = javac -depend $(CLASSES) 
 
-all:	classes docu 
+all:	classes
 
 classes:	
 	$(CC) *.java
