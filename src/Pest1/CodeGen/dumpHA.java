@@ -4,7 +4,7 @@
  * This class is responsible for generating our hierarchical
  * automaton.
  *
- * @version $Id: dumpHA.java,v 1.9 1999-01-20 18:47:26 swtech25 Exp $
+ * @version $Id: dumpHA.java,v 1.10 1999-01-21 13:44:53 swtech25 Exp $
  * @author Marcel Kyas
  */
 package codegen;
@@ -67,17 +67,10 @@ public class dumpHA
 
 	/**
 	 * Set statechart to bla.
-	 * @exception CodeGenException if we cannot clone bla.
 	 */
 	public void setStatechart(Statechart bla)
-		throws CodeGenException
 	{
-		try {
-			S = (Statechart) bla.clone();
-		}
-		catch (CloneNotSupportedException e) {
-			throw(new CodeGenException(e.toString()));
-		}
+			S = bla;
 	}
 
 
@@ -100,22 +93,25 @@ public class dumpHA
 	private void dumpStatement(OutputStreamWriter f, Boolstmt b)
 		throws CodeGenException, IOException
 	{
-		System.out.println("dumpStatement");
 		if (b instanceof BAss) {
 			BAss c = (BAss) b;
-			Integer i = (Integer) DT.cond_sym.get(c.ass.blhs.var);
-			f.write("post_cond[" + i + "] = " +
-				dumpGuard(c.ass.brhs) + ";");
+			f.write("post_cond[" +
+				dumpTables.generateSymBVar(c.ass.blhs) +
+				 "] = " + dumpGuard(c.ass.brhs) + ";\n");
 		} else if (b instanceof MFalse) {
 			MFalse c = (MFalse) b;
-			Integer i = (Integer) DT.cond_sym.get(c.var.var);
-			f.write("post_cond[" + i + "] = false;");
+			f.write("post_cond[" + 
+				dumpTables.generateSymBVar(c.var) +
+				"] = false;\n");
 		} else if (b instanceof MTrue) {
 			MTrue c = (MTrue) b;
-			Integer i = (Integer) DT.cond_sym.get(c.var.var);
-			f.write("post_cond[" + i + "] = true;");
+			f.write("post_cond[" +
+				dumpTables.generateSymBVar(c.var) +
+				"] = true;\n");
 		} else {
-			throw(new CodeGenException("Unknown boolean assignment"));
+			throw(new CodeGenException(
+				"Unknown boolean assignment"
+			));
 		}
 	}
 
@@ -135,19 +131,24 @@ public class dumpHA
 		if (a instanceof ActionBlock) {
 			ActionBlock b = (ActionBlock) a;
 			Aseq current = b.aseq;
+
+			f.write("// Action sequence\n");
 			while (current != null) {
 				dumpNewEvents(f, current.head);
 				current = current.tail;
 			}
 		} else if (a instanceof ActionEmpty) {
+			f.write("// Empty action\n");
 			return;
 		} else if (a instanceof ActionEvt) {
 			ActionEvt b = (ActionEvt) a;
-			Integer i = (Integer)
-				DT.events_sym.get(b.event.name);
-			f.write("post_events[" + i + "] = true;");
+
+			f.write("post_events[" +
+				dumpTables.generateSymEvent(b.event)
+				+ "] = true;\n");
 		} else if (a instanceof ActionStmt) {
 			ActionStmt b = (ActionStmt) a;
+
 			dumpStatement(f, b.stmt);
 		} else {
 			throw(new CodeGenException("Unknown Action."));
@@ -166,8 +167,9 @@ public class dumpHA
 		System.out.println("dumpGuard");
 		if (g instanceof GuardBVar) {
 			GuardBVar h = (GuardBVar) g;
-			Integer i = (Integer) DT.cond_sym.get(h.bvar.var);
-			return "pre_cond[" + i + "]";
+			return "pre_cond[" +
+				dumpTables.generateSymBVar(h.bvar) +
+				"]";
 		} else if (g instanceof GuardCompg) {
 			GuardCompg h = (GuardCompg) g;
 			String s = dumpGuard(h.cguard.elhs);
@@ -189,6 +191,7 @@ public class dumpHA
 			GuardCompp h = (GuardCompp) g;
 			Path p = h.cpath.path;
 			String s = dumpTables.generateSymState(p);
+
 			switch (h.cpath.pathop) {
 			case Comppath.IN:
 				return "pre_states[" + s + "]";
@@ -199,15 +202,18 @@ public class dumpHA
 				return "( his_states[" + s +
 					"] && !pre_states[" + s + "])";
 			default:
-				throw(new CodeGenException("Unsupported path operation"));
+				throw(new CodeGenException(
+				      "Unsupported path operation"
+				));
 			}
 		} else if (g instanceof GuardEmpty) {
 			return "true";
 		} else if (g instanceof GuardEvent) {
 			GuardEvent h = (GuardEvent) g;
-			Integer i = (Integer)
-				 DT.events_sym.get(h.event.name);
-			return "pre_event[" + i + "]";
+
+			return "pre_event[" +
+				dumpTables.generateSymEvent(h.event) +
+				"]";
 		} else if (g instanceof GuardNeg) {
 			GuardNeg h = (GuardNeg) g;
 			return "!(" + dumpGuard(h.guard) +")";
@@ -228,24 +234,32 @@ public class dumpHA
 	 * @exception CodeGenException .
 	 * @exception IOException .
 	 */
-	private void dumpNextState(OutputStreamWriter f, TrList tl, TrAnchor t)
+	private void dumpNextState(OutputStreamWriter f,
+				   Path p,
+				   TrList tl,
+				   TrAnchor t)
 		throws CodeGenException, IOException
 	{
+		Path q;
+
 		System.out.println("dumpNextState");
 		if (t instanceof Conname) {
 			//dumpTransitions(f, tl, t);
 		} else if (t instanceof Statename) {
 			Statename s = (Statename) t;
-			Integer i = (Integer) DT.states_sym.get(s.name);
-			f.write("post_states[" + i + "] = true;");
-			// CAVE: we need to check for or states...
+
+			q = p.append(s.name);
+			f.write("post_states[" +
+				dumpTables.generateSymState(q) +
+				"] = true;\n");
+			//This needs a fix.
 			State v = null;
 			if (v instanceof Or_State) {
 				Or_State u = (Or_State) v;
-				Integer j = (Integer) DT.states_sym.get(
-					u.defaults.head.name
-				);
-				f.write("post_states[" + j + "] = true;");
+				f.write("post_states[" +
+					dumpTables.generateSymState(
+						q.append(u.defaults.head.name)
+					) + "] = true;\n");
 			}
 		} else if (t instanceof UNDEFINED) {
 			throw(new CodeGenException("Undefined target"));
@@ -259,7 +273,7 @@ public class dumpHA
 	 * This method will dump the necessary code for
 	 * transitions.  s denotes the source.
 	 */
-	private void dumpTransitions(OutputStreamWriter f, TrList tl,
+	private void dumpTransitions(OutputStreamWriter f, Path p, TrList tl,
 				     TrAnchor s)
 		throws CodeGenException, IOException
 	{
@@ -270,10 +284,10 @@ public class dumpHA
 			if (current.head.source == s) {
 				f.write("if (" +
 					dumpGuard(current.head.label.guard)
-					+ ") {");
+					+ ") {\n");
 				dumpNewEvents(f, current.head.label.action);
-				dumpNextState(f, tl, current.head.target);
-				f.write("}");
+				dumpNextState(f, p, tl, current.head.target);
+				f.write("}\n");
 			}
 		}
 	}
@@ -282,11 +296,14 @@ public class dumpHA
 	/**
 	 * This section will create code for a basic state
 	 * @exception CodeGenException If no such state.
+	 * @exception IOException self-explanatory.
 	 */
-	private void dumpBasicState(OutputStreamWriter f, Basic_State s)
-		throws CodeGenException
+	private void dumpBasicState(OutputStreamWriter f,
+				    Path p,
+				    Basic_State s)
+		throws IOException, CodeGenException
 	{
-		System.out.println("dumpBasicState");
+		f.write("// Basic State " + s.name.name + "\n");
 		// No code for a basic state.  They are already handled
 		// in And and Or states.
 	}
@@ -297,22 +314,25 @@ public class dumpHA
 	 * @exception CodeGenException ?
 	 * @exception IOException ?
 	 */
-	private void dumpOrState(OutputStreamWriter f, Or_State s)
+	private void dumpOrState(OutputStreamWriter f, Path p, Or_State s)
 		throws CodeGenException, IOException
 	{
 		StateList current = s.substates;
 		TrList currTr = s.trs;
+		Path q;
 
 		System.out.println("dumpOrState");
+		f.write("// Or State " + s.name.name + "\n");
 		while (current != null) {
+			q = p.append(current.head.name.name);
 			f.write("if (pre_states[" +
-				current.head +
-				"]) {");
+				dumpTables.generateSymState(q) +
+				"]) {\n");
 			//dumpTransitions(f, s.trs, current.head.name);
-			f.write("}");
+			f.write("}\n");
 			current = current.tail;
 		}
-		iterateStateList(f, s.substates);
+		iterateStateList(f, p, s.substates);
 	}
 
 
@@ -322,11 +342,12 @@ public class dumpHA
 	 *   the type of a sub state.
 	 * @exception IOException ?
 	 */
-	private void dumpAndState(OutputStreamWriter f, And_State s)
+	private void dumpAndState(OutputStreamWriter f, Path p, And_State s)
 		throws IOException, CodeGenException
 	{
 		System.out.println("dumpAndState");
-		iterateStateList(f, s.substates);
+		f.write("// And State " + s.name.name + "\n");
+		iterateStateList(f, p, s.substates);
 	}
 
 
@@ -337,19 +358,24 @@ public class dumpHA
 	 *   the type of a sub state.
 	 * @exception IOException ?
 	 */
-	private void iterateStateList(OutputStreamWriter f, StateList sl)
+	private void iterateStateList(OutputStreamWriter f,
+				      Path p,
+				      StateList sl)
 		throws CodeGenException, IOException
 	{
 		StateList current = sl;
+		Path q;
 
 		System.out.println("Iterating state list");
 		while (current != null) {
+			q = p.append(current.head.name.name);
 			if (current.head instanceof And_State) {
-				dumpAndState(f, (And_State) current.head);
+				dumpAndState(f, q, (And_State) current.head);
 			} else if (current.head instanceof Or_State) {
-				dumpOrState(f, (Or_State) current.head);
+				dumpOrState(f, q, (Or_State) current.head);
 			} else if (current.head instanceof Basic_State) {
-				dumpBasicState(f, (Basic_State) current.head);
+				dumpBasicState(f, q,
+					       (Basic_State) current.head);
 			} else {
 				throw(new CodeGenException(
 					"Cannot determine type of state."
@@ -366,19 +392,25 @@ public class dumpHA
 	private void dumpAutomaton(OutputStreamWriter f)
 		throws CodeGenException, IOException
 	{
+		Path p = new Path(S.state.name.name, null);
+
 		System.out.println("Dumping Automaton");
-		f.write("/**\n * This code was automatically generated\n */");
-		f.write("public class Automaton extends SymbolTable\n{");
+		f.write("/**\n * This code was automatically generated " +
+			"by codegen\n */");
+		f.write("\npublic class Automaton extends SymbolTable {\n");
+		f.write("\npublic void step() {\n");
 		if (S.state instanceof And_State) {
-			dumpAndState(f, (And_State) S.state);
+			dumpAndState(f, p, (And_State) S.state);
 		} else if (S.state instanceof Or_State) {
-			dumpOrState(f, (Or_State) S.state);
+			dumpOrState(f, p, (Or_State) S.state);
 		} else if (S.state instanceof Basic_State) {
-			dumpBasicState(f, (Basic_State) S.state);
+			dumpBasicState(f, p, (Basic_State) S.state);
 		} else {
 			throw(new CodeGenException(
-				"Cannot determine type of state."));
+				"Cannot determine type of state."
+			));
 		}
+		f.write("\n}\n}\n");
 	}
 
 
@@ -398,12 +430,10 @@ public class dumpHA
 			DT.dump(fw);
 			fw.flush();
 			fw.close();
-			System.out.println("Dumped Symbol Table");
 			fw = new FileWriter(path + "/Automaton.java");
 			dumpAutomaton(fw);
 			fw.flush();
 			fw.close();
-			System.out.println("Dumped Automaton");
 		}
 		catch (IOException e) {
 			throw(new CodeGenException(e.toString()));
