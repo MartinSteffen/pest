@@ -1,0 +1,76 @@
+Oliver Otte, Sven Thomsen
+swtech22
+PEST2 - Simulation
+
+Zur Simulation:
+Zunächst wird die Simulationskonsole gestartet,
+von dieser aus koennen dann der Monitor und der
+Tracer gestartet werden, desweiteren ist
+die Eingabe von Breakpoints moeglich.
+Die Aufloesung von Nichtdeterminismen kann im
+Menu "Einstellungen" vorgenommen werden.
+
+Monitor:
+Im Monitor wird der aktuelle Status angezeigt.
+Ueber "Hinzufuegen/Entfernen" koennen die 
+anzuzeigenden Events und Conditions bestimmt werden.
+Um Events oder Conditions zu setzen,
+klicke man auf die entsprechende Checkbox.
+
+Tracer:
+Hier koennen Traces aufgezeichnet, geladen, gespeichert
+und wieder abgespielt werden.
+ACHTUNG: Der zu ladende Trace muss zur im Editor 
+angezeigten Statechart passen.
+Ansonsten kann der Trace nicht geladen werden.
+
+Breakpoints:
+Ueber Einstellungen->Breakpoints koennen Breakpoints eingegeben
+und geloescht werden. Als Bedingungen sind alle Elemente
+erlaubt, die auch in Transition-Guards auftauchen duerfen.
+Falls ein Breakpoint erfuellt ist, so wird dieses Ereignis
+in einem Dialog angezeigt.
+
+Nichtdeterminismen:
+In "Einstellungen->automatische Aufloesung von Nichtdeterminismus" kann
+ausgewählt werden, wie die Simulation auf Nichtdeterminismen reagieren soll:
+- durch Benutzerinteraktion
+- automatisch
+
+Schrittweite:
+In "Einstellungen->Schrittweite" kann die Anzahl an Schritten 
+festgelegt werden, die durch "naechster Simulationsschritt" 
+getaetigt werden.
+
+Tests:
+
+  cond.test:
+  Hier kann man erkennen, dass sowohl die Abfrage
+  als auch das Setzen von Conditions funktioniert.
+
+  Connector.test:
+  Hier sind mehrere Connectoren in einer Statechart eingebaut,
+  wir haben versucht alle Moeglichkeiten, die mit Connectoren
+  auftreten koennen, zu beruecksichtigen.
+
+  Fehler33.test:
+  Fehler34.test:
+  Fehler35.test:
+  Dies sind die Tests, um unsere "fixed"-Statements auf
+  dem ErrorReport zu belegen.
+
+  inentex.test:
+  Wir verwenden in diesem Test die Guards "in", "entered" und
+  "exited".
+
+  andorstate.test:
+  In dieser Statechart sind mehrere And- und Or-States vorhanden,
+  einfach mal das Event A auslösen.....
+
+  Racing.test:
+  Test auf Racingsituationen bei Conditions.
+  Durch Event a wird gleichzeitig c auf True und False gesetzt,
+  dies erkennen wir und fuehren diesen Schritt nicht aus.
+
+  
+  
