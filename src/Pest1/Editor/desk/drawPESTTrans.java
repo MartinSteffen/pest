@@ -264,7 +264,8 @@ public static CPoint transpoint(Statechart root,int cx1, int cy1)
 {
 	CPoint[] tp = tr.points;
 	int lauf2 = tp.length-1;  
-	CPoint[] ta = Bezier(tp,4*(lauf2));
+	CPoint[] ta;
+	if (Editor.Bez == true) {ta = Bezier(tp,4*(lauf2));} else {ta = tp;}
 	int trsize = ta.length-1;
 	//System.out.println("Anzahl ZeigerPunkte : "+(int) (trsize+1));
 	for (int lauf = 0;lauf < (trsize-1);lauf++) {h.setColor(def_tr);h.drawLine(	(int) ((ta[lauf].x+cx1)*Editor.ZoomFaktor),
