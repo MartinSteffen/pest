@@ -48,11 +48,11 @@ public void actionPerformed(ActionEvent e) {
 			System.out.println(path);
 			if (path != null)
 			    {
-				new codegen.CodeGen(path,myWindow.SyntaxBaum);
+				new codegen.CodeGen(myWindow.SyntaxBaum);
 			    }
  			myWindow.fDialog.dispose();
 
-      		}catch(codegen.CodeGenException cge)
+	      		}catch(codegen.CodeGenException cge)
 		    {
 		      myWindow.OkDialog("Fehler","Fehler bei der Code-Generierung");
 		  }
