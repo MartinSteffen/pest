@@ -12,7 +12,7 @@ pest myWindow;
     Menu M_Export,M_Werkzeuge;
 MenuItem M_Speichern, M_Editor;
     //MenuItem M_Speichernu;
-MenuItem M_Simulator, M_Codegen, M_SyntaxCheck,M_PrettyPrint;
+MenuItem M_Simulator, M_Codegen, M_SyntaxCheck,M_PrettyPrint,M_CrossRef;
 GUIdateiML   ml;  
 GUIwerkML    mlw; 
 GUIoptionML  mle; 
@@ -77,6 +77,7 @@ public GUIMenu(pest myWindow)
   M_Simulator   = addMenuItem(M_Werkzeuge,"Simulator",mlw);
   M_Codegen     = addMenuItem(M_Werkzeuge,"Codegenerator",mlw);
   M_SyntaxCheck = addMenuItem(M_Werkzeuge,"SyntaxCheck",mlw);
+  M_CrossRef    = addMenuItem(M_Werkzeuge,"Crossreferenz",mlw);
   m.addSeparator();
   M_PrettyPrint = addMenuItem(M_Werkzeuge,"PrettyPrinter",mlw);
   add(M_Werkzeuge);

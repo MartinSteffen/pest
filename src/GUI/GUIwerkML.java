@@ -60,17 +60,20 @@ public void actionPerformed(ActionEvent e) {
 	  if (myWindow.checkSB(false))
 	      {
 		  //myWindow.OkDialog("FEHLER","Wegen nicht compilierbarem Quelltext nicht implementiert");
-	      	try{
-
-		  new codegen.CodeGen(".",myWindow.SyntaxBaum);
+		  try{
+		    
+		    new codegen.CodeGen(".",myWindow.SyntaxBaum);
       		}catch(codegen.CodeGenException cge)
-		  {
-		    myWindow.OkDialog("Fehler","Fehler bei der Code-Generierung");
+		    {
+		      myWindow.OkDialog("Fehler","Fehler bei der Code-Generierung");
 		  }
 	      }
 
+      }else if (cmd.equals("Crossreferenz")) {
+	  check.Crossreference cr = new check.Crossreference(myWindow,  myWindow.PEditor);
+	  cr.report(myWindow.SyntaxBaum);
       }else if (cmd.equals("PrettyPrinter")) {
-	 	  (new PrettyPrint()).start( myWindow.SyntaxBaum );
+	  (new PrettyPrint()).start( myWindow.SyntaxBaum );
       }else{  
 	 myWindow.userMessage("GUI   : NOCH NICHT IMPLEMENTIERT"); 
       }	 

@@ -121,5 +121,24 @@ public interface GUIInterface{
      */  
 
     public String EingabeDialog( Frame par, String Titel, String Msg, String Defaulttext);
+
+     /** getStatecolor
+      * Gibt ein Color-Objekt zurück, welches zum Zeichnen von States benutzt
+      * werden soll.
+     */  
+    public Color getStatecolor();
+
+     /** getTransitioncolor
+      * Gibt ein Color-Objekt zurück, welches zum Zeichnen von Transitionen benutzt
+      * werden soll.
+     */  
+    public Color getTransitioncolor();
+
+     /** getConnectorcolor
+      * Gibt ein Color-Objekt zurück, welches zum Zeichnen von Connectoren benutzt
+      * werden soll.
+     */  
+
+    public Color getConnectorcolor();
 }
 

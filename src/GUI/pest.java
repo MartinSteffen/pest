@@ -43,7 +43,7 @@ import absyn.*;
  * <li>Optionendialoge sind zum Teil noch zu machen, sobald diese mit
  * den Gruppen geklärt sind.<br>
  * <li>Abhängigkeitstransparente Benutzerführung<br>
- * <li>Exportaufruf(e)<br>
+ * <li>Exportaufruf(e) <br>
  * <li>Das Wiederherstellen der Oberfläche ist noch nicht fehlerfrei.
  * </ul> 
  * <DT><STRONG>Temporäre Features: </STRONG><br>
@@ -300,7 +300,16 @@ implements GUIInterface
 
 	if( (!CheckedSC) || (forced) )
 	    {
-		check.ModelCheck SCchecker = new check.ModelCheck(this);
+		check.ModelCheck SCchecker;
+
+		if (PEditor != null)
+		    {
+			SCchecker = new check.ModelCheck(this,PEditor);
+		    }
+		else
+		    {
+			SCchecker = new check.ModelCheck(this);
+		    }
 		ResultSC = SCchecker.checkModel(SyntaxBaum);
 		CheckedSC = true;
 	    }
@@ -424,7 +433,20 @@ implements GUIInterface
         return new EingabeDialog(par,par.getGraphics().getFontMetrics(),Titel,Msg,Defaulttext).getEingabe();
     }
 
+    public Color getStatecolor()
+    {
+	return color[stateColorIndex];
+    }
 
+    public Color getTransitioncolor()
+    {
+	return color[transColorIndex];
+    }
+
+    public Color getConnectorcolor()
+    {
+	return color[conColorIndex];
+    }
     
     
     BufferedReader load(String titel)
