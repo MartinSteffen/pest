@@ -27,7 +27,7 @@ public class Delete {
 
   StateList stlist = null;
 
-  // Diese Routine findet den direkten Vorgänger von Todelete und weisst ihm dem Feld
+  // Diese Routine findet den direkten Vorg„nger von Todelete und weisst ihm dem Feld
   // Father zu.
   // Danach wird Todelete aus dem Statechart entfernt.
 
@@ -162,7 +162,7 @@ public class Delete {
   private Path cuthead ( Path p ) {
 
   // entfernt den head aus einem Path und haengt den Rest auf dessen Posititon
-  // Wenn es keinen Rest gibt, müßte head auf NULL und somit der
+  // Wenn es keinen Rest gibt, m˜te head auf NULL und somit der
   // gesamte Pfad auf NULL gesetzt werden
 
     if (p.tail != null) {

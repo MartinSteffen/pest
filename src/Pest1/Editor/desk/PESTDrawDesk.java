@@ -45,7 +45,7 @@ import java.applet.*;
       static Dimension dim;
       static tempobj ttobj = null;
       //Image buffer;
-      //Graphics bufferGraphics;  
+      Graphics bufferGraphics;  
       
      Statechart root= new Statechart(null,null,null,null);
 
@@ -63,6 +63,7 @@ import java.applet.*;
     this.width = dim.width;
     this.height = dim.height;
     this.xpanel.setForeground(Color.black);
+    bufferGraphics = xpanel.getGraphics();
 
     // low-level Implementierungen
     this.enableEvents(AWTEvent.MOUSE_EVENT_MASK);
@@ -109,21 +110,18 @@ import java.applet.*;
   // Grafik herstellen
       public void paint(Graphics g) { 
  System.out.println("repaint gestartet");
-	  new Repaint(g,root);Repaint r = new Repaint(); r.start(root,0,0,true);
-				  new highlightObject(g,root);
-
-   System.out.println("repaint beendet");  
-   if (ttobj != null)
-       {
-	   g.setColor(Color.black);
-	   if (ttobj.Id == "sq") {g.drawRect(ttobj.x1,ttobj.y1,ttobj.x2,ttobj.y2);}
-	   if (ttobj.Id == "pa") {g.drawLine(ttobj.x1,ttobj.y1,ttobj.x2,ttobj.y2);}
-	   ttobj = null;
-	   // repaint();
-       }
-
- 
+	  	new Repaint(g,root);
+		Repaint r = new Repaint(); 
+		r.start(root,0,0,true);
+		new highlightObject(g,root);
+   			System.out.println("repaint beendet");  
   }
+  
+    public void restore(Graphics g) {
+		new Repaint(g,root);
+		Repaint r = new Repaint(); 
+		r.start(root,0,0,true);
+	}
 
 
    // Ueberwachung der Mausaktivitaeten in Abhaengigkeit der Zeichenfunktionen
@@ -173,38 +171,33 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_TransLabel")
 		new highlightObject(aktcomp,Color.black);
 		new highlightObject();
 		} else {	new highlightObject(true);}
-	repaint();
+		repaint();
         	} 
-
       }
 
 if ((e.getID() == MouseEvent.MOUSE_DRAGGED) & (Editor.Editor() =="Draw_State"))
-		{// Editor.SetListen();
-System.out.println("-----------------");
-//repaint(last_x,last_y,old_x,old_y);
- 
-		   
-		    System.out.println("boxdraw gestartet");
-		    //g.setColor(Color.black);
-		  //   g.drawRect((int) (last_x/Editor.ZoomFaktor),
-		  //	       (int) (last_y/Editor.ZoomFaktor),
-		  //	       (int) ((e.getX()-last_x)/Editor.ZoomFaktor),
-		  //	       (int) ((e.getY()-last_y)/Editor.ZoomFaktor));
-		      ttobj = new tempobj("sq",
-					  (int) (last_x),
-					  (int) (last_y),
-					  (int) ((e.getX()-last_x)),
-					  (int) ((e.getY()-last_y)));
-		       
-		       System.out.println("boxdraw beendet");
+		{
+		//new Repaint(g,root);
+		//Repaint r = new Repaint(); 
+		//r.start(root,0,0,true); 
+		   	bufferGraphics = this.getGraphics();
+		  
+		    bufferGraphics.setColor(this.getBackground());
+		    bufferGraphics.drawRect((int) (last_x),
+		  	       (int) (last_y),
+		  	       (int) (old_x),
+		  	       (int) (old_y));
 
-		          repaint(last_x-1,last_y-1,old_x+1,old_y+1);
-		    old_x = e.getX()-last_x+1;
-		    old_y = e.getY()-last_y+1;
+		    bufferGraphics.setColor(Color.black);
+		    bufferGraphics.drawRect((int) (last_x),
+		  	       (int) (last_y),
+		  	       (int) ((e.getX()-last_x)),
+		  	       (int) ((e.getY()-last_y)));
+		      
+		    old_x = e.getX()-last_x;
+		    old_y = e.getY()-last_y;
 
-		    //repaint();
-		    //  Editor.SetListen();trroot = false;
-
+		    restore(g);
 		}
 
 if ((e.getID() == MouseEvent.MOUSE_DRAGGED) & (Editor.Editor() =="Draw_Par"))
@@ -251,20 +244,30 @@ if ((e.getID() == MouseEvent.MOUSE_DRAGGED) & (Editor.Editor() =="Draw_Par"))
 
 if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans" & trroot == true)
       {
-	  aktcomp = PESTdrawutil.getSmallObject(root,(int) (e.getX()/Editor.ZoomFaktor),(int) (e.getY()/Editor.ZoomFaktor));
+	  //aktcomp = PESTdrawutil.getSmallObject(root,(int) (e.getX()/Editor.ZoomFaktor),(int) (e.getY()/Editor.ZoomFaktor));
+		//new Repaint(g,root);
+		//Repaint r = new Repaint(); 
+		//r.start(root,0,0,true); 
+		
+	  bufferGraphics = this.getGraphics();		  
+	  bufferGraphics.setColor(this.getBackground());
 	  int tj = 0;
 	  while (tempwaypoint[tj+1] != null)
-	      {g.drawLine(tempwaypoint[tj].x,tempwaypoint[tj].y,tempwaypoint[tj+1].x,tempwaypoint[tj+1].y);
+	      {bufferGraphics.drawLine(tempwaypoint[tj].x,tempwaypoint[tj].y,tempwaypoint[tj+1].x,tempwaypoint[tj+1].y);
 	      tj++;};
-	  
-	  g.setColor(Color.black);
-	  repaint();
-	  //g.drawLine(last_x,last_y,e.getX(),e.getY());
-	  drawPESTTrans.drawTrans(g,last_x,last_y,e.getX(),e.getY(),null,null,Color.black);
-	// System.out.println("Akt. Komponente : "+aktcomp);
-	//new highlightObject(true);
-	//new highlightObject(aktcomp,Color.black);
-	//new highlightObject();
+	  drawPESTTrans.drawTrans(bufferGraphics,last_x,last_y,old_x,old_y,null,null,this.getBackground());
+  //bufferGraphics.drawLine(last_x,last_y,e.getX(),e.getY());
+  restore(g);
+	  tj = 0;
+	  bufferGraphics.setColor(Color.black);
+	  	  while (tempwaypoint[tj+1] != null)
+	  	      {bufferGraphics.drawLine(tempwaypoint[tj].x,tempwaypoint[tj].y,tempwaypoint[tj+1].x,tempwaypoint[tj+1].y);
+	  	      tj++;};
+			  
+	 drawPESTTrans.drawTrans(bufferGraphics,last_x,last_y,e.getX(),e.getY(),null,null,Color.black);
+		
+		old_x = e.getX();
+		old_y = e.getY();
       }
 
 }
@@ -308,8 +311,12 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans" & trro
 			if (e.getClickCount() < 2)
 			{
 			    laufwaypoint++;
-			g.setColor(Editor.tr_color());
-			g.drawLine(last_x,last_y,e.getX(),e.getY());last_x = (short) e.getX(); last_y = (short) e.getY();		
+			//g.setColor(Editor.tr_color());
+			//g.drawLine(last_x,last_y,e.getX(),e.getY());
+			drawPESTTrans.drawTrans(bufferGraphics,last_x,last_y,e.getX(),e.getY(),null,null,this.getBackground());
+			g.setColor(Color.black);g.drawLine(last_x,last_y,e.getX(),e.getY());
+			last_x = (short) e.getX(); last_y = (short) e.getY();
+			
 			tempwaypoint[laufwaypoint] = new Point((int) (last_x/Editor.ZoomFaktor),(int) (last_y/Editor.ZoomFaktor));
 			} else
 			{
@@ -318,11 +325,11 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans" & trro
 		//	System.out.println("Pfeilspitze");
 			TrAnchor an1 = null;
 			TrAnchor an2 = null;
-			drawPESTTrans.drawTrans(g,tempwaypoint[laufwaypoint-1].x
-						,tempwaypoint[laufwaypoint-1].y
-						,tempwaypoint[laufwaypoint].x
-						,tempwaypoint[laufwaypoint].y
-						,an1,an2,Editor.tr_color());
+			//drawPESTTrans.drawTrans(g,tempwaypoint[laufwaypoint-1].x
+			//			,tempwaypoint[laufwaypoint-1].y
+			//			,tempwaypoint[laufwaypoint].x
+			//			,tempwaypoint[laufwaypoint].y
+			//			,an1,an2,Editor.tr_color());
 			new drawPESTTrans(g,root,tempwaypoint,laufwaypoint,Color.magenta);
 			Editor.SetListen();trroot = false;
 			repaint();

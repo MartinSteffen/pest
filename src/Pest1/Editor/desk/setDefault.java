@@ -73,7 +73,15 @@ boolean ttest;
 		   otemp1.defaults = NameList2;
 		} else {System.out.println(">>FEHLER in setDefault2<<");}
 
-	
+	if (matrix1.akt == root.state & matrix1.akt.rect != null)
+	  {
+        State tempstate;
+		Or_State otemp;
+	    tempstate = root.state;
+	    root.state = new Or_State(new Statename("...root"),new StateList(tempstate,null),null,null,null);
+	    otemp = (Or_State) root.state; 
+	    otemp.defaults = new StatenameList(matrix1.akt.name,null);		
+	  }
 
     }
 } // setDefault
