@@ -4,7 +4,7 @@
  * Created: Thu Dec 31 1998, 18:00:00
  *
  * @author Developed by Eike Schulz for swtech14.
- * @version $Id: SpreadAlgorithm.java,v 1.2 1999-01-22 21:58:47 swtech14 Exp $
+ * @version $Id: SpreadAlgorithm.java,v 1.3 1999-01-25 15:24:01 swtech14 Exp $
  *
  *
  * Durch diese Klasse wird ein (syntaktisch korrektes!) Statechart-Objekt mit
@@ -35,6 +35,7 @@ package tesc2;
 import absyn.*;
 import java.awt.FontMetrics;
 import java.util.Vector;
+import editor.Editor;
 
 class SpreadAlgorithm extends GraphOptimizer {
 
@@ -1403,10 +1404,21 @@ class SpreadAlgorithm extends GraphOptimizer {
   // Berechne Laenge des TLabels ´l´.
 
   private int getTLabelLength(TLabel l) {
-    //    return ((l != null && l.caption != null) ?
-    //	    (fMetrics.stringWidth (l.caption) + stepsize_tiny*2) : 0);
-    return ((l != null && l.caption != null) ?
-	    (fMetrics.stringWidth ("Testlabel") + stepsize_tiny*2) : 0);
+
+    // Rueckgabewert fuer Labellaenge.
+    int returnlength = 0;
+
+    // Pruefe, ob caption-String leer ist.
+    if (l != null && l.caption != null) {
+
+      // Falls 'caption'-String nicht leer ist, pruefe ob Laenge von Caption >=
+      // 'tLabellength' ist.
+
+      returnlength = (l.caption.length() >= TLABELLENGTH) ?
+	(fMetrics.stringWidth (Editor.LongLabel) + stepsize_tiny*2)
+	:(fMetrics.stringWidth (l.caption) + stepsize_tiny*2);
+    }
+    return returnlength;
   } // method getTLabelLength
 
 
