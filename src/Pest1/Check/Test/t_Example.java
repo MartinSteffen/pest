@@ -1,9 +1,9 @@
-
+import Check.*;
 import Absyn.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: t_Example.java,v 1.3 1998-12-04 11:12:13 swtech11 Exp $
+ *  @version  $Id: t_Example.java,v 1.4 1998-12-06 23:12:04 swtech11 Exp $
  */
 public class t_Example{
 
@@ -39,7 +39,7 @@ public class t_Example{
  new BvarList (a6,
  new BvarList (a5,null))));
 
-    PathList pathlist =  
+    PathList pathlist =
         new PathList (new Path ("SUD"),
           new PathList (new Path ("P1"),
             new PathList (new Path ("P2"),
@@ -68,7 +68,7 @@ public class t_Example{
 							  new GuardEvent(C),
 							  new GuardCompp (new Comppath (Comppath.IN,
 											new Path ("T245"))))),
-					   new ActionEvent(C)));
+					   new ActionEmpty (new Dummy())));
 
 
   Or_State R1 = new Or_State (new Statename ("R1"),
@@ -80,7 +80,7 @@ public class t_Example{
   Or_State R2 = new Or_State (
 			      new Statename ("R2"),
 			      new StateList (T1,new StateList (T2,null)),
-			      new TrList  (new Tr (new Statename ("T1"), 
+			      new TrList  (new Tr (new UNDEFINED(), // undef statt Statename ("T1")
 						   new Statename ("T2"),
 						   new Label (new GuardEvent(D),null)),
 					   new TrList (new Tr (new Statename ("T2"), 
@@ -112,23 +112,107 @@ public class t_Example{
   Or_State SUD = new Or_State (
 			       new Statename ("SUD"),
 			       new StateList (P1,new StateList (P2,new StateList (P3,null))),
-			       new TrList (new Tr (new Statename ("P1"), 
-						   new Statename ("P2"), 
+			       new TrList (new Tr (new Statename ("P1"),
+						   new Statename ("P2"),
 						   new Label (new GuardEvent(C),null)),
-					   new TrList (new Tr (new Statename ("P1"), 
-							       new Statename ("P3"), 
+					   new TrList (new Tr (new Statename ("P1"),
+							       new Statename ("P3"),
 							       new Label (new GuardEvent(A),null)),
-						       new TrList (new Tr (new Statename ("P3"), 
-									   new Statename ("P1"), 
+						       new TrList (new Tr (new Statename ("P3"),
+									   new Statename ("P1"),
 									   new Label (new GuardEvent(B),null)),null))),
 			       new StatenameList (new Statename("P1"), null),
-			       null);  
-  
+			       null);
+
   return new Statechart (statelist,
 			 blist,
 			 pathlist,
 			 SUD);
   }
+
+  public static Statechart getExample_m1() {
+
+    PathList pathlist =
+        new PathList (new Path ("SUD"),
+          new PathList (new Path ("SUD.P1"),
+            new PathList (new Path ("SUD.P2"),
+              new PathList (new Path ("SUD.P2.Z1"),
+                new PathList (new Path ("SUD.P2.Z2"),
+             null)))));
+
+    Basic_State P1 = new Basic_State (new Statename("P1"));
+    Basic_State Z1 = new Basic_State (new Statename("Z1"));
+    Basic_State Z2 = new Basic_State (new Statename("Z2"));
+
+    Or_State P2 = new Or_State (
+			       new Statename ("P2"),
+			       new StateList (Z1,new StateList (Z2,null)),
+			       new TrList (new Tr (new Statename ("Z1"), new Statename ("Z5"), new Label (null,null)),
+					     new TrList (new Tr (new Statename ("Z2"), new Statename ("Z1"), new Label (null,null)),
+						     new TrList (new Tr (new Statename ("Z1"), new Statename ("P1"), new Label (null,null)),
+                   new TrList (new Tr (new Statename ("Z2"), new UNDEFINED (), new Label (null,null)),
+                     new TrList (new Tr (new Statename ("Z1"), new Statename ("Z2"), new Label (null,null)),
+              null))))),
+			       new StatenameList (new Statename("Z2"), null),
+			       null);
+
+    Or_State SUD = new Or_State (
+			       new Statename ("SUD"),
+			       new StateList (P1,new StateList (P2,null)),
+			       new TrList (new Tr (new Statename ("Z1"), new Statename ("P2"), new Label (null,null)),
+					     new TrList (new Tr (new Statename ("P1"), new UNDEFINED (), new Label (null,null)),
+						     new TrList (new Tr (new Statename ("P3"), new Statename ("P1"),	new Label (null,null)),
+                   new TrList (new Tr (new UNDEFINED (), new UNDEFINED (), new Label (null,null)),
+                     new TrList (new Tr (new Statename ("P2"), new Statename ("P1"), new Label (null,null)),
+              null))))),
+			       new StatenameList (new Statename("P1"), null),
+			       null);
+
+    return new Statechart (null, null, pathlist, SUD);
+  }
+
+  public static Statechart getExample_m2() {
+
+    PathList pathlist =
+        new PathList (new Path ("SUD"),
+          new PathList (new Path ("SUD.P1"),
+            new PathList (new Path ("SUD.P2"),
+              new PathList (new Path ("SUD.P2.Z1"),
+                new PathList (new Path ("SUD.P2.Z2"),
+             null)))));
+
+    Basic_State P1 = new Basic_State (new Statename("P1"));
+    Basic_State Z1 = new Basic_State (new Statename("Z1"));
+    Basic_State Z2 = new Basic_State (new Statename("Z2"));
+
+    Or_State P2 = new Or_State (
+			       new Statename ("P2"),
+			       new StateList (Z1,new StateList (Z2,null)),
+			       new TrList (new Tr (new Statename ("Z1"), new Conname("BLABLA-CON"), new Label (null,null)),
+					     new TrList (new Tr (new Statename ("Z2"), new Statename ("Z1"), new Label (null,null)),
+						     new TrList (new Tr (new Conname("SUD-1-CON"), new Statename ("P1"), new Label (null,null)),
+                   new TrList (new Tr (new Statename ("Z2"), new UNDEFINED (), new Label (null,null)),
+                     new TrList (new Tr (new Statename ("Z1"), new Conname("P2-CON"), new Label (null,null)),
+              null))))),
+			       new StatenameList (new Statename("Z2"), null),
+			       new ConnectorList (new Connector(new Conname("P2-CON")), null));
+
+    Or_State SUD = new Or_State (
+			       new Statename ("SUD"),
+			       new StateList (P1,new StateList (P2,null)),
+			       new TrList (new Tr (new Conname("sud-3-CON"), new Statename ("P2"), new Label (null,null)),
+					     new TrList (new Tr (new Statename ("P1"), new Conname("P2-CON"), new Label (null,null)),
+						     new TrList (new Tr (new Statename ("P3"), new Statename ("P1"),	new Label (null,null)),
+                   new TrList (new Tr (new Conname("SUD-1-CON"), new Conname("sud-2-CON"), new Label (null,null)),
+                     new TrList (new Tr (new Statename ("P2"), new Statename ("P1"), new Label (null,null)),
+              null))))),
+			       new StatenameList (new Statename("P1"), null),
+			       new ConnectorList (new Connector(new Conname("SUD-1-CON")),
+               new ConnectorList(new Connector(new Conname("sud-2-CON")), null))    );
+
+    return new Statechart (null, null, pathlist, SUD);
+  }
+
 }
 
 
