@@ -534,7 +534,10 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans" & trro
 	  tj = 0;
 	  bufferGraphics.setColor(Color.black);
 	  	  while (tempwaypoint[tj+1] != null)
-	  	      {bufferGraphics.drawLine(tempwaypoint[tj].x,tempwaypoint[tj].y,tempwaypoint[tj+1].x,tempwaypoint[tj+1].y);
+	  	      {bufferGraphics.drawLine((int)(tempwaypoint[tj].x*Editor.ZoomFaktor),
+					       (int)(tempwaypoint[tj].y*Editor.ZoomFaktor),
+					       (int)(tempwaypoint[tj+1].x*Editor.ZoomFaktor),
+					       (int)(tempwaypoint[tj+1].y*Editor.ZoomFaktor));
 	  	      tj++;};
 			  
 	 drawPESTTrans.drawTrans(bufferGraphics,last_x,last_y,e.getX(),e.getY(),null,null,Color.black);
