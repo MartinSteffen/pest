@@ -14,7 +14,7 @@ public class Editor extends Frame
     private String label;
 
     /**
-     * public Editor(Statechart st, String l)
+     * Ruft den Editor auf, uebergibt Statechart und Name 
      */
 
     public Editor(Statechart st, String l)
@@ -45,16 +45,36 @@ public class Editor extends Frame
     }
 
     /** 
-     * public static boolean highlight(Path obj)
+     * highlight-Funktion: gibt true zurueck, falls erfolgreich
      */
 
-    public static boolean highlight(Path obj)
+    public static boolean highlight(Path obj, Color c)
+    {
+	return true;
+    }
+    public static boolean highlight(Basic_State obj, Color c)
+    {
+	return true;
+    }
+    public static boolean highlight(And_State obj, Color c)
+    {
+	return true;
+    }
+    public static boolean highlight(Or_State obj,Color c)
+    {
+	return true;
+    }
+    public static boolean highlight(Tr obj,Color c)
+    {
+	return true;
+    }
+    public static boolean highlight(Connector obj,Color c)
     {
 	return true;
     }
 
     /**
-     *public static boolean listenEditor()
+     *listenEditor: gibt true zurueck, falls Aenderung an dem Statechart vorgenommen(seit der letzten Abfrage) 
      */
 
     public static boolean listenEditor()
