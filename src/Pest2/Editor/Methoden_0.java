@@ -6,14 +6,14 @@ import java.awt.*;
 import java.awt.event.*;
 
 
-public class Methoden_0
+class Methoden_0
 {
     private static Point mMoved = new Point(0,0); //enthaehlt absolute Koordinate
     private static Point conpos = new Point(0,0);
     private static CPoint[] pointsTr = new CPoint[50]; //Array fuer addTransitionmouse-Clicked und -Moved
 
 
-    public static void transitionMouseClicked(MouseEvent e,int x,int y,Editor editor)
+    protected static void transitionMouseClicked(MouseEvent e,int x,int y,Editor editor)
     {
         addTransitionMouseClicked(e,x,y,editor);
     }
@@ -28,7 +28,7 @@ public class Methoden_0
     Hilfsmethode: getNullIndex(Point[] p)
                   setNullArray(CPoint[] p)
 */
-    public static void addTransitionMouseClicked(MouseEvent e,int x,int y,Editor editor)
+    protected static void addTransitionMouseClicked(MouseEvent e,int x,int y,Editor editor)
     {
         State s1=null,s2=null;
         Graphics g = editor.getGraphics();
@@ -139,7 +139,7 @@ public class Methoden_0
         g.dispose();
     }
 
-    public static void addConnectorMouseClicked(int x, int y, Editor editor)
+    protected static void addConnectorMouseClicked(int x, int y, Editor editor)
     {
         if (getConEnvOf(x,y,editor) != null) return;
         if (EditorUtils.getInnermostStateOf(x,y,editor) instanceof Basic_State) return;
@@ -161,7 +161,7 @@ public class Methoden_0
     //          wenn Transition gewaehlt ist
     //Parametern: State, x- und y-Koordinaten des Mauszeigers
 
-    public static void transitionMouseMoved(State state,int x, int y, Editor editor)
+    protected static void transitionMouseMoved(State state,int x, int y, Editor editor)
     {
         State st = editor.statechart.state;
         if (st == null) return;
@@ -259,7 +259,7 @@ public class Methoden_0
         g.dispose();
     }
 
-    public static void markConMouseMoved(int x, int y, Editor editor)
+    protected static void markConMouseMoved(int x, int y, Editor editor)
     {
         State state = editor.statechart.state;
         if (state == null) return;
@@ -314,7 +314,7 @@ public class Methoden_0
         catch (Exception e) {}
     }
 
-    public static void drawTransition(TrList trlist,int absX, int absY,Color color, Editor editor)
+    protected static void drawTransition(TrList trlist,int absX, int absY,Color color, Editor editor)
     {
         Graphics g = editor.getGraphics();
         g.setColor(color);
@@ -385,7 +385,7 @@ public class Methoden_0
 
 
 // x,y absolute Koordinate des innersten zustandes
-    public static void bezier(Point[] p1,int x, int y,Color col, Editor editor)
+    protected static void bezier(Point[] p1,int x, int y,Color col, Editor editor)
     {
         Graphics g = editor.getGraphics();
         g.setColor(col);
@@ -497,7 +497,7 @@ public class Methoden_0
     //                3 fuer untere Seite
     //                4 fuer linke Seite
 
-    public static int wherePoint(Rectangle r, int x, int y)
+    protected static int wherePoint(Rectangle r, int x, int y)
     {
         Rectangle r1 = new Rectangle(r.x,r.y,r.width/2,r.height/2);
         Rectangle r2 = new Rectangle(r.x+r.width/2,r.y,r.width/2,r.height/2);
@@ -571,7 +571,7 @@ public class Methoden_0
     }
 
 
-    public static Point getScrollPosition(Editor editor)
+    protected static Point getScrollPosition(Editor editor)
     {
         return new Point(editor.scrollX,editor.scrollY);
     }
@@ -756,7 +756,7 @@ public class Methoden_0
     }
 
 
-    public static CRectangle abs(Editor editor, State state) {
+    protected static CRectangle abs(Editor editor, State state) {
 
         // liefert das Rectangle von state mit absoluten Koordinaten
         // Achtung: state muá im Baum h„ngen. Ist dies nicht der Fall
@@ -778,7 +778,7 @@ public class Methoden_0
     }
 
 //State "root" kann zurueck gegeben werden
-    public static State getFirstOrStateOf(int x, int y, Editor editor)
+    protected static State getFirstOrStateOf(int x, int y, Editor editor)
     {
         State s = EditorUtils.getInnermostStateOf(x,y,editor);
         if (s.equals(editor.statechart.state)) return s;
@@ -795,7 +795,7 @@ public class Methoden_0
     Methode: getConEnvOf
     Funktion: liefert den Connector, der um den absoluten Punkt(x,y) mit 10 Pixel Umgebung enthaelt
 */
-    public static Connector getConEnvOf(int x, int y, Editor editor)
+    protected static Connector getConEnvOf(int x, int y, Editor editor)
     {
         State s = getFirstOrStateOf(x,y,editor);
         Rectangle r = abs(editor,s), rectcon = new Rectangle(x-5,y-5,10,10); //Connector hat durchmesser 10
@@ -810,7 +810,7 @@ public class Methoden_0
         return null;
     }
 
-    public static void showDefaultState(Editor editor)
+    protected static void showDefaultState(Editor editor)
     {
         StateList help = editor.stateList;
         Or_State os = null;
@@ -858,7 +858,7 @@ public class Methoden_0
     }
 
 
-    public static void addDefaultMouseClicked(int x, int y, Editor editor)
+    protected static void addDefaultMouseClicked(int x, int y, Editor editor)
     {
         State s = EditorUtils.getInnermostStateOf(x,y,editor);
         State s1 = getFirstOrStateOf(x,y,editor);
@@ -888,7 +888,7 @@ public class Methoden_0
 	editor.gui.StateChartHasChanged();
     }
 
-    public static void showHltObject(Absyn obj, Color col, Editor editor)
+    protected static void showHltObject(Absyn obj, Color col, Editor editor)
     {
         if (obj == null) return;
         if (obj instanceof Basic_State)
@@ -981,7 +981,7 @@ public class Methoden_0
         catch (Exception e) {}
     }
 
-    public static void updateAll(Editor editor)
+    protected static void updateAll(Editor editor)
     {
         showAllTrans(editor);
         showAllConnectors(editor);

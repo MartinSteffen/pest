@@ -2,7 +2,7 @@ package editor;
 
 import java.awt.*;
 
-public class Pfeil
+class Pfeil
 {
     private int x1,y1,x2,y2;
     static double alpha = 30,alpha1;

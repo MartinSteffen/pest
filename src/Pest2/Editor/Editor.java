@@ -15,33 +15,33 @@ Aenderungen am 01.02.99 (von long)
 
 public class Editor extends Frame implements ActionListener {
 
-    public Statechart statechart;
+    protected Statechart statechart;
     private Statechart old;
     private MenuItem undo = null;
-    public Point startPoint = null;
-    public Point endPoint = null;
-    public State activeState = null;
-    public CRectangle newRect = null;
-    public boolean actionOk = false;
-    public StateList stateList = null;
+    protected Point startPoint = null;
+    protected Point endPoint = null;
+    protected State activeState = null;
+    protected CRectangle newRect = null;
+    protected boolean actionOk = false;
+    protected StateList stateList = null;
     private String status = "";
     private Scrollbar vert,horiz;
-    public int scrollX=-20,scrollY=-80;
-    public GUIInterface gui = null;
+    protected int scrollX=-20,scrollY=-80;
+    protected GUIInterface gui = null;
     private boolean changedStatechart = false; //fuer listenEditor()
     private String statechartName = "";
 
     private MenuItem copyOneCon,copyOneTr,insertOne,moveOne,removeOne,moveTransName;
     private Menu copy = new Menu("Kopieren");
     private Dimension dimension;
-    public CheckboxMenuItem cbbezier = new CheckboxMenuItem("Transitionen mit Kurven");
-    public int fontsize = 0;
+    protected CheckboxMenuItem cbbezier = new CheckboxMenuItem("Transitionen mit Kurven");
+    protected int fontsize = 0;
 
-    public static Editor edRef = null;
+    protected static Editor edRef = null;
     final Editor editor = this;
 
 /**
-	public Editor(Statechart st, String l)
+	protected Editor(Statechart st, String l)
 
     Erzeugt ein Editorobjekt und öffnet ein Editorfenster
 
@@ -49,7 +49,7 @@ public class Editor extends Frame implements ActionListener {
     @param l Ein Bezeichner fuer den Statechart
 */
 
-    public Editor(Statechart st, String l, int x, int y, int width, int height,GUIInterface gui_interface) {
+    protected Editor(Statechart st, String l, int x, int y, int width, int height,GUIInterface gui_interface) {
         statechart = st;
         if (statechart.state == null)  {
             statechart.state = new Or_State(null, null, null, null, null);
@@ -66,7 +66,7 @@ public class Editor extends Frame implements ActionListener {
         new highlightObject(true);
     }
 
-    public static Editor getRef()
+    protected static Editor getRef()
     {
         return edRef;
     }
@@ -549,15 +549,15 @@ public class Editor extends Frame implements ActionListener {
 	@return den aktuellen Statechart
      */
 
-    public Statechart getStatechart() {
+    protected Statechart getStatechart() {
         return statechart;
     }
 
-    public void setChangedStatechart(boolean b)
+    protected void setChangedStatechart(boolean b)
     {
         changedStatechart = b;
     }
-    public boolean getChangedStatechart()
+    protected boolean getChangedStatechart()
     {
         return changedStatechart;
     }

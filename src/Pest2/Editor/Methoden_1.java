@@ -21,20 +21,20 @@ class ObjectList
 }
 
 
-public class Methoden_1
+class Methoden_1
 {
     private static Point points[] = new Point[3];
     private static double factor = 1;
     private static Tr trans = null;
-    public static State selectOneState = null;
-    public static Tr selectOneTr = null;
-    public static Connector selectOneConnector = null;
-    public static State copyOneState = null;
-    public static Tr copyOneTr = null;
-    public static Connector copyOneConnector = null;
-    public static Absyn markLast = null; //das zuletzt markierte Objekt
+    protected static State selectOneState = null;
+    protected static Tr selectOneTr = null;
+    protected static Connector selectOneConnector = null;
+    protected static State copyOneState = null;
+    protected static Tr copyOneTr = null;
+    protected static Connector copyOneConnector = null;
+    protected static Absyn markLast = null; //das zuletzt markierte Objekt
 
-    public static ObjectList selectList = null,copyList = null;
+    protected static ObjectList selectList = null,copyList = null;
 
 
 /*
@@ -42,7 +42,7 @@ public class Methoden_1
     Funktion: erzeugt ein Dialogfenster fuer die Eingabe von Statename zu dem
               Zustand, der x,y im innersten hat.
 */
-    public static void addStatenameMouseClicked(int x, int y, Editor editor)
+    protected static void addStatenameMouseClicked(int x, int y, Editor editor)
     {
         State s = EditorUtils.getInnermostStateOf(x,y,editor);
         if (s == null) return;
@@ -64,7 +64,7 @@ public class Methoden_1
         }
     }
 
-    public static void addAndNameMouseClicked(int x, int y, Editor editor)
+    protected static void addAndNameMouseClicked(int x, int y, Editor editor)
     {
         State s = getFirstAndOf(x,y,editor);
         if (s == null) return;
@@ -79,7 +79,7 @@ public class Methoden_1
         }
     }
 
-    public static void addConNameMouseClicked(int x, int y, Editor editor)
+    protected static void addConNameMouseClicked(int x, int y, Editor editor)
     {
         Connector con = Methoden_0.getConEnvOf(x,y,editor);
         if (con == null) return;
@@ -101,7 +101,7 @@ public class Methoden_1
     Funktion: erzeugt ein Dialogfenster fuer die Eingabe von Transitionsnamen,
 
 */
-    public static void addTransNameMouseClicked(int x, int y, Editor editor)
+    protected static void addTransNameMouseClicked(int x, int y, Editor editor)
     {
         if (EditorUtils.getInnermostStateOf(x,y,editor) instanceof Basic_State) return;
         State s1 = Methoden_0.getFirstOrStateOf(x,y,editor);
@@ -206,21 +206,21 @@ public class Methoden_1
 /*
     Zoom-Faktor
 */
-    public static double getFactor()
+    protected static double getFactor()
     {
         return factor;
     }
-    public static void setFactor(double f)
+    protected static void setFactor(double f)
     {
         factor = f/100;
     }
 
-    public static void markObjects(Rectangle rect, Editor editor)
+    protected static void markObjects(Rectangle rect, Editor editor)
     {
         selectList = getObjects(rect,editor);
     }
 
-    public static ObjectList getObjects(Rectangle rect, Editor editor)
+    protected static ObjectList getObjects(Rectangle rect, Editor editor)
     {
         ObjectList objList = null;
         Or_State os = (Or_State)(editor.statechart.state);
@@ -276,7 +276,7 @@ public class Methoden_1
         return objList;
     }
 
-    public static void copyObjects(ObjectList objlist, Editor editor)
+    protected static void copyObjects(ObjectList objlist, Editor editor)
     {
         while (objlist != null)
         {
@@ -300,7 +300,7 @@ public class Methoden_1
         }
     }
 
-    public static void removeObjects(Editor editor)
+    protected static void removeObjects(Editor editor)
     {
         ObjectList list = selectList;
         while (list != null)
@@ -320,7 +320,7 @@ public class Methoden_1
         selectList = null;
     }
 
-    public static void selectOne(int x, int y, Editor editor)
+    protected static void selectOne(int x, int y, Editor editor)
     {
         if (Methoden_0.getConEnvOf(x,y,editor) != null)
             selectOneConnector(x,y,editor);
@@ -328,7 +328,7 @@ public class Methoden_1
             selectOneTr(x,y,editor);
     }
 
-    public static void insertOne(int x, int y, Editor editor)
+    protected static void insertOne(int x, int y, Editor editor)
     {
         if (markLast instanceof Connector)
             insertOneConnector(x,y,editor);
@@ -359,7 +359,7 @@ public class Methoden_1
         }
     }
 
-    public static void copyOneTr(Editor editor)
+    protected static void copyOneTr(Editor editor)
     {
         try
         {
@@ -736,7 +736,7 @@ public class Methoden_1
         selectList = new ObjectList(selectOneConnector,selectList);
     }
 
-    public static void copyOneConnector(Editor editor)
+    protected static void copyOneConnector(Editor editor)
     {
         try
         {
@@ -749,7 +749,7 @@ public class Methoden_1
         }
     }
 
-    public static void insertOneConnector(int x, int y,Editor editor)
+    protected static void insertOneConnector(int x, int y,Editor editor)
     {
         try
         {
@@ -780,7 +780,7 @@ public class Methoden_1
     Methode: removeOne()
     Funktion: entfernt das markierte Objekt
 */
-    public static void removeOne(Editor editor)
+    protected static void removeOne(Editor editor)
     {
         if (markLast instanceof Connector)
             removeOneCon(editor);
@@ -848,7 +848,7 @@ public class Methoden_1
         }
     }
 
-    public static void moveOne(int x, int y, Editor editor)
+    protected static void moveOne(int x, int y, Editor editor)
     {
         if (markLast instanceof Connector){
             if (markLast == null) return;
@@ -894,7 +894,7 @@ public class Methoden_1
         tr.target = t;
     }
 
-    public static void moveTransName(int x, int y, Editor editor)
+    protected static void moveTransName(int x, int y, Editor editor)
     {
         State s = Methoden_0.getFirstOrStateOf(x,y,editor);
         Rectangle r = Methoden_0.abs(editor,s);
@@ -902,7 +902,7 @@ public class Methoden_1
         editor.repaint();
     }
 
-    public static void showFullTransName(int x, int y, Editor editor)
+    protected static void showFullTransName(int x, int y, Editor editor)
     {
         if (editor.gui == null) return;
         StateList list = editor.stateList;

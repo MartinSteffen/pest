@@ -4,7 +4,7 @@
  *
  *
  *
- * @author
+ * @authorLong Mai, Florian Luepke
  * @version
  */
 
@@ -23,7 +23,7 @@ public class highlightObject {
     {
          deleteObject(obj);
     }
-
+   
     public highlightObject(State obj,Color col)
     {
         if (obj instanceof Basic_State)
@@ -33,10 +33,19 @@ public class highlightObject {
         if (obj instanceof And_State)
             new highlightObject((And_State)obj,col);
     }
+
+  /**
+   *fuer das Unhighlighten von Basic_State
+   *
+   */
     public highlightObject(Basic_State obj)
     {
         deleteObject(obj);
     }
+  /**
+   *highlighten von Basic_State mit Farbe col
+   *
+   */
     public highlightObject(Basic_State obj, Color col)
     {
         if (obj != null)
@@ -44,10 +53,19 @@ public class highlightObject {
         showHlt();
     }
 
+  /**
+   *fuer das unhighlighten von And_State
+   *
+   */
     public highlightObject(And_State obj)
     {
         deleteObject(obj);
     }
+
+  /**
+   *fuer das highlighten von  And_State mit Farbe col
+   *
+   */
     public highlightObject(And_State obj, Color col)
     {
         if (obj != null)
@@ -55,10 +73,19 @@ public class highlightObject {
         showHlt();
     }
 
+  /**
+   *fuer das unhighlighten von Or_State 
+   *
+   */
     public highlightObject(Or_State obj)
     {
         deleteObject(obj);
     }
+
+  /**
+   *fuer das highlighten von Or_State mit Farbe col
+   *
+   */
     public highlightObject(Or_State obj, Color col)
     {
         if (obj != null)
@@ -66,10 +93,19 @@ public class highlightObject {
         showHlt();
     }
 
+  /**
+   *fuer das unhighlighten von Transition
+   *
+   */
     public highlightObject(Tr obj)
     {
         deleteObject(obj);
     }
+
+  /**
+   *fuer das highlighten von Transition mit Farbe col
+   *
+   */
     public highlightObject(Tr obj, Color col)
     {
         if (obj != null)
@@ -77,22 +113,31 @@ public class highlightObject {
         showHlt();
     }
 
+  /**
+   *fuer das unhighlighten von Connector
+   *
+   */
     public highlightObject(Connector obj)
     {
         deleteObject(obj);
     }
+
+  /**
+   *fuer das highlighten von Connector mit Farbe col
+   *
+   */
     public highlightObject(Connector obj, Color col)
     {
         if (obj != null)
             list = new HltList(new Hlt(obj,col),list);
         showHlt();
     }
-    public highlightObject(boolean clear)
+    protected highlightObject(boolean clear)
     {
         if(clear) list = null;
     }
 
-    public highlightObject()
+    protected highlightObject()
     {
         showHlt();
     }
