@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.13 1999-01-18 16:01:02 swtech25 Exp $
+//	$Id: report_list,v 1.14 1999-01-18 16:13:27 swtech18 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -109,7 +109,7 @@ Falls auf E3 reagiert wird, gibt es gar keine Meldung.
 #Number:        6
 #Autor:         Erich Mikk erm
 #Subject:       Interlevel Transitionen in TV
-#Status:        reported
+#Status:        fixed
 #Description:
 
 In ~swtech12/Examples/TV/tv.st ist eine Interlevel-Transition. Folgendes
@@ -194,7 +194,7 @@ Wenn in verschiedenen Ebenenen States den gleichen Namen haben, kann man bei ein
 #Number:	14
 #Autor:	        Daniel Wendorff swtech11
 #Subject:	Interleveltransition ? siehe Nummer 6
-#Status:	reported
+#Status:	fixed
 #Description:
 
 
