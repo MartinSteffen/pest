@@ -381,7 +381,7 @@ implements GUIInterface
 	    {
 		check.ModelCheck SCchecker;
 
-		if (PEditor != null)
+		if (PEditor == null)
 		    {
 			SCchecker = new check.ModelCheck(this);
 		    }
