@@ -35,7 +35,7 @@ import java.awt.*;
  * keine
  * </DL COMPACT>
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: Crossreference.java,v 1.6 1999-01-20 13:46:00 swtech11 Exp $
+ * @version  $Id: Crossreference.java,v 1.7 1999-01-21 13:02:41 swtech11 Exp $
  */
 public class Crossreference extends ModelCheckBasics {
   private GUIInterface gui = null; // Referenz auf die GUI
@@ -56,6 +56,8 @@ public class Crossreference extends ModelCheckBasics {
     // Eingabe
     such = gui.EingabeDialog("Crossreference","Zu suchendes Element eingeben;",such);
     System.out.println(such);
+    
+    report_b_e();
 
     // Start der Auswertung
     if (sc.state instanceof Or_State) {navOrState ((Or_State)sc.state, null,""); }
@@ -69,7 +71,7 @@ public class Crossreference extends ModelCheckBasics {
       for (int i=0; i<items.size(); i++) {
         ReportItem rp = (ReportItem)items.elementAt(i);
         gui.userMessage("Check:   - "+rp.Pth);
-        ho = new highlightObject((Absyn)rp.Obj,Color.black); // Object highlighten
+        ho = new highlightObject((Absyn)rp.HiObj,Color.black); // Object highlighten
       }
       ho = new highlightObject(); // Highlighten aktivieren
     }
@@ -77,6 +79,19 @@ public class Crossreference extends ModelCheckBasics {
       gui.userMessage("Check: "+such+" wurde nicht gefunden.");
     }
   }
+
+    void report_b_e(){
+      for(SEventList e=sc.events; e!=null;e=e.tail){
+	  if (e.head.name.equals(such)) {itemInput(e.head,null,"Def.Liste Events");};
+      }
+
+  for(BVarList b=sc.bvars; b!=null;b=b.tail){
+	  if (b.head.var.equals(such)) {itemInput(b.head,null,"Def.Liste BVars");};
+      
+
+
+  };}
+
 
 
   void navBasicState(Basic_State bs, State _s, String p) {
@@ -106,6 +121,10 @@ public class Crossreference extends ModelCheckBasics {
     String z1 = new String();
     String z2 = new String();
     
+    // Ueberpruefe Guards und Actions
+    pruefeGuard(tl.head.label.guard, tl.head, p);
+    pruefeAction(tl.head.label.action, tl.head, p);
+
     // Namen der Anker rausfinden
     if (tl.head.source instanceof UNDEFINED)
       { z1 = new String("UNDEFINED"); }
@@ -141,6 +160,67 @@ public class Crossreference extends ModelCheckBasics {
     if (tl.tail != null) { navTransInTransList(tl.tail, _s, p); }
   }
 
+
+    void pruefeGuard(Guard g, Tr t, String p){
+    if (g instanceof GuardBVar)  {pruefeBVar  (((GuardBVar )g).bvar, t, p, 1);}
+      else {
+      if (g instanceof GuardCompg) {pruefeGuard (((GuardCompg)g).cguard.elhs, t, p);
+                                    pruefeGuard (((GuardCompg)g).cguard.erhs, t, p); }
+        else {
+        if (g instanceof GuardNeg)   {pruefeGuard (((GuardNeg)g).guard, t, p);}
+          else {
+	      if (g instanceof GuardEvent) {pruefeEvent (((GuardEvent)g).event, t, p,1);} 
+	      else {
+		   
+		       if (g instanceof GuardCompp) {pruefePath  (((GuardCompp)g).cpath.path, t, p);}
+		       else{
+			   if (g instanceof GuardUndet) {};
+			   
+		       };};};};};};
+
+    void pruefeAction(Action a, Tr t, String p){
+    if (a instanceof ActionBlock)  { if ((((ActionBlock)a).aseq)!=null) {
+            Aseq as=((ActionBlock)a).aseq;
+            for(; (as.tail!=null); as=as.tail) 
+	      { pruefeAction(as.head, t, p);}
+	    pruefeAction(as.head, t, p);}
+      
+    }
+      else {
+      if (a instanceof ActionStmt) {pruefeBool (((ActionStmt)a).stmt, t, p);}
+        else {
+          if (a instanceof ActionEvt) {pruefeEvent (((ActionEvt)a).event, t, p, 2);}
+    }; }; };
+
+  void pruefeBVar(Bvar b, Tr t, String p, int i){
+
+      if ((b.var.equals(such)) && (i==1)) {itemInput(b,t,"BVar im Guard",t,p);}
+      if ((b.var.equals(such)) && (i==2)) {itemInput(b,t,"BVar im Action",t,p);}
+
+ 
+  };
+
+  void pruefeBool(Boolstmt b, Tr t, String p) {
+     if (b instanceof BAss)  {pruefeBVar(((BAss)b).ass.blhs, t, p, 2); pruefeGuard(((BAss)b).ass.brhs, t, p);}
+       else {
+       if (b instanceof MTrue)  {pruefeBVar(((MTrue)b).var, t, p, 2);}
+         else {
+         if (b instanceof MFalse) {pruefeBVar(((MFalse)b).var, t, p, 2);}
+          
+     };};};
+
+  void pruefeEvent(SEvent e, Tr t, String p, int i){
+
+      if ((e.name.equals(such)) && (i==1)) {itemInput(e,t,"Event im Guard",t,p);}
+      if ((e.name.equals(such)) && (i==2)) {itemInput(e,t,"Event im Action",t,p);}
+  };
+
+  void pruefePath(Path p, Tr t, String s){
+      if (such.equals(PathtoString(p))) {itemInput(p,t,"Pfad im Guard",t,s);}
+      for (;p.tail!=null;p=p.tail){}; if (such.equals(p.head)) {itemInput(p,t,"State im Guard",t,s);}
+     
+  };
+
   // Eingabe eines Report Ergebnises
   void itemInput(int a, Object ho, String p) {
     ReportItem ri = new ReportItem(a, ho, p);
@@ -152,6 +232,20 @@ public class Crossreference extends ModelCheckBasics {
     items.addElement(ri);
   }
 
+ void itemInput(Object o, Object ho, String p1, Tr t, String p) {
+  String s1="";
+  String s2="";
+  if (t.source instanceof Statename) { s1=((Statename)t.source).name;};
+  if (t.target instanceof Statename) { s2=((Statename)t.target).name;};
+  if (t.source instanceof Conname)  { s1=((Conname)t.source).name;};
+  if (t.target instanceof Conname)  { s2=((Conname)t.target).name;};
+  if (t.source instanceof UNDEFINED)  { s1="UNDEFINED";};
+  if (t.target instanceof UNDEFINED)  { s2="UNDEFINED";};
+
+
+    ReportItem ri = new ReportItem(o, ho, p1 +" Trans: "+s1+" -> "+s2+" in State: "+p);
+    items.addElement(ri);
+  }
 
 
 }
