@@ -45,7 +45,7 @@ import gui.*;
  * </DL COMPACT>
  *
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: ModelCheck.java,v 1.11 1999-01-03 15:14:27 swtech11 Exp $
+ * @version  $Id: ModelCheck.java,v 1.12 1999-01-03 16:28:33 swtech11 Exp $
  */
 public class ModelCheck {
   private ModelCheckMsg mcm; // Object, um die Fehler und Warnungen zu speichern
@@ -335,21 +335,22 @@ public class ModelCheck {
  *<TR><TD ALIGN="right">100</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Doppelte Definition von BVar</TD></TR>
  *<TR><TD ALIGN="right">101</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Keine Deklaration von BVar</TD></TR>
  *<TR><TD ALIGN="right">102</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Deklarierte BVar wurde nicht verwendet</TD></TR>
+ *<TR><TD ALIGN="right">103</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Der Boolsche Ausdruck im Guard der Transition laesst sich nicht spezifizieren. </TD></TR>
  *<TR><TD ALIGN="right">110</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Die Statechart enthält keine Liste der booleschen Variablen.</TD></TR>
  *<TR><TD ALIGN="right">200</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Doppelte Definition von Events</TD></TR>
  *<TR><TD ALIGN="right">201</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Keine Deklaration von Event</TD></TR>
  *<TR><TD ALIGN="right">202</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Deklarierter Event wurde nicht verwendet</TD></TR>
  *<TR><TD ALIGN="right">203</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Der Pathname in einem GuardComppath ist nicht vorhanden.</TD></TR>
- *<TR><TD ALIGN="right">204</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Der Pathname in einem GuardComppath ist mehrfach vorhanden.</TD></TR>
  *<TR><TD ALIGN="right">210</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Die Statechart enthält keine Eventliste.</TD></TR>
  *<TR><TD ALIGN="right">300</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Mehrfache Definition von Statename</TD></TR>
  *<TR><TD ALIGN="right">301</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Bezeichnung von Statename nicht eindeutig</TD></TR>
- *<TR><TD ALIGN="right">302</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Deklarierter State wurde nicht verwendet</TD></TR>
+ *<TR><TD ALIGN="right">302</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Deklarierter State wurde nicht verwendet</TD></TR>
  *<TR><TD ALIGN="right">303</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Keine Deklaration von Statename</TD></TR>
  *<TR><TD ALIGN="right">304</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Ein Or-State enthaelt nur einen inneren State</TD></TR>
  *<TR><TD ALIGN="right">305</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Ein Or-State enthaelt keinen inneren State</TD></TR>
  *<TR><TD ALIGN="right">306</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Ein And-State enthaelt nur einen inneren State</TD></TR>
  *<TR><TD ALIGN="right">307</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Ein And-State enthaelt keinen inneren State</TD></TR>
+ *<TR><TD ALIGN="right">308</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Der Statename ist ein leerer String</TD></TR>
  *<TR><TD ALIGN="right">310</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Die Statechart enthält keine Pfadliste.</TD></TR>
  *<TR><TD ALIGN="right">311</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Die Statechart enthält keine States.</TD></TR>
  *<TR><TD ALIGN="right">400</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Der Start-State der Transition ist nicht definiert.</TD></TR>
@@ -368,7 +369,14 @@ public class ModelCheck {
  *<TR><TD ALIGN="right">413</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Interlevel-Transition: Der Ziel-Connenctor liegt falsch.</TD></TR>
  *<TR><TD ALIGN="right">414</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Interlevel-Transition: Beide Connenctoren liegten falsch.</TD></TR>
  *<TR><TD ALIGN="right">415</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Die Transition hat den gleichen Start- und Ziel-Connector.</TD></TR>
- *<TR><TD ALIGN="right">420</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Die Statechart enthält keine Transitionen.</TD></TR> 
+ *<TR><TD ALIGN="right">416</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Der Guard der Transition beinhaltet einen Nichtdetermininsmus.</TD></TR>
+ *<TR><TD ALIGN="right">417</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Der Guard der Transition laesst sich nicht spezifizieren.</TD></TR>
+ *<TR><TD ALIGN="right">418</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Der Action der Transition laesst sich nicht spezifizieren.</TD></TR>
+ *<TR><TD ALIGN="right">419</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Die Transition ist auf keinem Weg mit einem State verbunden.</TD></TR>
+ *<TR><TD ALIGN="right">420</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Die Statechart enthält keine Transitionen.</TD></TR>
+ *<TR><TD ALIGN="right">421</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Dieser Connector ist Teil eines Zyklus.</TD></TR>
+ *<TR><TD ALIGN="right">422</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Die Transition ist an ihrem Startpunkt nicht durch andere Transitionen mit einem Startstate verbunden.</TD></TR>
+ *<TR><TD ALIGN="right">423</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Die Transition ist an ihrem Zielpunkt nicht durch andere Transitionen mit einem Zielstate verbunden.</TD></TR>
  *<TR><TD ALIGN="right">X</TD><TD ALIGN="center">X</TD><TD ALIGN="center">X</TD><TD>unbekannter Code</TD></TR>
  *</Table>
  * @param _number Index der Warnung (1 bis getWarningNumber() )
