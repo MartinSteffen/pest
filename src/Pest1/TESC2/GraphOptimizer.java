@@ -4,7 +4,7 @@
  * Created: Mon Dec 07 16:43:30 1998
  * 
  * @author swtech14 : Eike Schulz & Martin Poerksen
- * @version $Id: GraphOptimizer.java,v 1.11 1999-01-25 15:23:07 swtech14 Exp $
+ * @version $Id: GraphOptimizer.java,v 1.12 1999-02-11 14:03:02 swtech14 Exp $
  *
  *
  * <br>Der GraphOptimizer stellt Algorithmen zur Verfuegung, die die Zuordnung
@@ -151,6 +151,7 @@ public class GraphOptimizer {
 
   /**
    * Start des Graphplazierungsalgorithmus.
+   * @exception AlgorithmException Test, ob Parameteruebergabe richtig
    */
 
   public Statechart start () throws AlgorithmException {
@@ -204,6 +205,7 @@ public class GraphOptimizer {
 
   /**
    * Start des Graphplazierungsalgorithmus.
+   * @exception AlgorithmException Test, ob Parameteruebergabe richtig
    * Uebergabewert:
    *   int-Wert fuer Algorithmus-Art.
    */
@@ -230,7 +232,7 @@ public class GraphOptimizer {
    * Setze Algorithmus-Art.
    */
 
-  public void setAlgorithm (int alg) {
+  void setAlgorithm (int alg) {
     algorithm = alg;
   } // method setAlgorithm
 
@@ -240,7 +242,7 @@ public class GraphOptimizer {
    * Setze FontMetrics.
    */
 
-  public void setFontMetrics (FontMetrics fm) {
+  void setFontMetrics (FontMetrics fm) {
     fMetrics = fm;
   } // method setFontMetrics
 
