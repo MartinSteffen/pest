@@ -34,7 +34,7 @@ public class HighObj {
     private void redraw(Connector co, int nx, int ny, boolean drawflag,Absyn na,Color col) {
 	int neux = nx;
 	int neuy = ny;
-	System.out.println("Connector zeichnen");
+	//System.out.println("Connector zeichnen");
 
 	if (co == na) { 
 			h.setColor(col);
@@ -42,7 +42,7 @@ public class HighObj {
 			(int) ((co.position.y+neuy)*Editor.ZoomFaktor),
 			(int) (12*Editor.ZoomFaktor),
 			(int) (12*Editor.ZoomFaktor)
-			); System.out.println("Connector gefunden");
+				   ); //System.out.println("Connector gefunden");
 			}
 	// die anderen folgen spaeter
     }

@@ -125,13 +125,6 @@ public class Relist {
 	templist = templist.tail;
 	}
 
-	//colist = os.connectors;
-	//while (colist != null)
-	//{
-	//pathlist = nroot.cnames;
-	//Relist re = new Relist(); re.start(root,pathlist,path,colist.head);
-	//colist = colist.tail;
-	//}
 	String temptranslabel;
 	trlist = os.trs;
 	while (trlist != null)

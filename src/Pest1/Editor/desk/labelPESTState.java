@@ -28,6 +28,7 @@ Statechart root;
    boolean drawtest = true;  
    static int laufname = 0;
    Statematrix matrix1,matrix2;
+    Or_State otemp;
     
     public labelPESTState(Statechart nroot, int cx1, int cy1) 
     {
@@ -46,6 +47,11 @@ Statechart root;
 	    } else
 		{
 		    matrix1.akt.name = new Statename(Editor.labelObject(matrix1.akt));
+		   if (matrix1.prev != null)
+		       {
+			   otemp =  (Or_State) matrix1.prev;
+			   otemp.defaults = null;
+		       }
 		} 
  
 	}

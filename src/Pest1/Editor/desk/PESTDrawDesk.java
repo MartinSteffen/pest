@@ -25,7 +25,7 @@ import editor.*;
  /* Hauptzeichenfeld (Voreinstellungen & Definitionen) */
   public class PESTDrawDesk extends Component implements ActionListener {
 
-      protected short last_x, last_y;                		// letzter Klick
+      protected int last_x, last_y,old_x,old_y;                		// letzter Klick
       protected Color current_color = Color.black;   	        // aktueller Farbe
       protected int width, height;                   		// Groessenvariablen
       protected PopupMenu popup;                     		// pop-up Menue
@@ -161,11 +161,61 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_TransLabel")
 
       }
 
+if ((e.getID() == MouseEvent.MOUSE_DRAGGED) & (Editor.Editor() =="Draw_State"))
+		{// Editor.SetListen();
+		    repaint(last_x,last_y,old_x,old_y);
+		    g.setColor(Color.black);
+		    g.drawRect((int) (last_x/Editor.ZoomFaktor),
+			       (int) (last_y/Editor.ZoomFaktor),
+			       (int) ((e.getX()-last_x)/Editor.ZoomFaktor),
+			       (int) ((e.getY()-last_y)/Editor.ZoomFaktor));
+		    old_x = e.getX()-last_x+1;
+		    old_y = e.getY()-last_y+1;
+		    //  Editor.SetListen();trroot = false;
+
+		}
+
+if ((e.getID() == MouseEvent.MOUSE_DRAGGED) & (Editor.Editor() =="Draw_Par"))
+		{// Editor.SetListen();
+		    int px2,py2;
+		    
+		    if (Math.abs(last_x-e.getX()) < Math.abs(last_y-e.getY()))
+			{
+			    px2 = last_x;
+			    py2 = e.getY();
+			} else
+			    {
+				px2 = e.getX();
+				py2 = last_y;
+			    }
+
+		    repaint(last_x,last_y,old_x,old_y);
+		    g.setColor(Color.black);
+		    g.drawLine((int) (last_x/Editor.ZoomFaktor),
+			       (int) (last_y/Editor.ZoomFaktor),
+
+			       (int) ((px2)/Editor.ZoomFaktor),
+			       (int) ((py2)/Editor.ZoomFaktor));
+		    old_x = e.getX()-last_x+1;
+		    old_y = e.getY()-last_y+1;
+		    //  Editor.SetListen();trroot = false;
+
+		}
 
 
-if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans")
+
+if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans" & trroot == true)
       {
-	aktcomp = PESTdrawutil.getSmallObject(root,(int) (e.getX()/Editor.ZoomFaktor),(int) (e.getY()/Editor.ZoomFaktor));
+	  aktcomp = PESTdrawutil.getSmallObject(root,(int) (e.getX()/Editor.ZoomFaktor),(int) (e.getY()/Editor.ZoomFaktor));
+	  int tj = 0;
+	  while (tempwaypoint[tj+1] != null)
+	      {g.drawLine(tempwaypoint[tj].x,tempwaypoint[tj].y,tempwaypoint[tj+1].x,tempwaypoint[tj+1].y);
+	      tj++;};
+	  
+	  g.setColor(Color.black);
+	  repaint();
+	  //g.drawLine(last_x,last_y,e.getX(),e.getY());
+	  drawPESTTrans.drawTrans(g,last_x,last_y,e.getX(),e.getY(),null,null,Color.black);
 	// System.out.println("Akt. Komponente : "+aktcomp);
 	//new highlightObject(true);
 	//new highlightObject(aktcomp,Color.black);
@@ -262,8 +312,11 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans")
 		}
 
 
+	
+
 	    if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Draw_State"))
 		{// Editor.SetListen();
+		    repaint();
 		    new drawPESTState(g,root,(int) (last_x/Editor.ZoomFaktor),
 					     (int) (last_y/Editor.ZoomFaktor),
 					     (int) (e.getX()/Editor.ZoomFaktor),
