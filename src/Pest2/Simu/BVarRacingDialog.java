@@ -13,12 +13,12 @@ class BVarRacingDialog extends Dialog implements ActionListener{
     setLayout(new GridLayout(2,1));
     status=s;
     var=v;
-    Label l=new Label("Racing-Situation bei Variable '"+v.var+"' aufgetreten!\n\n Variable wird auf false gesetzt!");
+    Label l=new Label("Racing-Situation bei Variable '"+v.var+"' aufgetreten! Es wurde kein Schritt ausgefuehrt!");
     Button b=new Button("OK");
     b.addActionListener(this);
     add(l);
     add(b);
-
+    pack();
     
   }
   
@@ -31,5 +31,6 @@ class BVarRacingDialog extends Dialog implements ActionListener{
   public BooleanTabelle getAnswer(){
     return status;
   }
+
 
 }

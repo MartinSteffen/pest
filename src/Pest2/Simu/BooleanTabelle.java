@@ -41,19 +41,13 @@ class BooleanTabelle extends Object{
     String tab_element=null;
     while (tab_keys.hasMoreElements()){
       tab_element=(String)tab_keys.nextElement();
-      System.err.print(tab_element);
       if (isIn(tab_element)){
 	if (isTrue(tab_element)){
 	  result.setTrue(tab_element);
-	  System.err.println(" auf true!!!");
-	}
-	else{
-	  System.err.println(" auf false!!!");
 	}
       }
       else{
 	result.setTrue(tab_element);
-	System.err.println(" auf true!! (sowieso...)");
       }
     }
     return result;
@@ -74,17 +68,31 @@ class BooleanTabelle extends Object{
     String name=b.var;
     return (isTrue(name));
   }
-   
+
+  public boolean isFalse(Bvar b){
+    return (!(isTrue(b)));
+  }
+
   public boolean isTrue(String name){
-    String value=(String)data.get(name);
-    if (value!=null){
-      return (value.equals("true"));
+    boolean result=false;
+    Enumeration enum=data.keys();
+    String tempkey=null;
+    String tempvalue=null;
+    while (enum.hasMoreElements()){
+      tempkey=(String)enum.nextElement();
+      if (tempkey.equals(name)){
+	tempvalue=(String)data.get(tempkey);
+	result=(tempvalue.equals("true"));
+	break;
+      }
     }
-    else{
-      return false;
-    }
-  } 
+    return result;
+  }
  
+  public boolean isFalse(String name){
+    return (!(isTrue(name)));
+  }
+
   public void setTrue(Bvar b){
     String name=b.var;
     data.put(name,(new String("true")));
@@ -96,10 +104,32 @@ class BooleanTabelle extends Object{
   }
   
   public void setTrue(String name){
+    if (isIn(name)){
+      Enumeration enum=data.keys();
+      String temp=null;
+      while (enum.hasMoreElements()){
+	temp=(String)enum.nextElement();
+	if (temp.equals(name)){
+	  data.put(temp,(new String("true")));
+	  break;
+	}
+      }
+    }
     data.put(name,(new String("true")));
   }
 
   public void setFalse(String name){
+    if (isIn(name)){
+      Enumeration enum=data.keys();
+      String temp=null;
+      while (enum.hasMoreElements()){
+	temp=(String)enum.nextElement();
+	if (temp.equals(name)){
+	  data.put(temp,(new String("false")));
+	  break;
+	}
+      }
+    }
     data.put(name,(new String("false")));
   }
 
@@ -111,10 +141,10 @@ class BooleanTabelle extends Object{
     String tempkey=null;
     String tempvalue=null;
     Enumeration keys=null;
-    keys=(tab.data).keys(); /* Zunaechst alle "Wahren" aus tab nach result...*/
+    keys=(tab.data).keys(); 
     while (keys.hasMoreElements()){
       tempkey=(String)keys.nextElement();
-      if (isTrue(tempkey)){
+      if (tab.isTrue(tempkey)){
 	result.setTrue(tempkey);
       }
       else{
@@ -129,7 +159,7 @@ class BooleanTabelle extends Object{
       if (result.isIn(tempkey)){
 	/*Wenn ja, dann pruefen, ob der angestrebte Wert bei beiden das gleiche ergibt*/
         String valueAusTab=(String)result.data.get(tempkey);
-	if (valueAusTab.equals(tempvalue)){
+	if (((result.isTrue(tempkey))&&(isTrue(tempkey)))||((result.isFalse(tempkey))&&(isFalse(tempkey)))){
 	  /* hier muss nichts gemacht werden, der Wert ist schon gesetzt...*/
 	}
 	else{
@@ -141,11 +171,27 @@ class BooleanTabelle extends Object{
       }
       else{
 	/* tempkey gibt es noch nicht, also einfach ´reinkopieren ...*/
-	(result.data).put(tempkey,tempvalue);
+	if (isTrue(tempkey)){
+	  result.setTrue(tempkey);
+	}
+	else{
+	  result.setFalse(tempkey);
+	}
       }
     }
     if (racing_occured){
       throw (new RacingException(result,racing_var));
+    }
+    return result;
+  }
+
+  String debug(){
+    String result="";
+    Enumeration enum=data.keys();
+    String temp=null;
+    while (enum.hasMoreElements()){
+      temp=(String)enum.nextElement();
+      result+=temp+"="+(String)data.get(temp);
     }
     return result;
   }

@@ -5,7 +5,10 @@ import editor.*;
 import gui.*;
 import java.io.*;
 
-/**swtech22 - Simulation: Die Simulationsumgebung wird durch einen einfachen Konstruktor gestartet
+/**swtech22 - Simulation
+ * <P>
+ * @author Oliver Otte, Sven Thomsen
+ * @version $Id: Simu.java,v 1.16 1999-02-23 12:06:38 swtech22 Exp $
  * <P>
  * <STRONG> Anforderungen. </STRONG> Wir verlassen uns darauf, dass die
  * Statecharts, die uns uebergeben werden, folgende Eigenschaften haben:
@@ -24,23 +27,16 @@ import java.io.*;
  * STATUS
  * </STRONG>
  * <BR>
- * Der Nachfolgeralgorithmus ist implementiert und mit einigen Beispielen aus
- * "Examples" getestet.
- * Es werden Racing-Situationen bei Conditions und Nichtdeterminismus bei Transitionen erkannt,
- * unsere GUI ist funktionell aber noch nicht schoen.<BR>
- * Getestet haben wir absyn.Example, tv.st und a1.st, sowie die Beispiele aus unserem Test-Verzeichnis.
- * Die Aktiven States und Transitionen werden gehighlighted, das Highlighting hat noch ein paar kleinere
- * Macken. (Workaround: Fenster verkleinern und wieder vergroessern, repaint() hilft :-) 
+ * Die Simulationsumgebung ist implementiert und getestet.
+ * Der Leistungsumfang entspricht den Anforderungen des Pflichtenhefts.
+ * Zum Testen empfehlen wir die Beispiele aus unserem Test-Verzeichnis (weiteres hierzu in dem README).
  * Alle Statusmeldungen auf System.out und System.err sind wie abgesprochen
  * abgeändert worden und tauchen jetzt nur noch bei gesetztem Debugschalter auf.
- * Die bekannten Fehler mit Connectoren sind behoben.
- * Inzwischen kann man sowohl die Schrittweite eingeben, als auch die Aufloesung von Nichtdeterminismen
- * veraendern (Zufall oder Benutzer).
  * <DT><STRONG>
  * TODO.
  * </STRONG>
  * <UL>
- * <LI> weitere Tests
+ * <LI> nichts
  * </UL>
  * <DT><STRONG>
  * BEKANNTE FEHLER.

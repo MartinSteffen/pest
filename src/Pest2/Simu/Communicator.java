@@ -95,7 +95,7 @@ class Communicator extends Frame implements ActionListener, ItemListener{
     BVarRacingDialog dialog=new BVarRacingDialog(this,racing_status,racing_var);
     dialog.show();
     racing_status=dialog.getAnswer();
-    return result;
+    return prev_status;
   }
 
   void trace_record(boolean recording){
@@ -273,6 +273,8 @@ class Communicator extends Frame implements ActionListener, ItemListener{
     setLayout(new FlowLayout());
     addWindowListener(new WindowAdapter(){
       public void windowClosing(WindowEvent e){
+	unhighlightPrevTrs();
+	unhighlightPrevStates();
 	setVisible(false);
 	monitor.setVisible(false);
 	tracer.setVisible(false);

@@ -142,7 +142,7 @@ class Tracer extends Frame implements AdjustmentListener,ActionListener{
   }
 
   void load(){
-    FileDialog dialog=new FileDialog(this,"Trace Speichern",FileDialog.SAVE);
+    FileDialog dialog=new FileDialog(this,"Trace Laden",FileDialog.LOAD);
     dialog.show();
     String dir=dialog.getDirectory();
     String file=dialog.getFile();

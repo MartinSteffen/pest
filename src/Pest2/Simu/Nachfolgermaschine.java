@@ -253,7 +253,7 @@ class Nachfolgermaschine extends Object{
      if (rootstate!=null){
        result=step((new Path((rootstate.name).name,null)),rootstate);
      }
-     result.filterConditions(act_status);
+     result=result.filterConditions(act_status);
      return result;
    };
 
