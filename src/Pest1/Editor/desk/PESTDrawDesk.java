@@ -146,8 +146,9 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_TransLabel")
 		new highlightObject(true);
 		new highlightObject(aktcomp,Color.yellow.darker());
 		new highlightObject();
-		}
-        	}
+		} else {	new highlightObject(true);}
+	repaint();
+        	} 
 
       }
 
@@ -246,8 +247,10 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans")
 		 		                 (int) (e.getY()/Editor.ZoomFaktor),(Tr) akttrans);
 		    Editor.SetListen();
 		    trroot = false;
+		new highlightObject();
 		   repaint();
-		  }
+		  } else {	new highlightObject(true);repaint();}
+
 		}
 
 

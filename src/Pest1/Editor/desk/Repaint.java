@@ -69,6 +69,11 @@ public class Repaint {
 
 private void redraw(Tr tr,int nx, int ny, boolean drawflag) {
 	int trsize = tr.points.length-1;
+	if (tr.label.position != null)
+	{
+	h.setColor(Color.black);
+	h.drawString(tr.label.caption,tr.label.position.x+nx,tr.label.position.y+ny);
+	}
 	// System.out.println("Anzahl ZeigerPunkte : "+(int) (trsize+1));
 	//for (int lauf = 0;lauf < (trsize-1);lauf++) {h.setColor(def_tr);h.drawLine(	(int) ((tr.points[lauf].x+nx)*Editor.ZoomFaktor),
 	//								(int) ((tr.points[lauf].y+ny)*Editor.ZoomFaktor),

@@ -44,7 +44,7 @@ matrix1 = PESTdrawutil.getStateFrame(root,cx1,cy1,cx2,cy2);
 matrix2 = PESTdrawutil.getState(root,cx1,cy1);
 matrix3 = PESTdrawutil.getState(root,cx2,cy2);
 
-System.out.println("gemeinsame Tr : "+matrix1.akt);
+//System.out.println("gemeinsame Tr : "+matrix1.akt);
 if (matrix1.akt instanceof Or_State)
 {
   otemp1 = (Or_State) matrix1.akt;
@@ -102,10 +102,10 @@ movetest = false;
 		     ,temppoint); // source, target, label
   otemp1.trs = new TrList(transtemp,trtemp);
 
-System.out.println("tempp1 :"+temppoint[0]);
-System.out.println("tempp2 :"+temppoint[countarray]);
-System.out.println("name 1 :"+name1);
-System.out.println("name 2 :"+name2);
+//System.out.println("tempp1 :"+temppoint[0]);
+//System.out.println("tempp2 :"+temppoint[countarray]);
+//System.out.println("name 1 :"+name1);
+//System.out.println("name 2 :"+name2);
 
 if (name1 instanceof UNDEFINED) {g.setColor(c_color);
 				g.fillOval(	(int) (((temppoint[0].x+matrix1.x)-3)*Editor.ZoomFaktor),
@@ -205,9 +205,9 @@ public static CPoint transpoint(Statechart root,int cx1, int cy1)
 {
 	CPoint[] tp = tr.points;
 	  
-	CPoint[] ta = Bezier(tp,25);
+	CPoint[] ta = Bezier(tp,30);
 	int trsize = ta.length-1;
-	System.out.println("Anzahl ZeigerPunkte : "+(int) (trsize+1));
+	//System.out.println("Anzahl ZeigerPunkte : "+(int) (trsize+1));
 	for (int lauf = 0;lauf < (trsize-1);lauf++) {h.setColor(def_tr);h.drawLine(	(int) ((ta[lauf].x+cx1)*Editor.ZoomFaktor),
 									(int) ((ta[lauf].y+cy1)*Editor.ZoomFaktor),
 									(int) ((ta[lauf+1].x+cx1)*Editor.ZoomFaktor),
@@ -227,41 +227,33 @@ public static CPoint transpoint(Statechart root,int cx1, int cy1)
 
 private static CPoint[] Bezier(CPoint[] r, int genau)
 {
+double[] x = new double[1000];
+double[] y = new double[1000];
 int m;
 int n = r.length-1;
 CPoint[] rt = new CPoint[genau+1];
-CPoint[] RR = new CPoint[10000];
-double tx,ty;
 
 for (int t = 0; t <= genau; t++)
 	{
 	for (int i = 0;i <= n;i++)
 		{
-		    //x[i] = (double) r[i].x;
-		    //y[i] = (double) r[i].y;
-		    RR[2*i] = new CPoint(r[i]);
-		    RR[2*i+1] = new CPoint(r[i]);
-		    //System.out.print((int) Math.round(r[i].x)+"|");
-		  
+		x[i] = (double) r[i].x;
+		y[i] = (double) r[i].y;
 		//x[2*i+1] = (double) r[i].x;
 		//y[2*i+1] = (double) r[i].y;
 
 		}
-	//System.out.print("ENDE");
-	m = 2*n;
+	m = n;
 	while (m > 0)
 		{
 		for (int j = 0;j <=(m-1);j++)
 			{
-			tx = RR[j].x+((double)t/(double)genau)*(RR[j+1].x-RR[j].x);
-			// System.out.print(((double)t/(double)genau));
-			ty = RR[j].y+((double)t/(double)genau)*(RR[j+1].y-RR[j].y);
-			RR[j] = new CPoint((int) Math.round(tx),
-					   (int) Math.round(ty));
+			x[j] = x[j]+((double)t/(double)genau)*(x[j+1]-x[j]);
+			y[j] = y[j]+((double)t/(double)genau)*(y[j+1]-y[j]);
 			}
 		m--;
 		}
-	rt[t] = new CPoint(RR[0]);
+	rt[t] = new CPoint((int) Math.round(x[0]), (int) Math.round(y[0]));
 	//System.out.println((int) Math.round(x[0]));
 	}
 	return rt;

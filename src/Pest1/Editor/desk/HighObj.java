@@ -196,11 +196,11 @@ private void redraw(Tr tr,int nx, int ny, boolean drawflag,Absyn na,Color col) {
 	 if (tr == na){ 
 	int trsize = tr.points.length-1;
 	System.out.println("Anzahl ZeigerPunkte : "+(int) (trsize+1));
-	for (int lauf = 0;lauf < (trsize-1);lauf++) {h.setColor(col);h.drawLine(	(int) ((tr.points[lauf].x+nx)*Editor.ZoomFaktor),
-									(int) ((tr.points[lauf].y+ny)*Editor.ZoomFaktor),
-									(int) ((tr.points[lauf+1].x+nx)*Editor.ZoomFaktor),
-									(int) ((tr.points[lauf+1].y+ny)*Editor.ZoomFaktor) )
-									;}
+	//for (int lauf = 0;lauf < (trsize-1);lauf++) {h.setColor(col);h.drawLine(	(int) ((tr.points[lauf].x+nx)*Editor.ZoomFaktor),
+	//								(int) ((tr.points[lauf].y+ny)*Editor.ZoomFaktor),
+	//								(int) ((tr.points[lauf+1].x+nx)*Editor.ZoomFaktor),
+	//								(int) ((tr.points[lauf+1].y+ny)*Editor.ZoomFaktor) )
+	//								;}
 
 				if (tr.source instanceof UNDEFINED) {h.setColor(col);
 				h.fillOval(	(int) (((tr.points[0].x+nx)-3)*Editor.ZoomFaktor),
@@ -209,15 +209,16 @@ private void redraw(Tr tr,int nx, int ny, boolean drawflag,Absyn na,Color col) {
 
 
 
-				drawPESTTrans.drawTrans(h,
-				(int) ((tr.points[trsize-1].x+nx)*Editor.ZoomFaktor),
-				(int) ((tr.points[trsize-1].y+ny)*Editor.ZoomFaktor),
-				(int) ((tr.points[trsize-0].x+nx)*Editor.ZoomFaktor),
-				(int) ((tr.points[trsize-0].y+ny)*Editor.ZoomFaktor),
-				tr.source,
-				tr.target,
-				col );}
-
+	//			drawPESTTrans.drawTrans(h,
+	//			(int) ((tr.points[trsize-1].x+nx)*Editor.ZoomFaktor),
+	//			(int) ((tr.points[trsize-1].y+ny)*Editor.ZoomFaktor),
+	//			(int) ((tr.points[trsize-0].x+nx)*Editor.ZoomFaktor),
+	//			(int) ((tr.points[trsize-0].y+ny)*Editor.ZoomFaktor),
+	//			tr.source,
+	//			tr.target,
+	//			col );
+	
+	drawPESTTrans.BTrans(h,tr,nx,ny,col);}
 
 // erst nur Zweipunktzeichnen
 	}
