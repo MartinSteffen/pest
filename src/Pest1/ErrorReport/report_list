@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.61 1999-02-05 09:32:07 swtech00 Exp $
+//	$Id: report_list,v 1.62 1999-02-05 09:34:00 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -24,6 +24,9 @@
 #Subject:	Wiederholtes Starten des Editors nicht möglich
 #Status: 	reported
 #Description: 
+
+Zurückgesetzt, weil die gleiche Sequenz ist möglich, wenn man statt
+Menüs die graphische benutzerführung benutzt.
 
 Die Hauptinstanz (gui) erkennt es offenbar nicht, wenn der Editor
 geschlossen worden ist. Folgende Sequenz führt zu dem Fehler:
