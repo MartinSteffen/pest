@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.14 1999-01-18 16:13:27 swtech18 Exp $
+//	$Id: report_list,v 1.15 1999-01-19 09:39:23 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -216,7 +216,8 @@ Ihr Source ist Standby und ihr Target Working. Die Koordinaten des Linienzuges s
 Das schliessen des Simulators fuehrt zu einer Null-pointer exception.
 
 
-//------------------------------------------------------------------------------#Number:	16
+//------------------------------------------------------------------------------
+#Number:	16
 #Autor:		Marcel Kyas, Walter Loeser, Andre Paetzold swtech25
 #Subject:	Kein Pfad fuer CodeGen.
 #Status:	reported
@@ -224,3 +225,24 @@ Das schliessen des Simulators fuehrt zu einer Null-pointer exception.
 
 Man kann fuer die Code Erzeugung keinen Pfad angeben.  Der Pfad "."
 ist leider nicht brauchbar zum ordentlichen testen.
+//------------------------------------------------------------------------------
+#Number:	17
+#Autor:		Erich Mikk erm
+#Subject:	stm generiert ein Exception, den keiner fängt
+#Status:	reported
+#Description:
+
+Versuche Statecharts zu Importieren wie in Number 1 (wichtig; tv.st).
+Folgende Ausgabe des programms ist nicht erwünscht:
+java.lang.Exception: Interleveltransitionen nicht zulässig
+        at stm.HAImport.makeTrHash(HAImport.java:379)
+        at stm.HAImport.initImport(HAImport.java:181)
+        at stm.HAImport.<init>(HAImport.java:122)
+        at gui.GUIimportML.actionPerformed(GUIimportML.java:80)
+        at java.awt.MenuItem.processActionEvent(MenuItem.java:436)
+        at java.awt.MenuItem.processEvent(MenuItem.java:400)
+        at java.awt.MenuComponent.dispatchEventImpl(MenuComponent.java:177)
+        at java.awt.MenuComponent.dispatchEvent(MenuComponent.java:169)
+        at java.awt.EventDispatchThread.run(EventDispatchThread.java:83)
+
+//------------------------------------------------------------------------------
