@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.94 1999-02-10 13:48:33 swtech24 Exp $
+//	$Id: report_list,v 1.95 1999-02-11 05:51:17 swtech01 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -990,3 +990,30 @@ java.lang.ClassCastException: absyn.Conname
         at java.awt.Container.dispatchEventImpl(Container.java:923)
         at java.awt.Component.dispatchEvent(Component.java:1708)
         at java.awt.EventDispatchThread.run(EventDispatchThread.java:81)
+//------------------------------------------------------------------------------
+#Number:	64
+#Autor:		Bernd Weber bwe
+#Subject:	"Neue Koordinaten" erzeugt Fehler in Statechart ?
+#Status: 	reported
+#Description: 
+1. Tesc-Import von ~swtech12/Examples/cyber.tesc1
+2. Editor starten (Koordinaten ok)
+3. Neue Koordinaten starten
+Folgende Exception tritt dann auf:
+
+java.lang.NullPointerException: 
+        at editor.desk.Repaint.redraw(Repaint.java:120)
+        at editor.desk.Repaint.start(Repaint.java:48)
+        at editor.desk.Repaint.redraw(Repaint.java:308)
+        at editor.desk.Repaint.start(Repaint.java:45)
+        at editor.desk.Repaint.redraw(Repaint.java:393)
+        at editor.desk.Repaint.start(Repaint.java:46)
+        at editor.desk.Repaint.redraw(Repaint.java:55)
+        at editor.desk.Repaint.start(Repaint.java:43)
+        at editor.desk.PESTDrawDesk.paint(PESTDrawDesk.java:327)
+        at java.awt.Container.paint(Container.java:645)
+        at java.awt.Component.dispatchEventImpl(Component.java:1412)
+        at java.awt.Container.dispatchEventImpl(Container.java:837)
+        at java.awt.Component.dispatchEvent(Component.java:1393)
+        at java.awt.EventDispatchThread.run(EventDispatchThread.java:63)
+
