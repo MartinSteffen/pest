@@ -80,7 +80,7 @@ private void redraw(Tr tr,int nx, int ny, boolean drawflag) {
 			 );
 	} else
 	    {
-		h.drawString("<LongLabel>",
+		h.drawString(Editor.LongLabel,
 			 (int) ((tr.label.position.x+nx)*Editor.ZoomFaktor),
 			 (int) ((tr.label.position.y+ny)*Editor.ZoomFaktor)
 			 );
