@@ -49,7 +49,7 @@ import editor.*;
  * </DL COMPACT>
  *
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: ModelCheck.java,v 1.19 1999-01-19 10:22:09 swtech11 Exp $
+ * @version  $Id: ModelCheck.java,v 1.20 1999-01-19 11:28:40 swtech11 Exp $
  */
 public class ModelCheck {
   private ModelCheckMsg mcm; // Object, um die Fehler und Warnungen zu speichern
@@ -105,7 +105,7 @@ public class ModelCheck {
     boolean NoFatalError = false;
     boolean result = false;
 
-    boolean BrowserOut = true;// false;    
+    boolean BrowserOut = false;    
 
     boolean Zeitnahme = true;
     long s0=0; long e0=0; long s1=0; long e1=0; long s2=0; long e2=0;
