@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestTransitions.java,v 1.18 1999-01-26 10:03:45 swtech11 Exp $
+ *  @version  $Id: TestTransitions.java,v 1.19 1999-01-26 10:15:36 swtech11 Exp $
  */
 class TestTransitions extends ModelCheckBasics {
   Vector newPLV = new Vector(); // Vector fuer die selbst angelegte PathList der States
@@ -112,8 +112,27 @@ class TestTransitions extends ModelCheckBasics {
     else if (tl.head.source instanceof Statename) { // State ?
       mtr.s = 1;
       mtr.sz = 1;
-      v1 = !StatenameInPathList(newPLV, z1); // State -> nicht vorhanden ?
-      if (v1==false) { i1 = !NameInThisStateSubstates(((Or_State)_s).substates, z1); } // State -> Interlevel ?
+      //v1 = !StatenameInPathList(newPLV, z1); // State -> nicht vorhanden ?
+      //if (v1==false) { i1 = !NameInThisStateSubstates(((Or_State)_s).substates, z1); } // State -> Interlevel ?
+      int aS = AnzStatenameInPathList(newPLV, z1); // State -> nicht vorhanden ?
+      if (aS == 0) { v1 = true; }
+      else { // State -> Interlevel ?
+ 
+        int anz = AnzNameInThisStateSubstates(((Or_State)_s).substates, z1, 0);
+        // System.out.println(anz);
+        if (anz > 1) { // 2 uneindeutige States auf einem Level
+          i1 = false;
+          msg.addError(425,"Trans: "+z1+" -> "+z2+" in State: " + p,tl.head);
+        }
+        else if (anz == 1 & aS ==1) { i1 = false; } //  1 State am richtigen Ort => kein Interlevel
+        else if (anz == 0) { i1 = true; } //  1 oder mehr States nur am falschen Ort => Interlevel eindeutig
+        else if (anz == 1 & aS >1) { // 1 State richtig und 1 oder mehr States falsch => Interlevel ?
+          State st =  StateFromStatenameInThisStateSubstates(((Or_State)_s).substates, z1);
+          // System.out.println("Graphischer Test notwendig"+st);
+          i1 = !pruefe_coord_IT( st,tl.head,true);
+        }
+      } 
+   
     }
     else if (tl.head.source instanceof Conname) { // Connector ?
       mtr.s = 2;
