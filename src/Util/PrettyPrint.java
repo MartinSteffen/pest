@@ -88,6 +88,12 @@ public class PrettyPrint {
       output ((StatenameList)ab);
     if (ab instanceof TrAnchor)
       output ((TrAnchor)ab);
+    if (ab instanceof Tesc_Syntax)
+      output ((Tesc_Syntax)ab);
+    if (ab instanceof Pest_CoordSyntax)
+      output ((Pest_CoordSyntax)ab);
+    if (ab instanceof Pest_NocoordSyntax)
+      output ((Pest_NocoordSyntax)ab);
   } // method start (Absyn)
 
 
@@ -113,6 +119,7 @@ public class PrettyPrint {
   } // method output (Statechart)
 
 
+  
   /**
    * Starte Ausgabe auf Bildschirm (SEventList).
    */
@@ -223,6 +230,19 @@ public class PrettyPrint {
   } // method start (StateList)
 
 
+  
+  private void output (Tesc_Syntax s) {
+    System.out.println (whiteSpace (column) + "[Syntax: Tesc] ");    
+  }
+
+  private void output (Pest_CoordSyntax s) {
+    System.out.println (whiteSpace (column) + "[Syntax: Pest mit Coord.] ");    
+  }
+
+  private void output (Pest_NocoordSyntax s) {
+    System.out.println (whiteSpace (column) + "[Syntax: Pest ohne Coord.] ");    
+  }
+
   // Starte Ausgabe auf Bildschirm (State).
 
   private void output (State state) {
@@ -238,8 +258,10 @@ public class PrettyPrint {
   // Starte Ausgabe auf Bildschirm (Basic_State).
 
   private void output (Basic_State bState) {
-    if (bState != null) {
-      System.out.println (whiteSpace (column) + "[Basic_State] ");
+    if ((bState != null) && (bState instanceof Basic_State)) {
+      String ppclassstring = 
+	(bState instanceof Ref_State) ? "[Ref_State] " : "[Basic_State] ";
+      System.out.println (whiteSpace (column) + ppclassstring);
       PrettyPrint ppBasicSt = new PrettyPrint (column + tab, tab);
 
       // Gib Statename aus.
@@ -251,6 +273,16 @@ public class PrettyPrint {
       //Gib Location aus.
       //ppBasicSt.start (bState.location); 
     }
+    if ((bState != null) && (bState instanceof Basic_State)) {
+      PrettyPrint ppRefdeltaSt = new PrettyPrint (column + tab, tab);
+    }
+
+    if ((bState != null) && (bState instanceof Ref_State)) {
+      System.out.println (whiteSpace (column+tab) + ((Ref_State)bState).filename);
+      PrettyPrint ppRefdeltaSt = new PrettyPrint (column + tab, tab);
+      ppRefdeltaSt.start(((Ref_State)bState).filetype);
+    }
+
   } // method output (Basic_State)
 
 
