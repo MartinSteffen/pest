@@ -30,6 +30,8 @@ Struktur von TESC an Beispielen
 
 Beispiel 1
 
+  event a,b
+  
   and A
       xor A1
           basic D
@@ -42,7 +44,9 @@ Beispiel 1
 
 Beispiel 2 (aus dem Pflichtenheft) ohne inter-level-Transitionen
 
-  and SUD 
+  event (A,B,C,D,G)
+
+  or SUD 
       basic P1
       basic P2
       or P3
@@ -52,7 +56,7 @@ Beispiel 2 (aus dem Pflichtenheft) ohne inter-level-Transitionen
                 basic S1
                 basic S2
                 from S1 to S2 on C
-                from S2 to S1 on G[in(SUD.P3.Q2.T2)]
+                from S2 to S1 on G & in(SUD.P3.Q2.T2)
                 default S1
              end R1
              or R2
@@ -63,11 +67,12 @@ Beispiel 2 (aus dem Pflichtenheft) ohne inter-level-Transitionen
                 default T1
              end R2
          end Q2
-         default Q1
          from Q1 to Q2 on A do C
+         default Q1
       end P3
       from P1 to P2 on C
       from P1 to P3 on A
+      from P3 to P1 on B
       default P1
   end SUD
 
@@ -163,6 +168,7 @@ transitions   ::= transition transitions | transition
 
 transition    ::= "from" "identifier" "to" "indentifier" "on" guard {"do" action}
 
+
 guard         ::= "true" | "false" | "identifier" | "!" guard | comppath | compguard
 
 comppath      ::= pathop "identifier"
@@ -172,6 +178,7 @@ pathop        ::= "in" | "entered" | "exited"
 compguard     ::= "(" guard op guard ")" 
 
 op            ::= "&" | "|" | "->" | "<->"
+
 
 action        ::= actionlist | "identifier" | boolstmt |
 
