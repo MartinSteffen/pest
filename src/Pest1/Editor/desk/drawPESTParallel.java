@@ -56,18 +56,23 @@ matrix1 = PESTdrawutil.getState(root,dx1,dy1);
 matrix2 = PESTdrawutil.getState(root,dx2,dy2);
 
 
+
+if (matrix1.akt != null & matrix2.akt != null)
+ {
+   
 if ( delx  <  dely) { 
 		//System.out.println("kleiner"); 
 		dx2 = cx1; quer = false;
 		dy1 = matrix1.y;
-		dy2 = matrix1.y+matrix1.akt.rect.height;
+		if (matrix1.akt.rect != null) {dy2 = matrix1.y+matrix1.akt.rect.height;}
 		} else  
 		{
 		//System.out.println("groesser");
 		 dy2 = cy1;quer = true;
 		dx1 = matrix1.x;
-		dx2 = matrix1.x+matrix1.akt.rect.width;
+		if (matrix1.akt.rect != null) {dx2 = matrix1.x+matrix1.akt.rect.width;}
 		}
+     
 
 // g.drawRect(dx1,dy1,dx2-dx1,dy2-dy1);
 
@@ -481,6 +486,7 @@ drawPar(g,temprect2.x+matrix1.x,temprect2.y+matrix1.y,temprect2.width,temprect2.
 
 }
 
+}
 
 public static void drawPar(Graphics g,int cx1, int cy1, int cx2, int cy2, Color c_color) 
 	{

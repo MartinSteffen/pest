@@ -504,7 +504,9 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans" & trro
 
 	if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Select") & (copyobj != null) & (mover == false))
 		{ 
-		   copyobj = null;
+		    new setcopymove(root,copyobj,e.getX(),e.getY());
+		    copyobj = null;
+		    Editor.SetListen();repaint();
 		}
 
 	if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Select") & (copyobj != null) & (mover == true))
