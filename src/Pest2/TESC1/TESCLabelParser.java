@@ -10,7 +10,7 @@ import util.*;
  * Label-Parser fuer den Editor.
  * <p>
  * @author Michael Suelzer, Christoph Schuette.
- * @version  $Id: TESCLabelParser.java,v 1.2 1999-01-18 17:08:52 swtech20 Exp $
+ * @version  $Id: TESCLabelParser.java,v 1.3 1999-01-20 17:32:10 swtech20 Exp $
  */   
 class TESCLabelParser extends TESCParser {
 
@@ -47,10 +47,6 @@ class TESCLabelParser extends TESCParser {
 	token = lexer.getNextToken ();
 
 	debug ("parseLabel");
-
-        pathlist = null;
-        bvarlist = null;
-        eventlist = null;
 
 	TLabel label = parseLabel ();
 
@@ -103,6 +99,11 @@ class TESCLabelParser extends TESCParser {
 //	------------
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.2  1999/01/18 17:08:52  swtech20
+//	- okDialog -> userMessage
+//	- Pruefung auf gui==null
+//	- package visibility fuer Nicht-Schnittstellenklassen
+//
 //	Revision 1.1  1999/01/17 17:16:41  swtech20
 //	Umstellung der Guard-Syntax auf Statemate-Style, Implementierung des
 //	LabelParsers fuer den Editor. Anpassung der Schnittstelle.

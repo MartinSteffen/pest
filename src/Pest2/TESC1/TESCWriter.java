@@ -10,7 +10,7 @@ import java.util.*;
  * <hr>
  * Die Grobstruktur stammt aus dem Pretty-Printer von Eike Schulz. 
  * <hr>
- * @version  $Id: TESCWriter.java,v 1.1 1999-01-17 17:19:25 swtech20 Exp $
+ * @version  $Id: TESCWriter.java,v 1.2 1999-01-20 17:32:12 swtech20 Exp $
  * @author Michael Suelzer, Christoph Schuette.
  *  
  */   
@@ -556,7 +556,7 @@ class TESCWriter {
 	if (gu != null) {
 	    writer.write (whiteSpace (column) + "// Achtung : [GuardUndet] \n");
 	    writer.write (whiteSpace (column) + gu.undet);
-	    Error("Undet Guard kann nicht exportiert werden!");
+	    Error("Undet-Guard kann textuell nicht dargestellt werden.");
 	}
     }
 
@@ -807,6 +807,10 @@ class TESCWriter {
 //	----------------------
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.1  1999/01/17 17:19:25  swtech20
+//	Implementierung der Export-Funktionen. Neue Funktion zum Erzeugen
+//	einer textuellen Darstellung eines TLabels mit Syntax Guard / Action.
+//
 //
 //
 //

@@ -30,26 +30,25 @@ import gui.*;
  * <br>
  *
  * <p><STRONG> Status: </STRONG> <p>
- * <ul>
- * <li>  
- * </ul>
+ * Momentan koennen Statecharts nur ohne UNDET-Guards exportiert werden. UNDET-Guard werden
+ * mit Fehler abgewiesen.
  *
  * <p><STRONG>Todo: </STRONG>
  * <ul>
- * <li> Schnittstelle mit GUI/STM absprechen und ev. anpassen
- * <li> GuardUndet
- * <li> Testen
+ * <li> GuardUndet behandeln
+ * <li> Weiteres Bug Fixing
  * </ul>
  *
- * <p><STRONG>Bekannte Fehler.</STRONG>
+ * <p><STRONG>Bekannte Fehler: </STRONG>
  * <ul>
  * <li> 
  * </ul>
  *
  * <p><STRONG>Testmoeglichkeiten: </STRONG> <p>
- * <p>
+ * Jedes Statechart, z.B. das <A HREF="./tesc1/Docu/Example.tesc">Beispiel</A> aus
+ * dem Pflichtenheft, kann testweise exportiert werden. 
  * <hr>
- * @version  $Id: TESCSaver.java,v 1.3 1999-01-18 17:08:53 swtech20 Exp $
+ * @version  $Id: TESCSaver.java,v 1.4 1999-01-20 17:32:12 swtech20 Exp $
  * @author Michael Suelzer, Christoph Schuette.
  *  
  */   
@@ -183,6 +182,11 @@ public final class TESCSaver {
 //	----------------------
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.3  1999/01/18 17:08:53  swtech20
+//	- okDialog -> userMessage
+//	- Pruefung auf gui==null
+//	- package visibility fuer Nicht-Schnittstellenklassen
+//
 //	Revision 1.2  1999/01/17 17:19:24  swtech20
 //	Implementierung der Export-Funktionen. Neue Funktion zum Erzeugen
 //	einer textuellen Darstellung eines TLabels mit Syntax Guard / Action.

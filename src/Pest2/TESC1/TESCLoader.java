@@ -26,15 +26,7 @@ import gui.*;
  * <li> Keywords aus util.Keyword.java kommen nicht in Bezeichnern vor
  * <li> Alle Listen sind konsistent       
  * </ul>
- * 
- * <p><STRONG>Anforderungen: </STRONG> <p>
- * Wir verlassen uns darauf, dass die Statecharts, die uns uebergeben werden, folgende 
- * Eigenschaften haben:
- * <ul>
- * <li>
- * </ul>
  * <br>
- *
  * <p><STRONG> Status: </STRONG> <p>
  * Momentan erkennt unser Parser die Sprache TESC, definiert in <A HREF="./tesc1/Docu/Grammatik">tesc1/Docu/Grammatik</A>
  * Mit dieser Sprachdefinition kann man Statecharts gemaess der Abstrakten Syntax 
@@ -42,7 +34,6 @@ import gui.*;
  *
  * <p><STRONG>Todo: </STRONG>
  * <ul>
- * <li> Schnittstelle mit EDITOR/STM absprechen.
  * <li> Grammatik aktualisieren
  * <li> Struktur GUARD/ACTION mit STM abstimmen.
  * <li> Doku TESC
@@ -61,7 +52,7 @@ import gui.*;
  * dem Pflichtenheft verwendet werden.
  * <p>
  * <hr>
- * @version  $Id: TESCLoader.java,v 1.12 1999-01-18 17:08:52 swtech20 Exp $
+ * @version  $Id: TESCLoader.java,v 1.13 1999-01-20 17:32:11 swtech20 Exp $
  * @author Michael Suelzer, Christoph Schuette.
  *  
  */   
@@ -266,6 +257,11 @@ public final class TESCLoader {
 //	----------------------
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.12  1999/01/18 17:08:52  swtech20
+//	- okDialog -> userMessage
+//	- Pruefung auf gui==null
+//	- package visibility fuer Nicht-Schnittstellenklassen
+//
 //	Revision 1.11  1999/01/17 17:16:40  swtech20
 //	Umstellung der Guard-Syntax auf Statemate-Style, Implementierung des
 //	LabelParsers fuer den Editor. Anpassung der Schnittstelle.
