@@ -146,6 +146,7 @@ public class Simu extends Frame implements java.awt.event.ItemListener, java.awt
 	private boolean debug_resetSimu = false;
 	private boolean debug_resetEventList = false;
 	private boolean debug_resetBVarList = false;
+	private boolean debug_makeTrans = true;
 	// redundant
 	public int makeTabCounter = 0;
 /**
@@ -350,7 +351,7 @@ public void button3_MouseClicked(java.awt.event.MouseEvent mouseEvent) {
 	int i;
 	
 	i = Integer.parseInt(((getTextField1()).getText()));
-	System.out.println("button3_mouseClicked(): Schritte zu machen --------------------------------------: "+i);
+	// System.out.println("button3_mouseClicked(): Schritte zu machen --------------------------------------: "+i);
 	makeNStep(i);
 	return;
 }
@@ -772,7 +773,7 @@ public Statechart example() {
 
  *  @author   Daniel Wendorff und Magnus Stiller
 
- *  @version  $Id: Simu.java,v 1.20 1999-02-07 23:05:12 swtech26 Exp $
+ *  @version  $Id: Simu.java,v 1.21 1999-02-11 23:35:26 swtech26 Exp $
 
  */
 
@@ -3058,7 +3059,7 @@ protected void makeNStep(int n) {
 		while (counter < n) {
 			makeStep();
 			counter++;
-			try{
+			/*try{
 				edit.repaint();
 				Thread.yield();
 			
@@ -3066,6 +3067,7 @@ protected void makeNStep(int n) {
 				
 			}
 			catch(InterruptedException e){}
+			*/
 			
 		}
 	}
@@ -3477,7 +3479,7 @@ private void makeTab(State daten, Path weg) {
 			};
 			makeTab(workList.head, weg);					// Rest der Standartabbbauvariante
 
-			workList = workList.tail;						// Verursacht NPE
+			//workList = workList.tail;						// Verursacht NPE
 
 			// Dann lege zwei "Kopien" der trs an, die spaeter gebraucht werden.
 
@@ -3488,19 +3490,12 @@ private void makeTab(State daten, Path weg) {
 
 			//System.out.println("makeTab(S,P): connList = "+connList1);
 
-			/*try {
-				connList1 = (ConnectorList)(((Or_State)data).connectors.clone());
-			}
-			catch (CloneNotSupportedException cnse) {
-				guiOutput("CLONE-ERROR in makeTab(State, Path), Kopie der ConnectorList");
-
-			}*/
 
 			// Fuer jeden Eintrag in der trs-Liste rufe makeTrans() auf, mit den Parametern:
 			// 1. Eintrag (Transition)
 			// 2. Der bisherige Weg (Pfad) in der Statechart (Bis zu DIESEM Or-State!)
-			// 3. Geklonte Transitionsliste zu DIESEM Or-State.
-			// 4. Geklonte Connectorenliste zu diesem Or-State.
+			// 3. Kopierte Transitionsliste zu DIESEM Or-State.
+			// 4. Kopierte Connectorenliste zu diesem Or-State.
 			// 5. Zugehoerige Transitionen zur zu generierenden 'abstrakten' Transition (fuer unsere Transitionsliste)
 			// 6. Zugehoerige Connectoren zur zu generierenden 'abstrakten' Transition. 
 			
@@ -3537,8 +3532,8 @@ private void makeTab(State daten, Path weg) {
  * Parameter:
  *			 1. Eintrag (Transition)
  *			 2. Der bisherige Weg (Pfad) in der Statechart (Bis zu DIESEM Or-State!)
- *			 3. Geklonte Transitionsliste zu DIESEM Or-State.
- *			 4. Geklonte Connectorenliste zu diesem Or-State.
+ *			 3. Kopierte Transitionsliste zu DIESEM Or-State.
+ *			 4. Kopierte Connectorenliste zu diesem Or-State.
  *			 5. Zugehoerige Transitionen zur zu generierenden 'abstrakten' Transition (fuer unsere Transitionsliste)
  *			 6. Zugehoerige Connectoren zur zu generierenden 'abstrakten' Transition.
  *
@@ -3569,6 +3564,7 @@ private void makeTab(State daten, Path weg) {
  * @version V1.00 vom 14.01.1999
  * @version V4.03 vom 23.01.1999 - Cloning, NPExep
  * @version V4.04 vom 24.01.1999 - handClonePath
+ * @version V4.11 vom 08-10.02.1999 - Bughunting
  */
 
 
@@ -3586,7 +3582,7 @@ private void makeTrans(Tr trans, Path weg, TrList trclone, ConnectorList connLis
 	boolean found = false;
 	boolean doLoop = true;
 		
-	if (debug2) {
+	if (debug_makeTrans) {
 		System.out.println("makeTrans: 'weg' hat den Wert: "+returnDottedPath(weg));
 	}
 	
@@ -3597,21 +3593,16 @@ private void makeTrans(Tr trans, Path weg, TrList trclone, ConnectorList connLis
 	
 	
 	 
-	else // hier ist also davon auszugehen, dass (trans.source instanceof Stanename) = true ist
+	else // hier ist also davon auszugehen, dass (trans.source instanceof Statename) = true ist
 	
 	{	// siehe (2)
 		if (trans.target instanceof Statename)
 		{
-			if (debug4) {
-				System.out.println("makeTrans: 'weg' (2) hat den Wert: "+returnDottedPath(weg));
-			}
 			Path source = handClonePath(weg);			// Hier werden Clones erstellt, weil die Einträge in die
-			if (debug4) {
-				System.out.println("makeTrans: 'weg' (3) hat den Wert: "+returnDottedPath(weg));
-			}
+
 			Path target	= handClonePath(weg);			// transList nicht mehr veraendert werden duerfen.
 			
-			if (debug4) {
+			if (debug_makeTrans) {
 				System.out.println("makeTrans: 'source' hat den Wert: "+returnDottedPath(source));
 				System.out.println("makeTrans: 'target' hat den Wert: "+returnDottedPath(target));
 			}
@@ -3625,17 +3616,17 @@ private void makeTrans(Tr trans, Path weg, TrList trclone, ConnectorList connLis
 			// *************************CLONING *****************************************************
 			try {
 				if (prevTrans != null) {
-					if (debug2) {
-						//System.out.println("makeTrans(): Versuche clone() von prevTrans");
+					if (debug_makeTrans) {
+						System.out.println("makeTrans(): Versuche clone() von prevTrans");
 					}
 					prevTransTemp = (TrList)(prevTrans.clone());
 				}
 				else {
-					prevTransTemp = null;
+					prevTransTemp = new TrList(null, null);
 				}
 				if (prevConn.head != null) {
-					if (debug2) {
-						//System.out.println("makeTrans(). Versuche clone() von prevConn");
+					if (debug_makeTrans) {
+						System.out.println("makeTrans(). Versuche clone() von prevConn");
 					}
 					prevConnTemp = (ConnectorList)prevConn.clone();
 				}
@@ -3650,7 +3641,7 @@ private void makeTrans(Tr trans, Path weg, TrList trclone, ConnectorList connLis
 			
 			TransTabEntry tteDummy = new TransTabEntry(source, target, trans.label);
 			transList.addElement(new TransTab(tteDummy, prevTrans, prevConn));
-			if (debug2) {
+			if (debug_makeTrans) {
 				System.out.println("makeTrans: Erweitere die transList ");
 				System.out.println("makeTrans: um source = "+returnDottedPath(tteDummy.tteSource));
 				System.out.println("makeTrans: und target= "+returnDottedPath(tteDummy.tteTarget));
@@ -3660,7 +3651,6 @@ private void makeTrans(Tr trans, Path weg, TrList trclone, ConnectorList connLis
 		// siehe (3)
 		else // (trans.source instanceof Statename) = true  & (trans.target instance of Conname) = true
 		{
-
 			// Erstelle weitere Kopie der Transitionsliste
 			trclone3 = trclone;
 
@@ -3675,7 +3665,7 @@ private void makeTrans(Tr trans, Path weg, TrList trclone, ConnectorList connLis
 
 			if (trans == null) {
 				doLoop = false;
-				System.out.println("makeTrans: WARNING ! trans-Liste hat NULLPOINTER !!!");
+				System.out.println("makeTrans: WARNING ! Transition 'trans' hat NULLPOINTER !!!");
 			}
 			
 			
@@ -3690,23 +3680,22 @@ private void makeTrans(Tr trans, Path weg, TrList trclone, ConnectorList connLis
 					
 					compare1 = ((Conname)(trans.target)).name;
 					compare2 = ((Conname)(trclone3.head.source)).name;
+					//System.out.println("Vergleiche : XXX"+compare1+"xxx mit XXX"+compare2+"xxx");
+					
 					if (compare1.equals(compare2)){
-						if (debug==true){
-							System.out.println("makeTrans hat eine Aequivalenz des letzten Typs erkannt !");
+						if (debug_makeTrans==true){
+							System.out.println("makeTrans: Aequivalenz des letzten Typs erkannt !");
+							System.out.println("Aeqivalenz zwischen : XXX"+compare1+"xxx und XXX"+compare2+"xxx gefunden !");
 						}
 						Tr newTrans = new Tr(null,null,new TLabel(null,null)); 	// Neue Transition instantiieren
-						System.out.println("Checkpoint 1");
 						newTrans.source = trans.source; 		// die als Anfangspunkt den Startpunkt der
 																// Anfangstransition besitzt
-						System.out.println("Checkpoint 2");
 						newTrans.target = trclone3.head.target; // und als Endpunkt den Endpunkt der gewaehlten
-																// Transition aus der Transitionsliste bekommt.
-						System.out.println("Checkpoint 3");
-
+						 										// Transition aus der Transitionsliste bekommt.
+						
 						// Bestimme mit returnNewGuard und returnNewAction das zusammengefasste Label.
 						Guard arg1 = returnNewGuard(trans.label.guard, trclone3.head.label.guard);
-						System.out.println("Checkpoint 4");
-
+						
 						/*	 Das ist die alte "Spielweise". Wir haben uns dagenen entschieden, weil man
 							 bei returnNewAction nicht ohne cloning auskommt und cloning bisher nicht
 							 korrekt funktioniert.
@@ -3716,59 +3705,78 @@ private void makeTrans(Tr trans, Path weg, TrList trclone, ConnectorList connLis
 							statt dessen :
 						*/
 						Action arg2 = null;
-						System.out.println("Checkpoint 5");
 						newTrans.label.guard = arg1;
-						System.out.println("Checkpoint 6");
 						newTrans.label.action = arg2;
-						System.out.println("Checkpoint 7");
+						
 
 						// Haenge dann die abgearbeitete Transition in die prevTrans-Liste (vorne ran)
 						// unkritisch !
 						prevTrans = new TrList(trclone3.head, prevTrans); //**************************************
-						System.out.println("Checkpoint 8");						
 						// Erstelle eine "Kopie" der uebergebenen Connectorliste
 						connClone1 = connList;
-						System.out.println("Checkpoint 9");
 						
 						// Suche das passende Connectorobjekt zum bekannten Connectornamen aus
 						// der geklonten Liste heraus und haenge das Objekt in die prevConn-Liste (vorne ran).
-						
+						//System.out.println("Suche jetzt nach dem Connectorobjekt");						
 						found = false;
 						while (found == false) 										// Standartabbauvariante
-						{	System.out.println("Checkpoint 10");
-							compare1 = ((Connector)(connClone1.head)).name.name;
-							System.out.println("Checkpoint 11");
-							compare2 = ((Conname)(newTrans.target)).name;
-							System.out.println("Checkpoint 12");
+						{
+							//System.out.println("makeTrans: searching .....");
 							
+							compare1 = ((Connector)(connClone1.head)).name.name;
+						
+							compare2 = ((Conname)(trans.target)).name;
+
+														
 							if ( compare1.equals(compare2)) 
 							{
+								//System.out.println("makeTrans: Habe etwas passendes gefunden !");
 								prevConn = new ConnectorList(connClone1.head, prevConn); //********************
-								connClone1.tail = null;
 								found=true;
 							}
-							if (connClone1.tail == null){
+							//System.out.println("makeTrans: Checkpoint 1");
+							if ((connClone1.tail == null) && (found == false)){
 								found=true;
-								System.out.println("makeTrans meldet: Fataler Fehler an Checkpoint Zwo");
+								System.out.println("makeTrans meldet: Fataler Fehler !!");
 							}
 							else{
-								connClone1 = connClone1.tail;
+								if (found == false) {
+									//System.out.println("makeTrans: Checkpoint 2");
+									connClone1 = connClone1.tail;
+								}
 							}
-							
+							//System.out.println("makeTrans: Checkpoint 3");
 						}
 						// Rufe dann makeTrans mit der neuen Transition und den angepassten prevTrans - und
 						// prevConn - Listen auf
+						//System.out.println("makeTrans: Checkpoint 4");
 						makeTrans(newTrans, weg, trclone, connList, prevTrans, prevConn);
-						prevConn = prevConn.tail;
-						prevTrans = prevTrans.tail;
+						//System.out.println("makeTrans: Checkpoint 5");
+						prevConn = prevConn.tail;			// Abbau des angefuegten Connectors
+						prevTrans = prevTrans.tail;			// Abbau der angefuegten Transition
+						//System.out.println("makeTrans: Checkpoint 6");
 					}
 					if (trclone3.tail != null){
 						trclone3 = trclone3.tail;
+						//System.out.println("makeTrans: Checkpoint 7");
 					}
 					else{
 						doLoop=false;
+						//System.out.println("makeTrans: Checkpoint 8");
 					}
 				}
+				else {
+					if (trclone3.tail != null){
+						trclone3 = trclone3.tail;
+						//System.out.println("makeTrans: Checkpoint 9");
+					}
+					else {
+						doLoop=false;
+						//System.out.println("makeTrans: Checkpoint 10");
+					}
+
+				}
+					
 			}
 		}
 	}
@@ -4758,7 +4766,7 @@ private TransTab selectNonDet(Vector arg1) {
  * @param status boolean
  */
 public void setDebugLevel(boolean status) {
-	/*debug = status;	// = debug1 !
+	debug = status;	// = debug1 !
 	debug1 = status;	// fatal error, nullPointerExeptions
 	debug2 = status;	// Statusmeldungen
 	debug2a = status;	// Statusmeldungen für selten genutze Methoden
@@ -4766,10 +4774,25 @@ public void setDebugLevel(boolean status) {
 	debug2c = status;	// Statusmeldungen für häufig gentze Methoden
 	debug3 = status;	// Funktionsnachweise
 	debug4 = status;	// Ausgabe von Countern und Variableninhalte
-	debug5 = status;	// ----- */
+	debug5 = status;	// ----- 
 	debug_get_guard = status;
 	debug_make_action = status;
 	debug_killLevelConflicts = status;
+	debug_makeRealTransList = status;
+	debug_makePossTransList = status;
+	debug_step = status;
+	debug_removePathInList = status;
+	debug_removePathInListLinear = status;
+	debug_executeTransList = status;
+	debug_copyEnteredToIn = status;
+	debug_inMethod = status;
+	debug_inMethodInit = status;
+	debug_firstStep = status;
+	debug_resetSimu = status;
+	debug_resetEventList = status;
+	debug_resetBVarList = status;
+	debug_makeTrans = status;
+
 
 }
 /**
@@ -4826,8 +4849,8 @@ private void step() {
 		System.out.println("step : Inhalt der InList ist :");
 	}
 	
-	printInList();
 	if (debug_step==true){
+		printInList();
 		System.out.println("step : copyEnteredToIn() wird aufgerufen");
 	}
 	
@@ -4836,8 +4859,10 @@ private void step() {
 	if (debug_step==true){
 		System.out.println("step : Jetzt ist Inhalt der InList der folgende:");
 	}
-	
-	printInList();
+
+	if (debug_step==true){
+		printInList();
+	}
 	
 
 	
