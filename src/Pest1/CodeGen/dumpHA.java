@@ -4,7 +4,7 @@
  * This class is responsible for generating our hierarchical
  * automaton.
  *
- * @version $Id: dumpHA.java,v 1.6 1999-01-11 15:10:59 swtech25 Exp $
+ * @version $Id: dumpHA.java,v 1.7 1999-01-18 12:33:01 swtech25 Exp $
  * @author Marcel Kyas
  */
 package codegen;
@@ -100,43 +100,66 @@ public class dumpHA
 
 
 	/**
-	 * This method will create code for a compound guard.
-	 */
-	private String dumpCompguard(Compguard g)
-	{
-		return ""; // todo
-	}
-
-
-	/**
 	 * This method will create the boolean statement for a guard
 	 */
 	private String dumpGuard(Guard g)
 		throws CodeGenException
 	{
 		if (g instanceof GuardBVar) {
-			// todo
+			GuardBVar h = (GuardBVar) g;
+			Integer i = (Integer) DT.cond_sym.get(h.bvar.var);
+			return "pre_cond[" + i + "]";
 		} else if (g instanceof GuardCompg) {
-			// todo
+			GuardCompg h = (GuardCompg) g;
+			String s = dumpGuard(h.cguard.elhs);
+			String t = dumpGuard(h.cguard.erhs);
+			switch (h.cguard.eop) {
+			case Compguard.AND:
+				return "( " + s + " && " + t + " )";
+			case Compguard.OR:
+				return "( " + s + " || " + t + " )";
+			case Compguard.IMPLIES:
+				return "( !" + s + " || " + t + " )";
+			case Compguard.EQUIV:
+				return "(( " + s + " && " + t + ") || ( !" +
+					s + " && !" + t + "))";
+			default:
+				throw(new CodeGenException("Unsupported binary operation"));
+			}
 		} else if (g instanceof GuardCompp) {
-			// todo
-			// check what this is
+			GuardCompp h = (GuardCompp) g;
+			Path p = h.cpath.path;
+			String s = dumpTables.generateSymState(p);
+			switch (h.cpath.pathop) {
+			case Comppath.IN:
+				return "pre_states[" + s + "]";
+			case Comppath.ENTERED:
+				return "( !his_states[" + s +
+					"] && pre_states[" + s + "])";
+			case Comppath.EXITED:
+				return "( his_states[" + s +
+					"] && !pre_states[" + s + "])";
+			default:
+				throw(new CodeGenException("Unsupported path operation"));
+			}
 		} else if (g instanceof GuardEmpty) {
 			return "true";
 		} else if (g instanceof GuardEvent) {
-			// todo
+			GuardEvent h = (GuardEvent) g;
+			Integer i = (Integer)
+				 DT.events_sym.get(h.event.name);
+			return "pre_event[" + i + "]";
 		} else if (g instanceof GuardNeg) {
 			GuardNeg h = (GuardNeg) g;
 			return "!(" + dumpGuard(h.guard) +")";
 		} else if (g instanceof GuardUndet) {
 			throw(new CodeGenException(
-				"Undetermined Guards not supported"));
+				"Undetermined Guards are not supported"));
 		} else {
 			throw(new CodeGenException(
 				"Cannot determine type of guard."
 			));
 		}
-		return ""; // not reached.
 	}
 
 
