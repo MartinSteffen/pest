@@ -21,6 +21,7 @@ import tesc1.*;
 /**
  * @author Michael Mai / Martin Bestaendig
  * @version 1.33 </dl>
+ * <a HREF="../editor/Test/tutorial.html">Der Editor</a>
  *
  * <H3>Wir erwarten :</H3>
  *<ul>
@@ -251,7 +252,7 @@ s2.addActionListener(new ActionListener() {
 
 
    Menu zoom = new Menu("Zoom");            // Create a File menu.
-    menubar.add(tools);                       // Add to menubar.
+   //   menubar.add(tools);                       // Add to menubar.
 
     // Tool-Menue erzeugen
     MenuItem z1, z2, z3, z4, z5, z6, z7,z10,z12,z15,z16;
