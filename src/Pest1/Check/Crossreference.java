@@ -4,6 +4,7 @@ import absyn.*;
 import gui.*;
 import editor.*;
 import java.util.*;
+import java.awt.*;
 
 /**
  * <h1>Crossreference für Statecharts</h1>
@@ -25,7 +26,7 @@ import java.util.*;
  * <br>
  * <DL COMPACT>
  * <DT><STRONG>STATUS: </STRONG><br>
- * noch gar nichts
+ * Die Auswertung erfolgt bis jetzt für: States (alle Arten), Connectoren, Anker der Transitionen
  * <DT><STRONG>To Do: </STRONG><br>
  * alles
  * <DT><STRONG>Bekannte Fehler: </STRONG><br>
@@ -34,24 +35,27 @@ import java.util.*;
  * keine
  * </DL COMPACT>
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: Crossreference.java,v 1.4 1999-01-17 20:21:45 swtech11 Exp $
+ * @version  $Id: Crossreference.java,v 1.5 1999-01-18 20:56:31 swtech11 Exp $
  */
 public class Crossreference extends ModelCheckBasics {
   private GUIInterface gui = null; // Referenz auf die GUI
-  private Editor edit = null;
-  private String such = new String("?");
+  public String such = new String("");
   private Vector items = new Vector();
 
   public Crossreference(GUIInterface _gui, Editor _edit) {
     gui = _gui;
-    edit = _edit;
+  }
+
+  public Crossreference(GUIInterface _gui) {
+    gui = _gui;
   }
 
 
   public void report(Statechart sc) {
 
     // Eingabe
-    gui.EingabeDialog("Crossreference","Zu suchendes Element eingeben;",such);
+    such = gui.EingabeDialog("Crossreference","Zu suchendes Element eingeben;",such);
+    System.out.println(such);
 
     // Start der Auswertung
     if (sc.state instanceof Or_State) {navOrState ((Or_State)sc.state, null,""); }
@@ -60,11 +64,14 @@ public class Crossreference extends ModelCheckBasics {
 
     // Ausgabe
     if (items.size()>0) {
+      highlightObject ho = new highlightObject(true); // Highlighten vorbereiten
       gui.userMessage("Check: "+such+" ist ein:");
       for (int i=0; i<items.size(); i++) {
         ReportItem rp = (ReportItem)items.elementAt(i);
         gui.userMessage("Check:   - "+rp.Pth);
+        ho = new highlightObject((Absyn)rp.Obj,Color.black); // Object highlighten
       }
+      ho = new highlightObject(); // Highlighten aktivieren
     }
     else {
       gui.userMessage("Check: "+such+" wurde nicht gefunden.");
@@ -80,6 +87,7 @@ public class Crossreference extends ModelCheckBasics {
     if (os.name.name.equals(such)) { itemInput(1,os,"Or-State in "+p); }
     String np = getAddPathPart(p, os.name.name);
     if (os.trs != null) { navTransInTransList(os.trs, os, np); }
+    if (os.connectors != null) { navConInConList(os.connectors, np); }
     if (os.substates != null) { navStateInStateList(os.substates, os, np); }
   }
 
@@ -87,6 +95,50 @@ public class Crossreference extends ModelCheckBasics {
     if (as.name.name.equals(such)) { itemInput(2,as,"And-State in "+p); }
     String np = getAddPathPart(p, as.name.name);
     if (as.substates != null) { navStateInStateList(as.substates, as, np); }
+  }
+
+  void navConInConList(ConnectorList cl, String p) {
+    if (cl.head.name.name.equals(such)) { itemInput(4,cl.head,"Connector in "+p); }
+    if (cl.tail != null) {navConInConList(cl.tail, p);}
+  }
+
+  void navTransInTransList(TrList tl, State _s, String p) {
+    String z1 = new String();
+    String z2 = new String();
+    
+    // Namen der Anker rausfinden
+    if (tl.head.source instanceof UNDEFINED)
+      { z1 = new String("UNDEFINED"); }
+    else if (tl.head.source instanceof Statename)
+      { z1 = new String(((Statename)tl.head.source).name); }
+    else if (tl.head.source instanceof Conname)
+      { z1 = new String(((Conname)tl.head.source).name); }
+    if (tl.head.target instanceof UNDEFINED)
+      { z2 = new String("UNDEFINED"); }
+    else if (tl.head.target instanceof Statename)
+      { z2 = new String(((Statename)tl.head.target).name); }
+    else if (tl.head.target instanceof Conname)
+      { z2 = new String(((Conname)tl.head.target).name); }
+
+    // Auswertung der Anker  
+    if (tl.head.source instanceof Statename) {
+      if ( z1.equals(such) )
+        { itemInput(5,tl.head,"Statename des Startankers der Transition "+z1+" -> "+z2+" in "+p); }
+    }
+    else if (tl.head.source instanceof Conname) {
+      if ( z1.equals(such) )
+        { itemInput(7,tl.head,"Connectorname des Startankers der Transition "+z1+" -> "+z2+" in "+p); }
+    }
+    if (tl.head.target instanceof Statename) {
+      if ( z2.equals(such) )
+        { itemInput(6,tl.head,"Statename des Zielankers der Transition "+z1+" -> "+z2+" in "+p); }
+    }
+    else if (tl.head.target instanceof Conname) {
+      if ( z2.equals(such) )
+        { itemInput(8,tl.head,"Connectorname des Zielankers der Transition "+z1+" -> "+z2+" in "+p); }
+    }
+
+    if (tl.tail != null) { navTransInTransList(tl.tail, _s, p); }
   }
 
   // Eingabe eines Report Ergebnises
@@ -104,6 +156,11 @@ class ReportItem {
        //   1: OrState
        //   2: AndState
        //   3: BasicState
+       //   4: Connectoren
+       //   5: Statename des Startanker
+       //   6: Statename des Zielanker
+       //   7: Connectorname des Startanker
+       //   8: Connectorname des Zielanker
 
   // das Objekt selbst, z.B. zum Highlighten, evtl. überflüssig
   Object Obj = null;
