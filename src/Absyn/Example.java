@@ -58,12 +58,12 @@ public class Example {
   
   Tr tr1 = new Tr (new Statename ("S1"), 
 		   new Statename ("S2"),
-		   new TLabel (new GuardEvent(C),null));
+		   new TLabel (new GuardEvent(new SEvent("C")),null));
 
   Tr tr2 = new Tr (new Statename ("S2"), 
 		   new Statename ("S1"),
 		   new TLabel (new GuardCompg (new Compguard (Compguard.AND,
-							  new GuardEvent(G),
+							  new GuardEvent(new SEvent("G")),
 							  new GuardCompp (new Comppath (Comppath.IN,t2p)))),
 					   new ActionEmpty (new Dummy())));
 
@@ -79,10 +79,10 @@ public class Example {
 			      new StateList (T1,new StateList (T2,null)),
 			      new TrList  (new Tr (new Statename ("T1"), 
 						   new Statename ("T2"),
-						   new TLabel (new GuardEvent(D),null)),
+						   new TLabel (new GuardEvent(new SEvent("D")),null)),
 					   new TrList (new Tr (new Statename ("T2"), 
 							       new Statename ("T1"),
-							       new TLabel (new GuardEvent(G),null)),null)),
+							       new TLabel (new GuardEvent(new SEvent("G")),null)),null)),
 			      new StatenameList (new Statename("T1"), null),	
 			      null);
   
@@ -101,7 +101,8 @@ public class Example {
 			      new StateList (Q1,new StateList (Q2,null)),
 			      new TrList (new Tr (new Statename ("Q1"), 
 						  new Statename ("Q2"),
-						  new TLabel (new GuardEvent(A),new ActionEvt (C))),
+						  new TLabel (new GuardEvent(new SEvent("A")),
+							                     new ActionEvt (new SEvent("C")))),
 					  null),
 			      new StatenameList( new Statename("Q1"), null),	
 			      null);
@@ -111,13 +112,14 @@ public class Example {
 			       new StateList (P1,new StateList (P2,new StateList (P3,null))),
 			       new TrList (new Tr (new Statename ("P1"), 
 						   new Statename ("P2"), 
-						   new TLabel (new GuardEvent(C),null)),
+						   new TLabel (new GuardEvent(new SEvent("C")),null)),
 					   new TrList (new Tr (new Statename ("P1"), 
 							       new Statename ("P3"), 
-							       new TLabel (new GuardEvent(A),null)),
+							       new TLabel (new GuardEvent(new SEvent("A")),null)),
 						       new TrList (new Tr (new Statename ("P3"), 
 									   new Statename ("P1"), 
-									   new TLabel (new GuardEvent(B),null)),null))),
+									   new TLabel (new GuardEvent(new SEvent("B")),
+										                      null)),null))),
 			       new StatenameList (new Statename("P1"), null),
 			       null);  
   
