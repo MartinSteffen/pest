@@ -20,7 +20,7 @@ public class Example {
 
 
     
-    Path sudp = new Path ("Sud", null);
+    Path sudp = new Path ("SUD", null);
     Path p1p  = sudp.append("P1");
     Path p2p  = sudp.append("P2");
     Path p3p  = sudp.append("P3");
@@ -71,7 +71,7 @@ public class Example {
   Or_State R1 = new Or_State (new Statename ("R1"),
 			      new StateList (S1,new StateList (S2,null)),
 			      new TrList (tr1, new TrList (tr2, null)),
-			      new StatenameList (new Statename("T1"), null),	
+			      new StatenameList (new Statename("S1"), null),	
 			      null);
   
   Or_State R2 = new Or_State (
