@@ -8,7 +8,7 @@ import java.awt.event.*;
  * Fenster zur Eingabe der Optionen des Syntax Checks
  *
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: CheckOption.java,v 1.1 1999-01-18 20:56:31 swtech11 Exp $
+ *  @version  $Id: CheckOption.java,v 1.2 1999-01-19 10:18:37 swtech11 Exp $
  */
 public class CheckOption extends Dialog implements ActionListener {
 
@@ -21,6 +21,7 @@ public class CheckOption extends Dialog implements ActionListener {
   Checkbox sc_high;
   Checkbox sc_warn;
   Checkbox cr_high;
+  Checkbox sc_brow;
   
 
   /**
@@ -33,7 +34,7 @@ public class CheckOption extends Dialog implements ActionListener {
 
     Point p = parent.getLocation();
 	  setLocation(p.x + 30 , p.y + 30);
-    setLayout(new GridLayout(6,1));
+    setLayout(new GridLayout(7,1));
 
     // Ueberschrift Syntax Check
   	Panel panel = new Panel(new GridLayout(1,1));
@@ -42,20 +43,26 @@ public class CheckOption extends Dialog implements ActionListener {
   	panel.add(new Label("  Syntax Check:"));
 	  add(panel);
 
-    // Check highlighten
-  	panel = new Panel(new GridLayout(1,2));
+    // Browser benutzen
+  	panel = new Panel(new GridLayout(1,1));
     panel.setBackground(Color.lightGray);
     panel.setForeground(Color.black);
-    panel.add(new Label("    "));
+    sc_brow = new Checkbox("Message Browser benutzen",cf.sc_browser );
+    panel.add(sc_brow);
+    add(panel);
+
+    // Check highlighten
+  	panel = new Panel(new GridLayout(1,1));
+    panel.setBackground(Color.lightGray);
+    panel.setForeground(Color.black);
     sc_high = new Checkbox("Ergebnisse highlighten",cf.sc_highlight);
     panel.add(sc_high);
     add(panel);
 
     // Check Warnungen
-  	panel = new Panel(new GridLayout(1,2));
+  	panel = new Panel(new GridLayout(1,1));
     panel.setBackground(Color.lightGray);
     panel.setForeground(Color.black);
-    panel.add(new Label("    "));
     sc_warn = new Checkbox("Warnungen ausgeben",cf.sc_warning);
     panel.add(sc_warn);
     add(panel);
@@ -68,10 +75,9 @@ public class CheckOption extends Dialog implements ActionListener {
 	  add(panel);
 
     // Crossreference highlighten
-  	panel = new Panel(new GridLayout(1,2));
+  	panel = new Panel(new GridLayout(1,1));
     panel.setBackground(Color.lightGray);
     panel.setForeground(Color.black);
-    panel.add(new Label("    "));
     cr_high = new Checkbox("Ergebnisse highlighten",cf.cr_highlight);
     panel.add(cr_high);
     add(panel);
@@ -100,7 +106,8 @@ public class CheckOption extends Dialog implements ActionListener {
   	if (cmd.equals(button1.getActionCommand())) {
   		cf.sc_highlight = sc_high.getState();
 	  	cf.sc_warning   = sc_warn.getState();
-		  cf.cr_highlight = cr_high.getState();
+		cf.cr_highlight = cr_high.getState();
+  		cf.sc_browser   = sc_brow.getState();
   		setVisible(false);
 	  	dispose();
 	  }
