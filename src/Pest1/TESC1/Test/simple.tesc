@@ -10,7 +10,7 @@ or S3:
 			basic B2;
 			defcon : B1;
 			transitions:
-				from B1 to B2 on ~ ;
+				from B1 to B2;
 		end StateY;
 		basic B;
 		defcon : B;
