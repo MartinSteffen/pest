@@ -37,7 +37,6 @@ import java.io.*;
  * TODO.
  * </STRONG>
  * <UL>
- * <LI> Nullwerte in der Statechart abfangen               (-7.1)
  * <LI> Connectoren in die Nachfolgerberechung einbeziehen (-8.1)
  * <LI> Abfrage bei Nichtdeterminismus                     (-9.1)
  * <LI> Ausfuehrliche, dokumentierte Tests                 (-10.1)
@@ -48,7 +47,7 @@ import java.io.*;
  * <UL>
  * <LI> Connectoren sind nicht benutzbar: -> ClassCastException
  * <LI> Nichtdeterminismus wird erkannt, kann aber nicht aufgelöst werden (GUI fehlt)
- * <LI> noch duerfen in der Statechart keine null-Werte auftauchen
+ * <LI> Noch nicht getestet, was absyn.Dummy anrichten kann
  * <LI> 
  * </UL>
  * <DT><STRONG>

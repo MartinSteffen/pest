@@ -187,16 +187,18 @@ class Nachfolgermaschine extends Object{
    Status step(Path path,State s){
      /*Aufsplitten, je nach Statetyp wird dann das passende step aufgerufen*/
      Status result=new Status();
-     Class klasse=s.getClass();
-     String klassenname=klasse.getName();
-     if (klassenname.equals("absyn.Basic_State")){
-       result=step(path,(Basic_State)s);
-     }
-     if (klassenname.equals("absyn.Or_State")){
-       result=step(path,(Or_State)s);
-     }
-     if (klassenname.equals("absyn.And_State")){
-       result=step(path,(And_State)s);
+     if (s!=null){
+       Class klasse=s.getClass();
+       String klassenname=klasse.getName();
+       if (klassenname.equals("absyn.Basic_State")){
+	 result=step(path,(Basic_State)s);
+       }
+       if (klassenname.equals("absyn.Or_State")){
+	 result=step(path,(Or_State)s);
+       }
+       if (klassenname.equals("absyn.And_State")){
+	 result=step(path,(And_State)s);
+       }
      }
      return result;
    }
@@ -284,28 +286,30 @@ class Nachfolgermaschine extends Object{
 
    boolean isSatisfied(Guard g){
       boolean result=false;
-      Class klasse=g.getClass();
-      String klassenname=klasse.getName();
-      if (klassenname.equals("absyn.GuardUndet")){
-        result=isSatisfied((GuardUndet)g);
-      }
-      if (klassenname.equals("absyn.GuardEmpty")){
-        result=isSatisfied((GuardEmpty)g);
-      }
-      if (klassenname.equals("absyn.GuardCompg")){
-        result=isSatisfied((GuardCompg)g);
-      }
-      if (klassenname.equals("absyn.GuardCompp")){
-        result=isSatisfied((GuardCompp)g);
-      }
-      if (klassenname.equals("absyn.GuardNeg")){
-        result=isSatisfied((GuardNeg)g);
-      }
-      if (klassenname.equals("absyn.GuardBVar")){
+      if (g!=null){
+	Class klasse=g.getClass();
+	String klassenname=klasse.getName();
+	if (klassenname.equals("absyn.GuardUndet")){
+	  result=isSatisfied((GuardUndet)g);
+	}
+	if (klassenname.equals("absyn.GuardEmpty")){
+	  result=isSatisfied((GuardEmpty)g);
+	}
+	if (klassenname.equals("absyn.GuardCompg")){
+	  result=isSatisfied((GuardCompg)g);
+	}
+	if (klassenname.equals("absyn.GuardCompp")){
+	  result=isSatisfied((GuardCompp)g);
+	}
+	if (klassenname.equals("absyn.GuardNeg")){
+	  result=isSatisfied((GuardNeg)g);
+	}
+	if (klassenname.equals("absyn.GuardBVar")){
         result=isSatisfied((GuardBVar)g);
-      }
-      if (klassenname.equals("absyn.GuardEvent")){
-	result=isSatisfied((GuardEvent)g);
+	}
+	if (klassenname.equals("absyn.GuardEvent")){
+	  result=isSatisfied((GuardEvent)g);
+	}
       }
       return result;
    }
