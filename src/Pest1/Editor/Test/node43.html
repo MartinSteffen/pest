@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//DE">
+<!--Converted with LaTeX2HTML 96.1-h (September 30, 1996) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds -->
+<HTML>
+<HEAD>
+<TITLE>Abstrakte Syntax</TITLE>
+<META NAME="description" CONTENT="Abstrakte Syntax">
+<META NAME="keywords" CONTENT="requirements">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<LINK REL=STYLESHEET HREF="requirements.css">
+</HEAD>
+<H1><A NAME="SECTION000100000000000000000">Neue Abstrakte Syntax</A></H1>
+<P>
+<A NAME="secabsy">&#160;</A>
+<P>
+<PRE>Statechart      ::      events          : Events        /* all events */
+                        bvars           : Bvars         /* all bvars */
+                        names           : Paths         /* min. path suffixes */
+                        state           : State         /* Rootstate */
+
+SubSyn          =       State 
+                        | Tr 
+                        | Connector
+                        parent          : State
+
+Statenames      =       Str -set
+Statename       =       Str
+
+Paths           =       Pathname -set
+Path            =       Str *
+
+Bvars           =       Bvar -set
+Bvar            =       Str
+
+States          =       State -set
+
+State           =       AND-State 
+                        | OR-State 
+                        | Basic-State
+                        name : String
+
+AND-State       ::      substates       : States
+
+OR-State        ::      substates       : States
+                        trs             : Trs
+                        conns           : Connectors
+
+BASIC-States    ::      default         : Boolean
+
+Ref_State       =       Basic_State
+
+Connectors      =       Connector -set
+
+Connector       =       name            : Conname
+
+Conname         =       Str
+
+Trs             =       Tr -set
+
+Tr              ::      source          : TrAnchor
+                        target          : TrAnchor
+                        tlabel          : Label
+
+Label           ::      guard        : Guard
+                        action       : Action
+
+TrAnchor        =       State 
+                        | Connector 
+                        | UNDEFINED
+
+Guard           =       emptyexpr     : Dummy
+                        | event       : Event
+                        | bvar        : Bvar
+                        | negguard    : Guard
+                        | compp       : Comppath
+                        | compg       : Compguard
+                        | undet       : Str
+
+Comppath        ::      s_pop   : Pathop
+                        s_ppath : Path
+
+Pathop          ::      IN 
+                        | ENTERED 
+                        | EXITED
+
+Compguard       ::      s_eop   : Op
+                        s_elhs  : Guard
+                        s_erhs  : Guard
+
+Op              =       ANDOP 
+                        | OROP 
+                        | IMPLIES 
+                        | EQUIV
+
+Action          =       s_block         : Aseq
+                        | s_egen        : Event
+                        | s_bstmt       : Boolstmt
+                        | s_empty       : Dummy
+
+Aseq            =       Action *
+
+Boolstmt        =       mtrue         : Bvar
+                        | mfalse      : Bvar
+                        | bass        : Bassign
+
+Bassign         ::      blhs          : Bvar
+                        brhs          : Cond
+
+Dummy           =       Str</PRE>
+<P>
+<BR>
+<br>
+
+ <a HREF="tutorial.html">Der Editor</a>
+ <HR>
+<P><ADDRESS>
+
+<I>swtech24 <BR>
+Mon Feb 15 1999</I>
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,316 @@
+<!--NewPage-->
+<html>
+<head>
+<title>
+  
+</title>
+</head>
+
+<body>
+ <dt>
+    <p align="center">
+	<font face="Creature" color="#0800FF">
+      <big><big><b>Syntaxbaum</b></big></big>
+    </p>
+</dt>
+<p>
+<font face="Creature" color="#000000">
+<b>[Statechart] </b><BR> 
+| <b>  [SEventList] </b><BR>
+|   |   [SEvent] B <BR>
+|   |   [location] 1 <BR>
+|   |   [SEvent] A <BR>
+|   |   [location] 1 <BR>
+|   |   [SEvent] D <BR>
+|   |   [location] 1 <BR>
+|   |   [SEvent] G <BR>
+|   |   [location] 1 <BR>
+|   |   [SEvent] C <BR>
+|   |   [location] 1 <BR>
+| <b>  [PathList] </b> <BR>
+|   |   [Path] SUD.P3.Q2.R2.T2 <BR>
+|   |   [Path] SUD.P3.Q2.R2.T1 <BR>
+|   |   [Path] SUD.P3.Q2.R2 <BR>
+|   |   [Path] SUD.P3.Q2.R1.S2 <BR>
+|   |   [Path] SUD.P3.Q2.R1.S1 <BR>
+|   |   [Path] SUD.P3.Q2.R1 <BR>
+|   |   [Path] SUD.P3.Q2 <BR>
+|   |   [Path] SUD.P3.Q1 <BR>
+|   |   [Path] SUD.P3 <BR>
+|   |   [Path] SUD.P2 <BR>
+|   |   [Path] SUD.P1 <BR>
+|   |   [Path] SUD <BR>
+|  <b> [Or_State] </b> <BR>
+|   |   [Statename] SUD <BR>
+|   |   |   [location] 6 <BR>
+|   |   |   [Point] absyn.CPoint[x=5,y=26]
+ <BR>
+|   |   [Rectangle] absyn.CRectangle[x=0,y=0,width=458,height=527] <BR>
+|   |   [StateList]  <BR>
+|   |   |   [Basic_State]  <BR>
+|   |   |   |   [Statename] P1 <BR>
+|   |   |   |   |   [location] 7 <BR>
+|   |   |   |   |   [Point] absyn.CPoint[x=421,y=181] <BR>
+|   |   |   |   [Rectangle] absyn.CRectangle[x=416,y=155,width=30,height=31] <BR>
+|   |   |   [Basic_State]  <BR>
+|   |   |   |   [Statename] P2 <BR>
+|   |   |   |   |   [location] 8
+|   |   |   |   |   [Point] absyn.CPoint[x=379,y=181] <BR>
+|   |   |   |   [Rectangle] absyn.CRectangle[x=374,y=155,width=30,height=31] <BR>
+|   |   |   [Or_State]  <BR>
+|   |   |   |   [Statename] P3 <BR>
+|   |   |   |   |   [location] 10 <BR>
+|   |   |   |   |   [Point] absyn.CPoint[x=17,y=150] <BR>
+|   |   |   |   [Rectangle] absyn.CRectangle[x=12,y=124,width=350,height=372] <BR>
+|   |   |   |   [StateList]  <BR>
+|   |   |   |   |   [Basic_State]  <BR>
+|   |   |   |   |   |   [Statename] Q1 <BR>
+|   |   |   |   |   |   |   [location] 11 <BR>
+|   |   |   |   |   |   |   [Point] absyn.CPoint[x=311,y=119] <BR>
+|   |   |   |   |   |   [Rectangle] absyn.CRectangle[x=306,y=93,width=32,height=31] <BR>
+|   |   |   |   |   [And_State]  <BR>
+|   |   |   |   |   |   [Statename] Q2 <BR>
+|   |   |   |   |   |   |   [location] 12 <BR>
+|   |   |   |   |   |   |   [Point] absyn.CPoint[x=17,y=88] <BR>
+|   |   |   |   |   |   [Rectangle] absyn.CRectangle[x=12,y=93,width=282,height=248] <BR>
+|   |   |   |   |   |   [StateList]  <BR>
+|   |   |   |   |   |   |   [Or_State]  <BR>
+|   |   |   |   |   |   |   |   [Statename] R1 <BR>
+|   |   |   |   |   |   |   |   |   [location] 13 <BR>
+|   |   |   |   |   |   |   |   |   [Point] absyn.CPoint[x=5,y=26]
+ <BR>
+|   |   |   |   |   |   |   |   [Rectangle] absyn.CRectangle[x=0,y=0,width=166,height=248] <BR>
+|   |   |   |   |   |   |   |   [StateList]  <BR>
+|   |   |   |   |   |   |   |   |   [Basic_State]  <BR>
+|   |   |   |   |   |   |   |   |   |   [Statename] S1<BR>
+|   |   |   |   |   |   |   |   |   |   |   [location] 14 <BR>
+|   |   |   |   |   |   |   |   |   |   |   [Point] absyn.CPoint[x=70,y=181] <BR>
+|   |   |   |   |   |   |   |   |   |   [Rectangle] absyn.CRectangle[x=65,y=155,width=29,height=31] <BR>
+|   |   |   |   |   |   |   |   |   [Basic_State]  <BR>
+|   |   |   |   |   |   |   |   |   |   [Statename] S2 <BR>
+|   |   |   |   |   |   |   |   |   |   |   [location] 15 <BR>
+|   |   |   |   |   |   |   |   |   |   |   [Point] absyn.CPoint[x=29,y=181] <BR>
+|   |   |   |   |   |   |   |   |   |   [Rectangle] absyn.CRectangle[x=24,y=155,width=29,height=31] <BR>
+|   |   |   |   |   |   |   |   [TrList]  <BR>
+|   |   |   |   |   |   |   |   |   [Tr]  <BR>
+|   |   |   |   |   |   |   |   |   |   [Point[]]  <BR>
+|   |   |   |   |   |   |   |   |   |   |   [Point] absyn.CPoint[x=71,y=155] <BR>
+|   |   |   |   |   |   |   |   |   |   |   [Point] absyn.CPoint[x=71,y=93] <BR>
+|   |   |   |   |   |   |   |   |   |   |   [Point] absyn.CPoint[x=30,y=93] <BR>
+|   |   |   |   |   |   |   |   |   |   |   [Point] absyn.CPoint[x=30,y=155] <BR>
+|   |   |   |   |   |   |   |   |   |   [location] 20 <BR>
+|   |   |   |   |   |   |   |   |   |   [Statename] S1 <BR>
+|   |   |   |   |   |   |   |   |   |   [Statename] S2 <BR>
+|   |   |   |   |   |   |   |   |   |   [TLabel]  <BR>
+|   |   |   |   |   |   |   |   |   |   |   [Point] absyn.CPoint[x=39,y=100] <BR>
+|   |   |   |   |   |   |   |   |   |   |   [location] 20 <BR>
+|   |   |   |   |   |   |   |   |   |   |   [caption] C <BR>
+|   |   |   |   |   |   |   |   |   |   |   [GuardEvent]  <BR>
+|   |   |   |   |   |   |   |   |   |   |   |   [SEvent] C <BR>
+|   |   |   |   |   |   |   |   |   |   |   |   [location] 1 <BR>
+|   |   |   |   |   |   |   |   |   |   |   [ActionBlock]  <BR>
+|   |   |   |   |   |   |   |   |   |   |   |   [Aseq]  <BR>
+|   |   |   |   |   |   |   |   |   |   |   |   |   [ActionEmpty] <BR>
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   [Dummy]  <BR>
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   [location] 1 <BR>
+|   |   |   |   |   |   |   |   |   [Tr]  <BR>
+|   |   |   |   |   |   |   |   |   |   [Point[]]  <BR>
+|   |   |   |   |   |   |   |   |   |   |   [Point] absyn.CPoint[x=36,y=155] <BR>
+|   |   |   |   |   |   |   |   |   |   |   [Point] absyn.CPoint[x=36,y=124] <BR>
+|   |   |   |   |   |   |   |   |   |   |   [Point] absyn.CPoint[x=77,y=124] <BR>
+|   |   |   |   |   |   |   |   |   |   |   [Point] absyn.CPoint[x=77,y=155] <BR>
+|   |   |   |   |   |   |   |   |   |   [location] 21 <BR>
+|   |   |   |   |   |   |   |   |   |   [Statename] S2 <BR>
+|   |   |   |   |   |   |   |   |   |   [Statename] S1 <BR>
+|   |   |   |   |   |   |   |   |   |   [TLabel]  <BR>
+|   |   |   |   |   |   |   |   |   |   |   [Point] absyn.CPoint[x=74,y=150] <BR>
+|   |   |   |   |   |   |   |   |   |   |   [location] 21 <BR>
+|   |   |   |   |   |   |   |   |   |   |   [caption] G[in(SUD.P3.Q2.R2.T2)] <BR>
+|   |   |   |   |   |   |   |   |   |   |   [GuardCompg]  <BR>
+|   |   |   |   |   |   |   |   |   |   |   |   [Compguard] <AND>  <BR>
+|   |   |   |   |   |   |   |   |   |   |   |   |   [GuardEvent]  <BR>
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   [SEvent] G <BR>
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   [location] 1 <BR>
+|   |   |   |   |   |   |   |   |   |   |   |   |   [GuardCompp]  <BR>
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   [Comppath] <IN> <BR> 
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   [Path] SUD.P3.Q2.R2.T2 <BR>
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   [location] 1 <BR>
+|   |   |   |   |   |   |   |   |   |   |   |   |   [location] 1 <BR>
+|   |   |   |   |   |   |   |   |   |   |   |   [location] 1 <BR>
+|   |   |   |   |   |   |   |   |   |   |   [location] 1 <BR>
+|   |   |   |   |   |   |   |   |   |   |   [ActionBlock]  <BR>
+|   |   |   |   |   |   |   |   |   |   |   |   [Aseq]  <BR>
+|   |   |   |   |   |   |   |   |   |   |   |   |   [ActionEmpty]  <BR>
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   [Dummy]  <BR>
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   [location] 1 <BR>
+|   |   |   |   |   |   |   |   [StatenameList]  <BR>
+|   |   |   |   |   |   |   |   |   [Statename] S1 <BR>
+|   |   |   |   |   |   |   |   |   |   [location] 17 <BR>
+|   |   |   |   |   |   |   [Or_State]  <BR>
+|   |   |   |   |   |   |   |   [Statename] R2 <BR>
+|   |   |   |   |   |   |   |   |   [location] 24 <BR>
+|   |   |   |   |   |   |   |   |   [Point] absyn.CPoint[x=171,y=26] <BR>
+|   |   |   |   |   |   |   |   [Rectangle] absyn.CRectangle[x=166,y=0,width=116,height=248] <BR>
+|   |   |   |   |   |   |   |   [StateList]  <BR>
+|   |   |   |   |   |   |   |   |   [Basic_State]  <BR>
+|   |   |   |   |   |   |   |   |   |   [Statename] T1 <BR>
+|   |   |   |   |   |   |   |   |   |   |   [location] 25 <BR>
+|   |   |   |   |   |   |   |   |   |   |   [Point] absyn.CPoint[x=66,y=181] <BR>
+|   |   |   |   |   |   |   |   |   |   [Rectangle] absyn.CRectangle[x=61,y=155,width=31,height=31] <BR>
+|   |   |   |   |   |   |   |   |   [Basic_State]  <BR>
+|   |   |   |   |   |   |   |   |   |   [Statename] T2 <BR>
+|   |   |   |   |   |   |   |   |   |   |   [location] 26 <BR>
+|   |   |   |   |   |   |   |   |   |   |   [Point] absyn.CPoint[x=23,y=181] <BR>
+|   |   |   |   |   |   |   |   |   |   [Rectangle] absyn.CRectangle[x=18,y=155,width=31,height=31] <BR>
+|   |   |   |   |   |   |   |   [TrList]  <BR>
+|   |   |   |   |   |   |   |   |   [Tr]  <BR>
+|   |   |   |   |   |   |   |   |   |   [Point[]]  <BR>
+|   |   |   |   |   |   |   |   |   |   |   [Point] absyn.CPoint[x=67,y=155] <BR>
+|   |   |   |   |   |   |   |   |   |   |   [Point] absyn.CPoint[x=67,y=93] <BR>
+|   |   |   |   |   |   |   |   |   |   |   [Point] absyn.CPoint[x=24,y=93] <BR>
+|   |   |   |   |   |   |   |   |   |   |   [Point] absyn.CPoint[x=24,y=155] <BR>
+|   |   |   |   |   |   |   |   |   |   [location] 31 <BR>
+|   |   |   |   |   |   |   |   |   |   [Statename] T1 <BR>
+|   |   |   |   |   |   |   |   |   |   [Statename] T2 <BR>
+|   |   |   |   |   |   |   |   |   |   [TLabel]  <BR>
+|   |   |   |   |   |   |   |   |   |   |   [Point] absyn.CPoint[x=52,y=108] <BR>
+|   |   |   |   |   |   |   |   |   |   |   [location] 31 <BR>
+|   |   |   |   |   |   |   |   |   |   |   [caption] D <BR>
+|   |   |   |   |   |   |   |   |   |   |   [GuardEvent]  <BR>
+|   |   |   |   |   |   |   |   |   |   |   |   [SEvent] D <BR>
+|   |   |   |   |   |   |   |   |   |   |   |   [location] 1 <BR>
+|   |   |   |   |   |   |   |   |   |   |   [ActionBlock]  <BR>
+|   |   |   |   |   |   |   |   |   |   |   |   [Aseq]  <BR>
+|   |   |   |   |   |   |   |   |   |   |   |   |   [ActionEmpty]  <BR>
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   [Dummy]  <BR>
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   [location] 1 <BR>
+|   |   |   |   |   |   |   |   |   [Tr]  <BR>
+|   |   |   |   |   |   |   |   |   |   [Point[]]  <BR>
+|   |   |   |   |   |   |   |   |   |   |   [Point] absyn.CPoint[x=30,y=155] <BR>
+|   |   |   |   |   |   |   |   |   |   |   [Point] absyn.CPoint[x=30,y=124] <BR>
+|   |   |   |   |   |   |   |   |   |   |   [Point] absyn.CPoint[x=73,y=124] <BR>
+|   |   |   |   |   |   |   |   |   |   |   [Point] absyn.CPoint[x=73,y=155] <BR>
+|   |   |   |   |   |   |   |   |   |   [location] 32 <BR>
+|   |   |   |   |   |   |   |   |   |   [Statename] T2 <BR>
+|   |   |   |   |   |   |   |   |   |   [Statename] T1 <BR>
+|   |   |   |   |   |   |   |   |   |   [TLabel]  <BR>
+|   |   |   |   |   |   |   |   |   |   |   [Point] absyn.CPoint[x=41,y=141] <BR>
+|   |   |   |   |   |   |   |   |   |   |   [location] 32 <BR>
+|   |   |   |   |   |   |   |   |   |   |   [caption] G <BR>
+|   |   |   |   |   |   |   |   |   |   |   [GuardEvent]  <BR>
+|   |   |   |   |   |   |   |   |   |   |   |   [SEvent] G <BR>
+|   |   |   |   |   |   |   |   |   |   |   |   [location] 1
+ <BR>
+|   |   |   |   |   |   |   |   |   |   |   [ActionBlock]  <BR>
+|   |   |   |   |   |   |   |   |   |   |   |   [Aseq]  <BR>
+|   |   |   |   |   |   |   |   |   |   |   |   |   [ActionEmpty]  <BR>
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   [Dummy]  <BR>
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   [location] 1 <BR>
+|   |   |   |   |   |   |   |   [StatenameList]  <BR>
+|   |   |   |   |   |   |   |   |   [Statename] T1 <BR>
+|   |   |   |   |   |   |   |   |   |   [location] 28 <BR>
+|   |   |   |   [TrList]  <BR>
+|   |   |   |   |   [Tr] 
+ <BR>
+|   |   |   |   |   |   [Point[]]  <BR>
+|   |   |   |   |   |   |   [Point] absyn.CPoint[x=312,y=93] <BR>
+|   |   |   |   |   |   |   [Point] absyn.CPoint[x=312,y=62] <BR>
+|   |   |   |   |   |   |   [Point] absyn.CPoint[x=52,y=62] <BR>
+|   |   |   |   |   |   |   [Point] absyn.CPoint[x=52,y=93] <BR>
+|   |   |   |   |   |   [location] 37 <BR>
+|   |   |   |   |   |   [Statename] Q1 <BR>
+|   |   |   |   |   |   [Statename] Q2 <BR>
+|   |   |   |   |   |   [TLabel]  <BR>
+|   |   |   |   |   |   |   [Point] absyn.CPoint[x=183,y=67] <BR>
+|   |   |   |   |   |   |   [location] 37 <BR>
+|   |   |   |   |   |   |   [caption] A/C <BR>
+|   |   |   |   |   |   |   [GuardEvent]  <BR>
+|   |   |   |   |   |   |   |   [SEvent] A <BR>
+|   |   |   |   |   |   |   |   [location] 1 <BR>
+|   |   |   |   |   |   |   [ActionBlock]  <BR>
+|   |   |   |   |   |   |   |   [Aseq]  <BR>
+|   |   |   |   |   |   |   |   |   [ActionEvt]  <BR>
+|   |   |   |   |   |   |   |   |   |   [SEvent] C <BR>
+|   |   |   |   |   |   |   |   |   |   [location] 1 <BR>
+|   |   |   |   [StatenameList]  <BR>
+|   |   |   |   |   [Statename] Q1 <BR>
+|   |   |   |   |   |   [location] 35 <BR>
+|   |   [TrList]  <BR>
+|   |   |   [Tr]  <BR>
+|   |   |   |   [Point[]]  <BR>
+|   |   |   |   |   [Point] absyn.CPoint[x=434,y=155] <BR>
+|   |   |   |   |   [Point] absyn.CPoint[x=434,y=124] <BR>
+|   |   |   |   |   [Point] absyn.CPoint[x=380,y=124] <BR>
+|   |   |   |   |   [Point] absyn.CPoint[x=380,y=155] <BR>
+|   |   |   |   [location] 44 <BR>
+|   |   |   |   [Statename] P1 <BR>
+|   |   |   |   [Statename] P2 <BR>
+|   |   |   |   [TLabel]  <BR>
+|   |   |   |   |   [Point] absyn.CPoint[x=428,y=136] <BR>
+|   |   |   |   |   [location] 44 <BR>
+|   |   |   |   |   [caption] C <BR>
+|   |   |   |   |   [GuardEvent]  <BR>
+|   |   |   |   |   |   [SEvent] C <BR>
+|   |   |   |   |   |   [location] 1  <BR>
+|   |   |   |   |   [ActionBlock]  <BR>
+|   |   |   |   |   |   [Aseq]   <BR>
+|   |   |   |   |   |   |   [ActionEmpty]  <BR>
+|   |   |   |   |   |   |   |   [Dummy]  <BR>
+|   |   |   |   |   |   |   |   [location] 1 <BR>
+|   |   |   [Tr]  <BR>
+|   |   |   |   [Point[]]  <BR>
+|   |   |   |   |   [Point] absyn.CPoint[x=422,y=155] <BR>
+|   |   |   |   |   [Point] absyn.CPoint[x=422,y=62] <BR>
+|   |   |   |   |   [Point] absyn.CPoint[x=20,y=62] <BR>
+|   |   |   |   |   [Point] absyn.CPoint[x=20,y=124]
+ <BR>
+|   |   |   |   [location] 45 <BR>
+|   |   |   |   [Statename] P1 <BR>
+|   |   |   |   [Statename] P3 <BR>
+|   |   |   |   [TLabel]  <BR>
+|   |   |   |   |   [Point] absyn.CPoint[x=198,y=79] <BR>
+|   |   |   |   |   [location] 45 <BR>
+|   |   |   |   |   [caption] A <BR>
+|   |   |   |   |   [GuardEvent] <BR> 
+|   |   |   |   |   |   [SEvent] A <BR>
+|   |   |   |   |   |   [location] 1 <BR>
+|   |   |   |   |   [ActionBlock]  <BR>
+|   |   |   |   |   |   [Aseq]  <BR>
+|   |   |   |   |   |   |   [ActionEmpty]  <BR>
+|   |   |   |   |   |   |   |   [Dummy]  <BR>
+|   |   |   |   |   |   |   |   [location] 1 <BR>
+|   |   |   [Tr]  <BR>
+|   |   |   |   [Point[]]  <BR>
+|   |   |   |   |   [Point] absyn.CPoint[x=28,y=124] <BR>
+|   |   |   |   |   [Point] absyn.CPoint[x=28,y=93] <BR>
+|   |   |   |   |   [Point] absyn.CPoint[x=428,y=93] <BR>
+|   |   |   |   |   [Point] absyn.CPoint[x=428,y=155] <BR>
+|   |   |   |   [location] 46 <BR>
+|   |   |   |   [Statename] P3 <BR>
+|   |   |   |   [Statename] P1 <BR>
+|   |   |   |   [TLabel]  <BR>
+|   |   |   |   |   [Point] absyn.CPoint[x=202,y=103] <BR>
+|   |   |   |   |   [location] 46 <BR>
+|   |   |   |   |   [caption] B <BR>
+|   |   |   |   |   [GuardEvent]  <BR>
+|   |   |   |   |   |   [SEvent] B <BR>
+|   |   |   |   |   |   [location] 1 <BR>
+|   |   |   |   |   [ActionBlock]  <BR>
+|   |   |   |   |   |   [Aseq]  <BR>
+|   |   |   |   |   |   |   [ActionEmpty]  <BR>
+|   |   |   |   |   |   |   |   [Dummy]  <BR>
+|   |   |   |   |   |   |   |   [location] 1 <BR>
+|   |   [StatenameList]  <BR>
+|   |   |   [Statename] P1 <BR>
+|   |   |   |   [location] 41
+ <BR>
+</p>
+
+
+<br>
+<br>
+
+ <a HREF="tutorial.html">Der Editor</a>
+
+</body>
+</html>
