@@ -72,7 +72,7 @@ import util.*;
  * <br>
  * <hr>
  * @author Arne Koch/Mike Rumpf.
- * @version  $Id: TESCSaver.java,v 1.5 1999-01-25 13:27:50 swtech13 Exp $ 
+ * @version  $Id: TESCSaver.java,v 1.6 1999-01-27 17:32:46 swtech13 Exp $ 
  */ 
 
 /* Konventionen:
@@ -173,7 +173,13 @@ public class TESCSaver {
 	    b = (c && d);
 	   
 	    // Auch bei Fehler setzten ?
-	    tl.caption = new String(g + " / " + a);
+	    // Entält nur etwas, wenn guard/action != ""
+	    if (a.length() > 0)
+		tl.caption = new String(g + " / " + a);
+	    else if (g.length() > 0)
+		tl.caption = new String(g);
+	    else
+		tl.caption = new String("");
 
 	}
 	else 
@@ -323,7 +329,7 @@ public class TESCSaver {
 	a = saveanchor(trans.source);
 	bw.write(" to ");
 	b = saveanchor(trans.target);
-	bw.write(" on ");
+	//bw.write(" on ");
 	
 	if (trans.label != null) {
 
@@ -353,13 +359,20 @@ public class TESCSaver {
 		}
 	    }
 
-	    if (guard.length() == 0) guard = new String("~");
+            // Freizeichen, bzw "on", wenn guard vorhanden
+	    if (guard.length() == 0) 		
+		guard = new String(" "); 	    
+	    else 
+		bw.write(" on ");
 		
 	    bw.write(guard);
 	    
 	    if (action != null) {
-		bw.write(" do ");
-		bw.write(action);
+		// Auch "do" nur schreiben, wenn Action etwas enthält
+		if (action.length() > 0) {
+		    bw.write(" do ");
+		    bw.write(action);
+		}
 	    }
 	    
 	    bw.write(";");
@@ -535,4 +548,10 @@ public class TESCSaver {
 	}
     }
 } 
-	    
+
+
+/* Letzte Änderungen
+ *
+ * - in savetransition: "on"/"do" nur schreiben, wenn guard/action != ""
+ * - ins setCaption: "/" nur , wenn action != ""
+ */	    

@@ -36,6 +36,12 @@ import util.*;
  */
 
 
+/* Letzte Änderungen:
+ * 
+ * - in actionstmt: erst hier caption + / setzten
+ * - in trans : prüfen, ob on da, sonst leerguard => guardangaben koennen weggelassen werden
+ */
+
 class TESCParser {
 
 
@@ -773,6 +779,10 @@ class TESCParser {
 
 	if (tok.token == vTOKEN.DO) {
 	    match(vTOKEN.DO);
+
+	    // Erst jetzt darf caption etwas enthalten
+	    tl_caption.append("/");
+
 	    Location loc = new Location(tok.linenum);
 	    // Auch ActionBlock bei nur einer Action ??
 	    al = actionlist(p);
@@ -1321,14 +1331,20 @@ class TESCParser {
 	match(vTOKEN.TO);
 		
 	t2 = sname(p);
-		
-	match(vTOKEN.ON);
-
-	tl_caption = new StringBuffer();
-
-	grd = guard(p);
 	
-	tl_caption.append("/");
+	tl_caption = new StringBuffer("");
+
+	// Falls on da, guard parsen, sonst leerer Guard
+	if (tok.token == vTOKEN.ON) {
+	
+	    match(vTOKEN.ON);
+	    grd = guard(p);
+	}
+	else {
+	    grd = new GuardEmpty((Dummy)setLoc(new Dummy(), loc));
+	}
+	
+	//tl_caption.append("/");
 	act = actionstmt(p);
 	
 	tr = new Tr(t1, t2, new TLabel(grd, act, null, loc, tl_caption.toString()));
@@ -1773,8 +1789,11 @@ class TESCParser {
 }
 
 /* TESCParser
- * $Id: TESCParser.java,v 1.19 1999-01-25 13:27:49 swtech13 Exp $
+ * $Id: TESCParser.java,v 1.20 1999-01-27 17:32:46 swtech13 Exp $
  * $Log: not supported by cvs2svn $
+ * Revision 1.19  1999/01/25 13:27:49  swtech13
+ * debug auskommentiert
+ *
  * Revision 1.18  1999/01/17 21:42:36  swtech13
  * Verbesserungen/Bugfixes
  *

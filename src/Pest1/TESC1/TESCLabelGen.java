@@ -99,6 +99,7 @@ public class TESCLabelGen {
 	String s = null;
 	boolean b = false;
 	boolean c = false;
+	boolean gbe = false;
 
 	inEv = true;
 	inAction = false;
@@ -107,14 +108,19 @@ public class TESCLabelGen {
 	undetUsed = false;
 	errc = false;
 	
-	// Falls nur eine einzige Bvar/pathop
+	// Falls nur Bvar/pathop und kein Eventteil
 	if (!(grd instanceof GuardCompg)) {
 	    b = firstBvar(grd);
 	    inEv = false;
 	}
 	else {
-	    if (((GuardCompg)grd).cguard.eop == Compguard.AND)
+	    if (((GuardCompg)grd).cguard.eop == Compguard.AND) {
+		// Ist rhs bvar-teil?
 		c = firstBvar(((GuardCompg)grd).cguard.erhs);
+		// ist rhs leer => bvar-teil leer
+		gbe = isEmptyGuard(((GuardCompg)grd).cguard.erhs);
+		
+	    }
 	}
 	
 	if (c) {
@@ -125,7 +131,11 @@ public class TESCLabelGen {
 	    inEv = false;
 	    s = new String(s + addGuard(((GuardCompg)grd).cguard.erhs) + "]");
 	}
-	else 
+	else if (gbe)
+	    // Leerer Bvar-Teil
+	    s = addGuard(((GuardCompg)grd).cguard.elhs);
+	else
+	    // Mmh, glaube das heisst: Eventteil, kein Bvarteil (nicht mal Empty/Dummy)
 	    s = addGuard(grd);
 
 	// ???
@@ -234,7 +244,8 @@ public class TESCLabelGen {
     }
 
     private String addGuardEmpty(GuardEmpty ge) {
-	return new String("~");
+	//return new String("~");
+	return new String("");
     }
 
     private String addGuardEvent (GuardEvent ev) {
@@ -380,7 +391,8 @@ public class TESCLabelGen {
 	else if (grd instanceof GuardCompp)
 	    b = true;
 	else if (grd instanceof GuardEmpty)
-	    b = true;
+	    b = false;
+	    //b = true;
 
 	else if (grd instanceof GuardCompg)
 	    b = firstBvar(((GuardCompg)grd).cguard.elhs);	
@@ -390,6 +402,17 @@ public class TESCLabelGen {
 	return b;
     }
 
+    private boolean isEmptyGuard(Guard grd) {
+	boolean b = false;
+
+	if (grd instanceof GuardEmpty)
+	    b = true;
+
+	return b;
+    }
+
+
+    // Wozu diese Fkt. ??
     private boolean secEmpty(Guard g) {
 	boolean b = false;
 
@@ -419,7 +442,8 @@ public class TESCLabelGen {
     }
 
     private String addActionEmpty(ActionEmpty a) {
-	return new String("~");
+	//return new String("~");
+	return new String("");
     }
 
     private String addActionEvt(ActionEvt a) {
@@ -506,3 +530,9 @@ public class TESCLabelGen {
 
 
 }
+
+/* Letzte Änderungen
+ *
+ * - addGuardEmpty/addActionEmpty : liefern "" statt "~"
+ * - in firstBvar: false bei Empty
+ */
