@@ -90,7 +90,7 @@ import java.util.*;
  * <br>
  * <hr>
  * @author Arne Koch/Mike Rumpf.
- * @version  $Id: TESCLoader.java,v 1.17 1999-01-17 21:42:35 swtech13 Exp $ 
+ * @version  $Id: TESCLoader.java,v 1.18 1999-01-18 12:27:54 swtech13 Exp $ 
  */ 
 public class TESCLoader {
 
@@ -195,7 +195,7 @@ public class TESCLoader {
      * @param Referenz auf Statechart
      * @return Liefert Guard oder null bei Fehler.
      */ 
-	public Guard getGuard(BufferedReader br, Statechart sc) throws IOException {
+  public Guard getGuard(BufferedReader br, Statechart sc) throws IOException {
 	TESCParser parser = new TESCParser(br, gi);
 	parser.initSwitches(options);
 
@@ -215,6 +215,16 @@ public class TESCLoader {
 	    return guard;
 	}
     }
+
+
+  /**
+   * <STRONG>NICHT</STRONG> verwenden, liefert null.
+   * @return null
+   */
+  public TLabel getLabel(BufferedReader br, Statechart sc) {
+
+    return null;
+  }
 
     /** 
      * Umwandeln eines  TESC-File aus BufferedReader in Action.<br> <STRONG> Achtung: </STRONG> Der String MUSS mit einem ; abgeschlossen sein<br><STRONG>  Temporär!! </STRONG>
@@ -308,6 +318,9 @@ public class TESCLoader {
 
 /* 
  * $Log: not supported by cvs2svn $
+ * Revision 1.17  1999/01/17 21:42:35  swtech13
+ * Verbesserungen/Bugfixes
+ *
  * Revision 1.14  1999/01/11 23:20:09  swtech13
  * ~ in Guards, bassign in Action wird jetzt erkannt
  * Doku angepasst
