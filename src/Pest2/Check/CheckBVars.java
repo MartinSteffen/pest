@@ -61,7 +61,31 @@ class CheckBVars {
     if (s instanceof Or_State) {
       os = (Or_State)s;
       substates=os.substates;
+      // in dieser Routine, weil es gerade so gut passt, noch einiges mehr
+      // testen: Duplikate, Defaultstates
       if (!checkDupes.check(substates,path)) { ok = false; }
+      if (substates==null || substates.head==null) {
+          error.addError(new ItemError(100,"Substates in or-State nicht vorhanden oder null", path));
+          ok = false;
+          } else
+      if (substates.tail==null && os.defaults==null) {
+          os.defaults=new StatenameList(substates.head.name,null);
+          warning.addWarning(new ItemWarning(100,"Defaultstate "+os.defaults.head.name+" gesetzt", path));
+          }
+
+      if (os.defaults==null ||
+          os.defaults.head==null ||
+          os.defaults.head.name==null ||
+          os.defaults.head.name.compareTo("")==0) {
+          error.addError(new ItemError(100,"Kein Defaultstate gesetzt", path));
+          ok = false;
+          }
+
+      if (os.defaults != null && os.defaults.tail != null) {
+          error.addError(new ItemError(100,"Zuviele Defaultstates gesetzt", path));
+          ok = false;
+          }
+
       trl = os.trs;
       while (trl != null) {
         // Testen, ob die BVars in den Guards auch deklariert sind
@@ -86,14 +110,15 @@ class CheckBVars {
         if (trl.head.label.action instanceof ActionStmt) {
           ActionStmt a = (ActionStmt)trl.head.label.action;
           bv = bvl;
-          found = false;
-          while (bv != null && found==false) {
-            if (a.stmt instanceof BAss) {
-              ba = (BAss)a.stmt;
-              if (ba.ass.blhs.var.equals(bv.head.var)) { found = true; }
+          found = true;
+          if (a.stmt instanceof BAss) {
+            found = false;
+            ba = (BAss)a.stmt;
+            while (bv != null && found==false) {
+              if (ba.ass.blhs.var.compareTo(bv.head.var)==0) { found = true; }
               bv = bv.tail;
               }
-            }
+             }
 
           // Event aus der Transitionsliste wurde nicht gefunden
           if (found == false) {
