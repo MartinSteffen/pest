@@ -1,3 +1,5 @@
+package tesc2;
+
 /**
  * Diese Exception wurde von uns am Anfang der Entwicklung in unser
  * Interface aufgenommen. Sp&auml;ter stellte sich heraus, da&szlig;
@@ -8,11 +10,10 @@
  *
  * Created: Tue Dec  8 11:20:46 1998
  *
- * @author Software Technologie 19
- * @version 1.0
+ * @author Software Technologie 19, Hoeppner, Abeling
+ * @version $Id: AlgorithmException.java,v 1.4 1999-02-11 14:55:54 swtech19 Exp $
  */
 
-package tesc2;
 
 public class AlgorithmException extends Exception {
     
