@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	--------------
 //
-//	$Id: report_list,v 1.54 1999-02-11 10:07:29 swtech15 Exp $
+//	$Id: report_list,v 1.55 1999-02-11 12:37:24 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -652,4 +652,14 @@ nicht exportieren kann).
 Man importiere ~swtech12/Examples/misc/nondet-test1.tesc2. Dann
 versuche man, den Zustand Init umzubenennen. Bei mir erscheint immer
 das Menu fr den Zustand Nondet.
+//------------------------------------------------------------------------------
+#Number:	42
+#Autor:		Erich Mikk erm
+#Subject:	TESC2 berechnet falsche Koordinaten?
+#Status:	reported
+#Description:
+
+TESC-Import /home/swtech12/Examples/PC/a1.pest2.tesc
+SyntaxCheck meldet interlevel Trs.
+Offenbar liegen dir TrAnchors nicht auf den Lienien der Zustände.
 //------------------------------------------------------------------------------
