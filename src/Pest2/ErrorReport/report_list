@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	------------------
 //
-//	$Id: report_list,v 1.23 1999-02-01 14:34:50 swtech23 Exp $
+//	$Id: report_list,v 1.24 1999-02-01 19:43:25 swtech18 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -83,7 +83,7 @@ gespeichert wurde.
 #Number:	4
 #Autor:		Erich Mikk erm
 #Subject:	Transitionsbeschriftungen nicht sichtbar
-#Status: 	processing 
+#Status: 	fixed 
 #Description: 
 
 Import->Statemate lädt swtech12/Examples/TV/tv.st.
@@ -125,7 +125,7 @@ Der Statename hat offensichtlich keinen Inhalt.
 #Number:	7
 #Autor:		Erich Mikk erm
 #Subject:	STM-Import achtet nicht auf Keywords
-#Status: 	reported
+#Status: 	fixed
 #Description: 
 
 Importiere SE-Systems/vcr.st 
