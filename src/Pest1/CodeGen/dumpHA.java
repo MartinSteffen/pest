@@ -4,7 +4,7 @@
  * This class is responsible for generating our hierarchical
  * automaton.
  *
- * @version $Id: dumpHA.java,v 1.16 1999-02-03 20:02:50 swtech25 Exp $
+ * @version $Id: dumpHA.java,v 1.17 1999-02-07 17:07:36 swtech25 Exp $
  * @author Marcel Kyas
  */
 package codegen;
@@ -268,15 +268,23 @@ public class dumpHA
 			dumpTransitions(f, lvl, p, o, tl, t);
 		} else if (t instanceof Statename) {
 			Statename s = (Statename) t;
+			StateList current;
 
 			q = p.append(s.name);
 			f.write(printlnPP(lvl, "post_states[" +
 				dumpTables.generateSymState(q) +
 				"] = true;"));
-			// TODO
-			State v = null;
-			if (v instanceof Or_State) {
-				Or_State u = (Or_State) v;
+			current = o.substates;
+			if (!current.head.name.equals(s)) {
+				current = current.tail;
+				if (current == null) {
+					throw(new CodeGenException(
+						"Cannot determine sub-state"
+					));
+				}
+			}
+			if (current.head instanceof Or_State) {
+				Or_State u = (Or_State) current.head;
 				f.write(printlnPP(lvl, "post_states[" +
 					dumpTables.generateSymState(
 						q.append(u.defaults.head.name)
@@ -335,7 +343,7 @@ public class dumpHA
 			f.write(printlnPP(lvl,
 				"// no outgoing transitions found") +
 				printlnPP(lvl,
-				"//Need to stutter here.") +
+				"// Need to stutter here.") +
 				printlnPP(lvl, "post_states[" +
 					dumpTables.generateSymState(p) +
 					"] = true;")
