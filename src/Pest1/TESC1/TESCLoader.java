@@ -26,7 +26,7 @@ import java.util.*;
  * anzuwenden:
  * 
  * <ul>
- * <li> TestBVars.pruefeBVar(...)    // Allerdings sollte gecheckt werden, ob überflüssige BVars vorhanden
+ * <li> TestBVars.pruefeBVar(...)    // AllTESCLoader.javaerdings sollte gecheckt werden, ob überflüssige BVars vorhanden
  * <li> TestEvents.pruefeEvent(...)  // Allerdings sollte gecheckt werden, ob überflüssige Events vorhanden
  * <li> TestPI                       // Falls wir das richtig verstanden haben ..
  * </ul>
@@ -90,7 +90,7 @@ import java.util.*;
  * <br>
  * <hr>
  * @author Arne Koch/Mike Rumpf.
- * @version  $Id: TESCLoader.java,v 1.21 1999-01-20 22:07:53 swtech13 Exp $ 
+ * @version  $Id: TESCLoader.java,v 1.22 1999-01-25 13:27:49 swtech13 Exp $ 
  */ 
 public class TESCLoader {
 
@@ -388,6 +388,9 @@ public class TESCLoader {
 
 /* 
  * $Log: not supported by cvs2svn $
+ * Revision 1.21  1999/01/20 22:07:53  swtech13
+ * Haesslichen Fehler in getLabel(TLabel,...) beseitigt
+ *
  * Revision 1.18  1999/01/18 12:27:54  swtech13
  * Schnittstellen-Anpassung
  *

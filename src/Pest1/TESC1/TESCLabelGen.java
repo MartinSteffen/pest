@@ -26,7 +26,7 @@ public class TESCLabelGen {
     private Guard grd;
     private Action act;
 
-    private boolean inEv;         // Schalter, ob der Ev-Teil, oder der Bvar-Teil aufgebaut wird
+    private boolean inEv;         // SchalteTESCLabelGen.javar, ob der Ev-Teil, oder der Bvar-Teil aufgebaut wird
     private boolean inAction;     // -- " --, setzt inEv ausser Gefecht
     private boolean switchToBv;   // Übergang zu Bvar-Teil
     private boolean start;
@@ -480,7 +480,7 @@ public class TESCLabelGen {
     }
 
     private void initSwitches() {
-	 switches.addElement("debug");
+      // switches.addElement("debug");
 	 switches.addElement("Trans.useAbsyn");
     }
 
@@ -500,7 +500,8 @@ public class TESCLabelGen {
     private void err(String s) {
 	errc = true;
 	if (gi != null) gi.userMessage("TESC-Export: Fehler: "+ s);
-	else System.out.println("TESC-Export: Fehler: "+ s);
+	else
+          System.out.println("TESC-Export: Fehler: "+ s);
     }
 
 

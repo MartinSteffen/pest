@@ -313,7 +313,7 @@ class TESCParser {
     // private Methoden
 
     private void initSwitches() {
-	switches.addElement("debug");
+      //switches.addElement("debug");
 	//switches.addElement("jumpAfterError");
     }
 
@@ -1764,16 +1764,20 @@ class TESCParser {
 	    String txt = new String("Tesc1: DEBUG-> ");
 	    
 	    txt = txt.concat(s);
-	    if (gi != null) gi.userMessage(txt);
-	    else System.out.println(txt);
+	    //if (gi != null) gi.userMessage(txt);
+	    //else 
+            System.out.println(txt);
 	}
     }
 
 }
 
 /* TESCParser
- * $Id: TESCParser.java,v 1.18 1999-01-17 21:42:36 swtech13 Exp $
+ * $Id: TESCParser.java,v 1.19 1999-01-25 13:27:49 swtech13 Exp $
  * $Log: not supported by cvs2svn $
+ * Revision 1.18  1999/01/17 21:42:36  swtech13
+ * Verbesserungen/Bugfixes
+ *
  * Revision 1.15  1999/01/11 23:20:10  swtech13
  * ~ in Guards, bassign in Action wird jetzt erkannt
  * Doku angepasst

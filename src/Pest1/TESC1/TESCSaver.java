@@ -26,7 +26,7 @@ import util.*;
  * <li> 3. Kein GuardUndet (s. Status)
  * <li> 4. Keine Schleifen bei Listen.
  * <li> 5. Keine unartigen Nullpointer.
- * <li> 6. TLabel müssen der tesc1-Syntax genügen. (Momentan geht der Export zwar immer, aber evtl. kein Reimport mögl.)
+ * <li> 6. TLabel müssen der tesc1-SyntaxTESCSaver.java genügen. (Momentan geht der Export zwar immer, aber evtl. kein Reimport mögl.)
  * </ul>
  * 
  * die mit folgenden Checks ueberprueft werden koennen:
@@ -72,7 +72,7 @@ import util.*;
  * <br>
  * <hr>
  * @author Arne Koch/Mike Rumpf.
- * @version  $Id: TESCSaver.java,v 1.4 1999-01-18 16:44:32 swtech13 Exp $ 
+ * @version  $Id: TESCSaver.java,v 1.5 1999-01-25 13:27:50 swtech13 Exp $ 
  */ 
 
 /* Konventionen:
@@ -186,7 +186,7 @@ public class TESCSaver {
     }
 
     private void initSwitches() {
-	 switches.addElement("debug");
+      //switches.addElement("debug");
 	 switches.addElement("Trans.useAbsyn");
     }
 
@@ -529,8 +529,9 @@ public class TESCSaver {
 	    String txt = new String("TESCSaver: DEBUG-> ");
 	    
 	    txt = txt.concat(s);
-	    if (gi != null) gi.userMessage(txt);
-	    else System.out.println(txt);
+	    //if (gi != null) gi.userMessage(txt);
+	    //else 
+              System.out.println(txt);
 	}
     }
 } 
