@@ -4,7 +4,7 @@
  * This class is responsible for generating our hierarchical
  * automaton.
  *
- * @version $Id: dumpHA.java,v 1.17 1999-02-07 17:07:36 swtech25 Exp $
+ * @version $Id: dumpHA.java,v 1.18 1999-02-08 12:27:53 swtech25 Exp $
  * @author Marcel Kyas
  */
 package codegen;
@@ -39,7 +39,6 @@ public class dumpHA
 	 * its state chart with bla.
 	 */
 	public dumpHA(Statechart bla)
-		throws CodeGenException
 	{
 		path = null;
 		setStatechart(bla);
@@ -62,7 +61,6 @@ public class dumpHA
 	 * its state chart with bla and the path name to fasel.
 	 */
 	public dumpHA(Statechart bla, String fasel)
-		throws CodeGenException
 	{
 		setStatechart(bla);
 		setPathname(fasel);
