@@ -22,7 +22,11 @@ Usage: javadep [options] packagename|java-file
 Where options are:
  -h         Display this help.
  -t         Produce text-output rather than html-code
+ -i         Ignore import statements (-> search in all files)
+ -n         Show an additional  list of unused functions
  -o file    Output to file
+ -v         Verbose output
+ -q         Show no warnings
 "
 }
 ###########################################################################
@@ -33,7 +37,9 @@ error()
 ###########################################################################
 warning()
 {
-  echo "WARNING: $*" >/dev/stderr
+  if [ $quiet = 0 ]; then
+    echo "WARNING: $*" >/dev/stderr
+  fi
 }
 ###########################################################################
 log()
@@ -75,6 +81,33 @@ split_at_char()
   )
 }
 ###########################################################################
+add_prefix()
+{
+  if [ "$#" != 1 ]; then
+    error "add_prefix called incorrectly."
+    return 1
+  fi
+  prefix="$1"
+  read line
+  while [ $? = 0 ]; do
+    echo "$prefix$line"
+    read line
+  done
+}
+###########################################################################
+get_function_name()
+{
+ (
+   set -f
+   IFS="." 
+   set $1 
+   while [ $# -gt 1 ]; do
+     shift 
+   done 
+   echo $1
+ )
+}
+###########################################################################
 find_path_dirs()
 {
   if [ $# != 1 ]; then
@@ -100,17 +133,16 @@ find_package_dir()
     return 1
   fi
   package=$1
+  package_dir=`echo $package|sed 's/\./\//g'`
   result=
   if [ ! -z $CLASSPATH ]; then
     class_dirs=`(find_path_dirs $CLASSPATH)`
     for i in $class_dirs; do
-      if [ -d $i/$package ]; then
+      if [ -d $i/$package_dir ]; then
         if [ "$result" != "" ] && [ $result != $i/$package ]; then
           warning "Multiple occurences of $package in CLASSPATH"
-          log "  $result"
-          log "  $i/$package"
         else
-          result="$i/$package"
+          result="$i/$package_dir"
         fi
       fi
     done
@@ -127,46 +159,27 @@ find_package_dir()
 ###########################################################################
 find_package_files()
 {
-  if [ $# != 1 ]; then
+# finds all files to a package
+# default is to search in one directory only
+# If second argument is 1 then all subdirectories are searched too.
+
+  if [ $# -gt 2 ]; then
     error "find_package_files called incorrectly."
     return 1
   fi
-
-  package=$1
+  package=`basename $1 ".*"`
   package_dir=`(find_package_dir $package)`
   if [ "$package_dir" = "" ]; then
     error "package directory not found: $1"
     return 1
   else
-    files=`find $package_dir -type f -name "*.java" -exec grep -lw "package $package" {} \;`
-#    files=`(grep -l "package $package;"  $package_dir/*.java) 2>/dev/null`
+    if [ $# -gt 1 ] && [ "$2" = "1" ]; then
+      files=`find $package_dir -type f -name "*.java" -exec grep -l "package $package" {} \;`
+    else
+      files=`find $package_dir -maxdepth 1 -type f -name "*.java" -exec grep -lw "package $package" {} \;`
+    fi
     echo $files
   fi
-}
-###########################################################################
-find_public_functions()
-{
-# sucht alle public-Funktionen eines Paketes, die dem Pattern in $1
-# entsprechen 
-
-  if [ $# != 1 ]; then
-    error "find_public_functions called incorrectly."
-    error "$*"
-    return 1
-  fi
-
-  set -f
-  set `split_at_char "." $1`
-  set +f  
-
-  package=$1
-  package_files=`(find_package_files $package)`
-  if [ "$package_files" = "" ]; then
-    error "No files found for $package"
-    return 1
-  fi
-  functions=`grep -hw "public.*(" $package_files`
-  echo "$functions"
 }
 ###########################################################################
 find_function_names()
@@ -176,8 +189,8 @@ find_function_names()
   # (Java-Deklaration, die mit public... beginnt) nach dem
   #  Funktionsnamen
   read line
-  org_line=$line
   while [ $? = 0 ]; do
+    org_line=$line
     IFS="(" 
     set $line
     line=$1
@@ -196,174 +209,183 @@ find_function_names()
  )
 }
 ###########################################################################
+find_public_functions()
+{
+# sucht alle public-Methoden eines Paketes, die dem Pattern in $1
+# entsprechen und gibt sie Zeilenweise in der Form
+# filename:Methoden-Name aus.
+
+  if [ $# != 1 ]; then
+    error "find_public_functions called incorrectly."
+    error "$*"
+    return 1
+  fi
+    
+  import=$1
+  set -f
+  set `split_at_char . $import`
+  set +f
+  package=$1
+  shift
+  while [ $# -gt 1 ]; do
+    package="$package.$1"
+    shift
+  done
+  # ist der letzte Teil des imports ein Stern, wird das gesamte package durchsucht,
+  # ansonsten nur die angegebene Methode ausgegeben
+  if [ "$1" != "*" ]; then
+    log "Only single function imported. Existence not checked yet: $package"
+    echo "$package.$1"
+    return
+  fi
+
+  package_files=`(find_package_files $package 1)`
+  if [ "$package_files" = "" ]; then
+    error "No files found for $package"
+    return 1
+  fi
+  # jetzt muß in allen Datein nach public-Methoden gesucht werden.
+  # Jeder methode muß dann der Package-Name sowie ein : vorangestellt werden.
+  for package_file in $package_files; do
+    set -f
+    set `grep '^\W*package.*;\W*$' $package_file|sed 's/;//g'`
+    package=$2
+    if [ "$package" = "" ]; then
+      error "Illegal package statement in $package_file"
+      continue
+    fi
+    functions=`grep -hw 'public.*(' $package_file|find_function_names|add_prefix "$package_file:$package."`
+    if [ "$functions" != "" ]; then
+      echo "$functions"
+    fi
+  done
+}
+###########################################################################
+find_deps_in_file()
+{
+  # Sucht in einer Datei zunächst nach imports, wählt anhand der imports
+  # eine Liste von zu suchenden Funktionen aus und ermittelt schliesslich
+  # die Vorkommen dieser Funktionen in der Datei
+  # Der Dateiname wird als erster (und einziger Parameter) übergeben,
+  # die gesamte Funktionsliste muss in all_pub_functions gespeichert sein
+  filename=$1
+
+  if [ $ignore_imports = 1 ]; then
+    search_functions="$all_pub_functions"
+  else
+    my_imports=`grep -w "import .*;" $filename|grep -v "^//"|sed 's/\/\/.*//g'`
+    my_imports=`echo $my_imports|sed 's/import//g'|sed 's/;//g'|sed 's/\013//g'`
+  
+    search_functions=
+    for my_import in $my_imports; do
+      case $my_import in
+        java*|com*) continue
+                    ;;
+      esac
+  
+      loc_search_fcts=`(for i in $all_pub_functions; do echo $i; done)|grep "$my_import"`
+      if [ "$loc_search_fcts" != "" ]; then
+        search_functions="$search_functions $loc_search_fcts"
+      fi
+    done
+  fi
+  search_functions=`(for i in $search_functions; do echo $i; done)|sort -u|awk -F: '{print $2}'`
+  filedeps=
+  for search_function in $search_functions; do
+     function_name=`get_function_name $search_function`
+     case $function_name in
+       clone) continue
+              ;;
+     esac
+     deplines=`grep -n "$function_name\W*(" $filename|grep -v "^\W*\/\/"|grep -v "^\W*\*"|awk -F: '{print $1}'`
+     if [ "$deplines" != "" ]; then
+       for lineno in $deplines; do
+         echo $search_function:$filename:$lineno
+       done
+     fi
+  done
+}
+
+###########################################################################
 find_deps()
 {
-  javafile=
   if [ $# != 1 ]; then
     error "find_deps called incorrectly"
     return 1
   fi
 
-  docudir=`find_package_dir pestdocu`
-  if [ $? != 0 ]; then
-    warning "Could not find pestdocu."
-    docu_installed=0
-    ref_installed=0
-  else
-    docu_installed=1
-    ref_file=$docudir/AllNames.html
-    if [ -f $ref_file ]; then
-      ref_installed=1
-    else
-      ref_installed=0
-    fi
+  # erstmal alle Dateien des Packages finden (in allen subdirs)
+  package=$1
+  package_files=`find_package_files $package 1`
+  if [ "$package_files" = "" ]; then 
+    warning "No files found for package $package"
+    return 1
   fi
-
-  
-  if [ -f $1 ]; then
-    javafile=$1
-    #Versuche package-Namen herauszufinden
-    package=`grep -w "^package .*;" $javafile|awk '{printf $2}'`
-    if [ "$package" = "" ]; then
-      error "Could not determine package name"
-      return 1
-    else
-      package_files=$javafile
-    fi
-  else
-    # erstmal alle Dateien des Packages finden
-    package=$1
-    package_files=`find_package_files $package`
-    if [ "$package_files" = "" ]; then 
-      warning "No files found for package $package"
-      return 1
-    fi
-  fi
-
-  if [ $html = 1 ]; then
-    if [ "$javafile" = "" ]; then
-      templog "<h1> Dependencies in package <em>$package</em> </h1><br>"
-    else
-      templog "<h1> Dependencies in file <em>$javafile</em> </h1><br>"
-    fi
-  fi
-
-  # Dateien mit import-Anweisungen finden
-  all_imports=`grep -hw "import .*;" $package_files|grep -v "^//"`
-  all_imports=`echo $all_imports|sed 's/import//g'|sed 's/;//g'|sed 's/\013//g'`
-
-  
-  # Imports zeilenweise ausgeben und mit sort -u doppelte Einträge
-  # entfernen
-  all_imports=`(for i in $all_imports; do
-                  echo $i;
-                done )|sort -u`
-
-  if [ $html = 1 ]; then
-    if [ "$javafile" = "" ]; then
-      templog "<h2> List of all imports in package <em>$package</em><br>" 
-    else
-      templog "<h2> List of all imports in file <em>$javafile</em><br>" 
-    fi 
-    templog "<UL>" 
-    for import in $all_imports; do
-      templog "<LI>$import</LI>" 
-    done
-    templog "</UL>"
-  else
-    if [ "$javafile" = "" ]; then
-      templog "List of all imports in package $package" 
-    else
-      templog "List of all imports in file $javafile" 
-    fi 
-    for import in $all_imports; do
-      templog "+ $import" 
-    done
-  fi
-
-  new_imports=
-  for import in $all_imports; do
-    set -f
-    set `split_at_char '.' $import`
-    import_package=$1
-    
-    if [ "$import_package" = "java" ] || [ "$import_package" = "com" ]; then
-      log "Ignoring $import"
-    else
-      new_imports="$new_imports $import"
-    fi
+  package_deps=
+  for package_file in $package_files; do
+    package_deps="$package_deps `find_deps_in_file $package_file`"
   done
-  set -f
-  all_imports="$new_imports"
+  if [ "$package_deps" != "" ]; then
+    echo "$package_deps"
+  fi
+}
+###########################################################################
+templog()
+{
+  echo "$*" >> $tempfile
+}
+###########################################################################
+html_print_start()
+{
+  echo "<html>" >$tempfile
+  echo "<title> Dependencies </title>" >>$tempfile
+  echo "<body>" >>$tempfile
 
-  set +f
-
-  templog "<h2>External functions and their occurences</h2>"
-  for import in $all_imports; do
-    set -f
-    set `split_at_char '.' $import`
-    set +f
-    import_package=$1
-    new_imports=
-    # alle Funktionen des importierten Packets finden und nach
-    # Vorkommen in den Files des zu untersuchenden Pakets finden 
-    package_functions=`(find_public_functions $import)`
-    if [ $? != 0 ]; then
-      warning "No files for import $import found."
-      continue
-    fi
-    function_names=`echo "$package_functions"|find_function_names|sort -u`
-
-    #jetzt in allen Files des Packages nach diesen Funktionen suchen
-    for function_name in $function_names; do
-      if [ "$function_name" = "clone" ]; then
-        continue
-      fi
-      if [ "$javafile" = "" ]; then
-        uses=`grep -nw "$function_name\W*(" $package_files|awk -F: '{print $1 ":" $2}'`
-      else
-        uses=`grep -nw "$function_name.*(" $package_files|awk -F: '{print $1}'`
-      fi
-      if [ "$uses" != "" ]; then
-        templog "<h3>$function_name</h3>"
-        templog "Declaration(s) found:<br>"
-        if [ $html = 1 ]; then
-          if [ $ref_installed = 1 ]; then
-            templog "<ul>"
-            ref=`grep "href=\"$import_package\..*\#$function_name(" $ref_file|listrefs>>$tempfile`
-            templog "</ul>"
-          fi 
-        else
-          templog "$import_package.$function_name" 
-          templog "===========================================" 
-        fi
-
-        templog "Occurences of $function_name:<br>"
-	templog "<ul>"
-
-        if [ "$javafile" = "" ]; then
-          for i in $uses; do 
-	    set `split_at_char : $i`
-	    oc_file=$1
-            oc_line=$2
-             templog "<li> in file <a href=\"file://localhost$oc_file\">`basename $oc_file`</a>"
-             templog "at line $oc_line </li>"
-          done
-        else
-          for i in $uses; do echo "$javafile:$i">>$tempfile; done
-        fi
-	templog "</ul>"
-      fi       
-    done
-  done
-  templog "</ul>"
+  echo "<h1 align=center>Dependencies for $* </h1>" >>$tempfile
+  echo "<ul>" >>$tempfile
+}
+###########################################################################
+html_print_dep()
+{
+ my_func_name=$1
+ shift
+ mydeps=$*
+ echo "<li> Dependencies for $1 " >>$tempfile
+ echo "<ul>" >>$tempfile
+ for mydep in $mydeps; do
+   echo "<li> $mydep </li>" >>$tempfile
+ done
+ echo "</ul> </li>" >>$tempfile
+}
+###########################################################################
+html_print_unused_functions()
+{
+ echo "<li> Functions never used inm external packages</li>" >>$tempfile
+ echo "<ul>"
+ for myfunction in $*; do
+   echo "<li> $myfunction </li>" >>$tempfile
+ done
+ echo "<ul> </li>" >>$tempfile
+}
+###########################################################################
+html_print_end()
+{
+  echo "</ul>" >>$tempfile
+  echo "</body>" >>$tempfile
+  echo "</html>" >$tempfile
 }
 ###########################################################################
 tempfile=/tmp/javadep.$$
-verbose=1
+quiet=0
+verbose=0
+ignore_imports=0
+show_unused_functions=0
 html=1
-outfile=
+outfile=pestdocu/Dependencies.html
 args=
+org_package=
+ext_packages=
+all_packages="check codegen editor gui simu stm tesc1 tesc2 util"
 
 while [ $# != 0 ]; do
   case $1 in
@@ -372,6 +394,22 @@ while [ $# != 0 ]; do
 	    ;;
 
 	-t) html=0
+	    shift
+	    ;;
+
+	-v) verbose=1
+	    shift
+	    ;;
+
+	-q) quiet=1
+	    shift
+	    ;;
+
+	-i) ignore_imports=1
+	    shift
+	    ;;
+
+	-n) show_unused_functions=1
 	    shift
 	    ;;
 
@@ -390,37 +428,128 @@ while [ $# != 0 ]; do
 	    exit 1
 	    ;;
 
-	 *) args="$args $1"
+	 *) if [ "$org_package" = "" ]; then
+              org_package=$1
+            else
+              ext_packages="$ext_packages $1"
+            fi
             shift
 	    ;;
   esac
 done
 
-
 if [ -f $tempfile ]; then
   rm -f $tempfile
 fi
-
-if [ $html = 1 ]; then
-  echo "<html>" >$tempfile
-  echo "<title> Dependencies </title>" >>$tempfile
-  echo "<body>" >>$tempfile
+# org_package must be specified
+if [ "$org_package" = "" ]; then
+  error "No package specified."
+  exit 1
 fi
 
-for arg in $args; do
-  echo "Searching for dependencies of $arg"
-  find_deps $arg
+# if no ext_packages are specified, all PEST packages but the org_package
+# are ext_packages.
+if [ "$ext_packages" = "" ]; then
+  for i in $all_packages; do
+    if [ "$i" != "$org_package" ]; then
+       ext_packages="$ext_packages $i"
+    fi
+  done
+fi
+
+# check if documentation and reference file is installed
+docudir=`find_package_dir pestdocu`
+if [ $? != 0 ]; then
+  warning "Could not find pestdocu."
+  docu_installed=0
+  ref_installed=0
+else
+  docu_installed=1
+  ref_file=$docudir/AllNames.html
+  if [ -f $ref_file ]; then
+    ref_installed=1
+  else
+    ref_installed=0
+  fi
+fi
+
+html_print_start
+
+log "Searching for all public declarations in $org_package"
+
+# find all public declarations
+all_pub_functions=`find_public_functions "$org_package.*"`
+
+# find occurences of functions in each external package
+all_deps=
+for ext_package in $ext_packages; do
+  log "Searching for dependencies in package $ext_package"
+  all_deps="$all_deps `find_deps $ext_package`"
+done
+
+# all_deps=`(for i in $all_deps; do echo $i; done)|sort -u`
+
+# generate header
+if [ $html = 1 ]; then
+  html_print_start
+else
+  echo "Dependencies for $org_package"
+fi
+
+# search for occurences of each function in all_deps and generate output
+unused_functions=
+for i in $all_pub_functions; do
+  IFS=":"
+  set $i
+  pub_function=$2
+  IFS=" "
+  fct_deps=`(for name in $all_deps; do echo $name; done)|grep -w "^$pub_function"`
+  if [ "$fct_deps" != "" ]; then
+   if [ $html = 1 ]; then
+     html_print_dep "$pub_function" "$fct_deps"
+   else
+    echo "Dependencies for function $pub_function"
+    for j in $fct_deps; do 
+      used_functions="$used_functions $i"
+      IFS=:
+      set $j
+      echo "$2, at line $3"
+      IFS=" "
+    done
+    fi
+  else
+     unused_functions="$unused_functions $pub_function"
+  fi
 done
 
 if [ $html = 1 ]; then
-  echo "</body>" >> $tempfile
-  echo "</html>" >> $tempfile
+  html_print_end
 fi
 
-if [ "$outfile" != "" ]; then
-  cp $tempfile $outfile
-  rm -f $tempfile
-else
-  cat $tempfile
+if [ $show_unused_functions = 1 ]; then
+  unused_functions=`(for i in $unused_functions; do echo $i; done)|sort -u`
+  if [ $html = 1 ]; then
+    html_print_unused_functions $unused_functions
+  set $unused_functions
+  if [ $# -gt 0 ]; then
+    echo "The following functions are declared public but not used in searched packages:"
+    while [ $# -gt 0 ]; do
+      echo $1
+      shift
+    done
+  fi
+  exit
 fi
+
+if [ $html = 1 ]; then
+  cp -f $tempfile $outfile
+  if [ $? = 0 ]; then
+    log "Output written to $outfile"
+    rm -f $tempfile
+  else
+    error "Could not write to $outfile. Output still in $tempfile."
+  fi
+fi
+
+
 
