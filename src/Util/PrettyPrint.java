@@ -161,8 +161,12 @@ public class PrettyPrint {
 
   private void output (Bvar bv) {
       if (bv != null) {
-	  System.out.println (whiteSpace (column) + "[Bvar] " +
-			      bv.var);
+	  if (bv.var != null) {
+	  System.out.println (whiteSpace (column) + "[Bvar] (" +
+			      bv.var + ")");
+	  }
+	  else System.out.println ("whiteSpace(column) +[Bvar] " + "NULL");
+
 	  //Gib Location aus.
 	  start(bv.location);
       }
@@ -474,6 +478,9 @@ public class PrettyPrint {
 
       //Gib Location aus.
       ppLab.start(l.location);
+
+      // Gib Caption aus.
+      System.out.println (whiteSpace (column+tab) + "[caption] " + l.caption );
 
       // Gib Guard aus.
       ppLab.start (l.guard);
