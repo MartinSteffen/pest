@@ -2372,7 +2372,7 @@ public void scrollbar1_AdjustmentValueChanged(java.awt.event.AdjustmentEvent adj
  * Aufgerufen von					: simu(,,)
  * Ruft auf							: fill(int)
  *
- * @params arg1 Vector
+ * @param arg1 Vector
  * @returns
  * @version 3.00 vom 17.01.1999
  */
@@ -2430,11 +2430,14 @@ public void update(Vector arg1){
 }
 /**
  *
- * Arbeitsversion !!!!
+ * Schreibt die, in der UI veraenderten Listen in die internen Listen zurueck 
  *
  * Benutzt globale Objekte	  		: inVector ( das ist entweder die seList oder die bvList )
  * Aufgerufen von					:
- * Ruft auf							: 
+ * Ruft auf							:
+ * @param
+ * @returns
+ * @version V4.01 vom 04.02.1999
  */
 private void writeBack() {
 
@@ -2444,12 +2447,15 @@ private void writeBack() {
 	absyn.Bvar temp2 = null;
 	FrameName = this.getTitle();
 
-
-	System.out.println("Anfang :XX"+FrameName+"xx : Ende");
+	if (debug) {
+		System.out.println("Anfang :XX"+FrameName+"xx : Ende");
+	}
 	
 	if (FrameName.equals("Event-Liste")){
 
-		System.out.println("Fenster als Event-Liste identifiziert");		
+		if (debug) {
+			System.out.println("Fenster als Event-Liste identifiziert");
+		}
 		int i = inVector.size();					// Bestimmt die Groesse des uebergebenen Vektorobjekts
 		for (int position=0; position < i; position++){					
 
