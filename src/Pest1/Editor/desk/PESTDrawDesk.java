@@ -90,7 +90,8 @@ import editor.*;
     else if (command.equals("loeschen")){ 
 	if (deleteobj instanceof State) { 
 	    System.out.println(">>>in delete"+deleteobj);
-	    Deleter.delete((State) deleteobj,root);}
+	    //    Deleter.delete((State) deleteobj,root);
+	}
                                         }
     
   }
