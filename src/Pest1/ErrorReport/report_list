@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.4 1999-01-12 22:33:03 swtech18 Exp $
+//	$Id: report_list,v 1.5 1999-01-13 09:24:29 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -86,8 +86,6 @@ Die Dateien ~/swtech12/Examples/SE-Systems/cd.st und ~/swtech12/Examples/TV/syst
 sind fehlerhaft: cd.st hat keine Initmap und system.st hat keine Trmap.
 //-----------------------------------------------------------------------------
 
-//-----------------------------------------------------------------------------
-
 #Number:        5
 #Autor:         Arne Koch swtech13
 #Subject:       Warnings bei SyntaxCheck
@@ -106,5 +104,29 @@ Check:   [E3]
 Falls auf E3 reagiert wird, gibt es gar keine Meldung.
 
 (Import->TESC->tesc1/Test/bsp1.tesc->SyntaxCheck)
+
+//------------------------------------------------------------------------------
+#Number:        6
+#Autor:         Erich Mikk erm
+#Subject:       Interlevel Transitionen in TV
+#Status:        reported
+#Description:
+
+In ~swtech12/Examples/TV/tv.st ist eine Interlevel-Transition. Folgendes
+muss hier Passieren: z.B. Die Transition von VIDEOTEXT nach SHOW darf nicht
+als Interlevel-Transition dargestellt werden.
 //------------------------------------------------------------------------------
 
+#Number:        7
+#Autor:         Erich Mikk erm
+#Subject:       Default States im Editor nicht sichtbar.
+#Status:        reported
+#Description:
+
+
+Der Editor hat keine Bezeichnung für default states.
+
+Man sieht es, wenn man z.B. ~swtech12/Examples/TV/tv.st über 
+Datei->Import->Statemate lädt.
+
+//------------------------------------------------------------------------------
