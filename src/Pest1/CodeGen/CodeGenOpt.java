@@ -9,7 +9,7 @@ import java.io.*;
  *
  * @see CodeGenConfig
  * @author Marcel Kyas, Walter Loeser, Andre Paetzold.
- * @version $Id: CodeGenOpt.java,v 1.5 1999-02-17 11:59:13 swtech25 Exp $
+ * @version $Id: CodeGenOpt.java,v 1.6 1999-02-17 12:58:26 swtech25 Exp $
  */
 public class CodeGenOpt implements Serializable {
 
@@ -66,15 +66,26 @@ public class CodeGenOpt implements Serializable {
   boolean twoStatecharts;
 
   /**
-   * Path.
+   * Path, where we will store the generated code.  This must be
+   * a fully qualified path name, without trailing "/".
    */
   String path;
+
+  /**
+   * Class name of automaton 1.
+   */
+  String name1;
+
+  /**
+   * Class name of automaton 2.
+   */
+  String name2;
 
   /**
    * The options are initialized with the following settings:
    * nondetFlavor is takeFirst, envFlavor is none; traceCodeGen,
    * verbose, and twoStatecharts are false.  Path will be set to
-   * "/tmp".
+   * "/tmp", name[12] will be set to "Automaton[12]"
    */
   public CodeGenOpt() {
     nondetFlavor = takeFirst;
@@ -82,7 +93,9 @@ public class CodeGenOpt implements Serializable {
     traceCodeGen = false;
     verbose = false;
     twoStatecharts = false;
-    path = new String("/tmp");
+    path = new String("/tmp/");
+    name1 = new String("Automaton1");
+    name2 = new String("Automaton2");
   }
 }
  
