@@ -33,18 +33,6 @@ import util.*;
  * + Bei Ident mit Bezug auf vorhandenes Obejkt immer prüfen, ob auch vorhanden s.u.
  */
 
-/* Änderungen:
- * - pathop -> absolute Pfade
- * - Keine Action angegeben -> new ActionEmpty(new Dummy())
- * - Schaltermechanismus eingebaut.
- * - debugmechanismus eingebaut.
- */
-
-
-/* In Example.java wird bei Comppath auf ein schon vorhandenes Objekt zurückgegriffen, was nicht ok sein sollte.
- * Scheinbar prüft checkModel auf Objektid!!
- */
-
 
 class TESCParser {
 
@@ -67,6 +55,9 @@ class TESCParser {
 
     private BufferedReader is;
 
+    SEventList evlist;
+    BvarList   bvlist;
+
     // protected-Methoden für das Package
 	
     protected TESCParser(BufferedReader is_, GUIInterface gi_) {
@@ -78,6 +69,9 @@ class TESCParser {
 	cnlist = new Vector();
 	bnlist = new Vector();
 	enlist = new Vector();
+
+	evlist = null;
+	bvlist = null;
 
 	switches = new Vector();
 	initSwitches();
@@ -176,8 +170,6 @@ class TESCParser {
      */
     private Statechart buildStatechart() throws IOException {
 
-	SEventList evlist = null;
-	BvarList bvlist = null;
 	State st = null;
 	PathList plist = null;
 
@@ -185,6 +177,8 @@ class TESCParser {
 
 	tok = ts.nextToken();
 
+
+	//sollte jetzt ueberfluesig sein.
 	if (tok.token == vTOKEN.EVENTS) {
 	    evlist = events();
 	}
@@ -200,7 +194,7 @@ class TESCParser {
     }
 
     
-    // events : 
+    // events : temporar
     private SEventList events() throws IOException {
 	SEventList evlist = null;
 	
@@ -212,7 +206,7 @@ class TESCParser {
 	return evlist;
     }
     
-    // bvars :
+    // bvars : temporar
     private BvarList bvars() throws IOException {
 	BvarList bvlist = null;
 
@@ -224,7 +218,7 @@ class TESCParser {
 	return bvlist;
     }
 
-    // eventliste aufbauen
+    // eventliste aufbauen temporar
     private SEventList eventlist() throws IOException {
 	SEvent ev;
 	SEventList evlist = null;
@@ -234,7 +228,7 @@ class TESCParser {
         if (tok.token==vTOKEN.IDENT) {
 	    ev = new SEvent(tok.value_str);
 	    ev.location = loc;
-	    addEventname(tok.value_str);
+	    
 	    match(vTOKEN.IDENT);
 	
 	    if (tok.token==vTOKEN.COMMA) {
@@ -257,7 +251,7 @@ class TESCParser {
     }
     
 
-    // bvarliste aufbauen
+    // bvarliste aufbauen temporar
     private BvarList bvarlist() throws IOException {
 	Bvar bv;
 	BvarList bvlist = null;	
@@ -266,7 +260,7 @@ class TESCParser {
         if (tok.token==vTOKEN.IDENT) {
 	    bv = new Bvar(tok.value_str);
 	    bv.location = loc;
-	    addBvarname(tok.value_str);
+	    
 	    match(vTOKEN.IDENT);
 	
 	    if (tok.token==vTOKEN.COMMA) {
@@ -634,7 +628,7 @@ class TESCParser {
 	}
 	else {
 	    // keine Action angegeben
-	     Location loc = new Location(tok.linenum);
+	    Location loc = new Location(tok.linenum);
 	    act = new ActionEmpty((Dummy)setLoc(new Dummy(), loc));
 	    act.location = loc;
 	}
@@ -667,20 +661,34 @@ class TESCParser {
 	Location loc = new Location(tok.linenum);
 
 	if (tok.token == vTOKEN.IDENT) {
-	    if (is_bvarname(tok.value_str)) {
-		a = bassign(p);
-		a.location = loc;
-	    }
-	    else if( is_eventname(tok.value_str)) {
-		a = new ActionEvt((SEvent)setLoc(new SEvent(tok.value_str), loc));
-		a.location = loc;
-		match(vTOKEN.IDENT);
+	
+
+	    // Das ist unschoen, aber wir haben kein lookahead
+	    String s = new String(tok.value_str);
+	    match(vTOKEN.IDENT);
+
+	    if (tok.token == vTOKEN.BASSIGN) {
+		a = bassign(p, s);
 	    }
 	    else {
-		addError(makeError(tok,"Unbekannter Identifikator"));
-	    }   
+		SEvent ev = (SEvent)setLoc(new SEvent(s), loc);
+		a = new ActionEvt(ev);
+		a.location = loc;
+		
+		if( !is_eventname(s)) {
+		    if (!is_bvarname(s)) {
+			debug("Füge neues SEvent in SEventList ein!");
+			evlist = new SEventList( (SEvent)setLoc(new SEvent(s), loc), evlist);
+		    }
+		    else {
+			addError(makeError(tok,"Ist schon als Bvarname deklariert!"));
+		    }
+		}
+	    }
+
 	   
 	}
+	
 	else if (tok.token == vTOKEN.EMPTYEXP) {
 	    a = new ActionEmpty((Dummy)setLoc(new Dummy(), loc));
 	    a.location = loc;
@@ -690,21 +698,29 @@ class TESCParser {
 	return a;
     }
 
-    private Action bassign(Path p) throws IOException {
+    // unschoen, aber wir haben kein lookahead
+    private Action bassign(Path p, String s) throws IOException {
 	Action a = null;
 	Bvar bv = null;
 	Location loc = new Location(tok.linenum);
 
-	if (tok.token == vTOKEN.IDENT) {
+	//if (tok.token == vTOKEN.IDENT) {	    
 
-	    // Fehler, falls neue Bvar
-	    if (!is_bvarname(tok.value_str)) {
-		addError(makeError(tok,"Bvar nicht eingeführt!"));	
+	    bv = new Bvar(s);
+	    bv.location = loc;
+
+	    
+	    if (!is_bvarname(s)) {
+		if (!is_eventname(s)) {
+		    debug("Füge neue Bvar in BvarList ein!");
+		    bvlist = new BvarList((Bvar)setLoc(new Bvar(s), loc), bvlist);
+		}
+		else {
+			addError(makeError(tok,"Ist schon als Eventname deklariert!"));
+		    }	
 	    }
 
-	    bv = new Bvar(tok.value_str);
-	    bv.location = loc;
-	    match(vTOKEN.IDENT);
+	    //match(vTOKEN.IDENT);
 	    match(vTOKEN.BASSIGN);
 	    
 	    // boolop
@@ -722,23 +738,53 @@ class TESCParser {
 	    }
 	    else {
 		loc = new Location(tok.linenum);
-		a = new ActionStmt((BAss)setLoc(new BAss((Bassign)setLoc(new Bassign(bv, guard(p)),loc) ), loc));
+		a = new ActionStmt((BAss)setLoc(new BAss((Bassign)setLoc(new Bassign(bv, guard_b(p)),loc) ), loc));
 		a.location = loc;
 	    }
-	}
+	    //}
 
 	return a;
     }
         
+    
+
     // Guards
     private Guard guard(Path p) throws IOException {
+	Guard grd_e = null;
+	Guard grd_b = null;
+	Guard grd   = null;
+	Location loc = new Location(tok.linenum);
+
+	grd_e = guard_e(p);
+	if (tok.token == vTOKEN.LPAR_E) {
+	    match(vTOKEN.LPAR_E);
+	    grd_b = guard_b(p);
+	    match(vTOKEN.RPAR_E);
+	}
+	
+	if (grd_b == null) {
+	    grd = grd_e;
+	}
+	else {
+	    if (grd_e != null)
+		grd = new GuardCompg((Compguard)setLoc(new Compguard(Compguard.AND, grd_e, grd_b), loc));
+	    else 
+		grd = grd_b;
+
+	    grd.location  = loc;
+	}
+	return grd;
+    }
+    
+
+    private Guard guard_e(Path p) throws IOException {
 	Guard grd1 = null;
 	Guard grd2 = null;
 	Guard grd = null;
 	int t = 0;
 	Location loc = new Location(tok.linenum);
 
-	grd1 = ocompg(p);
+	grd1 = ocompg_e(p);
 	grd = grd1;	
 
 	while (tok.token == vTOKEN.IMPL || tok.token == vTOKEN.AQUI) {
@@ -751,7 +797,7 @@ class TESCParser {
 		match(vTOKEN.AQUI);
 		break;
 	    }
-	    grd2 = ocompg(p);
+	    grd2 = ocompg_e(p);
 	    switch(t) {
 	    case vTOKEN.IMPL:
 		grd = new GuardCompg((Compguard)setLoc(new Compguard(Compguard.IMPLIES, grd1, grd2), new Location(tok.linenum)));
@@ -768,18 +814,18 @@ class TESCParser {
     }
 
     // ||
-    private Guard ocompg(Path p) throws IOException {
+    private Guard ocompg_e(Path p) throws IOException {
 	Guard grd1 = null;
 	Guard grd2 = null;
 	Guard grd = null;
 	int t = 0;
 	Location loc = new Location(tok.linenum);
 
-	grd1 = acompg(p);
+	grd1 = acompg_e(p);
 	grd = grd1;
 	while (tok.token == vTOKEN.OR) {	    	
 	    match(vTOKEN.OR);
-	    grd2 = acompg(p);
+	    grd2 = acompg_e(p);
 	    	
 	    grd = new GuardCompg((Compguard)setLoc(new Compguard(Compguard.OR, grd1, grd2), loc));
 	    grd.location = loc;
@@ -789,18 +835,18 @@ class TESCParser {
     }
     
     // &&
-    private Guard acompg(Path p) throws IOException {
+    private Guard acompg_e(Path p) throws IOException {
 	Guard grd1 = null;
 	Guard grd2 = null;
 	Guard grd = null;
 	int t = 0;
 	Location loc = new Location(tok.linenum);
 
-	grd1 = kcompg(p);
+	grd1 = kcompg_e(p);
 	grd = grd1;
 	while (tok.token == vTOKEN.AND) {	    	
 	    match(vTOKEN.AND);
-	    grd2 = kcompg(p);
+	    grd2 = kcompg_e(p);
 	    	
 	    grd = new GuardCompg((Compguard)setLoc(new Compguard(Compguard.AND, grd1, grd2), loc));
 	    grd.location = loc;
@@ -811,14 +857,14 @@ class TESCParser {
     }
 
     // Klammern und nicht-reduzierbares
-    private Guard kcompg(Path p) throws IOException {	
+    private Guard kcompg_e(Path p) throws IOException {	
 	Guard grd = null;
 	Location loc = new Location(tok.linenum);
 	
 	if (tok.token == vTOKEN.NOT) {
 	    // ???
 	    match(vTOKEN.NOT);
-	    grd = new GuardNeg(kcompg(p));
+	    grd = new GuardNeg(kcompg_e(p));
 	}
 	else if(tok.token == vTOKEN.EMPTYEXP) {
 	    // Rekursion ??? oder kann ~ nur für sich stehen ?
@@ -828,20 +874,26 @@ class TESCParser {
 	    grd = pathop(p);
 	}
 	else if (tok.token == vTOKEN.IDENT) {
-	    if (is_bvarname(tok.value_str)) {
-		grd = new GuardBVar((Bvar)setLoc(new Bvar(tok.value_str), loc));
-	    }
-	    else if (is_eventname(tok.value_str)) {
-		grd = new GuardEvent((SEvent)setLoc(new SEvent(tok.value_str), loc));
-	    }
-	    else {
-		addError(makeError(tok,"Unbekannter Identifikator"));
-	    }
+	    // ???
+	    SEvent ev = (SEvent)setLoc(new SEvent(tok.value_str), loc);
+
+	    // falls neues event, evlist erweitern
+	    if (!is_eventname(tok.value_str)) {
+		if (!is_bvarname(tok.value_str)) {
+		    debug("Füger neues SEvent in evlist ein!");
+		    evlist = new SEventList( (SEvent)setLoc(new SEvent(tok.value_str), loc), evlist);
+		}
+		else {
+			addError(makeError(tok,"Ist schon als Bvarname deklariert!"));
+		    }
+	    } 
+	    
+	    grd = new GuardEvent(ev);
 	    match(vTOKEN.IDENT);
 	}
 	else if (tok.token == vTOKEN.LPAR) {
 	    match(vTOKEN.LPAR);
-	    grd = guard(p);
+	    grd = guard_e(p);
 	    match(vTOKEN.RPAR);
 	}
 	
@@ -851,8 +903,8 @@ class TESCParser {
 
     }
 
-    // ??? In Example.java wird eine REferenz auf einen schon vorhandenen Path verwendet.
-    // Was ist richtig?
+
+    // 
     private Guard pathop(Path actPath) throws IOException {
 	Guard grd = null;
 	Location loc = new Location(tok.linenum);
@@ -864,7 +916,6 @@ class TESCParser {
 	    match (vTOKEN.IN);
 	    match (vTOKEN.LPAR);
 	    //grd = new GuardCompp((Comppath)setLoc(new Comppath(Comppath.IN, actPath.append(tok.value_str)), loc));
-	    // S. comment oben
 	    
 	    grd = new GuardCompp((Comppath)setLoc(new Comppath(Comppath.IN, StringToPath(tok.value_str)), loc));
 	    
@@ -899,6 +950,132 @@ class TESCParser {
 	return grd;
     }
     
+
+    // Guards fuer Bvars
+    private Guard guard_b(Path p) throws IOException {
+	Guard grd1 = null;
+	Guard grd2 = null;
+	Guard grd = null;
+	int t = 0;
+	Location loc = new Location(tok.linenum);
+
+	grd1 = ocompg_b(p);
+	grd = grd1;	
+
+	while (tok.token == vTOKEN.IMPL || tok.token == vTOKEN.AQUI) {
+	    t = tok.token;
+	    switch(t) {
+	    case vTOKEN.IMPL:
+		match(vTOKEN.IMPL);
+		break;
+	    case vTOKEN.AQUI:	
+		match(vTOKEN.AQUI);
+		break;
+	    }
+	    grd2 = ocompg_b(p);
+	    switch(t) {
+	    case vTOKEN.IMPL:
+		grd = new GuardCompg((Compguard)setLoc(new Compguard(Compguard.IMPLIES, grd1, grd2), new Location(tok.linenum)));
+		grd.location = loc;
+		break;
+	    case vTOKEN.AQUI:	
+		grd = new GuardCompg((Compguard)setLoc(new Compguard(Compguard.EQUIV, grd1, grd2), new Location(tok.linenum)));
+		grd.location = loc;
+		break;
+	    }
+	}
+
+	return grd;
+    }
+
+    // ||
+    private Guard ocompg_b(Path p) throws IOException {
+	Guard grd1 = null;
+	Guard grd2 = null;
+	Guard grd = null;
+	int t = 0;
+	Location loc = new Location(tok.linenum);
+
+	grd1 = acompg_b(p);
+	grd = grd1;
+	while (tok.token == vTOKEN.OR) {	    	
+	    match(vTOKEN.OR);
+	    grd2 = acompg_b(p);
+	    	
+	    grd = new GuardCompg((Compguard)setLoc(new Compguard(Compguard.OR, grd1, grd2), loc));
+	    grd.location = loc;
+	}
+
+	return grd;
+    }
+    
+    // &&
+    private Guard acompg_b(Path p) throws IOException {
+	Guard grd1 = null;
+	Guard grd2 = null;
+	Guard grd = null;
+	int t = 0;
+	Location loc = new Location(tok.linenum);
+
+	grd1 = kcompg_b(p);
+	grd = grd1;
+	while (tok.token == vTOKEN.AND) {	    	
+	    match(vTOKEN.AND);
+	    grd2 = kcompg_b(p);
+	    	
+	    grd = new GuardCompg((Compguard)setLoc(new Compguard(Compguard.AND, grd1, grd2), loc));
+	    grd.location = loc;
+	}
+	
+
+	return grd;
+    }
+
+    // Klammern und nicht-reduzierbares
+    private Guard kcompg_b(Path p) throws IOException {	
+	Guard grd = null;
+	Location loc = new Location(tok.linenum);
+	
+	if (tok.token == vTOKEN.NOT) {
+	    // ???
+	    match(vTOKEN.NOT);
+	    grd = new GuardNeg(kcompg_b(p));
+	}
+	else if(tok.token == vTOKEN.EMPTYEXP) {
+	    // Rekursion ??? oder kann ~ nur für sich stehen ?
+	    grd = new GuardEmpty((Dummy)setLoc(new Dummy(), loc)); 
+	}
+	else if(tok.token == vTOKEN.IN || tok.token == vTOKEN.ENTERED || tok.token == vTOKEN.EXITED) {
+	    grd = pathop(p);
+	}
+	else if (tok.token == vTOKEN.IDENT) {
+	    // ???
+	    Bvar bv = (Bvar)setLoc(new Bvar(tok.value_str), loc);
+	    // bvlist erweitern, falls neue Bvar
+	    if (!is_bvarname(tok.value_str)) {
+		if (!is_eventname(tok.value_str)) {
+		    debug("Füge neue Bvar in bvlist ein!");
+		    bvlist = new BvarList( (Bvar)setLoc(new Bvar(tok.value_str), loc), bvlist);
+		}
+		else {
+			addError(makeError(tok,"Ist schon als Eventname deklariert!"));
+		}
+	    }
+	    grd = new GuardBVar(bv);
+	    match(vTOKEN.IDENT);
+	}
+	else if (tok.token == vTOKEN.LPAR) {
+	    match(vTOKEN.LPAR);
+	    grd = guard_b(p);
+	    match(vTOKEN.RPAR);
+	}
+	
+	if (grd != null) grd.location = loc;
+	
+	return grd;
+
+    }
+
 
     // Transitionen
     private TrList trdef(Path p) throws IOException {
@@ -1238,77 +1415,72 @@ class TESCParser {
     // => Die Pfade muessen geprüft werden.
 
     private boolean is_conname(String txt, Path p) {
-	
-	boolean b = false;
-	int i = 0;
-	int l = cnlist.size();
 	String x = makePathString(p).concat(".").concat(txt);
 
-	while (i<l) {
-	    if (x.compareTo((String)cnlist.elementAt(i)) == 0) {
-		//System.out.println("Connname");
-		b = true;
-		break;
-	    }
-	    i++;
-	}
-	return b;
+	return cnlist.contains(x);
     }
 
-    private boolean is_statename(String txt, Path p) {
-	boolean b = false;
-	int i = 0;
-	int l = snlist.size();
+    private boolean is_statename(String txt, Path p) {	
 	String x = makePathString(p).concat(".").concat(txt);
 
-	
-	while (i<l) {
-	    if (x.compareTo((String)snlist.elementAt(i)) == 0) {
-		//System.out.println("Statenname");
-		b = true;
-		break;
-	    }
-	    i++;
-	}
-	return b;	
+	return snlist.contains(x);	
     }
 
 
+    
     // Bvars werden global definiert => eindeutige Namen
+    // Pruefen direkt ueber Liste
     private boolean is_bvarname(String txt) {
 	boolean b = false;
-	int i = 0;
-	int l = bnlist.size();
+	BvarList bvl = bvlist;
 
-	while (i<l) {
-	    if (txt.compareTo((String)bnlist.elementAt(i)) == 0) {
-		//System.out.println("Bvarname");
-		b = true;
-		break;
+	while (bvl != null) {
+	    if (bvl.head != null) {
+		if (bvl.head.var.compareTo(txt) == 0) {
+		    b = true;
+		    debug("Gefunden!");
+		    break;
+		}
 	    }
-	    i++;
+	    bvl = bvl.tail;
 	}
-	return b;	
+	
+	return b;
     }
+    /*
+    private boolean is_bvarname(String txt) {
+        return bnlist.contains(txt); 
+    }
+    */
 
+    /*
     // s. Bvars
     private boolean is_eventname(String txt) {
-	boolean b = false;
-	int i = 0;
-	int l = enlist.size();
-
-	while (i<l) {
-	    if (txt.compareTo((String)enlist.elementAt(i)) == 0) {
-		//System.out.println("Eventname");
-		b = true;
-		break;
-	    }
-	    i++;
-	}
-	return b;	
+	
+	return enlist.contains(txt);	
     }
+    */
 
-    // Hinzufügen der jeweiligen Names in die Listen
+    private boolean is_eventname(String txt) {
+	boolean b = false;
+	SEventList evl = evlist;
+
+	while (evl != null) {
+	    if (evl.head != null) {
+		if (evl.head.name.compareTo(txt) == 0) {
+		    b = true;
+		    debug("Gefunden!");
+		    break;
+		}
+	    }
+	    evl = evl.tail;
+	}
+	
+	return b;
+    }
+    
+
+    // Hinzufügen der jeweiligen Names in die Listen, temporar
     private void addStatename(String s, Path p) {
 	snlist.addElement(makePathString(p).concat(".").concat(s));
     }
@@ -1317,6 +1489,9 @@ class TESCParser {
 	cnlist.addElement(makePathString(p).concat(".").concat(s));
     }
 
+
+    // Nicht mehr benoetigt
+    /*
     private void addBvarname(String s) {
 	bnlist.addElement(s);
     }
@@ -1325,6 +1500,7 @@ class TESCParser {
 	enlist.addElement(s);
 
     }
+    */
 
     // hängt Fehlermeldung an die Liste an.
     private void addError(String txt) {
@@ -1371,7 +1547,7 @@ class TESCParser {
 }
 
 /* TESCParser
- * $Id: TESCParser.java,v 1.13 1999-01-09 15:51:14 swtech13 Exp $
+ * $Id: TESCParser.java,v 1.14 1999-01-11 20:10:32 swtech13 Exp $
  * $Log: not supported by cvs2svn $
  * Revision 1.11  1999/01/06 14:57:24  swtech13
  * Fehlerbehandlung verbessert

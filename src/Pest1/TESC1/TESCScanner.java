@@ -81,6 +81,8 @@ class TESCScanner {
 	else if (s.compareTo((String)"(") == 0)   ret = true;
 	else if (s.compareTo((String)")") == 0)   ret = true;
 	else if (s.compareTo((String)"!") == 0)   ret = true;
+	else if (s.compareTo((String)"]") == 0)   ret = true;
+	else if (s.compareTo((String)"[") == 0)   ret = true;
 
 	else if (s.compareTo((String)"<=>") == 0 )  ret = true;
 	else if (s.compareTo((String) "=>") == 0 )  ret = true;
@@ -103,6 +105,8 @@ class TESCScanner {
 	else if (s.compareTo((String)"(") == 0)   ret = true;
 	else if (s.compareTo((String)")") == 0)   ret = true;
 	else if (s.compareTo((String)"!") == 0)   ret = true;	
+	else if (s.compareTo((String)"]") == 0)   ret = true;
+	else if (s.compareTo((String)"[") == 0)   ret = true;
 
 	// Mehstellige Trenner
 	else if (s.regionMatches(0, (String)"<=>", 0, s.length()))   ret = true;
@@ -270,6 +274,8 @@ class TESCScanner {
 	else if (s.compareTo((String)":=") == 0)          i = vTOKEN.BASSIGN;
 	else if (s.compareTo((String)"!") == 0)           i = vTOKEN.NOT;
 	else if (s.compareTo((String)"defcon") == 0)      i = vTOKEN.DEFCON;
+	else if (s.compareTo((String)"[") == 0)       i = vTOKEN.LPAR_E;
+	else if (s.compareTo((String)"]") == 0)       i = vTOKEN.RPAR_E;
 
 	else i = vTOKEN.IDENT;
 	
@@ -379,6 +385,13 @@ class TESCScanner {
 	case 32:
 	    s = new String("defcon");
 	    break;
+	case 33:
+	    s = new String("[");
+	    break;
+	case 34:
+	    s = new String("]");
+	    break;
+	    
 
 	case 40:
 	    s = new String("identifier");
@@ -395,8 +408,11 @@ class TESCScanner {
 
 
 /* TESCScanner
- * $Id: TESCScanner.java,v 1.8 1998-12-21 16:17:37 swtech13 Exp $
+ * $Id: TESCScanner.java,v 1.9 1999-01-11 20:10:33 swtech13 Exp $
  * $Log: not supported by cvs2svn $
+ * Revision 1.8  1998/12/21 16:17:37  swtech13
+ * Fehlermeldungen im Parser -> GUI
+ *
  * Revision 1.7  1998/12/17 11:54:16  swtech13
  * TESCLoader.java auf BufferedReader umgestellt
  *

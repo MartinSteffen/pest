@@ -39,14 +39,19 @@ class vTOKEN {
     static final int BASSIGN     = 30;
     static final int NOT         = 31;
     static final int DEFCON      = 32;
+    static final int LPAR_E      = 33;
+    static final int RPAR_E      = 34;
 
     // Nichtschlüsselwörter
     static final int IDENT    = 40; 
 }
 
 /* vTOKEN
- * $Id: vTOKEN.java,v 1.3 1998-12-15 17:51:58 swtech00 Exp $
+ * $Id: vTOKEN.java,v 1.4 1999-01-11 20:10:33 swtech13 Exp $
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  1998/12/15 17:51:58  swtech00
+ * Towards new naming conventions in PEST1
+ *
  * Revision 1.2  1998/12/14 23:58:09  swtech13
  * Scanner: Teilstrings von keywords werden nicht mehr zurueckgewiesen
  *
