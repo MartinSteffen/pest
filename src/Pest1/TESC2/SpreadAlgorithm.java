@@ -4,7 +4,7 @@
  * Created: Thu Dec 31 1998, 18:00:00
  *
  * @author Developed by Eike Schulz for swtech14.
- * @version $Id: SpreadAlgorithm.java,v 1.3 1999-01-25 15:24:01 swtech14 Exp $
+ * @version $Id: SpreadAlgorithm.java,v 1.4 1999-02-04 09:47:35 swtech14 Exp $
  *
  *
  * Durch diese Klasse wird ein (syntaktisch korrektes!) Statechart-Objekt mit
@@ -729,8 +729,8 @@ class SpreadAlgorithm extends GraphOptimizer {
 
 
 
-  // Berechne CPoint-Array mit Transitions-Koordinaten fuer eine DIREKTE Transi-
-  // tion, und erhoehe Counterwerte fuer "State-Transitionsanschluesse".
+  // Berechne CPoint-Array mit Transitions-Koordinaten fuer eine DIREKTE
+  // Transition, und erhoehe Counterwerte fuer "State-Transitionsanschluesse".
   //
   // Uebergabeobjekte/-wert:
   //   Quell-State,
@@ -751,7 +751,7 @@ class SpreadAlgorithm extends GraphOptimizer {
     // die die Verschiebung der Transitionen ermoeglichen.
 
     x1 = src.rect.x + (lh.getStateposInfo (src)).counter_x;
-    y1 = src.rect.y - 1;
+    y1 = src.rect.y;
 
     x2 = x1;
     y2 = dist_y;
@@ -767,7 +767,7 @@ class SpreadAlgorithm extends GraphOptimizer {
     y3 = y2;
 
     x4 = x3;
-    y4 = trgt.rect.y - 1;
+    y4 = trgt.rect.y;
 
     // Erhoehe Counterwerte je nach Basic- oder And-/Or-State.
 
@@ -798,8 +798,8 @@ class SpreadAlgorithm extends GraphOptimizer {
 
 
 
-  // Berechne CPoint-Array mit Transitions-Koordinaten fuer eine INDIREKTE Tran-
-  // sition, und erhoehe Counterwerte fuer "Transitionsanschluesse".
+  // Berechne CPoint-Array mit Transitions-Koordinaten fuer eine INDIREKTE
+  // Transition, und erhoehe Counterwerte fuer "Transitionsanschluesse".
   //
   // Uebergabeobjekte/-wert:
   //   Quell-State,
@@ -828,7 +828,7 @@ class SpreadAlgorithm extends GraphOptimizer {
     if (src instanceof Basic_State) {
 
       x1 = src.rect.x + lh.getStateposInfo (src).counter_x;
-      y1 = src.rect.y + Math.max (BASICSTATE_MINHEIGHT, fontHeight) + 1;
+      y1 = src.rect.y + Math.max (BASICSTATE_MINHEIGHT, fontHeight);
 
       x2 = x1;
       y2 = trgt.position.y + lh.getConnectorposInfo (trgt).counter_ya +
@@ -858,7 +858,7 @@ class SpreadAlgorithm extends GraphOptimizer {
     } else {
 
       x1 = src.rect.x + lh.getStateposInfo (src).counter_x;
-      y1 = lh.getStateposInfo (src).max_y + 1;
+      y1 = lh.getStateposInfo (src).max_y;
 
       x2 = x1;
       y2 = dist_y;
