@@ -24,8 +24,22 @@ public class Test {
 
 
 
+
+      CPoint cp = new CPoint(4,5);
+      CPoint cpclone = (CPoint) cp.clone();
+      cpclone.x = 123;
+      pp.start(cp);
+      pp.start(cpclone);
+
+      CRectangle cr = new CRectangle(cp);
+      CRectangle crclone  = (CRectangle) cr.clone();
+      crclone.x=666;
+      pp.start(cr);
+      pp.start(crclone);
+
+
     //  Test des  Ref_State
-    System.out.println("-----------------------Test der Refstates");
+      System.out.println("-----------------------Test der Refstates");
     Basic_State S1 = new Basic_State (new Statename("S1"));
     Ref_State   RS1 = new Ref_State(new Statename("RefS1"), new String ("../../g"), new Pest_CoordSyntax()) ;
     pp.start(S1);
