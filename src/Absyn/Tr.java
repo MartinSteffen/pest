@@ -9,7 +9,7 @@ import java.awt.Point;
 /**
  *Tr.
  * @author Initially provided by Martin Steffen.
- * @version $Id: Tr.java,v 1.8 1998-12-15 11:07:01 swtech00 Exp $
+ * @version $Id: Tr.java,v 1.9 1998-12-15 13:38:08 swtech00 Exp $
  */
 public class Tr  implements Serializable, Cloneable {   // Transition
     public CPoint[]  points;
@@ -29,6 +29,9 @@ public class Tr  implements Serializable, Cloneable {   // Transition
 	label  = l;
     };
 
+/**
+ * @exception CloneNotSupportedException self-explanatory exception
+ */
     public Object clone () throws CloneNotSupportedException {
 	CPoint [] pointsclone;
 	if (points != null) {pointsclone = (CPoint [])points.clone();} else {pointsclone =null;};
@@ -51,9 +54,12 @@ public class Tr  implements Serializable, Cloneable {   // Transition
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Tr.java,v 1.8 1998-12-15 11:07:01 swtech00 Exp $
+//	$Id: Tr.java,v 1.9 1998-12-15 13:38:08 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.8  1998/12/15 11:07:01  swtech00
+//	Point -> CPoint, die Methode clone() angepasst. (Arrays of CPoint's funktionieren auch)
+//
 //	Revision 1.7  1998/12/15 07:11:11  swtech01
 //	Added Serialization to all classes
 //

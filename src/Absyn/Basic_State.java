@@ -14,6 +14,9 @@ public class Basic_State extends State implements Serializable, Cloneable {
 	rect = r;
     };
     
+/**
+ * @exception CloneNotSupportedException self-explanatory exception
+ */
     public Object clone() throws CloneNotSupportedException {
 	return new Basic_State ((Statename)name.clone(),rect);
     };
@@ -24,9 +27,12 @@ public class Basic_State extends State implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Basic_State.java,v 1.7 1998-12-15 11:30:38 swtech00 Exp $
+//	$Id: Basic_State.java,v 1.8 1998-12-15 13:38:01 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.7  1998/12/15 11:30:38  swtech00
+//	Rectangle durch CRectangle ersetzt
+//
 //	Revision 1.6  1998/12/15 07:11:07  swtech01
 //	Added Serialization to all classes
 //

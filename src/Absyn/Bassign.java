@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Boolean assignment.
  * @author Initially provided by Martin Steffen.
- * @version  $Id: Bassign.java,v 1.7 1998-12-15 07:11:07 swtech01 Exp $
+ * @version  $Id: Bassign.java,v 1.8 1998-12-15 13:38:02 swtech00 Exp $
  */
 public class Bassign extends Absyn implements Serializable, Cloneable {
 /**
@@ -24,6 +24,9 @@ public class Bassign extends Absyn implements Serializable, Cloneable {
 	brhs = r;
     };
 
+/**
+ * @exception CloneNotSupportedException self-explanatory exception
+ */
     public Object clone() throws CloneNotSupportedException {
 	return new Bassign((Bvar)blhs.clone(),(Guard)brhs.clone());
     };
@@ -37,9 +40,12 @@ public class Bassign extends Absyn implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Bassign.java,v 1.7 1998-12-15 07:11:07 swtech01 Exp $
+//	$Id: Bassign.java,v 1.8 1998-12-15 13:38:02 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.7  1998/12/15 07:11:07  swtech01
+//	Added Serialization to all classes
+//
 //	Revision 1.6  1998/12/11 17:42:55  swtech00
 //	Cloneable
 //

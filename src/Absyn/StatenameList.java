@@ -16,6 +16,9 @@ public class StatenameList extends Absyn implements Serializable, Cloneable {
 
 
 
+/**
+ * @exception CloneNotSupportedException self-explanatory exception
+ */
     public Object clone() throws CloneNotSupportedException {
 	StatenameList tailclone;
 	if (tail != null)

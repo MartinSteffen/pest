@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Operation on path of statenames.
  * @author Initially provided by Martin Steffen.
- * @version $Id: Comppath.java,v 1.8 1998-12-15 07:11:07 swtech01 Exp $
+ * @version $Id: Comppath.java,v 1.9 1998-12-15 13:38:03 swtech00 Exp $
  */
 public class Comppath extends Absyn implements Serializable, Cloneable {
 /**
@@ -30,6 +30,9 @@ public class Comppath extends Absyn implements Serializable, Cloneable {
 	path    = p;
     };
 
+/**
+ * @exception CloneNotSupportedException self-explanatory exception
+ */
     public Object clone() throws CloneNotSupportedException {
 	return new Comppath (pathop, (Path)path.clone());
     };
@@ -40,9 +43,12 @@ public class Comppath extends Absyn implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Comppath.java,v 1.8 1998-12-15 07:11:07 swtech01 Exp $
+//	$Id: Comppath.java,v 1.9 1998-12-15 13:38:03 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.8  1998/12/15 07:11:07  swtech01
+//	Added Serialization to all classes
+//
 //	Revision 1.7  1998/12/11 17:42:56  swtech00
 //	Cloneable
 //

@@ -19,6 +19,9 @@ public class Path  implements Serializable, Cloneable {
 	    return new Path(head, new Path (s, null));
     };
 
+/**
+ * @exception CloneNotSupportedException self-explanatory exception
+ */
     public Object clone() throws CloneNotSupportedException {
 	Path tailclone;
 	if (tail != null) {tailclone = (Path)tail.clone();} else tailclone = null;
@@ -31,9 +34,12 @@ public class Path  implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Path.java,v 1.6 1998-12-15 07:11:10 swtech01 Exp $
+//	$Id: Path.java,v 1.7 1998-12-15 13:38:06 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.6  1998/12/15 07:11:10  swtech01
+//	Added Serialization to all classes
+//
 //	Revision 1.5  1998/12/11 17:43:00  swtech00
 //	Cloneable
 //

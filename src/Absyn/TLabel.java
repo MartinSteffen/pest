@@ -7,7 +7,7 @@ import java.awt.Point;
 /**
  * TLabel.
  * @author Initially provided by Martin Steffen.
- * @version $Id: TLabel.java,v 1.5 1998-12-15 11:06:06 swtech00 Exp $
+ * @version $Id: TLabel.java,v 1.6 1998-12-15 13:38:08 swtech00 Exp $
  */
 public class TLabel extends Absyn implements Serializable, Cloneable {
 /**
@@ -39,6 +39,9 @@ public class TLabel extends Absyn implements Serializable, Cloneable {
 	action = a;
     };
 
+/**
+ * @exception CloneNotSupportedException self-explanatory exception
+ */
     public Object clone() throws CloneNotSupportedException {
 	CPoint positionclone;
 	if (position != null) {positionclone = (CPoint)position.clone();} else {positionclone = null;};
@@ -56,8 +59,11 @@ public class TLabel extends Absyn implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: TLabel.java,v 1.5 1998-12-15 11:06:06 swtech00 Exp $
+//	$Id: TLabel.java,v 1.6 1998-12-15 13:38:08 swtech00 Exp $
 //      $Log: not supported by cvs2svn $
+//      Revision 1.5  1998/12/15 11:06:06  swtech00
+//      Point -> Cpoint, entprechend die Methode clone() angepasst.
+//
 //
 //
 //

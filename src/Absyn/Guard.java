@@ -6,9 +6,12 @@ import java.io.Serializable;
 /**
  * Abstract class Guard introduces a union type for guards of transition labels.
  * @author Initially provided by Martin Steffen.
- * @version $Id: Guard.java,v 1.6 1998-12-15 07:11:08 swtech01 Exp $
+ * @version $Id: Guard.java,v 1.7 1998-12-15 13:38:04 swtech00 Exp $
  */
 public abstract class Guard extends Absyn implements Serializable, Cloneable {
+/**
+ * @exception CloneNotSupportedException self-explanatory exception
+ */
     public abstract Object clone() throws CloneNotSupportedException;
 };
 
@@ -24,9 +27,12 @@ public abstract class Guard extends Absyn implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Guard.java,v 1.6 1998-12-15 07:11:08 swtech01 Exp $
+//	$Id: Guard.java,v 1.7 1998-12-15 13:38:04 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.6  1998/12/15 07:11:08  swtech01
+//	Added Serialization to all classes
+//
 //	Revision 1.5  1998/12/11 17:42:57  swtech00
 //	Cloneable
 //

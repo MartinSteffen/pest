@@ -6,7 +6,7 @@ import java.io.Serializable;
 /**
  * One kind of transition action: generation of events.
  * @author Initially provided by Martin Steffen.
- * @version  $Id: ActionEvt.java,v 1.3 1998-12-15 07:11:06 swtech01 Exp $
+ * @version  $Id: ActionEvt.java,v 1.4 1998-12-15 13:38:00 swtech00 Exp $
  */
 public class ActionEvt extends Action implements Serializable, Cloneable {
   public SEvent event;
@@ -14,6 +14,9 @@ public class ActionEvt extends Action implements Serializable, Cloneable {
     event  =  e;
   };
 
+/**
+ * @exception CloneNotSupportedException self-explanatory exception
+ */
     public Object clone() throws CloneNotSupportedException {
 	return new ActionEvt((SEvent)event.clone());
     };
@@ -23,9 +26,12 @@ public class ActionEvt extends Action implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: ActionEvt.java,v 1.3 1998-12-15 07:11:06 swtech01 Exp $
+//	$Id: ActionEvt.java,v 1.4 1998-12-15 13:38:00 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.3  1998/12/15 07:11:06  swtech01
+//	Added Serialization to all classes
+//
 //	Revision 1.2  1998/12/11 17:39:13  swtech00
 //	Cloneable
 //

@@ -9,6 +9,9 @@ public class Conname extends TrAnchor implements Serializable, Cloneable{
 	name  = n;
     };
     
+/**
+ * @exception CloneNotSupportedException self-explanatory exception
+ */
     public Object clone() throws CloneNotSupportedException {
 	return new Conname(name);
     };
@@ -18,9 +21,12 @@ public class Conname extends TrAnchor implements Serializable, Cloneable{
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Conname.java,v 1.4 1998-12-15 07:11:08 swtech01 Exp $
+//	$Id: Conname.java,v 1.5 1998-12-15 13:38:03 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.4  1998/12/15 07:11:08  swtech01
+//	Added Serialization to all classes
+//
 //	Revision 1.3  1998/12/11 17:42:57  swtech00
 //	Cloneable
 //

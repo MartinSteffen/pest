@@ -9,6 +9,9 @@ public class SEventList implements Serializable, Cloneable {
 	head = h;
 	tail = tl;
     };
+/**
+ * @exception CloneNotSupportedException self-explanatory exception
+ */
     public Object clone() throws CloneNotSupportedException {
 	SEventList tailclone;
 	if (tail != null) {tailclone = (SEventList)tail.clone();} else {tailclone = null;};
@@ -22,9 +25,12 @@ public class SEventList implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: SEventList.java,v 1.5 1998-12-15 07:11:10 swtech01 Exp $
+//	$Id: SEventList.java,v 1.6 1998-12-15 13:38:07 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.5  1998/12/15 07:11:10  swtech01
+//	Added Serialization to all classes
+//
 //	Revision 1.4  1998/12/11 17:43:01  swtech00
 //	Cloneable
 //

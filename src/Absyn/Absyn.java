@@ -8,11 +8,14 @@ import java.io.Serializable;
  * <br> TESC input language may have locations.
  * <p>
  * @author Initially provided by Martin Steffen.
- * @version  $Id: Absyn.java,v 1.10 1998-12-15 07:11:05 swtech01 Exp $
+ * @version  $Id: Absyn.java,v 1.11 1998-12-15 13:38:00 swtech00 Exp $
  */
 abstract public class Absyn implements Cloneable, Serializable {
     Location location;
 
+/**
+ * @exception CloneNotSupportedException self-explanatory exception
+ */
     public abstract Object clone() throws  CloneNotSupportedException;
 
 
@@ -22,9 +25,12 @@ abstract public class Absyn implements Cloneable, Serializable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Absyn.java,v 1.10 1998-12-15 07:11:05 swtech01 Exp $
+//	$Id: Absyn.java,v 1.11 1998-12-15 13:38:00 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.10  1998/12/15 07:11:05  swtech01
+//	Added Serialization to all classes
+//
 //	Revision 1.9  1998/12/11 17:38:39  swtech00
 //	Clonable
 //

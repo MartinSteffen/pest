@@ -8,6 +8,9 @@ public class Statename extends TrAnchor implements Serializable, Cloneable {
 	name = s;
     };
 
+/**
+ * @exception CloneNotSupportedException self-explanatory exception
+ */
     public Object clone() throws CloneNotSupportedException {
 	return new Statename(name);
     };
@@ -17,9 +20,12 @@ public class Statename extends TrAnchor implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Statename.java,v 1.5 1998-12-15 07:11:11 swtech01 Exp $
+//	$Id: Statename.java,v 1.6 1998-12-15 13:38:08 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.5  1998/12/15 07:11:11  swtech01
+//	Added Serialization to all classes
+//
 //	Revision 1.4  1998/12/11 17:43:01  swtech00
 //	Cloneable
 //

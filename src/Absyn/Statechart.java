@@ -20,6 +20,9 @@ public class Statechart extends Absyn implements Serializable, Cloneable  {
     public Statechart(String filename) {
     }
 
+/**
+ * @exception CloneNotSupportedException self-explanatory exception
+ */
     public Object clone () throws CloneNotSupportedException {
 	BvarList bvarsclone;
 	if (bvars != null)
@@ -37,9 +40,12 @@ public class Statechart extends Absyn implements Serializable, Cloneable  {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Statechart.java,v 1.10 1998-12-15 07:11:11 swtech01 Exp $
+//	$Id: Statechart.java,v 1.11 1998-12-15 13:38:08 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.10  1998/12/15 07:11:11  swtech01
+//	Added Serialization to all classes
+//
 //	Revision 1.9  1998/12/11 17:43:01  swtech00
 //	Cloneable
 //

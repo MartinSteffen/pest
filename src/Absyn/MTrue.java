@@ -6,7 +6,7 @@ import java.io.Serializable;
 /**
  * One kind of boolean statement: assigns true to the variable.
  * @author Initially provided by Martin Steffen.
- * @version $Id: MTrue.java,v 1.4 1998-12-15 07:11:09 swtech01 Exp $
+ * @version $Id: MTrue.java,v 1.5 1998-12-15 13:38:06 swtech00 Exp $
  */
 public class MTrue extends Boolstmt implements Serializable, Cloneable {
 /**
@@ -17,6 +17,9 @@ public class MTrue extends Boolstmt implements Serializable, Cloneable {
     var = v;
   };
 
+/**
+ * @exception CloneNotSupportedException self-explanatory exception
+ */
     public Object clone () throws CloneNotSupportedException {
 	return new MTrue((Bvar)var.clone());
     };
@@ -28,9 +31,12 @@ public class MTrue extends Boolstmt implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: MTrue.java,v 1.4 1998-12-15 07:11:09 swtech01 Exp $
+//	$Id: MTrue.java,v 1.5 1998-12-15 13:38:06 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.4  1998/12/15 07:11:09  swtech01
+//	Added Serialization to all classes
+//
 //	Revision 1.3  1998/12/11 17:42:59  swtech00
 //	Cloneable
 //
