@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.63 1999-02-05 10:22:47 swtech01 Exp $
+//	$Id: report_list,v 1.64 1999-02-05 10:44:14 swtech11 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -786,4 +786,13 @@ geöffneten Editor keine Fehler, mit schon.
 Erstelle zwei Zustaende mit UNbeschrifteter Trasition. Erzeuge einen
 parent state aussenrum. Dabei wird die Anzeige total entstellt (Or-State
 geloescht, Zustaende und Transition verschoben).
+//------------------------------------------------------------------------------
+#Number:        55
+#Autor:         check swtech11
+#Subject:       Editor oder stm ? Interlevel-Transition
+#Status:        reported
+#Description:
+
+Das alte Problem mit den Interlevel-Transitionen nach dem Importieren durch STM.
+Ich habe PC/a1.st importiert. Nachdem Aufruf des Editors zeigt der Check zwei Interlevel-Transitionen an.
 //------------------------------------------------------------------------------
