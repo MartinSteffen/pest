@@ -11,7 +11,7 @@ import java.util.*;
  * Browser
  *
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: Browser.java,v 1.7 1999-01-25 13:54:15 swtech11 Exp $
+ *  @version  $Id: Browser.java,v 1.8 1999-01-25 16:43:49 swtech11 Exp $
  */
 class Browser extends Dialog implements ActionListener {
   pest parent = null;
@@ -123,7 +123,6 @@ class Browser extends Dialog implements ActionListener {
 
   // Error und Warnings highlighten
   void selectObject() {
-  System.out.println(edit);
     if (edit != null) { high = true; } else { high = false; } // muﬂ noch um Config erweiter werden
     highlightObject ho;
     if (high==true) { ho = new highlightObject(true); }

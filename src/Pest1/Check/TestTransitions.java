@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestTransitions.java,v 1.15 1999-01-22 20:33:26 swtech11 Exp $
+ *  @version  $Id: TestTransitions.java,v 1.16 1999-01-25 16:43:55 swtech11 Exp $
  */
 class TestTransitions extends ModelCheckBasics {
   Vector newPLV = new Vector(); // Vector fuer die selbst angelegte PathList der States
@@ -75,7 +75,6 @@ class TestTransitions extends ModelCheckBasics {
 
     String z1 = msg.getTrSourceName(tl.head);
     String z2 = msg.getTrTargetName(tl.head);    
-
     mtr.t = tl.head;
     // Startanker der Transition bearbeiten
     if (tl.head.source instanceof UNDEFINED) { // undefiniert ?
@@ -112,6 +111,8 @@ class TestTransitions extends ModelCheckBasics {
     else if (tl.head.target instanceof Statename) { // State ?
       mtr.z = 1;
       mtr.zz = 1;
+
+
       v2 = !StatenameInPathList(newPLV, z2); // State -> nicht vorhanden ?
       if (v2==false) { i2 = !NameInThisStateSubstates(((Or_State)_s).substates, z2); } // State -> Interleven ?
     }
@@ -387,6 +388,40 @@ class TestTransitions extends ModelCheckBasics {
     }
   }
 
+    boolean pruefe_coord_IT(State s, Tr t) {
+    int n=t.points.length;
+    int xt=t.points[n].x;
+    int yt=t.points[n].y;
+    int xs=s.rect.x;
+    int ys=s.rect.y;
+    int hs=s.rect.height;
+    int ws=s.rect.width;
+System.out.println();
+System.out.println("xt"+xt);
+System.out.println("yt"+yt);
+System.out.println("xs"+xs);
+System.out.println("ys"+ys);
+System.out.println("hs"+hs);
+System.out.println("ws"+ws);
+System.out.println();
+
+
+    boolean b=false;
+    if (umgebung(xs,xt) && yt>=ys && yt<=(ys+hs)) b=true;
+    if (umgebung(ys,yt) && xt>=xs && xt<=(xs+ws)) b=true;
+    if (umgebung(xs+ws,xt) && yt>=ys && yt<=(ys+ws)) b=true;
+    if (umgebung(ys+hs,yt) && xt>=xs && xt<=(xs+ws)) b=true;
+    return b;
+
+    }
+
+    boolean umgebung(int a, int s) {
+    int e=2;
+    boolean b=false;
+    if (((int)Math.abs(a-s))<e) b=true;
+System.out.println(b);
+    return b;
+  }
 }
 
 // Transitionen zur besseren Nutzung speichern
