@@ -9,7 +9,7 @@ extends MenuBar
 
 pest myWindow;
 
-    Menu M_Export;
+    Menu M_Export,M_Werkzeuge;
 MenuItem M_Speichern, M_Speichernu, M_Editor;
 MenuItem M_Simulator, M_Codegen, M_SyntaxCheck,M_PrettyPrint;
 
@@ -59,14 +59,14 @@ public GUIMenu(pest myWindow)
   addMenuItem(m,"Statemate",mle);
   add(m);
 
-  m = new Menu("Werkzeuge");
-  M_Editor      = addMenuItem(m,"Editor",mlw);
-  M_Simulator   = addMenuItem(m,"Simulator",mlw);
-  M_Codegen     = addMenuItem(m,"Codegenerator",mlw);
-  M_SyntaxCheck = addMenuItem(m,"SyntaxCheck",mlw);
+  M_Werkzeuge = new Menu("Werkzeuge");
+  M_Editor      = addMenuItem(M_Werkzeuge,"Editor",mlw);
+  M_Simulator   = addMenuItem(M_Werkzeuge,"Simulator",mlw);
+  M_Codegen     = addMenuItem(M_Werkzeuge,"Codegenerator",mlw);
+  M_SyntaxCheck = addMenuItem(M_Werkzeuge,"SyntaxCheck",mlw);
   m.addSeparator();
-  M_PrettyPrint = addMenuItem(m,"PrettyPrinter",mlw);
-  add(m);
+  M_PrettyPrint = addMenuItem(M_Werkzeuge,"PrettyPrinter",mlw);
+  add(M_Werkzeuge);
 
   m = new Menu("Hilfe");
   addMenuItem(m,"Allgemein",mlh);
@@ -112,24 +112,26 @@ void updateMenu()
     {
 	if (myWindow.SyntaxBaum == null)
 	    {
-		M_Speichern.setEnabled(false);
-		M_Speichernu.setEnabled(false);
-		M_Export.setEnabled(false);
-		M_Editor.setEnabled(false);
-		M_Codegen.setEnabled(false);
-		M_Simulator.setEnabled(false);
-		M_SyntaxCheck.setEnabled(false);
+ 		M_Speichern.setEnabled(false);
+ 		M_Speichernu.setEnabled(false);
+ 		M_Export.setEnabled(false);
+		M_Werkzeuge.setEnabled(false);
+		// 		M_Editor.setEnabled(false);
+ 		//M_Codegen.setEnabled(false);
+ 		//M_Simulator.setEnabled(false);
+ 		//M_SyntaxCheck.setEnabled(false);
 	    }
 	else
 	    {
 		
-		M_Speichern.setEnabled(true);
-		M_Speichernu.setEnabled(true);
-		M_Editor.setEnabled(true);
-		M_Export.setEnabled(true);
-		M_Codegen.setEnabled(true);
-		M_Simulator.setEnabled(true);
-		M_SyntaxCheck.setEnabled(true);
+ 		M_Speichern.setEnabled(true);
+ 		M_Speichernu.setEnabled(true);
+ 		M_Editor.setEnabled(true);
+ 		M_Export.setEnabled(true);
+		M_Werkzeuge.setEnabled(true);
+// 		M_Codegen.setEnabled(true);
+// 		M_Simulator.setEnabled(true);
+// 		M_SyntaxCheck.setEnabled(true);
 	    }
     }
 }

@@ -67,6 +67,7 @@ implements GUIInterface
 
     boolean checkSB()
     {
+	userMessage("GUI   : SyntaxCheck");
 	if(!CheckedSC)
 	    {
 		check.ModelCheck SCchecker = new check.ModelCheck(this);
@@ -100,6 +101,7 @@ implements GUIInterface
 	SBDateiname = name;
 	CheckedSC = false;
 	ResultSC  = false;
+	userMessage("GUI   : Neues Statechart erzeugt");
 	theGUIMenu.updateMenu();	
     }
 
@@ -150,37 +152,35 @@ implements GUIInterface
      * @see            java.awt.FileDialog
      */
     
-    void load()
+    BufferedReader load(String titel)
     {
+	BufferedReader resp = null;
+
 	fDialog.setMode(FileDialog.LOAD);
-	fDialog.setTitle("StateChart laden");
+	fDialog.setTitle(titel);
 	fDialog.setVisible(true);
 	String FileName = fDialog.getFile();
 	if (FileName != null)//Ok gewählt
 	    {
 		try {
-		    		    BufferedReader  inFile = new BufferedReader(new FileReader(fDialog.getDirectory()+FileName));
-		    if(inFile.readLine().equals("zustand"))
-			{
-			    // hier soll noch irgendwie geladen werden
-			    
-			}
-		    else
-			{
-			    OkDialog("Fehler","Ist keine PEST-Datei");
-			}
-		    inFile.close();
+		    resp = new BufferedReader(new FileReader(fDialog.getDirectory()+FileName));
 		    
 		}catch (IOException e)
 		    {
+			resp = null;
 			OkDialog("Fehler","Auf die Datei kann nicht zugegriffen werden");
 			// Alarm !
 		    }
-		
+	    }
+	else
+	    {
+		resp = null;
 	    }
 	
 	fDialog.setVisible(false);
 	fDialog.dispose();
+
+    return resp;
     }
 
 
@@ -192,19 +192,22 @@ implements GUIInterface
      * @see            java.awt.FileDialog
      */
     
-    void save()
+    BufferedWriter save(String titel)
     {
+	BufferedWriter resp = null;
+
 	fDialog.setMode(FileDialog.SAVE);
-	fDialog.setTitle("Statechart speichern");
+	fDialog.setTitle(titel);
 	fDialog.setVisible(true);
 	String FileName = fDialog.getFile();
 	if (FileName != null)//Ok gewählt
 	    {
 		try {
-		    BufferedWriter  outFile = new BufferedWriter(new FileWriter(fDialog.getDirectory()+FileName));
+		    resp = new BufferedWriter(new FileWriter(fDialog.getDirectory()+FileName));
 		    
 		}catch (IOException e)
 		    {
+			resp = null;
 			OkDialog("FEHLER","Das Speichern ist FEHLGESCHLAGEN !");
 			// Alarm !
 		    }
@@ -213,6 +216,7 @@ implements GUIInterface
 	
 	fDialog.setVisible(false);
 	fDialog.dispose();
+	return resp;
     }
 
 

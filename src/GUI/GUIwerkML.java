@@ -36,8 +36,8 @@ public void actionPerformed(ActionEvent e) {
       }else if (cmd.equals("Simulator")) {
 	  if (myWindow.checkSB())
 	      {
-		  new simu.Simu(myWindow.SyntaxBaum);
-		  //myWindow.OkDialog("FEHLER","Wegen fehlender PACKAGE Anweisung in der Klasse Simu nicht implementiert");
+		  //  new simu.Simu(myWindow.SyntaxBaum);
+		  myWindow.OkDialog("FEHLER","Nicht compilierbar");
 
 	      }
       }else if (cmd.equals("Codegenerator")) {
@@ -54,7 +54,7 @@ public void actionPerformed(ActionEvent e) {
 	      }
 
       }else if (cmd.equals("PrettyPrinter")) {
-	 	  (new PrettyPrint()).start( Example.getExample() );
+	 	  (new PrettyPrint()).start( myWindow.SyntaxBaum );
       }else{  
 	 myWindow.userMessage("GUI   : NOCH NICHT IMPLEMENTIERT"); 
       }	 

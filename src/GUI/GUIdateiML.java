@@ -26,14 +26,11 @@ public void actionPerformed(ActionEvent e) {
       {
 	  System.exit(0);
       }else if (cmd.equals("Oeffnen")) {
-	  myWindow.load();
+	  myWindow.load("Statechart laden");
       }else if (cmd.equals("Speichern")) {
-	  myWindow.save();
+	  myWindow.save("Statechart speichern");
       }else if (cmd.equals("Neu")) {
-	  myWindow.SBDateiname="UNBENANNT";
-	  myWindow.SyntaxBaum = new absyn.Statechart(myWindow.SBDateiname);
-	  myWindow.userMessage("GUI   : Neues Statechart erzeugt");
-	  myMenu.updateMenu();
+	  myWindow.setStatechart(new absyn.Statechart(myWindow.SBDateiname),"UNBENANNT");
       }else{
 	  myWindow.userMessage("GUI   : cmd:"+cmd);
 	  new testClass(myWindow);
