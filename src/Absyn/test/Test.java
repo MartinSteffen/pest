@@ -38,13 +38,36 @@ public class Test {
       pp.start(crclone);
 
 
+
+      System.out.println("-------neue Test der BVars");
+      Bvar bv1 = new Bvar("Alter String");
+      Bvar bv1clone = (Bvar)bv1.clone();
+      pp.start(bv1);
+      pp.start(bv1clone);
+      bv1clone.var = "clone";
+      bv1.var = "alte var";
+      
+      
+      
+      pp.start(bv1);
+      pp.start(bv1clone);
+      
+
+
     //  Test des  Ref_State
+
+
+    
       System.out.println("-----------------------Test der Refstates");
-    Basic_State S1 = new Basic_State (new Statename("S1"));
-    Ref_State   RS1 = new Ref_State(new Statename("RefS1"), new String ("../../g"), new Pest_CoordSyntax()) ;
-    pp.start(S1);
-    pp.start(RS1);
+      Basic_State S1 = new Basic_State (new Statename("S1"));
+      Ref_State   RS1 = new Ref_State(new Statename("RefS1"), new String ("../../g"), new Pest_CoordSyntax()) ;
+      pp.start(S1);
+      pp.start(RS1);
+
+
     System.out.println("-------End Test der Refstates");
+
+
 
 
         
@@ -293,6 +316,7 @@ public class Test {
 
   Conname cname = new Conname ("CN", new CPoint(3,4), new Location(7));
   Conname cnameclone  = (Conname) cname.clone();
+
 
   pp.start(cname);
   pp.start(cnameclone);
