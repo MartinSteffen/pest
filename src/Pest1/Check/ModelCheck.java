@@ -77,9 +77,9 @@ import editor.*;
  *<TR><TD ALIGN="right">101</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Keine Definition von BVar</TD></TR>
  *<TR><TD ALIGN="right">102</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Definierte BVar wurde nicht verwendet</TD></TR>
  *<TR><TD ALIGN="right">103</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Der Boolsche Ausdruck im Guard der Transition laesst sich nicht spezifizieren. </TD></TR>
- *<TR><TD ALIGN="right">104</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">&nbsp;</TD><TD>Die Boolsche Variable wird in keinem Action veraendert. </TD></TR>
- *<TR><TD ALIGN="right">105</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">&nbsp;</TD><TD>Kein Guard fragt den Wert der boolschen Variable ab. </TD></TR>
- *<TR><TD ALIGN="right">106</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">&nbsp;</TD><TD>Der Name des BVars ist ein leerer String.</TD></TR>
+ *<TR><TD ALIGN="right">104</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Die Boolsche Variable wird in keinem Action veraendert. </TD></TR>
+ *<TR><TD ALIGN="right">105</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Kein Guard fragt den Wert der boolschen Variable ab. </TD></TR>
+ *<TR><TD ALIGN="right">106</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Der Name des BVars ist ein leerer String.</TD></TR>
  *<TR><TD ALIGN="right">110</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Die Statechart enthält keine Liste der booleschen Variablen.</TD></TR>
  *<TR><TD ALIGN="right">200</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Name von Event nicht eindeutig</TD></TR>
  *<TR><TD ALIGN="right">201</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Keine Deklaration von Event</TD></TR>
@@ -87,7 +87,7 @@ import editor.*;
  *<TR><TD ALIGN="right">203</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Der Pathname in einem GuardComppath ist nicht vorhanden.</TD></TR>
  *<TR><TD ALIGN="right">204</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Das Guardevent wird nie von einem Actionevent ausgeloest.</TD></TR>
  *<TR><TD ALIGN="right">205</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Das Actionevent loest kein  Guardevent aus.</TD></TR>
- *<TR><TD ALIGN="right">206</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">&nbsp;</TD><TD>Der Name des Events ist ein leerer String.</TD></TR>
+ *<TR><TD ALIGN="right">206</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Der Name des Events ist ein leerer String.</TD></TR>
  *<TR><TD ALIGN="right">210</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Die Statechart enthält keine Eventliste.</TD></TR>
  *<TR><TD ALIGN="right">300</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Mehrfache Definition von Statename</TD></TR>
  *<TR><TD ALIGN="right">301</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Bezeichnung von Statename nicht eindeutig</TD></TR>
@@ -133,7 +133,7 @@ import editor.*;
  *</Table>
  * <br>
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: ModelCheck.java,v 1.33 1999-01-28 20:56:20 swtech11 Exp $
+ * @version  $Id: ModelCheck.java,v 1.34 1999-01-29 10:43:42 swtech11 Exp $
  * @see CheckConfig
  */
 public class ModelCheck {
