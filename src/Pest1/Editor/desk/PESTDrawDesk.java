@@ -23,7 +23,6 @@ import editor.*;
 import java.applet.*;
 import tesc2.*;
 
-
  /* Hauptzeichenfeld (Voreinstellungen & Definitionen) */
 /**
  * @author Michael Mai / Martin Bestaendig
@@ -102,7 +101,7 @@ import tesc2.*;
 
   }
 
-  public Dimension getPreferredSize() { return new Dimension(width, height); }
+      //  protected Dimension getPreferredSize() { return new Dimension(width, height); }
 
   // pop-up Menueabfrage
  // pop-up Menueabfrage 
@@ -343,7 +342,7 @@ import tesc2.*;
 
    // Ueberwachung der Mausaktivitaeten in Abhaengigkeit der Zeichenfunktionen
 
-public void processMouseMotionEvent(MouseEvent e)
+protected void processMouseMotionEvent(MouseEvent e)
 {Graphics g = getGraphics();
   Absyn aktcomp2;
   
@@ -828,9 +827,9 @@ public static void redo() {
 	//System.out.println("basis : "+basis);
       }
 
-public static Dimension sizer() {return dpanel.getSize();}
+protected static Dimension sizer() {return dpanel.getSize();}
 
-public static void resizer(int fak) {
+protected static void resizer(int fak) {
 	Dimension old = dpanel.getSize();
 	dpanel.setSize(old.width*fak,old.height*(fak+1));
 	dim = dpanel.getSize();
