@@ -18,18 +18,25 @@ public class Example {
             new SEventList (D,
               new SEventList (G,null)))));
 
+
+    
     Path sudp = new Path ("Sud", null);
-    Path p1p  = new Path ("P1", sudp);
-    Path p2p  = new Path ("P2", sudp);
-    Path p3p  = new Path ("P3", sudp);
-    Path q1p  = new Path ("Q1", p3p);
-    Path q2p  = new Path ("Q2", p3p);
-    Path r1p  = new Path ("R1", q2p);
-    Path r2p  = new Path ("R2", q2p);
-    Path s1p  = new Path ("S1", r1p);
-    Path s2p  = new Path ("S2", r1p);
-    Path t1p  = new Path ("T1", r2p);
-    Path t2p  = new Path ("T2", r2p);
+    Path p1p  = sudp.append("P1");
+    Path p2p  = sudp.append("P2");
+    Path p3p  = sudp.append("P3");
+    Path q1p  = p3p.append("Q1");
+    Path q2p  = p3p.append("Q2");
+    Path r1p = q2p.append("R1");
+    Path r2p = q2p.append("R2");
+    Path s1p = r1p.append("S1");
+    Path s2p = r1p.append("S2");
+    Path t1p = r2p.append("T1");
+    Path t2p = r2p.append("T2");
+
+
+
+
+
     PathList pathlist =
     new PathList (sudp,
       new PathList (p1p,
