@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	------------
 //
-//	$Id: report_list,v 1.70 1999-02-23 13:43:49 swtech22 Exp $
+//	$Id: report_list,v 1.71 1999-02-24 13:16:40 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -145,7 +145,7 @@ Check mu auf Keywords nicht prfen, weil wir es so vereinbart haben
 #Number:	8
 #Autor:		Erich Mikk erm
 #Subject:	Zoom wirft Exceptions
-#Status: 	fixed
+#Status: 	confirmed
 #Description: 
 
 Importiere SE-Systems/cd.st.
@@ -173,7 +173,7 @@ java.lang.ClassCastException: absyn.And_State
 #Number:	9
 #Autor:		Erich Mikk erm
 #Subject:	Simulation highlightet nicht
-#Status: 	fixed 
+#Status: 	confirmed 
 #Description: 
 
 Importiere TV/tv.st.
@@ -224,12 +224,12 @@ Man knnte mit der gleichen Methode noch mehr davon starten.
 #Status:	reported
 #Description:
 
-Am 11.2. wieder zurückgesetzt:
+Am 11.2. wieder zur’ckgesetzt:
 Einstellungen->SyntaxCheck
 	es passiert NICHTS
 
 
-Am 9.2. zurückgesetzt. Ich kann nicht erkennen, dass hier sich irgendwas getan hat.
+Am 9.2. zur’ckgesetzt. Ich kann nicht erkennen, dass hier sich irgendwas getan hat.
 [Erich]
 
 //------------------------------------------------------------------------------
@@ -616,7 +616,7 @@ beide Basic States als Default angegeben sind. Syntaxcheck meldet keine Fehler.
 Importiere ~swtech12/Examples/misc/faulty3.tesc2. Ergibt keine Fehler, obwohl
 root als sein eigener default markiert ist. Syntaxcheck meldet keine Fehler.
 
-Zurückgesetzt weil das Beispiel noch immer importierbar ist und keine
+Zur’ckgesetzt weil das Beispiel noch immer importierbar ist und keine
 Fehler gemeldet werden.
 
 Von Seiten des SyntaxChecks gefixed.
@@ -638,8 +638,8 @@ jedoch nicht und verbrt die gesamte Rechenzeit :-( .
 #Status:	confirmed
 #Description:
 
-Am 11.2. zurück:
-z.B. ~swtech12/Examples/ex_undet.pest öffenen und check.
+Am 11.2. zur’ck:
+z.B. ~swtech12/Examples/ex_undet.pest ÷ffenen und check.
 Komischerweise keine Fehler, 
 Wenn man das gleiche in PEST1 versucht, dann werden undetguard's gemeldet.
 
@@ -667,13 +667,13 @@ das Menu fr den Zustand Nondet.
 
 TESC-Import /home/swtech12/Examples/PC/a1.pest2.tesc
 SyntaxCheck meldet interlevel Trs.
-Offenbar liegen dir TrAnchors nicht auf den Lienien der Zustände.
+Offenbar liegen dir TrAnchors nicht auf den Lienien der Zust„nde.
 
 Nachtrag.
 --------
 Ich wollte wissen, ob der IT-Check von check auch richtig funktioniert.
-Sieht nicht so aus: wenn man die Datei, für die check ITs meldet, in
-PEST-Format speichert und in PEST1 lädt, dann werden keine IT-Probleme in
+Sieht nicht so aus: wenn man die Datei, f’r die check ITs meldet, in
+PEST-Format speichert und in PEST1 l„dt, dann werden keine IT-Probleme in
 PEST1 gemeldet.  Vielleicht ist das denn doch ein check-Fehler und kein
 TESC2.
 //------------------------------------------------------------------------------
@@ -688,7 +688,7 @@ Transitionen aktivieren, dann gehen von SAFE zwei Linien ins Nichts
 //------------------------------------------------------------------------------ 
 #Number:	44
 #Autor:		Erich Mikk erm
-#Subject:	Nur eine Simulation pro Session möglich
+#Subject:	Nur eine Simulation pro Session m÷glich
 #Status:	fixed
 #Description:
 
@@ -703,7 +703,7 @@ gestartet werden).
 #Number:	45
 #Autor:		Erich Mikk erm
 #Subject:	Check erkennt Fehler nicht
-#Status:	fixed
+#Status:	confirmed
 #Description:
 
 STM-Import SE-Systems/tamagotc.st
