@@ -1,3 +1,7 @@
+Grammatik von TESC
+$Id: Grammatik,v 1.2 1999-01-11 12:14:22 swtech20 Exp $
+-----------------------------------------------------------------------
+
 TESC              ::= VAR EVENT STATE
   
 VAR               ::= {"var" VARS}
@@ -18,7 +22,7 @@ AND_STATE         ::= "and" IDENTIFIER
                             AND_SUBSTATES 
                       "end" IDENTIFIER
 
-AND_SUBSTATES     ::= OR_STATE {AND_SUBSTATES} | BASIC_STATE {AND_SUBSTATES
+AND_SUBSTATES     ::= OR_STATE {AND_SUBSTATES} | BASIC_STATE {AND_SUBSTATES}
 
 OR_STATE          ::= "or " IDENTIFIER
                             OR_SUBSTATES CONNECTORS TRANSITIONS DEFAULTCON
@@ -56,11 +60,13 @@ GUARDOR           ::= GUARDAND GUARDOR_REST
 
 GUARDOR_REST      ::= {"|" GUARDAND GUARDOR_REST}
 
-GUARDAND          ::= GUARDID GUARDAND_REST
+GUARDAND          ::= GUARDNOT GUARDAND_REST
 
-GUARDAND_REST     ::= {"&" GUARDID GUARDAND_REST}
+GUARDAND_REST     ::= {"&" GUARDNOT GUARDAND_REST}
 
-GUARDID           ::= IDENTIFIER | "!" GUARD | COMPPATH | "(" GUARD ")"
+GUARDNOT          ::= {"!"} GUARDID
+
+GUARDID           ::= IDENTIFIER | COMPPATH | "(" GUARD ")"
 
 COMPPATH          ::= (IN | ENTERED | EXITED) "(" PATH ")"
 
@@ -73,3 +79,6 @@ BOOLSTMT          ::= IDENTIFIER "=" (true | false | GUARD)
 ACTIONLIST        ::= (IDENTIFIER | BOOLSTMT) {"," ACTIONLIST}
 
 IDENTIFIER        ::= <Zeichen-/Ziffernkette>
+
+-----------------------------------------------------------------------
+$Log: not supported by cvs2svn $

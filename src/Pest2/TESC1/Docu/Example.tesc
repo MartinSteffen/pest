@@ -1,8 +1,8 @@
 // Beispiel aus dem Pflichtenheft
 //
-// $Id: example.tesc,v 1.2 1999-01-04 15:26:26 swtech20 Exp $
+// $Id: Example.tesc,v 1.1 1999-01-11 12:14:21 swtech20 Exp $
 
-  event (A,B,C,D,G)
+  event (A,B,C,D,G) 
 
   or SUD
       basic P1
@@ -39,6 +39,10 @@
 //	------------------------------
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.2  1999/01/04 15:26:26  swtech20
+//	Schluesselworte in Bezeichnern werden nicht mehr zugelassen.
+//	Status upgedated.
+//
 //	Revision 1.1  1999/01/03 21:49:32  swtech20
 //	Doku und Testdaten
-//
+
