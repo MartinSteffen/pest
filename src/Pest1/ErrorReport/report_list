@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.7 1999-01-13 17:31:01 swtech11 Exp $
+//	$Id: report_list,v 1.8 1999-01-15 14:02:11 swtech21 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -130,3 +130,54 @@ Man sieht es, wenn man z.B. ~swtech12/Examples/TV/tv.st über
 Datei->Import->Statemate lädt.
 
 //------------------------------------------------------------------------------
+#Number:	8
+#Autor:		Heiko Haller swtech21
+#Subject:	PEST1: Transitionen-Label machen Zoom nicht mit
+#Status:	reported
+#Description:
+
+Wenn ich eine Transition zwischen zwei States mit einem Label versehe
+und dann Zoom ausfuehre, wird das Label nicht mehr an die Transition
+geschrieben. Die Label von States hingegen werden korrekt gezoomt.
+
+//------------------------------------------------------------------------------
+
+#Number:	9
+#Autor:		Stefan Lemke swtech21
+#Subject:	PEST1: Benennung von States im Zoom-Modus
+#Status:	reported
+#Description:
+
+In eine Chart hineingezoomt.
+Einen kleinen Zustand auf dritter Ebene erstellt. Er konnte nicht benannt 
+werden, das Umbennen-Fenster wurde nicht geoeffnet.
+//------------------------------------------------------------------------------
+#Number:	10
+#Autor:		Stefan Lemke swtech21
+#Subject:	PEST1: Bildgroesse im Zoom-Modus
+#Status:	reported
+#Description:
+
+In eine Chart gezommt.
+Die rechte untere Ecke des Charts ist nicht mit den Slidern erreichbar.
+
+
+//------------------------------------------------------------------------------
+#Number:	11
+#Autor:		Stefan Lemke swtech21
+#Subject:	PEST1: Loeschen von States
+#Status:	reported
+#Description:
+
+State erstellt. Das Loeschen ist nicht moeglich. Auswahl der Funktion aus dem
+Kontextmenue hat keine Wirkung.
+
+//------------------------------------------------------------------------------
+#Number:	12
+#Autor:		Stefan Lemke swtech21
+#Subject:	Benennung von kleinen States
+#Status:	reported
+#Description:
+
+3x in eine Statechart gezoomt. State (Groesse auf Bildschirm ca. 1 cm x 3 cm)
+ist nicht benennbar, groessere States jedoch schon.
