@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.58 1999-02-04 17:22:48 swtech00 Exp $
+//	$Id: report_list,v 1.59 1999-02-04 17:56:38 swtech15 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -22,7 +22,7 @@
 #Number: 	1
 #Autor:   	Erich Mikk erm
 #Subject:	Wiederholtes Starten des Editors nicht möglich
-#Status: 	reported 
+#Status: 	fixed 
 #Description: 
 
 Die Hauptinstanz (gui) erkennt es offenbar nicht, wenn der Editor
@@ -49,7 +49,7 @@ werden!). obwohl der Editor geschlossen worden ist.
 #Number: 	2
 #Autor:   	Erich Mikk erm
 #Subject:	Hauptinstanz versucht Statechart zu laden
-#Status: 	reported 
+#Status: 	fixed 
 #Description: 
 
 (0) Man führe die Sequenz aus Number 1 aus. 
@@ -220,7 +220,7 @@ Das schliessen des Simulators fuehrt zu einer Null-pointer exception.
 #Number:	16
 #Autor:		Marcel Kyas, Walter Loeser, Andre Paetzold swtech25
 #Subject:	Kein Pfad fuer CodeGen.
-#Status:	reported
+#Status:	fixed
 #Description:
 
 Man kann fuer die Code Erzeugung keinen Pfad angeben.  Der Pfad "."
@@ -415,7 +415,7 @@ Wenn man Transitionen oder States labeln will, wird das Labelfenster mit einer d
 #Number:	28
 #Autor:		Heiko Haller, Stefan Lemke, swtech21
 #Subject:	Grafisches Menue laesst SyntaxCheck nicht zu
-#Status: 	reported
+#Status: 	fixed
 #Description: 
 
 TESC importiert.
@@ -606,19 +606,19 @@ Ebene geloescht
 #Number:        40
 #Autor:         stm swtech18
 #Subject:       GUI: Nach Import und weiterem Import (diesmal mit Fehler) ist alte Chart noch da. 
-#Status:        reported
+#Status:        fixed (ist so gedacht)
 #Description:
 //------------------------------------------------------------------------------
 #Number:        41
 #Autor:         Bernd Weber bwe
 #Subject:       GUI: Nach Speichern wird Dateiname in Titelleiste nicht aktualisiert
-#Status:        reported
+#Status:        processing
 #Description:
 //------------------------------------------------------------------------------
 #Number:        42
 #Autor:         Bernd Weber bwe
 #Subject:       GUI: Speichern über graf. Menu wird nicht erkannt
-#Status:        reported
+#Status:        processing
 #Description:
 
 Speichert man über die graf. Benutzerführung, meldet GUI beim Versuch,

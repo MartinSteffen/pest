@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	------------------
 //
-//	$Id: report_list,v 1.29 1999-02-04 11:48:53 swtech23 Exp $
+//	$Id: report_list,v 1.30 1999-02-04 17:59:10 swtech15 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -197,7 +197,7 @@ Default states nicht erkennbar.
 #Number:	11
 #Autor:		Erich Mikk
 #Subject:	Man kann mehrere Simulationen starten
-#Status:	reported
+#Status:	processing
 #Description:
 
 Lade Chart (egal wie).
@@ -208,7 +208,7 @@ Starte noch eine Simulation (z.B. auf der Chart der gr. Benutzerführung).
 #Number:	12
 #Autor:		Erich Mikk
 #Subject:	Man kann mehrere Editore starten
-#Status:	reported
+#Status:	processing
 #Description:
 
 Man bereite sich eine Chart vor und speichere es (Datei->Speichern)
@@ -221,7 +221,7 @@ Man könnte mit der gleichen Methode noch mehr davon starten.
 #Number:	13
 #Autor:		Erich Mikk
 #Subject:	Einstellungsmöglichkeiten nicht vorhanden
-#Status:	reported
+#Status:	processing
 #Description:
 
 Einstellungen->TESC1 sagt
@@ -232,7 +232,7 @@ Einstellungen->SyntaxCheck
 #Number:	14
 #Autor:		Mario Thies swtech23
 #Subject:	Inkonsistenzen GUI
-#Status:	reported
+#Status:	processing
 #Description:
 
 Das Fenster "Statechart wurde geaendert, troztdem fortfahren" scheint nicht, wenn 
@@ -263,7 +263,7 @@ Workaround: Erst Default Connectoren entfernen, dann umbenennen.
 #Number:	17
 #Autor:		Bernd Weber bwe
 #Subject:	GUI/Editor: GUI bekommt Aenderungen in Chart nicht mit.
-#Status:	reported
+#Status:	reported (kein GUI-problem, siehe 2.mal #25 )
 #Description:
 
 Pest starten, neue Chart erzeugen, Editor starten und neuen Zustand hinzufügen.
