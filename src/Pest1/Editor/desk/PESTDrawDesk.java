@@ -12,7 +12,8 @@ package editor.desk;
 
 import java.awt.*;               
 import java.awt.datatransfer.*;  
-import java.awt.event.*;         
+import java.awt.event.*;
+import java.awt.Graphics.*;         
 import java.io.*;                
 import java.util.zip.*;          
 import java.util.Vector;        
@@ -28,12 +29,11 @@ import editor.*;
       protected Color current_color = Color.black;   	        // aktueller Farbe
       protected int width, height;                   		// Groessenvariablen
       protected PopupMenu popup;                     		// pop-up Menue
-      protected Panel panel;                        		// Menuefenster
+      protected static Panel xpanel;                        		// Menuefenster
 
       static Storelist anf;
       static Storelist lauf;
       static Storelist basis;
-
       
      Statechart root= new Statechart(null,null,null,null);
 
@@ -43,7 +43,7 @@ import editor.*;
            new newStorelist();
 	  root = nroot;
 
-    this.panel = panel;
+    this.xpanel = panel;
     this.width = width;
     this.height = height;
 
@@ -65,6 +65,10 @@ import editor.*;
     }
     // Registrierung von pop-up
     this.add(popup);
+this.show();
+
+
+
   }
 
   public Dimension getPreferredSize() { return new Dimension(width, height); }
@@ -77,11 +81,12 @@ import editor.*;
     else if (command.equals("restore")) root = redo();
     else if (command.equals("load")) ;
     
-  } 
+  }
+ 
 
   // Grafik herstellen
-  public void paint(Graphics g) {
-   
+      public void paint(Graphics g) { new highlightObject(g);   new highlightObject();
+     
   }
 
 
@@ -112,11 +117,22 @@ import editor.*;
 		    last_x = (short) e.getX(); last_y = (short) e.getY(); 	// Save position.
 		}
 
-	    if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.editor() =="Draw_State"))
+	    if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Draw_State"))
 		{ 
 		    new drawPESTState(g,root,last_x,last_y,e.getX(),e.getY(),Color.blue);
 		    Editor.SetListen();
 		}
+	if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Draw_Par"))
+		{ 
+		    new drawPESTParallel(g,root,last_x,last_y,e.getX(),e.getY(),Color.blue);
+		    Editor.SetListen();
+		}
+	if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Select"))
+		{ 
+		    System.out.println(PESTdrawutil.getState(root,last_x,last_y).akt);
+		}
+
+
 	}
   }
  
@@ -187,6 +203,14 @@ import editor.*;
 	 
       }
 
+
+      private class  newdraw
+         {
+	newdraw() { repaint();}
+        }
+  
+ 
+public PESTDrawDesk() {repaint();}
 
 } // PESTDrawDesk
 

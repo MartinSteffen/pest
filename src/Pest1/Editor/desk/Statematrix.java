@@ -22,8 +22,12 @@ import absyn.*;
 public class Statematrix {
 	public State akt;
 	public State prev;
-public Statematrix(State x, State y) {
-	akt = x;
-	prev = y;
+	public int x;
+	public int y; 
+public Statematrix(State sx, State sy,int ax , int ay) {
+	akt = sx;
+	prev = sy;
+	x = ax;
+	y = ay;
 	}
 }
