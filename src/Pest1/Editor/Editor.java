@@ -407,7 +407,7 @@ public static String Stringeingabe(String a, String b, String c,Absyn type)
 	if (type instanceof Tr)
 	{
 	tempstring = c;
-	if (tempstring.compareTo("Default")==0) {tempname = "";} else {tempname = c;}
+	if (tempstring.compareTo("")==0) {tempname = "";} else {tempname = c;}
 	}
 
 	tempstring = gui.EingabeDialog(a,b,tempname);
@@ -418,6 +418,7 @@ public static String labelObject (Absyn obj)
     {
 	String name,ausgabe = "",ausgabe2 = "";
 	State stateobj;
+	Tr transobj;
 	
 	if (obj instanceof State)
 	    {
@@ -431,7 +432,8 @@ public static String labelObject (Absyn obj)
 	    }
 	if (obj instanceof Tr)
 	   {
-		name = "Default";
+		transobj = (Tr) obj;
+		name = transobj.label.caption;
 		ausgabe2 = Stringeingabe("Transition umbenennen","Neuer Name fuer die gewaehlten Transition :",name,obj);
 	   }
 	return ausgabe2;
@@ -439,8 +441,3 @@ public static String labelObject (Absyn obj)
 
 }
 // Editor 
-
-
-
-
-
