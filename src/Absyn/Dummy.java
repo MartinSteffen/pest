@@ -6,9 +6,9 @@ import java.io.Serializable;
 /**
  * Dummy.
  * @author Initially provided by Martin Steffen.
- * @version $Id: Dummy.java,v 1.7 1998-12-15 07:11:08 swtech01 Exp $
+ * @version $Id: Dummy.java,v 1.8 1998-12-15 08:01:23 swtech00 Exp $
  */
-public class Dummy extends Absyn implements Serializable {
+public class Dummy extends Absyn implements Serializable, Cloneable {
 /**
  * Constructor.
  */
@@ -30,9 +30,12 @@ public class Dummy extends Absyn implements Serializable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Dummy.java,v 1.7 1998-12-15 07:11:08 swtech01 Exp $
+//	$Id: Dummy.java,v 1.8 1998-12-15 08:01:23 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.7  1998/12/15 07:11:08  swtech01
+//	Added Serialization to all classes
+//
 //	Revision 1.6  1998/12/13 17:45:32  swtech20
 //	extends Absyn
 //
