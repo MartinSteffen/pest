@@ -1,11 +1,15 @@
 /**
- * AlgorithmException.java
+ * Diese Exception wurde von uns am Anfang der Entwicklung in unser
+ * Interface aufgenommen. Sp&auml;ter stellte sich heraus, da&szlig;
+ * wir diese Exception nicht ben&ouml;tigen. 
+ * Um die Konsistenz zur anderen tesc2-Gruppe aber zu behalten,
+ * lie&szlig;en wir die Exception drin.
  *
  *
  * Created: Tue Dec  8 11:20:46 1998
  *
  * @author Software Technologie 19
- * @version
+ * @version 1.0
  */
 
 package tesc2;

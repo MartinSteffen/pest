@@ -67,9 +67,7 @@ import absyn.*;
  * STATUS
  * </strong>
  *
- * Layout wird nicht wie oben beschrieben durchgef&uuml;hrt. 
- * Die Minimierung der Kanten&uuml;berschneidungen funktioniert noch nicht
- * und ist deswegen deaktiviert.
+ * Layout wird wie oben beschrieben durchgef&uuml;hrt. 
  * <br>
  * Im Verzeichnis
  * tesc2/Test findet sich ein Programm TestFrame, das in diesem
@@ -80,23 +78,24 @@ import absyn.*;
  * <dt><strong>
  * TODO 
  * </strong>
- * Verbesserung der optischen Erscheinung.
+ * Wir haben fertig!
  *
  * <dt><strong>
  * BEKANNTE FEHLER
  * </strong>
- * Das Erscheinungsbild ist noch nicht ,,optimal''
+ * keine
  *
  * <dt><strong>
  * TEMPOR&Auml;RE FEATURES
  * </strong>
+ * keine
  * 
  * </dl compact>
  *
  * Created: Fri Nov 27 11:26:25 1998
  *
  * @author Software Technologie 19, Klaus H&ouml;ppner, Achim Abeling
- * @version $Id: GraphOptimizer.java,v 1.11 1999-01-27 14:01:13 swtech19 Exp $
+ * @version $Id: GraphOptimizer.java,v 1.12 1999-02-10 10:00:46 swtech19 Exp $
  *
  */
 
