@@ -35,7 +35,7 @@ import java.awt.*;
  * keine
  * </DL COMPACT>
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: Crossreference.java,v 1.7 1999-01-21 13:02:41 swtech11 Exp $
+ * @version  $Id: Crossreference.java,v 1.8 1999-01-21 16:31:13 swtech11 Exp $
  */
 public class Crossreference extends ModelCheckBasics {
   private GUIInterface gui = null; // Referenz auf die GUI
@@ -51,13 +51,14 @@ public class Crossreference extends ModelCheckBasics {
   }
 
 
-  public void report(Statechart sc) {
-
+  public void report(Statechart _sc) {
+    sc=_sc;
     // Eingabe
     such = gui.EingabeDialog("Crossreference","Zu suchendes Element eingeben;",such);
+    if (such!=null) {
     System.out.println(such);
     
-    report_b_e();
+    report_list();
 
     // Start der Auswertung
     if (sc.state instanceof Or_State) {navOrState ((Or_State)sc.state, null,""); }
@@ -71,26 +72,31 @@ public class Crossreference extends ModelCheckBasics {
       for (int i=0; i<items.size(); i++) {
         ReportItem rp = (ReportItem)items.elementAt(i);
         gui.userMessage("Check:   - "+rp.Pth);
+        if (rp.HiObj!=null) {
         ho = new highlightObject((Absyn)rp.HiObj,Color.black); // Object highlighten
-      }
+	};}
       ho = new highlightObject(); // Highlighten aktivieren
     }
     else {
       gui.userMessage("Check: "+such+" wurde nicht gefunden.");
     }
-  }
+    };};
 
-    void report_b_e(){
-      for(SEventList e=sc.events; e!=null;e=e.tail){
+    void report_list(){
+
+      for(SEventList e=sc.events; e!=null; e=e.tail){
 	  if (e.head.name.equals(such)) {itemInput(e.head,null,"Def.Liste Events");};
       }
 
-  for(BVarList b=sc.bvars; b!=null;b=b.tail){
-	  if (b.head.var.equals(such)) {itemInput(b.head,null,"Def.Liste BVars");};
-      
+      for(BvarList b=sc.bvars; b!=null;b=b.tail){
+	  if (b.head.var.equals(such)) {itemInput(b.head,null,"Def.Liste BVars");};}
+          
+      for(PathList p=sc.cnames; p!=null;p=p.tail){
+	  if (PathtoString(p.head).equals(such)) {itemInput(p.head,null,"Pfadliste States");};
+  
 
 
-  };}
+      };}
 
 
 
@@ -122,6 +128,7 @@ public class Crossreference extends ModelCheckBasics {
     String z2 = new String();
     
     // Ueberpruefe Guards und Actions
+    //pruefeString(tl.head.label, tl.head, p); //ueberprueft den Caption auf infixStrings
     pruefeGuard(tl.head.label.guard, tl.head, p);
     pruefeAction(tl.head.label.action, tl.head, p);
 
@@ -174,7 +181,7 @@ public class Crossreference extends ModelCheckBasics {
 		   
 		       if (g instanceof GuardCompp) {pruefePath  (((GuardCompp)g).cpath.path, t, p);}
 		       else{
-			   if (g instanceof GuardUndet) {};
+			   if (g instanceof GuardUndet) {pruefeString(g, t, p);};
 			   
 		       };};};};};};
 
@@ -196,8 +203,6 @@ public class Crossreference extends ModelCheckBasics {
 
       if ((b.var.equals(such)) && (i==1)) {itemInput(b,t,"BVar im Guard",t,p);}
       if ((b.var.equals(such)) && (i==2)) {itemInput(b,t,"BVar im Action",t,p);}
-
- 
   };
 
   void pruefeBool(Boolstmt b, Tr t, String p) {
@@ -220,6 +225,30 @@ public class Crossreference extends ModelCheckBasics {
       for (;p.tail!=null;p=p.tail){}; if (such.equals(p.head)) {itemInput(p,t,"State im Guard",t,s);}
      
   };
+
+  void pruefeString(Absyn a, Tr t, String p){
+
+      if ((a instanceof TLabel) && (equalinString(((TLabel)a).caption, such))) {itemInput(a,t,"Infixtext in Caption",t,p);}
+      if ((a instanceof GuardUndet) && (equalinString(((GuardUndet)a).undet, such))) {itemInput(a,t,"Infixtext im GuardUndet",t,p);}
+     
+  };
+
+    boolean equalinString(String a, String in) {
+    boolean b =false;
+    int al=a.length();
+    int il=in.length();
+    String m="";
+
+
+   if ((il<=al) && (al>0) && (il>0)) {
+	for (int j=0; ((j<=(al-il)) && (!b));j++) {
+	    m=a.substring(j,il+j);
+
+	    if (m.equals(in)) {b=true;};
+    };};
+
+    return b;
+    }
 
   // Eingabe eines Report Ergebnises
   void itemInput(int a, Object ho, String p) {
