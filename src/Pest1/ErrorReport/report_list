@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.24 1999-01-25 10:04:35 swtech00 Exp $
+//	$Id: report_list,v 1.25 1999-01-25 10:13:07 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -286,4 +286,22 @@ Importiere z.B. TV/tv.st und starte Editor.
 Der Editor zeigt keine tr-Labels an.
 Das liegt wahrscheinlich daran, dass STM-Import sie nicht vorfindet 
 und auch selbst nicht erzeugt.
+//------------------------------------------------------------------------------
+
+#Number:	21
+#Autor:		Erich Mikk
+#Subject:	Code für TV/tv.st ist nicht kompilierbar
+#Status:	reported
+#Description:
+
+Importiere TV/tv.st.
+Generiere Code (Werkzeuge-> Codegenerator).
+In der Direktory, wo pest gestartet wurde, befindet sich jetzt Automaton.java.
+Beim kompilieren bekommt man folgenden Fehler:
+
+goofy{swtech00} javac Automaton.java
+Automaton.java:12: ')' expected.
+        if ( pre_events[EVENT_$$stop$$] {
+                                       ^
+1 error
 //------------------------------------------------------------------------------
