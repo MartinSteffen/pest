@@ -1,22 +1,36 @@
 /**
  * Container for Options to codegen.
  * @author Marcel Kyas, Walter Loeser, Andre Paetzold.
- * @version $Id: CodeGenOpt.java,v 1.1 1999-01-25 15:10:16 swtech25 Exp $
+ * @version $Id: CodeGenOpt.java,v 1.2 1999-02-03 20:03:22 swtech25 Exp $
  */
 package codegen;
 
 public class CodeGenOpt {
 	/**
-	 * Flavor for nondeterminism.
+	 * Take the first Transition enabled.
 	 */
 	public final static int takeFirst = 0;
+
+	/**
+	 * Try to cycle through enabled transitions.
+	 */
 	public final static int roundRobin = 1;
+
+	/**
+	 * Choose an enabled transition randomly.
+	 */
 	public final static int random = 2;
 
 	/**
-	 * Flavor for environment.
+	 * Do not generate code for an environment.
 	 */
 	public final static int none = 0;
+
+	/**
+	 * Generate the code for a simple environment.
+	 * This is an environment without user interaction.  It will
+	 * treat the statechart as a closed system.
+	 */
 	public final static int simple = 1;
 
 	/**

@@ -14,7 +14,7 @@ import java.util.*;
  * an interface to the original textual representations of
  * states, events and conditions.
  *
- * @version $Id: dumpTables.java,v 1.12 1999-01-29 19:49:02 swtech25 Exp $
+ * @version $Id: dumpTables.java,v 1.13 1999-02-03 20:03:23 swtech25 Exp $
  * @author Marcel Kyas
  */
 public class dumpTables
@@ -176,7 +176,8 @@ public class dumpTables
 	 */
 	public static String generateSymEvent(SEvent e)
 	{
-		return "EVENT_" + e.name;
+		String s = new String("EVENT_" + e.name);
+		return s.replace('.', '$');
 	}
 
 
@@ -186,7 +187,8 @@ public class dumpTables
 	 */
 	public static String generateSymBVar(Bvar b)
 	{
-		return "BVAR_" + b.var;
+		String s = new String("BVAR_" + b.var);
+		return s.replace('.', '$');
 	}
 
 
@@ -463,10 +465,15 @@ public class dumpTables
 
 	/**
 	 * Generate the symbolic state name as a String.
+	 * This is a crude hack.  It will convert all dots
+	 * '.' to '$' in order to make tokens out of it.
+	 * We need to check, if there is a chance of name
+	 * clashes.
 	 */
 	public static String generateSymState(Path path)
 	{
-		return generateName(path, "_");
+		String s = generateName(path, "_$_");
+		return s.replace('.', '$');
 	}
 
 
