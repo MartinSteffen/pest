@@ -22,8 +22,26 @@ import util.PrettyPrint;
  *    st = imp.getStatechart();
  * </pre>
  *
+ * <DL COMPACT>
+ * <DT><STRONG>
+ * STATUS.
+ * </STRONG>
+ * Import funktioniert (HA-Format wird eingelesen und ein
+ * StateChart in PEST-Syntax zur&uuml;ckgeliefert).
+ * <DT><STRONG>TODO.</STRONG>
+ * Nur f&uuml;r Transitionen m&uuml;ssen
+ * die Locations dahingehend ge&auml;ndert werden, da&szlig;
+ * doppelte Punkte (ehemalige Statemate-Konnektoren) entfernt
+ * werden. Exceptions m&uuml;ssen noch in Form von Warnungen
+ * und Fehlermeldungen an GUI weitergeleitet werden.
+ * <DT><STRONG>
+ * BEKANNTE FEHLER.
+ * </STRONG>
+ * Keine.
+ * </DL COMPACT>
+ *
  * @author  Sven Jorga, Werner Lehmann
- * @version $Id: HAImport.java,v 1.4 1998-12-16 20:29:54 swtech18 Exp $
+ * @version $Id: HAImport.java,v 1.5 1999-01-04 14:15:14 swtech18 Exp $
  */
 public class HAImport implements Patterns {
   Perl5Util perl = new Perl5Util();
