@@ -801,6 +801,9 @@ private static Statechart redo() {
 
       public static void addundo(Statechart nroot)
       {        Statechart root = nroot;
+      if (lauf == null) {new newStorelist();}
+      System.out.println("lauf.next :"+lauf);
+      System.out.println("basis.next :"+basis.next);
         lauf = lauf.next;
 	try {lauf.chart = (Statechart) root.clone();}
 	catch (Exception e) {System.out.println("Waere die Absyn korrekt, so funktionierte auch das Undo !!!!  Stack :"+e);}
