@@ -4,7 +4,7 @@
  * Created: Thu Dec 31 1998, 21:50:30
  *
  * @author Developed by Eike Schulz for swtech14.
- * @version $Id: AbsToRelCalculator.java,v 1.1 1999-01-08 23:06:34 swtech14 Exp $
+ * @version $Id: AbsToRelCalculator.java,v 1.2 1999-02-12 16:25:19 swtech14 Exp $
  *
  *
  * Diese Klasse rechnet die Absolutkoordinaten eines SYNTAKTISCH KORREKTEN,
@@ -86,10 +86,10 @@ class AbsToRelCalculator {
 	cL = cL.tail;
       }
 
+      s.name.position.x -= s.rect.x;
+      s.name.position.y -= s.rect.y;
       s.rect.x -= sur_x;
       s.rect.y -= sur_y;
-      s.name.position.x -= sur_x;
-      s.name.position.y -= sur_y;
     }
   } // method calculate_state
 
