@@ -4,8 +4,15 @@ import java.io.Serializable;
 
 import java.awt.Point;
 
+
+
+/**
+ *Tr.
+ * @author Initially provided by Martin Steffen.
+ * @version $Id: Tr.java,v 1.8 1998-12-15 11:07:01 swtech00 Exp $
+ */
 public class Tr  implements Serializable, Cloneable {   // Transition
-    public Point[]  points;
+    public CPoint[]  points;
     public TrAnchor source;
     public TrAnchor target;
     public TLabel    label;
@@ -15,7 +22,7 @@ public class Tr  implements Serializable, Cloneable {   // Transition
 	target = t;
 	label  = l;
     };
-    public Tr (TrAnchor s, TrAnchor t, TLabel l, Point[] p) {
+    public Tr (TrAnchor s, TrAnchor t, TLabel l, CPoint[] p) {
 	points = p;
 	source = s;
 	target = t;
@@ -23,11 +30,13 @@ public class Tr  implements Serializable, Cloneable {   // Transition
     };
 
     public Object clone () throws CloneNotSupportedException {
+	CPoint [] pointsclone;
+	if (points != null) {pointsclone = (CPoint [])points.clone();} else {pointsclone =null;};
 	return new Tr(
 		      (TrAnchor)source.clone(),
 		      (TrAnchor)target.clone(),
 		      (TLabel)label.clone(),
-		      points
+		      pointsclone
 		      );
     };
 };
@@ -42,9 +51,12 @@ public class Tr  implements Serializable, Cloneable {   // Transition
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Tr.java,v 1.7 1998-12-15 07:11:11 swtech01 Exp $
+//	$Id: Tr.java,v 1.8 1998-12-15 11:07:01 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.7  1998/12/15 07:11:11  swtech01
+//	Added Serialization to all classes
+//
 //	Revision 1.6  1998/12/11 17:43:02  swtech00
 //	Cloneable
 //
