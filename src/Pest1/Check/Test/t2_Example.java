@@ -1,8 +1,9 @@
+
 import absyn.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: t2_Example.java,v 1.7 1998-12-29 14:25:33 swtech11 Exp $
+ *  @version  $Id: t2_Example.java,v 1.8 1998-12-29 15:01:37 swtech11 Exp $
  */
 public class t2_Example {
   
@@ -237,7 +238,21 @@ public static Statechart getExample_m() {
   }
 
   public static Statechart getExample_d2() {
-    
+
+ Bvar a3 = new Bvar ("A");
+ Bvar a4 = new Bvar ("C");
+ Bvar a5 = new Bvar ("B");
+ Bvar a6 = new Bvar ("D");
+ Bvar a7 = new Bvar ("F");
+   
+ /*BvarList blist=new BvarList(a3,null);
+   blist=new BvarList(a4,blist);*/
+
+     BvarList blist =
+      new BvarList (a3,
+ new BvarList (a4,
+ new BvarList (a6,
+ new BvarList (a5,null))));    
     SEvent A = new SEvent ("A");
     SEvent B = new SEvent ("B");
     SEvent C = new SEvent ("C");
@@ -286,7 +301,7 @@ public static Statechart getExample_m() {
   Basic_State T1 = new Basic_State (new Statename("T1"));
   Basic_State T2 = new Basic_State (new Statename("T2"));
 
-  Tr tr1 = new Tr (new Statename ("S1"), 
+  Tr tr1 = new Tr (null, 
 		   new Statename ("S2"),
 		   new TLabel (new GuardEvent(new SEvent("C")),new ActionEmpty(new Dummy())));
 
@@ -309,14 +324,14 @@ public static Statechart getExample_m() {
 			      new StateList (T1,new StateList (T2,null)),
 			      new TrList  (new Tr (new Statename ("T1"), 
 						   new Statename ("T2"),
-						   new TLabel (new GuardEvent(new SEvent("D")),new ActionEmpty(new Dummy()))),
+						   new TLabel (new GuardUndet("s"), new ActionEmpty(new Dummy()))),
 					   new TrList (new Tr (new Statename ("T2"), 
 							       new Statename ("T1"),
-							       new TLabel (new GuardEvent(new SEvent("G")),new ActionEmpty(new Dummy()))),null)),
+							       new TLabel (null , null)),null)),
 			      new StatenameList (new Statename("T1"), null),	
 			      null);
   
-  Basic_State Q1 = new Basic_State (new Statename(""));
+  Basic_State Q1 = new Basic_State (new Statename("Q1"));
     
   And_State Q2 = new And_State (
 				new Statename ("Q2"),
@@ -354,7 +369,7 @@ public static Statechart getExample_m() {
 			       null);  
   
   return new Statechart (statelist,
-			 null,
+			 blist,
 			 pathlist,
 			 SUD);
   }

@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestBVars.java,v 1.3 1998-12-29 14:25:49 swtech11 Exp $
+ *  @version  $Id: TestBVars.java,v 1.4 1998-12-29 15:01:48 swtech11 Exp $
  */
 
 /** Diese Testklasse testet, ob alle BVars deklariert worden sind, 
@@ -77,9 +77,9 @@ class TestBVars extends ModelCheckBasics{
              (g instanceof GuardCompp)) {}
             else {
             if (g instanceof GuardUndet) {msg.addWarning(416,"Trans: "+
-                ((Statename)t.source).name+" -> "+((Statename)t.target).name+" in State: "+p);}
+                ((Statename)t.source).name+" -> "+((Statename)t.target).name+" in State: "+p); }
               else {msg.addError(417,"Trans: "+
-                ((Statename)t.source).name+" -> "+((Statename)t.target).name+" in State: "+p);};
+                ((Statename)t.source).name+" -> "+((Statename)t.target).name+" in State: "+p); };
     };};};};};
 
     /** Ueberprueft, ob ein BVar, der in einem Guard oder einem Action verwendet wird, 
