@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	--------------
 //
-//	$Id: report_list,v 1.36 1999-02-07 14:29:40 swtech15 Exp $
+//	$Id: report_list,v 1.37 1999-02-08 11:49:51 swtech01 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -568,7 +568,7 @@ Schritten in der Simulation gibt's eine Exception:
 #Number:	36
 #Autor:		Bernd Weber bwe
 #Subject:	Tesc: Fehlender Default State wird nicht erkannt
-#Status:	fixed
+#Status:	confirmed
 #Description:
 
 Importiere ~swtech12/Examples/misc/faulty1.tesc2. Ergibt keine Fehler, obwohl
@@ -577,7 +577,7 @@ kein Default State markiert ist. Syntaxcheck meldet keine Fehler.
 #Number:	37
 #Autor:		Bernd Weber bwe
 #Subject:	Tesc: Zu viele Default States werden nicht erkannt
-#Status:	fixed
+#Status:	confirmed
 #Description:
 
 Importiere ~swtech12/Examples/misc/faulty2.tesc2. Ergibt keine Fehler, obwohl
@@ -585,7 +585,7 @@ beide Basic States als Default angegeben sind. Syntaxcheck meldet keine Fehler.
 //------------------------------------------------------------------------------
 #Number:	38
 #Autor:		Bernd Weber bwe
-#Subject:	Tesc: Zu viele Default States werden nicht erkannt
+#Subject:	Tesc: Falscher Default States wird nicht erkannt
 #Status:	fixed
 #Description:
 
@@ -595,7 +595,7 @@ root als sein eigener default markiert ist. Syntaxcheck meldet keine Fehler.
 #Number:	39
 #Autor:		Bernd Weber bwe
 #Subject:	Check: Terminiert nicht !!!
-#Status:	fixed
+#Status:	confirmed
 #Description:
 
 Importiere ~swtech12/Examples/misc/bvar-test1.tesc2. Chart wird im Editor
@@ -624,3 +624,4 @@ Man importiere ~swtech12/Examples/misc/nondet-test1.tesc2. Dann
 versuche man, den Zustand Init umzubenennen. Bei mir erscheint immer
 das Menu fr den Zustand Nondet.
 //------------------------------------------------------------------------------
+
