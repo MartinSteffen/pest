@@ -5,6 +5,8 @@
  */
 package CodeGen;
 
+import Absyn.*;
+
 /**
  *
  * This class provides a simple interface to other parts
@@ -19,9 +21,9 @@ package CodeGen;
  * If an error occures, we will throw a CodeGenException.
  *
  * @author Marcel Kyas, Walter Loeser, Andre Paetzold.
- * @version $Id: CodeGen.java,v 1.1 1998-11-30 17:46:50 swtech25 Exp $
+ * @version $Id: CodeGen.java,v 1.2 1998-12-07 12:12:15 swtech25 Exp $
  */
-public class CodeGen throws CodeGenException
+public class CodeGen
 {
 	/**
 	 * This is our reserved event keyword.  If it occures,
@@ -38,7 +40,7 @@ public class CodeGen throws CodeGenException
 	 * This method will cause the CodeGenerator to do
 	 * its work.  If will return after successful completion.
 	 */
-	public CodeGenerator(String path, Statechart statechart)
+	public CodeGen(String path, Statechart statechart)
 	{
 		Generate(path, statechart);
 	}
@@ -48,7 +50,7 @@ public class CodeGen throws CodeGenException
          * its work.  If will return after successful completion.
 	 * This will activate some options. 
          */
-        public CodeGenerator(String path, Statechart statechart, int options)
+        public CodeGen(String path, Statechart statechart, int options)
         {
                 Generate(path, statechart);
         }
