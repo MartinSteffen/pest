@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	------------------
 //
-//	$Id: report_list,v 1.9 1999-01-20 17:41:30 swtech20 Exp $
+//	$Id: report_list,v 1.10 1999-01-21 15:48:30 swtech23 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -39,7 +39,7 @@ Probleme gibt es dann spaeter beim Export/Import mit TESC.
 #Number:  	2
 #Autor:		Michael Suelzer swtech20
 #Subject:	Checker erkennt eingetragene Zustaende nicht
-#Status:	processing
+#Status:	fixed
 Description:
 Wenn man Import->TESC->tesc1/Test/simple.tesc und anschliežend
 den Syntax-Checker ausfuehrt, erhaelt man den Fehler:
@@ -74,7 +74,7 @@ java.lang.NullPointerException
 #Number:	3
 #Autor:		Mario Thies swtech23
 #Subject:	Statechart automatisch speichern
-#Status: 	reported 
+#Status: 	confirmed 
 #Description: 
 Nach dem Importieren von ueber tesc, anschliessendem Check und Beenden von
 Pest erscheint das Fenster, dass die Statechart geaendert aber noch nicht
