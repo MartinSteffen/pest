@@ -44,7 +44,7 @@ import java.awt.*;
  * keine
  * </DL COMPACT>
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: Crossreference.java,v 1.20 1999-02-10 01:11:02 swtech11 Exp $
+ * @version  $Id: Crossreference.java,v 1.21 1999-02-10 12:38:50 swtech11 Exp $
  */
 public class Crossreference extends ModelCheckBasics {
   private GUIInterface gui = null;     // Referenz auf die GUI
@@ -107,7 +107,7 @@ public class Crossreference extends ModelCheckBasics {
         if (high==true) {ho = new highlightObject(); }// Highlighten aktivieren
       }
       else { gui.userMessage("Check: "+such+" wurde nicht gefunden."); }
-// outputToFile("test.txt");
+      // outputToFile("test.txt");
     }
 
   }

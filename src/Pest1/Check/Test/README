@@ -1,7 +1,10 @@
-README Datei der Testergebnisse von PEST1/check
+README Datei der Testergebnisse von PEST1/check 
 
 Autoren: Magnus Stiller und Daniel Wendorff
-@version  $Id: README,v 1.1 1999-02-09 13:45:00 swtech11 Exp $
+@version  $Id: README,v 1.2 1999-02-10 12:38:11 swtech11 Exp $
+
+
+SyntaxCheck:
 
 Um unsere Testergebnisse reproduzieren zu koennen, muss t.java kompiliert werden. t.java benoetig die Dateien t2_Example.java und absyn/Example.java. Nach dem Starten von t.java werden folgende Statecharts produziert: BeispielAbsSyn.sc, Daniel1.sc, Daniel2.sc, Magnus1.sc, Magnus2.sc und Magnus3.sc.
 
@@ -11,3 +14,8 @@ Beim Testen des Checkers will man auch seltene Faelle und Beispiele konstruieren
 
 VORSICHT: Man kann auf diese Weise Schleifen und Null-Pointer erzeugen. Diese werden nicht abgefangen.
 
+
+Crossreference:
+
+Zum Testen des Crossreference gibt es die beiden Tesc-Dateien: Example.tesc und active_axes.tesc.
+Die Ergebnisse von Crossreference stehen in Example.cross und active_axes.cross

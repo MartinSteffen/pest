@@ -1,0 +1,123 @@
+Meldungen der Crossreference:
+
+OFF ist ein:
+- Statename des Zielankers der Transition nicht -> OFF in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.YAW
+- Statename des Zielankers der Transition nicht -> OFF in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.YAW
+- Statename des Zielankers der Transition nicht -> OFF in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.YAW
+- Statename des Startankers der Transition OFF -> nicht in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.YAW
+- Statename des Startankers der Transition OFF -> nicht in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.YAW
+- Or-State in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.YAW
+
+
+
+Meldungen der Crossreference:
+
+*OFF ist ein:
+- Pfadliste States
+- Pfadliste States
+- Pfadliste States
+- Statename des Zielankers der Transition nicht -> OFF in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.YAW
+- Pfad im Guard Trans: nicht -> OFF in State: ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.YAW
+- Statename des Zielankers der Transition nicht -> OFF in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.YAW
+- Pfad im Guard Trans: nicht -> OFF in State: ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.YAW
+- Statename des Zielankers der Transition nicht -> OFF in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.YAW
+- Statename des Startankers der Transition OFF -> nicht in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.YAW
+- Statename des Startankers der Transition OFF -> nicht in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.YAW
+- Pfad im Guard Trans: B1 -> B3 in State: ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.YAW.nicht.FST
+- Pfad im Guard Trans: B1 -> B2 in State: ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.YAW.nicht.FST
+- Or-State in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.YAW
+- Pfad im Guard Trans: A1 -> A2 in State: ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.YAW.OFF
+- Statename des Zielankers der Transition ROLL_ON -> ROLL_OFF in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.ROLL
+- Pfad im Guard Trans: ROLL_ON -> ROLL_OFF in State: ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.ROLL
+- Statename des Zielankers der Transition ROLL_ON -> ROLL_OFF in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.ROLL
+- Pfad im Guard Trans: ROLL_ON -> ROLL_OFF in State: ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.ROLL
+- Statename des Zielankers der Transition ROLL_ON -> ROLL_OFF in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.ROLL
+- Statename des Startankers der Transition ROLL_OFF -> ROLL_ON in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.ROLL
+- Statename des Startankers der Transition ROLL_OFF -> ROLL_ON in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.ROLL
+- Pfad im Guard Trans: ROLL_ON_FST_B1 -> ROLL_ON_FST_B3 in State: ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.ROLL.ROLL_ON.ROLL_ON_FST
+- Pfad im Guard Trans: ROLL_ON_FST_B1 -> ROLL_ON_FST_B2 in State: ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.ROLL.ROLL_ON.ROLL_ON_FST
+- Or-State in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.ROLL
+- Pfad im Guard Trans: ROLL_OFF_A1 -> ROLL_OFF_A2 in State: ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.ROLL.ROLL_OFF
+- Statename des Zielankers der Transition PITCH_ON -> PITCH_OFF in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.PITCH
+- Pfad im Guard Trans: PITCH_ON -> PITCH_OFF in State: ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.PITCH
+- Statename des Zielankers der Transition PITCH_ON -> PITCH_OFF in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.PITCH
+- Pfad im Guard Trans: PITCH_ON -> PITCH_OFF in State: ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.PITCH
+- Statename des Zielankers der Transition PITCH_ON -> PITCH_OFF in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.PITCH
+- Statename des Startankers der Transition PITCH_OFF -> PITCH_ON in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.PITCH
+- Statename des Startankers der Transition PITCH_OFF -> PITCH_ON in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.PITCH
+- Pfad im Guard Trans: PITCH_ON_FST_B1 -> PITCH_ON_FST_B3 in State: ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.PITCH.PITCH_ON.PITCH_ON_FST
+- Pfad im Guard Trans: PITCH_ON_FST_B1 -> PITCH_ON_FST_B2 in State: ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.PITCH.PITCH_ON.PITCH_ON_FST
+- Or-State in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.PITCH
+- Pfad im Guard Trans: PITCH_OFF_A1 -> PITCH_OFF_A2 in State: ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.PITCH.PITCH_OFF
+
+
+
+Meldungen der Crossreference:
+
+OFF* ist ein:
+- Statename des Zielankers der Transition nicht -> OFF in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.YAW
+- Statename des Zielankers der Transition nicht -> OFF in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.YAW
+- Statename des Zielankers der Transition nicht -> OFF in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.YAW
+- Statename des Startankers der Transition OFF -> nicht in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.YAW
+- Statename des Startankers der Transition OFF -> nicht in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.YAW
+- Or-State in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.YAW
+
+
+
+
+Meldungen der Crossreference:
+
+*OFF* ist ein:
+- Pfadliste States
+- Pfadliste States
+- Pfadliste States
+- Pfadliste States
+- Pfadliste States
+- Pfadliste States
+- Pfadliste States
+- Pfadliste States
+- Pfadliste States
+- Statename des Zielankers der Transition nicht -> OFF in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.YAW
+- Pfad im Guard Trans: nicht -> OFF in State: ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.YAW
+- Statename des Zielankers der Transition nicht -> OFF in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.YAW
+- Pfad im Guard Trans: nicht -> OFF in State: ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.YAW
+- Statename des Zielankers der Transition nicht -> OFF in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.YAW
+- Statename des Startankers der Transition OFF -> nicht in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.YAW
+- Pfad im Guard Trans: OFF -> nicht in State: ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.YAW
+- Statename des Startankers der Transition OFF -> nicht in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.YAW
+- Pfad im Guard Trans: B1 -> B3 in State: ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.YAW.nicht.FST
+- Pfad im Guard Trans: B1 -> B2 in State: ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.YAW.nicht.FST
+- Or-State in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.YAW
+- Pfad im Guard Trans: A1 -> A2 in State: ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.YAW.OFF
+- Statename des Zielankers der Transition ROLL_ON -> ROLL_OFF in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.ROLL
+- Pfad im Guard Trans: ROLL_ON -> ROLL_OFF in State: ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.ROLL
+- Statename des Zielankers der Transition ROLL_ON -> ROLL_OFF in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.ROLL
+- Pfad im Guard Trans: ROLL_ON -> ROLL_OFF in State: ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.ROLL
+- Statename des Zielankers der Transition ROLL_ON -> ROLL_OFF in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.ROLL
+- Statename des Startankers der Transition ROLL_OFF -> ROLL_ON in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.ROLL
+- Pfad im Guard Trans: ROLL_OFF -> ROLL_ON in State: ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.ROLL
+- Statename des Startankers der Transition ROLL_OFF -> ROLL_ON in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.ROLL
+- Pfad im Guard Trans: ROLL_ON_FST_B1 -> ROLL_ON_FST_B3 in State: ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.ROLL.ROLL_ON.ROLL_ON_FST
+- Pfad im Guard Trans: ROLL_ON_FST_B1 -> ROLL_ON_FST_B2 in State: ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.ROLL.ROLL_ON.ROLL_ON_FST
+- Or-State in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.ROLL
+- Pfad im Guard Trans: ROLL_OFF_A1 -> ROLL_OFF_A2 in State: ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.ROLL.ROLL_OFF
+- Statename des Startankers der Transition ROLL_OFF_A1 -> ROLL_OFF_A2 in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.ROLL.ROLL_OFF
+- Statename des Zielankers der Transition ROLL_OFF_A1 -> ROLL_OFF_A2 in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.ROLL.ROLL_OFF
+- Basic-State in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.ROLL.ROLL_OFF
+- Basic-State in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.ROLL.ROLL_OFF
+- Statename des Zielankers der Transition PITCH_ON -> PITCH_OFF in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.PITCH
+- Pfad im Guard Trans: PITCH_ON -> PITCH_OFF in State: ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.PITCH
+- Statename des Zielankers der Transition PITCH_ON -> PITCH_OFF in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.PITCH
+- Pfad im Guard Trans: PITCH_ON -> PITCH_OFF in State: ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.PITCH
+- Statename des Zielankers der Transition PITCH_ON -> PITCH_OFF in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.PITCH
+- Statename des Startankers der Transition PITCH_OFF -> PITCH_ON in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.PITCH
+- Pfad im Guard Trans: PITCH_OFF -> PITCH_ON in State: ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.PITCH
+- Statename des Startankers der Transition PITCH_OFF -> PITCH_ON in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.PITCH
+- Pfad im Guard Trans: PITCH_ON_FST_B1 -> PITCH_ON_FST_B3 in State: ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.PITCH.PITCH_ON.PITCH_ON_FST
+- Pfad im Guard Trans: PITCH_ON_FST_B1 -> PITCH_ON_FST_B2 in State: ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.PITCH.PITCH_ON.PITCH_ON_FST
+- Or-State in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.PITCH
+- Pfad im Guard Trans: PITCH_OFF_A1 -> PITCH_OFF_A2 in State: ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.PITCH.PITCH_OFF
+- Statename des Startankers der Transition PITCH_OFF_A1 -> PITCH_OFF_A2 in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.PITCH.PITCH_OFF
+- Statename des Zielankers der Transition PITCH_OFF_A1 -> PITCH_OFF_A2 in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.PITCH.PITCH_OFF
+- Basic-State in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.PITCH.PITCH_OFF
+- Basic-State in ACTIVE_AXES.ACTIVE_AXES_ACTIVE_AXES.PITCH.PITCH_OFF
