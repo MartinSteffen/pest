@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	--------------
 //
-//	$Id: report_list,v 1.44 1999-02-09 14:54:57 swtech16 Exp $
+//	$Id: report_list,v 1.45 1999-02-09 15:15:27 swtech16 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -329,7 +329,7 @@ Default States vorhanden sind.
 #Number:	22
 #Autor:		Bernd Weber bwe
 #Subject:	Editor: Transition werden bei Zoom verschoben
-#Status:	processing
+#Status:	processing und fixed
 #Description:
 
 Erstellt man eine Chart mit Transitionbeschriftungen und whlt einen
