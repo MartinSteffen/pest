@@ -75,10 +75,10 @@ import tesc2.*;
 
     // Erzeugung der pop-up Menues
     String[] labels = new String[] {
-      "Undo", "Restore", "Loeschen","Kopieren","Verschieben"};
+      "-","Undo", "Restore","-", "Objekt loeschen","Block loeschen","-","kopieren","verschieben"};
     String[] commands = new String[] {
-      "undo", "restore", "loeschen","kopieren","verschieben"};
-    popup = new PopupMenu();                   		// Menueerzeugung
+      "","undo", "restore","", "loeschen","rloeschen","","kopieren","verschieben"};
+    popup = new PopupMenu("Werkzeugleiste");                   		// Menueerzeugung
     for(int i = 0; i < labels.length; i++) {
       MenuItem mi = new MenuItem(labels[i]);   	// erzeugt Menueeintrag
       mi.setActionCommand(commands[i]);        	// actioncommand.
@@ -111,7 +111,51 @@ import tesc2.*;
 				        	catch (Exception e) {System.out.println("Clone-Fehler");}
 						mover = true;
 					System.out.println("test3 : "+copyobj);
-	}	
+					if (deleteobj instanceof State) {
+					    System.out.println("rek loeschen");
+					    DeleteChart dc = new DeleteChart ( root );
+					    State todelete = (State)deleteobj;
+					    State father = dc.get_father(root.state, todelete);
+
+					    System.out.println("Zu löschender State: "+ todelete);
+					    System.out.println("Vater "+ father);
+
+					    if (father instanceof Or_State)
+						{
+						    Or_State otemp01 = (Or_State) father;
+						    StateList stlist01 = otemp01.substates;
+						    while (stlist01 != null)
+							{
+							    if (stlist01.head == todelete) {
+								System.out.println("gefunden");
+								stlist01.head = new Basic_State(new Statename("...temprek"),null);
+								todelete = stlist01.head;
+							    };
+							    stlist01 = stlist01.tail;
+							}
+						}
+					    if (father instanceof And_State)
+						{
+						    And_State atemp01 = (And_State) father;
+						    StateList stlist01 = atemp01.substates;
+						    while (stlist01 != null)
+							{
+							    if (stlist01.head == todelete) {
+								System.out.println("gefunden");
+								stlist01.head = new Basic_State(new Statename("...temprek"),null);
+								todelete = stlist01.head;
+							    };
+							    stlist01 = stlist01.tail;
+							}
+						}
+
+					    dc.delete_State( todelete );
+
+					    repaint();
+
+
+					}
+    }	
     else if (command.equals("loeschen")){ 
        
 	    // ********************
@@ -130,6 +174,8 @@ import tesc2.*;
 
 
 	    }
+
+
 
       if (aktcomp instanceof Tr) {
 
@@ -162,7 +208,91 @@ import tesc2.*;
     }
 	    // ********************
     Editor.SetListen();
-    }                                      
+    }     
+
+ else if (command.equals("rloeschen")){ 
+       
+	    // ********************
+    if (aktcomp instanceof State) {
+	System.out.println("rek loeschen");
+	DeleteChart dc = new DeleteChart ( root );
+        State todelete = (State)aktcomp;
+        State father = dc.get_father(root.state, todelete);
+
+	System.out.println("Zu löschender State: "+ todelete);
+	    System.out.println("Vater "+ father);
+
+	    if (father instanceof Or_State)
+		{
+		    Or_State otemp01 = (Or_State) father;
+		    StateList stlist01 = otemp01.substates;
+		    while (stlist01 != null)
+			{
+			    if (stlist01.head == todelete) {
+				System.out.println("gefunden");
+				stlist01.head = new Basic_State(new Statename("...temprek"),null);
+				todelete = stlist01.head;
+			    };
+			    stlist01 = stlist01.tail;
+			}
+		}
+	    if (father instanceof And_State)
+		{
+		    And_State atemp01 = (And_State) father;
+		    StateList stlist01 = atemp01.substates;
+		    while (stlist01 != null)
+			{
+			    if (stlist01.head == todelete) {
+				System.out.println("gefunden");
+				stlist01.head = new Basic_State(new Statename("...temprek"),null);
+				todelete = stlist01.head;
+			    };
+			    stlist01 = stlist01.tail;
+			}
+		}
+
+	 dc.delete_State( todelete );
+
+	 repaint();
+
+
+	    }
+
+
+
+      if (aktcomp instanceof Tr) {
+
+        DeleteChart dc = new DeleteChart ( root );
+        Tr todelete = (Tr)aktcomp;
+        Or_State father = dc.find_trans(todelete);
+
+	//      System.out.println("Zu löschende Transition: "+ todelete);
+	// System.out.println("Zugehöriger State: "+ father);
+
+        dc.delete_Trans( todelete );
+
+        repaint();
+
+    }
+
+    if (aktcomp instanceof Connector) {
+
+        DeleteChart dc = new DeleteChart ( root );
+        Connector todelete = (Connector)aktcomp;
+        Or_State father = dc.find_con(todelete);
+
+	//    System.out.println("Zu löschende Transition: "+ todelete);
+	// System.out.println("Zugehöriger State: "+ father);
+
+        dc.delete_Con( todelete );
+
+        repaint();
+
+    }
+	    // ********************
+    Editor.SetListen();
+    }     
+                                    
     
   }
  
@@ -511,6 +641,7 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans" & trro
 
 	if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Select") & (copyobj != null) & (mover == true))
 		{ 
+		   new setcopymove(root,copyobj,e.getX(),e.getY()); 
 		   copyobj = null;
 		   mover = false;
 		}

@@ -25,7 +25,7 @@ public class setcopymove
 {
 Statechart root;
 Absyn obj;
-State allstate;
+State allstate,tempstate;
 Or_State allorstate;
 StateList stlist=null;
 ConnectorList colist=null;
@@ -51,21 +51,43 @@ Basic_State tempbasic;
 		matrix2 = PESTdrawutil.getState(root,cx1,cy1);
 		matrix3 = PESTdrawutil.getState(root,cx1+allstate.rect.width,cy1+allstate.rect.height);
 		
+if (matrix1.akt == null)
+    {
+	//*******************************************
+  tempstate = root.state;
+  root.state = new Or_State(new Statename("...root"),new StateList(tempstate,null),null,null,null);
+	//*******************************************
+  matrix1 = PESTdrawutil.getStateFrame(root,cx1,cy1,cx1+allstate.rect.width,cy1+allstate.rect.height);
+  matrix2 = PESTdrawutil.getState(root,cx1,cy1);
+  matrix3 = PESTdrawutil.getState(root,cx1+allstate.rect.width,cy1+allstate.rect.height);
+    }
+ 
 if (matrix2.akt == matrix3.akt & matrix1.akt instanceof Basic_State)
 		    {
+			if (matrix1.prev == null)
+			    {
+				tempstate = root.state;
+				root.state = new Or_State(new Statename("...root"),new StateList(tempstate,null),null,null,null);
+			    }
+			matrix1 = PESTdrawutil.getStateFrame(root,cx1,cy1,cx1+allstate.rect.width,cy1+allstate.rect.height);
 			if (matrix1.prev instanceof And_State) {
 			    atemp1 = (And_State) matrix1.prev;
 			    sublist = atemp1.substates;
+			    while(sublist.head != matrix1.akt)
+				{
+				    sublist = sublist.tail;
+				}
 			}
 			if (matrix1.prev instanceof Or_State) {
 			    otemp1 = (Or_State) matrix1.prev;
 			    sublist = otemp1.substates;
+			    while(sublist.head != matrix1.akt)
+				{
+				    sublist = sublist.tail;
+				}
 			}
-			while(sublist.head != matrix1.akt)
-			    {
-				sublist = sublist.tail;
-			    }
-			tempbasic = (Basic_State) sublist.head;
+			
+			tempbasic = (Basic_State) matrix1.akt;
 			otemp2 = new Or_State(tempbasic.name,null,null,null,null,tempbasic.rect);
 			sublist.head = otemp2;
 		    }
