@@ -49,6 +49,12 @@ import java.lang.reflect.*;
 	private TextField ivjTextField9 = null;
 	private Button ivjButton4 = null;
 	private Button ivjButton5 = null;
+	private boolean debug1 = true;
+	private boolean debug2 = true;
+	private boolean debug3 = true;
+	private boolean debug4 = true;
+	private boolean debug5 = true;
+
 /**
  * Constructor
  */
@@ -839,12 +845,12 @@ private void disableChecks() {
 }
 /**
  *
- * Füllt die Textfelder und die Checkboxen der Listframes mit den Daten aus arString und arBool
+ * Fuellt die Textfelder und die Checkboxen der Listframes mit den Daten aus arString und arBool
  * in Abhaengigkeit von der uebergebenen Anfangsposition.
  *
  * Benutzt globale Objekte			: arString,arBool
- * Aufgerufen von					: initTabs()
- * Ruft auf							: -----
+ * Aufgerufen von				: initTabs()
+ * Ruft auf					: -----
  * @param start int
  * @returns
  * @version 3.0 vom 17.01.1999
@@ -859,12 +865,16 @@ private void fill(int start)
 	if (debug == true)
 	{
 		System.out.println("Methode fill: Berechnete Laenge: " + max);
+		System.out.println("Methode fill: Startzaehler     : " +counter);
 	}
 	
 	if (counter < max)
 	{
 		getTextField1().setText(arString[counter]);
+		getTextField1().setEnabled(true);
 		getCheckbox1().setState(Array.getBoolean(arBool, counter));
+		System.out.println("fill: TextField 1 gefuellt !");
+		
 	}
 	else
 	{
@@ -995,7 +1005,7 @@ private void fill(int start)
 }
 /**
  *
- * Füllt die Textfelder und die Checkboxen der Listframes mit den Daten aus arString und arBoolWork
+ * Fllt die Textfelder und die Checkboxen der Listframes mit den Daten aus arString und arBoolWork
  * in Abhaengigkeit von der uebergebenen Anfangsposition.
  *
  * Benutzt globale Objekte			: arString,arBoolWork
@@ -2107,7 +2117,7 @@ private void initialize(Vector arg1) {
  * Inititialisiert die Arrays arString, arBool, arBoolWork 
  *
  * Benutzt globale Objekte			: seList bzw. evList
- * Aufgerufen von					: 
+ * Aufgerufen von					: initialize()
  * Ruft auf							: ----
  */
 public void initTabs(Vector arg1) {
