@@ -23,7 +23,6 @@ import absyn.*;
  * <DT><STRONG>To Do</STRONG>
  *   <UL>
  *   <LI>Need to fix code for non-determinism.
- *   <LI>Need to check constructor for boolean arrays.
  *   <LI>Default connectors currently do not work.
  *   </UL>
  * <DT><STRONG>Known Bugs</STRONG>
@@ -52,7 +51,7 @@ import absyn.*;
  * </DL>
  *
  * @author Marcel Kyas, Walter Loeser, Andre Paetzold.
- * @version $Id: CodeGen.java,v 1.15 1999-01-21 15:27:32 swtech25 Exp $
+ * @version $Id: CodeGen.java,v 1.16 1999-01-25 14:22:18 swtech25 Exp $
  */
 public class CodeGen
 {
@@ -96,8 +95,7 @@ public class CodeGen
 	public void Generate(String path, Statechart statechart)
 		throws CodeGenException
 	{
-		dumpHA h = new dumpHA(statechart, path);
-		h.dump();
+		Generate(path, statechart, new CodeGenOpt());
 	}
 
         /**
@@ -108,9 +106,10 @@ public class CodeGen
 	 *
 	 * @exception CodeGenException if code generation fails.
          */
-        public void Generate(String path, Statechart statechart, int options)
+        public void Generate(String path, Statechart statechart, CodeGenOpt o)
 		throws CodeGenException
         {
-		Generate(path, statechart);
+		dumpHA h = new dumpHA(statechart, path);
+		h.dump();
         }
 }
