@@ -210,22 +210,22 @@ th = this;
     this.setMenuBar(menubar);                // Add it to the frame.
    
 
-Menu win = new Menu("Window");            // Create a File menu.
+Menu win = new Menu("Fenster");            // Create a File menu.
     menubar.add(win);                       // Add to menubar.
 
     MenuItem w1, w2;
     win.add(w1 = new MenuItem("Loeschen"));
     win.addSeparator();                    
-    win.add(w2 = new MenuItem("Schliessen"));
+    win.add(w2 = new MenuItem("Beenden"));
 
     w1.addActionListener(new ActionListener() {    
       public void actionPerformed(ActionEvent e) { Freeit(nroot); }
     });
     w2.addActionListener(new ActionListener() {     
-      public void actionPerformed(ActionEvent e) { Dispose();  }
+      public void actionPerformed(ActionEvent e) { gui.editorClosing();  }
     });
 
-    Menu tools = new Menu("Tools");            // Create a File menu.
+    Menu tools = new Menu("Werkzeuge");            // Create a File menu.
     menubar.add(tools);                       // Add to menubar.
 
     // Tool-Menue erzeugen
