@@ -90,7 +90,7 @@ import java.util.*;
  * <br>
  * <hr>
  * @author Arne Koch/Mike Rumpf.
- * @version  $Id: TESCLoader.java,v 1.18 1999-01-18 12:27:54 swtech13 Exp $ 
+ * @version  $Id: TESCLoader.java,v 1.19 1999-01-19 21:46:20 swtech13 Exp $ 
  */ 
 public class TESCLoader {
 
@@ -144,7 +144,7 @@ public class TESCLoader {
      * @param Referenz auf einen BufferedReader
      * @return Liefert Guard oder null bei Fehler.
      */ 
-    public Guard getGuard(BufferedReader br) throws IOException {
+    private Guard getGuard(BufferedReader br) throws IOException {
 	TESCParser parser = new TESCParser(br, gi);
 	parser.initSwitches(options);
 
@@ -167,7 +167,7 @@ public class TESCLoader {
      * @param Referenz auf BvarList
      * @return Liefert Guard oder null bei Fehler.
      */ 
-    public Guard getGuard(BufferedReader br, SEventList el, BvarList bl) throws IOException {
+    private Guard getGuard(BufferedReader br, SEventList el, BvarList bl) throws IOException {
 	TESCParser parser = new TESCParser(br, gi);
 	parser.initSwitches(options);
 
@@ -218,7 +218,7 @@ public class TESCLoader {
 
 
   /**
-   * <STRONG>NICHT</STRONG> verwenden, liefert null.
+   * <STRONG>NICHT</STRONG> verwenden, liefert null.<br> Diese Methode ist nur aus Kompatibilitätsgründen zu PEST2 da. 
    * @return null
    */
   public TLabel getLabel(BufferedReader br, Statechart sc) {
@@ -231,7 +231,7 @@ public class TESCLoader {
      * @param Referenz auf einen BufferedReader     
      * @return Liefert Action oder null bei Fehler.
      */ 
-    public Action getAction(BufferedReader br) throws IOException {
+    private Action getAction(BufferedReader br) throws IOException {
 	TESCParser parser = new TESCParser(br, gi);
 	parser.initSwitches(options);
 	Action action = parser.readAction(br);
@@ -253,7 +253,7 @@ public class TESCLoader {
      * @param Referenz auf BvarList
      * @return Liefert Action oder null bei Fehler.
      */ 
-    public Action getAction(BufferedReader br, SEventList el, BvarList bl) throws IOException {
+    private Action getAction(BufferedReader br, SEventList el, BvarList bl) throws IOException {
 	TESCParser parser = new TESCParser(br, gi);
 	parser.initSwitches(options);
 	Action action = parser.readAction(br, el, bl);
@@ -303,7 +303,7 @@ public class TESCLoader {
      * Zugriff auf die SEventList des Parsers<br><STRONG>  Temporär!! </STRONG>
      * @return Liefert SEventList des Parsers.
      */ 
-    public SEventList getSEventList() {
+    private SEventList getSEventList() {
 	return evlist;
     }
 
@@ -311,13 +311,16 @@ public class TESCLoader {
      * Zugriff auf die BvarList des Parsers<br><STRONG>  Temporär!! </STRONG>
      * @return Liefert BvarList des Parsers.
      */ 
-    public BvarList getBvarList() {
+    private BvarList getBvarList() {
 	return bvlist;
     }
 }
 
 /* 
  * $Log: not supported by cvs2svn $
+ * Revision 1.18  1999/01/18 12:27:54  swtech13
+ * Schnittstellen-Anpassung
+ *
  * Revision 1.17  1999/01/17 21:42:35  swtech13
  * Verbesserungen/Bugfixes
  *
