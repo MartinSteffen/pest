@@ -54,7 +54,7 @@ import gui.GUIInterface;
  * </DL COMPACT>
  *
  * @author  Sven Jorga, Werner Lehmann
- * @version $Id: HAImport.java,v 1.8 1999-01-11 12:00:40 swtech18 Exp $
+ * @version $Id: HAImport.java,v 1.9 1999-01-11 12:27:12 swtech18 Exp $
  */
 public class HAImport implements Patterns {
   Perl5Util perl = new Perl5Util();
@@ -82,9 +82,20 @@ public class HAImport implements Patterns {
   private Hashtable coordHash = null;
   private Hashtable initHash = null;
 
+/** Der Konstruktor dient zum Importieren einer StateChart
+   * im HA-Format. Es wird erwartet, da&szlig; reader ein
+   * Stream auf eine entsprechende Eingabedatei ist.
+   */
+
   public HAImport(BufferedReader reader) throws Exception {
     initImport(reader);
   }
+
+  /** Dieser Konstruktor erwartet zus&auml;tzlich ein GUIInterface
+   * und sollte nun anstelle des bisherigen verwendet werden, damit
+   * Fehlermeldungen im Logfenster des GUIs erscheinen und nicht als
+   * Dialoge.
+   */
 
   public HAImport(BufferedReader reader, GUIInterface gui ) throws Exception {
     this.gui = gui;
@@ -139,6 +150,13 @@ public class HAImport implements Patterns {
     initHash = makeInitHash(initString);
     initSuccess = true;
   }
+
+  /** Diese Methode liefert die StateChart, die aus dem dem Konstruktor
+   * &uuml;bergebenen Stream importiert wird. Wenn ein Fehler auftritt,
+   * wird dieser ggf. im GUI-Logfenster ausgegeben (falls ein entsprechendes
+   * Objekt bei der Konstruktion der Klasse angegeben wurde). Der
+   * R&uuml;ckgabewert ist in diesem Fall null.
+   */
 
   public Statechart getStatechart() throws Exception {
     Statechart st = null;
@@ -263,6 +281,10 @@ public class HAImport implements Patterns {
   }
 
   private String removeQuotes(String str) { return perl.substitute("s/\"//g",str); }
+
+  /** main dient uns intern zum testen ohne GUI und sollte nicht
+   * verwendet werden.
+   */
 
   public static final void main(String args[]) {
     PrettyPrint pp = new PrettyPrint ();
