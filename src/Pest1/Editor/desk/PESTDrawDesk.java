@@ -40,7 +40,7 @@ import tesc2.*;
       static boolean trroot = false;
       static Point[] tempwaypoint = new Point[100];
       static int laufwaypoint = 0;
-      static Absyn deleteobj;
+      static Absyn deleteobj,copyobj;
       static Statematrix aktmatrix = null,aktmatrix2 = null;
       static State tempstate1=null;
       static Dimension dim;
@@ -74,9 +74,9 @@ import tesc2.*;
 
     // Erzeugung der pop-up Menues
     String[] labels = new String[] {
-      "Undo", "Restore", "Loeschen"};
+      "Undo", "Restore", "Loeschen","Kopieren"};
     String[] commands = new String[] {
-      "undo", "restore", "loeschen"};
+      "undo", "restore", "loeschen","kopieren"};
     popup = new PopupMenu();                   		// Menueerzeugung
     for(int i = 0; i < labels.length; i++) {
       MenuItem mi = new MenuItem(labels[i]);   	// erzeugt Menueeintrag
@@ -100,6 +100,11 @@ import tesc2.*;
 	Editor.Buttontype = "Select";
     if (command.equals("undo")) {root = undo();Editor.newdraw();}
     else if (command.equals("restore")) {root = redo();Editor.newdraw();}
+    else if (command.equals("kopieren")) {	System.out.println("test2 : "+copyobj);
+					try     {copyobj = (Absyn) deleteobj.clone();}
+				        	catch (Exception e) {System.out.println("Clone-Fehler");}
+					System.out.println("test2 : "+copyobj);
+	}	
     else if (command.equals("loeschen")){ 
        
 	    // ********************
@@ -177,8 +182,11 @@ import tesc2.*;
 public void processMouseMotionEvent(MouseEvent e)
 {Graphics g = getGraphics();
   Absyn aktcomp2;
-if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Select")
+  
+if (e.getID() == MouseEvent.MOUSE_MOVED & (Editor.Editor() == "Select" | Editor.Editor() == "Info" ))
       {
+	if (copyobj == null)
+	{
 	aktcomp2 = PESTdrawutil.getSmallObject(root,(int) (e.getX()/Editor.ZoomFaktor),(int) (e.getY()/Editor.ZoomFaktor)) ; 
 	if (aktcomp2 != aktcomp) 
 	{
@@ -189,7 +197,35 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Select")
 		new highlightObject();
 		// textlabel.hide();
 	        }
-	      }
+	} else
+	{
+	   if (copyobj instanceof State)
+	     {
+		State tempdrstate = (State) copyobj;
+	//	g.setColor(this.getBackground());
+	//	g.drawRect(last_x,last_y,tempdrstate.rect.width,tempdrstate.rect.height);
+	//	restore(g);
+	//	g.setColor(Color.black);
+	//	g.drawRect(e.getX(),e.getY(),tempdrstate.rect.width,tempdrstate.rect.height);
+	//	last_x = e.getX();
+	//	last_y = e.getY();
+
+ 	bufferGraphics = this.getGraphics();
+		  
+		    bufferGraphics.setColor(this.getBackground());
+		    bufferGraphics.drawRect(last_x,last_y,tempdrstate.rect.width,tempdrstate.rect.height);
+
+
+		    bufferGraphics.setColor(Color.black);
+		    bufferGraphics.drawRect(e.getX(),e.getY(),tempdrstate.rect.width,tempdrstate.rect.height);
+		last_x = e.getX();
+		last_y = e.getY();
+
+		    restore(g);
+
+	     }
+	}
+       }
 
 if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_StateLabel")
       {
@@ -414,9 +450,6 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans" & trro
 
 		}
 
-
-	
-
 	    if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Draw_State"))
 		{// Editor.SetListen();
 		       repaint();
@@ -449,15 +482,29 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans" & trro
 		    repaint();
 		}
 
-
-
-	if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Select"))
+	if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Select") & (copyobj == null))
 		{ 
 		    Absyn test = PESTdrawutil.getSmallObject(root,
 			(int) (last_x/Editor.ZoomFaktor),
 			(int) (last_y/Editor.ZoomFaktor)
 				);
 		deleteobj = test;
+		// System.out.println("to delete >>>"+deleteobj);
+		}
+
+	if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Select") & (copyobj != null))
+		{ 
+		   copyobj = null;
+		}
+
+
+
+if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Info"))
+		{ 
+		    Absyn test = PESTdrawutil.getSmallObject(root,
+			(int) (last_x/Editor.ZoomFaktor),
+			(int) (last_y/Editor.ZoomFaktor)
+				);
 
 			if (test instanceof Tr)
 			{
@@ -472,9 +519,10 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans" & trro
 			      }
 			  }// else { textlabel.hide();}
 			}
-
-		// System.out.println("to delete >>>"+deleteobj);
 		}
+
+
+
 	if ((e.getID() == MouseEvent.MOUSE_PRESSED) & (Editor.Editor() =="Draw_Conn"))
 	    { //  Editor.SetListen();
 		    new drawPESTConn(g,root,
@@ -511,7 +559,6 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans" & trro
 	  private Storelist(Storelist a, Storelist b)
 	  { prev = a;
 	    next = b;
-	      
 	  }
       }
 
@@ -529,7 +576,6 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans" & trro
 		    lauf.chart = new Statechart(null,null,null,null);
 		    anf.next = lauf;
 		    anf = lauf;
-		    
 		  }
 	      anf.next = basis;
 	      basis.prev = anf;
@@ -546,7 +592,6 @@ private static Statechart undo() {
 	//xroot.cnames = lauf.chart.cnames;
 	//Editor.newdraw();
 	return lauf.chart;
-
    }
 
 private static Statechart redo() { 
