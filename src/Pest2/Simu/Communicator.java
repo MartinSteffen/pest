@@ -104,13 +104,13 @@ public class Communicator extends Frame{
     while (actives.hasMoreElements()){
       element=(State)actives.nextElement();
       if (element instanceof Or_State){
-	highlight=new highlightObject((Or_State)element,Color.green);
+	highlight=new highlightObject((Or_State)element,Color.white);
       }
       if (element instanceof Basic_State){
-	highlight=new highlightObject((Basic_State)element,Color.green);
+	highlight=new highlightObject((Basic_State)element,Color.white);
       }
         if (element instanceof And_State){
-	highlight=new highlightObject((And_State)element,Color.green);
+	highlight=new highlightObject((And_State)element,Color.white);
       }
     }
   }
@@ -142,7 +142,7 @@ public class Communicator extends Frame{
     Tr element=null;
     while (actives.hasMoreElements()){
       element=(Tr)actives.nextElement();
-      highlight=new highlightObject(element,Color.green);
+      highlight=new highlightObject(element,Color.black);
     }
   }
   

@@ -56,8 +56,7 @@ public class Status extends Object{
     transitions.debug();
   }
 
-  public void read(BufferedReader r){
-  }
+
 
 }
 

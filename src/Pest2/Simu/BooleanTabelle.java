@@ -99,4 +99,8 @@ public class BooleanTabelle extends Object{
     }
     return result;
   }
+
+
+
+
 }
