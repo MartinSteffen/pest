@@ -25,17 +25,17 @@ import java.io.*;
  * </STRONG>
  * <BR>
  * Der Nachfolgeralgorithmus ist implementiert und mit einigen Beispielen aus
- * "Examples" getestet. Das Testen gestaltet sich etwas schwierig, da wir bisher
- * die Transitionsbeschriftungen "erraten" mussten.
+ * "Examples" getestet.
  * Es werden Racing-Situationen bei Conditions und Nichtdeterminismus bei Transitionen erkannt,
- * unsere GUI ist aber noch bearbeitungswuerdig.<BR>
- * Getestet haben wir z.B. absyn.Example, tv.st und a1.st
- * was auch funktioniert, d.h. es koennen Events eingeben werden, die States werden erreicht
- * und die Transitionen und Aktionen werden ausgefuehrt. <BR>
- * Die Aktiven States werden noch nicht im Editor angezeigt, dafuer aber auf der Console.
- * Die Aufrufe der Highlight-Funktionen sind schon drin, werden bisher vom Editor aber noch nicht verarbeitet (Stand: 28.1)
+ * unsere GUI ist funktionell aber noch nicht schoen.<BR>
+ * Getestet haben wir absyn.Example, tv.st und a1.st, sowie die Beispiele aus unserem Test-Verzeichnis.
+ * Die Aktiven States und Transitionen werden gehighlighted, das Highlighting hat noch ein paar kleinere
+ * Macken. (Workaround: Fenster verkleinern und wieder vergroessern, repaint() hilft :-) 
  * Alle Statusmeldungen auf System.out und System.err sind wie abgesprochen
- * abgeändert worden und tauchen jetzt nur noch bei gesetztem Debugschalter.
+ * abgeändert worden und tauchen jetzt nur noch bei gesetztem Debugschalter auf.
+ * Die bekannten Fehler mit Connectoren sind behoben.
+ * Inzwischen kann man sowohl die Schrittweite eingeben, als auch die Aufloesung von Nichtdeterminismen
+ * veraendern (Zufall oder Benutzer).
  * <DT><STRONG>
  * TODO.
  * </STRONG>
@@ -47,9 +47,6 @@ import java.io.*;
  * </STRONG>
  * <UL>
  * <LI> NullPointer in substates werden nicht abgefangen, d.h ein OR-State muss mindestens einen Substate haben, ansonsten waere es ein Basic-State (ist eigentlich nicht direkt ein Fehler....)</LI>
- * <LI> Bei Racing-Situatuionen bei booleschen Variablen ist unsere Gui nicht 
-   sehr hilfreich</LI>
- 
  * </UL>                    
  */
          

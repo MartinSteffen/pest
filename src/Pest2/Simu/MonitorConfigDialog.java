@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 
-class MonitorConfigDialog.java extends Dialog{
+class MonitorConfigDialog extends Dialog{
 
   Vector element_views=null;
   Vector element_list=null;
