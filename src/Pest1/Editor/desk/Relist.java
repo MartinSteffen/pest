@@ -73,21 +73,21 @@ public class Relist {
 	Path path = npath,temppath = null,temppath2=null,temppath3 = null;
 	Absyn taction,tguard,tlauf;	
 
-	temppathlist = pathlist;
-	temppath = path;
-	path = new Path(co.name.name,temppath);
-	temppath = path;
-	while (temppath.tail != null)
-	{
-	temppath2 = new Path(temppath.head,temppath3);
-	temppath3 = temppath2;
-	temppath = temppath.tail; 
-	}
-	temppath2 = new Path(temppath.head,temppath3);
+	//temppathlist = pathlist;
+	//temppath = path;
+	// path = new Path(co.name.name,temppath);
+	//temppath = path;
+	//while (temppath.tail != null)
+	//{
+	//temppath2 = new Path(temppath.head,temppath3);
+	//temppath3 = temppath2;
+	//temppath = temppath.tail; 
+	//}
+	//temppath2 = new Path(temppath.head,temppath3);
 
-	pathlist = new PathList(temppath2,temppathlist);
-	root.cnames = pathlist;
-	System.out.println("Basic_State");
+	//pathlist = new PathList(temppath2,temppathlist);
+	//root.cnames = pathlist;
+	//System.out.println("Basic_State");
 	//PrettyPrint pp = new PrettyPrint();
   	//pp.start(root);
     	}
