@@ -737,7 +737,7 @@ if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Info"))
 			{
 			Tr trtmp = (Tr) test;
 			  {
-			      if (trtmp.label.caption.length() >= GraphOptimizer.TLABELLENGTH)
+			      if (trtmp.label.caption.length() >= 20/*GraphOptimizer.TLABELLENGTH*/)
 			      {
 			      new LabelArea(e.getX(),e.getY(),trtmp.label.caption);
 			      }
