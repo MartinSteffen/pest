@@ -1,4 +1,4 @@
-package Absyn;
+package absyn;
 
 import java.io.Serializable;
 import java.awt.Point;
@@ -9,7 +9,7 @@ import java.awt.Dimension;
 /**
  * CRectangle.
  * @author Initially provided by Martin Steffen.
- * @version $Id: CRectangle.java,v 1.2 1998-12-15 13:38:03 swtech00 Exp $
+ * @version $Id: CRectangle.java,v 1.3 1998-12-15 16:33:26 swtech00 Exp $
  */
 public class CRectangle extends Rectangle implements Cloneable, Serializable {
     /**
@@ -64,8 +64,11 @@ public class CRectangle extends Rectangle implements Cloneable, Serializable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: CRectangle.java,v 1.2 1998-12-15 13:38:03 swtech00 Exp $
+//	$Id: CRectangle.java,v 1.3 1998-12-15 16:33:26 swtech00 Exp $
 //      $Log: not supported by cvs2svn $
+//      Revision 1.2  1998/12/15 13:38:03  swtech00
+//      exception-tag hinzugefuegt um javadoc sauber durchlaufen zu lassen
+//
 //      Revision 1.1  1998/12/15 11:23:26  swtech00
 //      kloniebare Rectangles hinzugefuegt, alos
 //

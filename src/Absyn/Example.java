@@ -1,4 +1,4 @@
-package Absyn;
+package absyn;
 
 
 public class Example {

@@ -1,4 +1,4 @@
-package Absyn;
+package absyn;
 import java.io.Serializable;
 
 public class TrList implements Cloneable, Serializable { // List of transitions
@@ -24,9 +24,12 @@ public class TrList implements Cloneable, Serializable { // List of transitions
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: TrList.java,v 1.8 1998-12-15 13:38:09 swtech00 Exp $
+//	$Id: TrList.java,v 1.9 1998-12-15 16:33:32 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.8  1998/12/15 13:38:09  swtech00
+//	exception-tag hinzugefuegt um javadoc sauber durchlaufen zu lassen
+//
 //	Revision 1.7  1998/12/15 08:01:24  swtech00
 //	Cloneable zu Dummy + TrList hinzugefuegt
 //

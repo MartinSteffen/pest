@@ -1,11 +1,11 @@
-package Absyn;
+package absyn;
 
 import java.io.Serializable;
 
 /**
  * Composition of two guards.
  * @author Initially provided by Martin Steffen.
- * @version $Id: Compguard.java,v 1.8 1998-12-15 13:38:03 swtech00 Exp $
+ * @version $Id: Compguard.java,v 1.9 1998-12-15 16:33:26 swtech00 Exp $
  */
 public class Compguard extends Absyn implements Serializable, Cloneable {
 /**
@@ -50,9 +50,12 @@ public class Compguard extends Absyn implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Compguard.java,v 1.8 1998-12-15 13:38:03 swtech00 Exp $
+//	$Id: Compguard.java,v 1.9 1998-12-15 16:33:26 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.8  1998/12/15 13:38:03  swtech00
+//	exception-tag hinzugefuegt um javadoc sauber durchlaufen zu lassen
+//
 //	Revision 1.7  1998/12/15 07:11:07  swtech01
 //	Added Serialization to all classes
 //

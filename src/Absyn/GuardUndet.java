@@ -1,4 +1,4 @@
-package Absyn;
+package absyn;
 
 import java.io.Serializable;
 
@@ -7,7 +7,7 @@ import java.io.Serializable;
  * One kind of guard: untyped identifier.
  * If the type of the identifier can not be determined, this class is used.
  * @author Initially provided by Martin Steffen.
- * @version $Id: GuardUndet.java,v 1.4 1998-12-15 13:38:05 swtech00 Exp $
+ * @version $Id: GuardUndet.java,v 1.5 1998-12-15 16:33:29 swtech00 Exp $
  */
 public class GuardUndet extends Guard implements Serializable, Cloneable {
 /**
@@ -34,9 +34,12 @@ public class GuardUndet extends Guard implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: GuardUndet.java,v 1.4 1998-12-15 13:38:05 swtech00 Exp $
+//	$Id: GuardUndet.java,v 1.5 1998-12-15 16:33:29 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.4  1998/12/15 13:38:05  swtech00
+//	exception-tag hinzugefuegt um javadoc sauber durchlaufen zu lassen
+//
 //	Revision 1.3  1998/12/15 07:11:09  swtech01
 //	Added Serialization to all classes
 //

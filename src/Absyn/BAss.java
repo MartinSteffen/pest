@@ -1,11 +1,11 @@
-package  Absyn;
+package  absyn;
 
 import java.io.Serializable;
 
 /**
  * One kind of boolean statement: assignment.
  * @author Initially provided by Martin Steffen.
- * @version $Id: BAss.java,v 1.5 1998-12-15 13:38:01 swtech00 Exp $
+ * @version $Id: BAss.java,v 1.6 1998-12-15 16:33:24 swtech00 Exp $
  */
 public class BAss extends Boolstmt implements Serializable, Cloneable {
 /**
@@ -31,9 +31,12 @@ public class BAss extends Boolstmt implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: BAss.java,v 1.5 1998-12-15 13:38:01 swtech00 Exp $
+//	$Id: BAss.java,v 1.6 1998-12-15 16:33:24 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.5  1998/12/15 13:38:01  swtech00
+//	exception-tag hinzugefuegt um javadoc sauber durchlaufen zu lassen
+//
 //	Revision 1.4  1998/12/15 07:11:06  swtech01
 //	Added Serialization to all classes
 //

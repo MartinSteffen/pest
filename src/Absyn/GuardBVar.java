@@ -1,11 +1,11 @@
-package Absyn;
+package absyn;
 
 import java.io.Serializable;
 
 /**
  * One kind of guard: boolean variable.
  * @author Initially provided by Martin Steffen.
- * @version $Id: GuardBVar.java,v 1.4 1998-12-15 13:38:04 swtech00 Exp $
+ * @version $Id: GuardBVar.java,v 1.5 1998-12-15 16:33:28 swtech00 Exp $
  */
 public class GuardBVar extends Guard implements Serializable, Cloneable {
 /**
@@ -32,9 +32,12 @@ public class GuardBVar extends Guard implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: GuardBVar.java,v 1.4 1998-12-15 13:38:04 swtech00 Exp $
+//	$Id: GuardBVar.java,v 1.5 1998-12-15 16:33:28 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.4  1998/12/15 13:38:04  swtech00
+//	exception-tag hinzugefuegt um javadoc sauber durchlaufen zu lassen
+//
 //	Revision 1.3  1998/12/15 07:11:08  swtech01
 //	Added Serialization to all classes
 //

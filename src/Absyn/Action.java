@@ -1,4 +1,4 @@
-package Absyn;
+package absyn;
 
 import java.io.Serializable;
 
@@ -6,7 +6,7 @@ import java.io.Serializable;
 /**
  * Abstract class Action introduces a union type for actions of transition labels.
  * @author Initially provided by Martin Steffen.
- * @version $Id: Action.java,v 1.8 1998-12-15 13:38:00 swtech00 Exp $
+ * @version $Id: Action.java,v 1.9 1998-12-15 16:33:23 swtech00 Exp $
  */
 public abstract class  Action extends Absyn  implements Serializable, Cloneable {
 /**
@@ -19,9 +19,12 @@ public abstract class  Action extends Absyn  implements Serializable, Cloneable 
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Action.java,v 1.8 1998-12-15 13:38:00 swtech00 Exp $
+//	$Id: Action.java,v 1.9 1998-12-15 16:33:23 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.8  1998/12/15 13:38:00  swtech00
+//	exception-tag hinzugefuegt um javadoc sauber durchlaufen zu lassen
+//
 //	Revision 1.7  1998/12/15 07:11:05  swtech01
 //	Added Serialization to all classes
 //

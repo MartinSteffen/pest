@@ -1,4 +1,4 @@
-package Absyn;
+package absyn;
 
 import java.io.Serializable;
 
@@ -6,7 +6,7 @@ import java.io.Serializable;
 /**
  * One kind of transition action: generation of events.
  * @author Initially provided by Martin Steffen.
- * @version  $Id: ActionEvt.java,v 1.4 1998-12-15 13:38:00 swtech00 Exp $
+ * @version  $Id: ActionEvt.java,v 1.5 1998-12-15 16:33:23 swtech00 Exp $
  */
 public class ActionEvt extends Action implements Serializable, Cloneable {
   public SEvent event;
@@ -26,9 +26,12 @@ public class ActionEvt extends Action implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: ActionEvt.java,v 1.4 1998-12-15 13:38:00 swtech00 Exp $
+//	$Id: ActionEvt.java,v 1.5 1998-12-15 16:33:23 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.4  1998/12/15 13:38:00  swtech00
+//	exception-tag hinzugefuegt um javadoc sauber durchlaufen zu lassen
+//
 //	Revision 1.3  1998/12/15 07:11:06  swtech01
 //	Added Serialization to all classes
 //

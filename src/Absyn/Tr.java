@@ -1,4 +1,4 @@
-package Absyn;
+package absyn;
 
 import java.io.Serializable;
 
@@ -9,7 +9,7 @@ import java.awt.Point;
 /**
  *Tr.
  * @author Initially provided by Martin Steffen.
- * @version $Id: Tr.java,v 1.9 1998-12-15 13:38:08 swtech00 Exp $
+ * @version $Id: Tr.java,v 1.10 1998-12-15 16:33:32 swtech00 Exp $
  */
 public class Tr  implements Serializable, Cloneable {   // Transition
     public CPoint[]  points;
@@ -54,9 +54,12 @@ public class Tr  implements Serializable, Cloneable {   // Transition
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Tr.java,v 1.9 1998-12-15 13:38:08 swtech00 Exp $
+//	$Id: Tr.java,v 1.10 1998-12-15 16:33:32 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.9  1998/12/15 13:38:08  swtech00
+//	exception-tag hinzugefuegt um javadoc sauber durchlaufen zu lassen
+//
 //	Revision 1.8  1998/12/15 11:07:01  swtech00
 //	Point -> CPoint, die Methode clone() angepasst. (Arrays of CPoint's funktionieren auch)
 //

@@ -1,4 +1,4 @@
-package Absyn;
+package absyn;
 
 import java.io.Serializable;
 
@@ -19,9 +19,12 @@ public abstract class TrAnchor extends Absyn implements Serializable, Cloneable 
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: TrAnchor.java,v 1.6 1998-12-15 13:38:09 swtech00 Exp $
+//	$Id: TrAnchor.java,v 1.7 1998-12-15 16:33:32 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.6  1998/12/15 13:38:09  swtech00
+//	exception-tag hinzugefuegt um javadoc sauber durchlaufen zu lassen
+//
 //	Revision 1.5  1998/12/15 07:11:11  swtech01
 //	Added Serialization to all classes
 //

@@ -1,4 +1,4 @@
-package Absyn;
+package absyn;
 
 import java.io.Serializable;
 
@@ -21,9 +21,12 @@ public class Conname extends TrAnchor implements Serializable, Cloneable{
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Conname.java,v 1.5 1998-12-15 13:38:03 swtech00 Exp $
+//	$Id: Conname.java,v 1.6 1998-12-15 16:33:26 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.5  1998/12/15 13:38:03  swtech00
+//	exception-tag hinzugefuegt um javadoc sauber durchlaufen zu lassen
+//
 //	Revision 1.4  1998/12/15 07:11:08  swtech01
 //	Added Serialization to all classes
 //
