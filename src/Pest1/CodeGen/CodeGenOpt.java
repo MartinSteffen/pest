@@ -9,7 +9,7 @@ import java.io.*;
  *
  * @see CodeGenConfig
  * @author Marcel Kyas, Walter Loeser, Andre Paetzold.
- * @version $Id: CodeGenOpt.java,v 1.7 1999-02-28 17:34:08 swtech25 Exp $
+ * @version $Id: CodeGenOpt.java,v 1.8 1999-03-01 17:38:35 swtech25 Exp $
  */
 public class CodeGenOpt implements Serializable {
 
@@ -93,7 +93,7 @@ public class CodeGenOpt implements Serializable {
     traceCodeGen = true;
     verbose = false;
     twoStatecharts = false;
-    path = new String("/tmp/");
+    path = new String(".");
     name1 = new String("Automaton1");
     name2 = new String("Automaton2");
   }

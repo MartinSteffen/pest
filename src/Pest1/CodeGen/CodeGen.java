@@ -17,11 +17,11 @@ import absyn.*;
  * correctly yet.
  * <DT><STRONG>To Do</STRONG>
  *   <UL>
- *   <LI>Need to fix code for non-determinism.
+ *   <LI>Fix various bugs.
  *   </UL>
  * <DT><STRONG>Known Bugs</STRONG>
  *   <UL>
- *   <LI>No Bugs nown.  But see Prerequisites.
+ *   <LI>No Bugs known.  But see Prerequisites.
  *   </UL>
  * <A HREF="mailto:swtech25@informatik.uni-kiel.de">swtech25</A>
  * <DT><STRONG>Prerequisites:</STRONG>
@@ -47,7 +47,7 @@ import absyn.*;
  * </DL>
  *
  * @author Marcel Kyas, Walter Loeser, Andre Paetzold.
- * @version $Id: CodeGen.java,v 1.18 1999-02-17 13:15:02 swtech25 Exp $
+ * @version $Id: CodeGen.java,v 1.19 1999-03-01 17:38:34 swtech25 Exp $
  */
 public class CodeGen
 {

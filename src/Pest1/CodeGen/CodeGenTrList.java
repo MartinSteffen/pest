@@ -30,7 +30,7 @@ public class CodeGenTrList
     if (tail != null) {
       return new CodeGenTrList(head, tail.append(t));
     } else {
-      return new CodeGenTrList(t);
+      return new CodeGenTrList(head, new CodeGenTrList(t));
     }
   }
 }

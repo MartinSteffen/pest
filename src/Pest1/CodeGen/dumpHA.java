@@ -4,7 +4,7 @@
  * This class is responsible for generating our hierarchical
  * automaton.
  *
- * @version $Id: dumpHA.java,v 1.24 1999-03-01 14:36:06 swtech25 Exp $
+ * @version $Id: dumpHA.java,v 1.25 1999-03-01 17:38:36 swtech25 Exp $
  * @author Marcel Kyas
  */
 package codegen;
@@ -15,8 +15,8 @@ import java.util.*;
 
 public class dumpHA
 {
-  private static final float loadFactor = 0.7f;
-  private static final int hashTabSize = 1024;
+  private static final String endEventName =
+    dumpTables.generateSymEvent(new SEvent(dumpTables.endEvent));
   private Statechart S1;
   private Statechart S2;
   CodeGenOpt opt;
@@ -169,6 +169,22 @@ public class dumpHA
   }
 
 
+  private String dumpDefaultStateCode(int lvl, Path p, State s)
+       throws CodeGenException
+  {
+    if ((s instanceof Or_State) || (s instanceof And_State)) {
+      return util.printlnPP(lvl, "a.post_states[a." +
+			    dumpTables.generateSymState(p) + "] = true;") +
+	dumpDefaultStates(lvl, p, s);
+    } else if (s instanceof Basic_State) {
+      return util.printlnPP(lvl, "a.post_states[a." +
+			    dumpTables.generateSymState(p) + "] = true;");
+    } else {
+      return "";
+    }
+  }
+
+
   /**
    * This method will handle or-state targets.  Pass a target state as s.
    * @exception CodeGenException If chart is inconsistent.
@@ -180,35 +196,18 @@ public class dumpHA
 
     if (s instanceof Or_State) {
       Or_State os = (Or_State) s;
-      Path q = p.append(os.defaults.head.name);
-      StateList current = os.substates;
 
-      ret += util.printlnPP(lvl, "// Default of " + os.name.name);
-      while (current != null) {
-	Path r = p.append(current.head.name.name);
-
-	if (current.head instanceof Or_State ||
-	    current.head instanceof And_State) {
-	  ret += util.printlnPP(lvl, "a.post_states[a." +
-				dumpTables.generateSymState(r) + "] = true;");
-	  ret += dumpDefaultStates(lvl, r, current.head);
-	}
-	current = current.tail;
-      }
+      ret += util.printlnPP(lvl, "// Default of or state " + os.name.name);
+      ret += dumpDefaultStateCode(lvl, p.append(os.defaults.head.name),
+				  lookup(os.defaults.head, os.substates));
     } else if (s instanceof And_State) {
       And_State as = (And_State) s;
       StateList current = as.substates;
 
-      ret += util.printlnPP(lvl, "// Defaults of " + as.name.name);
+      ret += util.printlnPP(lvl, "// Defaults of and state " + as.name.name);
       while (current != null) {
-	Path q = p.append(current.head.name.name);
-
-	if (current.head instanceof Or_State ||
-	    current.head instanceof And_State) {
-	  ret += util.printlnPP(lvl, "a.post_states[a." +
-				dumpTables.generateSymState(q) + "] = true;");
-	  ret += dumpDefaultStates(lvl, q, current.head);
-	}
+	ret += dumpDefaultStateCode(lvl, p.append(current.head.name.name),
+				    current.head);
 	current = current.tail;
       }
     }
@@ -294,7 +293,7 @@ public class dumpHA
    * for various reasons.
    */
   private CodeGenTrList collectTransitions(int lvl, Path p, Or_State o,
-					  TrList tl, TrAnchor s)
+					   TrList tl, TrAnchor s)
        throws CodeGenException
   {
     TrList current = tl;
@@ -303,24 +302,26 @@ public class dumpHA
 
     while(current != null) {
       if (tr != null) {
-	tr = tr.append(new CodeGenTrans(trs++, null,
+	tr = tr.append(new CodeGenTrans(trs, null,
 					dumpTarget(lvl + 1, p, o, tl,
 						   current.head.target),
 					dumpGuard(current.head.label.guard),
 					dumpAction(lvl + 1,
-						   current.head.label.action)
-					)
-		       );
+						   current.head.label.action)));
+	if (opt.traceCodeGen)
+	  System.out.println("Collected transition " + trs);
+	++trs;
       } else {
-	tr = new CodeGenTrList(new CodeGenTrans(trs++, null,
+	tr = new CodeGenTrList(new CodeGenTrans(trs, null,
 						dumpTarget(lvl + 1, p, o, tl,
 							   current.head.target),
 						dumpGuard(current.head.label.guard),
 						dumpAction(lvl + 1,
-							   current.head.label.action)
-						)
-			       );
-	}
+							   current.head.label.action)));
+	if (opt.traceCodeGen)
+	  System.out.println("Collected transition " + trs);
+	++trs;
+      }
       current = current.tail;
     }
     return tr;
@@ -352,16 +353,12 @@ public class dumpHA
   private String dumpNonDet(int lvl)
   {
     String ret = new String();
-    ret += util.printlnPP(lvl, "trans = 0") +
+    ret += util.printlnPP(lvl, "trans = 0;") +
       util.printlnPP(lvl, "for (i = 0; i < enabled.length; ++i)") +
       util.printlnPP(lvl + 1, "if (enabled[i])") +
       util.printlnPP(lvl + 2, "++trans;") +
       util.printlnPP(lvl, "if (trans == 0) {") +
       util.printlnPP(lvl + 1, "selected = -1; // Force default") +
-      util.printlnPP(lvl, "} else if (trans == 1) {") +
-      util.printlnPP(lvl + 1, "for (selected = 0; !enabled[selected]; " +
-		     "++selected)") +
-      util.printlnPP(lvl + 2, ";") +
       util.printlnPP(lvl, "} else {");
     if (opt.nondetFlavor == opt.takeFirst) {
       ret += util.printlnPP(lvl + 1, "for (selected = 0; " +
@@ -369,8 +366,14 @@ public class dumpHA
 			    "++selected)") +
 	util.printlnPP(lvl + 2, ";");
     } else if (opt.nondetFlavor == opt.random) {
-      // Other cases go here ...
+      ret += util.printlnPP(lvl + 1, "for (selected = " +
+			    "randomIntGenerator(0, enabled.length - 1); " +
+                            "!enabled[selected]; " +
+
+                            "selected = (selected + 1) % enabled.length)") +
+	util.printlnPP(lvl + 2, ";");
     }
+    ret += util.printlnPP(lvl, "}");
     return ret;
   }
 
@@ -380,10 +383,8 @@ public class dumpHA
    */
   private String dumpStutter(int lvl, Path p)
   {
-    return util.printlnPP(lvl, "// no outgoing transitions found") +
-      util.printlnPP(lvl,"// Need to stutter here.") +
-      util.printlnPP(lvl, "a.post_states[a." + dumpTables.generateSymState(p) +
-		     "] = true;");
+    return util.printlnPP(lvl, "a.post_states[a." +
+			  dumpTables.generateSymState(p) + "] = true;");
   }
 
 
@@ -395,12 +396,14 @@ public class dumpHA
     String ret = new String();
     CodeGenTrList current = tr;
 
-    ret += util.printlnPP(lvl, "switch (trans) {");
+    ret += util.printlnPP(lvl, "switch (selected) {");
     while (current != null) {
-      ret += util.printlnPP(lvl, "case " + tr.head.number + ":") +
-	tr.head.action +
-	tr.head.target +
+      ret += util.printlnPP(lvl, "case " + current.head.number + ":") +
+	current.head.action +
+	current.head.target +
 	util.printlnPP(lvl + 1, "break;");
+      if (opt.traceCodeGen)
+	System.out.println("Case " + current.head.number);
       current = current.tail;
     }
     ret += util.printlnPP(lvl, "default:") +
@@ -469,9 +472,8 @@ public class dumpHA
 
     f.write(util.printlnPP(lvl, "// Or State " + s.name.name));
     while (current != null) {
-      q = p.append(current.head.name.name);
       f.write(util.printlnPP(lvl, "if (a.pre_states[a." +
-			     dumpTables.generateSymState(q) +
+			     dumpTables.generateSymState(p) +
 			     "]) {"));
       f.write(dumpTransitions(lvl + 1, p, s, s.trs, current.head.name));
       f.write(util.printlnPP(lvl, "} else"));
@@ -565,15 +567,12 @@ public class dumpHA
 	    util.printlnPP(1, " * of the hierarchical automaton") +
 	    util.printlnPP(1, " */") +
 	    util.printlnPP(1, "public void step(SymbolTable a) {") +
-	    util.printlnPP(1, "// Handle endEvent first") +
-	    util.printlnPP(2, "if ( a.pre_events[a." +
-			   dumpTables.generateSymEvent(new SEvent(
-								  dumpTables.endEvent
-								  )) +
-			   "]) {") +
+	    util.printlnPP(2, "int trans = 0;") +
+	    util.printlnPP(2, "int selected = 0;") +
+	    util.printlnPP(2, "int i = 0;") + "\n" +
+	    util.printlnPP(2, "if ( a.pre_events[a." + endEventName + "]) {") +
 	    util.printlnPP(3, "// Stutter in this state") +
-	    util.printlnPP(3, "a.post_events[a." + dumpTables.generateSymEvent(
-									       new SEvent(dumpTables.endEvent)) + "] = true;") +
+	    util.printlnPP(3, "a.post_events[a." + endEventName + "] = true;")+
 	    util.printlnPP(3, "return;") +
 	    util.printlnPP(2, "}"));
     if (s.state instanceof And_State) {
@@ -583,9 +582,8 @@ public class dumpHA
     } else if (s.state instanceof Basic_State) {
       dumpBasicState(f, 2, p, (Basic_State) s.state);
     } else {
-      throw(new CodeGenException(
-				 "Cannot determine type of state."
-				 ));
+      throw(new CodeGenException("dumpAutomaton(): " +
+				 "Cannot determine type of state."));
     }
     f.write(
 	    util.printlnPP(1, "}") +
@@ -611,12 +609,12 @@ public class dumpHA
       DT.dump(fw);
       fw.flush();
       fw.close();
-      fw = new FileWriter(opt.path + "/" + opt.name1);
+      fw = new FileWriter(opt.path + "/" + opt.name1 + ".java");
       dumpAutomaton(fw, opt.name1, S1);
       fw.flush();
       fw.close();
       if (opt.twoStatecharts && S2 != null) {
-	fw = new FileWriter(opt.path + "/" + opt.name2);
+	fw = new FileWriter(opt.path + "/" + opt.name2 + ".java");
 	dumpAutomaton(fw, opt.name2, S2);
 	fw.flush();
 	fw.close();
