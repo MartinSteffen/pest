@@ -43,38 +43,40 @@ import util.*;
  * die mit folgenden Checks ueberprueft werden koennen:
  *
  * <ul>
- * <li> syntaxcheck
- * <li> 
+ * <li> SyntaxCheck-Aufruf:
+ * <ul>
+ * <li> Initialisierung:   ModelCheck mc = new ModelCheck(GUI_Referenz)
+ * <li> Aufruf des Checks: boolean = mc.checkModel(Statechart)
+ * </ul>
+ * <li> Der Aufruf erfolgt allerdings nicht direkt von uns, sondern wird <b>vor</b> unserem
+ * Aufruf von der GUI durchgefuehrt.
  * </ul>
  *
  *
  * <DL COMPACT>
  *
  * <DT><STRONG>
- * STATUS
+ * STATUS</strong><p>
  * Der Simulator ist noch nicht ablauffaehig, da alle Teilstuecke eng miteinander verzahnt sind und so
- * die fehlenden Features einen Ablauf verhindern.
- * </STRONG>
+ * die fehlenden Features einen Ablauf verhindern.<p>
  *
  * <DT><STRONG>
- * TODO.
+ * TODO: </strong>
  * <ul>
  * <li> Eingaben in den Fenstern fuer BVars und Events werden nicht ausgewertet (Deadline: 11.01.)
  * <li> Interlevel-Konflikte werden noch nicht aufgeloest (Deadline: < 11.01.)
  * <li> Ablaufsteuerung ( 1 Schritt und erster Schritt wegen vorherigem Punkt nicht korrekt) (Deadline: 11.01.)
  * </ul>
- * 
- * </STRONG>
+ * <p> 
  * <DT><STRONG>
- * BEKANNTE FEHLER.
+ * BEKANNTE FEHLER:</strong>
  * <ul>
  * <li> Die clone()-Funktion der Absyn erzeugt Fehlermeldungen, die einen fehlerfreien Lauf bisher unmoeglich machen.
  * <li> Fehler bei den Fenstern
  * </ul>
- * </STRONG>
- *
+ * <p>
  * <DT><STRONG>
- * TEMPORÄRE FEATURES.
+ * TEMPORÄRE FEATURES:</strong>
  * <ul>
  * <li> Ueber die GUI:
  * <ul>
@@ -82,9 +84,9 @@ import util.*;
  * <li> Statusausgaben zum Ueberpruefen diverser Features (z.B. welche Objekte gehighlighted werden)
  * </ul>
  * </ul>
+ * <p>
  * Ein Abstellen der temporaeren Features ist bisher nur durch Auskommentieren im Sourcecode moeglich, in der
  * naechsten Version wird es eine DEBUG-Einstellung geben, die ein An- und Ausstellen ermoeglichen.
- * </STRONG>
  */
 
 public class Simu extends Object{
@@ -533,7 +535,7 @@ private boolean make_action(Action aktion) {
 	return false;
 }
 /**
- * This method was created in VisualAge.
+ * Diese Methode fuehrt n Simulationsschritte aus
  * @param n int
  */
 protected boolean makeNStep(int n) {
