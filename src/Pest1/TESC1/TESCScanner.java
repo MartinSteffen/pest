@@ -11,6 +11,8 @@ class TESCScanner {
 
     private int ln;  // Zeilennummern
 
+    private boolean pb = false;
+
     private int lastb =0;     // Steuervar für readStream
     private StringBuffer lah; // LookAhead - Buffer
 
@@ -27,7 +29,8 @@ class TESCScanner {
     }
 
     protected TOKEN nextToken() throws IOException {
-	scan_forward();
+	if (!pb) scan_forward();
+	else pb = false;
 
 	return token;
     }
@@ -37,6 +40,10 @@ class TESCScanner {
 	return token;
     }
 
+    // bei nächstem nextToken() das jetztige TOKEN liefern
+    protected void pushback() {
+	pb = true;
+    }
 
     // private-Methoden nur für TESCScanner
 
@@ -65,7 +72,6 @@ class TESCScanner {
     }
 
     // zusätzliche Tokentrenner
-    // die Funktion kann teil von is_partOfSep werden <- ist jetzt so
     private boolean is_sep(String s) {
 	boolean ret = false;
 
@@ -74,7 +80,13 @@ class TESCScanner {
 	else if (s.compareTo((String)":") == 0)   ret = true;
 	else if (s.compareTo((String)"(") == 0)   ret = true;
 	else if (s.compareTo((String)")") == 0)   ret = true;
-	
+	else if (s.compareTo((String)"!") == 0)   ret = true;
+
+	else if (s.compareTo((String)"<=>") == 0 )  ret = true;
+	else if (s.compareTo((String) "=>") == 0 )  ret = true;
+	else if (s.compareTo((String) "&&") == 0)   ret = true;
+	else if (s.compareTo((String) "||") == 0)   ret = true;
+	else if (s.compareTo((String) ":=") == 0)   ret = true;
 
 	return ret;
     }
@@ -90,6 +102,7 @@ class TESCScanner {
 	else if (s.compareTo((String)":") == 0)   ret = true;
 	else if (s.compareTo((String)"(") == 0)   ret = true;
 	else if (s.compareTo((String)")") == 0)   ret = true;
+	else if (s.compareTo((String)"!") == 0)   ret = true;	
 
 	// Mehstellige Trenner
 	else if (s.regionMatches(0, (String)"<=>", 0, s.length()))   ret = true;
@@ -120,12 +133,21 @@ class TESCScanner {
 			b = is.read();
 			lah.append((char)b);
 		    }
-		    
+		    	
 		    // Es wird ein Char weiter gelesen, deshalb dazwischen ein Space
 		    lah.insert(lah.length()-1, ' ');
-		    		   
-		    //nächstes char soll Space sein
-		    b = ' ';
+
+		    StringBuffer sb = new StringBuffer(lah.toString());
+		    sb.setLength(sb.length()-2);
+		    
+		    if(is_sep(sb.toString())) { 		   
+			//nächstes char soll Space sein
+			b = ' ';
+		    }
+		    else {
+			// z.B. trans < transitions
+			lah.setLength(0);
+		    }
 		}
 		else lah.setLength(0);
 	}
@@ -246,19 +268,138 @@ class TESCScanner {
 	
 	else if (s.compareTo((String)"connectors") == 0)  i = vTOKEN.CONS;
 	else if (s.compareTo((String)":=") == 0)          i = vTOKEN.BASSIGN;
-	else if (s.compareTo((String)"not") == 0)         i = vTOKEN.NOT;
+	else if (s.compareTo((String)"!") == 0)           i = vTOKEN.NOT;
+	else if (s.compareTo((String)"defcon") == 0)      i = vTOKEN.DEFCON;
 
 	else i = vTOKEN.IDENT;
 	
 	return i;
+    }
+
+    protected String getString( int i) {
+	String s;
+
+	switch(i) {
+	case -1:
+	    s = new String("EOF");
+	    break;
+	case 0:
+	    s = new String("DUMMY");
+	    break;
+	case 1:
+	    s = new String("basic");
+	    break;
+	case 2:   
+	    s = new String("or");
+	    break;
+	case 3:
+	    s = new String("and");
+	    break;
+	case 4:
+	    s = new String("from");
+	    break;
+	case 5:
+	    s = new String("on");
+	    break;
+	case 6: 
+	   s = new String("to");
+	    break; 
+	case 7:
+	    s = new String("do");
+	    break;
+	case 8:
+	    s = new String("end");
+	    break;
+	case 9:
+	    s = new String("true");
+	    break; 
+	case 10:   
+	    s = new String("false");
+	    break;
+	case 11:
+	    s = new String("(");
+	    break;
+	case 12:
+	    s = new String(")");
+	    break;
+	case 13:
+	    s = new String(":");
+	    break;
+	case 14:
+	    s = new String(";");
+	    break;
+	case 15:
+	    s = new String("events");
+	    break;
+	case 16:
+	    s = new String(",");
+	    break;
+	case 17:
+	    s = new String("<=>");
+	    break;
+	case 18:   
+	    s = new String("=>");
+	    break;
+	case 19:
+	    s = new String("&&");
+	    break;
+	case 20:
+	    s = new String("||");
+	    break;
+	case 21:
+	    s = new String("in");
+	    break;
+	case 22: 
+	    s = new String("entered");
+	    break;
+	case 23:
+	    s = new String("exited");
+	    break;
+	case 24:
+	    s = new String("~");
+	    break;
+	case 25:
+	    s = new String("undef");
+	    break;
+	case 26:   
+	    s = new String("transitions");
+	    break;
+	case 27:
+	    s = new String("bvars");
+	    break;
+	case 29:
+	    s = new String("cons");
+	    break;
+	case 30:
+	    s = new String(":=");
+	    break;
+	case 31:
+	    s = new String("!");
+	    break;
+	case 32:
+	    s = new String("defcon");
+	    break;
+
+	case 40:
+	    s = new String("identifier");
+	    break;
+
+	default:
+	    s = new String("unbekannt");
+	}
+
+	return s;
     }
     
 }
 
 
 /* TESCScanner
- * $Id: TESCScanner.java,v 1.4 1998-12-07 20:10:17 swtech13 Exp $
+ * $Id: TESCScanner.java,v 1.5 1998-12-14 23:58:09 swtech13 Exp $
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  1998/12/07 20:10:17  swtech13
+ * Anpassung der Schnittstelle
+ *
  * Revision 1.3  1998/12/07 15:13:23  swtech13
  * Scanner um Kommentare erweitert, Schnittstelle um Konstruktor mit
  * GUIInterface Parameter erweitert.

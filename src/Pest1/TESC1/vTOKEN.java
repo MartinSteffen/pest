@@ -38,12 +38,16 @@ class vTOKEN {
     static final int CONS        = 29;
     static final int BASSIGN     = 30;
     static final int NOT         = 31;
+    static final int DEFCON      = 32;
 
     // Nichtschlüsselwörter
     static final int IDENT    = 40; 
 }
 
 /* vTOKEN
- * $Id: vTOKEN.java,v 1.1 1998-12-07 14:02:27 swtech13 Exp $
+ * $Id: vTOKEN.java,v 1.2 1998-12-14 23:58:09 swtech13 Exp $
  * $Log: not supported by cvs2svn $
+ * Revision 1.1  1998/12/07 14:02:27  swtech13
+ * Tokenliste
+ *
  */
