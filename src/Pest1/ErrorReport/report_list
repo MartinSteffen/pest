@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.73 1999-02-08 09:14:44 swtech24 Exp $
+//	$Id: report_list,v 1.74 1999-02-08 10:33:29 swtech24 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -768,7 +768,7 @@ deswegen, weil Codegen die Default-Namen nicht vertraegt.
 #Number:        53
 #Autor:         Bernd Weber bwe
 #Subject:       Editor: erzeugt Interlevel-Transitionen in AND-Sates
-#Status:        reported
+#Status:        fixed
 #Description:
 
 Man erzeuge einen AND-State und in einer der Komponenten zwei Basic-Zustaende
