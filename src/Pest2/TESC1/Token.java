@@ -4,50 +4,60 @@ package tesc1;
  * Tokenklasse.
  * <p>
  * @author Michael Sülzer, Christoph Schütte.
- * @version  $Id: Token.java,v 1.4 1999-01-17 17:13:04 swtech20 Exp $
+ * @version  $Id: Token.java,v 1.5 1999-02-07 11:54:47 swtech20 Exp $
  */   
 
 class Token implements Cloneable {
 
-    public static final int token_count = 31;
+    public static final int token_count = 36;
 
-    public static final int TOK_BADCHAR    = -2;
-    public static final int TOK_EOF        = -1;
-    public static final int TOK_IDENTIFIER =  0;
+    public static final int TOK_STRINGERROR = -4;
+    public static final int TOK_STRING      = -3;
+    public static final int TOK_BADCHAR     = -2;
+    public static final int TOK_EOF         = -1;
+    public static final int TOK_IDENTIFIER  =  0;
 
-    public static final int TOK_DEFAULT    =  1;
-    public static final int TOK_ENTERED    =  2;
-    public static final int TOK_EXITED     =  3;
-    public static final int TOK_BASIC      =  4;
-    public static final int TOK_FALSE      =  5;
-    public static final int TOK_UNDEF      =  6;
-    public static final int TOK_FROM       =  7;
-    public static final int TOK_TRUE       =  8;
-    public static final int TOK_AND        =  9;
-    public static final int TOK_CON        = 10;
-    public static final int TOK_END        = 11;
-    public static final int TOK_IN         = 12;
-    public static final int TOK_DO         = 13;
-    public static final int TOK_ON         = 14;
-    public static final int TOK_OR         = 15;
-    public static final int TOK_TO         = 16;
-    public static final int TOK_ANDOP      = 17;
-    public static final int TOK_OROP       = 18;
-    public static final int TOK_NOTOP      = 19;
-    public static final int TOK_ASSIGN     = 20;
-    public static final int TOK_IMPLIES    = 21;
-    public static final int TOK_EQUIV      = 22;
-    public static final int TOK_KOMMA      = 23;
-    public static final int TOK_LPAR       = 24;
-    public static final int TOK_RPAR       = 25;
-    public static final int TOK_VAR        = 26;
-    public static final int TOK_EVENT      = 27;
-    public static final int TOK_DOT        = 28;
-    public static final int TOK_LSPAR      = 29;
-    public static final int TOK_RSPAR      = 30; 
-    public static final int TOK_SLASH      = 31;
+    public static final int TOK_DEFAULT     =  1;
+    public static final int TOK_ENTERED     =  2;
+    public static final int TOK_EXITED      =  3;
+    public static final int TOK_BASIC       =  4;
+    public static final int TOK_FALSE       =  5;
+    public static final int TOK_UNDEF       =  6;
+    public static final int TOK_FROM        =  7;
+    public static final int TOK_TRUE        =  8;
+    public static final int TOK_AND         =  9;
+    public static final int TOK_CON         = 10;
+    public static final int TOK_END         = 11;
+    public static final int TOK_IN          = 12;
+    public static final int TOK_DO          = 13;
+    public static final int TOK_ON          = 14;
+    public static final int TOK_OR          = 15;
+    public static final int TOK_TO          = 16;
+    public static final int TOK_ANDOP       = 17;
+    public static final int TOK_OROP        = 18;
+    public static final int TOK_NOTOP       = 19;
+    public static final int TOK_ASSIGN      = 20;
+    public static final int TOK_IMPLIES     = 21;
+    public static final int TOK_EQUIV       = 22;
+    public static final int TOK_KOMMA       = 23;
+    public static final int TOK_LPAR        = 24;
+    public static final int TOK_RPAR        = 25;
+    public static final int TOK_VAR         = 26;
+    public static final int TOK_EVENT       = 27;
+    public static final int TOK_DOT         = 28;
+    public static final int TOK_LSPAR       = 29;
+    public static final int TOK_RSPAR       = 30; 
+    public static final int TOK_SLASH       = 31;
+    public static final int TOK_REF         = 32;
+    public static final int TOK_AS           = 33;
+    public static final int TOK_TESC         = 34;
+    public static final int TOK_PEST         = 35;
+    public static final int TOK_PEST_NOCOORD = 36;
 
+
+    public static final Token StringError  = new Token(TOK_STRINGERROR);
     public static final Token BadChar      = new Token(TOK_BADCHAR);
+    public static final Token String       = new Token(TOK_STRING);
     public static final Token EOF          = new Token(TOK_EOF, "<EOF>");
     public static final Token Identifier   = new Token(TOK_IDENTIFIER, "<IDF>");
 
@@ -82,8 +92,15 @@ class Token implements Cloneable {
     public static final Token LSPar        = new Token(TOK_LSPAR  , "[");
     public static final Token RSPar        = new Token(TOK_RSPAR  , "]");
     public static final Token Slash        = new Token(TOK_SLASH  , "/");
+    public static final Token KeyRef       = new Token(TOK_REF    , "ref");
+    public static final Token KeyAs        = new Token(TOK_AS     , "as");
+    public static final Token KeyTesc        = new Token(TOK_TESC     , "tesc");
+    public static final Token KeyPest        = new Token(TOK_PEST     , "pest");
+    public static final Token KeyPestNoCoord = new Token(TOK_PEST_NOCOORD , "pest_nocoord");
+
       
     public static final Token token_list[] = {
+        KeyPestNoCoord,
         KeyDefault,
         KeyEntered,
         KeyExited,
@@ -92,11 +109,15 @@ class Token implements Cloneable {
         KeyFalse,
         KeyUndef,
         KeyFrom,
+        KeyPest,
+	KeyTesc,
         KeyTrue,
         KeyAnd,
         KeyCon,
         KeyEnd,
+        KeyRef,
         KeyVar,
+        KeyAs,
         KeyIn,
         KeyDo,
         KeyOn,
@@ -178,6 +199,9 @@ class Token implements Cloneable {
 //      -----------               
 //
 //      $Log: not supported by cvs2svn $
+//      Revision 1.4  1999/01/17 17:13:04  swtech20
+//      Neues Token TOK_SLASH fuer TLabel.caption. Kommentarzeichen jetzt //.
+//
 //      Revision 1.3  1999/01/03 21:48:21  swtech20
 //      Implementierung des Parsers
 //
