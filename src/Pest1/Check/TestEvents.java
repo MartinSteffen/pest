@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestEvents.java,v 1.11 1999-01-18 08:00:35 swtech11 Exp $
+ *  @version  $Id: TestEvents.java,v 1.12 1999-01-18 14:15:21 swtech11 Exp $
  */
 /** Diese Testklasse testet, ob alle Events deklariert worden sind, 
     <br>ob die deklarierten eindeutig sind und ob sie alle verwendet werden.*/
@@ -43,8 +43,9 @@ ASoll=new Vector();
 
   void erstelle_Ist() {
      for(SEventList e=sc.events; e!=null;e=e.tail){
-        if (Ist.contains(e.head.name)) {msg.addError(200,"Event: "+e.head.name);}
-          else {Ist.addElement(e.head.name);};}
+        if (equalString(Ist, e.head.name)) {msg.addError(200,"Event: "+e.head.name);}
+          else {  if (e.head.name.equals("")) {msg.addError(206,"");};
+      Ist.addElement(e.head.name);};}
         };
 
 /** Die Methode ueberprueft saemtliche Transitionen auf eine Verwendung von Events.

@@ -2,7 +2,7 @@ package check;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: ErrorAndWarningCodes.java,v 1.25 1999-01-18 08:00:32 swtech11 Exp $
+ *  @version  $Id: ErrorAndWarningCodes.java,v 1.26 1999-01-18 14:15:19 swtech11 Exp $
  */
 class ErrorAndWarningCodes {
   ErrorAndWarningCodes() {
@@ -44,6 +44,7 @@ class ErrorAndWarningCodes {
       case 103: {_s = "Der Boolsche Ausdruck im Guard der Transition laesst sich nicht spezifizieren."; break;}
       case 104: {_s = "Die Boolsche Variable wird in keinem Action veraendert."; break; }
       case 105: {_s = "Kein Guard fragt den Wert der boolschen Variable ab."; break; }
+      case 106: {_s = "Der Name des BVars ist ein leerer String."; break; }
 
       case 110: {_s = "Die Statechart enthält keine Liste der booleschen Variablen."; break; }
       
@@ -53,6 +54,7 @@ class ErrorAndWarningCodes {
       case 203: {_s = "Der Pathname in einem GuardComppath ist nicht vorhanden."; break; }
       case 204: {_s = "Das Guardevent wird nie von einem Actionevent ausgeloest.  "; break; }
       case 205: {_s = "Das Actionevent loest kein  Guardevent aus."; break; }
+      case 206: {_s = "Der Name des Events ist ein leerer String."; break; }
       case 210: {_s = "Die Statechart enthält keine Eventliste."; break; }
 
       case 300: {_s = "Mehrfache Definition von Statename"; break; }

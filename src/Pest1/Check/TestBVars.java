@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestBVars.java,v 1.11 1999-01-18 08:00:34 swtech11 Exp $
+ *  @version  $Id: TestBVars.java,v 1.12 1999-01-18 14:15:20 swtech11 Exp $
  */
 
 /** Diese Testklasse testet, ob alle BVars deklariert worden sind, 
@@ -45,8 +45,10 @@ class TestBVars extends ModelCheckBasics{
   void erstelle_Ist() {
          
      for(BvarList b=sc.bvars; b!=null; b=b.tail){
-       if (Ist.contains(b.head.var)) { msg.addError(100,"BVar: "+b.head.var);}
-                                else {Ist.addElement(b.head.var);};
+       if (equalString(Ist, b.head.var)) { msg.addError(100,"BVar: "+b.head.var);}
+                                else {
+				    if (b.head.var.equals("")) {msg.addError(106,"");};
+                             Ist.addElement(b.head.var);};
         }
    };
     /** Die Methode ueberprueft saemtliche Transitionen auf eine Verwendung von BVars.
