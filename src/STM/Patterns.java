@@ -1,4 +1,4 @@
-package PEST1.STM;
+package STM;
 
 interface Patterns {
 

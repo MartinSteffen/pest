@@ -1,8 +1,7 @@
 HTMLDIR = Docu
 DOCCFLAGS = -author -version -d $(HTMLDIR)
-DOCC = javadoc $(DOCCFLAGS) $(CLASSES)
-CLASSES =-classpath $$CLASSPATH:./HAImport/PerlTools.jar
-CC = javac -depend $(CLASSES) 
+DOCC = javadoc $(DOCCFLAGS) 
+CC = javac -depend  
 
 all:	classes
 
