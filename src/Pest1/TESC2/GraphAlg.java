@@ -1,5 +1,6 @@
 //===============================================================
 //
+//               file     :    GraphAlg.java
 //               group    :    4
 //               account  :    swtech14
 //               member   :    Eike Schulz & Martin Poerksen
