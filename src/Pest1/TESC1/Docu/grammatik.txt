@@ -1,6 +1,12 @@
-/* Grammatik fuer Tesc - $Id: grammatik.txt,v 1.6 1999-01-11 20:11:29 swtech13 Exp $ 
+/* Grammatik fuer Tesc - $Id: grammatik.txt,v 1.7 1999-01-13 18:44:50 swtech13 Exp $ 
  *
  * $Log: not supported by cvs2svn $
+ * Revision 1.6  1999/01/11 20:11:29  swtech13
+ * Grammatik eingeschraenkt, so dass Variablentypen eindeutig aus dem Kontext
+ * bestimmt werden koennen.
+ *
+ * Erste Doku.
+ *
  * Revision 1.5  1999/01/06 15:00:26  swtech13
  * kleiner Fehler verbessert connectors => cons
  *
@@ -90,7 +96,7 @@
 <GUARD>	       ::= <E_GUARD> [ <B_GUARD> ]
 
 # Events
-<GUARD_E>      ::= <GUARD_E> => <O_COMPGUARD_E> | <GUARD_E> <=> <O_COMPGUARD_E> | <O_COMPGUARD_E> | <EMPTYSTR> | <COMPPATH> | <STRING>
+<GUARD_E>      ::= <GUARD_E> => <O_COMPGUARD_E> | <GUARD_E> <=> <O_COMPGUARD_E> | <O_COMPGUARD_E> | <EMPTYSTR> |  <STRING>
 
 <O_COMPGUARD_E>  ::= <O_COMPGUARD_E> || <A_COMPGUARD_E> | <A_COMPGUARD_E>
 
@@ -102,7 +108,7 @@
 
 
 #Bvars
-<GUARD_B>      ::= <GUARD_B> => <O_COMPGUARD_B> | <GUARD_B> <=> <O_COMPGUARD_B> | <O_COMPGUARD_B> | <EMPTYSTR> | <STRING>
+<GUARD_B>      ::= <GUARD_B> => <O_COMPGUARD_B> | <GUARD_B> <=> <O_COMPGUARD_B> | <O_COMPGUARD_B> | <EMPTYSTR> | <COMPPATH> | <STRING>
 
 <O_COMPGUARD_B>  ::= <O_COMPGUARD_B> || <A_COMPGUARD_B> | <A_COMPGUARD_B>
 
