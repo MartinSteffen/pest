@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	--------------
 //
-//	$Id: report_list,v 1.61 1999-02-11 15:54:49 swtech00 Exp $
+//	$Id: report_list,v 1.62 1999-02-11 17:42:37 swtech23 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -386,7 +386,7 @@ java.lang.NullPointerException:
 #Number:	25.1
 #Autor:		Bernd Weber bwe
 #Subject:	Check: erkennt Interlevel-Transition nicht.
-#Status:	reported
+#Status:	fixed
 #Description:
 
 Erzeugt man einen Or-State und einen Basic-State wie in Nr. 24 und zieht eine
@@ -635,7 +635,7 @@ jedoch nicht und verbrt die gesamte Rechenzeit :-( .
 #Number:	40
 #Autor:		Erich Mikk
 #Subject:	Check erkennt Undet_Guard nicht
-#Status:	reported
+#Status:	fixed
 #Description:
 
 Am 11.2. zurück:
@@ -662,7 +662,7 @@ das Menu fr den Zustand Nondet.
 #Number:	42
 #Autor:		Erich Mikk erm
 #Subject:	TESC2 berechnet falsche Koordinaten, oder check spinnt?
-#Status:	reported
+#Status:	fixed
 #Description:
 
 TESC-Import /home/swtech12/Examples/PC/a1.pest2.tesc
