@@ -1,5 +1,5 @@
 Grammatik von TESC
-$Id: Grammatik,v 1.4 1999-02-07 11:54:18 swtech20 Exp $
+$Id: Grammatik,v 1.5 1999-02-11 09:12:35 swtech20 Exp $
 -----------------------------------------------------------------------
 
 Tokenklassen für den Scanner
@@ -51,8 +51,6 @@ AND_SUBSTATES     ::= OR_STATE {AND_SUBSTATES} | BASIC_STATE {AND_SUBSTATES} | R
 OR_STATE          ::= "or"  IDENTIFIER
                             OR_SUBSTATES CONNECTORS TRANSITIONS DEFAULTCONS
                       "end" IDENTIFIER
-
-OR_SUBSTATES      ::= STATE {OR_SUBSTATES}
 
 OR_SUBSTATES      ::= STATE {OR_SUBSTATES}
 
@@ -126,8 +124,11 @@ Legende
 -----------------------------------------------------------------------
 
 $Log: not supported by cvs2svn $
+Revision 1.4  1999/02/07 11:54:18  swtech20
+- aktualisiert
+
 Revision 1.3  1999/01/20 17:32:37  swtech20
 - Grammatik und Doku aktualisiert
 
 Revision 1.2  1999/01/11 12:14:22  swtech20
-Updates.
+- Updates

@@ -1,13 +1,17 @@
 Sprachdefinition von TESC - Textuelle Statecharts
-
+$Id: Description,v 1.3 1999-02-11 09:12:35 swtech20 Exp $
+----------------------------------------------------------------------------------
 
 Schematische Darstellung
+------------------------
 
    -------   +---------+   -------   +--------+   ------------    
   | Datei |--| Scanner |--| Token |--| Parser |--| Syntaxbaum |
    -------   +---------+   -------   +--------+   ------------
 
+
 Sprachbeschreibung
+------------------
 
 Wie man aus den Beispielen erkennt, ist die Struktur von TESC streng hierarchisch
 und eng an die abstrakte Syntax angelehnt.
@@ -27,6 +31,7 @@ Kommentare werden mit Semikolon begonnen und reichen bis zu Zeilenende.
 
 
 Struktur von TESC an Beispielen
+-------------------------------
 
 Beispiel 1
 
@@ -86,14 +91,26 @@ Beispiel 3
     from C1 to P1 on A 
   end Main
 
+Beispiel 4
+
+  or root
+    ref a   in "ex1.tesc" as tesc
+    ref b_1 in "ex2.pest" as pest
+    ref b_2 in "ex3.pest" as pest_nocoord
+
+    default a
+  end root
+
 
 Schlüsselwortliste
+------------------
 
 Diese Worte duerfen in einem Statechart nirgends als Bezeichner, Name oder Operator
 auftauchen. Definiert sind die Schluesselworte in util.Keyword.java.
 
 
 Transitionsbeschriftungen
+-------------------------
 
 Der Aufbau der Beschriftungen ist an die Syntax von Statemate angelehnt, i.e.
 
@@ -103,13 +120,33 @@ In EventExpr duerfen nur Events verwendet werden und in BvarExpr analog nur
 Bvars. 
 
 
-Deklaration
+Deklarationen
+-------------
 
 Es gibt zwei Moeglichkeiten Events und Bvars einzufuehren.
 
 1. Explizite Deklaration
-   Nach den Schluesselworten var bzw. event folgt eine Liste von Bezeichnern,
-   zu denen dann entsprechend im weiteren Parse-Verlauf bezuggenommen wird.
-
+Nach Den Schluesselworten Var Bzw. Event Folgt Eine Liste Von Bezeichnern,
+Zu Denen Dann Entsprechend Im Weiteren Parse-Verlauf Bezuggenommen Wird.
+    
 2. Implizite Deklaration
-   Der Typ eines Bezeichners wird aus dem Kontext heraus ermittelt.
+Der Typ eines Bezeichners wird aus dem Kontext heraus ermittelt.
+    
+
+Externe Referenzen
+------------------
+
+Drei Typen von externen Referenzen werden untersuetzt
+
+1. TEST-Statecharts
+2. PEST-Statecharts mit Koordinaten
+3. PEST-Statecharts ohne Koordinaten
+
+Syntax
+
+  ref IDENTIFIER in STRING as {TESC,PEST,PEST_NOCOORD}
+
+
+----------------------------------------------------------------------------------
+
+$Log: not supported by cvs2svn $
