@@ -51,25 +51,20 @@ import absyn.*;
  * </DL>
  *
  * @author Marcel Kyas, Walter Loeser, Andre Paetzold.
- * @version $Id: CodeGen.java,v 1.16 1999-01-25 14:22:18 swtech25 Exp $
+ * @version $Id: CodeGen.java,v 1.17 1999-02-12 15:13:06 swtech25 Exp $
  */
 public class CodeGen
 {
-	/**
-	 * This is the default option setting
-	 */
-	final int defaultOptions = 0;
-
 	/**
 	 * This method will cause the CodeGenerator to do
 	 * its work.  It will return after successful completion.
 	 *
 	 * @exception CodeGenException if code generation fails.
 	 */
-	public CodeGen(String path, Statechart statechart)
+	public CodeGen(Statechart s, CodeGenOpt o)
 		throws CodeGenException
 	{
-		Generate(path, statechart);
+		this(s, null, o);
 	}
 
         /**
@@ -79,10 +74,10 @@ public class CodeGen
 	 *
 	 * @exception CodeGenException if code generation fails.
          */
-        public CodeGen(String path, Statechart statechart, int options)
+        public CodeGen(Statechart s1, Statechart s2)
 		throws CodeGenException
         {
-                Generate(path, statechart);
+                this(s1, s2, new CodeGenOpt());
         }
  
 	/**
@@ -92,10 +87,10 @@ public class CodeGen
 	 *
 	 * @exception CodeGenException if code generation fails.
 	 */
-	public void Generate(String path, Statechart statechart)
+	public CodeGen(Statechart s)
 		throws CodeGenException
 	{
-		Generate(path, statechart, new CodeGenOpt());
+		this(s, null, new CodeGenOpt());
 	}
 
         /**
@@ -106,10 +101,10 @@ public class CodeGen
 	 *
 	 * @exception CodeGenException if code generation fails.
          */
-        public void Generate(String path, Statechart statechart, CodeGenOpt o)
+        public CodeGen(Statechart s1, Statechart s2, CodeGenOpt o)
 		throws CodeGenException
         {
-		dumpHA h = new dumpHA(statechart, path);
+		dumpHA h = new dumpHA(s1, s2, o);
 		h.dump();
         }
 }

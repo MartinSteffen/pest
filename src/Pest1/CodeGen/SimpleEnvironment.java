@@ -2,7 +2,7 @@
  * This class is a very simple environment.
  *
  * @author
- * @version $Id: SimpleEnvironment.java,v 1.1 1999-01-25 15:10:17 swtech25 Exp $
+ * @version $Id: SimpleEnvironment.java,v 1.2 1999-02-12 15:13:07 swtech25 Exp $
  */
 import java.io.*;
 
@@ -17,8 +17,10 @@ public class SimpleEnvironment {
 		int steps;
 
 		Automaton a = new Automaton();
+		SymbolTable s = new SymbolTable();
 		OutputStreamWriter f = new OutputStreamWriter(System.out);
 
+		a.init(s);
 		if (args.length == 1) {
 			try {
 				steps = Integer.parseInt(args[1]);
@@ -31,23 +33,21 @@ public class SimpleEnvironment {
 			steps = 10;
 		}
 
-		a.pre_states[0] = true;
-
-		for(int i = 1; i < a.pre_events.length; ++i) {
-			a.pre_events[i] = true;
+		for(int i = 1; i < s.pre_events.length; ++i) {
+			s.pre_events[i] = true;
 		}
 
 		for(; steps > 0; --steps) {
-			a.step();
+			a.step(s);
 			try {
-			     a.trace(f);
+			     s.trace(f);
 			     f.flush();
 			}
 			catch(IOException e) {
 			     System.out.println(e);
 			     return;
 			}
-			a.finalizeStep();
+			s.finalizeStep();
 		}
 		try {
 		     f.close();
