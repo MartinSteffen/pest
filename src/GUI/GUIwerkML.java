@@ -3,6 +3,7 @@ package gui;
 // empfiehlt es sich hier NICHT "Absyn" zu importieren !
 
 import java.awt.event.*;
+import java.awt.*;
 import util.PrettyPrint;
 import absyn.Example;
 
@@ -37,7 +38,7 @@ public void actionPerformed(ActionEvent e) {
 		  if (myWindow.PEditor != null)
 		      {
 			  myWindow.PEditor.work(false);   // Änderungen verbieten
-			  simu.Simu Sim = new simu.Simu(myWindow.SyntaxBaum,myWindow.PEditor,myWindow);
+			  myWindow.simu = new simu.Simu(myWindow.SyntaxBaum,myWindow.PEditor,myWindow);
 // 			  if (Sim instanceof Thread)
 // 			      {
 // 				  Sim.start();
@@ -61,8 +62,13 @@ public void actionPerformed(ActionEvent e) {
 	      {
 		  //myWindow.OkDialog("FEHLER","Wegen nicht compilierbarem Quelltext nicht implementiert");
 		  try{
-		    
-		    new codegen.CodeGen(myWindow.SBPfad,myWindow.SyntaxBaum);
+		    	myWindow.fDialog.setMode(FileDialog.SAVE);
+			myWindow.fDialog.setTitle("Generierten Code speichern");
+			myWindow.fDialog.setVisible(true);
+			new codegen.CodeGen(myWindow.fDialog.getDirectory(),myWindow.SyntaxBaum);
+			myWindow.fDialog.setVisible(false);
+			myWindow.fDialog.dispose();
+
       		}catch(codegen.CodeGenException cge)
 		    {
 		      myWindow.OkDialog("Fehler","Fehler bei der Code-Generierung");

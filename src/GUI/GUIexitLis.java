@@ -28,6 +28,7 @@ extends WindowAdapter
 	ctrlWin.highLight[10] = false;
 	ctrlWin.highLight[5] = true;
 	ctrlWin.repaint();
+	myWindow.theGUIMenu.updateMenu();
     }
 
     public void windowActivated(WindowEvent e)
@@ -38,6 +39,7 @@ extends WindowAdapter
 		ctrlWin.highLight[10] = true;
 	    }
 	ctrlWin.repaint();
+	myWindow.theGUIMenu.updateMenu();
     }
 
 }

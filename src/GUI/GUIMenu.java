@@ -137,25 +137,54 @@ void updateMenu()
 	if (myWindow.SyntaxBaum == null)
 	    {
  		M_Speichern.setEnabled(false);
-		// 		M_Speichernu.setEnabled(false);
+		//M_Speichernu.setEnabled(false);
  		M_Export.setEnabled(false);
 		M_Werkzeuge.setEnabled(false);
-		// 		M_Editor.setEnabled(false);
- 		//M_Codegen.setEnabled(false);
- 		//M_Simulator.setEnabled(false);
- 		//M_SyntaxCheck.setEnabled(false);
+		M_Editor.setEnabled(false);
+ 		M_Codegen.setEnabled(false);
+ 		M_Simulator.setEnabled(false);
+ 		M_SyntaxCheck.setEnabled(false);
+		M_CrossRef.setEnabled(false);
 	    }
 	else
 	    {
-		
- 		M_Speichern.setEnabled(true);
-		// 		M_Speichernu.setEnabled(true);
- 		M_Editor.setEnabled(true);
- 		M_Export.setEnabled(true);
 		M_Werkzeuge.setEnabled(true);
-// 		M_Codegen.setEnabled(true);
-// 		M_Simulator.setEnabled(true);
-// 		M_SyntaxCheck.setEnabled(true);
+		M_Speichern.setEnabled(true);
+		M_CrossRef.setEnabled(true);
+		M_PrettyPrint.setEnabled(true);
+		if (myWindow.PEditor == null)
+		    {
+			M_Editor.setEnabled(true);
+			M_Simulator.setEnabled(false);
+		    }
+		else 
+		    {
+			M_Editor.setEnabled(false);
+			if (myWindow.ResultSC)
+			    {
+				M_Simulator.setEnabled(true);
+			    }
+		    }
+		if (myWindow.CheckedSC)
+		    {
+			M_SyntaxCheck.setEnabled(false);
+		    }
+		else
+		    {
+			M_SyntaxCheck.setEnabled(true);
+		    }
+		if (myWindow.ResultSC)
+		    {
+			M_Export.setEnabled(true);
+			M_Codegen.setEnabled(true);
+		    }
+		else
+		    {
+			M_Export.setEnabled(false);
+			M_Codegen.setEnabled(false);
+		    }
+		
+
 	    }
     }
 }

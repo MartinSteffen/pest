@@ -73,6 +73,8 @@ implements GUIInterface
     Dimension EditorDim = null;
     Point EditorLoc  = null;
 
+    simu.Simu simu = null;
+
     Statechart SyntaxBaum = null;
     String     SBDateiname = null;
     String     SBPfad = null;
@@ -80,9 +82,10 @@ implements GUIInterface
     boolean CheckedSC = false;
     boolean ResultSC = false;
     boolean isDirty = false;
-    boolean ctrlWin = false;
+    boolean ctrlWin = true;
 
     boolean debugMode = true;
+    boolean warningOpen = false;
 
     Color color[]; 
 
@@ -112,7 +115,7 @@ implements GUIInterface
 	exlis = new GUIexitLis(this);
 	setBackground(Color.lightGray);
 	setSize(630,400); 
-	setLocation(50,50);
+	setLocation(200,200);
 	setFont(new Font("Serif",Font.PLAIN,18));
 	theGUIMenu = new GUIMenu(this);
 	setMenuBar(theGUIMenu);	
@@ -172,8 +175,6 @@ implements GUIInterface
     void rememberConfig()
     {
 	pestConfig theConfig = new pestConfig();
-	theConfig.GUIDim = getSize();	
- 	theConfig.GUILoc = getLocation();
 
 	theConfig.Dateiname = SBDateiname;
 	theConfig.Pfad = SBPfad;
@@ -261,7 +262,7 @@ implements GUIInterface
 	    else
 		{
 		    MsgWindow.setRows(50);
-		    remove(controlWindow);
+ 		    remove(controlWindow);
 		    add("Center",MsgWindow);
 		}
 
@@ -275,8 +276,6 @@ implements GUIInterface
 // 		    checkConfig = theConfig.checkConfig;
 // 		}
 
- 	    setSize(theConfig.GUIDim);
-  	    setLocation(theConfig.GUILoc);
 
 
 	    File file = new File(SBPfad,SBDateiname);
@@ -293,23 +292,21 @@ implements GUIInterface
 		    controlWindow.highLight[7] = true; 
 		    controlWindow.highLight[8] = ResultSC;
 		    controlWindow.highLight[9] = true;
- 		}
-
-	    EditorLoc = theConfig.EditorLoc;
-	    EditorDim = theConfig.EditorDim;
-
- 	    if (theConfig.isEditor)
- 		{
-		    startEditor();
-		    PEditor.setLocation(EditorLoc.x,EditorLoc.y + PEditor.getInsets().top);
-		    PEditor.setSize(EditorDim);
-		    controlWindow.highLight[5] = false;
-		    if (ResultSC)
+		    EditorLoc = theConfig.EditorLoc;
+		    EditorDim = theConfig.EditorDim;
+		    
+		    if (theConfig.isEditor)
 			{
-			    controlWindow.highLight[10] = true;
+			    startEditor();
+			    PEditor.setLocation(EditorLoc.x,EditorLoc.y + PEditor.getInsets().top);
+			    PEditor.setSize(EditorDim);
+			    controlWindow.highLight[5] = false;
+			    if (ResultSC)
+				{
+				    controlWindow.highLight[10] = true;
+				}
 			}
-		}
-	    
+ 		}	    
 	    controlWindow.repaint();
 		    
 
@@ -329,7 +326,7 @@ implements GUIInterface
     {
 	if (EditorLoc == null)
 	    {
-		startEditorSized(100,100,200,200);
+		startEditorSized(100,100,500,400);
 	    }
 	else
 	    {
@@ -391,6 +388,7 @@ implements GUIInterface
 		    }
 		ResultSC = SCchecker.checkModel(SyntaxBaum);
 		CheckedSC = true;
+		theGUIMenu.updateMenu();
 	    }
 	else
 	    {
@@ -475,13 +473,21 @@ implements GUIInterface
     boolean isSaved()
     {
 	boolean resp;
-
-	if(isDirty())
+	if((isDirty()))
 	    {
 		resp = false;
-		if (YesNoDialog("ACHTUNG","Das aktuelle Statechart wurde noch nicht gespeichert ! Trotzdem fortfahren ?") == 1)
+		if (!warningOpen)
 		    {
-			resp = true;
+			warningOpen = true;  
+			if (YesNoDialog("ACHTUNG","Das aktuelle Statechart wurde noch nicht gespeichert ! Trotzdem fortfahren ?") == 1)
+			    {
+				resp = true;
+			    }
+			warningOpen = false;
+		    }
+		else 
+		    {
+			resp = false;
 		    }
 	    }
 	else
