@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	--------------
 //
-//	$Id: report_list,v 1.55 1999-02-11 12:37:24 swtech00 Exp $
+//	$Id: report_list,v 1.56 1999-02-11 13:26:13 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -208,7 +208,7 @@ Starte noch eine Simulation (z.B. auf der Chart der gr. Benutzerfhrung).
 #Number:	12
 #Autor:		Erich Mikk
 #Subject:	Man kann mehrere Editore starten
-#Status:	processing und fixed
+#Status:	confirmed
 #Description:
 
 Man bereite sich eine Chart vor und speichere es (Datei->Speichern)
@@ -221,16 +221,17 @@ Man knnte mit der gleichen Methode noch mehr davon starten.
 #Number:	13
 #Autor:		Erich Mikk
 #Subject:	Einstellungsmglichkeiten nicht vorhanden
-#Status:	fixed
+#Status:	reported
 #Description:
+
+Am 11.2. wieder zurückgesetzt:
+Einstellungen->SyntaxCheck
+	es passiert NICHTS
+
 
 Am 9.2. zurückgesetzt. Ich kann nicht erkennen, dass hier sich irgendwas getan hat.
 [Erich]
 
-Einstellungen->TESC1 sagt
-	GUI   : NOCH NICHT IMPLEMENTIERT
-Einstellungen->SyntaxCheck
-	es passiert NICHTS
 //------------------------------------------------------------------------------
 #Number:	14
 #Autor:		Mario Thies swtech23
@@ -634,8 +635,13 @@ jedoch nicht und verbrt die gesamte Rechenzeit :-( .
 #Number:	40
 #Autor:		Erich Mikk
 #Subject:	Check erkennt Undet_Guard nicht
-#Status:	fixed
+#Status:	reported
 #Description:
+
+Am 11.2. zurück:
+z.B. ~swtech12/Examples/ex_undet.pest öffenen und check.
+Komischerweise keine Fehler, 
+Wenn man das gleiche in PEST1 versucht, dann werden undetguard's gemeldet.
 
 STM-Import SE-Systems/bf_thrusters.st.
 Der Import meldet sehr viele (!!!) Warnings (Undet-Guard).
