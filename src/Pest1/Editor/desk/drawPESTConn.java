@@ -81,7 +81,7 @@ boolean drawtest = true;
 	       {otemp1 = (Or_State) matrix1.akt;
 	       temppoint1.x = cx1-matrix1.x;
 	       temppoint1.y = cy1-matrix1.y;
-	       contemp = new Connector(new Conname("...Connector"+laufname),temppoint1);
+	       contemp = new Connector(new Conname("___Connector"+laufname),temppoint1);
 	       colist1 = otemp1.connectors;
 	       colist2 = new ConnectorList(contemp,colist1);
 	       otemp1.connectors = colist2;
@@ -95,7 +95,7 @@ boolean drawtest = true;
 	      otemp1 = new Or_State(tempstatename,null,null,null,null,temprect);
 	      temppoint1.x = cx1-matrix1.x;
 	      temppoint1.y = cy1-matrix1.y;
-	      contemp = new Connector(new Conname("...Connector"+laufname),temppoint1);
+	      contemp = new Connector(new Conname("___Connector"+laufname),temppoint1);
 	      otemp1.connectors = new ConnectorList(contemp,null);
 	      laufname++;
 	      if (matrix1.akt == root.state) 
@@ -123,9 +123,9 @@ boolean drawtest = true;
 
 		temppoint1.x = cx1-matrix1.x;
 	      	temppoint1.y = cy1-matrix1.y;
-	      	contemp = new Connector(new Conname("...Connector"+laufname),temppoint1);
+	      	contemp = new Connector(new Conname("___Connector"+laufname),temppoint1);
 
-	                root.state = new Or_State(new Statename("...Or_State"+laufname),
+	                root.state = new Or_State(new Statename("___Or_State"+laufname),
 				new StateList(tempstate1,null),
 				null,
 				null,

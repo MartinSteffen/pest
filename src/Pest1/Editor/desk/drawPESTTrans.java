@@ -72,7 +72,7 @@ if (matrix1.prev instanceof Or_State)
 if (matrix1.akt == root.state)
   {
   tempstate = root.state;
-  root.state = new Or_State(new Statename("...root"),new StateList(tempstate,null),null,null,null);
+  root.state = new Or_State(new Statename("___root"),new StateList(tempstate,null),null,null,null);
     otemp = (Or_State) root.state; 
   
     for (int j=0;j < countarray; j++) { pointarray[j].x = pointarray[j].x;

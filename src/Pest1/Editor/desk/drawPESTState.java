@@ -69,7 +69,7 @@ root = nroot;
 	}
 	else
 	{
-	root.state = new Basic_State( new Statename("...state"+laufname) ,new CRectangle(cx1,cy1,cx2-cx1,cy2-cy1));
+	root.state = new Basic_State( new Statename("___state"+laufname) ,new CRectangle(cx1,cy1,cx2-cx1,cy2-cy1));
 	g.setColor(c_color);
              	g.drawRect((int) (cx1*Editor.ZoomFaktor),
 			(int) (cy1*Editor.ZoomFaktor),
@@ -95,7 +95,7 @@ boolean ttest = false;
 
 	if ( btemp.rect.contains(cx1,cy1) & btemp.rect.contains(cx2,cy2) )
 		{
-		btemp2 = new Basic_State( new Statename("...state"+laufname) ,new CRectangle(cx1-btemp.rect.x,cy1-btemp.rect.y,cx2-cx1,cy2-cy1) );
+		btemp2 = new Basic_State( new Statename("___state"+laufname) ,new CRectangle(cx1-btemp.rect.x,cy1-btemp.rect.y,cx2-cx1,cy2-cy1) );
 		Statename temp  = root.state.name;
 		root.state = new Or_State(temp,new StateList(btemp2,null),null,null,null,btemp.rect);
 		ttest = true;
@@ -106,9 +106,9 @@ boolean ttest = false;
 if ( brect.intersects(btemp.rect) == false)
 		{
 		Statename temp  = root.state.name;
-		btemp2 = new Basic_State( new Statename("...state"+laufname) ,new CRectangle(cx1,cy1,cx2-cx1,cy2-cy1));
+		btemp2 = new Basic_State( new Statename("___state"+laufname) ,new CRectangle(cx1,cy1,cx2-cx1,cy2-cy1));
 		laufname = laufname +1;
-		root.state = new Or_State( new Statename("...state"+laufname) ,new StateList(btemp2,new StateList(btemp,null)),null,null,null);
+		root.state = new Or_State( new Statename("___state"+laufname) ,new StateList(btemp2,new StateList(btemp,null)),null,null,null);
 		ttest = true;
  //System.out.println("no3");
 
@@ -120,7 +120,7 @@ if ( brect.intersects(btemp.rect) == false)
 		btemp2 = new Basic_State(temp,btemp.rect);
 		btemp2.rect.x = btemp2.rect.x-cx1;
 		btemp2.rect.y = btemp2.rect.y-cy1;
-		root.state = new Or_State(  new Statename("...state"+laufname)  ,new StateList(btemp2,null),null,null,null,new CRectangle(cx1,cy1,cx2-cx1,cy2-cy1));
+		root.state = new Or_State(  new Statename("___state"+laufname)  ,new StateList(btemp2,null),null,null,null,new CRectangle(cx1,cy1,cx2-cx1,cy2-cy1));
 		ttest = true;
  //System.out.println("no2");
 
@@ -175,10 +175,10 @@ ttest = true;
                  temprect2 = root.state.rect;
 	   if (temprect.intersects(root.state.rect) == false){
                    tempstate = root.state;
-	   btemp = new Basic_State(new Statename("...State"+laufname),new CRectangle(cx1,cy1,cx2-cx1,cy2-cy1));
+	   btemp = new Basic_State(new Statename("___State"+laufname),new CRectangle(cx1,cy1,cx2-cx1,cy2-cy1));
 	   templist = new StateList(btemp,null);
 	    laufname++;
-	   root.state = new Or_State(new Statename("...State"+laufname),new StateList(tempstate,templist),null,null,null);
+	   root.state = new Or_State(new Statename("___State"+laufname),new StateList(tempstate,templist),null,null,null);
 //	   System.out.println("aussen");
 	   } 
 	  else 
@@ -188,7 +188,7 @@ ttest = true;
 		tempstate.rect.x = tempstate.rect.x -cx1;
  		tempstate.rect.y = tempstate.rect.y -cy1;
 		templist = new StateList(tempstate,null);
-		root.state = new Or_State(new Statename("...State"+laufname),templist,null,null,null,new CRectangle(cx1,cy1,cx2-cx1,cy2-cy1));
+		root.state = new Or_State(new Statename("___State"+laufname),templist,null,null,null,new CRectangle(cx1,cy1,cx2-cx1,cy2-cy1));
 		System.out.println("innen");
 		} else 
 		{	Editor.fehlermeldung1();
@@ -206,9 +206,9 @@ ttest = true;
 	
 	while (templist != null) { 
 		lauf2 = templist.head;
-		System.out.println("noch");
+		//System.out.println("noch");
 		if (tempstate == lauf2) {
-			btemp = new Basic_State(new Statename("...state"+laufname),new CRectangle(cx1-matrix.x ,cy1-matrix.y ,cx2-cx1,cy2-cy1));  
+			btemp = new Basic_State(new Statename("___state"+laufname),new CRectangle(cx1-matrix.x ,cy1-matrix.y ,cx2-cx1,cy2-cy1));  
 			templist.head = new Or_State(tempstate.name,new StateList(btemp,null),null,null,null,tempstate.rect);
 			ttest = true;
 			}
@@ -327,7 +327,7 @@ if ((matrix.akt instanceof Or_State)  & (colist2 != null | templist2 != null | t
    (colist3 != null | templist3 != null | trlist3 != null) )
     //  {System.out.println("neue Funktion");}
     {//System.out.println("Or einx");
-			tempstate5 = new Or_State(new Statename ("...State"+laufname),templist2,trlist2,null,colist2,new CRectangle(cx1-matrix.x,cy1-matrix.y,cx2-cx1,cy2-cy1));
+			tempstate5 = new Or_State(new Statename ("___State"+laufname),templist2,trlist2,null,colist2,new CRectangle(cx1-matrix.x,cy1-matrix.y,cx2-cx1,cy2-cy1));
 			otemp = (Or_State) matrix.akt;
 			templist4 = new StateList(tempstate5,templist3);
 			otemp.substates = templist4;
@@ -336,7 +336,7 @@ if ((matrix.akt instanceof Or_State)  & (colist2 != null | templist2 != null | t
 						}		
 		if ((matrix.akt instanceof Or_State)  & (colist2 != null | templist2 != null | trlist2 != null) & matrix.akt != root.state)
 			{System.out.println("Or ein");
-			tempstate5 = new Or_State(new Statename ("...State"+laufname),templist2,trlist2,null,colist2,new CRectangle(cx1-matrix.x,cy1-matrix.y,cx2-cx1,cy2-cy1));
+			tempstate5 = new Or_State(new Statename ("___State"+laufname),templist2,trlist2,null,colist2,new CRectangle(cx1-matrix.x,cy1-matrix.y,cx2-cx1,cy2-cy1));
 			otemp = (Or_State) matrix.akt;
 			templist4 = new StateList(tempstate5,templist3);
 			otemp.substates = templist4;
@@ -346,7 +346,7 @@ if ((matrix.akt instanceof Or_State)  & (colist2 != null | templist2 != null | t
 
 		if (matrix.akt instanceof Or_State & colist3 == null & trlist3 == null & templist3 == null & matrix.akt.rect != null)
 		    {//System.out.println("wagadugu");
-			tempstate5 = new Or_State(new Statename ("...State"+laufname),templist2,trlist2,null,colist2,new CRectangle(cx1-matrix.x,cy1-matrix.y,cx2-cx1,cy2-cy1));
+			tempstate5 = new Or_State(new Statename ("___State"+laufname),templist2,trlist2,null,colist2,new CRectangle(cx1-matrix.x,cy1-matrix.y,cx2-cx1,cy2-cy1));
 			otemp = (Or_State) matrix.akt;
 			templist4 = new StateList(tempstate5,templist3);
 			otemp.substates = templist4;
@@ -356,7 +356,7 @@ if ((matrix.akt instanceof Or_State)  & (colist2 != null | templist2 != null | t
      
 		 if ((matrix.akt instanceof Or_State)  & colist2 == null & templist2 == null & trlist2 == null) // O.K.
 		     {//System.out.println("Basic ein");
-			btemp = new Basic_State(new Statename ("...State"+laufname),new CRectangle(cx1-matrix.x,cy1-matrix.y,cx2-cx1,cy2-cy1));
+			btemp = new Basic_State(new Statename ("___State"+laufname),new CRectangle(cx1-matrix.x,cy1-matrix.y,cx2-cx1,cy2-cy1));
 			otemp = (Or_State) matrix.akt;
 			templist = otemp.substates;
 			templist2 = new StateList(btemp,templist);

@@ -124,9 +124,9 @@ if (matrix1.akt instanceof Basic_State & matrix1.prev instanceof Or_State)
 		templist = templist.tail;
 	}
 
-	btemp1 = new Basic_State(new Statename("...Basic_State"+laufname),temprect1);
+	btemp1 = new Basic_State(new Statename("___Basic_State"+laufname),temprect1);
 	laufname ++;
-	btemp2 = new Basic_State(new Statename("...Basic_State"+laufname),temprect2);
+	btemp2 = new Basic_State(new Statename("___Basic_State"+laufname),temprect2);
 	laufname ++;
 	templist = new StateList(btemp1,null);
 	templist2 = new StateList(btemp2,templist);
@@ -143,13 +143,13 @@ drawPar(g,temprect2.x+matrix1.x,temprect2.y+matrix1.y,temprect2.width,temprect2.
 if (matrix1.akt instanceof Basic_State & root.state == matrix1.akt)
     {
 	temprect3 = root.state.rect;
-	btemp1 = new Basic_State(new Statename("...Basic_State"+laufname),temprect1);
+	btemp1 = new Basic_State(new Statename("___Basic_State"+laufname),temprect1);
 	laufname ++;
-	btemp2 = new Basic_State(new Statename("...Basic_State"+laufname),temprect2);
+	btemp2 = new Basic_State(new Statename("___Basic_State"+laufname),temprect2);
 	laufname ++;
 	templist = new StateList(btemp1,null);
 	templist2 = new StateList(btemp2,templist);
-	root.state = new And_State(new Statename("...And_State"+laufname),templist2,temprect3);
+	root.state = new And_State(new Statename("___And_State"+laufname),templist2,temprect3);
 	laufname ++;
 drawPar(g,temprect1.x+matrix1.x,temprect1.y+matrix1.y,temprect1.width,temprect1.height,c_color);
 drawPar(g,temprect2.x+matrix1.x,temprect2.y+matrix1.y,temprect2.width,temprect2.height,c_color);
@@ -167,9 +167,9 @@ if (matrix1.akt instanceof Basic_State & matrix1.prev instanceof And_State)
 	   temprect2.x = temprect2.x+temprect3.x;
 	   temprect2.y = temprect2.y+temprect3.y;
 
-      	   btemp1 = new Basic_State(new Statename("...Basic_State"+laufname),temprect1);
+      	   btemp1 = new Basic_State(new Statename("___Basic_State"+laufname),temprect1);
 	   laufname ++;
-	   btemp2 = new Basic_State(new Statename("...Basic_State"+laufname),temprect2);
+	   btemp2 = new Basic_State(new Statename("___Basic_State"+laufname),temprect2);
 	   laufname ++;
 
 	   templist3 = null;
@@ -328,21 +328,21 @@ if (matrix1.akt instanceof Basic_State & matrix1.prev instanceof And_State)
 
 	if (colist2 == null & templist2 == null & trlist2 == null)
 	{
-	tempstate8 = new Basic_State(new Statename("...Basic_State"+laufname),temprect2);
+	tempstate8 = new Basic_State(new Statename("___Basic_State"+laufname),temprect2);
 	laufname = laufname + 1;
 	} else
 	{
-	tempstate8 = new Or_State(new Statename("...Or_State"+laufname),templist2,trlist2,null,colist2,temprect2);
+	tempstate8 = new Or_State(new Statename("___Or_State"+laufname),templist2,trlist2,null,colist2,temprect2);
 	laufname = laufname + 1;
 	}
 
 	if (colist3 == null & templist3 == null & trlist3 == null)
 	{
-	tempstate9 = new Basic_State(new Statename("...Basic_State"+laufname),temprect1);
+	tempstate9 = new Basic_State(new Statename("___Basic_State"+laufname),temprect1);
 	laufname = laufname + 1;
 	} else
 	{
-	tempstate9 = new Or_State(new Statename("...Or_State"+laufname),templist3,trlist3,null,colist3,temprect1);
+	tempstate9 = new Or_State(new Statename("___Or_State"+laufname),templist3,trlist3,null,colist3,temprect1);
 	laufname = laufname + 1;
 	}
 
@@ -458,7 +458,7 @@ drawPar(g,matrix1.x+tempstate9.rect.x,matrix1.y+tempstate9.rect.y,tempstate9.rec
 	templist5 = new StateList(tempstate9,null);
 	templist6 = templist5;
 	templist5 = new StateList(tempstate8,templist6);
-	tempstate4 = new And_State(new Statename("...And_State"+laufname),templist5,temprect5);
+	tempstate4 = new And_State(new Statename("___And_State"+laufname),templist5,temprect5);
 	laufname++;
 	root.state = tempstate4;
 	//otemp1.substates = new StateList(tempstate4,otemp1.substates);

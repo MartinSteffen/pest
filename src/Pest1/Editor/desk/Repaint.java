@@ -52,7 +52,7 @@ public class Repaint {
 		if (sn.name.length() >= 3) {
 		tempstring = sn.name.substring(0,3);
 		//System.out.println("<<"+tempstring+">>");
-		if (tempstring.compareTo("...")==0) test = false;}
+		if (tempstring.compareTo("___")==0) test = false;}
  
 		if (test == true)
 		{
