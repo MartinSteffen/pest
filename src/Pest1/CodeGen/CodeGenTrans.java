@@ -5,7 +5,7 @@ package codegen;
  * code for transitions.
  *
  * @author Marcel Kyas
- * @version $Id: CodeGenTrans.java,v 1.1 1999-02-03 20:03:23 swtech25 Exp $
+ * @version $Id: CodeGenTrans.java,v 1.2 1999-02-17 14:02:04 swtech25 Exp $
  */
 public class CodeGenTrans {
 	/**
@@ -37,6 +37,5 @@ public class CodeGenTrans {
 	 * Next transition
 	 */
 	public CodeGenTrans next;
-
 }
 
