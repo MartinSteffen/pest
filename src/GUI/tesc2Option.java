@@ -15,7 +15,7 @@ import java.awt.*;
 import java.awt.event.*;
 import tesc2.*;
 
-public class tesc2Option extends Dialog
+class tesc2Option extends Dialog
     implements ActionListener {
     
     pest parent;

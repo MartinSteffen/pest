@@ -587,14 +587,6 @@ void newStatechart()
 	return resp;
     }	
 
-    public void addGUIMenu(Menu m){
-	theGUIMenu.add(m);
-    }
-
-    public void removeGUIMenu(Menu m){
-	theGUIMenu.remove(m);
-    }
-
     public void userMessage(String msg){
 	MsgWindow.append(msg+"\n");
     }
@@ -603,11 +595,11 @@ void newStatechart()
 	return new OKDialog(this,getGraphics().getFontMetrics(),Titel,Msg).getAnswer();
     }
 
-    public int YesNoDialog(String Titel, String Msg){
+    int YesNoDialog(String Titel, String Msg){
 	return new YesNoDialog(this,getGraphics().getFontMetrics(),Titel,Msg).getAnswer();
     }
 
-    public int YesNoCancelDialog(String Titel, String Msg){
+    int YesNoCancelDialog(String Titel, String Msg){
 	return new YesNoCancelDialog(this,getGraphics().getFontMetrics(),Titel,Msg).getAnswer();
     }
 
@@ -619,11 +611,11 @@ void newStatechart()
 	return new OKDialog(par,getGraphics().getFontMetrics(),Titel,Msg).getAnswer();
     }
 
-    public int YesNoDialog(Frame par, String Titel, String Msg){
+    int YesNoDialog(Frame par, String Titel, String Msg){
 	return new YesNoDialog(par,getGraphics().getFontMetrics(),Titel,Msg).getAnswer();
     }
 
-    public int YesNoCancelDialog(Frame par, String Titel, String Msg){
+    int YesNoCancelDialog(Frame par, String Titel, String Msg){
 	return new YesNoCancelDialog(par,getGraphics().getFontMetrics(),Titel,Msg).getAnswer();
     }
 

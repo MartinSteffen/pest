@@ -14,26 +14,6 @@ import java.awt.*;
 public interface GUIInterface{
 
     /** Diese Funktion
-     * fuegt ein "Menu" in die Menuzeile der GUI ein.
-     * Kann mit removeGUIMenu wieder entfernt werden.
-     * Es wird erwartet, dass das Menu bereits mit einem
-     * eigenen ActionListener verknuepft wurde !
-     * @see removeGUIMenu
-     * @param m       Referenz auf ein komplettes Menu, das eingefügt werden soll
-     */
-    public void addGUIMenu(Menu m);
-
-
-    /** Diese Funktion
-     * entfernt ein mit addGUIMenu eingefügtes Menu wieder
-     * aus der Menuzeile des GUI.
-     * @see addGUIMenu
-     * @param m        Referenz auf das mit addGUIMenu eingefuegte Menu 
-     */
-    public void removeGUIMenu(Menu m);
-
-
-    /** Diese Funktion
      * gibt im Meldungsfenster den uebergebenen String aus.
      * Wir sind hier sehr universell geblieben, aber:
      * Ausgaben sollte der Modulname vorangestellt werden, event TAB,
@@ -54,18 +34,6 @@ public interface GUIInterface{
      * @param Msg          Nachricht im Fenster
      */
     public int OkDialog(String Titel, String Msg);
-
-    /** YesNoDialog
-     * wie OkDialog, mit YES und NO statt OK.
-     * @see OkDialog
-     */
-    public int YesNoDialog(String Titel, String Msg);
-
-    /** YesNoCancel
-     * wie OkDialog, mit YES, NO und CANCEL, statt OK.
-     * @see OkDialog
-     */
-    public int YesNoCancelDialog(String Titel, String Msg);
 
     /** EingabeDialog
      *wie OkDialog,jedoch mit OK und Abbrechen.Bietet zusätzlich noch ein
@@ -97,17 +65,6 @@ public interface GUIInterface{
  
     public int OkDialog(Frame par, String Titel, String Msg);
 
-    /** YesNoDialog
-     * wie OkDialog, mit YES und NO statt OK.
-     * @see OkDialog
-     */
-    public int YesNoDialog(Frame par, String Titel, String Msg);
-
-    /** YesNoCancel
-     * wie OkDialog, mit YES, NO und CANCEL, statt OK.
-     * @see OkDialog
-     */
-    public int YesNoCancelDialog(Frame par, String Titel, String Msg);
 
      /** EingabeDialog
      *wie OkDialog,jedoch mit OK und Abbrechen.Bietet zusätzlich noch ein
