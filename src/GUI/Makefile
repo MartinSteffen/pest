@@ -25,6 +25,7 @@ gui:    $(patsubst %.java,%.class,$(wildcard *.java))
 clean:
 	cd .. 
 	rm -rf *.class *~ 
+	rm -f pest.jar
 	(cd ../absyn ; make clean) 
 	(cd ../editor ; make clean) 
 	(cd ../check ; make clean) 
@@ -36,3 +37,19 @@ clean:
 
 localdocu:	
 	javadoc  -version -author -d Docu *.java
+
+#----------------------------------------------------------------------
+# ALLE PEST Klassen werden in ein Archiv zusammengepackt
+# Mit dem Ergebnis pest.jar kann man PEST ohne Quelle benutzen.
+# Dafür setze CLASSPATH so daß
+#  (1) jdk1.1.6, PerlTools-1.1 und pest.jar im CLASSPATH enthalten sind
+#  (2) Der Pfad zu einer Workarea von PEST darf nicht enthalten sein!
+# z.B. für (t)csh:
+# setenv CLASSPATH .:<Pfad zu pest.jar>/pest.jar:/opt/jdk/jdk1.1.6/lib/classes.zip:/home/swtech12/PerlTools-1.1/PerlTools.jar
+#----------------------------------------------------------------------
+ 
+pest.jar:	all
+	(cd .. ; \
+	set CLASSPATH= .:/opt/jdk/jdk1.1.6/lib/classes.zip:/home/swtech12/PerlTools-1.1/PerlTools.jar ;\
+	jar cvf0 gui/pest.jar `find . -name "*.class"`  )
+#----------------------------------------------------------------------
