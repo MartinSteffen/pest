@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.56 1999-02-03 17:11:20 swtech25 Exp $
+//	$Id: report_list,v 1.57 1999-02-04 17:01:23 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -369,8 +369,26 @@ history connectors vergisst. Also: Hier fehlt eine Warnung!
 #Number:	26
 #Autor:		Erich Mikk erm
 #Subject:	STM-Import achtet nicht auf Keywords
-#Status: 	fixed
+#Status: 	reported
 #Description: 
+
+AM 4.2. VOM FIXED AUF REPORTED ZURÜCKGESETZT. 
+
+GRUND:
+------
+
+Versuche SAFER/active_axes.st zu importieren.
+Das wird abgeleht und als Fehler wird angezeigt:
+
+TESC-Export: Fehler: Bvar "OK_TO_CHANGE" im Eventteil gefunden!
+TESC-Export: Fehler: Bvar "OK_TO_CHANGE" im Eventteil gefunden!
+TESC-Export: Fehler: Bvar "OK_TO_CHANGE" im Eventteil gefunden!
+STM: Fehler beim Importieren. (Zustandsname (ON) ist reserviertes Schlüsselwort.)
+
+Das kann doch nicht angehen, dass man Keywords als Substring nicht haben kann!?
+
+DIE FOLGENDE SEQUENZ IST IN DER TAT NICHT MEHR MÖGLICH.
+-------------------------------------------------------
 
 Importiere SE-Systems/vcr.st 
 Mit dieser Chart gibt es Probleme, die man sieht, wenn man TESC benutzt.
