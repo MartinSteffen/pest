@@ -4,18 +4,22 @@ package Absyn;
 /**
  * Abstract class Action introduces a union type for actions of transition labels.
  * @author Initially provided by Martin Steffen.
- * @version $Id: Action.java,v 1.5 1998-12-03 17:06:51 swtech00 Exp $
+ * @version $Id: Action.java,v 1.6 1998-12-11 17:38:51 swtech00 Exp $
  */
-public abstract class  Action extends Absyn {
+public abstract class  Action extends Absyn  implements Cloneable {
+    public abstract Object clone() throws CloneNotSupportedException;
 };
 
 //----------------------------------------------------------------------
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Action.java,v 1.5 1998-12-03 17:06:51 swtech00 Exp $
+//	$Id: Action.java,v 1.6 1998-12-11 17:38:51 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.5  1998/12/03 17:06:51  swtech00
+//	Klasse public gemacht
+//
 //	Revision 1.4  1998/11/27 16:02:18  swtech00
 //	Ich habe damit angefangen, die Abstrakte Syntax so zu kommentieren, dass
 //	javadoc das auch verstehen kann. Das bereitet die Benutzung von javadoc vor.
