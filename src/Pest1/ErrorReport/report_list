@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.35 1999-01-27 23:10:04 swtech18 Exp $
+//	$Id: report_list,v 1.36 1999-01-28 13:20:14 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -291,7 +291,7 @@ und auch selbst nicht erzeugt.
 #Number:	21
 #Autor:		Erich Mikk
 #Subject:	Code für TV/tv.st ist nicht kompilierbar
-#Status:	fixed
+#Status:	confirmed
 #Description:
 
 Importiere TV/tv.st.
@@ -309,7 +309,7 @@ Automaton.java:12: ')' expected.
 #Number:	22
 #Autor:		Erich Mikk
 #Subject:	STM-Import traegt ~ für leere Beschriftung ein.
-#Status:	fixed
+#Status:	confirmed
 #Description:
 
 Beim Import wird das Feld 'caption' in TLabel von  der STM-Import gefüllt. 
