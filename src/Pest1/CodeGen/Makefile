@@ -1,7 +1,7 @@
-# $Id: Makefile,v 1.3 1999-01-04 13:45:56 swtech25 Exp $
+# $Id: Makefile,v 1.4 1999-01-04 14:18:36 swtech25 Exp $
 JAVAC=javac
 JAVACFLAGS=-g -deprecation -depend
-files=CodeGen.java CodeGenException.java
+files=CodeGen.java CodeGenException.java dumpHA.java
 
 all: $(files:.java=.class)
 
