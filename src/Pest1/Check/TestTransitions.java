@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestTransitions.java,v 1.17 1999-01-25 23:21:43 swtech11 Exp $
+ *  @version  $Id: TestTransitions.java,v 1.18 1999-01-26 10:03:45 swtech11 Exp $
  */
 class TestTransitions extends ModelCheckBasics {
   Vector newPLV = new Vector(); // Vector fuer die selbst angelegte PathList der States
@@ -155,7 +155,7 @@ class TestTransitions extends ModelCheckBasics {
         else if (anz == 1 & aS >1) { // 1 State richtig und 1 oder mehr States falsch => Interlevel ?
           State st =  StateFromStatenameInThisStateSubstates(((Or_State)_s).substates, z2);
           // System.out.println("Graphischer Test notwendig"+st);
-          i2 = !pruefe_coord_IT( st,tl.head);
+          i2 = !pruefe_coord_IT( st,tl.head,false);
         }
       }        
     }
@@ -431,10 +431,19 @@ class TestTransitions extends ModelCheckBasics {
     }
   }
 
-  boolean pruefe_coord_IT(State s, Tr t) {
-    int n=t.points.length-1;  // :-)
-    int xt=t.points[n].x;
-    int yt=t.points[n].y;
+  boolean pruefe_coord_IT(State s, Tr t, boolean a) {
+    int xt,yt;
+    if (a==false) { 
+      int n=t.points.length-1;  // :-)
+      xt=t.points[n].x;
+      yt=t.points[n].y;
+    }
+    else {
+      xt=t.points[0].x;
+      yt=t.points[0].y;
+    } 
+
+
     int xs=s.rect.x;
     int ys=s.rect.y;
     int hs=s.rect.height;
