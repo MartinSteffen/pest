@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.18 1999-01-19 14:53:11 swtech18 Exp $
+//	$Id: report_list,v 1.19 1999-01-22 08:57:46 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -245,4 +245,26 @@ java.lang.Exception: Interleveltransitionen nicht zulässig
         at java.awt.MenuComponent.dispatchEvent(MenuComponent.java:169)
         at java.awt.EventDispatchThread.run(EventDispatchThread.java:83)
 
+//------------------------------------------------------------------------------
+
+#Number:	18
+#Autor:		Erich Mikk erm
+#Subject:	Start des Simulators gelingt nicht: NullPointerException
+#Status:	reported 
+#Description:
+
+Importiere  ~swtech12/Examples/TV/tv.st
+Starte Editor
+Starte Simulator. Dann sieht man folgendes in stderr:
+
+java.lang.NullPointerException
+        at simu.Simu.makeTab(Simu.java:2192)
+        at simu.Simu.<init>(Simu.java:181)
+        at gui.GUIwerkML.actionPerformed(GUIwerkML.java:40)
+        at java.awt.MenuItem.processActionEvent(MenuItem.java:436)
+        at java.awt.MenuItem.processEvent(MenuItem.java:400)
+        at java.awt.MenuComponent.dispatchEventImpl(MenuComponent.java:177)
+        at java.awt.MenuComponent.dispatchEvent(MenuComponent.java:169)
+        at java.awt.EventDispatchThread.run(EventDispatchThread.java:83)
+ 
 //------------------------------------------------------------------------------
