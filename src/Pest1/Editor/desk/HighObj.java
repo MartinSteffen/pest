@@ -40,8 +40,8 @@ public class HighObj {
 			h.setColor(col);
 			h.fillOval((int) ((co.position.x+neux)*Editor.ZoomFaktor),
 			(int) ((co.position.y+neuy)*Editor.ZoomFaktor),
-			(int) (12),
-			(int) (12)
+			(int) (12*Editor.ZoomFaktor),
+			(int) (12*Editor.ZoomFaktor)
 			); System.out.println("Connector gefunden");
 			}
 	// die anderen folgen spaeter
@@ -93,7 +93,9 @@ public class HighObj {
 	StateList templist;
 	templist = os.substates;
 	ConnectorList colist;
+	TrList temptrlist;
 	colist = os.connectors;
+	temptrlist = os.trs;
 
 	if (os.rect != null & os == na)
 	    {         
@@ -142,6 +144,15 @@ public class HighObj {
 		}
 		colist = colist.tail;
 	    }
+	while (temptrlist != null)
+	    {
+		if (temptrlist.head != null) 
+		{
+		HighObj re = new HighObj();
+		re.start(temptrlist.head,neux,neuy,true,na,col);
+		}
+		temptrlist = temptrlist.tail;
+	    }
 
 
 	// die Listen fuer tr,co folgen spaeter
@@ -182,9 +193,9 @@ public class HighObj {
     }
 
 private void redraw(Tr tr,int nx, int ny, boolean drawflag,Absyn na,Color col) {
-	
+	System.out.println("ICH WILL DIESE TRANSITION highlighten (1)");
 	 if (tr == na){ 
-
+	System.out.println("ICH WILL DIESE TRANSITION highlighten (2)");
 	int trsize = tr.points.length-1;
 	System.out.println("Anzahl ZeigerPunkte : "+(int) (trsize+1));
 	for (int lauf = 0;lauf < (trsize-1);lauf++) {h.setColor(col);h.drawLine(	(int) ((tr.points[lauf].x+nx)*Editor.ZoomFaktor),
@@ -201,10 +212,10 @@ private void redraw(Tr tr,int nx, int ny, boolean drawflag,Absyn na,Color col) {
 
 
 				drawPESTTrans.drawTrans(h,
-				(int) ((tr.points[0].x+nx)*Editor.ZoomFaktor),
-				(int) ((tr.points[0].y+ny)*Editor.ZoomFaktor),
-				(int) ((tr.points[1].x+nx)*Editor.ZoomFaktor),
-				(int) ((tr.points[1].y+ny)*Editor.ZoomFaktor),
+				(int) ((tr.points[trsize-1].x+nx)*Editor.ZoomFaktor),
+				(int) ((tr.points[trsize-1].y+ny)*Editor.ZoomFaktor),
+				(int) ((tr.points[trsize-0].x+nx)*Editor.ZoomFaktor),
+				(int) ((tr.points[trsize-0].y+ny)*Editor.ZoomFaktor),
 				tr.source,
 				tr.target,
 				col );}
@@ -212,6 +223,4 @@ private void redraw(Tr tr,int nx, int ny, boolean drawflag,Absyn na,Color col) {
 
 // erst nur Zweipunktzeichnen
 	}
-
-
 }

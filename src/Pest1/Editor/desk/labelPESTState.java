@@ -38,13 +38,13 @@ Statechart root;
 	matrix2 = PESTdrawutil.getState(root,cx1,cy1+10);
 	if (matrix1.akt == matrix2.akt)
 	{
-	matrix1.akt.name = new Statename("Versuch");
+	matrix1.akt.name = new Statename(Editor.labelObject(matrix1.akt));
 	} 
 	else
 	{
 	if (matrix2.prev instanceof And_State)
 		{
-		matrix2.prev.name = new Statename("VERSUCH");
+		matrix2.prev.name = new Statename(Editor.labelObject(matrix2.akt));
 		}
 	}
  

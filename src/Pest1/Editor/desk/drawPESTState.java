@@ -297,7 +297,8 @@ System.out.println("con out");
 	            for (int j = 1;j < pointlength;j ++)
 			{
 			   trlist.head.points[j].x = trlist.head.points[j].x-(cx1-matrix.x);
-		 	   trlist.head.points[j].y = trlist.head.points[j].y-(cy1-matrix.y); 
+		 	   trlist.head.points[j].y = trlist.head.points[j].y-(cy1-matrix.y);
+ 
 			}
 			trlist.head.points[0].x = trlist.head.points[0].x-(cx1-matrix.x);
 		 	trlist.head.points[0].y = trlist.head.points[0].y-(cy1-matrix.y);

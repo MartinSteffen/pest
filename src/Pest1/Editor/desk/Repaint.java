@@ -14,10 +14,12 @@ public class Repaint {
     static Color def_conn = Color.red;
     static Color def_text = Color.black;
     static Color def_tr = Color.magenta;
+    static Statechart root;
+    static Absyn localobject;
 
    String tempstring;
     
-  public Repaint (Graphics g) {h = g;};
+  public Repaint (Graphics g,Statechart nroot) {h = g;root = nroot;};
    
     
   public Repaint () {}
@@ -32,7 +34,6 @@ public class Repaint {
 	if (ab instanceof And_State) redraw((And_State) ab,neux,neuy,drawflag);
 	if (ab instanceof Statename) redraw((Statename) ab,neux,neuy,drawflag);
 	if (ab instanceof Tr) redraw((Tr) ab,neux,neuy,drawflag);
-
     }
 
  
@@ -52,9 +53,17 @@ public class Repaint {
  
 		if (test == true)
 		{
-	 	h.setColor(def_text);h.drawString( sn.name,
+			if (drawflag == true)
+			{
+	 		h.setColor(def_text);h.drawString( sn.name,
 			(int) ((nx*Editor.ZoomFaktor)+4),
 			(int) ((ny*Editor.ZoomFaktor)+12));
+			} else
+			{
+			h.setColor(def_text);h.drawString( sn.name,
+			(int) ((nx*Editor.ZoomFaktor)+4),
+			(int) ((ny*Editor.ZoomFaktor)-5));
+			}
 		}
 	}
 
@@ -70,7 +79,28 @@ int trsize = tr.points.length-1;
 if (tr.source instanceof UNDEFINED) {h.setColor(def_tr);
 				h.fillOval(	(int) (((tr.points[0].x+nx)-3)*Editor.ZoomFaktor),
 						(int) (((tr.points[0].y+ny)-3)*Editor.ZoomFaktor),
-						6,6);}
+						6,6);} else
+	      {localobject = PESTdrawutil.getSmallObject(root,tr.points[0].x+nx,tr.points[0].y+ny);
+	      System.out.println("aktueller TRAnchor source :"+localobject);
+		   if (localobject instanceof State) {
+		       State hier = (State) localobject;
+		       tr.source = new Statename(hier.name.name);
+		   };
+	      }
+
+if (tr.target instanceof UNDEFINED) {h.setColor(def_tr); 
+				h.fillOval(	(int) (((tr.points[trsize].x+nx)-3)*Editor.ZoomFaktor),
+						(int) (((tr.points[trsize].y+ny)-3)*Editor.ZoomFaktor),
+						6,6);} else
+	      {localobject = PESTdrawutil.getSmallObject(root,tr.points[trsize].x+nx,tr.points[trsize].y+ny);
+	      System.out.println("aktueller TRAnchor target :"+localobject);
+		   if (localobject instanceof State) {
+		       State hier = (State) localobject;
+		       tr.target = new Statename(hier.name.name);
+		   };
+	      }
+
+
 
 
 	 drawPESTTrans.drawTrans(h,
@@ -159,12 +189,10 @@ if (tr.source instanceof UNDEFINED) {h.setColor(def_tr);
 
 	while (trlist != null)
 	    {
-		
 		Repaint re = new Repaint();
 		re.start(trlist.head,neux,neuy,true);
 		trlist = trlist.tail;
 	    }
-
 
 	while (colist != null)
 	    {
@@ -173,8 +201,8 @@ if (tr.source instanceof UNDEFINED) {h.setColor(def_tr);
 		h.setColor(def_conn);
 		h.fillOval((int) ((colist.head.position.x+neux)*Editor.ZoomFaktor),
 			(int) ((colist.head.position.y+neuy)*Editor.ZoomFaktor),
-			(int) (12),
-			(int) (12)
+			(int) (12*Editor.ZoomFaktor),
+			(int) (12*Editor.ZoomFaktor)
 			);
 		}
 		colist = colist.tail;
@@ -188,13 +216,17 @@ if (tr.source instanceof UNDEFINED) {h.setColor(def_tr);
 	                if (templist.head.name == tempstatelist.head) {
 		System.out.println("Default : "+templist.head.name);
 		h.setColor(def_state);
-		h.fillOval((int) ((templist.head.rect.x+neux+(templist.head.rect.width / 2)-10)*Editor.ZoomFaktor),
-			(int) ((templist.head.rect.y+neuy+(templist.head.rect.height / 2)-10)*Editor.ZoomFaktor),
-			(int) (20),
-			(int) (20)
+		h.drawRect((int) ((templist.head.rect.x+neux)*Editor.ZoomFaktor)+2,
+			(int) ((templist.head.rect.y+neuy)*Editor.ZoomFaktor)+2,
+			(int) ((templist.head.rect.width)*Editor.ZoomFaktor)-4,
+			(int) ((templist.head.rect.height)*Editor.ZoomFaktor)-4
+			);
+		h.drawRect((int) ((templist.head.rect.x+neux)*Editor.ZoomFaktor)+4,
+			(int) ((templist.head.rect.y+neuy)*Editor.ZoomFaktor)+4,
+			(int) ((templist.head.rect.width)*Editor.ZoomFaktor)-8,
+			(int) ((templist.head.rect.height)*Editor.ZoomFaktor)-8
 			);
 
-	
 		}
 		templist = templist.tail;
 	    }
@@ -231,8 +263,11 @@ if (tr.source instanceof UNDEFINED) {h.setColor(def_tr);
 		neuy = neuy + as.rect.y;
 
 		Repaint re = new Repaint();
-		re.start(as.name,neux,neuy-18,true);
+		re.start(as.name,neux,neuy,false);
 
+		//Repaint re = new Repaint();
+		//re.start(as.name,neux,neuy-18,true);
+	
 	    }
 
 	while (templist != null)

@@ -90,10 +90,11 @@ import editor.*;
  
 
   // Grafik herstellen
-      public void paint(Graphics g) { 	  new Repaint(g);Repaint r = new Repaint(); r.start(root,0,0,true);
+      public void paint(Graphics g) { 	  new Repaint(g,root);Repaint r = new Repaint(); r.start(root,0,0,true);
 				  new highlightObject(g,root);
 
    System.out.println("repaint gestartet");  
+ 
   }
 
 
@@ -167,6 +168,8 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans")
 			tempwaypoint[laufwaypoint] = new Point((int) last_x,(int) last_y);
 			} else
 			{
+			if (laufwaypoint > 0)
+			{
 			System.out.println("Pfeilspitze");
 			TrAnchor an1 = null;
 			TrAnchor an2 = null;
@@ -177,6 +180,8 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans")
 						,an1,an2,Color.magenta);
 			new drawPESTTrans(g,root,tempwaypoint,laufwaypoint,Color.magenta);
 			trroot = false;
+			repaint();
+			} else {trroot = false;}
 			}
 		}
 		System.out.println("Waylist :"+tempwaypoint+"    lauf : "+laufwaypoint);

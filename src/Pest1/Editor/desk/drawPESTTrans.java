@@ -22,13 +22,13 @@ import editor.*;
   
 public class drawPESTTrans  {
 static boolean movetest=false;;
-	
+static Statechart root;	
+static Absyn localobject;
 
 public drawPESTTrans(Graphics g,Statechart nroot, Point[] pointarray, int countarray, Color c_color) {
 
 CPoint[]  temppoint = new CPoint[countarray+1];
 Statematrix matrix1,matrix2,matrix3;
-Statechart root = nroot;
 TrList trtemp = null;
 Or_State otemp1;
 Tr transtemp;
@@ -38,7 +38,7 @@ TrAnchor name1= new UNDEFINED(),name2= new UNDEFINED();
 Absyn getname1=null, getname2 = null; 
 int cx1 = pointarray[0].x,cx2 = pointarray[countarray].x,cy1 = pointarray[0].y,cy2 = pointarray[countarray].y;
 
-
+root = nroot;
 
 matrix1 = PESTdrawutil.getStateFrame(root,cx1,cy1,cx2,cy2);
 matrix2 = PESTdrawutil.getState(root,cx1,cy1);
@@ -113,14 +113,14 @@ if (name1 instanceof UNDEFINED) {g.setColor(c_color);
 						6,6);}
 
 
- drawTrans(g,
-		(int) ((temppoint[0].x+matrix1.x)*Editor.ZoomFaktor),
-		(int) ((temppoint[0].y+matrix1.y)*Editor.ZoomFaktor),
-		(int) ((temppoint[countarray].x+matrix1.x)*Editor.ZoomFaktor),
-		(int) ((temppoint[countarray].y+matrix1.y)*Editor.ZoomFaktor),
-		name1,
-		name2,
-		c_color);
+// drawTrans(g,
+//		(int) ((temppoint[0].x+matrix1.x)*Editor.ZoomFaktor),
+//		(int) ((temppoint[0].y+matrix1.y)*Editor.ZoomFaktor),
+//		(int) ((temppoint[countarray].x+matrix1.x)*Editor.ZoomFaktor),
+//		(int) ((temppoint[countarray].y+matrix1.y)*Editor.ZoomFaktor),
+//		name1,
+//		name2,
+//		c_color);
 }
 
 }
@@ -158,13 +158,13 @@ public static void drawTrans(Graphics g,int cx1, int cy1, int cx2, int cy2,TrAnc
 	yu = cy2-Math.round(50*Math.sin(winkel));	
 		
 	wneu = winkel +Math. PI-((Math.PI)/4);	
-	g.drawLine(cx2,cy2,cx2+ (int) Math.round(size*Math.cos(wneu)),cy2- (int) Math.round(size*Math.sin(wneu)));
+	g.drawLine(cx2,cy2,cx2+ (int) Math.round(size*Math.cos(wneu)*Editor.ZoomFaktor),cy2- (int) Math.round(size*Editor.ZoomFaktor*Math.sin(wneu)));
 		
 	wneu = winkel - Math.PI +((Math.PI)/4);	//    wneu:=wwinkel+ ((180-ww)*(pi/180));
-	g.drawLine(cx2,cy2,cx2+ (int) Math.round(size*Math.cos(wneu)),cy2- (int) Math.round(size*Math.sin(wneu)));
+	g.drawLine(cx2,cy2,cx2+ (int) Math.round(size*Editor.ZoomFaktor*Math.cos(wneu)),cy2- (int) Math.round(size*Editor.ZoomFaktor*Math.sin(wneu)));
 
 //	if (ta1 instanceof UNDEFINED) {g.fillOval(cx1-3,cy1-3,6,6);}
-	if (ta2 instanceof UNDEFINED) {g.fillOval(cx2-3,cy2-3,6,6);}
+       	if (ta2 instanceof UNDEFINED) {g.fillOval(cx2-3,cy2-3,6,6);} 
     } 
 
 
