@@ -3,7 +3,7 @@ import Absyn.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: t_Example.java,v 1.6 1998-12-08 00:06:41 swtech11 Exp $
+ *  @version  $Id: t_Example.jav,v 1.1 1998-12-08 14:26:48 swtech11 Exp $
  */
 public class t_Example{
 

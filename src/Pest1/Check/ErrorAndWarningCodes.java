@@ -2,7 +2,7 @@ package Check;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: ErrorAndWarningCodes.java,v 1.7 1998-12-08 00:08:52 swtech11 Exp $
+ *  @version  $Id: ErrorAndWarningCodes.java,v 1.8 1998-12-08 14:24:59 swtech11 Exp $
  */
 class ErrorAndWarningCodes {
   ErrorAndWarningCodes() {
@@ -31,12 +31,16 @@ class ErrorAndWarningCodes {
       case 202: {_s = "Deklarierter Event wurde nicht verwendet"; break; }
       case 203: {_s = "Der Pathname in einem GuardComppath ist nicht vorhanden."; break; }
       case 204: {_s = "Der Pathname in einem GuardComppath ist mehrfach vorhanden."; break; }
+
       case 300: {_s = "Mehrfache Definition von Statename"; break; }
       case 301: {_s = "Bezeichnung von Statename nicht eindeutig"; break;}
       case 302: {_s = "Deklarierter State wurde nicht verwendet"; break; }
       case 303: {_s = "Keine Deklaration von Statename"; break; }
-      case 304: {_s = ""; break; }
-      
+      case 304: {_s = "Ein Or-State enthaelt nur einen inneren State"; break; }
+      case 305: {_s = "Ein Or-State enthaelt keinen inneren State"; break; }
+      case 307: {_s = "Ein And-State enthaelt nur einen inneren State"; break; }
+      case 306: {_s = "Ein And-State enthaelt keinen inneren State"; break; }
+     
       case 400: {_s = "Der Start-State der Transition ist nicht definiert."; break; }
       case 401: {_s = "Der Ziel-State der Transition ist nicht definiert."; break; }
       case 402: {_s = "Beide States der Transition sind nicht definiert."; break; }

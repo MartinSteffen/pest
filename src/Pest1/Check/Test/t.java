@@ -5,7 +5,7 @@ import Absyn.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: t.java,v 1.3 1998-12-08 00:06:40 swtech11 Exp $
+ *  @version  $Id: t.java,v 1.4 1998-12-08 14:25:14 swtech11 Exp $
  */
 public class t {
 
@@ -39,10 +39,10 @@ public class t {
     }
     if (argv.length >= 1) {
       // Statecharts auswählen
-      if (argv[0].equalsIgnoreCase("d")) {
-        t_Example t = new t_Example();
+	  if (argv[0].equalsIgnoreCase("d")) {
+        t2_Example t = new t2_Example();
         sc = t.getExample_d();
-      }
+	}
       if (argv[0].equalsIgnoreCase("s")) {
         Example t = new Example();
         sc = t.getExample();
@@ -51,17 +51,17 @@ public class t {
         sc = new Statechart(null,null,null,null);
       }
       if (argv[0].equalsIgnoreCase("m")) {
-        t_Example t = new t_Example();
-        sc = t.getExample_m1();
+        t2_Example t = new t2_Example();
+        sc = t.getExample_m();
       }
-      if (argv[0].equalsIgnoreCase("m2")) {
-        t_Example t = new t_Example();
+      /*if (argv[0].equalsIgnoreCase("m2")) {
+        t2_Example t = new t2_Example();
         sc = t.getExample_m2();
-      }
-      if (argv[0].equalsIgnoreCase("m3")) {
-        t_Example t = new t_Example();
+	}*/
+      /*if (argv[0].equalsIgnoreCase("m3")) {
+        t2_Example t = new t2_Example();
         sc = t.getExample_m3();
-      }
+	}*/
       // Check auswählen
       if (argv.length >= 2) {
         if (argv[1].equalsIgnoreCase("a")) { ok = mc.checkModel(sc); }

@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: testBVars.java,v 1.5 1998-12-04 11:11:58 swtech11 Exp $
+ *  @version  $Id: testBVars.java,v 1.6 1998-12-08 14:25:00 swtech11 Exp $
  */
 class testBVars extends modelCheckBasics{
   private Vector Ist;
@@ -40,39 +40,40 @@ class testBVars extends modelCheckBasics{
 
   void erstelle_Soll() {
 
-    if (sc.state instanceof Or_State) {testTransOrState((Or_State)sc.state); }
-    if (sc.state instanceof And_State) {testTransAndState((And_State)sc.state); }
+    if (sc.state instanceof Or_State) {testTransOrState((Or_State)sc.state, null, ""); }
+    if (sc.state instanceof And_State) {testTransAndState((And_State)sc.state, null, ""); }
 
   };
 
-  void nextTransInTransList(TrList tl) {
-    pruefeGuard(tl.head.label.guard, tl.head);
-    pruefeAction(tl.head.label.action, tl.head);
-    if (tl.tail != null) { nextTransInTransList(tl.tail); }
+  void nextTransInTransList(TrList tl, State _s, String p) {
+    pruefeGuard(tl.head.label.guard, tl.head, p);
+    pruefeAction(tl.head.label.action, tl.head, p);
+    if (tl.tail != null) { nextTransInTransList(tl.tail, _s, p); }
 
   }
-    void pruefeGuard(Guard g, Tr t){
-    if (g instanceof GuardBVar)  {pruefeBVar  (((GuardBVar )g).bvar, t);};
-    if (g instanceof GuardCompg) {pruefeGuard (((GuardCompg)g).cguard.elhs, t);
-                                  pruefeGuard (((GuardCompg)g).cguard.erhs, t); };
-    if (g instanceof GuardNeg)   {pruefeGuard (((GuardNeg)g).guard, t);};
+    void pruefeGuard(Guard g, Tr t, String p){
+    if (g instanceof GuardBVar)  {pruefeBVar  (((GuardBVar )g).bvar, t, p);};
+    if (g instanceof GuardCompg) {pruefeGuard (((GuardCompg)g).cguard.elhs, t, p);
+                                  pruefeGuard (((GuardCompg)g).cguard.erhs, t, p); };
+    if (g instanceof GuardNeg)   {pruefeGuard (((GuardNeg)g).guard, t, p);};
     }
 
-  void pruefeBVar(Bvar b, Tr t){
+  void pruefeBVar(Bvar b, Tr t, String p){
       if (Ist.contains(b.var)) {if (!Soll.contains(b.var)) { Soll.addElement(b.var);};}
-      else {msg.addError(101,"BVar: "+b.var+"/ Statename: "+((Statename)t.source).name+" -> "+((Statename)t.target).name);};
+      else {msg.addError(101,"BVar: "+b.var+
+                  "/ Transition: "+((Statename)t.source).name+" -> "+((Statename)t.target).name+" in State: "+p);};
   };
 
-    void pruefeAction(Action a, Tr t){
+    void pruefeAction(Action a, Tr t, String p){
     if (a instanceof ActionBlock)  { for(Aseq as=((ActionBlock)a).aseq;as.tail!=null;as=as.tail) 
-	{ pruefeAction(as.head, t);};}
-    if (a instanceof ActionStmt) {pruefeBool (((ActionStmt)a).stmt, t);};
+	{ pruefeAction(as.head, t, p);};}
+    if (a instanceof ActionStmt) {pruefeBool (((ActionStmt)a).stmt, t, p);};
     };
 
-  void pruefeBool(Boolstmt b, Tr t) {
-     if (b instanceof BAss)  {pruefeBVar(((BAss)b).ass.blhs, t); pruefeGuard(((BAss)b).ass.brhs, t);};
-     if (b instanceof MTrue)  {pruefeBVar(((MTrue)b).var, t);};
-     if (b instanceof MFalse) {pruefeBVar(((MFalse)b).var, t);};
+  void pruefeBool(Boolstmt b, Tr t, String p) {
+     if (b instanceof BAss)  {pruefeBVar(((BAss)b).ass.blhs, t, p); pruefeGuard(((BAss)b).ass.brhs, t, p);};
+     if (b instanceof MTrue)  {pruefeBVar(((MTrue)b).var, t, p);};
+     if (b instanceof MFalse) {pruefeBVar(((MFalse)b).var, t, p);};
     };
 
     void vergleiche(){
