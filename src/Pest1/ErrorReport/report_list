@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.48 1999-02-02 09:47:10 swtech24 Exp $
+//	$Id: report_list,v 1.49 1999-02-02 11:26:54 swtech01 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -598,4 +598,56 @@ Ebene geloescht
 #Subject:       GUI: Nach Import und weiterem Import (diesmal mit Fehler) ist alte Chart noch da. 
 #Status:        reported
 #Description:
+//------------------------------------------------------------------------------
+#Number:        41
+#Autor:         Bernd Weber bwe
+#Subject:       GUI: Nach Speichern wird Dateiname in Titelleiste nicht aktualisiert
+#Status:        reported
+#Description:
+//------------------------------------------------------------------------------
+#Number:        42
+#Autor:         Bernd Weber bwe
+#Subject:       GUI: Speichern über graf. Menu wird nicht erkannt
+#Status:        reported
+#Description:
 
+Speichert man über die graf. Benutzerführung, meldet GUI beim Versuch,
+etwas zu laden oder Pest zu beenden, dass die Chart noch nicht
+gespeichert wurde. Über normales Menu funktioniert's.
+//------------------------------------------------------------------------------
+#Number:        43
+#Autor:         Bernd Weber bwe
+#Subject:       Editor: Editor erzeugt selbst Koordinatenproblem
+#Status:        reported
+#Description:
+
+Zeichne Chart mit zwei Basic States, teile einen der beiden mittels
+"Parallel", zeichne dann eine Transition vom Basic State zum
+AND-State.
+Nach Speichern und Laden meldet der Editor nun ein Koordinatenproblem.
+//------------------------------------------------------------------------------
+#Number:        44
+#Autor:         Bernd Weber bwe
+#Subject:       Simu: Keine Funtionalität erkennbar
+#Status:        reported
+#Description:
+
+Erzeuge zwei Basic States und eine leere Transition vom Default State
+zum zweiten Zustand. Rufe Syntaxcheck und Simulator auf.
+Nach Klicken von "MakeStep" passiert nix (Default State noch immer
+aktiv).
+//------------------------------------------------------------------------------
+#Number:        45
+#Autor:         Bernd Weber bwe
+#Subject:       Editor: Labeln von Transition fast unmöglich
+#Status:        reported
+#Description:
+
+1. Zwei Basic States nebeneinander erzeugen
+2. Dicht an Mitte der rechten Kante innerhalb des linken Zustandes Anfangspunkt
+   einer Transition setzen. 
+3. Dicht an Mitte der linken Kante innerhalb des rechten Zustandes
+   Zwischenpunkt setzen (ein Linksklick)
+4. An selbem Punkt Endpunkt mit Doppelklick setzen.
+5. Versuchen Transition mit Label Transition zu selektieren (viel
+    Spass ;-) )
