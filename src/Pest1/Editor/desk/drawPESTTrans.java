@@ -67,14 +67,32 @@ if (matrix1.prev instanceof Or_State)
      otemp = (Or_State) matrix1.prev; 
    
      for (int j=0;j < countarray; j++) { pointarray[j].x = pointarray[j].x;
-     	                                pointarray[j].y = pointarray[j].y;
-   									    temppoint[j] = new CPoint(pointarray[j]);}
+	     pointarray[j].y = pointarray[j].y;
+	     temppoint[j] = new CPoint(pointarray[j]);}
+
+     // if (matrix1.prev != null)
+       {
+	 // if (matrix1.prev.rect != null)
+	   {
+	     for (int j=0;j < countarray; j++) { pointarray[j].x = pointarray[j].x-(matrix1.x-matrix1.akt.rect.x);
+	     pointarray[j].y = pointarray[j].y-(matrix1.y-matrix1.akt.rect.y);
+	     temppoint[j] = new CPoint(pointarray[j]);}
+	   }
+       }
  	temppoint[0] = transpoint(root,cx1,cy1);
+	temppoint[0].x = temppoint[0].x-(matrix1.x-matrix1.akt.rect.x);
+	temppoint[0].y = temppoint[0].y-(matrix1.y-matrix1.akt.rect.y); 
  	temppoint[countarray] = transpoint(root,cx2,cy2);
+	temppoint[countarray].x = temppoint[countarray].x-(matrix1.x-matrix1.akt.rect.x);
+	temppoint[countarray].y = temppoint[countarray].y-(matrix1.y-matrix1.akt.rect.y); 
+
+	if (!(matrix1.akt.rect == null & getname1 == getname2 & matrix1.akt instanceof Or_State))
+	{
      transtemp = new Tr(matrix1.akt.name,matrix1.akt.name,new TLabel(new GuardEmpty(new Dummy()),new ActionEmpty(new Dummy()))
  		     ,temppoint);
  	trtemp = otemp.trs;
-	otemp.trs = new TrList(transtemp,trtemp);		 
+	otemp.trs = new TrList(transtemp,trtemp);
+	}		 
  }
 
 if (matrix1.akt == root.state)
@@ -85,7 +103,7 @@ if (matrix1.akt == root.state)
   
     for (int j=0;j < countarray; j++) { pointarray[j].x = pointarray[j].x;
     	                                pointarray[j].y = pointarray[j].y;
-  									    temppoint[j] = new CPoint(pointarray[j]);}
+					temppoint[j] = new CPoint(pointarray[j]);}
 	temppoint[0] = transpoint(root,cx1,cy1);
 	temppoint[countarray] = transpoint(root,cx2,cy2);
     transtemp = new Tr(tempstate.name,tempstate.name,new TLabel(new GuardEmpty(new Dummy()),new ActionEmpty(new Dummy()))
@@ -102,11 +120,23 @@ if (matrix1.akt == root.state)
 
 if (matrix1.akt instanceof Or_State)
 {
+
+  if (matrix1.prev == null & matrix1.akt.rect != null)
+    {
+      tempstate = root.state;
+      root.state = new Or_State(new Statename("___root"),new StateList(tempstate,null),null,null,null);
+      otemp = (Or_State) root.state;
+    }
+
+  matrix1 = PESTdrawutil.getStateFrame(root,cx1,cy1,cx2,cy2); 
+
+  getname1 = PESTdrawutil.getSmallObject(root,cx1,cy1);
+  getname2 = PESTdrawutil.getSmallObject(root,cx2,cy2);
   otemp1 = (Or_State) matrix1.akt;
+  if (getname1 == getname2 & matrix1.prev instanceof Or_State) {
+  otemp1 = (Or_State) matrix1.prev;  
+  }
   trtemp = otemp1.trs;
-  
-getname1 = PESTdrawutil.getSmallObject(root,cx1,cy1);
-getname2 = PESTdrawutil.getSmallObject(root,cx2,cy2);
 
 if (matrix2.akt.rect == null & getname1 instanceof Or_State) getname1 = null; 
 
@@ -115,24 +145,54 @@ if (matrix3.akt.rect == null & getname2 instanceof Or_State) getname2 = null;
 //System.out.println("name 1 :"+getname1);
 //System.out.println("name 2 :"+getname2);
 movetest = false;
-      
-	{
-	    for (int j=0;j < countarray; j++) { pointarray[j].x = pointarray[j].x - matrix1.x;
-	                                        pointarray[j].y = pointarray[j].y - matrix1.y;
+if (getname1 != getname2)
+  
+  {
+	  for (int j=0;j < countarray; j++) { pointarray[j].x = pointarray[j].x-matrix1.x;
+	    pointarray[j].y = pointarray[j].y-matrix1.y;
 						temppoint[j] = new CPoint(pointarray[j]);}
+	}
+{
+	    if (getname1 == getname2 & matrix1.prev != null)
+	    {
+        if (matrix1.prev instanceof Or_State & matrix1.prev.rect != null) {
+	    for (int j=0;j < countarray; j++) { pointarray[j].x = pointarray[j].x-(matrix1.x-matrix1.akt.rect.x);
+	                                        pointarray[j].y = pointarray[j].y-(matrix1.y-matrix1.akt.rect.y);
+						temppoint[j] = new CPoint(pointarray[j]);}
+	}
+	if (matrix1.prev instanceof Or_State & matrix1.prev.rect == null) {
+	    for (int j=0;j < countarray; j++) { pointarray[j].x = pointarray[j].x;
+	                                        pointarray[j].y = pointarray[j].y;
+						temppoint[j] = new CPoint(pointarray[j]);}
+	}
+	    }
+
 	temppoint[0] = transpoint(root,cx1,cy1);
 	
 	if (movetest == true)
 	{
-	temppoint[0].x = temppoint[0].x - matrix1.x;
-	temppoint[0].y = temppoint[0].y - matrix1.y;
+	  if (getname1 != getname2)
+	  {
+	    temppoint[0].x = temppoint[0].x- matrix1.x;
+	    temppoint[0].y = temppoint[0].y- matrix1.y;
+	  }
+	if (getname1 == getname2 & matrix1.prev != null){
+	if (matrix1.prev instanceof Or_State & matrix1.prev.rect != null) {
+	temppoint[0].x = temppoint[0].x-(matrix1.x-matrix1.akt.rect.x);
+	temppoint[0].y = temppoint[0].y-(matrix1.y-matrix1.akt.rect.y);  
+	}
+	if (matrix1.prev instanceof Or_State & matrix1.prev.rect == null) {
+	temppoint[0].x = temppoint[0].x;
+	temppoint[0].y = temppoint[0].y;  
+	}
+	}
 	if (getname1 instanceof State) {  if (matrix2.prev instanceof And_State) 
 					{obname1 = (State) matrix2.prev; name1 = obname1.name;}
 					else {obname1 = (State) getname1; name1 = obname1.name;}
 				      };
 
 	if (getname1 instanceof Connector) {obcon1 = (Connector) getname1; name1 = obcon1.name;};
-	} else {temppoint[0] = new CPoint(cx1-matrix1.x,cy1-matrix1.y);} 
+	} else {temppoint[0] = new CPoint(cx1,cy1);} 
 	}
                 movetest = false;
 	if(getname2 != null)	
@@ -140,8 +200,21 @@ movetest = false;
 	temppoint[countarray] = transpoint(root,cx2,cy2);
 	if (movetest == true)
 	{
-	temppoint[countarray].x = temppoint[countarray].x - matrix1.x;
-	temppoint[countarray].y = temppoint[countarray].y - matrix1.y;
+	  if (getname1 != getname2)
+	  {
+	    temppoint[countarray].x = temppoint[countarray].x- matrix1.x;
+	    temppoint[countarray].y = temppoint[countarray].y- matrix1.y;
+	  }
+	if (getname1 == getname2 & matrix1.prev != null) {
+	if (matrix1.prev.rect != null& matrix1.prev instanceof Or_State) {
+	temppoint[countarray].x = temppoint[countarray].x-(matrix1.x-matrix1.akt.rect.x);
+	temppoint[countarray].y = temppoint[countarray].y-(matrix1.y-matrix1.akt.rect.y);  
+	}
+	if (matrix1.prev.rect == null& matrix1.prev instanceof Or_State) {
+	temppoint[countarray].x = temppoint[countarray].x;
+	temppoint[countarray].y = temppoint[countarray].y;  
+	}
+	}
 	if (getname2 instanceof State) {  if (getname2 != root.state)
 				           {
 					 if (matrix3.prev instanceof And_State) 
@@ -150,13 +223,22 @@ movetest = false;
     				            } else {name2 = new UNDEFINED();}
 				      };
 	if (getname2 instanceof Connector) {obcon2 = (Connector) getname2; name2 = obcon2.name;};
-	} else {temppoint[countarray] = new CPoint(cx2-matrix1.x,cy2-matrix1.y);} 
-	} else {temppoint[countarray] = new CPoint(cx2-matrix1.x,cy2-matrix1.y);}
+	} else {temppoint[countarray] = new CPoint(cx2,cy2);} 
+	} else {temppoint[countarray] = new CPoint(cx2,cy2);}
       
 
-  transtemp = new Tr(name1,name2,new TLabel(new GuardEmpty(new Dummy()),new ActionEmpty(new Dummy()))
-		     ,temppoint); // source, target, label
-  otemp1.trs = new TrList(transtemp,trtemp);
+	// transtemp = new Tr(name1,name2,new TLabel(new GuardEmpty(new Dummy()),new ActionEmpty(new Dummy()))
+	//     ,temppoint); // source, target, label
+	//otemp1.trs = new TrList(transtemp,trtemp);
+
+
+if (!(matrix1.akt.rect == null & getname1 == getname2 & matrix1.akt instanceof Or_State))
+	{
+     transtemp = new Tr(matrix1.akt.name,matrix1.akt.name,new TLabel(new GuardEmpty(new Dummy()),new ActionEmpty(new Dummy()))
+ 		     ,temppoint);
+	otemp1.trs = new TrList(transtemp,trtemp);
+	}		
+
 
   //System.out.println("tempp1 :"+temppoint[0]);
   //System.out.println("tempp2 :"+temppoint[countarray]);

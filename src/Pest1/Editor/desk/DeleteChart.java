@@ -73,7 +73,7 @@ public class DeleteChart {
         os.trs = update_trans (os.trs, x);
 
     // Wenn Vater Or_State ohne Rectangle (imaginärer Or_State)
-    // und Vater hat keine Substates mehr, dann lösche komplette Chart
+    // und Vater hat keine Substates mehr, dann l”sche komplette Chart
 
         if(os.rect == null && os.substates == null) {
 
@@ -185,7 +185,7 @@ public class DeleteChart {
     return;
   }
 
-  // Wenn Or_State leer und ganz oben, dann lösche kompletten Baum
+  // Wenn Or_State leer und ganz oben, dann l”sche kompletten Baum
 
   if (father == null && is_empty(x) ) {
     Tree.state = null;
@@ -197,17 +197,24 @@ public class DeleteChart {
     Or_State os = ((Or_State)father);
 
     // Verschieben der relativen Koordinaten
+
     move_coord(x);
     move_trans(x);
     move_cons(x);
-
+    
+    // x aus der Stateliste des Vaters entfernen
     os.substates = remove_State(os.substates, x);
-    // subs von Todelete an Vater anhängen
+
+    // subs von x an Vater anhängen    
     os.substates = append_List(x.substates, os.substates);
+
     // trans von Todelete an Vater anhängen
     os.trs = append_List(x.trs, os.trs);
+
     // connectoren von Todelete an Vater anhängen
     os.connectors = append_List(x.connectors, os.connectors);
+
+    return;
 
   }
 
@@ -286,7 +293,7 @@ public class DeleteChart {
     StateList dummy = stl;
     StateList dummy2 = stl;
 
-    // Fall: Liste hat nur ein Element. Dann Liste komplett löschen
+    // Fall: Liste hat nur ein Element. Dann Liste komplett l”schen
     if (stl!= null) {
       if (stl.head == x && stl.tail == null) { return null; }
     }
@@ -349,7 +356,7 @@ public class DeleteChart {
     TrList dummy = trl;
     TrList dummy2 = trl;
 
-    // Fall: Liste hat nur ein Element. Dann Liste komplett löschen
+    // Fall: Liste hat nur ein Element. Dann Liste komplett l”schen
     if (trl!= null) {
       if (trl.head == x && trl.tail == null) { return null; }
     }
@@ -378,7 +385,7 @@ public class DeleteChart {
     ConnectorList dummy = cons;
     ConnectorList dummy2 = cons;
 
-    // Fall: Liste hat nur ein Element. Dann Liste komplett löschen
+    // Fall: Liste hat nur ein Element. Dann Liste komplett l”schen
     if (cons!= null) {
       if (cons.head == x && cons.tail == null) { return null; }
     }
@@ -502,6 +509,9 @@ public class DeleteChart {
     private StateList append_List ( StateList source, StateList target ) {
 
       // hängt source an target an und gibt die angehängte Liste zurück
+
+      // System.out.println("target: " + target);
+      // System.out.println("source: " + source);
 
       if (target == null) { return source; }
 

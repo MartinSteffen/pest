@@ -189,7 +189,8 @@ import tesc2.*;
         State todelete = (State)aktcomp;
         State father = dc.get_father(root.state, todelete);
 
-	//    System.out.println("Zu l”schender State: "+ todelete);
+	// System.out.println("Zu l”schender State: "+ todelete);
+
 	// System.out.println("Vater "+ father);
 
         dc.delete_State( todelete );
