@@ -246,9 +246,12 @@ s1.addActionListener(new ActionListener() {
     menubar.add(tools);                       // Add to menubar.
 
     // Tool-Menue erzeugen
-    MenuItem z1, z2, z3, z4, z5, z6, z7,z10,z12;
+    MenuItem z1, z2, z3, z4, z5, z6, z7,z10,z12,z15,z16;
     zoom.add(z10 = new MenuItem("Zoom In"));
     zoom.add(z12 = new MenuItem("Zoom Out"));
+    zoom.addSeparator();
+    zoom.add(z15 = new MenuItem("Zoom In 10x"));
+    zoom.add(z16 = new MenuItem("Zoom Out10x"));
     zoom.addSeparator();
     zoom.add(z1 = new MenuItem("1/8 x"));
     zoom.add(z2 = new MenuItem("1/4 x"));
@@ -297,7 +300,19 @@ z12.addActionListener(new ActionListener() {
 						scribble.repaint();}
     });
 
+z15.addActionListener(new ActionListener() {    
+      public void actionPerformed(ActionEvent e) { zoomfk = zoomfk + 10; if (zoomfk == 0) {zoomfk = 2;}
+			if (zoomfk > -1) {ZoomFaktor = zoomfk;} else
+					{ZoomFaktor = 1/(Math.abs(zoomfk));}
+					 	scribble.repaint();}
 
+    });
+z16.addActionListener(new ActionListener() {    
+      public void actionPerformed(ActionEvent e) { zoomfk = zoomfk - 10; if (zoomfk == 0) {zoomfk = -2;}
+			if (zoomfk > -1) {ZoomFaktor = zoomfk;} else
+					{ZoomFaktor = 1/(Math.abs(zoomfk));}
+						scribble.repaint();}
+    });
 
       
  s1.addActionListener(new ActionListener() {    
