@@ -1,0 +1,72 @@
+Informationen zu den Tests
+$Id: README,v 1.1 1999-02-11 09:22:22 swtech20 Exp $
+===============================================================================
+
+
+   (1) Folgende Testdateien sind in diesem Verzeichnis zu finden:
+ 
+       (a) Simple-1.tesc, Simple-2.tesc, Simple-3.tesc und Simple-4.tesc
+       (b) ../Docu/Example.tesc
+       (c) Export.tesc
+       (d) Ref-State.tesc
+ 
+   (2) Zweck der Tests und Resultate
+ 
+       (a) Einfache TESC-Dateien zum Pruefen des Parsers
+
+           - Simple.tesc 
+              - Verwenden von AND-, OR-, BASIC-States
+              - Verwenden von einfachen Transitionen mir Bvars und Events
+              - Resultat: Import OK
+
+           - Simple-2.tesc
+              - Komplexere Guards und Events zum Testen der Prioritaeten
+                in den Bvars und Events, sowie der Aufteilung
+                nach Statemate-Style.
+              - Resultat: Import OK
+
+           - Simple-3.tesc
+              - Wie Simple-2.tesc nur ohne Var- und Event-Deklaration
+                damit diese gemaess Kontext angelegt werden.
+              - Resultat: Import OK, mit Warnungen
+
+		TESC1 : Zeile 4 : Info : e3 implizit als Event deklariert
+		TESC1 : Zeile 4 : Info : e2 implizit als Event deklariert
+		TESC1 : Zeile 5 : Info : e1 implizit als Event deklariert
+		TESC1 : Zeile 5 : Info : v1 implizit als Bvar deklariert
+		TESC1 : Zeile 5 : Info : v2 implizit als Bvar deklariert
+
+           - Simple-4.tesc
+              - Wie Simple-3.tesc nur ohne Var- und Event-Deklaration 
+                damit diese gemaess Kontext angelegt werden.
+              - Hier werden jedoch die Bezeichner spaeter falsch
+                verwendet.
+              - Resultat: Import korrekterweise FEHLERHAFT:
+ 
+		TESC1 : Zeile 5 : Fehler : e1 ist ein Event.
+		TESC1 : Zeile 6 : Fehler : Event-Teil des Guards enthält Bvar.
+		TESC1 : Zeile 6 : Fehler : Bvar-Teil des Guards enthält Event.
+
+
+       (b) Beispiel aus dem Pflichtenheft
+
+           - ../Docu/Example.tesc
+             - Resultat: Import OK
+
+
+       (c) Exporttest
+
+           - Export des Beispiels aus dem Pflichtenheft (c) . Mit diff
+             sieht man, dass sich nur die Kommentar und Formatierungen
+             unterscheiden.
+           - Resutltat : Export OK  
+
+       (d) State-Referenzen
+
+           - Ref-State.tesc
+             - Verwenden von REF-States aller Typen
+             - Resulttat: Import OK
+ 
+===============================================================================
+
+$Log: not supported by cvs2svn $
