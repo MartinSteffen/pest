@@ -113,10 +113,19 @@ if (tr.source instanceof UNDEFINED) {h.setColor( Editor.tr_color());
 		   if (localobject instanceof State) {
 		       State hier = (State) localobject;
 		       Statematrix matrix = PESTdrawutil.getState(root,tr.points[0].x+nx,tr.points[0].y+ny);
-		      if (matrix.prev instanceof And_State) {//System.out.println("AND>"+matrix.prev);
+Statename trtest = (Statename)tr.source;
+		      if (matrix.prev instanceof And_State) {
+			  
+			    if (hier.name.name != trtest.name) {System.out.println(hier.name.name+"->"+trtest.name);
+			    Editor.dislocation();}
+			  //System.out.println("AND>"+matrix.prev);
 			  //System.out.println("AND>"+matrix.prev.name.name);
 			  tr.source = new Statename(matrix.prev.name.name);} else 
-			      {tr.source = new Statename(hier.name.name);}
+			      {
+				 if (hier.name.name != trtest.name) {System.out.println(hier.name.name+"->"+trtest.name);
+				 Editor.dislocation();
+				 }
+				  tr.source = new Statename(hier.name.name);}
 		   };
 	      }
 
@@ -132,10 +141,16 @@ if (tr.target instanceof UNDEFINED) {h.setColor( Editor.tr_color());
 			if (hier.rect != null)
 			{
 		       Statematrix matrix = PESTdrawutil.getState(root,tr.points[trsize].x+nx,tr.points[trsize].y+ny);
+		           Statename trtest2 = (Statename)tr.target;
 		       if (matrix.prev instanceof And_State) {//System.out.println("AND>"+matrix.prev);
 			  //System.out.println("AND>"+matrix.prev.name.name);
+			      if (hier.name.name != trtest2.name) {System.out.println(hier.name.name+"->"+trtest2.name);
+			      Editor.dislocation();}
 			  tr.target = new Statename(matrix.prev.name.name);} else 
-			      {tr.target = new Statename(hier.name.name);}
+			      {
+				  if (hier.name.name != trtest2.name) {System.out.println(hier.name.name+"->"+trtest2.name);
+				  Editor.dislocation();}
+				  tr.target = new Statename(hier.name.name);}
 			}
 		   };
 	      }

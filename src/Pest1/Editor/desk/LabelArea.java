@@ -64,7 +64,7 @@ public class LabelArea extends Dialog {
      //System.out.println("Position von / :"+lauf);
      if (lauf == -1) {ts1 = hs1;ts2 = "";}
      if (lauf == 0 & hs1.length()>1) {ts2 = hs1.substring(1);}
-     if (lauf > 0) {ts1 = hs1.substring(0,lauf);}
+     if (lauf > 0 & lauf >= hs1.length()+1) {ts1 = hs1.substring(0,lauf);}
      if (lauf > 0  & lauf < hs1.length()+1) {ts2 = hs1.substring(lauf+1);}
      ts1 = ts1.trim();
      ts2 = ts2.trim();
