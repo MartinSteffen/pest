@@ -1,0 +1,26 @@
+Zeitplan :
+==========
+
+Gruppe    : 4
+Account   : swtech14
+Developer : Eike Schulz & Martin Poerksen
+
+
+1.Schritt : Spezifizierung der Probleme
+            Koordination der Schnittstellen mit anderen Gruppen
+            Festlegung der verbotenen Eingaben ( z.B. Interlevel-Transitionen )
+            Festlegung der erlaubten Eingaben  ( z.B. isolierte Transitionen )
+            u.s.w.
+
+            ........ bis zum Montag, den 30.11.98 ........
+
+2.Schritt : Implementierung ( Codierung ) des Graphplazierungsalgorithmus 
+            
+            ........ bis zum Montag, den 04.01.99 ........
+
+3.Schritt : Testen : Fehlersuche, Verbesserungen, 
+                     abschliessende Koordination mit der Editorgruppe, ob der
+                     Algorithmus aufrufbar ist.
+
+            ........ bis zum Montag, den 11.01.99 ........
+            
