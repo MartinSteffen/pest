@@ -3,16 +3,18 @@
 #----------------------------------------------------------------------
 
 
-all:    $(patsubst %.java,%.class,$(wildcard *.java))  
+all:    others $(patsubst %.java,%.class,$(wildcard *.java))  
 
-	make -C ../Absyn
-	make -C ../Editor
-	make -C ../Check
-	make -C ../Simu
-	make -C ../TESC1
-	make -C ../TESC2
-	make -C ../CodeGen
-	make -C ../STM
+
+others:
+	(cd ../Absyn ; make)
+	(cd ../Editor ; make)
+	(cd ../Check ; make)
+	(cd ../Simu ; make)
+	(cd ../TESC1 ; make)
+	(cd ../TESC2 ; make)
+	(cd ../CodeGen ; make)
+	(cd ../STM ; make)
 
 gui:    $(patsubst %.java,%.class,$(wildcard *.java))  
 
