@@ -1,0 +1,213 @@
+Sprachdefinition von TESC - Textuelle Statecharts - (Stand 29.11.)
+
+
+Schematische Darstellung
+
+   -------   +---------+   -------   +--------+   ------------    
+  | Datei |--| Scanner |--| Token |--| Parser |--| Syntaxbaum |
+   -------   +---------+   -------   +--------+   ------------
+
+Sprachbeschreibung
+
+Wie man aus den Beispielen erkennt, ist die Struktur von TESC streng hierarchisch
+und eng an die abstrakte Syntax angelehnt.
+Es gibt genau einen Root-Zustand, der alle weiteren And-, Or- und Basic-Zustaende 
+enthaelt.
+Transitionen und Konnektoren werden separat nach den Zustaenden angegeben. inter-
+level-Transitionen sind nicht erlaubt.
+Der eindeutige Startzustand in Or-Zustaenden wird nach den Transitionen festgelegt. 
+Transitionen besitzen wie in der abstrakten Syntax einen Waechter und eine 
+optionale Aktion.
+Der Waechter ist syntaktisch als ein boolscher Ausdruck zu sehen, der mit den 
+boolschen Operatoren und, oder, folgt aus und ist aequivalent zusammen gesetzt ist. 
+Als Operanden koennen Ereignisse, boolsche Variablen, "Pfadzustaende" und die 
+Konstanten true, false verwendet werden.
+Eine Aktion ist eine Liste von Ereignissen und boolschen Zuweisungen. 
+Kommentare werden mit Semikolon begonnen und reichen bis zu Zeilenende.
+
+
+Struktur von TESC an Beispielen
+
+Beispiel 1
+
+  and A
+      xor A1
+          basic D
+          from D to D on a do b
+      end A1
+      xor A2
+          basic D
+      end A2
+  end A
+
+Beispiel 2 (aus dem Pflichtenheft) ohne inter-level-Transitionen
+
+  and SUD 
+      basic P1
+      basic P2
+      or P3
+         basic Q1
+         and Q2
+             or R1
+                basic S1
+                basic S2
+                from S1 to S2 on C
+                from S2 to S1 on G[in(SUD.P3.Q2.T2)]
+                default S1
+             end R1
+             or R2
+                basic T1
+                basic T2
+                from T1 to T2 on D
+                from T2 to T1 on G
+                default T1
+             end R2
+         end Q2
+         default Q1
+         from Q1 to Q2 on A do C
+      end P3
+      from P1 to P2 on C
+      from P1 to P3 on A
+      default P1
+  end SUD
+
+Beispiel 3
+
+  or Main
+    basic P1
+    basic P2
+    con C1
+    from P1 to C1 on A
+    from C1 to P1 on A 
+  end Main
+
+Beispiel 4 Ausdrücke 
+
+  - G & in(SUD.P3.Q2.T2)
+  - !G | !in(SUD.P3.Q2.T2)
+  - (a=true,b=false)
+  - (a=!a&!b,A)
+
+Tokenklassen für den Scanner
+
+<character>     ::= {a..z,A..Z}
+<digits>        ::= {0..9}
+<boolval>       ::= {true, false}
+<dot>           ::= {.}
+<keywors>       ::= {and, or, basic, from, to, on, do, default, end, con, true, false, 
+                     in, entered, exited, undef}
+<sidentifier>   ::= <character>+(<character>+<digits>)*
+<identifier>    ::= <sidentifier>(<dot><sidentifier>)*
+
+<pathop>        ::= {in|entered|exited}
+<op>            ::= {&,|,->,<=>}
+<parentesis>    ::= {(,)}
+<komma>         ::= {,}
+<not>           ::= {!}
+<equal>		::= {=}
+<whitespace>    ::= {TAB, SPACE, ENTER}
+<EOF>           ::= {EOF}
+<comment>       ::= {;}
+
+Legende
+{.} = Menge
+ |  = Auswahl
+ *  = bel. Wiederholung
+ +  = Auswahl
+
+
+Schlüsselwortliste
+
+Diese Worte duerfen in einem Statechart nirgends als Bezeichner, Name oder Operator
+auftauchen.
+
+ - and, or, basic, from, to, on, do, default, end, con, true, false, in, entered, exited, 
+ - undef (für Transitionen mit fehlendem Zustand)
+ - abort (Marcel)
+ 
+
+Grammatik
+
+tesc          ::= state
+
+state         ::= and_state | or_state | basic_state
+
+and_state     ::= "and"     {"identifier"}  
+                            and_substates
+                  "end"     {"identifier"}
+
+and_substates ::= or_state {and_substates} | basic_state {and_substates}
+
+or_states     ::= or_state or_states | or_state 
+
+or_state      ::= "or"      {"identifier"}
+                            or_substates
+                            connectors
+                            transitions
+                            defaultcon
+                  "end"     {"identifier"}
+
+or_substates  ::= state {or_substates} 
+
+basic_states  ::= basic_state basic_states | basic_state
+
+basic_state   ::= "basic" {"identifier"}
+
+defaultcon    ::= "default" "do" "identifier"
+
+connectors    ::= connector connecotrs | connector
+
+connector     ::= "con" "identifier"
+                         
+transitions   ::= transition transitions | transition
+
+transition    ::= "from" "identifier" "to" "indentifier" "on" guard {"do" action}
+
+guard         ::= "true" | "false" | "identifier" | "!" guard | comppath | compguard
+
+comppath      ::= pathop "identifier"
+
+pathop        ::= "in" | "entered" | "exited"
+
+compguard     ::= "(" guard op guard ")" 
+
+op            ::= "&" | "|" | "->" | "<->"
+
+action        ::= actionlist | "identifier" | boolstmt |
+
+actionlist    ::= "(" action, {actionlistel}  ")"
+
+actionlistel  ::= "," action {actionlistel}
+
+boolstmt      ::= "identifier" "=" { "true" | "false" | Condition }
+
+condition     ::= ???
+
+
+Legende 
+ .  = Nichterminal
+"." = Token
+{.} = Optional
+ |  = Auswahl
+
+Probleme und Fragen
+
+- Wie ist die Verschachtelung von and-Zustaenden
+  zu realisieren? Ueberhaupt?
+- Sollen Schluesselwörte als Bezeichner zugelassen sein? Falls "Ja, klären, wie
+  man diese beim Import ablehnt.
+- Wie sieht ein Bezeichner aus? Beginn immer Buchstabe?
+  Sollte nicht von den Editor-Leuten bereits abgeprüft werden, daß kein Bezeichner
+  als Schlüsselwort vergeben wird? 
+  Sonst Probleme in Phase II --> Task Force?
+- Muß ein korrektes StateChart korrekt belabelt sein?
+- Keine Lokalen Events
+- Zusätzliches Schüsselwort "undef" für Transitionen ohne Zustände.
+- Aussehen einer Condition  
+- Feste Reihenfolge im or-State-Block (or_substates,connectors,transitions,
+  defaultcon) ok?
+
+Todo
+- Grammatik muß eindeutig und frei von Links-Rekursionen sein.
+- Tokenbezeichner festlegen
+
