@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.50 1999-02-02 12:46:19 swtech11 Exp $
+//	$Id: report_list,v 1.51 1999-02-02 13:23:08 swtech24 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -605,7 +605,7 @@ gespeichert wurde. Über normales Menu funktioniert's.
 #Number:        43
 #Autor:         Bernd Weber bwe
 #Subject:       Editor: Editor erzeugt selbst Koordinatenproblem
-#Status:        reported
+#Status:        fixed
 #Description:
 
 Zeichne Chart mit zwei Basic States, teile einen der beiden mittels
