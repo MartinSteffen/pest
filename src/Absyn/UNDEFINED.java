@@ -5,7 +5,8 @@ import java.io.Serializable;
 public class UNDEFINED extends TrAnchor implements Cloneable, Serializable{
 
 
-
+  public UNDEFINED () {
+  }
 
   public UNDEFINED (Location l) {
     location = l;
@@ -24,9 +25,19 @@ public class UNDEFINED extends TrAnchor implements Cloneable, Serializable{
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: UNDEFINED.java,v 1.7 1999-01-11 17:23:52 swtech00 Exp $
+//	$Id: UNDEFINED.java,v 1.8 1999-01-11 20:22:33 swtech13 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.7  1999/01/11 17:23:52  swtech00
+//	Alle Bestandteile der abstrakten Syntax mit Locations (= nicht-abstrakte
+//	Unterklassen von Absyn) in der Form modifiziert, da"s das Locations-Feld
+//	mit-geklont wird. =>
+//
+//	     o	Jeweils neuer Kontruktor hinzugef"ugt
+//	     o  clone-Methode angepa"st
+//
+//	[Steffen]
+//
 //	Revision 1.6  1998/12/15 16:33:32  swtech00
 //	Towards new package names.
 //
