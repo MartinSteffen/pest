@@ -47,6 +47,14 @@ abstract class MapElement  {
 	lower.addElement(mt);
     }
 
+    int numberLower(int start) {
+	int i;
+	for (i = 0; i < lower.size(); i++) {
+	    ((MapTransition) lower.elementAt(i)).number = i + start;
+	}
+	return i + start;
+    }
+
     MapTransition findOpposite(MapTransition mt) {
 	return null;
     }

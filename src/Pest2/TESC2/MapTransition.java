@@ -14,6 +14,7 @@ package tesc2;
 class MapTransition  {
     
     int startRow,startColumn,endRow,endColumn;
+    int number = 0;
 
     MapTransition(int srow,int scolumn,int erow,int ecolumn) {
 	startRow = srow;
