@@ -6,7 +6,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestTransitions.java,v 1.1 1998-12-15 11:41:43 swtech11 Exp $
+ *  @version  $Id: TestTransitions.java,v 1.2 1998-12-15 14:14:39 swtech11 Exp $
  */
 class TestTransitions extends ModelCheckBasics {
   Vector newPLV = new Vector(); // Vector fuer die selbst angelegte PathList der States
@@ -18,6 +18,7 @@ class TestTransitions extends ModelCheckBasics {
   }
 
   boolean check() {
+    int m=msg.getErrorNumber();
     newPLV = getPathListFromState(sc.state);
     newCLV = getConnectorPathListFromState(sc.state);
     if (sc.state instanceof Or_State) {testTransOrState ((Or_State)sc.state, null,""); }  // null, da es keinen übergeordneten State gibt
@@ -25,7 +26,7 @@ class TestTransitions extends ModelCheckBasics {
     if (sc.state instanceof Basic_State) {testTransBasicState ((Basic_State)sc.state, null,""); }
 
     msg.addWarning(4,"bei allen Transitionen");
-    return (msg.getErrorNumber()==0);
+    return ((msg.getErrorNumber()-m)==0);
   }
 
 
@@ -61,6 +62,7 @@ class TestTransitions extends ModelCheckBasics {
     boolean u1 = false; boolean u2 = false;
     boolean v1 = false; boolean v2 = false; boolean w1 = false; boolean w2 = false;
     boolean i1 = false; boolean i2 = false; boolean j1 = false; boolean j2 = false;
+    boolean con1 = false;
     String z1 = new String();
     String z2 = new String();
     // Startanker der Transition bearbeiten
@@ -74,6 +76,7 @@ class TestTransitions extends ModelCheckBasics {
       if (v1==false) { i1 = !NameInThisStateSubstates(((Or_State)_s).substates, z1); } // State -> Interlevel ?
     }
     else if (tl.head.source instanceof Conname) { // Connector ?
+      con1 = true;
       z1 = new String(((Conname)tl.head.source).name);
       w1 = !StatenameInPathList(newCLV, z1); // Connector -> nicht vorhanden ?
       if (w1==false) { j1 = !ConnectorNameInThisStateConnectorList(((Or_State)_s).connectors, z1); } // Connector -> Interlevel ?
@@ -91,6 +94,7 @@ class TestTransitions extends ModelCheckBasics {
     }
     else if (tl.head.target instanceof Conname) { // Connector ?
       z2 = new String(((Conname)tl.head.target).name);
+      if (con1==true & z1.equals(z2)) { msg.addError(415,"Trans: ("+z1+") -> ("+z2+") in State: " + p); } // gleicher Connecntor bei Start und Ziel
       w2 = !StatenameInPathList(newCLV, z2); // Connector -> nicht vorhanden ?
       if (w2==false) { j2 = !ConnectorNameInThisStateConnectorList(((Or_State)_s).connectors, z2); } // Connector -> Interlevel ?
     }
