@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	------------------
 //
-//	$Id: report_list,v 1.7 1999-01-19 14:57:21 swtech18 Exp $
+//	$Id: report_list,v 1.8 1999-01-20 08:58:40 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -33,6 +33,7 @@ erhaelt man eine Bvar mit leerem Bezeichner. Pretty-Printer:
 .
 
 Probleme gibt es dann spaeter beim Export/Import mit TESC.
+//------------------------------------------------------------------------------
 
 
 #Number:  	2
@@ -67,6 +68,7 @@ java.lang.NullPointerException
         at java.awt.MenuComponent.dispatchEventImpl(MenuComponent.java:177)
         at java.awt.MenuComponent.dispatchEvent(MenuComponent.java:169)
         at java.awt.EventDispatchThread.run(EventDispatchThread.java:83)
+//------------------------------------------------------------------------------
 
 
 #Number:	3
@@ -77,3 +79,24 @@ java.lang.NullPointerException
 Nach dem Importieren von ueber tesc, anschliessendem Check und Beenden von
 Pest erscheint das Fenster, dass die Statechart geaendert aber noch nicht
 gespeichert wurde.
+//------------------------------------------------------------------------------
+#Number:	4
+#Autor:		Erich Mikk erm
+#Subject:	Transitionsbeschriftungen nicht sichtbar
+#Status: 	reported 
+#Description: 
+
+Import->Statemate lädt swtech12/Examples/TV/tv.st.
+Starte Editor.
+FEHLER:
+Transitionsbeschriftungen nicht sichtbar.
+//------------------------------------------------------------------------------
+#Number:	5
+#Autor:		Erich Mikk erm
+#Subject:	Chart nicht vollständig sichtbar
+#Status: 	reported 
+#Description: 
+
+Lade Statechart wie in Nr. 4. und starte Editor.
+Fehler: Oberer Rand (etwa 1/5)der Chart ist nicht sichtbar.
+//------------------------------------------------------------------------------
