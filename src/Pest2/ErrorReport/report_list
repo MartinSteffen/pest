@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	------------
 //
-//	$Id: report_list,v 1.71 1999-02-24 13:16:40 swtech00 Exp $
+//	$Id: report_list,v 1.72 1999-02-28 14:20:16 swtech01 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -279,7 +279,7 @@ Aus diesem Grund ist auch SyntaxCheck nur einmal (aus graf. Menu) aufrufbar.
 #Number:	18
 #Autor:		Bernd Weber bwe
 #Subject:	Editor: Alle States auf einem Level bekommen Default Connectoren
-#Status:	fixed
+#Status:	confirmed
 #Description:
 
 Erzeugt man in einem Or State neue Basic States werden alle Zustaende des
@@ -288,7 +288,7 @@ Or States zu Default States !?!
 #Number:	19
 #Autor:		Bernd Weber bwe
 #Subject:	Editor: erzeugt unbehandelte Exception
-#Status:	fixed
+#Status:	confirmed
 #Description:
 
 Lscht man die Default-Connectoren in einem Or State und versucht mehr
@@ -310,7 +310,7 @@ als einen State zum Default zu machen, gibt es eine Exception:
 #Number:	20
 #Autor:		Bernd Weber bwe
 #Subject:	Editor: Default Connectoren von Or States nicht zu lschen
-#Status:	fixed
+#Status:	confirmed
 #Description:
 
 Default Connectoren von Or States koennen nicht geloescht werden. 
@@ -359,7 +359,7 @@ Or State mit mehreren Default Connectoren bzw. gar keinen wird nicht bemngelt.
 #Number:	25
 #Autor:		Bernd Weber bwe
 #Subject:	Editor: Or-State kann nicht in And-State gewandelt werden
-#Status:	fixed
+#Status:	confirmed
 #Description:
 
 Erzeuge einen Or-State mit zwei Zustanden und einen Basic-State neben dem
@@ -522,7 +522,7 @@ Transitionen hat: keine Warnung, kein Fehler.
 #Number:	32
 #Autor:		Bernd Weber bwe
 #Subject:	Editor: Connector-Namen nicht eindeutig
-#Status:	fixed
+#Status:	confirmed
 #Description:
 
 Erstellt man mehrere Connectoren in einem State, haben diese alle den gleichen
@@ -534,7 +534,7 @@ Import fehl (mit der sprlichen Meldung: FEHLER).
 #Number:	33
 #Autor:		Bernd Weber bwe
 #Subject:	Simulation: Kommt mit Connectoren nicht klar
-#Status:	fixed 
+#Status:	confirmed
 #Description:
 
 swtech22: Test hierfuer in simu/Test/Fehler33.test
@@ -552,7 +552,7 @@ PEST irgendwann gekillt AFAIK.
 #Number:	34
 #Autor:		Bernd Weber bwe
 #Subject:	Simulation: Transition bei Nicht-Determinismus nicht whlbar
-#Status:	fixed
+#Status:	confirmed
 #Description:
 
 swtech22: Noch nicht schoen (genug), funktioniert jetzt aber besser
@@ -565,7 +565,7 @@ dem man die Transition(en) auswhlen knnen soll. Mir ist dies nicht mglich
 #Number:	35
 #Autor:		Bernd Weber bwe
 #Subject:	Simulation: Kommt i.A. mit Connectoren nicht klar
-#Status:	fixed
+#Status:	confirmed
 #Description:
 
 swtech22: Test hierfuer in simu/Test/Fehler35.test
