@@ -173,7 +173,7 @@ public static void drawTrans(Graphics g,int cx1, int cy1, int cx2, int cy2,TrAnc
 	
 	double dx ,dy ,d ,ws ,winkel ,xu ,yu ,wneu;
 	int size = 6;
-	int size2 = 5;
+	int size2 = 2;
 	int x, y;
 
 	winkel = 0;
