@@ -1,6 +1,8 @@
 package absyn;
 
 
+
+
 public class Example {
   
   public static Statechart getExample() {

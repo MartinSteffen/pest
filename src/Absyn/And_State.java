@@ -26,18 +26,26 @@ public class And_State extends State implements Serializable, Cloneable {
  * @exception CloneNotSupportedException self-explanatory exception
  */
    public Object clone() throws CloneNotSupportedException {
-	return new And_State(name, 
+       CRectangle rectclone;
+       if (rect != null) 
+	   rectclone = (CRectangle)rect.clone();
+       else
+	   rectclone = null;
+       return new And_State(name, 
 			     (StateList)substates.clone(), 
-			     (CRectangle)rect.clone());
+			     rectclone);
     };
 }
 //----------------------------------------------------------------------
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: And_State.java,v 1.9 1998-12-15 16:33:24 swtech00 Exp $
+//	$Id: And_State.java,v 1.10 1998-12-17 15:47:16 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.9  1998/12/15 16:33:24  swtech00
+//	Towards new package names.
+//
 //	Revision 1.8  1998/12/15 13:38:01  swtech00
 //	exception-tag hinzugefuegt um javadoc sauber durchlaufen zu lassen
 //

@@ -7,7 +7,7 @@ import java.awt.Point;
 /**
  * Connector.
  * @author Initially provided by Martin Steffen.
- * @version $Id: Connector.java,v 1.10 1998-12-15 16:33:26 swtech00 Exp $
+ * @version $Id: Connector.java,v 1.11 1998-12-17 15:47:17 swtech00 Exp $
  */
 public class Connector  extends Absyn implements Serializable, Cloneable {
 /**
@@ -37,8 +37,13 @@ public class Connector  extends Absyn implements Serializable, Cloneable {
  * @exception CloneNotSupportedException self-explanatory exception
  */
     public Object clone() throws CloneNotSupportedException {
+	CPoint positionclone;
+	if (position != null)
+	    positionclone = (CPoint)position.clone();
+	else
+	    positionclone = null;
 	return new Connector((Conname)name.clone(),
-			     (CPoint)position.clone());
+			     positionclone);
     };
 
 }
@@ -46,9 +51,12 @@ public class Connector  extends Absyn implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Connector.java,v 1.10 1998-12-15 16:33:26 swtech00 Exp $
+//	$Id: Connector.java,v 1.11 1998-12-17 15:47:17 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.10  1998/12/15 16:33:26  swtech00
+//	Towards new package names.
+//
 //	Revision 1.9  1998/12/15 13:38:03  swtech00
 //	exception-tag hinzugefuegt um javadoc sauber durchlaufen zu lassen
 //
