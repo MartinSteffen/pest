@@ -29,19 +29,26 @@ import util.PrettyPrint;
  * Import funktioniert (HA-Format wird eingelesen und ein
  * StateChart in PEST-Syntax zur&uuml;ckgeliefert).
  * <DT><STRONG>TODO.</STRONG>
- * Nur f&uuml;r Transitionen m&uuml;ssen
- * die Locations dahingehend ge&auml;ndert werden, da&szlig;
- * doppelte Punkte (ehemalige Statemate-Konnektoren) entfernt
- * werden. Exceptions m&uuml;ssen noch in Form von Warnungen
+ * Die durch das Entfernen von Konnektoren entstandenen 
+ * &Uuml;berschneidungen von Transitionen m&uuml;ssen
+ * noch &uuml;berarbeitet werden. Exceptions m&uuml;ssen noch in Form von Warnungen
  * und Fehlermeldungen an GUI weitergeleitet werden.
  * <DT><STRONG>
  * BEKANNTE FEHLER.
  * </STRONG>
  * Keine.
+ * <DT><STRONG>
+ * Forderungen.
+ * </STRONG>
+ * Wir erwarten ein korrektes HA-Format.
+ * <DT><STRONG>Garantien.</STRONG>
+ * Es wird ein PEST-StateChart erzeugt, die nur NULL-Pointer
+ * als Listenterminierung oder als Kennzeichnung f&uuml;r
+ * leere Listen enth&auml;lt.
  * </DL COMPACT>
  *
  * @author  Sven Jorga, Werner Lehmann
- * @version $Id: HAImport.java,v 1.5 1999-01-04 14:15:14 swtech18 Exp $
+ * @version $Id: HAImport.java,v 1.6 1999-01-05 15:40:34 swtech18 Exp $
  */
 public class HAImport implements Patterns {
   Perl5Util perl = new Perl5Util();
@@ -243,7 +250,7 @@ public class HAImport implements Patterns {
     PrettyPrint pp = new PrettyPrint ();
     try {
       //HAImport imp = new HAImport(new BufferedReader(new FileReader(new File("Test/ha-format.txt")))); }
-      HAImport imp = new HAImport(new BufferedReader(new FileReader(new File("STM/Test/a1.st"))));
+      HAImport imp = new HAImport(new BufferedReader(new FileReader(new File("Test/a1.st"))));
       pp.start(imp.getStatechart());}
     catch (Exception e) {
       e.printStackTrace();
@@ -318,6 +325,7 @@ public class HAImport implements Patterns {
               perl.match("/<?mk_coord\\((\\d+),(\\d+)\\)>?/",(String)currentTrVec.elementAt(m));
               pointVec.addElement(new CPoint(Integer.parseInt(perl.group(1)),Integer.parseInt(perl.group(2))));
             }
+            pointVec = removeDuplicates(pointVec);
             pointArray = new CPoint[pointVec.size()];
             pointVec.copyInto(pointArray);
             tl = new TrList(new Tr(new Statename((String)hiVec.elementAt(i-1)),
@@ -344,6 +352,19 @@ public class HAImport implements Patterns {
     else
       throw new Exception("falscher Typ");
 
+  }
+
+  private Vector removeDuplicates(Vector vec) {
+    Vector v = new Vector();
+    v = (Vector)vec.clone();
+
+    if (v.size() == 0) 
+      return v;
+
+    for (int i=0; i<v.size()-1; i++) 
+      if ( ((CPoint)v.elementAt(i)).equals((CPoint)v.elementAt(i+1)))
+        v.removeElementAt(i);
+    return v;
   }
 
   private Action createAction(String actionString) throws Exception {
