@@ -72,8 +72,9 @@ import absyn.*;
  * <dt><strong>
  * BEKANNTE FEHLER
  * </strong>
- * Das Erscheinungsbild ist noch nicht ,,optimal''
- *
+ * Das Erscheinungsbild ist noch nicht ,,optimal''.
+ * Geschachtelte And_States, also And_State mit einem And_State als 
+ * substate, werden nicht korrekt angezeigt.
  * <dt><strong>
  * TEMPOR&Auml;RE FEATURES
  * </strong>
@@ -83,7 +84,7 @@ import absyn.*;
  * Created: Fri Nov 27 11:26:25 1998
  *
  * @author Software Technologie 19, Klaus H&ouml;ppner, Achim Abeling
- * @version $Id: GraphOptimizer.java,v 1.9 1999-01-12 10:26:05 swtech19 Exp $
+ * @version $Id: GraphOptimizer.java,v 1.10 1999-01-12 10:35:49 swtech19 Exp $
  *
  */
 
