@@ -1,6 +1,6 @@
 package Absyn;
 
-public abstract class TrAnchor {};
+public abstract class TrAnchor extends Absyn {};
 
 
 

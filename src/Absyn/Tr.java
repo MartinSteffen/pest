@@ -2,7 +2,7 @@ package Absyn;
 
 
 
-public class Tr {   // Transition 
+public class Tr  {   // Transition 
     public TrAnchor source;
     public TrAnchor target;
     public Label    label;

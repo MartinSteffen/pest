@@ -1,7 +1,7 @@
 package Absyn;
 
 
-public class Statechart {
+public class Statechart extends Absyn {
     public SEventList  events;
     public BvarList bvars;
     public PathList cnames;

@@ -1,6 +1,6 @@
 package Absyn;
 
-public class Op {
+public class Op extends Absyn {
     public final static int AND     = 0;
     public final static int OR      = 1;
     public final static int IMPLIES = 2;

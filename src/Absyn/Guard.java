@@ -1,7 +1,7 @@
 package Absyn;
 
 
-public abstract class Guard {
+public abstract class Guard extends Absyn {
 };
 
 

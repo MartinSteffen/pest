@@ -1,6 +1,6 @@
 package Absyn;
 
-public abstract class State{};
+public  class State extends Absyn {};
 
 
 

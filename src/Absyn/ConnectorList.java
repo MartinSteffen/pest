@@ -1,6 +1,6 @@
 package Absyn;
 
-public class ConnectorList {
+public class ConnectorList extends Absyn {
     public Connector head;
     public ConnectorList  tail;
     public ConnectorList(Connector h, ConnectorList tl) {

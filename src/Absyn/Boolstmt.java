@@ -1,7 +1,7 @@
 
 package Absyn;
 
-public abstract class Boolstmt{
+public abstract class Boolstmt extends Absyn {
 };
 
 

@@ -1,6 +1,6 @@
 package Absyn;
 
 
-abstract class  Action {
+abstract class  Action extends Absyn {
 };
 
