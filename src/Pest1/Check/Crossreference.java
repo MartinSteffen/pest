@@ -35,7 +35,7 @@ import java.awt.*;
  * keine
  * </DL COMPACT>
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: Crossreference.java,v 1.11 1999-01-22 11:07:15 swtech11 Exp $
+ * @version  $Id: Crossreference.java,v 1.12 1999-01-22 11:24:10 swtech11 Exp $
  */
 public class Crossreference extends ModelCheckBasics {
   private GUIInterface gui = null; // Referenz auf die GUI
@@ -240,7 +240,7 @@ public class Crossreference extends ModelCheckBasics {
     int al=a.length();
     String in="";
     String m="";
-    if (infix) {
+    if ((infix) && (_in.length()>2)) {
         in=_in.substring(1,_in.length()-1);
         int il=in.length();
         if ((il<=al) && (al>0) && (il>0)) {
