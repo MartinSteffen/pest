@@ -27,6 +27,7 @@ implements GUIInterface
     GUIMenu theGUIMenu;
     TextArea MsgWindow;
 
+    editor.Editor PEditor = null;
     Statechart SyntaxBaum = null;
     String     SBDateiname = null;
 

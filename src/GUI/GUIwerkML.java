@@ -26,7 +26,7 @@ public void actionPerformed(ActionEvent e) {
   myWindow.userMessage("GUI   : starte "+cmd);
   if(cmd.equals("Editor"))
       {
-	  new editor.Editor(myWindow.SyntaxBaum,myWindow.SBDateiname,100,100,200,200);
+	myWindow.PEditor = new editor.Editor(myWindow.SyntaxBaum,myWindow.SBDateiname,100,100,200,200);
 
       }else if (cmd.equals("SyntaxCheck")) {
 
@@ -36,8 +36,8 @@ public void actionPerformed(ActionEvent e) {
       }else if (cmd.equals("Simulator")) {
 	  if (myWindow.checkSB())
 	      {
-		  //  new simu.Simu(myWindow.SyntaxBaum);
-		  myWindow.OkDialog("FEHLER","Nicht compilierbar");
+		  new simu.Simu(myWindow.SyntaxBaum,myWindow.PEditor,myWindow);
+		//  myWindow.OkDialog("FEHLER","Nicht compilierbar");
 
 	      }
       }else if (cmd.equals("Codegenerator")) {
