@@ -5,7 +5,7 @@ import absyn.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: ModelCheckMsg.java,v 1.9 1999-01-21 22:39:18 swtech11 Exp $
+ *  @version  $Id: ModelCheckMsg.java,v 1.10 1999-01-22 11:07:17 swtech11 Exp $
  */
 class ModelCheckMsg {
   private Vector ErrorCode;
@@ -49,43 +49,30 @@ class ModelCheckMsg {
     ErrorHiObj.addElement(_ho);
   }
 
-
-
   void addError(int n, Tr t, String p) {
     this.addError(n,"", t, p);
   }
 
+
+
     /** Error hinzufuegen*/
  void addError(int n, String p1, Tr t, String p) {
-  String s1="";
-  String s2="";
-  if (t.source instanceof Statename) { s1=((Statename)t.source).name;};
-  if (t.target instanceof Statename) { s2=((Statename)t.target).name;};
-  if (t.source instanceof Conname)  { s1=((Conname)t.source).name;};
-  if (t.target instanceof Conname)  { s2=((Conname)t.target).name;};
-  if (t.source instanceof UNDEFINED)  { s1="UNDEFINED";};
-  if (t.target instanceof UNDEFINED)  { s2="UNDEFINED";};
-  this.addError(n,p1 +" Trans: "+s1+" -> "+s2+" in State: "+p);
+  String s1=getTrSourceName(t);
+  String s2=getTrTargetName(t);
+  this.addError(n,p1 +" Trans: "+s1+" -> "+s2+" in State: "+p,t);
   }
 
+
  void addError(int n, String p1, Tr t, Tr t2, String p) {
-  String s1="";
-  String s2="";
-  String s3="";
-  String s4="";
-  if (t.source instanceof Statename) { s1=((Statename)t.source).name;};
-  if (t.target instanceof Statename) { s2=((Statename)t.target).name;};
-  if (t.source instanceof Conname)  { s1=((Conname)t.source).name;};
-  if (t.target instanceof Conname)  { s2=((Conname)t.target).name;};
-  if (t.source instanceof UNDEFINED)  { s1="UNDEFINED";};
-  if (t.target instanceof UNDEFINED)  { s2="UNDEFINED";};
-  if (t2.source instanceof Statename) { s3=((Statename)t2.source).name;};
-  if (t2.target instanceof Statename) { s4=((Statename)t2.target).name;};
-  if (t2.source instanceof Conname)  { s3=((Conname)t2.source).name;};
-  if (t2.target instanceof Conname)  { s4=((Conname)t2.target).name;};
-  if (t2.source instanceof UNDEFINED)  { s3="UNDEFINED";};
-  if (t2.target instanceof UNDEFINED)  { s4="UNDEFINED";};
-  this.addError(n,p1 +" Trans: "+s1+" -> "+s2+" Trans: "+s3+" -> "+s4+" in State: "+p);
+  String s1=getTrSourceName(t);
+  String s2=getTrTargetName(t);
+  String s3=getTrSourceName(t2);
+  String s4=getTrTargetName(t2);
+  Vector v=new Vector();
+  v.addElement(t);
+  v.addElement(t2);
+
+   this.addError(n,p1 +" Trans: "+s1+" -> "+s2+" Trans: "+s3+" -> "+s4+" in State: "+p,v);
   }
 
   // gesamte Error-Meldung des _number. Errors
@@ -134,6 +121,8 @@ class ModelCheckMsg {
     WarningHiObj.addElement(_ho);
   }
 
+
+
     /** Warnung hinzufuegen.*/
  void addWarning(int n, Tr t, String p) {
   this.addWarning(n,"", t, p);
@@ -141,36 +130,22 @@ class ModelCheckMsg {
 
     /** Warnung hinzufuegen.*/
  void addWarning(int n, String p1, Tr t, String p) {
-  String s1="";
-  String s2="";
-  if (t.source instanceof Statename) { s1=((Statename)t.source).name;};
-  if (t.target instanceof Statename) { s2=((Statename)t.target).name;};
-  if (t.source instanceof Conname)  { s1=((Conname)t.source).name;};
-  if (t.target instanceof Conname)  { s2=((Conname)t.target).name;};
-  if (t.source instanceof UNDEFINED)  { s1="UNDEFINED";};
-  if (t.target instanceof UNDEFINED)  { s2="UNDEFINED";};
-  this.addWarning(n,p1 +" Trans: "+s1+" -> "+s2+" in State: "+p);
+  String s1=getTrSourceName(t);
+  String s2=getTrTargetName(t);
+
+  this.addWarning(n,p1 +" Trans: "+s1+" -> "+s2+" in State: "+p, t);
   }
 
  void addWarning(int n, String p1, Tr t, Tr t2, String p) {
-  String s1="";
-  String s2="";
-  String s3="";
-  String s4="";
-  if (t.source instanceof Statename) { s1=((Statename)t.source).name;};
-  if (t.target instanceof Statename) { s2=((Statename)t.target).name;};
-  if (t.source instanceof Conname)  { s1=((Conname)t.source).name;};
-  if (t.target instanceof Conname)  { s2=((Conname)t.target).name;};
-  if (t.source instanceof UNDEFINED)  { s1="UNDEFINED";};
-  if (t.target instanceof UNDEFINED)  { s2="UNDEFINED";};
-  if (t2.source instanceof Statename) { s3=((Statename)t2.source).name;};
-  if (t2.target instanceof Statename) { s4=((Statename)t2.target).name;};
-  if (t2.source instanceof Conname)  { s3=((Conname)t2.source).name;};
-  if (t2.target instanceof Conname)  { s4=((Conname)t2.target).name;};
-  if (t2.source instanceof UNDEFINED)  { s3="UNDEFINED";};
-  if (t2.target instanceof UNDEFINED)  { s4="UNDEFINED";};
+  String s1=getTrSourceName(t);
+  String s2=getTrTargetName(t);
+  String s3=getTrSourceName(t2);
+  String s4=getTrTargetName(t2);
+  Vector v=new Vector();
+  v.addElement(t);
+  v.addElement(t2);
 
-  this.addWarning(n,p1 +" Trans: "+s1+" -> "+s2+" Trans: "+s3+" -> "+s4+" in State: "+p);
+  this.addWarning(n,p1 +" Trans: "+s1+" -> "+s2+" Trans: "+s3+" -> "+s4+" in State: "+p, v);
   }
 
   // gesamte Warning-Meldung des _number. Warnings zurueckmelden,
@@ -299,6 +274,24 @@ class ModelCheckMsg {
   }
 
   
+  String getTrSourceName(Tr t) {
+    String s=new String();
+    if (t.source instanceof Statename)      { s=((Statename)t.source).name;}
+    else if (t.source instanceof Conname)   { s=((Conname)t.source).name;}
+    else if (t.source instanceof UNDEFINED) { s="UNDEFINED";}
+    return s;
+  }
+
+  String getTrTargetName(Tr t) {
+    String s=new String();
+    if (t.target instanceof Statename)      { s=((Statename)t.target).name;}
+    else if (t.target instanceof Conname)   { s=((Conname)t.target).name;}
+    else if (t.target instanceof UNDEFINED) { s="UNDEFINED";}
+    return s;
+  }
+
+
+
 }
 
 

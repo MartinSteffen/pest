@@ -35,16 +35,14 @@ import java.awt.*;
  * keine
  * </DL COMPACT>
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: Crossreference.java,v 1.10 1999-01-21 22:39:15 swtech11 Exp $
+ * @version  $Id: Crossreference.java,v 1.11 1999-01-22 11:07:15 swtech11 Exp $
  */
 public class Crossreference extends ModelCheckBasics {
   private GUIInterface gui = null; // Referenz auf die GUI
   private Editor edit = null;
   public String such = new String("");
   private Vector items = new Vector();
-  private boolean infix=false;
-  private boolean praefix=false;
-  private boolean postfix=false;
+
 
   public Crossreference(GUIInterface _gui, Editor _edit) {
     gui = _gui;
@@ -62,10 +60,7 @@ public class Crossreference extends ModelCheckBasics {
     such = gui.EingabeDialog("Crossreference","Zu suchendes Element eingeben:",such);
     if (such!=null) {
     //System.out.println(such);
-    int suchl=such.length();
-    if ((such.substring(suchl-1,suchl).equals("*")) && (such.substring(0,1).equals("*"))) {infix=true; praefix=false; postfix=false;};
-    if ((!such.substring(suchl-1,suchl).equals("*")) && (such.substring(0,1).equals("*"))) {infix=false; praefix=false; postfix=true;};
-    if ((such.substring(suchl-1,suchl).equals("*")) && (!such.substring(0,1).equals("*"))) {infix=false; praefix=true; postfix=false;};
+
 
     report_list();
 
@@ -95,14 +90,14 @@ public class Crossreference extends ModelCheckBasics {
     void report_list(){
 
       for(SEventList e=sc.events; e!=null; e=e.tail){
-	  if (e.head.name.equals(such)) {itemInput(e.head,null,"Def.Liste Events");};
+	  if (equalString(e.head.name,such)) {itemInput(e.head,null,"Def.Liste Events");};
       }
 
       for(BvarList b=sc.bvars; b!=null;b=b.tail){
-	  if (b.head.var.equals(such)) {itemInput(b.head,null,"Def.Liste BVars");};}
+	  if (equalString(b.head.var,such)) {itemInput(b.head,null,"Def.Liste BVars");};}
           
       for(PathList p=sc.cnames; p!=null;p=p.tail){
-	  if (PathtoString(p.head).equals(such)) {itemInput(p.head,null,"Pfadliste States");};
+	  if (equalString(PathtoString(p.head),such)) {itemInput(p.head,null,"Pfadliste States");};
   
 
 
@@ -111,11 +106,11 @@ public class Crossreference extends ModelCheckBasics {
 
 
   void navBasicState(Basic_State bs, State _s, String p) {
-    if (bs.name.name.equals(such)) { itemInput(bs,bs,"Basic-State in "+p); }
+    if (equalString(bs.name.name,such)) { itemInput(bs,bs,"Basic-State in "+p); }
   }
 
   void navOrState(Or_State os, State _s, String p) {
-    if (os.name.name.equals(such)) { itemInput(os,os,"Or-State in "+p); }
+    if (equalString(os.name.name,such)) { itemInput(os,os,"Or-State in "+p); }
     String np = getAddPathPart(p, os.name.name);
     if (os.trs != null) { navTransInTransList(os.trs, os, np); }
     if (os.connectors != null) { navConInConList(os.connectors, np); }
@@ -123,13 +118,13 @@ public class Crossreference extends ModelCheckBasics {
   }
 
   void navAndState(And_State as, State _s, String p) {
-    if (as.name.name.equals(such)) { itemInput(as,as,"And-State in "+p); }
+    if (equalString(as.name.name,such)) { itemInput(as,as,"And-State in "+p); }
     String np = getAddPathPart(p, as.name.name);
     if (as.substates != null) { navStateInStateList(as.substates, as, np); }
   }
 
   void navConInConList(ConnectorList cl, String p) {
-    if (cl.head.name.name.equals(such)) { itemInput(cl.head,cl.head,"Connector in "+p); }
+    if (equalString(cl.head.name.name,such)) { itemInput(cl.head,cl.head,"Connector in "+p); }
     if (cl.tail != null) {navConInConList(cl.tail, p);}
   }
 
@@ -144,19 +139,19 @@ public class Crossreference extends ModelCheckBasics {
 
     // Auswertung der Anker  
     if (tl.head.source instanceof Statename) {
-      if ( z1.equals(such) )
+      if ( equalString(z1,such) )
         { itemInput(tl.head.source, tl.head,"Statename des Startankers der Transition "+z1+" -> "+z2+" in "+p); }
     }
     else if (tl.head.source instanceof Conname) {
-      if ( z1.equals(such) )
+      if ( equalString(z1,such) )
         { itemInput(tl.head.source,tl.head,"Connectorname des Startankers der Transition "+z1+" -> "+z2+" in "+p); }
     }
     if (tl.head.target instanceof Statename) {
-      if ( z2.equals(such) )
+      if ( equalString(z2,such) )
         { itemInput(tl.head.target,tl.head,"Statename des Zielankers der Transition "+z1+" -> "+z2+" in "+p); }
     }
     else if (tl.head.target instanceof Conname) {
-      if ( z2.equals(such) )
+      if ( equalString(z2,such) )
         { itemInput(tl.head.target,tl.head,"Connectorname des Zielankers der Transition "+z1+" -> "+z2+" in "+p); }
     }
 
@@ -197,8 +192,8 @@ public class Crossreference extends ModelCheckBasics {
 
   void pruefeBVar(Bvar b, Tr t, String p, int i){
 
-      if ((b.var.equals(such)) && (i==1)) {itemInput(b,t,"BVar im Guard",t,p);}
-      if ((b.var.equals(such)) && (i==2)) {itemInput(b,t,"BVar im Action",t,p);}
+      if ((equalString(b.var,such)) && (i==1)) {itemInput(b,t,"BVar im Guard",t,p);}
+      if ((equalString(b.var,such)) && (i==2)) {itemInput(b,t,"BVar im Action",t,p);}
   };
 
   void pruefeBool(Boolstmt b, Tr t, String p) {
@@ -212,12 +207,12 @@ public class Crossreference extends ModelCheckBasics {
 
   void pruefeEvent(SEvent e, Tr t, String p, int i){
 
-      if ((e.name.equals(such)) && (i==1)) {itemInput(e,t,"Event im Guard",t,p);}
-      if ((e.name.equals(such)) && (i==2)) {itemInput(e,t,"Event im Action",t,p);}
+      if ((equalString(e.name,such)) && (i==1)) {itemInput(e,t,"Event im Guard",t,p);}
+      if ((equalString(e.name,such)) && (i==2)) {itemInput(e,t,"Event im Action",t,p);}
   };
 
   void pruefePath(Path p, Tr t, String s){
-      if (such.equals(PathtoString(p))) {itemInput(p,t,"Pfad im Guard",t,s);}
+      if (equalString(PathtoString(p),such)) {itemInput(p,t,"Pfad im Guard",t,s);}
       for (;p.tail!=null;p=p.tail){}; if (such.equals(p.head)) {itemInput(p,t,"State im Guard",t,s);}
      
   };
@@ -229,8 +224,19 @@ public class Crossreference extends ModelCheckBasics {
      
   };
 
-    boolean equalString(String a, String _in) {
+    boolean equalString(String a, String such) {
     boolean b =false;
+    boolean infix=false;
+    boolean praefix=false;
+    boolean postfix=false;
+    int suchl=such.length();
+    if ((such.substring(suchl-1,suchl).equals("*")) && (such.substring(0,1).equals("*"))) {infix=true; praefix=false; postfix=false;};
+    if ((!such.substring(suchl-1,suchl).equals("*")) && (such.substring(0,1).equals("*"))) {infix=false; praefix=false; postfix=true;};
+    if ((such.substring(suchl-1,suchl).equals("*")) && (!such.substring(0,1).equals("*"))) {infix=false; praefix=true; postfix=false;};
+    String _in=such;
+
+
+
     int al=a.length();
     String in="";
     String m="";
@@ -240,7 +246,7 @@ public class Crossreference extends ModelCheckBasics {
         if ((il<=al) && (al>0) && (il>0)) {
 	  for (int j=0; ((j<=(al-il)) && (!b));j++) {
 	    m=a.substring(j,il+j);
-System.out.println("in: "+in+" sub: "+a);
+	    //System.out.println("in: "+in+" sub: "+a);
 
 	    if (m.equals(in)) {b=true;};
 	};};};
@@ -250,7 +256,7 @@ System.out.println("in: "+in+" sub: "+a);
         int il=in.length();
         if ((il<=al) && (al>0) && (il>0)) {
                   m=a.substring(al-il,al);
-System.out.println("in: "+in+" sub: "+m+" a "+a);
+		  //System.out.println("in: "+in+" sub: "+m+" a "+a);
 
 	    if (m.equals(in)) {b=true;};
 	};};
@@ -260,7 +266,7 @@ System.out.println("in: "+in+" sub: "+m+" a "+a);
         int il=in.length();
         if ((il<=al) && (al>0) && (il>0)) {
                   m=a.substring(0,il);
-System.out.println("in: "+in+" sub: "+a);
+		  //System.out.println("in: "+in+" sub: "+a);
 
 	    if (m.equals(in)) {b=true;};
 	};};

@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: ModelCheckBasics.java,v 1.11 1999-01-21 22:39:17 swtech11 Exp $
+ *  @version  $Id: ModelCheckBasics.java,v 1.12 1999-01-22 11:07:16 swtech11 Exp $
  */
 class ModelCheckBasics {
   ModelCheckMsg msg = new ModelCheckMsg();
@@ -217,43 +217,5 @@ class ModelCheckBasics {
   }
 }
 
- class BVarC {
-    Bvar b;
-    Tr   t=null;
-    String ort="";
-    
-      BVarC(Bvar _b) {
-	b=_b;}
-
-    BVarC(Bvar _b, Tr _t) {
-    b=_b;
-    t=_t;};
-
-      BVarC(Bvar _b, String o) {
-	  this(_b,null,o);}
-
-    BVarC(Bvar _b, Tr _t, String o) {
-    b=_b;
-    t=_t;
-    ort=o;};}
 
 
- class EventC {
-    SEvent e;
-    Tr   t=null;
-    String ort="";
-    
-    EventC(SEvent _e) {
-	e=_e;}
-
-    EventC(SEvent _e, Tr _t) {
-    e=_e;
-    t=_t;};
-
-    EventC(SEvent _e, String o) {
-	  this(_e,null,o);}
-
-    EventC(SEvent _e, Tr _t, String o) {
-    e=_e;
-    t=_t;
-    ort=o;};}
