@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.44 1999-01-29 16:46:39 swtech21 Exp $
+//	$Id: report_list,v 1.45 1999-01-29 20:26:55 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -475,7 +475,24 @@ Chart neugezeichnet, was unglaublich lange dauert.
 TESC-file: ~swtech21/tests/tesc/Safer3.tesc
 
 //------------------------------------------------------------------------------
+#Number:	33
+#Autor:		Erich Mikk erm
+#Subject:	STM-Import nicht möglich (2 >= 2)?
+#Status: 	reported
+#Description: 
 
+STM-Import von folgenden Charts aus SAFER
+
+active_axes.st safer.st thrusters.st
+
+ist nicht möglich.
+Es ist auch nicht möglich nachzuvollziehen, warum nicht. Die einzige Meldung
+
+STM: Fehler beim Importieren. (2 >= 2)
+
+ist nicht besonders informativ.
+
+//------------------------------------------------------------------------------
 
 
 
