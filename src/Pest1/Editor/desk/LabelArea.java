@@ -64,13 +64,13 @@ public class LabelArea extends Dialog {
      //System.out.println("Position von / :"+lauf);
      if (lauf == -1) {ts1 = hs1;ts2 = "";}
      if (lauf == 0 & hs1.length()>1) {ts2 = hs1.substring(1);}
-     if (lauf > 0 & lauf >= hs1.length()+1) {ts1 = hs1.substring(0,lauf);}
+     if (lauf > 0) {ts1 = hs1.substring(0,lauf);}
      if (lauf > 0  & lauf < hs1.length()+1) {ts2 = hs1.substring(lauf+1);}
      ts1 = ts1.trim();
      ts2 = ts2.trim();
      ta.setText("");
-     //System.out.println("Teilstring1 : -"+ts1+"-");
-     //System.out.println("Teilstring2 : -"+ts2+"-");
+     System.out.println("Teilstring1 : -"+ts1+"-");
+     System.out.println("Teilstring2 : -"+ts2+"-");
 
      // ************************** zu bearbeiten
      ta.append("-- Liste der Guards -- \n");
@@ -105,7 +105,7 @@ public class LabelArea extends Dialog {
 	 while (lauf != -1)
 	     {
 		 tt2 = ts2.substring(0,lauf);
-		 ts2 = ts2.substring(lauf+1);
+		 ts2 = ts2.substring(lauf);
 	     //System.out.println("        reported : -"+tt2+"-");
 		 ta.append(tt2+"\n");
 		 // System.out.println("        Teilstring2 : -"+ts2+"-");
