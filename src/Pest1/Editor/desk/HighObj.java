@@ -195,7 +195,7 @@ public class HighObj {
 private void redraw(Tr tr,int nx, int ny, boolean drawflag,Absyn na,Color col) {
 	 if (tr == na){ 
 	int trsize = tr.points.length-1;
-	System.out.println("Anzahl ZeigerPunkte : "+(int) (trsize+1));
+	//System.out.println("Anzahl ZeigerPunkte : "+(int) (trsize+1));
 	//for (int lauf = 0;lauf < (trsize-1);lauf++) {h.setColor(col);h.drawLine(	(int) ((tr.points[lauf].x+nx)*Editor.ZoomFaktor),
 	//								(int) ((tr.points[lauf].y+ny)*Editor.ZoomFaktor),
 	//								(int) ((tr.points[lauf+1].x+nx)*Editor.ZoomFaktor),

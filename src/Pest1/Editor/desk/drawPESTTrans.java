@@ -104,8 +104,8 @@ if (matrix2.akt.rect == null & getname1 instanceof Or_State) getname1 = null;
 
 if (matrix3.akt.rect == null & getname2 instanceof Or_State) getname2 = null; 
    
-System.out.println("name 1 :"+getname1);
-System.out.println("name 2 :"+getname2);
+//System.out.println("name 1 :"+getname1);
+//System.out.println("name 2 :"+getname2);
 movetest = false;
       
 	{
@@ -150,10 +150,10 @@ movetest = false;
 		     ,temppoint); // source, target, label
   otemp1.trs = new TrList(transtemp,trtemp);
 
-System.out.println("tempp1 :"+temppoint[0]);
-System.out.println("tempp2 :"+temppoint[countarray]);
-System.out.println("name 1 :"+name1);
-System.out.println("name 2 :"+name2);
+  //System.out.println("tempp1 :"+temppoint[0]);
+  //System.out.println("tempp2 :"+temppoint[countarray]);
+  //System.out.println("name 1 :"+name1);
+  //System.out.println("name 2 :"+name2);
 
 }
 
@@ -299,4 +299,9 @@ for (int t = 0; t <= genau; t++)
 }
 
 } // drawPESTTrans
+
+
+
+
+
 

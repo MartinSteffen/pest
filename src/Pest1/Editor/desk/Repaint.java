@@ -5,6 +5,7 @@ import absyn.*;
 import java.awt.*;
 import editor.*;
 import java.lang.*;
+import tesc2.*;
 
 public class Repaint {
 
@@ -72,7 +73,7 @@ private void redraw(Tr tr,int nx, int ny, boolean drawflag) {
 	if (tr.label.position != null)
 	{
 	h.setColor(def_text);
-	if (tr.label.caption.length() < 20)
+	if (tr.label.caption.length() < GraphOptimizer.TLABELLENGTH)
 	{
 	    h.drawString(tr.label.caption,
 			 (int) ((tr.label.position.x+nx)*Editor.ZoomFaktor),

@@ -21,6 +21,7 @@ import java.util.Properties;
 import absyn.*;
 import editor.*;
 import java.applet.*;
+import tesc2.*;
 
 
  /* Hauptzeichenfeld (Voreinstellungen & Definitionen) */
@@ -44,6 +45,8 @@ import java.applet.*;
       static State tempstate1=null;
       static Dimension dim;
       static tempobj ttobj = null;
+      //  static TextArea ta = new TextArea(10,10);
+      //static LabelArea textlabel = new LabelArea(20,20);
       //Image buffer;
       Graphics bufferGraphics;  
       
@@ -106,8 +109,8 @@ import java.applet.*;
         State todelete = (State)aktcomp;
         State father = dc.get_father(root.state, todelete);
 
-	      System.out.println("Zu löschender State: "+ todelete);
-        System.out.println("Vater "+ father);
+	//    System.out.println("Zu löschender State: "+ todelete);
+	// System.out.println("Vater "+ father);
 
         dc.delete_State( todelete );
 
@@ -122,8 +125,8 @@ import java.applet.*;
         Tr todelete = (Tr)aktcomp;
         Or_State father = dc.find_trans(todelete);
 
-	      System.out.println("Zu löschende Transition: "+ todelete);
-        System.out.println("Zugehöriger State: "+ father);
+	//      System.out.println("Zu löschende Transition: "+ todelete);
+	// System.out.println("Zugehöriger State: "+ father);
 
         dc.delete_Trans( todelete );
 
@@ -137,8 +140,8 @@ import java.applet.*;
         Connector todelete = (Connector)aktcomp;
         Or_State father = dc.find_con(todelete);
 
-	      System.out.println("Zu löschende Transition: "+ todelete);
-        System.out.println("Zugehöriger State: "+ father);
+	//    System.out.println("Zu löschende Transition: "+ todelete);
+	// System.out.println("Zugehöriger State: "+ father);
 
         dc.delete_Con( todelete );
 
@@ -154,12 +157,12 @@ import java.applet.*;
 
   // Grafik herstellen
       public void paint(Graphics g) { 
- System.out.println("repaint gestartet");
+	  //System.out.println("repaint gestartet");
 	  	new Repaint(g,root);
 		Repaint r = new Repaint(); 
 		r.start(root,0,0,true);
 		new highlightObject(g,root);
-   			System.out.println("repaint beendet");  
+   		//	System.out.println("repaint beendet");  
   }
   
     public void restore(Graphics g) {
@@ -173,17 +176,20 @@ import java.applet.*;
 
 public void processMouseMotionEvent(MouseEvent e)
 {Graphics g = getGraphics();
+  Absyn aktcomp2;
 if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Select")
       {
-	if (PESTdrawutil.getSmallObject(root,(int) (e.getX()/Editor.ZoomFaktor),(int) (e.getY()/Editor.ZoomFaktor)) != aktcomp) 
+	aktcomp2 = PESTdrawutil.getSmallObject(root,(int) (e.getX()/Editor.ZoomFaktor),(int) (e.getY()/Editor.ZoomFaktor)) ; 
+	if (aktcomp2 != aktcomp) 
 	{
 		aktcomp = PESTdrawutil.getSmallObject(root,(int) (e.getX()/Editor.ZoomFaktor),(int) (e.getY()/Editor.ZoomFaktor));
 	//	System.out.println("Akt. Komponente : "+aktcomp);
 		new highlightObject(true);
 		new highlightObject(aktcomp,Color.black);
 		new highlightObject();
-        	}
-      }
+		// textlabel.hide();
+	        }
+	      }
 
 if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_StateLabel")
       {
@@ -275,7 +281,7 @@ if ((e.getID() == MouseEvent.MOUSE_DRAGGED) & (Editor.Editor() =="Draw_Par"))
 					  (int) (px2),
 					  (int) (py2));
 		       
-		       System.out.println("boxdraw beendet");
+		    //     System.out.println("boxdraw beendet");
 		       repaint(last_x,last_y,old_x,old_y);
 		       //   repaint();
 
@@ -447,12 +453,27 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans" & trro
 
 	if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Select"))
 		{ 
-		    Absyn test = PESTdrawutil.getState(root,
+		    Absyn test = PESTdrawutil.getSmallObject(root,
 			(int) (last_x/Editor.ZoomFaktor),
 			(int) (last_y/Editor.ZoomFaktor)
-				).akt;
+				);
 		deleteobj = test;
-		System.out.println("to delete >>>"+deleteobj);
+
+			if (test instanceof Tr)
+			{
+			Tr trtmp = (Tr) test;
+			  {
+			      //repaint();
+			      //textlabel.text(trtmp.label.caption);
+			      //textlabel.show(e.getX(),e.getY());
+			      if (trtmp.label.caption.length() >= GraphOptimizer.TLABELLENGTH)
+			      {
+			      new LabelArea(e.getX(),e.getY(),trtmp.label.caption);
+			      }
+			  }// else { textlabel.hide();}
+			}
+
+		// System.out.println("to delete >>>"+deleteobj);
 		}
 	if ((e.getID() == MouseEvent.MOUSE_PRESSED) & (Editor.Editor() =="Draw_Conn"))
 	    { //  Editor.SetListen();

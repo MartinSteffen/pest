@@ -34,7 +34,7 @@ Statechart root;
 	root = nroot;
 	akttrans.label.position = new CPoint(cx1,cy1);
 	temptranslabel = Editor.labelObject(akttrans);
-System.out.println("Neues Label :"+temptranslabel);
+	// System.out.println("Neues Label :"+temptranslabel);
 
 }
     
