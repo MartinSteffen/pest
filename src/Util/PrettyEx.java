@@ -17,7 +17,9 @@ public class PrettyEx {
     // Erzeuge PP-Objekt.
     PrettyPrint pp = new PrettyPrint ();
     pp.start (Example.getExample());
+    
 
   } // method main
 
 } // class PrettyEx
+
