@@ -49,13 +49,14 @@ import editor.*;
  * </DL COMPACT>
  *
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: ModelCheck.java,v 1.17 1999-01-16 17:55:29 swtech11 Exp $
+ * @version  $Id: ModelCheck.java,v 1.18 1999-01-18 23:27:01 swtech11 Exp $
  */
 public class ModelCheck {
   private ModelCheckMsg mcm; // Object, um die Fehler und Warnungen zu speichern
   private boolean outputGUI; // Meldungen auf die GUI ausgeben
   private GUIInterface gui = null; // Referenz auf die GUI
   private Editor edit = null;
+
 
 /**
  * Der Constructor des Syntax Checkers.
@@ -103,6 +104,8 @@ public class ModelCheck {
     boolean NoStateError = false;
     boolean NoFatalError = false;
     boolean result = false;
+
+    boolean BrowserOut = false;    
 
     boolean Zeitnahme = true;
     long s0=0; long e0=0; long s1=0; long e1=0; long s2=0; long e2=0;
@@ -192,6 +195,13 @@ public class ModelCheck {
 
     mcm.sort(); // Meldungen sortieren
     if ( outputGUI == true ) { outputToGUI(); } // Ausgabe an die GUI
+
+    if (BrowserOut==true) { Browser b = new Browser((pest)gui,mcm); }
+
+
+
+
+
     return result;
   };
 
