@@ -7,7 +7,7 @@ import Absyn.*;
  * <b>Syntax Check für Statecharts</b>
  * <br><a href="../Check/Docu/ErrorAndWarningCodes.html">Codes von Fehlern und Warnungen beim Syntax Check</a> 
  * @author Daniel Wendorff und Magnus Stiller
- * @version  $Id: modelCheck.java,v 1.5 1998-12-03 12:07:26 swtech11 Exp $
+ * @version  $Id: modelCheck.java,v 1.6 1998-12-03 14:29:26 swtech11 Exp $
  */
 public class modelCheck {
   private modelCheckMsg mcm;
@@ -33,8 +33,8 @@ public class modelCheck {
  * Checkt die Events der Statechart sc, und gibt <b>true</b> zurück, falls keine Fehler oder Warnungen aufgetreten sind, sonst <b>false</b>.
  */
   public boolean checkEvents(Statechart sc) {
-    testEvents te = new testEvents();
-    return te.check(sc,mcm);
+    testEvents te = new testEvents(sc,mcm);
+    return te.check();
   }
 
 /**

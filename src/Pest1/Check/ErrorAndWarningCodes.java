@@ -15,10 +15,15 @@ class ErrorAndWarningCodes {
       case   5: { _s = "Der BVars Check funktioniert noch nicht einwandfrei."; break;  }
       case   100: {_s = "Doppelte Definition von BVar"; break; }
       case   101: {_s = "Keine Deklaration von BVar"; break; }
-      case   102: {_s = "Der Pathname in einem GuardComppath ist nicht vorhanden."; break; }
-      case   103: {_s = "Der Pathname in einem GuardComppath ist mehrfach vorhanden."; break; }
-      case   200: {_s = "Doppelte Definition von Events"; break; }
+      case   102: {_s = "Deklarierte BVar wurde nicht verwendet"; break; }
+      
+      case   200: {_s = "Doppelte Definition von Event"; break; }
       case   201: {_s = "Keine Deklaration von Event"; break; }
+      case   202: {_s = "Deklarierter Event wurde nicht verwendet"; break; }
+      case   203: {_s = "Der Pathname in einem GuardComppath ist nicht vorhanden."; break; }
+      case   204: {_s = "Der Pathname in einem GuardComppath ist mehrfach vorhanden."; break; }
+ 
+     
       case   400: {_s = "Der Startanker der Transition ist nicht definiert."; break; }
       case   401: {_s = "Der Zielanker der Transition ist nicht definiert."; break; }
       case   402: {_s = "Beide Anker der Transition sind nicht definiert."; break; }

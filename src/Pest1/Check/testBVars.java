@@ -21,24 +21,17 @@ class testBVars extends test{
   boolean check() {
     erstelle_Ist();
     erstelle_Soll();
-    //vergleiche();
+    vergleiche();
     msg.addWarning(5,"Root");
     return true;
   }
 
   void erstelle_Ist() {
-     BvarList b=sc.bvars;
-     int i;
-   
-     
-     for(i=0;(b!=null) && (i<(2*Ist.size()+1));i++){
+         
+     for(BvarList b=sc.bvars; b!=null; b=b.tail){
        if (Ist.contains(b.head.var)) { msg.addError(100,b.head.var);}
                                 else {Ist.addElement(b.head.var);};
-        b=b.tail;
-        System.out.println(i);
-       }
-     System.out.println(Ist.size());
-     if (Ist.size()<i) {/* Prüfe auf Kreis in BVarList */}
+        }
    };
 
   void erstelle_Soll() {
@@ -46,55 +39,43 @@ class testBVars extends test{
     if (sc.state instanceof Or_State) {testTransOrState((Or_State)sc.state); }
     if (sc.state instanceof And_State) {testTransAndState((And_State)sc.state); }
 
-  // erstellen einer Liste von Events, die in Guard oder Action vorkommen
-
   };
+
   void nextTransInTransList(TrList tl) {
-    pruefeGuard(tl.head.label.guard);
-    pruefeAction(tl.head.label.action);
+    pruefeGuard(tl.head.label.guard, tl.head);
+    // pruefeAction(tl.head.label.action, tl.head);
     if (tl.tail != null) { nextTransInTransList(tl.tail); }
 
   }
-    void pruefeGuard(Guard g){
-    if (g instanceof GuardBVar)  {pruefeBvar  (((GuardBVar )g).bvar);};
-    if (g instanceof GuardCompg) {pruefeGuard (((GuardCompg)g).cguard.elhs);
-                                  pruefeGuard (((GuardCompg)g).cguard.erhs); };
-    //  if (g instanceof GuardCompp) {pruefePath  (((GuardCompp)g).cpath.path);}
-    if (g instanceof GuardNeg)   {pruefeGuard (((GuardNeg)g).guard);};
+    void pruefeGuard(Guard g, Tr t){
+    if (g instanceof GuardBVar)  {pruefeBvar  (((GuardBVar )g).bvar, t);};
+    if (g instanceof GuardCompg) {pruefeGuard (((GuardCompg)g).cguard.elhs, t);
+                                  pruefeGuard (((GuardCompg)g).cguard.erhs, t); };
+    if (g instanceof GuardNeg)   {pruefeGuard (((GuardNeg)g).guard, t);};
     }
 
-    void pruefeAction(Action a){
-    if (a instanceof ActionBlock)  { for(Aseq as=((ActionBlock)a).aseq;as.tail!=null;as=as.tail) 
-	                                { pruefeAction(as.head);};}
-    if (a instanceof ActionStmt) {pruefeBool (((ActionStmt)a).stmt);};
-    }
-
-
-  void pruefeBvar(Bvar b){
+  void pruefeBvar(Bvar b, Tr t){
       if (Ist.contains(b.var)) {if (!Soll.contains(b.var)) { Soll.addElement(b.var);};}
-      else {msg.addError(101,(b.var));};
+      else {msg.addError(101,b.var+":"+((Statename)t.source).name+" -> "+((Statename)t.target).name);};
   };
 
-  void pruefeBool(Boolstmt b) {
-    if (b instanceof BAss)  {};
-    if (b instanceof MTrue) {};
-    if (b instanceof MFalse) {};
+    /*     void pruefeAction(Action a, Tr t){
+    if (a instanceof ActionBlock)  { for(Aseq as=((ActionBlock)a).aseq;as.tail!=null;as=as.tail) 
+	{ //pruefeAction(as.head, t);};}
+    if (a instanceof ActionStmt) {pruefeBool (((ActionStmt)a).stmt, t);};
+    }*/
+
+  void pruefeBool(Boolstmt b, Tr t) {
+      // if (b instanceof BAss)  {pruefeBVar(((BAss)b).bass.blhs, t); pruefeGuard(((BAss)b).bass.brhs, t);};
+    //  if (b instanceof MTrue)  {pruefeBvar(((MTrue)b).bvar, t);};
+    // if (b instanceof MFalse) {pruefeBvar(((MFalse)b).bvar, t);};
     };
 
+    void vergleiche(){
+	for( int i=0; i<Soll.size();i++) {
+	    Ist.removeElement(Soll.elementAt(i));};
+        for(int i=0; i<Ist.size(); i++) { msg.addWarning(102,(String)Ist.elementAt(i));};
 
-
-  void pruefePath(Path p){
-      PathList pl=sc.cnames;
-      int i=0;
-      for(;pl != null;pl=pl.tail){ 
-	  if (p.name==pl.head.name) {i++;};};
-      
-      if (i==0) {msg.addError(102,(p.name));}
-      if (i>1)  {msg.addWarning(103,(p.name));}
-
-      
-
-  };
-
+    };
 }
 
