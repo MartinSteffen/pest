@@ -14,7 +14,7 @@ import java.util.*;
  * an interface to the original textual representations of
  * states, events and conditions.
  *
- * @version $Id: dumpTables.java,v 1.11 1999-01-25 14:52:40 swtech25 Exp $
+ * @version $Id: dumpTables.java,v 1.12 1999-01-29 19:49:02 swtech25 Exp $
  * @author Marcel Kyas
  */
 public class dumpTables
@@ -107,7 +107,7 @@ public class dumpTables
 		"\t\t\t\tf.write(condition_names[i] + \" \");",
 		"\t\t\t}",
 		"\t\t}",
-		"\t\tf.write(\")\\n\");",
+		"\t\tf.write(\")\\n)\");",
 		"\t}",
 		"",
 		"\t/**",
