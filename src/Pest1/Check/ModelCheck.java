@@ -45,7 +45,7 @@ import editor.*;
  * </DL COMPACT>
  *
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: ModelCheck.java,v 1.31 1999-01-26 22:39:34 swtech11 Exp $
+ * @version  $Id: ModelCheck.java,v 1.32 1999-01-28 15:45:28 swtech11 Exp $
  * @see CheckConfig
  */
 public class ModelCheck {
@@ -250,7 +250,7 @@ public class ModelCheck {
 /**
  * Gibt die Anzahl der aufgetretenen Fehler zurück.
  */
-  public int getErrorNumber() { return mcm.getErrorNumber(); }
+  protected int getErrorNumber() { return mcm.getErrorNumber(); }
 
 /**
  * Liefert alle vorhandenen Fakten über den entsprechenden Fehler.
@@ -258,7 +258,7 @@ public class ModelCheck {
  * @param _number Index des Fehlers (1 bis getErrorNumber() )
  * @see           #getErrorNumber()
  */
-  public String getError(int _number) { return mcm.getError(_number); }
+  protected String getError(int _number) { return mcm.getError(_number); }
 
 /**
  * Liefert den Code des entsprechenden Fehlers.
@@ -267,7 +267,7 @@ public class ModelCheck {
  * @param _number Index des Fehlers (1 bis getErrorNumber() )
  * @see           #getErrorNumber()
  */
-  public int getErrorCode(int _number) { return mcm.getErrorCode(_number); }
+  protected int getErrorCode(int _number) { return mcm.getErrorCode(_number); }
 
 /**
  * Liefert die Beschreibung des entsprechenden Fehlers.
@@ -275,7 +275,7 @@ public class ModelCheck {
  * @param _number Index des Fehlers (1 bis getErrorNumber() )
  * @see           #getErrorNumber()
  */
-  public String getErrorMsg(int _number) { return mcm.getErrorMsg(_number); }
+  String getErrorMsg(int _number) { return mcm.getErrorMsg(_number); }
 
 /**
  * Liefert den Pfad des entsprechenden Fehlers.
@@ -283,12 +283,12 @@ public class ModelCheck {
  * @param _number Index des Fehlers (1 bis getErrorNumber() )
  * @see           #getErrorNumber()
  */
-  public String getErrorPath(int _number) { return mcm.getErrorPath(_number); }
+  String getErrorPath(int _number) { return mcm.getErrorPath(_number); }
 
 /**
  * Gibt die Anzahl der aufgetretenen Warnungen zurück.
  */
-  public int getWarningNumber() { return mcm.getWarningNumber(); }
+  int getWarningNumber() { return mcm.getWarningNumber(); }
 
 /**
  * Liefert alle vorhandenen Fakten über die entsprechende Warnung.
@@ -296,7 +296,7 @@ public class ModelCheck {
  * @param _number Index der Warnung (1 bis getWarningNumber() )
  * @see           #getWarningNumber()
  */
-  public String getWarning(int _number) { return mcm.getWarning(_number); }
+  protected String getWarning(int _number) { return mcm.getWarning(_number); }
 
 /**
  * Liefert den Code der entsprechenden Warnung.
@@ -391,7 +391,7 @@ public class ModelCheck {
  * @param _number Index der Warnung (1 bis getWarningNumber() )
  * @see           #getWarningNumber()
  */
-  public int getWarningCode(int _number) { return mcm.getWarningCode(_number); }
+  protected int getWarningCode(int _number) { return mcm.getWarningCode(_number); }
 
 /**
  * Liefert die Beschreibung der entsprechenden Warnung.
@@ -399,7 +399,7 @@ public class ModelCheck {
  * @param _number Index der Warnung (1 bis getWarningNumber() )
  * @see           #getWarningNumber()
  */
-  public String getWarningMsg(int _number) { return mcm.getWarningMsg(_number); }
+  protected String getWarningMsg(int _number) { return mcm.getWarningMsg(_number); }
 
 /**
  * Liefert den Pfad der entsprechenden Warnung.
@@ -407,7 +407,7 @@ public class ModelCheck {
  * @param _number Index der Warnung (1 bis getWarningNumber() )
  * @see           #getWarningNumber()
  */
-  public String getWarningPath(int _number) { return mcm.getWarningPath(_number); }
+  protected String getWarningPath(int _number) { return mcm.getWarningPath(_number); }
 
 }
 
