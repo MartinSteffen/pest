@@ -8,7 +8,7 @@ import java.util.*;
  *  ob die deklarierten eindeutig sind und ob sie alle verwendet werden.
  *
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestEvents.java,v 1.14 1999-01-28 20:56:23 swtech11 Exp $
+ *  @version  $Id: TestEvents.java,v 1.15 1999-02-05 10:29:35 swtech11 Exp $
  */
 class TestEvents extends ModelCheckBasics{
   private Vector Ist;
@@ -110,7 +110,7 @@ class TestEvents extends ModelCheckBasics{
       for(; ((pl != null) && (!b)) ; pl=pl.tail){
       if (PathtoString(pl.head).equals(PathtoString(p))) {b=true;};
        };              
-      if (b==false) {msg.addError(203,"Pfad: "+PathtoString(p), t, s);}
+      if (b==false) {msg.addWarning(203,"Pfad: "+PathtoString(p), t, s);}
      
   };
 
