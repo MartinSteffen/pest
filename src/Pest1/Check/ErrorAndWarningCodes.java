@@ -2,7 +2,7 @@ package Check;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: ErrorAndWarningCodes.java,v 1.4 1998-12-03 21:58:05 swtech11 Exp $
+ *  @version  $Id: ErrorAndWarningCodes.java,v 1.5 1998-12-06 23:03:53 swtech11 Exp $
  */
 class ErrorAndWarningCodes {
   ErrorAndWarningCodes() {
@@ -17,20 +17,33 @@ class ErrorAndWarningCodes {
       case   3: { _s = "Der State Check funktioniert noch nicht einwandfrei."; break;  }
       case   4: { _s = "Der Transition Check funktioniert noch nicht einwandfrei."; break;  }
       case   5: { _s = "Der BVars Check funktioniert noch nicht einwandfrei."; break;  }
-      case   100: {_s = "Doppelte Definition von BVar"; break; }
-      case   101: {_s = "Keine Deklaration von BVar"; break; }
-      case   102: {_s = "Deklarierte BVar wurde nicht verwendet"; break; }
+
+      case 100: {_s = "Doppelte Definition von BVar"; break; }
+      case 101: {_s = "Keine Deklaration von BVar"; break; }
+      case 102: {_s = "Deklarierte BVar wurde nicht verwendet"; break; }
       
-      case   200: {_s = "Doppelte Definition von Event"; break; }
-      case   201: {_s = "Keine Deklaration von Event"; break; }
-      case   202: {_s = "Deklarierter Event wurde nicht verwendet"; break; }
-      case   203: {_s = "Der Pathname in einem GuardComppath ist nicht vorhanden."; break; }
-      case   204: {_s = "Der Pathname in einem GuardComppath ist mehrfach vorhanden."; break; }
- 
-     
-      case   400: {_s = "Der Startanker der Transition ist nicht definiert."; break; }
-      case   401: {_s = "Der Zielanker der Transition ist nicht definiert."; break; }
-      case   402: {_s = "Beide Anker der Transition sind nicht definiert."; break; }
+      case 200: {_s = "Doppelte Definition von Event"; break; }
+      case 201: {_s = "Keine Deklaration von Event"; break; }
+      case 202: {_s = "Deklarierter Event wurde nicht verwendet"; break; }
+      case 203: {_s = "Der Pathname in einem GuardComppath ist nicht vorhanden."; break; }
+      case 204: {_s = "Der Pathname in einem GuardComppath ist mehrfach vorhanden."; break; }
+      
+      case 400: {_s = "Der Start-State der Transition ist nicht definiert."; break; }
+      case 401: {_s = "Der Ziel-State der Transition ist nicht definiert."; break; }
+      case 402: {_s = "Beide States der Transition sind nicht definiert."; break; }
+      case 403: {_s = "Der Start-State der Transition ist unbekannt."; break; }
+      case 404: {_s = "Der Ziel-State der Transition ist unbekannt."; break; }
+      case 405: {_s = "Beide States der Transition sind unbekannt."; break; }
+      case 406: {_s = "Interlevel-Transition: Der Start-State liegt falsch."; break; }
+      case 407: {_s = "Interlevel-Transition: Der Ziel-State liegt falsch."; break; }
+      case 408: {_s = "Interlevel-Transition: Beide States liegten falsch."; break; }
+      case 409: {_s = "Der Start-Connenctor der Transition ist unbekannt."; break; }
+      case 410: {_s = "Der Ziel-Connenctor der Transition ist unbekannt."; break; }
+      case 411: {_s = "Beide Connenctoren der Transition sind unbekannt."; break; }
+      case 412: {_s = "Interlevel-Transition: Der Start-Connenctor liegt falsch."; break; }
+      case 413: {_s = "Interlevel-Transition: Der Ziel-Connenctor liegt falsch."; break; }
+      case 414: {_s = "Interlevel-Transition: Beide Connenctoren liegten falsch."; break; }
+
       default:  _s = "Dieser Code wurde noch nicht erfasst.";
     }
     return _s;
