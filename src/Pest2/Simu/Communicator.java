@@ -64,60 +64,6 @@ public class Communicator extends Frame{
     return result;
   }
 
-
-  /* loeseNDeterm bekommt einen Vector mit mehreren moeglichen Transitionen */
-  /* und liefert einen Vector mit genau einer Transition zurueck.           */
-  /* Funktioniert noch nicht, da keine Rueckgabe bei knopfdruck....         */
-  public Vector loeseNDeterm(Vector v){
-    Vector result=new Vector(1);
-    Tr transition=null;
-    TrAnchor von=null;
-    TrAnchor nach=null;
-    String vontext=null;
-    String nachtext=null;
-    listvector=v;
-    int count=listvector.size();
-    Frame f=new Frame("Nichtdeterminismus aufgetreten");
-    int listsize=0;
-    if (count>10){
-      listsize=10;
-    }
-    else{
-      listsize=count;
-    }
-    list=new List(listsize,false);
-    for (int i=0; i<count; i++){
-      transition=(Tr)listvector.elementAt(i);
-      von=transition.source;
-      nach=transition.target;
-      if (von instanceof absyn.Statename){
-	vontext=((Statename)von).name;
-      }
-      else{
-	vontext=((Conname)von).name;
-      }
-      if (nach instanceof absyn.Statename){
-	nachtext=((Statename)nach).name;
-      }
-      else{
-	nachtext=((Conname)nach).name;
-      }
-      list.addItem(vontext+"->"+nachtext);
-    }
-    list.select(1);
-    Button b=new Button("Auswählen");
-    b.addActionListener(new ActionListener(){
-      public void actionPerformed(ActionEvent e){
-	int index=list.getSelectedIndex();
-	Tr t=(Tr)listvector.elementAt(index);
-	/* result.addElement(t); kann nicht funktionieren, nur zur Erinnerung da... */
-      }
-    });  
-    return result;
-  }
-    
-    
-
   void vor(){
     Status temp=maschine.liefereNachfolger(prev_status,akt_status);
     prev_status=akt_status;
@@ -126,12 +72,59 @@ public class Communicator extends Frame{
     System.err.println("Ergebnis des Schrittes:");
     akt_status.debug();
     System.err.println("-----------------------");
+    unhighlightPrevStates();
+    unhighlightPrevTrs();
+    highlightAktStates();
+    highlightAktTrs();
   }
 
   void setzeEvent(String name){
     akt_status.events.set(name,new SEvent(name));
   }
+
+  void highlightAktStates(){
+    StateTabelle states=akt_status.states;
+    Enumeration actives=states.data.elements();
+    State element=null;
+    while (actives.hasMoreElements()){
+      element=(State)actives.nextElement();
+      //editor.highlight(element,FARBE ROT);
+    }
+  }
+
+  void unhighlightPrevStates(){
+    StateTabelle states=prev_status.states;
+    Enumeration actives=states.data.elements();
+    State element=null;
+    while (actives.hasMoreElements()){
+      element=(State)actives.nextElement();
+      //editor.unhighlight(element,FARBE ROT);
+    }
+  }
+    
+  void highlightAktTrs(){
+    TransitionTabelle transitions=akt_status.transitions;
+    Enumeration actives=transitions.data.elements();
+    Tr element=null;
+    while (actives.hasMoreElements()){
+      element=(Tr)actives.nextElement();
+      //editor.highlight(element,FARBE ROT);
+    }
+  }
   
+  void unhighlightPrevTrs(){
+    TransitionTabelle transitions=akt_status.transitions;
+    Enumeration actives=transitions.data.elements();
+    Tr element=null;
+    while (actives.hasMoreElements()){
+      element=(Tr)actives.nextElement();
+      //editor.unhighlight(element,FARBE ROT);
+    }
+  } 
+
+
+  
+
   void buildFrame(){
     setSize(200,200);
     setLayout(new FlowLayout());
