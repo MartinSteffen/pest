@@ -1,16 +1,13 @@
 # Makefile fuer Simulator
 
-cc = /opt/jdk/jdk1.1.6/bin/javac
+cc = javac
 
 
 all : Editor.class 
 
-hlo.class : 
-	$(cc) highlightObject.java
 
-
-Editor.class : hlo.class
-	$(cc) Editor.java 
+Editor.class :
+	$(cc) *.java 
 
 clean :
 	rm -rf *.class
