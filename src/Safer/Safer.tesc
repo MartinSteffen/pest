@@ -392,97 +392,16 @@ and Global:
 		from TRAN to ROT on SET_control_mode_switch_ROT;
 	end control_mode_switch;
 
+
 	or AAH_control_button:
 		basic INIT;
 		basic DOWN;
 		basic UP;
 		defcon: INIT;
+		transitions:
 		from INIT to UP;
 		from UP to DOWN on SET_AAH_control_button_DOWN;
 		from DOWN to UP on SET_AAH_control_button_UP;
 	end AAH_control_button;
 
-	or AAH_state_toggle:
-	        basic init;
-	        basic OFF;
-	        basic STARTED;
-	        basic ON;
-	        basic PONCE;
-	        basic CLOSING;
-	        basic PTWICE;
-	
-	        defcon: init;
-	
-	        transitions:
-	                from init to OFF; # initialwert.
-	
-	                from OFF to STARTED on SET_AAH_state_toggle[in(Global.Safer.P1.AAH.engage.STARTED)];
-	                from OFF to ON on SET_AAH_state_toggle[in(Global.Safer.P1.AAH.engage.ON)];
-	                from OFF to PONCE on SET_AAH_state_toggle[in(Global.Safer.P1.AAH.engage.PONCE)];
-	                from OFF to CLOSING on SET_AAH_state_toggle[in(Global.Safer.P1.AAH.engage.CLOSING)];
-	                from OFF to PTWICE on SET_AAH_state_toggle[in(Global.Safer.P1.AAH.engage.PTWICE)];
-	                from OFF to OFF on SET_AAH_state_toggle[in(Global.Safer.P1.AAH.engage.OFF)];
-	
-	                from STARTED to STARTED on SET_AAH_state_toggle[in(Global.Safer.P1.AAH.engage.STARTED)];
-	                from STARTED to ON on SET_AAH_state_toggle[in(Global.Safer.P1.AAH.engage.ON)];
-	                from STARTED to PONCE on SET_AAH_state_toggle[in(Global.Safer.P1.AAH.engage.PONCE)];
-	                from STARTED to CLOSING on SET_AAH_state_toggle[in(Global.Safer.P1.AAH.engage.CLOSING)];
-	                from STARTED to PTWICE on SET_AAH_state_toggle[in(Global.Safer.P1.AAH.engage.PTWICE)];
-	                from STARTED to OFF on SET_AAH_state_toggle[in(Global.Safer.P1.AAH.engage.OFF)];
-	
-	                from ON to STARTED on SET_AAH_state_toggle[in(Global.Safer.P1.AAH.engage.STARTED)];
-	                from ON to ON on SET_AAH_state_toggle[in(Global.Safer.P1.AAH.engage.ON)];
-	                from ON to PONCE on SET_AAH_state_toggle[in(Global.Safer.P1.AAH.engage.PONCE)];
-	                from ON to CLOSING on SET_AAH_state_toggle[in(Global.Safer.P1.AAH.engage.CLOSING)];
-	                from ON to PTWICE on SET_AAH_state_toggle[in(Global.Safer.P1.AAH.engage.PTWICE)];
-	                from ON to OFF on SET_AAH_state_toggle[in(Global.Safer.P1.AAH.engage.OFF)];
-	
-	                from PONCE to STARTED on SET_AAH_state_toggle[in(Global.Safer.P1.AAH.engage.STARTED)];
-	                from PONCE to ON on SET_AAH_state_toggle[in(Global.Safer.P1.AAH.engage.ON)];
-	                from PONCE to PONCE on SET_AAH_state_toggle[in(Global.Safer.P1.AAH.engage.PONCE)];
-	                from PONCE to CLOSING on SET_AAH_state_toggle[in(Global.Safer.P1.AAH.engage.CLOSING)];
-	                from PONCE to PTWICE on SET_AAH_state_toggle[in(Global.Safer.P1.AAH.engage.PTWICE)];
-	                from PONCE to OFF on SET_AAH_state_toggle[in(Global.Safer.P1.AAH.engage.OFF)];
-	
-	                from CLOSING to STARTED on SET_AAH_state_toggle[in(Global.Safer.P1.AAH.engage.STARTED)];
-	                from CLOSING to ON on SET_AAH_state_toggle[in(Global.Safer.P1.AAH.engage.ON)];
-	                from CLOSING to PONCE on SET_AAH_state_toggle[in(Global.Safer.P1.AAH.engage.PONCE)];
-	                from CLOSING to CLOSING on SET_AAH_state_toggle[in(Global.Safer.P1.AAH.engage.CLOSING)];
-	                from CLOSING to PTWICE on SET_AAH_state_toggle[in(Global.Safer.P1.AAH.engage.PTWICE)];
-	                from CLOSING to OFF on SET_AAH_state_toggle[in(Global.Safer.P1.AAH.engage.OFF)];
-	
-	               from PTWICE to STARTED on SET_AAH_state_toggle[in(Global.Safer.P1.AAH.engage.STARTED)];
-	               from PTWICE to ON on SET_AAH_state_toggle[in(Global.Safer.P1.AAH.engage.ON)];
-	                from PTWICE to PONCE on SET_AAH_state_toggle[in(Global.Safer.P1.AAH.engage.PONCE)];
-	                from PTWICE to CLOSING on SET_AAH_state_toggle[in(Global.Safer.P1.AAH.engage.CLOSING)];
-	                from PTWICE to PTWICE on SET_AAH_state_toggle[in(Global.Safer.P1.AAH.engage.PTWICE)];
-	                from PTWICE to OFF on SET_AAH_state_toggle[in(Global.Safer.P1.AAH.engage.OFF)];
-	
-	end AAH_state_toggle;
-
-	# Global.Clock
-	# Clock, für timeout beim Berechnen des AAH-State-toggle
-	# muß außerhalb des Safer liegen
-	# wird mit jedem Zyklus gezählt, wenn gestartet.
-	
-	
-	or Clock:
-		basic init;
-		basic OFF;
-		basic TIMEOUT;
-		basic START;
-		basic STEP1;
-		basic STEP2;
-		basic STEP3;
-	
-		defcon: init;
-		transitions:
-			from init to OFF;
-			from OFF to START on SET_clock;
-			from START to STEP1 on P2Ready;
-			from STEP1 to STEP2 on P2Ready;
-			from STEP2 to STEP3 on P2Ready;
-			from STEP3 to TIMEOUT on P2Ready;
-	end Clock;
-	
 end Global;
