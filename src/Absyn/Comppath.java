@@ -9,3 +9,12 @@ public class Comppath extends Absyn {
     }
 }
 
+//----------------------------------------------------------------------
+//	Abstract Syntax for PEST Statecharts
+//	------------------------------------
+//
+//	$Id: Comppath.java,v 1.3 1998-11-26 16:32:14 swtech00 Exp $
+//
+//	$Log: not supported by cvs2svn $
+//
+//----------------------------------------------------------------------
