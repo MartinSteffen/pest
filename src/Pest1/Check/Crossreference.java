@@ -35,7 +35,7 @@ import java.awt.*;
  * keine
  * </DL COMPACT>
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: Crossreference.java,v 1.5 1999-01-18 20:56:31 swtech11 Exp $
+ * @version  $Id: Crossreference.java,v 1.6 1999-01-20 13:46:00 swtech11 Exp $
  */
 public class Crossreference extends ModelCheckBasics {
   private GUIInterface gui = null; // Referenz auf die GUI
@@ -80,11 +80,11 @@ public class Crossreference extends ModelCheckBasics {
 
 
   void navBasicState(Basic_State bs, State _s, String p) {
-    if (bs.name.name.equals(such)) { itemInput(3,bs,"Basic-State in "+p); }
+    if (bs.name.name.equals(such)) { itemInput(bs,bs,"Basic-State in "+p); }
   }
 
   void navOrState(Or_State os, State _s, String p) {
-    if (os.name.name.equals(such)) { itemInput(1,os,"Or-State in "+p); }
+    if (os.name.name.equals(such)) { itemInput(os,os,"Or-State in "+p); }
     String np = getAddPathPart(p, os.name.name);
     if (os.trs != null) { navTransInTransList(os.trs, os, np); }
     if (os.connectors != null) { navConInConList(os.connectors, np); }
@@ -92,13 +92,13 @@ public class Crossreference extends ModelCheckBasics {
   }
 
   void navAndState(And_State as, State _s, String p) {
-    if (as.name.name.equals(such)) { itemInput(2,as,"And-State in "+p); }
+    if (as.name.name.equals(such)) { itemInput(as,as,"And-State in "+p); }
     String np = getAddPathPart(p, as.name.name);
     if (as.substates != null) { navStateInStateList(as.substates, as, np); }
   }
 
   void navConInConList(ConnectorList cl, String p) {
-    if (cl.head.name.name.equals(such)) { itemInput(4,cl.head,"Connector in "+p); }
+    if (cl.head.name.name.equals(such)) { itemInput(cl.head,cl.head,"Connector in "+p); }
     if (cl.tail != null) {navConInConList(cl.tail, p);}
   }
 
@@ -123,34 +123,42 @@ public class Crossreference extends ModelCheckBasics {
     // Auswertung der Anker  
     if (tl.head.source instanceof Statename) {
       if ( z1.equals(such) )
-        { itemInput(5,tl.head,"Statename des Startankers der Transition "+z1+" -> "+z2+" in "+p); }
+        { itemInput(tl.head.source, tl.head,"Statename des Startankers der Transition "+z1+" -> "+z2+" in "+p); }
     }
     else if (tl.head.source instanceof Conname) {
       if ( z1.equals(such) )
-        { itemInput(7,tl.head,"Connectorname des Startankers der Transition "+z1+" -> "+z2+" in "+p); }
+        { itemInput(tl.head.source,tl.head,"Connectorname des Startankers der Transition "+z1+" -> "+z2+" in "+p); }
     }
     if (tl.head.target instanceof Statename) {
       if ( z2.equals(such) )
-        { itemInput(6,tl.head,"Statename des Zielankers der Transition "+z1+" -> "+z2+" in "+p); }
+        { itemInput(tl.head.target,tl.head,"Statename des Zielankers der Transition "+z1+" -> "+z2+" in "+p); }
     }
     else if (tl.head.target instanceof Conname) {
       if ( z2.equals(such) )
-        { itemInput(8,tl.head,"Connectorname des Zielankers der Transition "+z1+" -> "+z2+" in "+p); }
+        { itemInput(tl.head.target,tl.head,"Connectorname des Zielankers der Transition "+z1+" -> "+z2+" in "+p); }
     }
 
     if (tl.tail != null) { navTransInTransList(tl.tail, _s, p); }
   }
 
   // Eingabe eines Report Ergebnises
-  void itemInput(int a, Object o, String p) {
-    ReportItem ri = new ReportItem(a, o, p);
+  void itemInput(int a, Object ho, String p) {
+    ReportItem ri = new ReportItem(a, ho, p);
     items.addElement(ri);
   }
+
+  void itemInput(Object o, Object ho, String p) {
+    ReportItem ri = new ReportItem(o, ho, p);
+    items.addElement(ri);
+  }
+
+
 
 }
 
 class ReportItem {
   // die Art des Elementes, evtl. überflüssig
+  Object Obj = null;
   int Art = 0;
        //   0: unbekannt oder egal
        //   1: OrState
@@ -163,13 +171,20 @@ class ReportItem {
        //   8: Connectorname des Zielanker
 
   // das Objekt selbst, z.B. zum Highlighten, evtl. überflüssig
-  Object Obj = null;
+  Object HiObj = null;
   // die texttuelle Art des Elementes plus seiner Beschreibung der Lage
   String Pth = null;
 
-  public ReportItem(int a, Object o, String p) {
+  public ReportItem(int a, Object ho, String p) {
     Art = a;
-    Obj = o;
+    HiObj = ho;
     Pth = p;
   }
+
+  public ReportItem(Object o, Object ho, String p) {
+    Obj = o;
+    HiObj = ho;
+    Pth = p;
+  }
+
 }

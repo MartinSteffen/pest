@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestTransitions.java,v 1.12 1999-01-18 12:14:21 swtech11 Exp $
+ *  @version  $Id: TestTransitions.java,v 1.13 1999-01-20 13:46:02 swtech11 Exp $
  */
 class TestTransitions extends ModelCheckBasics {
   Vector newPLV = new Vector(); // Vector fuer die selbst angelegte PathList der States
@@ -148,7 +148,7 @@ class TestTransitions extends ModelCheckBasics {
     else if (j1==false & j2==true) { msg.addError(413,t); }
     else if (j1==true & j2==true)  { msg.addError(414,t); }
 
-    if (tl.head.label.guard!=null)  {Guardlist.addElement(new GuardE(tl.head.label.guard, tl.head));} // DW
+    if (tl.head.label.guard!=null)  {Guardlist.addElement(new GuardE(tl.head.label.guard, tl.head, p));} // DW
     if (tl.tail != null) { navTransInTransList(tl.tail, _s,p); }
   }
 
@@ -198,7 +198,8 @@ class TestTransitions extends ModelCheckBasics {
                                     {msg.addWarning(416,text);};
            if ((g.t.source instanceof Statename) && (((GuardE)Guardlist.elementAt(i)).t.source instanceof Statename) &&
                  ((((Statename)g.t.source).name).equals(((Statename)((GuardE)Guardlist.elementAt(i)).t.source).name ))) 
-	       {msg.addWarning(416,text);};
+	       {String s="Trans1: "+((Statename)g.t.source).name;
+                msg.addWarning(416,text, g.t, ((GuardE)Guardlist.elementAt(i)).t, g.ort);};
 
 };
 
@@ -407,7 +408,16 @@ class ConE {
 class GuardE {
    Guard g;
    Tr    t;
+   String ort="";
 
 GuardE(Guard _g, Tr _t){
      g=_g;
-     t=_t;};}
+     t=_t;};
+
+GuardE(Guard _g, Tr _t, String _ort){
+     g=_g;
+     t=_t;
+     ort=_ort;};
+
+
+}
