@@ -21,7 +21,7 @@ import absyn.*;
  * If an error occures, we will throw a CodeGenException.
  *
  * @author Marcel Kyas, Walter Loeser, Andre Paetzold.
- * @version $Id: CodeGen.java,v 1.4 1998-12-15 17:51:42 swtech00 Exp $
+ * @version $Id: CodeGen.java,v 1.5 1998-12-21 13:13:09 swtech25 Exp $
  */
 public class CodeGen
 {
@@ -39,6 +39,8 @@ public class CodeGen
 	/**
 	 * This method will cause the CodeGenerator to do
 	 * its work.  If will return after successful completion.
+	 *
+	 * @exception codegen.CodeGenException
 	 */
 	public CodeGen(String path, Statechart statechart)
 		throws CodeGenException
@@ -50,6 +52,8 @@ public class CodeGen
          * This method will cause the CodeGenerator to do
          * its work.  If will return after successful completion.
 	 * This will activate some options. 
+	 *
+	 * @exception codegen.CodeGenException
          */
         public CodeGen(String path, Statechart statechart, int options)
 		throws CodeGenException
@@ -61,6 +65,8 @@ public class CodeGen
 	 * This method is an alternative to produce code,
 	 * if you do not want to create a new instance of
 	 * the code generator.
+	 *
+	 * @exception codegen.CodeGenException
 	 */
 	public void Generate(String path, Statechart statechart)
 		throws CodeGenException
@@ -72,6 +78,8 @@ public class CodeGen
          * This method is an alternative to produce code,
          * if you do not want to create a new instance of
          * the code generator.  This time with options.
+	 *
+	 * @exception codegen.CodeGenException
          */
         public void Generate(String path, Statechart statechart, int options)
 		throws CodeGenException
