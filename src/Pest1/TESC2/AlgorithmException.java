@@ -18,4 +18,13 @@ public class AlgorithmException extends Exception {
     Errortext = msg;
   } // constructor AlgorithmException
 
+
+  /**
+   * Gib Fehlermeldung zurueck.
+   */
+
+  public String getMessage() {
+    return Errortext;
+  } // method getMessage
+
 } // class AlgorithmException
