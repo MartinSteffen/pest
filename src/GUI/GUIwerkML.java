@@ -33,30 +33,7 @@ public void actionPerformed(ActionEvent e) {
 	  myWindow.checkSB(true);
 	  
       }else if (cmd.equals("Simulator")) {
-	  if (myWindow.checkSB(false))
-	      {
-		  if (myWindow.PEditor != null)
-		      {
-			  myWindow.PEditor.work(false);   // Änderungen verbieten
-			  myWindow.simu = new simu.Simu(myWindow.SyntaxBaum,myWindow.PEditor,myWindow);
-// 			  if (Sim instanceof Thread)
-// 			      {
-// 				  Sim.start();
-// 				  while(Sim.isAlive())
-// 				      {
-// 					  // warten auf Ende !
-// 				      }
-// 			      }
-
-			  myWindow.PEditor.work(true);    // Änderungen zulassen
-		      }
-		  else
-		      {
-			  myWindow.OkDialog("Fehler","Zur Simulation muß ein Editor geöffnet sein");
-		      }
-		//  myWindow.OkDialog("FEHLER","Nicht compilierbar");
-
-	      }
+	      myWindow.startSimulator();
       }else if (cmd.equals("Codegenerator")) {
 	  if (myWindow.checkSB(false))
 	      {

@@ -67,6 +67,7 @@ implements GUIInterface
     ControlWindow controlWindow;
     GUIControlWindowML cwlis;
     GUIexitLis exlis;
+    GUIsimExitLis simexitlis;
     check.CheckConfig checkConfig;
 
     editor.Editor PEditor = null;
@@ -113,6 +114,7 @@ implements GUIInterface
 	super("Und hier kommt die PEST");
 	controlWindow = new ControlWindow(this);
 	exlis = new GUIexitLis(this);
+	simexitlis = new GUIsimExitLis(this);
 	setBackground(Color.lightGray);
 	setSize(630,400); 
 	setLocation(200,200);
@@ -353,6 +355,41 @@ implements GUIInterface
 	    {
 		OkDialog("Fehler","Es kann nur ein Editor gestartet werden !");
 	    }
+    }
+
+
+void startSimulator()
+    {
+	if (checkSB(false))
+	    {
+		if (PEditor != null)
+		    {
+			if(simu == null)
+			    {
+				PEditor.work(false);   // Änderungen verbieten
+				simu = new simu.Simu(SyntaxBaum,PEditor,this);
+				simu.addWindowListener(simexitlis);
+			    }
+			else
+			    {
+			        OkDialog("Fehler","Es kann nur ein Simulator gestartet werden");
+			    }
+			
+		    }
+		  else
+		      {
+			  OkDialog("Fehler","Zur Simulation muß ein Editor geöffnet sein");
+		      }
+		//  myWindow.OkDialog("FEHLER","Nicht compilierbar");
+		
+	    }
+    }
+
+void newStatechart()
+    {
+	setStatechart(new absyn.Statechart(SBDateiname),"./","UNBENANNT");
+	isDirty = false;
+	
     }
 
     boolean checkSB(boolean forced)

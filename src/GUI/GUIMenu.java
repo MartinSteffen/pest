@@ -65,7 +65,7 @@ public GUIMenu(pest myWindow)
   //addMenuItem(m,"Simulator",mle);
   //addMenuItem(m,"SyntaxCheck",mle);
   //addMenuItem(m,"Codegenerator",mle);
-  addMenuItem(m,"TESC1",mle);
+  //  addMenuItem(m,"TESC1",mle);
 
   addMenuItem(m,"TESC2",mle);
 
