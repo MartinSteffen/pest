@@ -44,13 +44,14 @@ import editor.*;
  * </DL COMPACT>
  *
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: ModelCheck.java,v 1.29 1999-01-25 16:43:53 swtech11 Exp $
+ * @version  $Id: ModelCheck.java,v 1.30 1999-01-25 23:21:41 swtech11 Exp $
  */
 public class ModelCheck {
   private ModelCheckMsg mcm; // Object, um die Fehler und Warnungen zu speichern
   private boolean outputGUI; // Meldungen auf die GUI ausgeben
   private GUIInterface gui = null; // Referenz auf die GUI
   private Editor edit = null;
+  private CheckConfig cf = null;
 
 /**
  * Der Constructor des Syntax Checkers.
@@ -79,17 +80,16 @@ public class ModelCheck {
  * Der Constructor des Syntax Checkers.
  * @param _gui Referenz auf die GUI
  * @param _edit Referenz auf den Editor
- * 
+ * @param _cf Referenz auf das Konfigurationsobjekt des Syntax Checks
  */
   public ModelCheck(GUIInterface _gui, Editor _edit, CheckConfig _cf) {
     mcm = new ModelCheckMsg();
     gui = _gui;
     outputGUI = true;
     edit = _edit;
+    cf = _cf;
 
   }
-
-
 
 /**
  * Führt den gesamten Syntax Check durch.
@@ -106,28 +106,17 @@ public class ModelCheck {
 
     Dialog V;
     Panel pan;
-    Label l1,l2,l3;
+    Label l2;
 
     boolean BrowserOut = true; // hier später Config
-
-    boolean Zeitnahme = true;
-    long s0=0; long e0=0; long s1=0; long e1=0; long s2=0; long e2=0;
-    long s3=0; long e3=0; long s4=0; long e4=0; long s5=0; long e5=0;
-
-
 
     // Fortschrittsanzeige
     V = new Dialog((pest)gui,"Fortschrittanzeige");
     pan = new Panel(new GridLayout(1,1));
-    l1 = new Label("");
-    //pan.add(l1);
     l2 = new Label("");
     l2.setAlignment(Label.CENTER);
     pan.add(l2);
-    l3 = new Label("");
-    //pan.add(l3);
     V.add(pan);
-
     Point p = ((pest)gui).getLocation();
     V.setLocation(p.x + 30 , p.y + 30);
     V.pack();
@@ -137,34 +126,27 @@ public class ModelCheck {
 	  V.setResizable(false);
   	V.setVisible(true);
 
-    // Test auf Kreisfreiheit und doppelte Referenzierung
-    s0 = getTimeC();
-    s1 = getTimeC();
-    // TestPI tpi = new TestPI(sc, mcm);
+    // Test auf Kreisfreiheit und doppelte Referenzierung, rerauskommentiert dank Garantie
+    // TestPI tpi = new TestPI(sc, mcm);             der anderen
     // NoFatalError=tpi.check();
-    NoFatalError=true;
-    e1 = getTimeC();
+    //NoFatalError=true;
+    //if ( NoFatalError == false ) {
+    //  if ( outputGUI == true ) {
+    //    int j = gui.OkDialog("Fataler Fehler","Der Fehler führt zum Abbruch des Syntax Checks !"); } }
+    //else
 
-    if ( NoFatalError == false ) {
-      if ( outputGUI == true ) {
-        int j = gui.OkDialog("Fataler Fehler","Der Fehler führt zum Abbruch des Syntax Checks !");
-      }
-    }
-    else {
+    {
       // Checkt die States.
       l2.setText("Check: States");
       if (sc.state == null) {
         mcm.addError(311,"uebergebene Statechart");
         if ( outputGUI == true ) {
-          gui.userMessage("Check: Der Check für die Überprüfung der States wurde nicht ausgeführt.");
-        }
+          gui.userMessage("Check: Der Check für die Überprüfung der States wurde nicht ausgeführt."); }
       }
       else {
         if (sc.cnames == null) { mcm.addError(310,"uebergebene Statechart"); }
-        s2 = getTimeC();
         TestStates ts = new TestStates(sc, mcm);
         NoStateError = ts.check();
-        e2 = getTimeC();
         if ( outputGUI == true & NoStateError == true) { gui.userMessage("Check: Keine Fehler während der Überprüfung der States gefunden."); }
       }
       // Checkt die Transitionen.
@@ -172,86 +154,45 @@ public class ModelCheck {
       if (sc.state == null) {
         mcm.addError(420,"uebergebene Statechart");
         if ( outputGUI == true ) {
-          gui.userMessage("Check: Der Check für die Überprüfung der Transitionen wurde nicht ausgeführt.");
-        }
+          gui.userMessage("Check: Der Check für die Überprüfung der Transitionen wurde nicht ausgeführt."); }
       }
       else {
-        s3 = getTimeC();
         TestTransitions tt = new TestTransitions(sc,mcm);
         NoTransError = tt.check();
-        e3 = getTimeC();
-        if ( outputGUI == true & NoTransError == true ) {
-          gui.userMessage("Check: Keine Fehler während der Überprüfung der Transitions gefunden.");
-        }
+        if ( outputGUI == true & NoTransError == true ) { gui.userMessage("Check: Keine Fehler während der Überprüfung der Transitions gefunden."); }
       }
       // Checkt die Events.
       l2.setText("Check: Events");
       if (sc.events == null) { mcm.addWarning(210,"uebergebene Statechart"); }
-      s4 = getTimeC();
       TestEvents te = new TestEvents(sc, mcm);
       NoEventError = te.check();
-      e4 = getTimeC();
-      if ( outputGUI == true & NoEventError == true ) {
-        gui.userMessage("Check: Keine Fehler während der Überprüfung der Events gefunden.");
-      }
+      if ( outputGUI == true & NoEventError == true ) { gui.userMessage("Check: Keine Fehler während der Überprüfung der Events gefunden."); }
       // Checkt die booleschen Variablen.
       l2.setText("Check: boolesche Variablen");
       if (sc.bvars == null) { mcm.addWarning(110,"uebergebene Statechart"); }
-      s5 = getTimeC();
       TestBVars tb = new TestBVars(sc, mcm);
       NoBooleanError = tb.check();
-      e5 = getTimeC();
       if ( outputGUI == true & NoBooleanError == true) {
         gui.userMessage("Check: Keine Fehler während der Überprüfung der Booleschen Variablen gefunden.");
       }
       // Gesamtergebnis erstellen
       result = ( NoEventError & NoBooleanError & NoTransError & NoStateError );
     }
-    e0 = getTimeC();
-
-    if ( Zeitnahme == true ) { // Dauer ausgeben
-      System.out.println("");
-      System.out.println("Dauer in Sekunden fuer Check auf:");
-      System.out.println("- fatale Fehler: " + getTimeDif(s1,e1));
-      if ( NoFatalError == true ) {
-        System.out.println("- States       : " + getTimeDif(s2,e2));
-        System.out.println("- Transitionen : " + getTimeDif(s3,e3));
-        System.out.println("- Events       : " + getTimeDif(s4,e4));
-        System.out.println("- BVars        : " + getTimeDif(s5,e5));
-      }
-      System.out.println("=================================");
-      System.out.println("- alles        : " + getTimeDif(s0,e0));
-      System.out.println("");
-    }
 
     l2.setText("Check: Meldungen sortieren");
     mcm.sort(); // Meldungen sortieren
     V.dispose();
 
-    if (BrowserOut==true) {
-	    // CheckOption co = new CheckOption((pest)gui,new CheckConfig()); // zu Testzwecken
-      Browser b = new Browser((pest)gui,edit,mcm);
+    if ( outputGUI == true ) {
+      if (BrowserOut==true) { // Browser-Ausgabe
+	      // CheckOption co = new CheckOption((pest)gui,new CheckConfig()); // zu Testzwecken
+        Browser b = new Browser((pest)gui,edit,mcm);
+      }
+      else { outputToGUI(); } // Ausgabe an die GUI
     }
-    else if ( outputGUI == true ) { outputToGUI(); } // Ausgabe an die GUI
 
     return result;
   };
-
-
-  // Zeit auslesen
-  private long getTimeC() {
-    Date now = new Date();
-    return now.getTime();
-  }
-
-  // Dauer berechnen
-  private float getTimeDif(long s, long e) {
-    float f=0;
-    // System.out.println(s + " " + e);
-    if ( e != s ) { f = ((float)(e-s))/100; }      //  
-    return f;
-  }
-
 
 /**
  * Gibt alle Meldungen des Syntax Checkers in eine Datei aus.
@@ -468,3 +409,40 @@ public class ModelCheck {
   public String getWarningPath(int _number) { return mcm.getWarningPath(_number); }
 
 }
+
+
+/** hier folgenden die Methoden zur Zeitnahmen, die nicht mehr gebraucht werden
+
+    long s0=0; long e0=0; long s1=0; long e1=0; long s2=0; long e2=0;
+    long s3=0; long e3=0; long s4=0; long e4=0; long s5=0; long e5=0;
+
+    { // Dauer ausgeben
+      System.out.println("");
+      System.out.println("Dauer in Sekunden fuer Check auf:");
+      System.out.println("- fatale Fehler: " + getTimeDif(s1,e1));
+      if ( NoFatalError == true ) {
+        System.out.println("- States       : " + getTimeDif(s2,e2));
+        System.out.println("- Transitionen : " + getTimeDif(s3,e3));
+        System.out.println("- Events       : " + getTimeDif(s4,e4));
+        System.out.println("- BVars        : " + getTimeDif(s5,e5));
+      }
+      System.out.println("=================================");
+      System.out.println("- alles        : " + getTimeDif(s0,e0));
+      System.out.println("");
+    }
+
+  // Zeit auslesen
+  private long getTimeC() {
+    Date now = new Date();
+    return now.getTime();
+  }
+
+  // Dauer berechnen
+  private float getTimeDif(long s, long e) {
+    float f=0;
+    // System.out.println(s + " " + e);
+    if ( e != s ) { f = ((float)(e-s))/100; }      //  
+    return f;
+  }
+
+*/

@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestTransitions.java,v 1.16 1999-01-25 16:43:55 swtech11 Exp $
+ *  @version  $Id: TestTransitions.java,v 1.17 1999-01-25 23:21:43 swtech11 Exp $
  */
 class TestTransitions extends ModelCheckBasics {
   Vector newPLV = new Vector(); // Vector fuer die selbst angelegte PathList der States
@@ -28,6 +28,17 @@ class TestTransitions extends ModelCheckBasics {
     return ((msg.getErrorNumber()-m)==0);
   }
 
+  // übergebenen Statenamen in der Pfadliste der Statechart suchen und die Anzahl zurückgeben
+  int AnzStatenameInPathList(Vector pl, String s) {
+    int anz = 0;
+    String sn;
+    for (int i=0; (i<pl.size()) ; i++) {
+      sn  = (String)pl.elementAt(i);
+      if (sn.endsWith(s)){ anz++; }
+    }
+    return anz;
+  }
+
   // übergebenen Statenamen in der Pfadliste der Statechart suchen; TRUE wenn gefunden
   boolean StatenameInPathList(Vector pl, String s) {
     boolean in = false;
@@ -46,6 +57,23 @@ class TestTransitions extends ModelCheckBasics {
     if (_sl.head.name.name.equals(_s)) { in = true; }
     else if (_sl.tail != null) { in = NameInThisStateSubstates(_sl.tail, _s);}
     return in;
+  }
+
+  // Name in der übergebenen StateList finden
+  int AnzNameInThisStateSubstates(StateList _sl, String _s, int az) {
+    if (_sl.head.name.name.equals(_s)) { az++; }
+    if (_sl.tail != null) { az = AnzNameInThisStateSubstates(_sl.tail, _s, az);}
+    return az;
+  }
+
+  // State in der übergebenen StateList laut Statename finden
+  State StateFromStatenameInThisStateSubstates(StateList _sl, String _s) {
+    State st = null;
+    if (_sl.head.name.name.equals(_s)) {
+      st = _sl.head;
+    }
+    else if (_sl.tail != null) { st = StateFromStatenameInThisStateSubstates(_sl.tail, _s);}
+    return st;
   }
 
   // Name in der übergebenen ConnectorList finden
@@ -111,10 +139,25 @@ class TestTransitions extends ModelCheckBasics {
     else if (tl.head.target instanceof Statename) { // State ?
       mtr.z = 1;
       mtr.zz = 1;
-
-
-      v2 = !StatenameInPathList(newPLV, z2); // State -> nicht vorhanden ?
-      if (v2==false) { i2 = !NameInThisStateSubstates(((Or_State)_s).substates, z2); } // State -> Interleven ?
+      //v2 = !StatenameInPathList(newPLV, z2);
+      int aS = AnzStatenameInPathList(newPLV, z2); // State -> nicht vorhanden ?
+      if (aS == 0) { v2 = true; }
+      else { // State -> Interlevel ?
+        //i2 = !NameInThisStateSubstates(((Or_State)_s).substates, z2); }
+        int anz = AnzNameInThisStateSubstates(((Or_State)_s).substates, z2, 0);
+        // System.out.println(anz);
+        if (anz > 1) { // 2 uneindeutige States auf einem Level
+          i2 = false;
+          msg.addError(425,"Trans: "+z1+" -> "+z2+" in State: " + p,tl.head);
+        }
+        else if (anz == 1 & aS ==1) { i2 = false; } //  1 State am richtigen Ort => kein Interlevel
+        else if (anz == 0) { i2 = true; } //  1 oder mehr States nur am falschen Ort => Interlevel eindeutig
+        else if (anz == 1 & aS >1) { // 1 State richtig und 1 oder mehr States falsch => Interlevel ?
+          State st =  StateFromStatenameInThisStateSubstates(((Or_State)_s).substates, z2);
+          // System.out.println("Graphischer Test notwendig"+st);
+          i2 = !pruefe_coord_IT( st,tl.head);
+        }
+      }        
     }
     else if (tl.head.target instanceof Conname) { // Connector ?
       mtr.z = 2;
@@ -388,14 +431,15 @@ class TestTransitions extends ModelCheckBasics {
     }
   }
 
-    boolean pruefe_coord_IT(State s, Tr t) {
-    int n=t.points.length;
+  boolean pruefe_coord_IT(State s, Tr t) {
+    int n=t.points.length-1;  // :-)
     int xt=t.points[n].x;
     int yt=t.points[n].y;
     int xs=s.rect.x;
     int ys=s.rect.y;
     int hs=s.rect.height;
     int ws=s.rect.width;
+/*
 System.out.println();
 System.out.println("xt"+xt);
 System.out.println("yt"+yt);
@@ -404,7 +448,7 @@ System.out.println("ys"+ys);
 System.out.println("hs"+hs);
 System.out.println("ws"+ws);
 System.out.println();
-
+*/
 
     boolean b=false;
     if (umgebung(xs,xt) && yt>=ys && yt<=(ys+hs)) b=true;
@@ -413,15 +457,16 @@ System.out.println();
     if (umgebung(ys+hs,yt) && xt>=xs && xt<=(xs+ws)) b=true;
     return b;
 
-    }
+  }
 
-    boolean umgebung(int a, int s) {
+  boolean umgebung(int a, int s) {
     int e=2;
     boolean b=false;
     if (((int)Math.abs(a-s))<e) b=true;
-System.out.println(b);
+//System.out.println(b);
     return b;
   }
+
 }
 
 // Transitionen zur besseren Nutzung speichern

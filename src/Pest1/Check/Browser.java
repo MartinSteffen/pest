@@ -11,7 +11,7 @@ import java.util.*;
  * Browser
  *
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: Browser.java,v 1.8 1999-01-25 16:43:49 swtech11 Exp $
+ *  @version  $Id: Browser.java,v 1.9 1999-01-25 23:21:38 swtech11 Exp $
  */
 class Browser extends Dialog implements ActionListener {
   pest parent = null;
@@ -37,7 +37,9 @@ class Browser extends Dialog implements ActionListener {
     setLayout(new BorderLayout());
 
     // Liste für Messages anlegen
-    lst = new List(mcm.getErrorNumber()*2+mcm.getWarningNumber()*2+2);
+    int ml = mcm.getErrorNumber()*2+mcm.getWarningNumber()*2+2;
+    if (ml>30) { ml = 30; } 
+    lst = new List(ml);
     lst.setMultipleMode(true);
     // Fehler ausgeben
     lst.setFont(new Font("Serif",Font.BOLD,16));
