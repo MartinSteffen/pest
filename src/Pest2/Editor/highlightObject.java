@@ -23,7 +23,7 @@ public class highlightObject {
     {
          deleteObject(obj);
     }
-   
+
     public highlightObject(State obj,Color col)
     {
         if (obj instanceof Basic_State)
@@ -41,6 +41,7 @@ public class highlightObject {
     public highlightObject(Basic_State obj)
     {
         deleteObject(obj);
+        editor.repaint();
     }
   /**
    *highlighten von Basic_State mit Farbe col
@@ -60,6 +61,7 @@ public class highlightObject {
     public highlightObject(And_State obj)
     {
         deleteObject(obj);
+        editor.repaint();
     }
 
   /**
@@ -74,12 +76,13 @@ public class highlightObject {
     }
 
   /**
-   *fuer das unhighlighten von Or_State 
+   *fuer das unhighlighten von Or_State
    *
    */
     public highlightObject(Or_State obj)
     {
         deleteObject(obj);
+        editor.repaint();
     }
 
   /**
@@ -100,6 +103,7 @@ public class highlightObject {
     public highlightObject(Tr obj)
     {
         deleteObject(obj);
+        editor.repaint();
     }
 
   /**
@@ -120,6 +124,7 @@ public class highlightObject {
     public highlightObject(Connector obj)
     {
         deleteObject(obj);
+        editor.repaint();
     }
 
   /**
