@@ -4,7 +4,7 @@
  * Created: Mon Dec 07 16:43:30 1998
  * 
  * @author swtech14 : Eike Schulz & Martin Poerksen
- * @version $Id: GraphOptimizer.java,v 1.2 1998-12-10 17:10:14 swtech14 Exp $
+ * @version $Id: GraphOptimizer.java,v 1.3 1998-12-10 18:05:38 swtech14 Exp $
  */
 
 package TESC2;
@@ -17,7 +17,8 @@ public class GraphOptimizer {
 
 
   /**
-   * Stringkonstantenfeld fuer verschiedene Algorithmusarten 
+   * Stringkonstantenfeld zur Bezeichnung der verschiedenen
+   * Algorithmusarten.
    */
 
   public static final String[] LIST_OF_ALGORITHMS =
@@ -25,8 +26,8 @@ public class GraphOptimizer {
 
 
   // Ergebniswert fuer Graphplazierungsalgorithmus :
-  // 0         : Algorithmus korrekt gelaufen
-  // Zahl <> 0 : Fehlercode
+  // errorcode == 0 : Algorithmus korrekt gelaufen,
+  // errorcode != 0 : Fehler aufgetreten -> Fehlercode.
 
   private int errorcode;
 
@@ -46,7 +47,7 @@ public class GraphOptimizer {
 
 
   /**
-   * Konstruktor zur Erzeugung eines Algorithmusobjektes ()
+   * Default-Konstruktor zur Erzeugung eines Algorithmusobjektes.
    */
 
   public GraphOptimizer () {
@@ -57,11 +58,11 @@ public class GraphOptimizer {
 
 
   /**
-   * Konstruktor zur Erzeugung eines Algorithmusobjektes (mit Parametern).
+   * Konstruktor zur Erzeugung eines Algorithmusobjektes.
    *
    * Uebergabeobjekte:
-   * - Statechart-Objekt,
-   * - FontMetrics-Objekt.
+   *   Statechart-Objekt,
+   *   FontMetrics-Objekt.
    */
 
   public GraphOptimizer (Statechart sc, FontMetrics fm) {
@@ -72,7 +73,7 @@ public class GraphOptimizer {
 
 
   /**
-   * Start des Graphplazierungsalgorithmus ().
+   * Start des Graphplazierungsalgorithmus.
    */
 
   public Statechart start () throws AlgorithmException {
@@ -107,9 +108,9 @@ public class GraphOptimizer {
 
 
   /**
-   * Start des Graphplazierungsalgorithmus (int-Parameter).
+   * Start des Graphplazierungsalgorithmus.
    * Uebergabewert:
-   * - int-Wert fuer Algorithmus-Art
+   *   int-Wert fuer Algorithmus-Art.
    */
 
   public Statechart start (int alg) throws AlgorithmException {
