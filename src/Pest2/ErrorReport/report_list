@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	--------------
 //
-//	$Id: report_list,v 1.34 1999-02-06 17:28:22 swtech23 Exp $
+//	$Id: report_list,v 1.35 1999-02-07 11:52:53 swtech20 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -41,7 +41,7 @@ Probleme gibt es dann spaeter beim Export/Import mit TESC.
 #Subject:	Checker erkennt eingetragene Zustaende nicht
 #Status:	confirmed
 Description:
-Wenn man Import->TESC->tesc1/Test/simple.tesc und anschliežend
+Wenn man Import->TESC->tesc1/Test/simple.tesc und anschlieend
 den Syntax-Checker ausfuehrt, erhaelt man den Fehler:
 
 .A1Event(e2) nicht gefunden
@@ -86,14 +86,14 @@ gespeichert wurde.
 #Status: 	confirmed
 #Description: 
 
-Import->Statemate lädt swtech12/Examples/TV/tv.st.
+Import->Statemate ldt swtech12/Examples/TV/tv.st.
 Starte Editor.
 FEHLER:
 Transitionsbeschriftungen nicht sichtbar.
 //------------------------------------------------------------------------------
 #Number:	5
 #Autor:		Erich Mikk erm
-#Subject:	Chart nicht vollständig sichtbar
+#Subject:	Chart nicht vollstndig sichtbar
 #Status: 	reported 
 #Description: 
 
@@ -107,7 +107,7 @@ Fehler: Oberer Rand (etwa 1/5)der Chart ist nicht sichtbar.
 #Description: 
 
 Importiere File X.st aus SE-Systems.
-Exportiere es über Exprt->TESC.
+Exportiere es ber Exprt->TESC.
 
 X \in {vcr.st,tamagotc.st} dann kann das Exportierte File nicht mehr
 eingelesen werden, obwohl der Syntax check keine Fehler gemeldet hat und
@@ -130,15 +130,15 @@ Der Statename hat offensichtlich keinen Inhalt.
 
 Importiere SE-Systems/vcr.st 
 Mit dieser Chart gibt es Probleme, die man sieht, wenn man TESC benutzt.
-Zuerst Chart über TESC exportieren.
-Dann versuchen wieder über TESC zu importieren.
-Das geht jetzt nicht, weil TESC Keywords in Guards nicht zuläßt 
+Zuerst Chart ber TESC exportieren.
+Dann versuchen wieder ber TESC zu importieren.
+Das geht jetzt nicht, weil TESC Keywords in Guards nicht zult 
 (das wird auch richtig gemeldet).
 
-Der Fehler besteht darin, daß STM es zugelassen hat, eine "kranke" Chart zu importieren.
+Der Fehler besteht darin, da STM es zugelassen hat, eine "kranke" Chart zu importieren.
 
-Check muß auf Keywords nicht prüfen, weil wir es so vereinbart haben
-(stattdessen müssen es TESC und STM-Import).
+Check mu auf Keywords nicht prfen, weil wir es so vereinbart haben
+(stattdessen mssen es TESC und STM-Import).
 
 
 //------------------------------------------------------------------------------
@@ -179,7 +179,7 @@ java.lang.ClassCastException: absyn.And_State
 Importiere TV/tv.st.
 Starte Editor.
 Starte Simulation.
-Führe Schrittweise Simulation durch (ein Schritt reicht).
+Fhre Schrittweise Simulation durch (ein Schritt reicht).
 Im Editor wird nichts gehighlightet.
 //------------------------------------------------------------------------------
 
@@ -203,7 +203,7 @@ Default states nicht erkennbar.
 Lade Chart (egal wie).
 Starte Editor.
 Starte Simulation (Werkzeuge->Simulation)
-Starte noch eine Simulation (z.B. auf der Chart der gr. Benutzerführung).
+Starte noch eine Simulation (z.B. auf der Chart der gr. Benutzerfhrung).
 //------------------------------------------------------------------------------
 #Number:	12
 #Autor:		Erich Mikk
@@ -212,15 +212,15 @@ Starte noch eine Simulation (z.B. auf der Chart der gr. Benutzerführung).
 #Description:
 
 Man bereite sich eine Chart vor und speichere es (Datei->Speichern)
-Starte pest erneut und öffne diese Chart (Datei -> Oeffnen)
-Starte einen Editor (Chart der gr. Benutzerführung -> Editor)
-Öffne die gleiche Chart nochmal (Chart der gr. Benutzerführung -> Oeffnen)
+Starte pest erneut und ffne diese Chart (Datei -> Oeffnen)
+Starte einen Editor (Chart der gr. Benutzerfhrung -> Editor)
+ffne die gleiche Chart nochmal (Chart der gr. Benutzerfhrung -> Oeffnen)
 Jetzt sieht man 2 gleichzeitig laufende Editore!
-Man könnte mit der gleichen Methode noch mehr davon starten.
+Man knnte mit der gleichen Methode noch mehr davon starten.
 //------------------------------------------------------------------------------
 #Number:	13
 #Autor:		Erich Mikk
-#Subject:	Einstellungsmöglichkeiten nicht vorhanden
+#Subject:	Einstellungsmglichkeiten nicht vorhanden
 #Status:	processing
 #Description:
 
@@ -266,9 +266,9 @@ Workaround: Erst Default Connectoren entfernen, dann umbenennen.
 #Status:	reported (kein GUI-problem, siehe 2.mal #25 )
 #Description:
 
-Pest starten, neue Chart erzeugen, Editor starten und neuen Zustand hinzufügen.
+Pest starten, neue Chart erzeugen, Editor starten und neuen Zustand hinzufgen.
 Jetzt neue Chart (aus GUI) erzeugen -> GUI meckert nicht!!!
-Editor warnt aber, wenn man im Editor "Datei-Neu" wählt.
+Editor warnt aber, wenn man im Editor "Datei-Neu" whlt.
 
 Aus diesem Grund ist auch SyntaxCheck nur einmal (aus graf. Menu) aufrufbar.
 //------------------------------------------------------------------------------
@@ -287,7 +287,7 @@ Or States zu Default States !?!
 #Status:	reported
 #Description:
 
-Löscht man die Default-Connectoren in einem Or State und versucht mehr
+Lscht man die Default-Connectoren in einem Or State und versucht mehr
 als einen State zum Default zu machen, gibt es eine Exception:
   
   java.lang.NullPointerException: 
@@ -305,7 +305,7 @@ als einen State zum Default zu machen, gibt es eine Exception:
 //------------------------------------------------------------------------------
 #Number:	20
 #Autor:		Bernd Weber bwe
-#Subject:	Editor: Default Connectoren von Or States nicht zu löschen
+#Subject:	Editor: Default Connectoren von Or States nicht zu lschen
 #Status:	reported
 #Description:
 
@@ -329,9 +329,9 @@ Default States vorhanden sind.
 #Status:	reported
 #Description:
 
-Erstellt man eine Chart mit Transitionbeschriftungen und wählt einen
+Erstellt man eine Chart mit Transitionbeschriftungen und whlt einen
 neuen Zoomfaktor, werden die Labels an anderer Stelle nochmal
-plaziert, wenn man sich ihnen mit dem Mauszeiger nähert.
+plaziert, wenn man sich ihnen mit dem Mauszeiger nhert.
 //------------------------------------------------------------------------------
 #Number:	23
 #Autor:		Bernd Weber bwe
@@ -350,7 +350,7 @@ Das war's. Mehr passiert nicht.
 #Status:	processing
 #Description:
 
-Or State mit mehreren Default Connectoren bzw. gar keinen wird nicht bemängelt.
+Or State mit mehreren Default Connectoren bzw. gar keinen wird nicht bemngelt.
 //------------------------------------------------------------------------------
 #Number:	25
 #Autor:		Bernd Weber bwe
@@ -361,7 +361,7 @@ Or State mit mehreren Default Connectoren bzw. gar keinen wird nicht bemängelt.
 Erzeuge einen Or-State mit zwei Zustanden und einen Basic-State neben dem
 Or-State. Zeichne eine Transition vom Or-State zum Basic-State. Versucht man
 nun, den Or-State zwischen den zwei Basic-States in einen And-State zu teilen,
-gibt's eine Exception (und unzählige folgen):
+gibt's eine Exception (und unzhlige folgen):
 
 Exception occurred during event dispatching:
 java.lang.NullPointerException: 
@@ -395,10 +395,10 @@ Or-State gibt's beim Syntaxcheck keine Fehler.
 #Status:	reported
 #Description:
 
-Erzeugt man eine Chart und wählt im Datei-Menu "Neu" wirkt sich dies nur auf den
-Editor aus. Hier beginnt man eine neue Chart, während der PrettyPrinter noch die
-alte Chart anzeigt. Änderungen im Editor haben keine Wirkung, da GUI die Chart
-an weitere Methoden wie Check, Export, Speichern usw. übergibt.
+Erzeugt man eine Chart und whlt im Datei-Menu "Neu" wirkt sich dies nur auf den
+Editor aus. Hier beginnt man eine neue Chart, whrend der PrettyPrinter noch die
+alte Chart anzeigt. nderungen im Editor haben keine Wirkung, da GUI die Chart
+an weitere Methoden wie Check, Export, Speichern usw. bergibt.
 //------------------------------------------------------------------------------
 #Number:	25
 #Autor:		Bernd Weber bwe
@@ -406,10 +406,10 @@ an weitere Methoden wie Check, Export, Speichern usw. übergibt.
 #Status:	reported
 #Description:
 
-Erzeugt man eine Chart und wählt im Datei-Menu "Neu" wirkt sich dies nur auf den
-Editor aus. Hier beginnt man eine neue Chart, während der PrettyPrinter noch die
-alte Chart anzeigt. Änderungen im Editor haben keine Wirkung, da GUI die Chart
-an weitere Methoden wie Check, Export, Speichern usw. übergibt.
+Erzeugt man eine Chart und whlt im Datei-Menu "Neu" wirkt sich dies nur auf den
+Editor aus. Hier beginnt man eine neue Chart, whrend der PrettyPrinter noch die
+alte Chart anzeigt. nderungen im Editor haben keine Wirkung, da GUI die Chart
+an weitere Methoden wie Check, Export, Speichern usw. bergibt.
 //------------------------------------------------------------------------------
 #Number:	26
 #Autor:		Bernd Weber bwe
@@ -439,42 +439,42 @@ Basic-State einen weiteren Zustand. Dann gibt's eine Exception:
 //------------------------------------------------------------------------------
 #Number:	27
 #Autor:		Bernd Weber bwe
-#Subject:	Editor: Rückgängig löscht alle Zustände
+#Subject:	Editor: Rckgngig lscht alle Zustnde
 #Status:	reported
 #Description:
 
-Man erzeuge eine Chart und darin drei Basic-States nebeneinander. Nun wählt man
-Rückgängig:Zustand hinzufügen, und alle States sind wieder weg (sagt auch
+Man erzeuge eine Chart und darin drei Basic-States nebeneinander. Nun whlt man
+Rckgngig:Zustand hinzufgen, und alle States sind wieder weg (sagt auch
 PrettyPrinter).
 //------------------------------------------------------------------------------
 #Number:	28
 #Autor:		Bernd Weber bwe
-#Subject:	Editor: Rückgängig löscht alle Transitionen
+#Subject:	Editor: Rckgngig lscht alle Transitionen
 #Status:	reported
 #Description:
 
 Man erzeuge eine Chart und darin drei Basic-States nebeneinander. Nun zeichnet
-man mehrere Transitionen und wählt Rückgängig:Transition hinzufügen, und alle
+man mehrere Transitionen und whlt Rckgngig:Transition hinzufgen, und alle
 Transitionen sind wieder weg (sagt auch PrettyPrinter).
 //------------------------------------------------------------------------------
 #Number:	29
 #Autor:		Bernd Weber bwe
-#Subject:	Editor: Rückgängig löscht alle Elemente eines Typs
+#Subject:	Editor: Rckgngig lscht alle Elemente eines Typs
 #Status:	reported
 #Description:
 
-Anscheinend löscht Rückgängig wie in Nr. 27 und 28 immer alle Elemente eines
+Anscheinend lscht Rckgngig wie in Nr. 27 und 28 immer alle Elemente eines
 Typs, die zuletzt in einem Rutsch erstellt wurden.
 //------------------------------------------------------------------------------
 #Number:	30
 #Autor:		Bernd Weber bwe
-#Subject:	Editor: Nach Transition können Zustände nicht mehr erzeugt werden
+#Subject:	Editor: Nach Transition knnen Zustnde nicht mehr erzeugt werden
 #Status:	reported
 #Description:
 
 Wie Nr. 26, nur mit einfacherem Beispiel:
 Erzeuge neue Chart mit einem Basic State, erstelle Transition von diesem Zustand
-zu sich selbst (selbstverständlich erlaubt!) und versuche, einen neuen Zustand
+zu sich selbst (selbstverstndlich erlaubt!) und versuche, einen neuen Zustand
 zu erzeugen. Das ergibt eine Exception:
   java.lang.NullPointerException: 
         at editor.EditorUtils.abs(EditorUtils.java:774)
@@ -498,8 +498,8 @@ zu erzeugen. Das ergibt eine Exception:
 #Description:
 
 Erstellt man einen Connector und darin eine Transition von diesem zu sich
-zurück, meldet Check keine Fehler.
-Genauso verhält es sich, wenn man Connectoren ohne ausgehende bzw. eingehende
+zurck, meldet Check keine Fehler.
+Genauso verhlt es sich, wenn man Connectoren ohne ausgehende bzw. eingehende
 Transitionen hat: keine Warnung, kein Fehler.
 //------------------------------------------------------------------------------
 #Number:	32
@@ -511,8 +511,8 @@ Transitionen hat: keine Warnung, kein Fehler.
 Erstellt man mehrere Connectoren in einem State, haben diese alle den gleichen
 Namen.
 Erzeugt man eine Chart mit mehreren Basic States und Connectoren und ein paar
-Transitionen zwischen States und Connectoren, schlägt nach einem Tesc-Export der
-Import fehl (mit der spärlichen Meldung: FEHLER).
+Transitionen zwischen States und Connectoren, schlgt nach einem Tesc-Export der
+Import fehl (mit der sprlichen Meldung: FEHLER).
 //------------------------------------------------------------------------------
 #Number:	33
 #Autor:		Bernd Weber bwe
@@ -522,9 +522,9 @@ Import fehl (mit der spärlichen Meldung: FEHLER).
 
 Man erzeuge drei Basic-States und einen Connector. Nun generiert man eine
 Transition von einem der States zum Connector. Es folgen zwei Transitionen vom
-Connector zu den zwei anderen Zuständen. Jetzt startet man die Simulation und
+Connector zu den zwei anderen Zustnden. Jetzt startet man die Simulation und
 macht zwei Schritte. 
-Die Simulation terminiert nun nicht mehr, sondern bläht sich im Speicher auf und
+Die Simulation terminiert nun nicht mehr, sondern blht sich im Speicher auf und
 frisst Speicher weg (bis mangels Swap-Space mein Linux-rechner
 stehenbleibt :-( ). 
 Sicherung dagegen: Mit ulimit maximalen Speicherverbrauch festlegen, dann wird
@@ -532,13 +532,13 @@ PEST irgendwann gekillt AFAIK.
 //------------------------------------------------------------------------------
 #Number:	34
 #Autor:		Bernd Weber bwe
-#Subject:	Simulation: Transition bei Nicht-Determinismus nicht wählbar
+#Subject:	Simulation: Transition bei Nicht-Determinismus nicht whlbar
 #Status:	reported
 #Description:
 
 Tritt in der Simulation ein Nicht-Determinismus auf, erscheint ein Fenster, in
-dem man die Transition(en) auswählen können soll. Mir ist dies nicht möglich
-(Fenster zu klein, Funktionalität nicht klar, Docu nicht vorhanden.)
+dem man die Transition(en) auswhlen knnen soll. Mir ist dies nicht mglich
+(Fenster zu klein, Funktionalitt nicht klar, Docu nicht vorhanden.)
 //------------------------------------------------------------------------------
 #Number:	35
 #Autor:		Bernd Weber bwe
@@ -568,7 +568,7 @@ Schritten in der Simulation gibt's eine Exception:
 #Number:	36
 #Autor:		Bernd Weber bwe
 #Subject:	Tesc: Fehlender Default State wird nicht erkannt
-#Status:	reported
+#Status:	fixed
 #Description:
 
 Importiere ~swtech12/Examples/misc/faulty1.tesc2. Ergibt keine Fehler, obwohl
@@ -577,7 +577,7 @@ kein Default State markiert ist. Syntaxcheck meldet keine Fehler.
 #Number:	37
 #Autor:		Bernd Weber bwe
 #Subject:	Tesc: Zu viele Default States werden nicht erkannt
-#Status:	reported
+#Status:	fixed
 #Description:
 
 Importiere ~swtech12/Examples/misc/faulty2.tesc2. Ergibt keine Fehler, obwohl
@@ -599,8 +599,8 @@ root als sein eigener default markiert ist. Syntaxcheck meldet keine Fehler.
 #Description:
 
 Importiere ~swtech12/Examples/misc/bvar-test1.tesc2. Chart wird im Editor
-richtig angezeigt und enthält AFAIK keine Fehler. Der Syntaxcheck terminiert
-jedoch nicht und verbrät die gesamte Rechenzeit :-( .
+richtig angezeigt und enthlt AFAIK keine Fehler. Der Syntaxcheck terminiert
+jedoch nicht und verbrt die gesamte Rechenzeit :-( .
 //------------------------------------------------------------------------------
 #Number:	40
 #Autor:		Erich Mikk
@@ -622,5 +622,5 @@ nicht exportieren kann).
 
 Man importiere ~swtech12/Examples/misc/nondet-test1.tesc2. Dann
 versuche man, den Zustand Init umzubenennen. Bei mir erscheint immer
-das Menu für den Zustand Nondet.
+das Menu fr den Zustand Nondet.
 //------------------------------------------------------------------------------
