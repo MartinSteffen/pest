@@ -1,47 +1,47 @@
-/**
- * GraphOptimizer.java
- *
- *
- * Created: Fri Nov 27 11:26:25 1998
- *
- * @author Software Technologie 19
- * @version
- *
- * Der GraphOptimizer stellt Algorithmen zur Verfuegung, die das Layout
- * eines Statecharts uebernehmen. Die Variable LIST_OF_ALGORITHMS 
- * beinhaltet die Namen der implementierten Algorithmen. Ueber die
- * Groesse dieses Arrays ermittelt man die Anzahl der verwendbaren
- * Algorithmen. Ueber die Methode start wird der Layoutprozess
- * gestartet. Dabei wird eine Kopie des uebergebenen Statecharts
- * erzeugt.
- *
- * Erklaerung der Algorithmen: 
- *  Das Layout erfolgt rekursiv ueber den Aufbau der abstrakten Syntax.
- *  Die Groesse von Basic-States wird entsprechend ihres Namens 
- *  durchgefuehrt. Bei AND-States wird zuerst das Layout der
- *  Unterzustaende bestimmt und diese dann so angeordnet, dass
- *  der Raum moeglichst optimal ausgenutzt wird. Bei OR-States wird
- *  das Layout der Unterzustaende bestimmt und diese dann nach
- *  einem bestimmten Verfahren im Zustand angeordnet. Diese Verfahren
- *  unterscheiden sich fuer die verschiedenen Algorithmen, der Rest ist
- *  gleich. 
- *  
- *  SugiyamaBCM: Die Knoten (Unterzustaende) werden so in Ebenen
- *   angeordnet, dass in einer Ebene keine Transitionen verlaufen.
- *   Transitionen verlaufen nur von einer Ebene zur naechsten, wobei
- *   fuer Transitionen, die eigentlich ueber mehrere Ebenen verlaufen,
- *   Dummy-Knoten in den Zwischenebenen eingefuegt werden. Dann werden
- *   die Knoten in den Ebenen so permutiert, dass moeglichst wenige
- *   Kantenueberschneidungen vorkommen (heuristisch). Ausgehend von
- *   dieser Darstellung, die die Groesse der Unterzustaende nicht
- *   beruecksichtigt, werden die Unterzustaende dann endgueltig plaziert.
- *   
- */
-
 package TESC2;
 
 import java.awt.FontMetrics;
 import Absyn.*;
+
+/**
+ *
+ * <br>Der GraphOptimizer stellt Algorithmen zur Verfuegung, die das Layout
+ * eines Statecharts &uuml;bernehmen. Die Variable LIST_OF_ALGORITHMS 
+ * beinhaltet die Namen der implementierten Algorithmen. &Uuml;ber die
+ * Gr&ouml;&szlig;e dieses Arrays ermittelt man die Anzahl der verwendbaren
+ * Algorithmen. &Uuml;ber die Methode start wird der Layoutproze&szlig;
+ * gestartet. Dabei wird eine Kopie des &uuml;bergebenen Statecharts
+ * erzeugt.
+ *
+ * <p>Erkl&auml;rung der Algorithmen: 
+ *  <br>Das Layout erfolgt rekursiv &uuml;ber den Aufbau der abstrakten Syntax.
+ *  Die Gr&ouml;&szlig;e von Basic-States wird entsprechend ihres Namens 
+ *  durchgef&uuml;hrt. Bei AND-States wird zuerst das Layout der
+ *  Unterzust&auml;nde bestimmt und diese dann so angeordnet, da&szlig;
+ *  der Raum m&ouml;glichst optimal ausgenutzt wird. Bei OR-States wird
+ *  das Layout der Unterzust&auml;nde bestimmt und diese dann nach
+ *  einem bestimmten Verfahren im Zustand angeordnet. Diese Verfahren
+ *  unterscheiden sich f&uuml;r die verschiedenen Algorithmen, der Rest ist
+ *  gleich. 
+ *  
+ *  <p>SugiyamaBCM: Die Knoten (Unterzust&auml;nde) werden so in Ebenen
+ *   angeordnet, da&szlig; in einer Ebene keine Transitionen verlaufen.
+ *   Transitionen verlaufen nur von einer Ebene zur n&auml;chsten, wobei
+ *   f&uuml;r Transitionen, die eigentlich &uuml;ber mehrere Ebenen verlaufen,
+ *   Dummy-Knoten in den Zwischenebenen eingef&uuml;gt werden. Dann werden
+ *   die Knoten in den Ebenen so permutiert, da&szlig; m&ouml;glichst wenige
+ *   Kanten&uuml;berschneidungen vorkommen (heuristisch). Ausgehend von
+ *   dieser Darstellung, die die Gr&ouml;&szlig;e der Unterzust&auml;nde nicht
+ *   ber&uuml;cksichtigt, werden die Unterzust&auml;nde dann endg&uuml;ltig 
+ *   plaziert.
+ *  <p>Weitere Algorithmen (einer) in Planung.<p>
+ *
+ * Created: Fri Nov 27 11:26:25 1998
+ *
+ * @author Software Technologie 19, Klaus H&ouml;ppner, Achim Abeling
+ * @version $Id: GraphOptimizer.java,v 1.4 1998-12-14 14:36:10 swtech19 Exp $
+ *
+ */
 
 public class GraphOptimizer {
     
@@ -50,9 +50,9 @@ public class GraphOptimizer {
     int algorithm;
 
     /**
-     * Die Eintraege des Arrays sind Namen fuer die verwendbaren
-     * Algorithmen. Die Anzahl der Algorithmen erhaelt man ueber die
-     * Laenge des Array.
+     * Die Eintr&auml;ge des Arrays sind Namen f&uuml;r die verwendbaren
+     * Algorithmen. Die Anzahl der Algorithmen erh&auml;lt man &uuml;ber die
+     * L&auml;nge des Array.
      */
 
     public static final String[] LIST_OF_ALGORITHMS = {
@@ -70,7 +70,7 @@ public class GraphOptimizer {
     }
     
     /**
-     * Erzeugt Optimierer fuer Statechart _sc mit FontMetrics _fm
+     * Erzeugt Optimierer f&uuml;r Statechart _sc mit FontMetrics _fm
      */
     public GraphOptimizer(Statechart _sc,FontMetrics _fm) {
 	sc = _sc;
@@ -80,6 +80,8 @@ public class GraphOptimizer {
 	
     /**
      * Optimiert das aktuelle Statechart mit Algorithmus _algorithm
+     * @exception AlgorithmException Falls ein Fehler auftreten sollte
+     * (was wissen wir auch noch nicht)
      */
     public Statechart start(int _algorithm) throws AlgorithmException {
 	algorithm = _algorithm;
@@ -88,6 +90,8 @@ public class GraphOptimizer {
 	
     /**
      * Optimiert aktuelles Statechart mit aktuellem Algorithmus
+     * @exception AlgorithmException Falls ein Fehler auftreten sollte
+     * (was wissen wir auch noch nicht)
      */
     public Statechart start() throws AlgorithmException {
 	// return sc.clone();
