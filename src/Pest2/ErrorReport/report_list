@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	---------------------
 //
-//	$Id: report_list,v 1.4 1999-01-18 08:53:59 swtech00 Exp $
+//	$Id: report_list,v 1.5 1999-01-18 16:14:39 swtech18 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -22,7 +22,7 @@
 #Number: 	1
 #Autor:   	Michael Suelzer swtech20
 #Subject:	Statemate generiert Bvar mit Leerstring
-#Status: 	reported 
+#Status: 	fixed 
 #Description: 
 Wenn man das Beispiel s1.st per Import->STATEMATE->stm/Test/a1.st importiert,
 erhaelt man eine Bvar mit leerem Bezeichner. Pretty-Printer:
