@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.51 1999-02-02 13:23:08 swtech24 Exp $
+//	$Id: report_list,v 1.52 1999-02-03 08:48:29 swtech01 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -496,7 +496,7 @@ ist nicht besonders informativ.
 #Number:	34
 #Autor:		Bernd Weber bwe
 #Subject:	Editor erzeugt unbehandelte Exception:
-#Status: 	fixed
+#Status: 	confirmed
 #Description: 
 
 Versucht man, ausserhalb aller gezeichneten Zustaende einen AND-State
@@ -553,7 +553,7 @@ erzeugten Java-Code.
 #Number:	37
 #Autor:		Bernd Weber bwe
 #Subject:	Check-Meldungen inkonsistent
-#Status: 	fixed
+#Status: 	confirmed
 #Description: 
 
 Beim Check einer leeren Chart, werden 2 Fehler gemeldet:
@@ -566,11 +566,13 @@ muessen keine Tr. vorkommen, also ist dies KEIN Fehler.
 #Number:	38
 #Autor:		Bernd Weber bwe
 #Subject:	TESC-Import nicht mit default-Namen moeglich
-#Status: 	reported
+#Status: 	confirmed
 #Description: 
 
 Exportiere Chart mit TESC-Export, die Default-Namen
 (z.B. ...DefaultState1) enthaelt. Der Import schlaegt dann fehl.
+
+Von reported auf confirmed gesetzt, da der Fehler nicht reproduzierbar ist.
 //------------------------------------------------------------------------------
 #Number:        39
 #Autor:         stm swtech18
@@ -605,7 +607,7 @@ gespeichert wurde. Über normales Menu funktioniert's.
 #Number:        43
 #Autor:         Bernd Weber bwe
 #Subject:       Editor: Editor erzeugt selbst Koordinatenproblem
-#Status:        fixed
+#Status:        confirmed
 #Description:
 
 Zeichne Chart mit zwei Basic States, teile einen der beiden mittels
@@ -638,3 +640,69 @@ aktiv).
 4. An selbem Punkt Endpunkt mit Doppelklick setzen.
 5. Versuchen Transition mit Label Transition zu selektieren (viel
     Spass ;-) )
+//------------------------------------------------------------------------------
+#Number:        46
+#Autor:         Bernd Weber bwe
+#Subject:       Editor: Editor erzeugt falsche Transition
+#Status:        reported
+#Description:
+
+Man erstelle zwei Zustaende wie in Number 43. Zeichne eine Transition
+vom Basic State und lasse sie dicht neben der gestrichelten Linie
+enden. Die Transition "schnappt" dann genau auf Linie und der
+SyntaxCheck meldet eine Interlevel-Transition. Einer der Basic States
+im And State ist Target der Transition geworden.
+//------------------------------------------------------------------------------
+#Number:        47
+#Autor:         Bernd Weber bwe
+#Subject:       Editor: Verschieben, Undo, Restore erzeugt inkonsistenten Zustand
+#Status:        reported
+#Description:
+
+Mehrmals ist es mir gelungen, den Editor durch Benutzen der
+o.g. Funktionen (ohne Selektieren ausgewaehlt zu haben) in einen
+Zustand zu bringen, in dem es überhaupt nicht mehr möglich ist, neue
+Elemente zu zeichnen (allerdings nicht immer reproduzierbar).
+Es sollte nicht möglich sein, diese Funktionen aufzurufen, wenn nichts
+selektiert ist bzw. sie keinen Sinn ergeben (Undo nur nach Aenderung,
+Restore nur nach Undo).
+
+Einfaches Beispiel: Neue Chart erzeugen, dann Restore. Nun gibt's bei
+jedem State eine Exception (wird aber gezeichnet, evt. dafür noch
+einmal restore) und PrettyPrinter zeigt keine Veraenderungen mehr.
+
+//------------------------------------------------------------------------------
+#Number:        48
+#Autor:         Bernd Weber bwe
+#Subject:       Codegen: Keine Schritte erkennbar
+#Status:        reported
+#Description:
+
+1. Importiere TV.st mit STM-Import
+2. Erzeuge dann Code mit dem Codegenerator (erzeugt
+   Automaton.java,SymbolTable.Java).
+3. SimpleEnvironment.java aus codegen-Verzeichnis in gleiches
+   Verzeichnis wie Automaton.java kopieren.
+4. "javac Automaton.java, SymbolTable.java SimpleEnvironment"
+    ausführen.
+5. "java SimpleEnvironment" ausführen. Erzeugt folgende Ausgabe:
+
+(
+ (TV.TV_TV.WORKING )
+ ()
+ ()
+)(
+ ()
+ ()
+ ()
+)
+usw., also keine erkennbaren Zustandsaenderungen.
+//------------------------------------------------------------------------------
+#Number:        49
+#Autor:         Bernd Weber bwe
+#Subject:       Editor: Transitions-Labels werden verschoben
+#Status:        reported
+#Description:
+
+Erstelle zwei Zustaende mit beschrifteter Trasition. Erzeuge einen
+parent state aussenrum. Dabei werden die Labels nach unten verschoben.
