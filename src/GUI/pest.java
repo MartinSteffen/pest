@@ -433,14 +433,14 @@ void newStatechart()
 	    {
 		check.ModelCheck SCchecker;
 
-		if (PEditor == null)
-		    {
-			SCchecker = new check.ModelCheck(this);
-		    }
-		else
-		    {
+//		if (PEditor == null)
+//		    {
+//			SCchecker = new check.ModelCheck(this);
+//		    }
+//		else
+//		    {
 			SCchecker = new check.ModelCheck(this,PEditor,checkConfig);
-		    }
+//		    }
 		ResultSC = SCchecker.checkModel(SyntaxBaum);
 		CheckedSC = true;
 		theGUIMenu.updateMenu();
