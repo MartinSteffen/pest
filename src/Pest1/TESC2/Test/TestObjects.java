@@ -12,15 +12,19 @@ class TestObjects {
 
 
   static Statechart getStatechart1() {
+    Ref_State P7 = new Ref_State
+      (new Statename ("RS01"), "irgendein_dateiname", null);
 
     Or_State P5 = new Or_State
       (new Statename ("P5"),
+
        new StateList
        (new Basic_State (new Statename ("P6")), new StateList
-	(new Basic_State (new Statename ("P7")), null)),
+	(P7, null)),
+
        new TrList
-       (new Tr (new Statename ("P6"), new Statename ("P7"),
-		new TLabel (null, null, null, null, "Label von P6 nach P7")), null),
+       (new Tr (new Statename ("P6"), new Statename ("RS01"),
+		new TLabel (null, null, null, null, "Label von P6 nach RS01")), null),
        null,
        null);
 
@@ -340,11 +344,14 @@ class TestObjects {
        null,
        null);
 
-    And_State P13 = new And_State
+    Or_State P13 = new Or_State
       (new Statename ("P13"),
        new StateList
        (new Basic_State (new Statename ("P14")), new StateList
-	(new Basic_State (new Statename ("P15")), null)));
+	(new Basic_State (new Statename ("P15")), null)),
+       null,
+       null,
+       null);
 
     And_State P12 = new And_State
       (new Statename ("P12"),
