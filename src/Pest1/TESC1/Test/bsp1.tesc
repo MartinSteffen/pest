@@ -3,9 +3,6 @@
 # Falls ein Kommentar nicht am Anfang einer Zeile steht, muss er durch ein Space/Tab
 # vom Rest getrennt werden
 
-events: 	e1, e2;	
-bvars:		C;
-
 or S1: 
 	and S2:	
 		basic B1;
