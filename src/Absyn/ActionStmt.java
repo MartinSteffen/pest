@@ -6,7 +6,7 @@ import java.io.Serializable;
 /**
  * One kind of transition action: boolean statement.
  * @author Initially provided by Martin Steffen.
- * @version $Id: ActionStmt.java,v 1.7 1999-01-11 17:23:46 swtech00 Exp $
+ * @version $Id: ActionStmt.java,v 1.8 1999-02-09 10:12:09 swtech00 Exp $
  */
 public class ActionStmt extends Action implements Serializable, Cloneable {
 /**
@@ -27,7 +27,8 @@ public class ActionStmt extends Action implements Serializable, Cloneable {
  */
     public Object clone() throws CloneNotSupportedException {
       Location  locationclone  = (location == null) ? null : (Location)location.clone();
-      return new ActionStmt ((Boolstmt)stmt.clone(), locationclone);
+      Boolstmt stmtclone =  (stmt == null) ? null : (Boolstmt) stmt.clone();
+      return new ActionStmt (stmtclone, locationclone);
     };
 
 };
@@ -36,9 +37,19 @@ public class ActionStmt extends Action implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: ActionStmt.java,v 1.7 1999-01-11 17:23:46 swtech00 Exp $
+//	$Id: ActionStmt.java,v 1.8 1999-02-09 10:12:09 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.7  1999/01/11 17:23:46  swtech00
+//	Alle Bestandteile der abstrakten Syntax mit Locations (= nicht-abstrakte
+//	Unterklassen von Absyn) in der Form modifiziert, da"s das Locations-Feld
+//	mit-geklont wird. =>
+//
+//	     o	Jeweils neuer Kontruktor hinzugef"ugt
+//	     o  clone-Methode angepa"st
+//
+//	[Steffen]
+//
 //	Revision 1.6  1998/12/15 16:33:24  swtech00
 //	Towards new package names.
 //
