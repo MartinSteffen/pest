@@ -43,10 +43,6 @@ package simu;
  * </ul>
  */
 
-
-
-Diese Kommentare muessen javadoc-Konventionen genuegen, damit Sie auch
-
 import java.util.*;
 import java.io.*;
  
@@ -116,11 +112,6 @@ public Simu(Statechart Daten, GUIInterface igui) {
  * entsprechend true oder false zurueck
  */
 private boolean get_guard(Guard waechter) {
-	boolean goal = false;
-	
-	return goal;
-}
-private boolean get_guard( waechter) {
 	boolean goal = false;
 	
 	return goal;
