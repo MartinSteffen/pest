@@ -14,7 +14,7 @@ import java.util.*;
  * an interface to the original textual representations of
  * states, events and conditions.
  *
- * @version $Id: dumpTables.java,v 1.7 1999-01-21 12:29:20 swtech25 Exp $
+ * @version $Id: dumpTables.java,v 1.8 1999-01-21 13:45:40 swtech25 Exp $
  * @author Marcel Kyas
  */
 public class dumpTables
@@ -171,7 +171,7 @@ public class dumpTables
 	 * This method returns a string from an event
 	 * for representation as an integer.
 	 */
-	private static String generateSymEvent(SEvent e)
+	public static String generateSymEvent(SEvent e)
 	{
 		return "EVENT_" + e.name;
 	}
@@ -181,7 +181,7 @@ public class dumpTables
 	 * This method returns a string from an event
 	 * for representation as an integer.
 	 */
-	private static String generateSymBVar(Bvar b)
+	public static String generateSymBVar(Bvar b)
 	{
 		return "BVAR_" + b.var;
 	}
