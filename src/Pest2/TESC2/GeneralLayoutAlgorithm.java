@@ -18,8 +18,8 @@ abstract class GeneralLayoutAlgorithm implements LayoutAlgorithm {
     /**
      * Klassenkonstanten
      */
-    static final int WIDTH_BONUS = 15;
-    static final int HEIGHT_BONUS = 15;
+    static final int WIDTH_BONUS = 10;
+    static final int HEIGHT_BONUS = 10;
 
     /**
      * Instanzvariablen
@@ -104,166 +104,41 @@ abstract class GeneralLayoutAlgorithm implements LayoutAlgorithm {
 	    stateList = stateList.tail;
 	}
 
+	/* arrayOfSubstates ordnen nach Größe der substates */
+
+	for (int i=0;i<substateCount-1;i++) {
+	    for (int j=i+1;j<substateCount;j++) {
+		if ((arrayOfSubstates[i].rect.width*
+		     arrayOfSubstates[i].rect.height) <
+		    (arrayOfSubstates[i].rect.width*
+		     arrayOfSubstates[i].rect.height)) {
+		    State help = arrayOfSubstates[i];
+		    arrayOfSubstates[i] = arrayOfSubstates[j];
+		    arrayOfSubstates[j] = help;
+		}
+	    }
+	}
+	    
 	/* Substates so anordnen, daß ein Rechteck vollständig 
 	   ausgefüllt wird */
-	
-	/* Erzeugen der Plazierungsgraphen Gx und Gy */
-	PlacingGraphEdge[] edgesGx = new PlacingGraphEdge[substateCount];
-	PlacingGraphEdge[] edgesGy = new PlacingGraphEdge[substateCount];
-	edgesGx[0] = new PlacingGraphEdge(-1,-2,
-					  arrayOfSubstates[0].rect.width);
-	edgesGy[0] = new PlacingGraphEdge(-1,-2,
-					  arrayOfSubstates[0].rect.height);
-	int interVertexCountGx = 0;
-	int interVertexCountGy = 0;
-	int H = arrayOfSubstates[0].rect.height;
-	int W = arrayOfSubstates[0].rect.width;
 
-	for (int i=1;i<substateCount;i++) {
-	    
-	    if (H<=W) {
-		edgesGy[i] = 
-		    new PlacingGraphEdge(interVertexCountGy,-2,
-					 arrayOfSubstates[i].rect.height);
-		for (int j=0;j<i;j++) {
-		    if (edgesGy[j].getEnd()==-2) 
-			edgesGy[j].setEnd(interVertexCountGy);
-		}
-		interVertexCountGy++;
-		edgesGx[i] =
-		    new PlacingGraphEdge(-1,-2,
-					 arrayOfSubstates[i].rect.width);
-		H = H + arrayOfSubstates[i].rect.height;
-		W = Math.max(W,arrayOfSubstates[i].rect.width);
-	    } else {
-		edgesGx[i] = 
-		    new PlacingGraphEdge(interVertexCountGx,-2,
-					 arrayOfSubstates[i].rect.width);
-		for (int j=0;j<i;j++) {
-		    if (edgesGx[j].getEnd()==-2) 
-			edgesGx[j].setEnd(interVertexCountGx);
-		}
-		interVertexCountGx++;
-		edgesGy[i] =
-		    new PlacingGraphEdge(-1,-2,
-					 arrayOfSubstates[i].rect.height);
-		H = Math.max(H,arrayOfSubstates[i].rect.height);
-		W = W + arrayOfSubstates[i].rect.width;
-	    }
+	CRectangle[] rect = new CRectangle[substateCount];
+	for (int i=0;i<substateCount;i++) {
+	    rect[i] = arrayOfSubstates[i].rect;
 	}
 
-	/* Ausgabe der Plazierungsgraphen */
-	
-	/*
-	System.out.println("Ausgabe der Plazierungsgraphen für den And_State '"+s.name.name+"'");
-	System.out.println("Gx=");
-	for (int i=0;i<substateCount;i++)
-	    System.out.println(i+".: ("+edgesGx[i].getStart()+","+edgesGx[i].getEnd()+","+edgesGx[i].getLength()+")");
-	System.out.println("Gy=");
-	for (int i=0;i<substateCount;i++)
-	    System.out.println(i+".: ("+edgesGy[i].getStart()+","+edgesGy[i].getEnd()+","+edgesGy[i].getLength()+")");
-	*/
+	int[] widthHeightArray = placeRectangles(rect);
 
 	/**
-	 * An dieser Stelle können die Plazierungsgraphen optimiert werden
+	 * An dieser Stelle könnten auch noch die evtl. substates von
+	 * substate verändert werden, sodaß deren Elemente zentriert
+	 * im neuen Rechteck werden
 	 */
 
-	/* Berechnung der Koordinaten und Größen der Substates aus den
-	   Plazierungsgraphen */
-
-	int[] posOfVertexGx = new int[interVertexCountGx+2];
-	int[] posOfVertexGy = new int[interVertexCountGy+2];
-	posOfVertexGx[0] = 0; // entspricht der linkesten Kante in Gx
-	posOfVertexGy[0] = 0; // entspricht der linkesten Kante in Gy
-
-	for (int i=1;i<interVertexCountGx+1;i++) {
-	    posOfVertexGx[i] = 0;
-	    
-	    for (int j=0;j<substateCount;j++) {
-		if (edgesGx[j].getEnd()==i-1) {
-		    posOfVertexGx[i] = 
-			Math.max(posOfVertexGx[i],
-				 posOfVertexGx[edgesGx[j].getStart()+1]+
-				 edgesGx[j].getLength());
-		}
-		    
-	    }
-	}
-	int k = interVertexCountGx+1;
-	posOfVertexGx[k] = 0;	    
-	for (int j=0;j<substateCount;j++) {
-	    if (edgesGx[j].getEnd()==-2) {
-		posOfVertexGx[k] = 
-		    Math.max(posOfVertexGx[k],
-			     posOfVertexGx[edgesGx[j].getStart()+1]+
-			     edgesGx[j].getLength());
-	    }
-	    
-	}
-	for (int i=1;i<interVertexCountGy+1;i++) {
-	    posOfVertexGy[i] = 0;
-
-	    for (int j=0;j<substateCount;j++) {
-		if (edgesGy[j].getEnd()==i-1) {
-		    posOfVertexGy[i] = 
-			Math.max(posOfVertexGy[i],
-				 posOfVertexGy[edgesGy[j].getStart()+1]+
-				 edgesGy[j].getLength());
-		}
-	    }
-	}
-	k = interVertexCountGy+1;
-	posOfVertexGy[k] = 0;	    
-	for (int j=0;j<substateCount;j++) {
-	    if (edgesGy[j].getEnd()==-2) {
-		posOfVertexGy[k] = 
-		    Math.max(posOfVertexGy[k],
-			     posOfVertexGy[edgesGy[j].getStart()+1]+
-			     edgesGy[j].getLength());
-	    }
-	    
-	}
-		
-	stateList = s.substates;
-	substateCount = 0;
-	while (stateList != null) {
-	    substate = stateList.head;
-	    int startx = edgesGx[substateCount].getStart();
-	    int endx   = edgesGx[substateCount].getEnd();
-	    int starty = edgesGy[substateCount].getStart();
-	    int endy   = edgesGy[substateCount].getEnd();
-	    substateCount++;
-	    if (startx == -1) {
-		startx = posOfVertexGx[0];
-	    } else {
-		startx = posOfVertexGx[startx+1];
-	    }
-	    if (endx == -2) {
-		endx = posOfVertexGx[interVertexCountGx+1];
-	    } else {
-		endx = posOfVertexGx[endx+1];
-	    }
-	    if (starty == -1) {
-		starty = posOfVertexGy[0];
-	    } else {
-		starty = posOfVertexGy[starty+1];
-	    }
-	    if (endy == -2) {
-		endy = posOfVertexGy[interVertexCountGy+1];
-	    } else {
-		endy = posOfVertexGy[endy+1];
-	    }
-
-	    /**
-	     * An dieser Stelle könnten auch noch die evtl. substates von
-	     * substate verändert werden, sodaß deren Elemente zentriert
-	     * im neuen Rechteck werden
-	     */
-
-	    substate.rect.x = startx;
-	    substate.rect.y = starty;
-	    substate.rect.width = endx - startx;
-	    substate.rect.height = endy - starty;
+	for (int i=0;i<substateCount;i++) {
+	    substate = arrayOfSubstates[i];
+	    int startx = substate.rect.x;
+	    int starty = substate.rect.y;
 
 	    if (substate instanceof And_State)
 		resizeAnd_State((And_State) substate);
@@ -279,15 +154,7 @@ abstract class GeneralLayoutAlgorithm implements LayoutAlgorithm {
 		substate.name.position.x = startx+5;
 		substate.name.position.y = starty+10;
 	    }
-	    stateList = stateList.tail;
-
-	    /* $Testausgabe */
-	    //System.out.println("Position des States "+substate.name.name+":"+substate.rect);
-	    
 	}
-	
-	s.rect.width = posOfVertexGx[interVertexCountGx+1];
-	s.rect.height = posOfVertexGy[interVertexCountGy+1];
 
 	/* Hier wird die Position des Namens des state relativ zu seiner
 	   eigenen linken oberen Ecke angegeben. Später (beim Layout des
@@ -296,7 +163,10 @@ abstract class GeneralLayoutAlgorithm implements LayoutAlgorithm {
 	   state */
 
 	s.name.position = new CPoint(5,-5);
-	
+
+	s.rect.width = widthHeightArray[0];
+	s.rect.height = widthHeightArray[1];
+
 	/* x- und y-Wert werden beim Layout des Superstate gesetzt */
 
 	
@@ -392,27 +262,182 @@ abstract class GeneralLayoutAlgorithm implements LayoutAlgorithm {
 	sc.state.rect.x = 0;
 	sc.state.rect.y = 0;
     };
-
+  
     /**
-     * Es folgen Klassen, die für das Plazieren der Substates in einem
-     * And_State benötigt werden
+     * Plazierung von Rechtecken 
      */
+    int[] placeRectangles(CRectangle[] s) {
+	
+	CRectangle[] freeRect = new CRectangle[3*s.length];
+	int countFreeRect = 0;
 
-    private class PlacingGraphEdge {
-	private int start,end;
-	private int length;
+	int Width = s[0].width;
+	int Height = s[0].height;
+	
+	s[0].x = 0;
+	s[0].y = 0;
 
-	PlacingGraphEdge(int _s,int _e,int _l) {
-	    start = _s;
-	    end = _e;
-	    length = _l;
+	for (int i=1;i<s.length;i++) {
+	    	    
+	    /* suche kleinstes freies Rechteck, in das s[i] passt */
+	    int index = -1;
+	    int minArea = -1;
+	    for (int j=0;j<freeRect.length;j++) {
+		if (freeRect[j] != null) {
+		    if ((freeRect[j].width >= s[i].width)&&
+			(freeRect[j].height >= s[i].height)) {
+			if (minArea == -1) {
+			    index = j;
+			    minArea = freeRect[j].width*freeRect[j].height;
+			} else {
+			    if (freeRect[j].width*freeRect[j].height<
+				minArea) {
+				index = j;
+				minArea = freeRect[j].width*freeRect[j].height;
+			    }
+			}
+		    }
+		}
+	    }
+
+	    if (index == -1) {
+		/* füge Rechteck rechts oder unten ein */
+
+		
+		if (Width < Height) {
+		    /* rechts anfügen */
+		    
+		    s[i].x = Width;
+		    s[i].y = 0;
+		    if (Height > s[i].height) {
+			freeRect[countFreeRect] = 
+			    new CRectangle(s[i].x,s[i].height,
+					   s[i].width,Height-s[i].height);
+			countFreeRect++;
+		    } else if (Height < s[i].height) {
+			freeRect[countFreeRect] = 
+			    new CRectangle(0,Height,Width,s[i].height-Height);
+			countFreeRect++;
+		    }
+		    Width = Width + s[i].width;
+		    Height = Math.max(Height,s[i].height);
+		} else {
+		    /* unten anfügen */
+ 
+		    s[i].x = 0;
+		    s[i].y = Height;
+		    if (Width > s[i].width) {
+			freeRect[countFreeRect] = 
+			    new CRectangle(s[i].width,Height,
+					   Width-s[i].width,s[i].height);
+			countFreeRect++;
+		    } else if (Width < s[i].width) {
+			freeRect[countFreeRect] = 
+			    new CRectangle(Width,0,s[i].width-Width,Height);
+			countFreeRect++;
+		    }
+		    Width = Math.max(Width,s[i].width);
+		    Height = Height + s[i].height;
+		}
+	    } else {
+		/* gefundenes freies Rechteck füllen */
+		
+		CRectangle r = freeRect[index];
+		s[i].x = r.x;
+		s[i].y = r.y;
+		if (s[i].width < r.width) {
+		    freeRect[countFreeRect] = 
+			new CRectangle(r.x+s[i].width,r.y,
+				       r.width-s[i].width,r.height);
+		    countFreeRect++;
+		    r.width = s[i].width;
+		}
+
+		if (s[i].height < r.height) {
+		    freeRect[countFreeRect] = 
+			new CRectangle(r.x,r.y+s[i].height,
+				       r.width,r.height-s[i].height);
+		    countFreeRect++;
+		}
+		freeRect[index] = null; // Rechteck löschen
+	    }
 	}
-	void setStart(int _s) {start = _s;}
-	void setEnd(int _e) {end = _e;}
-	void setLength(int _l) {length = _l;}
-	int getStart() {return start;}
-	int getEnd() {return end;}
-	int getLength() {return length;}
-    }   
-    
+
+
+	
+	/* freie Rechtecke löschen durch Vergrößern der anderen Rechtecke */
+
+	/* zähle die freien Rechtecke */
+
+	countFreeRect = 0;
+	for (int i=0;i<freeRect.length;i++) 
+	    if (freeRect[i] != null) countFreeRect++;
+
+	/* lösche die freien Rechtecke */
+
+	while (countFreeRect > 0) {	    
+	    for (int i=0;i<freeRect.length;i++) 
+		if (freeRect[i] != null) {
+		    boolean notFound = true;
+		    for (int j=0;(j<s.length)&&notFound;j++) {
+			if ((freeRect[i].width>=s[j].width)&&
+			    (freeRect[i].x==s[j].x)&&
+			    (freeRect[i].y==s[j].y+s[j].height)) {
+			    s[j].height += freeRect[i].height;
+			    freeRect[i].x += s[j].width;
+			    freeRect[i].width -= s[j].width;
+			    if (freeRect[i].width == 0) {
+				freeRect[i] = null;
+				countFreeRect--;
+			    }
+			    notFound = false;
+			} else if ((freeRect[i].height>=s[j].height)&&
+				   (freeRect[i].x==s[j].x+s[j].width)&&
+				   (freeRect[i].y==s[j].y)) {
+			    s[j].width += freeRect[i].width;
+			    freeRect[i].y += s[j].height;
+			    freeRect[i].height -= s[j].height;
+			    if (freeRect[i].height == 0) {
+				freeRect[i] = null;
+				countFreeRect--;
+			    }
+			    notFound = false;
+			}
+		    }
+		    for (int j=0;(j<freeRect.length)&&notFound;j++) {
+			if (freeRect[j] != null) {
+			    if ((freeRect[i].width>=freeRect[j].width)&&
+				(freeRect[i].x==freeRect[j].x)&&
+				(freeRect[i].y==freeRect[j].y+
+				 freeRect[j].height)) {
+				freeRect[j].height += freeRect[i].height;
+				freeRect[i].x += freeRect[j].width;
+				freeRect[i].width -= freeRect[j].width;
+				if (freeRect[i].width == 0) {
+				    freeRect[i] = null;
+				    countFreeRect--;
+				}
+				notFound = false;
+			    } else if ((freeRect[i].height>=
+					freeRect[j].height)&&
+				       (freeRect[i].x==
+					freeRect[j].x+freeRect[j].width)&&
+				       (freeRect[i].y==freeRect[j].y)) {
+				freeRect[j].width += freeRect[i].width;
+				freeRect[i].y += freeRect[j].height;
+				freeRect[i].height -= freeRect[j].height;
+				if (freeRect[i].height == 0) {
+				    freeRect[i] = null;
+				    countFreeRect--;
+				}
+				notFound = false;
+			    }
+			}
+		    }
+		}
+	}
+	int[] res = {Width,Height};
+	return res;
+    }
+
 } // GeneralLayoutAlgorithm
