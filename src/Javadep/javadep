@@ -95,6 +95,20 @@ add_prefix()
   done
 }
 ###########################################################################
+add_postfix()
+{
+  if [ "$#" != 1 ]; then
+    error "add_prefix called incorrectly."
+    return 1
+  fi
+  postfix="$1"
+  read line
+  while [ $? = 0 ]; do
+    echo "$line$postfix"
+    read line
+  done
+}
+###########################################################################
 get_function_name()
 {
  (
@@ -254,7 +268,7 @@ find_public_functions()
       error "Illegal package statement in $package_file"
       continue
     fi
-    functions=`grep -hw 'public.*(' $package_file|find_function_names|add_prefix "$package_file:$package."`
+    functions=`grep -hw 'public.*(' $package_file|grep -v "="|find_function_names|add_prefix "$package_file:$package."`
     if [ "$functions" != "" ]; then
       echo "$functions"
     fi
@@ -297,7 +311,7 @@ find_deps_in_file()
        clone) continue
               ;;
      esac
-     deplines=`grep -n "$function_name\W*(" $filename|grep -v "^\W*\/\/"|grep -v "^\W*\*"|awk -F: '{print $1}'`
+     deplines=`grep -n "$function_name\W*(" $filename|grep -v "^\W*\/\/"|grep -v "^\W*\*"|grep -v "public"|awk -F: '{print $1}'`
      if [ "$deplines" != "" ]; then
        for lineno in $deplines; do
          echo $search_function:$filename:$lineno
@@ -338,41 +352,64 @@ templog()
 html_print_start()
 {
   echo "<html>" >$tempfile
-  echo "<title> Dependencies </title>" >>$tempfile
+  echo "<title> Dependencies for $*</title>" >>$tempfile
   echo "<body>" >>$tempfile
 
   echo "<h1 align=center>Dependencies for $* </h1>" >>$tempfile
-  echo "<ul>" >>$tempfile
 }
 ###########################################################################
-html_print_dep()
+html_print_deps()
 {
- my_func_name=$1
+(
+ my_func=$1
  shift
- mydeps=$*
- echo "<li> Dependencies for $1 " >>$tempfile
- echo "<ul>" >>$tempfile
- for mydep in $mydeps; do
-   echo "<li> $mydep </li>" >>$tempfile
- done
- echo "</ul> </li>" >>$tempfile
+ my_alldeps=$*
+ IFS=":"
+ set $my_func
+ myfunc_name=$1
+ IFS="."
+ set $myfunc_name
+ while [ $# -gt 1 ]; do shift; done
+ myfunc_name=$1
+ IFS=" "
+ if [ $ref_installed = 1 ]; then
+   echo "<h2> Declaration(s) for $myfunc_name </h2>" >>$tempfile
+   (grep "href=\"$org_package\..*$myfunc_name(" $ref_file|sed 's/<dt>//g'|add_prefix "<li>")|add_postfix "</li>" >> $tempfile
+ else
+   warning "Docu not installed. No links to declarations created."
+ fi 
+ 
+  echo "<h2> Occurences of $myfunc_name </h2>" >>$tempfile
+  echo "<ul>" >>$tempfile
+  for my_dep in $my_alldeps; do
+    (
+      IFS=":"
+      set $my_dep
+      my_fileref=$2
+      my_linenum=$3
+      echo "<li>" >>$tempfile
+      echo "In file <a href=\"$my_fileref\">`basename $my_fileref`</a> at line $my_linenum." >>$tempfile
+      echo "</li>" >>$tempfile
+    )
+  done
+  echo "</ul>" >>$tempfile
+)
 }
 ###########################################################################
 html_print_unused_functions()
 {
- echo "<li> Functions never used inm external packages</li>" >>$tempfile
- echo "<ul>"
+ echo "<h2> Functions never used in external packages</h2>" >>$tempfile
+ echo "<ul>" >>$tempfile
  for myfunction in $*; do
    echo "<li> $myfunction </li>" >>$tempfile
  done
- echo "<ul> </li>" >>$tempfile
+ echo "</ul>" >>$tempfile
 }
 ###########################################################################
 html_print_end()
 {
-  echo "</ul>" >>$tempfile
   echo "</body>" >>$tempfile
-  echo "</html>" >$tempfile
+  echo "</html>" >>$tempfile
 }
 ###########################################################################
 tempfile=/tmp/javadep.$$
@@ -470,10 +507,11 @@ else
     ref_installed=1
   else
     ref_installed=0
+    warning "Could not find $ref_file"
   fi
 fi
 
-html_print_start
+html_print_start $org_package
 
 log "Searching for all public declarations in $org_package"
 
@@ -487,7 +525,7 @@ for ext_package in $ext_packages; do
   all_deps="$all_deps `find_deps $ext_package`"
 done
 
-# all_deps=`(for i in $all_deps; do echo $i; done)|sort -u`
+all_deps=`(for i in $all_deps; do echo $i; done)|sort -u`
 
 # generate header
 if [ $html = 1 ]; then
@@ -499,22 +537,20 @@ fi
 # search for occurences of each function in all_deps and generate output
 unused_functions=
 for i in $all_pub_functions; do
-  IFS=":"
-  set $i
-  pub_function=$2
-  IFS=" "
+  pub_function=`(IFS=":";set $i; echo $2)`
   fct_deps=`(for name in $all_deps; do echo $name; done)|grep -w "^$pub_function"`
   if [ "$fct_deps" != "" ]; then
+   used_functions="$used_functions $i"
    if [ $html = 1 ]; then
-     html_print_dep "$pub_function" "$fct_deps"
+     html_print_deps "$pub_function" "$fct_deps"
    else
     echo "Dependencies for function $pub_function"
     for j in $fct_deps; do 
-      used_functions="$used_functions $i"
-      IFS=:
-      set $j
-      echo "$2, at line $3"
-      IFS=" "
+      (
+        IFS=:
+        set $j
+        echo "$2, at line $3"
+      )
     done
     fi
   else
@@ -522,34 +558,32 @@ for i in $all_pub_functions; do
   fi
 done
 
-if [ $html = 1 ]; then
-  html_print_end
-fi
-
 if [ $show_unused_functions = 1 ]; then
   unused_functions=`(for i in $unused_functions; do echo $i; done)|sort -u`
   if [ $html = 1 ]; then
     html_print_unused_functions $unused_functions
-  set $unused_functions
-  if [ $# -gt 0 ]; then
-    echo "The following functions are declared public but not used in searched packages:"
-    while [ $# -gt 0 ]; do
-      echo $1
-      shift
-    done
+  else
+    set $unused_functions
+    if [ $# -gt 0 ]; then
+      echo "The following functions are declared public but not used in searched packages:"
+      while [ $# -gt 0 ]; do
+        echo $1
+        shift
+      done
+    fi
   fi
-  exit
+fi
+
+if [ $html = 1 ]; then
+  html_print_end
 fi
 
 if [ $html = 1 ]; then
   cp -f $tempfile $outfile
   if [ $? = 0 ]; then
     log "Output written to $outfile"
-    rm -f $tempfile
+#    rm -f $tempfile
   else
-    error "Could not write to $outfile. Output still in $tempfile."
+    error "Could not write to $outfile. Output kept in $tempfile."
   fi
 fi
-
-
-
