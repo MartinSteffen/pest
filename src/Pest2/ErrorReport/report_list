@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	------------------
 //
-//	$Id: report_list,v 1.22 1999-02-01 12:05:33 swtech20 Exp $
+//	$Id: report_list,v 1.23 1999-02-01 14:34:50 swtech23 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -228,4 +228,17 @@ Einstellungen->TESC1 sagt
 	GUI   : NOCH NICHT IMPLEMENTIERT
 Einstellungen->SyntaxCheck
 	es passiert NICHTS
+//------------------------------------------------------------------------------
+#Number:	14
+#Autor:		Mario Thies swtech23
+#Subject:	Inkonsistenzen GUI
+#Status:	reported
+#Description:
+
+Das Fenster "Statechart wurde geaendert, troztdem fortfahren" scheint nicht, wenn 
+man PEST direkt startet und eine neue leere Statechart erzeugt und PEST beenden
+will, es erscheint aber, wenn man davor eine nicht leere Statechart geladen hat;
+der interne Zustand nach dem Erstellen einer neuen leeren Statechart ist also von
+Vorbedingungen abhaengig.
+
 //------------------------------------------------------------------------------
