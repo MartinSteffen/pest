@@ -375,8 +375,22 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & (Editor.Editor() == "Select" | Editor.
  	bufferGraphics = this.getGraphics();
 		  
 		    bufferGraphics.setColor(this.getBackground());
-		    bufferGraphics.drawRect(last_x,last_y,tempdrstate.rect.width,tempdrstate.rect.height);
-
+		    if (Editor.ZoomFaktor>=1)
+			{
+		    bufferGraphics.drawRect((int)(((int)(last_x/Editor.ZoomFaktor))*Editor.ZoomFaktor),
+					    (int)(((int)(last_y/Editor.ZoomFaktor))*Editor.ZoomFaktor),
+					    (int)((int)(tempdrstate.rect.width/Editor.ZoomFaktor)*Editor.ZoomFaktor),
+					    (int)((int)(tempdrstate.rect.height/Editor.ZoomFaktor)*Editor.ZoomFaktor)
+					    );
+			}
+		    else
+			{
+		    bufferGraphics.drawRect((int)(last_x),
+					    (int)(last_y),
+					    (int)(tempdrstate.rect.width),
+					    (int)(tempdrstate.rect.height)
+					    );
+			}
 
 		    bufferGraphics.setColor(Color.black);
 		    bufferGraphics.drawRect(e.getX(),e.getY(),tempdrstate.rect.width,tempdrstate.rect.height);
@@ -430,21 +444,50 @@ if ((e.getID() == MouseEvent.MOUSE_DRAGGED) & (Editor.Editor() =="Draw_State"))
 		//Repaint r = new Repaint(); 
 		//r.start(root,0,0,true); 
 		   	bufferGraphics = this.getGraphics();
-		  
+		    if (Editor.ZoomFaktor<=1)
+			{
 		    bufferGraphics.setColor(this.getBackground());
 		    bufferGraphics.drawRect((int) (last_x),
-		  	       (int) (last_y),
-		  	       (int) (old_x),
-		  	       (int) (old_y));
+					    (int) (last_y),
+					    (int) (old_x),
+					    (int) (old_y));
 
 		    bufferGraphics.setColor(Color.black);
 		    bufferGraphics.drawRect((int) (last_x),
-		  	       (int) (last_y),
-		  	       (int) ((e.getX()-last_x)),
-		  	       (int) ((e.getY()-last_y)));
-		      
-		    old_x = e.getX()-last_x;
-		    old_y = e.getY()-last_y;
+					    (int) (last_y),
+					    (int) ((e.getX()-last_x)),
+					    (int) ((e.getY()-last_y)));
+			}
+		    else
+			{
+			    bufferGraphics.setColor(this.getBackground());
+			    bufferGraphics.drawRect((int)((int) (last_x/Editor.ZoomFaktor)*Editor.ZoomFaktor),
+						    (int)((int) (last_y/Editor.ZoomFaktor)*Editor.ZoomFaktor),
+						    (int)((int) (old_x/Editor.ZoomFaktor)*Editor.ZoomFaktor),
+						    (int)((int) (old_y/Editor.ZoomFaktor)*Editor.ZoomFaktor)
+						    );
+
+			    bufferGraphics.setColor(Color.black);
+			    bufferGraphics.drawRect((int)((int) (last_x/Editor.ZoomFaktor)*Editor.ZoomFaktor),
+						    (int)((int) (last_y/Editor.ZoomFaktor)*Editor.ZoomFaktor),
+
+						    (int)((int) (e.getX()/Editor.ZoomFaktor)*Editor.ZoomFaktor)-
+						    (int)((int) (last_x/Editor.ZoomFaktor)*Editor.ZoomFaktor),
+
+						    (int)((int) (e.getY()/Editor.ZoomFaktor)*Editor.ZoomFaktor)-
+						    (int)((int) (last_y/Editor.ZoomFaktor)*Editor.ZoomFaktor)
+
+						    // (int)((int) ((e.getX()-last_x)/Editor.ZoomFaktor)*Editor.ZoomFaktor),
+						    // (int)((int) ((e.getY()-last_y)/Editor.ZoomFaktor)*Editor.ZoomFaktor)
+						    );
+			}
+		    // old_x = e.getX()-last_x;
+		    //old_y = e.getY()-last_y;
+		    old_x = (int)((int) (e.getX()/Editor.ZoomFaktor)*Editor.ZoomFaktor)-
+			    (int)((int) (last_x/Editor.ZoomFaktor)*Editor.ZoomFaktor);
+
+		    old_y = (int)((int) (e.getY()/Editor.ZoomFaktor)*Editor.ZoomFaktor)-
+						    (int)((int) (last_y/Editor.ZoomFaktor)*Editor.ZoomFaktor);
 
 		    restore(g);
 		}
