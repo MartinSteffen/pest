@@ -700,11 +700,11 @@ public class EditorUtils {
             if (abs(editor,neu,alt).contains(abs(editor,substateList.head).x,
                                          abs(editor,substateList.head).y)) {
                 neu.substates = new StateList(substateList.head, neu.substates);
-                neu.defaults  = new StatenameList(substateList.head.name, neu.defaults);
+		//                neu.defaults  = new StatenameList(substateList.head.name, neu.defaults);
             }
             else {
                 altSubstates = new StateList(substateList.head, altSubstates);
-                altDefaults = new StatenameList(substateList.head.name, altDefaults);
+		//               altDefaults = new StatenameList(substateList.head.name, altDefaults);
             }
             substateList = substateList.tail;
         }
