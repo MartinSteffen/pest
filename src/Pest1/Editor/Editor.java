@@ -19,7 +19,7 @@ import java.lang.*;
 import tesc1.*;
 
 /**
- * @author Mai / Bestaendig
+ * @author Michael Mai / Martin Bestaendig
  * @version
  *
  * Wir erwarten :
@@ -45,16 +45,19 @@ import tesc1.*;
  * <li> Zeichnen von States funktioniert
  * <li> Zeichnen von Connectoren funktioniert
  * <li> Zeichnen von Transitionen funktioniert
- * <li> Kennzeichnen von Anfangszustaenden 95 %
+ * <li> Kennzeichnen von Anfangszustaenden funktioniert
  * <li> Labeln von States funktioniert
  * <li> Labeln von Transitionen funktioniert
  * <li> Patternmatcher : uebernimmt TESC 1
- * <li> Loeschen von Komponenten 80 %
- * <li> Selektieren von Objektgruppen 75 %
+ * <li> Loeschen von Komponenten funktioniert
  * <li> Selektieren von Transitionen funktioniert
  * <li> highlighten funktioniert
  * <li> Zoomen funktioniert
- * <li> Undo 100 % (80 %) (UNDO steht (100 %), funktioniert mit dem derzeitigen Status der Absyn noch nicht korrekt (80 %).
+ * <li> Kopieren von Objekten beschraenkt sich derzeit auf States (andere scheinen wenig sinnvoll)
+ * <li> Verschieben von Komponenten beinhaltet noch einige NULLPOINTER-Exceptions und ist deshalb noch nicht eingebunden.
+ * <li> Ein Info-Fenster fuer die Transitionslabel wurde erstellt
+ * <li> Ein Syntaxcheck fuer die Transitionsanchor wurde eingefuegt
+ * <li> Undo funktioniert (In Abhaengigkeit zum AbSyn-Status
  *
  *<DT><STRONG>
  * TODO.
