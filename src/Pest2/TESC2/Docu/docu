@@ -1,0 +1,22 @@
+GraphOptimizer ist ein Objekt zum Optimieren einer Statechart.
+Diese wird entweder beim Konstruktoraufruf uebergeben oder kann spaeter
+gesetzt werden mit setStatechart(...).
+Es ist geplant, verschiedene Algorithmen zur Verfuegung zu stellen, die
+ueber die Methode setAlgorithm(<algorithm-number>) ausgewaehlt werden
+koennen. Eine Liste der Namen der zur Verfuegung stehenden Algorithmen
+ist in der Variablen LIST_OF_ALGORITHMS abgelegt. Die Anzahl der
+Algorithmen erhaelt man ueber die Laenge dieses Arrays.
+Jeder Algorithmus sollte ueber die angegebene Integerkonstante 
+referenziert werden, um Probleme zu vermeiden.
+Zusaetzlich benoetigt der Optimierer die vom Editor verwendeten
+FontMetrics.
+Die eigentliche Optimierung wird ueber die Methode optimize() aufgerufen.
+Man kann auch durch optimize(<algorithm-number>) einen speziellen
+Optimierungsalgorithmus aufrufen. Zurueckgegeben wird jeweils ein
+neues Statechart.
+
+Die aktuelle Liste der Algorithmen ist:
+String in LIST_OF_ALGORITHMS     Integerkonstante  Beschreibung
+===============================================================
+"Dummy-Algorithmus"              DUMMY_AR          kopiert das alte
+
