@@ -8,7 +8,7 @@ import java.awt.event.*;
  * Fenster zur Eingabe der Optionen des Syntax Checks, die in der Klasse CheckConfig gespeichert werden
  *
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: CheckOption.java,v 1.8 1999-02-11 22:29:11 swtech11 Exp $
+ *  @version  $Id: CheckOption.java,v 1.9 1999-02-12 08:15:06 swtech11 Exp $
  *  @see CheckConfig
  */
 public class CheckOption extends Dialog implements ActionListener {
@@ -36,8 +36,8 @@ public class CheckOption extends Dialog implements ActionListener {
   public CheckOption(pest parent,CheckConfig _cf)  {
     super(parent,"Optionen beim Check",true);
     this.parent = parent;
-    if ( _cf==null ) { cf = new CheckConfig(); } else { cf = _cf; }
-
+    if ( _cf==null ) { _cf = new CheckConfig(); }
+  cf = _cf;
   /**System.out.println(cf.sc_browser);
   System.out.println(cf.sc_warning);
   System.out.println(cf.cr_highlight);
