@@ -4,18 +4,29 @@
  * This class is responsible for generating our hierarchical
  * automaton.
  *
- * @version $Id: dumpHA.java,v 1.3 1999-01-04 14:19:15 swtech25 Exp $
+ * @version $Id: dumpHA.java,v 1.4 1999-01-04 15:20:18 swtech25 Exp $
  * @author Marcel Kyas
  */
 package codegen;
 
 import absyn.*;
 import java.io.*;
+import java.util.*;
 
 public class dumpHA
 {
+	private final float loadFactor = (float) 0.7;
 	private Statechart S;
 	private String path;
+	private int state_curr_key = 0;
+	private int event_curr_key = 0;
+	private int cond_curr_key = 0;
+	private Hashtable states_key = new Hashtable(1024, loadFactor);
+	private Hashtable states_sym = new Hashtable(1024, loadFactor);
+	private Hashtable events_key = new Hashtable(1024, loadFactor);
+	private Hashtable events_sym = new Hashtable(1024, loadFactor);
+	private Hashtable cond_key = new Hashtable(1024, loadFactor);
+	private Hashtable cond_sym = new Hashtable(1024, loadFactor);
 
 	/**
 	 * This will construct a dumb instance of dumpHA.  You will
@@ -81,6 +92,79 @@ public class dumpHA
 	public void setPathname(String bla)
 	{
 		path = bla;
+	}
+
+
+	/**
+	 * Creates symbol names PathList and hashes them in Table.
+	 */
+	private void generateStateTable()
+	{
+		PathList current;
+		Path name;
+		String symbol;
+		Integer key;
+
+		current = S.cnames;
+		while (current != null) {
+			name = current.head;
+			symbol = new String(name.head);
+			name = name.tail;
+			while (name != null) {
+				symbol += ("_" + name.head);
+				name = name.tail;
+			}
+			// put them into Hash table, but check first.
+			if (!states_key.containsKey(symbol)) {
+				key = new Integer(state_curr_key);
+				states_key.put(symbol, key);
+				states_sym.put(key, symbol);
+				state_curr_key++;
+			}
+			current = current.tail;
+		}
+	}
+
+
+	/**
+	 * Creates symbol names PathList and hashes them in Table.
+	 */
+	private void generateEventTable()
+	{
+		SEventList current = S.events;
+		Integer key;
+
+		while (current != null) {
+			// put them into Hash table, but check first.
+			if (!events_key.containsKey(current.head)) {
+				key = new Integer(event_curr_key);
+				events_key.put(current.head, key);
+				events_sym.put(key, current.head);
+				event_curr_key++;
+			}
+			current = current.tail;
+		}
+	}
+
+
+	/**
+	 * Creates symbol names PathList and hashes them in Table.
+	 */
+	private void generateCondTable()
+	{
+		BvarList current = S.bvars;
+		Integer key;
+
+		while (current != null) {
+			// put them into Hash table, but check first.
+			if (!cond_key.containsKey(current.head)) {
+				key = new Integer(cond_curr_key);
+				cond_key.put(current.head, key);
+				cond_sym.put(key, current.head);
+				cond_curr_key++;
+			}
+			current = current.tail;
+		}
 	}
 
 
@@ -186,6 +270,8 @@ public class dumpHA
 	 */
 	void dump() throws CodeGenException
 	{
-
+		generateStateTable();
+		generateEventTable();
+		generateCondTable();
 	}
 }
