@@ -48,6 +48,7 @@ public class Communicator extends Frame{
     System.err.println("Nicht-Determinismus");
     NonDeterminismDialog dialog=new NonDeterminismDialog(this,v);
     dialog.show();
+    System.err.println("Und weiter gehts...");
     result=dialog.getAnswer();
     return result;
   }

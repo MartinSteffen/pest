@@ -28,9 +28,9 @@ import java.io.*;
  * Man kann auch schon etwas simulieren.<BR>
  * Es werden Racing-Situationen bei Conditions und Nichtdeterminismus bei Transitionen erkannt,
  * unsere GUI ist aber noch bearbeitungswuerdig.<BR>
- * Connectoren solten inzwischen funktionieren, sind aber noch nicht ausrichend getestet.<BR>
- * Getestet haben wir bisher nur am Beispiel aus absyn.Example,
- * welches auch funktioniert, d.h. es koennen Events eingeben werden, die States werden erreicht
+ * Connectoren solten inzwischen funktionieren, sind aber noch nicht ausreichend getestet.<BR>
+ * Getestet haben wir bisher am Beispiel aus absyn.Example, tv.st und a1.st
+ * was auch funktioniert, d.h. es koennen Events eingeben werden, die States werden erreicht
  * und die Transitionen und Aktionen werden ausgefuehrt. <BR>
  * Die Aktiven States werden noch nicht im Editor angezeigt, dafuer aber auf der Console.
  * Die Aufrufe der Highlight-Funktionen sind schon vorgesehen, wir haben nur noch ein Problem
@@ -45,8 +45,7 @@ import java.io.*;
  * BEKANNTE FEHLER.
  * </STRONG>
  * <UL>
- * <LI> Noch nicht getestet, was absyn.Dummy anrichten kann
- * <LI> 
+ * <LI> NullPointer in substates werden nicht abgefangen, d.h ein OR-State muss mindestens einen Substate haben, ansonsten waere es ein Basic-State<LI> 
  * </UL>
  * <DT><STRONG>
  * TEMPORÄRE FEATURES.

@@ -41,6 +41,7 @@ public class Status extends Object{
 
   public Status verbinde(Vector v) throws RacingException{
     Status result=new Status();
+    result=result.verbinde(this);
     Status temp=null;
     Enumeration enum=v.elements();
     while (enum.hasMoreElements()){

@@ -13,6 +13,19 @@ public class StateTabelle extends Object{
     data=new Hashtable();
   }
 
+ /*debug fuer Pfade*/
+  public void debug(Path path){
+    String head=path.head;
+    Path   tail=path.tail;
+    while (tail!=null){
+      System.out.print(head+" ");
+      head=tail.head;
+      tail=tail.tail;
+    }
+    System.out.print(head);
+    System.out.print("\n");
+  }
+
   public void debug(){
     System.out.println("Active States:");
     PrettyPrint out=new PrettyPrint();
@@ -83,11 +96,15 @@ public class StateTabelle extends Object{
     keys=(tab.data).keys(); /* Zunaechst alle aktiven aus tab nach result...*/
     while (keys.hasMoreElements()){
       temp=(Path)keys.nextElement();
+      System.err.print("verbindeTabtab:");
+      debug(temp);
       result.setActive(temp,tab.getState(temp));
     }
     keys=data.keys();      /* und dann alle aktiven der Instanz */
     while (keys.hasMoreElements()){
       temp=(Path)keys.nextElement();
+      System.err.print("verbindeTabinstance:");
+      debug(temp);
       result.setActive(temp,getState(temp));
     }
     return result;

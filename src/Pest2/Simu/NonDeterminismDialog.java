@@ -13,7 +13,8 @@ public class NonDeterminismDialog extends Dialog implements ActionListener{
   Button b=null;
 
   NonDeterminismDialog(Frame parent,Vector v){
-    super(parent,"Nichtdeterminismus");
+    super(parent,"Nichtdeterminismus",true);
+    setLayout(new FlowLayout());
     result=new Vector(1);
     Tr transition;
     TrAnchor von=null;
@@ -48,7 +49,8 @@ public class NonDeterminismDialog extends Dialog implements ActionListener{
       }
       list.addItem(vontext+"->"+nachtext);
     }
-    list.select(1);
+    list.select(0);
+    list.setSize(150,150);
     Button b=new Button("Auswählen");
     b.addActionListener(this);
     add(list);
@@ -58,8 +60,9 @@ public class NonDeterminismDialog extends Dialog implements ActionListener{
 
   public void actionPerformed(ActionEvent e){
     int index=list.getSelectedIndex();
+    System.err.println("User hat angeklickt: "+index);
     Tr t=(Tr)listvector.elementAt(index);
-    result.setElementAt(t,0);
+    result.insertElementAt(t,0);
     setVisible(false);
   }
 

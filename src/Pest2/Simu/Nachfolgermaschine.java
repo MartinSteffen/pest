@@ -58,7 +58,12 @@ class Nachfolgermaschine extends Object{
        statusse.addElement(step(path.append((temp.name).name),temp));/* fuer jeden Parallelstate */
      }                                                                /* step ausfuehren           */ 
      try{
-       result=result.verbinde(statusse);                              /* results verschmelzen     */ 
+       System.err.println("Aktive vor verbinde:");
+       result.states.debug();
+       result=result.verbinde(statusse);
+       System.err.println("Aktive nach verbinde:");
+       result.states.debug();
+       /* results verschmelzen     */ 
      }
      catch (RacingException e){
        result=comm.solveBVarRacing(e);
@@ -73,20 +78,22 @@ class Nachfolgermaschine extends Object{
      Status result=new Status();
      if (act_states.isActive(path)){ /*Ist os schon aktiv? Wenn ja, dann...*/
        System.err.println("OS ist schon aktiv - suche Transitionen");
-       Tr temp=(os.trs).head;       
-       TrList templist=(os.trs).tail;
        Vector transitionen=new Vector();
-       if (enabled(path,temp)){
-	 transitionen.addElement(temp); /*...wenn enabled, dann in einem Vector merken*/
+       if (os.trs!=null){
+	 Tr temp=(os.trs).head;
+	 TrList templist=(os.trs).tail;
+	 if (enabled(path,temp)){
+	   transitionen.addElement(temp); /*...wenn enabled, dann in einem Vector merken*/
+	 }
+	 while(templist!=null){       /*...pr’fen, welche der Transitionen enabled sind */ 
+	   temp=templist.head;
+	   templist=templist.tail;
+	   if (enabled(path,temp)){
+	     transitionen.addElement(temp); /*...wenn enabled, dann in einem Vector merken*/
+	   }
+	 }
        }
-	while(templist!=null){       /*...pr’fen, welche der Transitionen enabled sind */ 
-	  temp=templist.head;
-	  templist=templist.tail;
-	  if (enabled(path,temp)){
-	    transitionen.addElement(temp); /*...wenn enabled, dann in einem Vector merken*/
-	  }
-	}
-	System.err.println("Gefunden: "+transitionen.size());
+       System.err.println("Gefunden: "+transitionen.size());
 	if (transitionen.size()>1){                  /* Gibt es mehr als eine moegliche Transition */
 	  transitionen=comm.solveNonDeterminism(transitionen);
 	}
@@ -121,6 +128,8 @@ class Nachfolgermaschine extends Object{
 	 tempstatelist=substates.tail;
 	 System.err.println("Suche-----");
 	 debug(path.append((tempstate.name).name));
+	 System.err.println("Result-bisher aktiv:");
+	 result.states.debug();
 	 while (!((result.states).isActive(path.append((tempstate.name).name)))){
 	   debug(path.append((tempstate.name).name));
 	   tempstate=tempstatelist.head;
@@ -344,6 +353,7 @@ class Nachfolgermaschine extends Object{
     State head=states.head;
     String headname=(head.name).name;
     StateList tail=states.tail;
+    System.err.println("getStatebyName: "+name);
     if (headname.equals(name)){
       result=head;
     }
@@ -351,6 +361,7 @@ class Nachfolgermaschine extends Object{
       head=tail.head;
       headname=(head.name).name;
       tail=tail.tail;
+      System.err.println(headname);
       if (headname.equals(name)){
 	result=head;
       }
