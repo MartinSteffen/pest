@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.46 1999-02-01 14:28:47 swtech01 Exp $
+//	$Id: report_list,v 1.47 1999-02-01 19:41:24 swtech18 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -369,7 +369,7 @@ history connectors vergisst. Also: Hier fehlt eine Warnung!
 #Number:	26
 #Autor:		Erich Mikk erm
 #Subject:	STM-Import achtet nicht auf Keywords
-#Status: 	reported
+#Status: 	fixed
 #Description: 
 
 Importiere SE-Systems/vcr.st 
@@ -433,7 +433,7 @@ Transition von Init nach P1 geloescht. Bei UNDO wird gesamtes Statechart nicht m
 #Number:	30
 #Autor:		Erich Mikk erm
 #Subject:	Editor erzeugt Interlevel Transitionen (IT)?
-#Status: 	reported
+#Status: 	fixed
 #Description: 
 
 Import PC/a1.st (STM-Import).
@@ -478,7 +478,7 @@ TESC-file: ~swtech21/tests/tesc/Safer3.tesc
 #Number:	33
 #Autor:		Erich Mikk erm
 #Subject:	STM-Import nicht möglich (2 >= 2)?
-#Status: 	reported
+#Status: 	fixed
 #Description: 
 
 STM-Import von folgenden Charts aus SAFER
@@ -585,11 +585,16 @@ muessen keine Tr. vorkommen, also ist dies KEIN Fehler.
 Exportiere Chart mit TESC-Export, die Default-Namen
 (z.B. ...DefaultState1) enthaelt. Der Import schlaegt dann fehl.
 //------------------------------------------------------------------------------
+#Number:        39
+#Autor:         stm swtech18
+#Subject:       Nach dem Aendern von Labeln von Defaultstates sind dieses nicht mehr Default!
+#Status:        reported
+#Description:
 
-
-
-
-
-
-
+//------------------------------------------------------------------------------
+#Number:        40
+#Autor:         stm swtech18
+#Subject:       GUI: Nach Import und weiterem Import (diesmal mit Fehler) ist alte Chart noch da. 
+#Status:        reported
+#Description:
 
