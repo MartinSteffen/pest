@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.41 1999-01-29 13:52:36 swtech00 Exp $
+//	$Id: report_list,v 1.42 1999-01-29 15:12:26 swtech21 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -133,7 +133,7 @@ Datei->Import->Statemate lädt.
 #Number:	8
 #Autor:		Heiko Haller swtech21
 #Subject:	PEST1: Transitionen-Label machen Zoom nicht mit
-#Status:	fixed
+#Status:	confirmed
 #Description:
 
 Wenn ich eine Transition zwischen zwei States mit einem Label versehe
@@ -145,7 +145,7 @@ geschrieben. Die Label von States hingegen werden korrekt gezoomt.
 #Number:	9
 #Autor:		Stefan Lemke swtech21
 #Subject:	PEST1: Benennung von States im Zoom-Modus
-#Status:	fixed
+#Status:	confirmed
 #Description:
 
 In eine Chart hineingezoomt.
@@ -176,7 +176,7 @@ Kontextmenue hat keine Wirkung.
 #Number:	12
 #Autor:		Stefan Lemke swtech21
 #Subject:	Benennung von kleinen States
-#Status:	fixed
+#Status:	confirmed
 #Description:
 
 3x in eine Statechart gezoomt. State (Groesse auf Bildschirm ca. 1 cm x 3 cm)
@@ -386,3 +386,60 @@ Check muß auf Keywords nicht prüfen, weil wir es so vereinbart haben
 
 (Dieser Fehler ist auch bei PEST2 gemeldet, Nr. 7)
 //------------------------------------------------------------------------------
+#Number:	27
+#Autor:		Heiko Haller, Stefan Lemke, swtech21
+#Subject:	Editzeile beim Labeln zunaechst zu klein
+#Status: 	reported
+#Description: 
+
+Wenn man Transitionen oder States labeln will, wird das Labelfenster mit einer defaultmaessig viel zu kleinen Eingabezeile geoeffnet. Vergroessern des Fensters vergroessert auch den Eingabebereich.
+//------------------------------------------------------------------------------
+#Number:	28
+#Autor:		Heiko Haller, Stefan Lemke, swtech21
+#Subject:	Grafisches Menue laesst SyntaxCheck nicht zu
+#Status: 	reported
+#Description: 
+
+TESC importiert.
+Editor geoeffnet.
+SyntaxCheck ueber grafisches Menue gestartet und das Checkfenster wieder geschlossen.
+Danach ist der SyntaxCheck nicht mehr ueber das grafische Menue aktivierbar, ueber das normale Menue jedoch schon.
+
+//------------------------------------------------------------------------------
+#Number:	29
+#Autor:		Heiko Haller, Stefan Lemke, swtech21
+#Subject:	
+#Status: 	reported
+#Description: 
+
+or Safer:
+        basic Init;
+	basic P1;
+        basic P2;
+        
+        defcon: Init;
+ 
+        transitions:
+	from Init to P1 on;
+        from P1 to P2 on P1Ready;
+        from P2 to P1 on P2Ready;
+        
+end Safer;
+
+obiges TESC-File importiert.
+Editor geoeffnet.
+Transition von Init nach P1 geloescht. Bei UNDO wird gesamtes Statechart nicht mehr angezeigt.
+//------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
