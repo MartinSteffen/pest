@@ -17,10 +17,23 @@ public class Test {
     // Erzeuge PP-Objekt.
     PrettyPrint pp = new PrettyPrint ();
     Statechart sc =  Example.getExample();
-    pp.start(sc);
+    //----------------------->    pp.start(sc);
 
     try{
 	//Statechart sc2 = (Statechart)sc.clone();
+
+
+
+    //  Test des  Ref_State
+    System.out.println("-----------------------Test der Refstates");
+    Basic_State S1 = new Basic_State (new Statename("S1"));
+    Ref_State   RS1 = new Ref_State(new Statename("Ref S1"));
+    RS1.filename = "file: ~/abc.code";
+    RS1.filetype = new Pest_CoordSyntax();
+    pp.start(S1);
+    pp.start(RS1);
+    System.out.println("-------End Test der Refstates");
+
 
         
 
@@ -126,7 +139,8 @@ public class Test {
     pp.start(pathlist);
     pp.start(pathlistclone);
 
-    Basic_State S1 = new Basic_State (new Statename("S1"));
+
+
     Basic_State S1clone = (Basic_State)S1.clone();
     S1clone.name = new Statename("neu");
     pp.start(S1);
