@@ -1,0 +1,15 @@
+Hierarchie der Dateien
+Die rechts stehende Datei muss in die weiter links stehende eingefuegt wefrden.
+
+Safer.tesc
+  P1.tesc
+    AAH.tesc
+      AAH_control_out.tesc
+      engage.tesc
+    Grip.tesc
+  P2.tesc  
+    ThrusterSelection.tesc
+      All_axes_off.tesc 
+      NOT_All_axes_off.tesc                
+        combineROT.tesc
+clock.tesc
