@@ -4,7 +4,7 @@
  * Created: Thu Dec 31 1998, 18:00:00
  *
  * @author Developed by Eike Schulz for swtech14.
- * @version $Id: SpreadAlgorithm.java,v 1.4 1999-02-04 09:47:35 swtech14 Exp $
+ * @version $Id: SpreadAlgorithm.java,v 1.5 1999-02-12 16:29:42 swtech14 Exp $
  *
  *
  * Durch diese Klasse wird ein (syntaktisch korrektes!) Statechart-Objekt mit
@@ -105,6 +105,11 @@ class SpreadAlgorithm extends GraphOptimizer {
     maxCoord_x = 0;
     maxCoord_y = 0;
     unmarked_sInfos = null;
+
+    // Setze alle (evtl. vorhandenen) Koordinaten auf 'null'.
+
+    Nullbrowser nb = new Nullbrowser (sChart);
+    nb.start();
 
     // Lies zunaechst die Fonthoehe aus der FontMetrics.
     // Addiere einen gewissen Abstand hinzu, um die Schrift nicht zwischen die
