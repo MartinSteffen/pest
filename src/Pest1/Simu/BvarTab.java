@@ -1,20 +1,21 @@
 package simu;
 
 /**
- * Klasse Tabelle-BVar
+ * Hilfs-Klasse fuer Tabelle-BVar
  */
 
 import java.util.*;
 import java.lang.*;
  
 public class BvarTab {
-/**
- * BvarTab constructor comment.
- */
-public BvarTab(String strList, boolean boolWert) {
-	String sList;
+	absyn.Bvar bName;
 	boolean bWert;
-	sList = strList;
+
+/**
+ * Default-Constructor fuer BvarTab
+ */
+public BvarTab(absyn.Bvar arg1, boolean boolWert) {
+	bName = arg1;
 	bWert = boolWert;
 }
 }
