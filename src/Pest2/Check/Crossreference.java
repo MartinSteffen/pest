@@ -99,6 +99,12 @@ private Color        COLOR     = Color.red;       // Farbe fuer das Highlighten
 
   public void report(Statechart statechart) {
     this.statechart = statechart;
+
+    // ### nur zum Testen!
+    // Example e = new Example();
+    // this.statechart = e.getExample();
+    // ###
+
     // Benutzer zur Eingabe auffordern
     searchstr = gui.EingabeDialog("Crossreference","Objektname:",searchstr);
     // Start der Suche
@@ -111,7 +117,7 @@ private Color        COLOR     = Color.red;       // Farbe fuer das Highlighten
       if (this.statechart.state instanceof And_State)
         nextAndState ((And_State)this.statechart.state, null,"");
       if (this.statechart.state instanceof Basic_State)
-        handleBasicState ((Basic_State)this.statechart.state, null,"");
+        handleBasicState ((Basic_State)this.statechart.state, null);
       // Ausgabe
 
       if (items.size()>0) {
@@ -147,24 +153,24 @@ private Color        COLOR     = Color.red;       // Farbe fuer das Highlighten
     for(BvarList b=statechart.bvars; b!=null;b=b.tail)	    if (compareStrings(b.head.var,searchstr)) {addObject(b.head,null,"Bool'sche Variable");}
 
     // State
-    for(PathList p=statechart.cnames; p!=null;p=p.tail)	    if (compareStrings(PathtoString(p.head),searchstr)) {addObject(p.head,null,"State");}
+    for(PathList p=statechart.cnames; p!=null;p=p.tail)	    if (compareStrings(PathtoString(p.head),searchstr)) {addObject(p.head,null,"kommt in der State-Liste vor");}
   }
 
-  void pruefeGuard(Guard g, Tr t, String p){
+  void checkGuard(Guard g, Tr t, String p){
 
-    if (g instanceof GuardBVar)      pruefeBVar(((GuardBVar )g).bvar, t, p, 1);    else {
+    if (g instanceof GuardBVar)      checkBVar(((GuardBVar )g).bvar, t, p, 1);    else {
       if (g instanceof GuardCompg) {
-        pruefeGuard (((GuardCompg)g).cguard.elhs, t, p);
-        pruefeGuard (((GuardCompg)g).cguard.erhs, t, p);
+        checkGuard (((GuardCompg)g).cguard.elhs, t, p);
+        checkGuard (((GuardCompg)g).cguard.erhs, t, p);
       } else {
         if (g instanceof GuardNeg)
-          pruefeGuard (((GuardNeg)g).guard, t, p);
+          checkGuard (((GuardNeg)g).guard, t, p);
         else {
 	        if (g instanceof GuardEvent)
-            pruefeEvent (((GuardEvent)g).event, t, p,1);
+            checkEvent (((GuardEvent)g).event, t, p,1);
 	        else {
 		        if (g instanceof GuardCompp)
-              pruefePath  (((GuardCompp)g).cpath.path, t, p);
+              checkPath  (((GuardCompp)g).cpath.path, t, p);
 		        else {
 			        if (g instanceof GuardUndet)
                 pruefeString(g, t, p);
@@ -175,43 +181,43 @@ private Color        COLOR     = Color.red;       // Farbe fuer das Highlighten
     }
   }
 
-  void pruefeAction(Action a, Tr t, String p){
+  void checkAction(Action a, Tr t, String p){
     if (a instanceof ActionBlock) {
       if ((((ActionBlock)a).aseq)!=null) {
             Aseq as=((ActionBlock)a).aseq;
-            for(; (as.tail!=null); as=as.tail) pruefeAction(as.head, t, p);
-	          pruefeAction(as.head, t, p);}
+            for(; (as.tail!=null); as=as.tail) checkAction(as.head, t, p);
+	          checkAction(as.head, t, p);}
     } else {
-      if (a instanceof ActionStmt) pruefeBool (((ActionStmt)a).stmt, t, p);
+      if (a instanceof ActionStmt) checkBool (((ActionStmt)a).stmt, t, p);
       else {
-        if (a instanceof ActionEvt) pruefeEvent (((ActionEvt)a).event, t, p, 2);
+        if (a instanceof ActionEvt) checkEvent (((ActionEvt)a).event, t, p, 2);
       }
     }
   }
 
-
-  void pruefeBVar(Bvar b, Tr t, String p, int i){      if ((compareStrings(b.var,searchstr)) && (i==1)) addObject(b,t,"Bool'sche Variable im Guard",t,p);
+
+  void checkBVar(Bvar b, Tr t, String p, int i){      if ((compareStrings(b.var,searchstr)) && (i==1)) addObject(b,t,"Bool'sche Variable im Guard",t,p);
       if ((compareStrings(b.var,searchstr)) && (i==2)) addObject(b,t,"Bool'sche Variable im Action",t,p);
   };
 
-  void pruefeBool(Boolstmt b, Tr t, String p) {     if (b instanceof BAss)  {
-       pruefeBVar(((BAss)b).ass.blhs, t, p, 2);
-       pruefeGuard(((BAss)b).ass.brhs, t, p);}
+  void checkBool(Boolstmt b, Tr t, String p) {     if (b instanceof BAss)  {
+       checkBVar(((BAss)b).ass.blhs, t, p, 2);
+       checkGuard(((BAss)b).ass.brhs, t, p);}
      else {
-       if (b instanceof MTrue) pruefeBVar(((MTrue)b).var, t, p, 2);
+       if (b instanceof MTrue) checkBVar(((MTrue)b).var, t, p, 2);
        else {
-         if (b instanceof MFalse) pruefeBVar(((MFalse)b).var, t, p, 2);
+         if (b instanceof MFalse) checkBVar(((MFalse)b).var, t, p, 2);
        }
      }
   }
 
-  void pruefeEvent(SEvent e, Tr t, String p, int i){      if ((compareStrings(e.name,searchstr)) && (i==1))
+  void checkEvent(SEvent e, Tr t, String p, int i){      if ((compareStrings(e.name,searchstr)) && (i==1))
         addObject(e,t,"Ereignis im Guard",t,p);
       if ((compareStrings(e.name,searchstr)) && (i==2))
         addObject(e,t,"Ereignis im Action",t,p);
   };
 
-  void pruefePath(Path p, Tr t, String s){      if (compareStrings(PathtoString(p),searchstr))
+  void checkPath(Path p, Tr t, String s){      if (compareStrings(PathtoString(p),searchstr))
         addObject(p,t,"Pfad im Guard",t,s);
 
       for (;p.tail!=null;p=p.tail){};
@@ -238,11 +244,11 @@ private Color        COLOR     = Color.red;       // Farbe fuer das Highlighten
     boolean OK       = false;
 
     // Infix ?
-    if ((b.substring(blength-1,blength).equals("*")) &&        (b.substring(0,1).equals("*"))) infix = true;
+    if ((b.substring(blength-1,blength).equals("*")) &&        (b.substring(0,1).equals("*"))) infix = true;
     // postfix ?
-    if ((!b.substring(blength-1,blength).equals("*")) &&        (b.substring(0,1).equals("*"))) postfix = true;
+    if ((!b.substring(blength-1,blength).equals("*")) &&        (b.substring(0,1).equals("*"))) postfix = true;
     // praefix ?
-    if ((b.substring(blength-1,blength).equals("*")) &&        (!b.substring(0,1).equals("*"))) praefix = true;
+    if ((b.substring(blength-1,blength).equals("*")) &&        (!b.substring(0,1).equals("*"))) praefix = true;
     String _in = b;    String in  = "";
     String m   = "";
 
@@ -304,7 +310,7 @@ private Color        COLOR     = Color.red;       // Farbe fuer das Highlighten
     String s1 = getTrSourceName(transition);
     String s2 = getTrTargetName(transition);
 
-    ItemCrossreference item = new ItemCrossreference (object,       highlighted_object, path1 +" Trans: "+s1+" -> "+s2+" in State: "+path2);
+    ItemCrossreference item = new ItemCrossreference (object,       highlighted_object, path1 +" Trans: "+s1+" -> "+s2+" in State: "+path2);
     items.addElement(item);  }
 
 // ****************************************************************************
@@ -312,31 +318,31 @@ private Color        COLOR     = Color.red;       // Farbe fuer das Highlighten
 // ****************************************************************************
 
   void nextOrState(Or_State os, State s, String p) {
-    if (compareStrings(os.name.name,searchstr)) addObject(os,os,"Or-State in "+p);
+    if (compareStrings(os.name.name,searchstr)) addObject(os,os,"Or-State");
 
-    String np = getAddPathPart(p, os.name.name);
+    String np = getAddPathPart(p, os.name.name);
     if (os.trs != null)        nextTransInTransList(os.trs, os, np);    if (os.connectors != null) nextConInConList(os.connectors, np);
     if (os.substates != null)  nextStateInStateList(os.substates, os, np);
   }
 
   void nextAndState(And_State as, State s, String p) {
 
-    if (compareStrings(as.name.name,searchstr))      addObject(as,as,"And-State in "+p);
+    if (compareStrings(as.name.name,searchstr))      addObject(as,as,"And-State");
     String np = getAddPathPart(p, as.name.name);
 
     if (as.substates != null) nextStateInStateList(as.substates, as, np);  }
 
-  void handleBasicState(Basic_State bs, State s, String p) {
+  void handleBasicState(Basic_State bs, State s) {
     if (compareStrings(bs.name.name,searchstr))
-      addObject(bs,bs,"Basic-State in "+p);
+      addObject(bs,bs,"Basic-State");
   }
 
   void nextTransInTransList(TrList tl, State s, String p) {
 
-    String z1 = getTrSourceName(tl.head);
-    String z2 = getTrTargetName(tl.head);
-    // Ueberpruefe Guards und Actions    pruefeGuard(tl.head.label.guard, tl.head, p);
-    pruefeAction(tl.head.label.action, tl.head, p);
+    String z1 = getTrSourceName(tl.head);
+    String z2 = getTrTargetName(tl.head);
+    // Ueberpruefe Guards und Actions    checkGuard(tl.head.label.guard, tl.head, p);
+    checkAction(tl.head.label.action, tl.head, p);
 
     // Auswertung der Anker    if (tl.head.source instanceof Statename) {
       if ( compareStrings(z1,searchstr) )
@@ -364,15 +370,15 @@ private Color        COLOR     = Color.red;       // Farbe fuer das Highlighten
   void nextStateInStateList(StateList sl, State _s, String p) {
 
     if (sl.head instanceof Or_State) {nextOrState ((Or_State)sl.head, _s, p); }    if (sl.head instanceof And_State) {nextAndState ((And_State)sl.head, _s, p); }
-    if (sl.head instanceof Basic_State) {handleBasicState ((Basic_State)sl.head, _s, p); }
+    if (sl.head instanceof Basic_State) {handleBasicState ((Basic_State)sl.head, _s); }
     if (sl.tail != null) { nextStateInStateList(sl.tail, _s, p); }
 
   }
 
   void nextConInConList(ConnectorList cl, String p) {
 
-    if (compareStrings(cl.head.name.name,searchstr))      addObject(cl.head,cl.head,"Connector in "+p);
-    if (cl.tail != null) {nextConInConList(cl.tail, p);}
+    if (compareStrings(cl.head.name.name,searchstr))      addObject(cl.head,cl.head,"Connector in "+p);
+    if (cl.tail != null) {nextConInConList(cl.tail, p);}
   }
 
 }
