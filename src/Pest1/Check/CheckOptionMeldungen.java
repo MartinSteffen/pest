@@ -9,15 +9,15 @@ import java.awt.event.*;
  * Fenster zur Eingabe der gewünschten Warnungen des Syntax Checks, die im Browser ausgegeben werden sollen
  *
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: CheckOptionWarnung.java,v 1.2 1999-02-11 22:29:12 swtech11 Exp $
+ *  @version  $Id: CheckOptionMeldungen.java,v 1.1 1999-02-11 22:29:12 swtech11 Exp $
  *  @see CheckConfig, CheckOption
  */
-class CheckOptionWarnung extends Dialog implements ActionListener {
+class CheckOptionMeldungen extends Dialog implements ActionListener {
   pest parent;
-  CheckConfig cf;
 
   ErrorAndWarningCodes cod = new ErrorAndWarningCodes();
-  Vector v = cod.codeWarnings();
+  Vector vw = cod.codeWarnings();
+  Vector ve = cod.codeErrors();
 
   Panel panel;
   Button button1, button2;
@@ -29,37 +29,59 @@ class CheckOptionWarnung extends Dialog implements ActionListener {
    * @param parent notwendige Referenz auf das aufrufende Fenster
    * @param _cf die Klasse zum Speichern der Optionen des Checks
   */
-  public CheckOptionWarnung(pest parent,CheckConfig _cf)  {
-    super(parent,"Optionen beim Check - Warnungen selektieren",true);
+  public CheckOptionMeldungen(pest parent)  {
+    super(parent,"Optionen beim Check - Meldungen des Syntax Check",true);
     this.parent = parent;
-    if ( _cf==null ) { cf = new CheckConfig(); } else { cf = _cf; }
-    
+
     Point p = parent.getLocation();
     setLocation(p.x + 30 , p.y + 30);
     setLayout(new BorderLayout());
 
+/**
     // Ueberschrift Warnungen
   	panel = new Panel(new FlowLayout());
 	  panel.setBackground(Color.gray);
   	panel.setForeground(Color.white);
-  	panel.add(new Label("Warnungen, die angezeigt werden sollen, markieren:"));
+  	panel.add(new Label("Meldungen des Syntax Check:"));
 	  add("North",panel);
+*/
 
+    // Meldungsausgabe
 
-    // Warnungs Liste
-
-    lst = new List(v.size());
+    lst = new List(30);
     lst.setMultipleMode(true);
     lst.setFont(new Font("Serif",Font.PLAIN,14));
     lst.setBackground(Color.lightGray);
     lst.setForeground(Color.black);
 
-    for (int i=0; i<v.size(); i++) {
-      Integer n = (Integer) v.elementAt(i);
-      lst.add(cod.codeToString(n.intValue())+ " ("+n.intValue()+")");
-      if (cf.sc_warnStr.indexOf(";"+n.toString()+";")==-1) {
-        lst.select(i);
-      }
+    Integer n, na;
+
+    lst.add("Fehlermeldungen ( "+ ve.size() + " Stueck ):");
+    lst.add("");
+    lst.add("allgemeine Fehler:");
+    na = new Integer(0);
+    for (int i=0; i<ve.size(); i++) {
+      n = (Integer) ve.elementAt(i);
+      if (na.intValue()<100 && n.intValue()>=100) {lst.add("Fehler bei booleschen Variablen:"); };
+      if (na.intValue()<200 && n.intValue()>=200) {lst.add("Fehler bei Events:"); };
+      if (na.intValue()<300 && n.intValue()>=300) {lst.add("Fehler bei States:"); };
+      if (na.intValue()<400 && n.intValue()>=400) {lst.add("Fehler bei Transitionen:"); };
+      lst.add("- "+cod.codeToString(n.intValue())+" ("+n.toString()+")");
+      na = n;
+    }
+    lst.add("");
+    lst.add("Warnmeldungen ( "+ vw.size() + " Stueck ):");
+    lst.add("");
+    lst.add("allgemeine Warnungen:");
+    na = new Integer(0);
+    for (int i=0; i<vw.size(); i++) {
+      n = (Integer) vw.elementAt(i);
+      if (na.intValue()<100 && n.intValue()>=100) {lst.add("Warnungen bei booleschen Variablen:"); };
+      if (na.intValue()<200 && n.intValue()>=200) {lst.add("Warnungen bei Events:"); };
+      if (na.intValue()<300 && n.intValue()>=300) {lst.add("Warnungen bei States:"); };
+      if (na.intValue()<400 && n.intValue()>=400) {lst.add("Warnungen bei Transitionen:"); };
+      lst.add("- "+cod.codeToString(n.intValue())+" ("+n.toString()+")");
+      na = n;
     }
 
     add("Center",lst);
@@ -72,10 +94,7 @@ class CheckOptionWarnung extends Dialog implements ActionListener {
 	  button1.setActionCommand("OK");
   	button1.addActionListener(this);
 	  panel.add(button1);
-  	button2 = new Button("Abbrechen");
-	  button2.setActionCommand("Ab");
-  	button2.addActionListener(this);
-	  panel.add(button2);
+
   	add("South",panel);
 
   	pack();
@@ -91,17 +110,6 @@ class CheckOptionWarnung extends Dialog implements ActionListener {
   public void actionPerformed(ActionEvent e) {
   	String cmd = e.getActionCommand();
   	if (cmd.equals(button1.getActionCommand())) {
-      cf.sc_warnStr = "";
-      for (int i=0; i<v.size(); i++) {
-        if (lst.isIndexSelected(i)==false) {
-          Integer n = (Integer) v.elementAt(i);
-          cf.sc_warnStr = cf.sc_warnStr + ";" + n.toString() + ";";
-        }
-      }
-  		setVisible(false);
-	  	dispose();
-	  }
-  	else if (cmd.equals(button2.getActionCommand())) {
   		setVisible(false);
 	  	dispose();
 	  }

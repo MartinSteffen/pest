@@ -11,7 +11,7 @@ import java.util.*;
  *   400-499 Transitions Fehler
  *
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: ErrorAndWarningCodes.java,v 1.35 1999-02-11 01:06:25 swtech11 Exp $
+ *  @version  $Id: ErrorAndWarningCodes.java,v 1.36 1999-02-11 22:29:14 swtech11 Exp $
  */
 class ErrorAndWarningCodes {
 
@@ -31,6 +31,30 @@ class ErrorAndWarningCodes {
     v.addElement(new Integer(416));
     return v;
   }
+
+  // Vector mit allen Error Codes
+  Vector codeErrors() {
+    Vector v = new Vector();
+    v.addElement(new Integer(10));  v.addElement(new Integer(11));  v.addElement(new Integer(12));  v.addElement(new Integer(13));
+    v.addElement(new Integer(14));  v.addElement(new Integer(15));  v.addElement(new Integer(16));  v.addElement(new Integer(17));
+    v.addElement(new Integer(18));  v.addElement(new Integer(19));  v.addElement(new Integer(20));  v.addElement(new Integer(21));
+    v.addElement(new Integer(21));  v.addElement(new Integer(23));  v.addElement(new Integer(24));  v.addElement(new Integer(99));
+    v.addElement(new Integer(100)); v.addElement(new Integer(101)); v.addElement(new Integer(103)); v.addElement(new Integer(106));
+    v.addElement(new Integer(200)); v.addElement(new Integer(201)); v.addElement(new Integer(203));
+    v.addElement(new Integer(206)); v.addElement(new Integer(300)); v.addElement(new Integer(301)); v.addElement(new Integer(302));
+    v.addElement(new Integer(303)); v.addElement(new Integer(305)); v.addElement(new Integer(306)); v.addElement(new Integer(308));
+    v.addElement(new Integer(309)); v.addElement(new Integer(310)); v.addElement(new Integer(311)); v.addElement(new Integer(312));
+    v.addElement(new Integer(313)); v.addElement(new Integer(314)); v.addElement(new Integer(315)); v.addElement(new Integer(316));
+    v.addElement(new Integer(317)); v.addElement(new Integer(400)); v.addElement(new Integer(401)); v.addElement(new Integer(402));
+    v.addElement(new Integer(403)); v.addElement(new Integer(404)); v.addElement(new Integer(405)); v.addElement(new Integer(406));
+    v.addElement(new Integer(407)); v.addElement(new Integer(408)); v.addElement(new Integer(409)); v.addElement(new Integer(410));
+    v.addElement(new Integer(411)); v.addElement(new Integer(412)); v.addElement(new Integer(413)); v.addElement(new Integer(414));
+    v.addElement(new Integer(415)); v.addElement(new Integer(417)); v.addElement(new Integer(418)); v.addElement(new Integer(419));
+    v.addElement(new Integer(420)); v.addElement(new Integer(421)); v.addElement(new Integer(422)); v.addElement(new Integer(423));
+    v.addElement(new Integer(424)); v.addElement(new Integer(425)); v.addElement(new Integer(426));        
+    return v;
+  }
+
 
   String codeToString(int _i) {
     String _s = new String();

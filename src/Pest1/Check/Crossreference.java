@@ -44,7 +44,7 @@ import java.awt.*;
  * keine
  * </DL COMPACT>
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: Crossreference.java,v 1.22 1999-02-11 17:21:33 swtech11 Exp $
+ * @version  $Id: Crossreference.java,v 1.23 1999-02-11 22:29:13 swtech11 Exp $
  */
 public class Crossreference extends ModelCheckBasics {
   private GUIInterface gui = null;     // Referenz auf die GUI
@@ -92,31 +92,18 @@ public class Crossreference extends ModelCheckBasics {
       if (sc.state instanceof And_State) {navAndState ((And_State)sc.state, null,""); }
       if (sc.state instanceof Basic_State) {navBasicState ((Basic_State)sc.state, null,""); }
       // Ausgabe
-      if (edit != null & cf.cr_highlight==true) { high = true; } else { high = false; } // muß noch um Config erweiter werden
-      highlightObject ho;
       if (items.size()>0) {
-        if (high==true) { ho = new highlightObject(true); }// Highlighten vorbereiten
-	if (cf.sc_browser==false) { 
-       gui.userMessage("Check: "+such+" ist ein:");
-        for (int i=0; i<items.size(); i++) {
-          ReportItem rp = (ReportItem)items.elementAt(i);
-          gui.userMessage("Check:   - "+rp.Pth);
-          if (high==true & rp.HiObj!=null) {
-            ho = new highlightObject((Absyn)rp.HiObj,cf.color[cf.high_color]); // Object highlighten
-  	      }
-        }
-	}
-        else {
-        Browser b = new Browser(gui, edit, CrossToError(),cf);
-
-
-	}
-        if (high==true) {ho = new highlightObject(); }// Highlighten aktivieren
+        if (cf.cr_highlight==false) {
+          gui.userMessage("Check: "+such+" ist ein:");
+          for (int i=0; i<items.size(); i++) {
+            ReportItem rp = (ReportItem)items.elementAt(i);
+            gui.userMessage("Check:   - "+rp.Pth);
+          }
+      	}
+        else { Browser b = new Browser(gui, edit, CrossToError(),cf,such); }
       }
       else { gui.userMessage("Check: "+such+" wurde nicht gefunden."); }
-      // outputToFile("test.txt");
     }
-
   }
 
   // Listen durchsuchen
@@ -313,49 +300,15 @@ public class Crossreference extends ModelCheckBasics {
     items.addElement(ri);
   }
 
-
-
-
-/**
- * Gibt alle Meldungen des Syntax Checkers in eine Datei aus.
- * Die Methode gibt alle Fehler- und Warnungmeldungen in einer Textdatei im ASCII-Format aus.
- * @param _name  Name der Datei, in die gespeichert werden soll
- */
-  void outputToFile(String _name) {
-    try {
-      FileOutputStream fos = new FileOutputStream(_name);
-      PrintWriter out = new PrintWriter(fos);
-      out.println("Meldungen der Crossreference:");
-      out.println();
-      if (items.size()>0) {
-        out.println(such+" ist ein:");
-        for (int i=0; i<items.size(); i++) {
-          ReportItem rp = (ReportItem)items.elementAt(i);
-          out.println("- "+rp.Pth);
-        }
-      }
-      else {
-        out.println(such+" wurde nicht gefunden");
-      }
-      out.flush();
-      out.close();
-    }
-    catch (Exception e) { System.out.println(e); }
-  }
-
   ModelCheckMsg CrossToError() {
     ModelCheckMsg msg=new ModelCheckMsg();
     for (int i=0; i<items.size(); i++) {
-    msg.addError(0, ((ReportItem)items.elementAt(i)).Pth, ((ReportItem)items.elementAt(i)).HiObj);
-
+      msg.addError(0, ((ReportItem)items.elementAt(i)).Pth, ((ReportItem)items.elementAt(i)).HiObj);
     }
-
-
     return msg;
-    }
+  }
 
-
-}
+}
 
 
 class ReportItem {

@@ -8,7 +8,7 @@ import java.awt.event.*;
  * Fenster zur Eingabe der Optionen des Syntax Checks, die in der Klasse CheckConfig gespeichert werden
  *
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: CheckOption.java,v 1.7 1999-02-11 01:06:22 swtech11 Exp $
+ *  @version  $Id: CheckOption.java,v 1.8 1999-02-11 22:29:11 swtech11 Exp $
  *  @see CheckConfig
  */
 public class CheckOption extends Dialog implements ActionListener {
@@ -17,6 +17,7 @@ public class CheckOption extends Dialog implements ActionListener {
   Button button1;
   Button button2;
   Button button_warn;
+  Button button_MSG;
 
   CheckboxGroup sc_warn;
   Checkbox[] sc_warn_e;
@@ -112,7 +113,7 @@ public class CheckOption extends Dialog implements ActionListener {
   	panel = new Panel(new GridLayout(1,1));
     panel.setBackground(Color.lightGray);
     panel.setForeground(Color.black);
-    cr_high = new Checkbox("Ergebnisse highlighten",cf.cr_highlight);
+    cr_high = new Checkbox("Message Browser benutzen",cf.cr_highlight);
     panel.add(cr_high);
     add(panel);
     // Highlight Color auswählen
@@ -159,8 +160,12 @@ public class CheckOption extends Dialog implements ActionListener {
 	  button2.setActionCommand("Ab");
   	button2.addActionListener(this);
 	  panel.add(button2);
+  	button_MSG = new Button("Meldungen");
+	  button_MSG.setActionCommand("MSG");
+  	button_MSG.addActionListener(this);
+	  panel.add(button_MSG);
   	add(panel);
-    
+
   	pack();
 	  setResizable(true);
   	setVisible(true);
@@ -185,6 +190,9 @@ public class CheckOption extends Dialog implements ActionListener {
 	  }
     else if (cmd.equals(button_warn.getActionCommand())) {
       CheckOptionWarnung cow = new CheckOptionWarnung(parent, cf);
+    }
+    else if (cmd.equals(button_MSG.getActionCommand())) {
+      CheckOptionMeldungen com = new CheckOptionMeldungen(parent);
     }
   }
 

@@ -140,7 +140,7 @@ import editor.*;
  *</Table>
  * <br>
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: ModelCheck.java,v 1.42 1999-02-11 17:21:34 swtech11 Exp $
+ * @version  $Id: ModelCheck.java,v 1.43 1999-02-11 22:29:16 swtech11 Exp $
  * @see CheckConfig
  */
 public class ModelCheck {
@@ -282,7 +282,7 @@ public class ModelCheck {
 
     if ( outputGUI == true ) {
       if (cf.sc_browser==true) { // Browser-Ausgabe
-        Browser b = new Browser(gui,edit,mcm,cf);
+        Browser b = new Browser(gui,edit,mcm,cf,new String(""));
       }
       else { outputToGUI(); } // Ausgabe an die GUI
     }
