@@ -8,7 +8,7 @@ import java.awt.event.*;
  * Fenster zur Eingabe der Optionen des Syntax Checks, die in der Klasse CheckConfig gespeichert werden
  *
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: CheckOption.java,v 1.9 1999-02-12 08:15:06 swtech11 Exp $
+ *  @version  $Id: CheckOption.java,v 1.10 1999-02-12 10:52:48 swtech11 Exp $
  *  @see CheckConfig
  */
 public class CheckOption extends Dialog implements ActionListener {
@@ -36,7 +36,7 @@ public class CheckOption extends Dialog implements ActionListener {
   public CheckOption(pest parent,CheckConfig _cf)  {
     super(parent,"Optionen beim Check",true);
     this.parent = parent;
-    if ( _cf==null ) { _cf = new CheckConfig(); }
+    if ( _cf==null ) { _cf = new CheckConfig();}
   cf = _cf;
   /**System.out.println(cf.sc_browser);
   System.out.println(cf.sc_warning);
@@ -72,11 +72,12 @@ public class CheckOption extends Dialog implements ActionListener {
     add(panel);
 
     // keine Warnungen ausgeben
-    panel = new Panel(new GridLayout(1,1));
+    panel = new Panel(new GridLayout(1,2));
     panel.setBackground(Color.lightGray);
     panel.setForeground(Color.black);
     sc_warn_e[0] = new Checkbox("keine",sc_warn,false);
     panel.add(sc_warn_e[0]);
+    panel.add(new Label(""));
     add(panel);
 
     // bestimmte Warnungen ausgeben
@@ -94,11 +95,12 @@ public class CheckOption extends Dialog implements ActionListener {
     add(panel);
 
     // alle Warnungen ausgeben
-    panel = new Panel(new GridLayout(1,1));
+    panel = new Panel(new GridLayout(1,2));
     panel.setBackground(Color.lightGray);
     panel.setForeground(Color.black);
     sc_warn_e[1] = new Checkbox("alle",sc_warn,false);
     panel.add(sc_warn_e[1]);
+    panel.add(new Label("")); 
     add(panel);
 
     sc_warn_e[cf.sc_warning].setState(true);
