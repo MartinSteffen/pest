@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	------------------
 //
-//	$Id: report_list,v 1.30 1999-02-04 17:59:10 swtech15 Exp $
+//	$Id: report_list,v 1.31 1999-02-04 21:47:42 swtech23 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -317,7 +317,7 @@ wie ein Or State, sonst ist alles hin.
 #Number:	21
 #Autor:		Bernd Weber bwe
 #Subject:	Check: Mehrere oder keine Default States werden nicht erkannt
-#Status:	reported
+#Status:	processing
 #Description:
 
 Check gibt weder Fehler noch Warnungen aus, obwohl keine bzw. zu viele
@@ -336,7 +336,7 @@ plaziert, wenn man sich ihnen mit dem Mauszeiger nähert.
 #Number:	23
 #Autor:		Bernd Weber bwe
 #Subject:	Crossreferenz funktioniert nicht
-#Status:	reported
+#Status:	processing
 #Description:
 
 Aufruf von Crossreferenz ergibt Meldungen der GUI:
@@ -347,7 +347,7 @@ Das war's. Mehr passiert nicht.
 #Number:	24
 #Autor:		Bernd Weber bwe
 #Subject:	Check: erkennt multiple bzw. fehlende Default Connectoren nicht
-#Status:	reported
+#Status:	processing
 #Description:
 
 Or State mit mehreren Default Connectoren bzw. gar keinen wird nicht bemängelt.
@@ -382,7 +382,7 @@ java.lang.NullPointerException:
 #Number:	24
 #Autor:		Bernd Weber bwe
 #Subject:	Check: erkennt Interlevel-Transition nicht.
-#Status:	reported
+#Status:	processing
 #Description:
 
 Erzeugt man einen Or-State und einen Basic-State wie in Nr. 24 und zieht eine
@@ -494,7 +494,7 @@ zu erzeugen. Das ergibt eine Exception:
 #Number:	31
 #Autor:		Bernd Weber bwe
 #Subject:	Check: Erkennt Schleife an Connector nicht
-#Status:	reported
+#Status:	processing
 #Description:
 
 Erstellt man einen Connector und darin eine Transition von diesem zu sich
