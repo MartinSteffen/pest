@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	------------------
 //
-//	$Id: report_list,v 1.13 1999-01-27 15:35:42 swtech00 Exp $
+//	$Id: report_list,v 1.14 1999-01-27 16:20:21 swtech23 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -117,7 +117,7 @@ der vorangegangene Export erfolgreich war.
 #Number:	7
 #Autor:		Erich Mikk erm
 #Subject:	Check achtet nicht auf Keywords
-#Status: 	reported 
+#Status: 	processed
 #Description: 
 
 Importiere SE-Systems/vcr.st 
