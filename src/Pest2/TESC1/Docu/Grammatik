@@ -1,5 +1,29 @@
 Grammatik von TESC
-$Id: Grammatik,v 1.2 1999-01-11 12:14:22 swtech20 Exp $
+$Id: Grammatik,v 1.3 1999-01-20 17:32:37 swtech20 Exp $
+-----------------------------------------------------------------------
+
+Tokenklassen für den Scanner
+
+<character>     ::= {a..z,A..Z,.}
+<digits>        ::= {0..9}
+<sidentifier>   ::= <character>+(<character>+<digits>)*
+<identifier>    ::= <sidentifier>(<dot><sidentifier>)*
+<pathop>        ::= {in|entered|exited}
+<op>            ::= {&,|,->,<=>}
+<parentesis>    ::= {(,)}
+<komma>         ::= {,}
+<not>           ::= {!}
+<equal>		::= {=}
+<whitespace>    ::= {TAB, SPACE, ENTER}
+<EOF>           ::= {EOF}
+<comment>       ::= {//}
+
+Legende
+{.} = Menge
+ |  = Auswahl
+ *  = bel. Wiederholung
+ +  = Auswahl
+
 -----------------------------------------------------------------------
 
 TESC              ::= VAR EVENT STATE
@@ -10,7 +34,7 @@ VARS              ::= IDENTIFIER | "(" VARLIST ")"
 
 VARLIST           ::= IDENTIFIER {"," VARLIST}
 
-EVENT             ::= {"var" EVENTS}
+EVENT             ::= {"event" EVENTS}
 
 EVENTS            ::= IDENTIFIER | "(" EVENTLIST ")"
 
@@ -40,13 +64,15 @@ CONNECTOR         ::= "con" IDENTIFIER
 
 TRANSITIONS       ::= TRANSITION TRANSITION
 
-TRANSITION        ::= "from" TRANCHOR "to" TRANCHOR {"on" GUARD} {"do" ACTION}
+TRANSITION        ::= "from" TRANCHOR "to" TRANCHOR {"on" GUARD_STM} {"do" ACTION}
 
 TRANCHOR          ::= "UNDEF" | IDENTIFIER
 
 DEFAULTCONS       ::=  DEFAULTCON {DEFAULTCON}
 
 DEFAULTCON        ::= "default" IDENTIFIER
+
+GUARD_STM         ::= {GUARD} {"[" GUARD "]"}
 
 GUARD             ::= GUARDIMPLIES GUARD_REST
 
@@ -72,13 +98,29 @@ COMPPATH          ::= (IN | ENTERED | EXITED) "(" PATH ")"
 
 PATH              ::= IDENTIFIER {"." PATH}
 
-ACTION            ::= IDENTIFIER | BOOLSTMT | "(" ACTIONLIST ")"
+ACTIONS           ::= ( "(" ACTIONLIST ")" ) | ACTION
 
-BOOLSTMT          ::= IDENTIFIER "=" (true | false | GUARD)
+ACTION            ::= IDENTIFIER | ( IDENTIFIER "=" ( true | false | GUARD_STM ))
 
-ACTIONLIST        ::= (IDENTIFIER | BOOLSTMT) {"," ACTIONLIST}
+ACTIONLIST        ::= ACTION { "," ACTIONLIST }
 
 IDENTIFIER        ::= <Zeichen-/Ziffernkette>
 
 -----------------------------------------------------------------------
+
+In Regel GUARD_STM ::= {GUARD} {"[" GUARD "]"} duerfen im ersten
+Guard nur Events und im zweiten nur Bvars verwendet werden.
+
+-----------------------------------------------------------------------
+
+Legende 
+ .  = Nichterminal
+"." = Token
+{.} = Optional
+ |  = Auswahl
+
+-----------------------------------------------------------------------
+
 $Log: not supported by cvs2svn $
+Revision 1.2  1999/01/11 12:14:22  swtech20
+Updates.

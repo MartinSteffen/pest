@@ -1,4 +1,4 @@
-Sprachdefinition von TESC - Textuelle Statecharts - (Stand 29.11.)
+Sprachdefinition von TESC - Textuelle Statecharts
 
 
 Schematische Darstellung
@@ -30,7 +30,7 @@ Struktur von TESC an Beispielen
 
 Beispiel 1
 
-  event a,b
+  event (a,b)
   
   and A
       xor A1
@@ -56,7 +56,7 @@ Beispiel 2 (aus dem Pflichtenheft) ohne inter-level-Transitionen
                 basic S1
                 basic S2
                 from S1 to S2 on C
-                from S2 to S1 on G & in(SUD.P3.Q2.T2)
+                from S2 to S1 on G[in(SUD.P3.Q2.T2)]
                 default S1
              end R1
              or R2
@@ -86,135 +86,30 @@ Beispiel 3
     from C1 to P1 on A 
   end Main
 
-Beispiel 4 Ausdrücke 
-
-  - G & in(SUD.P3.Q2.T2)
-  - !G | !in(SUD.P3.Q2.T2)
-  - (a=true,b=false)
-  - (a=!a&!b,A)
-
-Tokenklassen für den Scanner
-
-<character>     ::= {a..z,A..Z}
-<digits>        ::= {0..9}
-<boolval>       ::= {true, false}
-<dot>           ::= {.}
-<keywors>       ::= {and, or, basic, from, to, on, do, default, end, con, true, false, 
-                     in, entered, exited, undef}
-<sidentifier>   ::= <character>+(<character>+<digits>)*
-<identifier>    ::= <sidentifier>(<dot><sidentifier>)*
-
-<pathop>        ::= {in|entered|exited}
-<op>            ::= {&,|,->,<=>}
-<parentesis>    ::= {(,)}
-<komma>         ::= {,}
-<not>           ::= {!}
-<equal>		::= {=}
-<whitespace>    ::= {TAB, SPACE, ENTER}
-<EOF>           ::= {EOF}
-<comment>       ::= {;}
-
-Legende
-{.} = Menge
- |  = Auswahl
- *  = bel. Wiederholung
- +  = Auswahl
-
 
 Schlüsselwortliste
 
 Diese Worte duerfen in einem Statechart nirgends als Bezeichner, Name oder Operator
-auftauchen.
-
- - and, or, basic, from, to, on, do, default, end, con, true, false, in, entered, exited, 
- - undef (für Transitionen mit fehlendem Zustand)
- - abort (Marcel)
- 
-
-Grammatik
-
-tesc          ::= state
-
-state         ::= and_state | or_state | basic_state
-
-and_state     ::= "and"     {"identifier"}  
-                            and_substates
-                  "end"     {"identifier"}
-
-and_substates ::= or_state {and_substates} | basic_state {and_substates}
-
-or_states     ::= or_state or_states | or_state 
-
-or_state      ::= "or"      {"identifier"}
-                            or_substates
-                            connectors
-                            transitions
-                            defaultcon
-                  "end"     {"identifier"}
-
-or_substates  ::= state {or_substates} 
-
-basic_states  ::= basic_state basic_states | basic_state
-
-basic_state   ::= "basic" {"identifier"}
-
-defaultcon    ::= "default" "do" "identifier"
-
-connectors    ::= connector connecotrs | connector
-
-connector     ::= "con" "identifier"
-                         
-transitions   ::= transition transitions | transition
-
-transition    ::= "from" "identifier" "to" "indentifier" "on" guard {"do" action}
+auftauchen. Definiert sind die Schluesselworte in util.Keyword.java.
 
 
-guard         ::= "true" | "false" | "identifier" | "!" guard | comppath | compguard
+Transitionsbeschriftungen
 
-comppath      ::= pathop "identifier"
+Der Aufbau der Beschriftungen ist an die Syntax von Statemate angelehnt, i.e.
 
-pathop        ::= "in" | "entered" | "exited"
+  EventExpr[BvarExpr] / Action
 
-compguard     ::= "(" guard op guard ")" 
-
-op            ::= "&" | "|" | "->" | "<->"
-
-
-action        ::= actionlist | "identifier" | boolstmt |
-
-actionlist    ::= "(" action, {actionlistel}  ")"
-
-actionlistel  ::= "," action {actionlistel}
-
-boolstmt      ::= "identifier" "=" { "true" | "false" | Condition }
-
-condition     ::= ???
+In EventExpr duerfen nur Events verwendet werden und in BvarExpr analog nur
+Bvars. 
 
 
-Legende 
- .  = Nichterminal
-"." = Token
-{.} = Optional
- |  = Auswahl
+Deklaration
 
-Probleme und Fragen
+Es gibt zwei Moeglichkeiten Events und Bvars einzufuehren.
 
-- Wie ist die Verschachtelung von and-Zustaenden
-  zu realisieren? Ueberhaupt?
-- Sollen Schluesselwörte als Bezeichner zugelassen sein? Falls "Ja, klären, wie
-  man diese beim Import ablehnt.
-- Wie sieht ein Bezeichner aus? Beginn immer Buchstabe?
-  Sollte nicht von den Editor-Leuten bereits abgeprüft werden, daß kein Bezeichner
-  als Schlüsselwort vergeben wird? 
-  Sonst Probleme in Phase II --> Task Force?
-- Muß ein korrektes StateChart korrekt belabelt sein?
-- Keine Lokalen Events
-- Zusätzliches Schüsselwort "undef" für Transitionen ohne Zustände.
-- Aussehen einer Condition  
-- Feste Reihenfolge im or-State-Block (or_substates,connectors,transitions,
-  defaultcon) ok?
+1. Explizite Deklaration
+   Nach den Schluesselworten var bzw. event folgt eine Liste von Bezeichnern,
+   zu denen dann entsprechend im weiteren Parse-Verlauf bezuggenommen wird.
 
-Todo
-- Grammatik muß eindeutig und frei von Links-Rekursionen sein.
-- Tokenbezeichner festlegen
-
+2. Implizite Deklaration
+   Der Typ eines Bezeichners wird aus dem Kontext heraus ermittelt.
