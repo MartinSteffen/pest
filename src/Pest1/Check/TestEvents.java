@@ -5,25 +5,28 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestEvents.java,v 1.8 1999-01-07 15:19:01 swtech11 Exp $
+ *  @version  $Id: TestEvents.java,v 1.9 1999-01-13 13:13:43 swtech11 Exp $
  */
 /** Diese Testklasse testet, ob alle Events deklariert worden sind, 
     <br>ob die deklarierten eindeutig sind und ob sie alle verwendet werden.*/
 
 class TestEvents extends ModelCheckBasics{
   private Vector Ist;
-  private Vector Soll;
+  private Vector GSoll;
+  private Vector ASoll;
 
   TestEvents() {
     super();
     Ist=new Vector();
-    Soll=new Vector();
+    GSoll=new Vector();
+ASoll=new Vector();
   }
 
   TestEvents(Statechart s, ModelCheckMsg m) {
     super(s,m);
     Ist=new Vector();
-    Soll=new Vector();
+    GSoll=new Vector();
+ASoll=new Vector();
   }
 
  /** Die Methode check ueberprueft die Statechart auf Fehler bzgl. Events.*/
@@ -65,7 +68,7 @@ class TestEvents extends ModelCheckBasics{
  /** Ueberprueft den Guard auf Verwendung von Events.*/
  
     void pruefeGuard(Guard g, Tr t, String p){
-    if (g instanceof GuardEvent) {pruefeEvent (((GuardEvent)g).event, t, p);};
+    if (g instanceof GuardEvent) {pruefeEvent (((GuardEvent)g).event, t, p,1);};
     if (g instanceof GuardCompg) {pruefeGuard (((GuardCompg)g).cguard.elhs, t, p);
                                   pruefeGuard (((GuardCompg)g).cguard.erhs, t, p); };
     if (g instanceof GuardCompp) {pruefePath  (((GuardCompp)g).cpath.path, t, p);}
@@ -74,21 +77,33 @@ class TestEvents extends ModelCheckBasics{
 
 /** Ueberprueft, ob ein Event deklariert worden ist.*/
 
-  void pruefeEvent(SEvent e, Tr t, String p){
-      if (Ist.contains(e.name)) {if (!Soll.contains(e.name)) { Soll.addElement(e.name);};}
+  void pruefeEvent(SEvent e, Tr t, String p, int i){
+      
+      if (Ist.contains(e.name)) if ((!GSoll.contains(e.name)) && (!ASoll.contains(e.name))) { 
+	  if (i==1) {GSoll.addElement(e.name);}
+          if (i==2) {ASoll.addElement(e.name);}
+
+;}
       else {msg.addError(201,"Event: "+e.name, t, p);};
   };
 
   /** Ueberprueft den Action auf Verwendung von Events.*/
 
      void pruefeAction(Action a, Tr t, String p){
-    if (a instanceof ActionBlock)  { if ((((ActionBlock)a).aseq)!=null)
-for(Aseq as=((ActionBlock)a).aseq; (as.tail!=null); as=as.tail) 
-	{ pruefeAction(as.head, t, p);}
+	 if (a instanceof ActionBlock)  { if ((((ActionBlock)a).aseq)!=null) {
+            Aseq as=((ActionBlock)a).aseq;
+            for(; (as.tail!=null); as=as.tail) 
+	      { pruefeAction(as.head, t, p);
+	      //System.out.println("Schleife "+p);               
+}
+	    pruefeAction(as.head, t, p);
+	    //System.out.println("Ende "+p);
+}
 
     else {msg.addError(24, t , p);};
     }
-    if (a instanceof ActionEvt) {pruefeEvent (((ActionEvt)a).event, t, p);};
+    if (a instanceof ActionEvt) {
+      pruefeEvent (((ActionEvt)a).event, t, p,2);};
     }
 
   /** Ueberprueft einen Pfad auf Existenz.*/
@@ -111,10 +126,21 @@ for(Aseq as=((ActionBlock)a).aseq; (as.tail!=null); as=as.tail)
 <br>Wenn Events aus dem Vector Ist nicht verwendet werden , wird gewarnt.*/
 
     void vergleiche(){
-	for( int i=0; i<Soll.size();i++) {
-	    Ist.removeElement(Soll.elementAt(i));};
-        for(int i=0; i<Ist.size(); i++) { msg.addWarning(202,(String)Ist.elementAt(i));};
+	for( int i=0; i<ASoll.size();i++) {
+            if (GSoll.contains(ASoll.elementAt(i))) {GSoll.removeElement(ASoll.elementAt(i));}
+	    else {msg.addWarning(205,(String)ASoll.elementAt(i));};
+	    Ist.removeElement(ASoll.elementAt(i));};
+        for(int i=0; i<GSoll.size(); i++) {
+                 Ist.removeElement(GSoll.elementAt(i)); 
+                 msg.addWarning(204,(String)GSoll.elementAt(i));};
+
+            for(int i=0; i<Ist.size(); i++) {
+                 
+                 msg.addWarning(202,(String)Ist.elementAt(i));};
+
+
 
     };}
+
 
 
