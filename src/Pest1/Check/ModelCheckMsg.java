@@ -5,7 +5,7 @@ import absyn.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: ModelCheckMsg.java,v 1.5 1999-01-06 12:56:27 swtech11 Exp $
+ *  @version  $Id: ModelCheckMsg.java,v 1.6 1999-01-07 15:18:59 swtech11 Exp $
  */
 class ModelCheckMsg {
   private Vector ErrorCode;
@@ -36,12 +36,13 @@ class ModelCheckMsg {
     ErrorPath.addElement(_path);
   }
 
-
+    /** Error hinzufuegen.*/
  void addError(int n, Tr t, String p) {
   
   this.addError(n,"", t, p);
   }
 
+    /** Error hinzufuegen*/
  void addError(int n, String p1, Tr t, String p) {
   String s1="";
   String s2="";
@@ -87,12 +88,13 @@ class ModelCheckMsg {
     WarningPath.addElement(_path);
   }
 
-
+    /** Warnung hinzufuegen.*/
  void addWarning(int n, Tr t, String p) {
   
   this.addWarning(n,"", t, p);
   }
 
+    /** Warnung hinzufuegen.*/
  void addWarning(int n, String p1, Tr t, String p) {
   String s1="";
   String s2="";

@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestEvents.java,v 1.7 1999-01-06 15:58:41 swtech11 Exp $
+ *  @version  $Id: TestEvents.java,v 1.8 1999-01-07 15:19:01 swtech11 Exp $
  */
 /** Diese Testklasse testet, ob alle Events deklariert worden sind, 
     <br>ob die deklarierten eindeutig sind und ob sie alle verwendet werden.*/
@@ -53,6 +53,7 @@ class TestEvents extends ModelCheckBasics{
 
   };
 
+    /** prueft den Guard und den Action einer Transition.*/
 
  void navTransInTransList(TrList tl, State _s, String p) {
     pruefeGuard(tl.head.label.guard, tl.head, p);
@@ -94,12 +95,12 @@ for(Aseq as=((ActionBlock)a).aseq; (as.tail!=null); as=as.tail)
  
   void pruefePath(Path p, Tr t, String s){
       PathList pl=sc.cnames;
-      
-      
       boolean b=false;
  
       for(; ((pl != null) && (!b)) ; pl=pl.tail){ 
-          if (PathtoString(pl.head).equals(PathtoString(p))) {b=true;};}              
+	  //  if (Pathequal(pl.head, p)) {b=true;};  
+      if (PathtoString(pl.head).equals(PathtoString(p))) {b=true;};
+       };              
           
       
       if (b==false) {msg.addError(203,"Pfad: "+PathtoString(p), t, s);}

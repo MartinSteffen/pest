@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestStates.java,v 1.5 1999-01-04 22:36:40 swtech11 Exp $
+ *  @version  $Id: TestStates.java,v 1.6 1999-01-07 15:19:02 swtech11 Exp $
  */
 
 /** Diese Testklasse testet, ob alle Statenamen deklariert worden sind, 
@@ -27,7 +27,6 @@ class TestStates extends ModelCheckBasics{
     erstelle_Pfad1();
     vergleiche_Pfade();
     pruefeState(sc.state);
-    // msg.addWarning(3,"bei allen States");
     return ((msg.getErrorNumber()-m)==0);;
   }
 
@@ -71,7 +70,7 @@ class TestStates extends ModelCheckBasics{
     };
 
    /** Die Vectoren Pfad1 und Pfad2 werden verglichen. 
-<br>Wenn States aus dem Vector Pfad2 nicht verwendet werden, wird gewarnt.*/
+<br>Wenn States aus dem Vector Pfad2 nicht verwendet werden, wird ein Fehler ausgegeben.*/
  
     void vergleiche_Pfade(){
     Vector p2=(Vector)Pfad2.clone();
@@ -82,7 +81,10 @@ class TestStates extends ModelCheckBasics{
     };
  
     
-
+    /** Es wird ueberprueft, ob ein Or- bzw. And-State andere States enthaelt.
+   <br> Wenn kein innere State vorhanden ist, wird ein Fehler ausgegeben. Bei einem inneren State wird gewarnt.
+    */
+    
     void pruefeState(State s){
     if (s instanceof Or_State) {
 	   if (((Or_State)s).substates==null) {msg.addError(305,"State: "+s.name.name);}
@@ -102,13 +104,15 @@ class TestStates extends ModelCheckBasics{
     if (sl.tail != null) { navStateInStateList(sl.tail); }
   }
 
+    /** Berechnet die Anzahl der States die in StateList sl vorhandne sind. */
     int Anzahl_States(StateList sl){
       int i=1; 
 	 for (; sl.tail!=null; sl=sl.tail) {i++;};
 
       return i;};
 
-        // gibt den kompletten Pfad des States _n zurueck, d.h. _p + "." +_n
+    /**   gibt den kompletten Pfad des States _n zurueck, d.h. _p + "." +_n
+	  <br> falls eine Statename aus "" besteht wird gewarnt.*/
   String getAddPathPart(String _p, String _n) {   // _p Pfad, _n Name des States
     String _np = new String();
     if (_p.equals("")) { _np = _n; } else { _np = _p + ts + _n; }

@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestBVars.java,v 1.8 1999-01-06 15:58:40 swtech11 Exp $
+ *  @version  $Id: TestBVars.java,v 1.9 1999-01-07 15:19:00 swtech11 Exp $
  */
 
 /** Diese Testklasse testet, ob alle BVars deklariert worden sind, 
@@ -63,7 +63,7 @@ class TestBVars extends ModelCheckBasics{
 
   }
 
-    /** Ueberprueft den Guard auf Verwendung von BVars.*/
+    /** Ueberprueft den Guard auf Verwendung von BVars und ob der nur Guardelemente verwendet worden sind.*/
 
     void pruefeGuard(Guard g, Tr t, String p){
     if (g instanceof GuardBVar)  {pruefeBVar  (((GuardBVar )g).bvar, t, p);}
@@ -87,7 +87,7 @@ class TestBVars extends ModelCheckBasics{
       if (Ist.contains(b.var)) {if (!Soll.contains(b.var)) { Soll.addElement(b.var);};}
       else { msg.addError(101, "BVar: "+b.var, t, p);};
   };
-   /** Ueberprueft den Action auf Verwendung von BVars.*/
+   /** Ueberprueft den Action auf Verwendung von BVars und ob nur Actionelemente verwendet werden.*/
 
     void pruefeAction(Action a, Tr t, String p){
     if (a instanceof ActionBlock)  {if ((((ActionBlock)a).aseq)!=null) for(Aseq as=((ActionBlock)a).aseq;as.tail!=null;as=as.tail) 

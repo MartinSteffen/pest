@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: ModelCheckBasics.java,v 1.5 1999-01-06 12:56:25 swtech11 Exp $
+ *  @version  $Id: ModelCheckBasics.java,v 1.6 1999-01-07 15:18:58 swtech11 Exp $
  */
 class ModelCheckBasics {
   ModelCheckMsg msg = new ModelCheckMsg();
@@ -141,6 +141,8 @@ class ModelCheckBasics {
     if (sl.tail != null) { tonavStateInStateList(sl.tail, p, plv); }
   }
 
+    /** prueft ob zwei Pfade gleich sind.*/
+
   boolean Pathequal(Path p1, Path p2){
   boolean b=(p1.head == p2.head);
   if ((b==true) && (p1.tail!=null) && (p2.tail!=null)) {b=Pathequal(p1.tail, p2.tail);}
@@ -149,6 +151,8 @@ class ModelCheckBasics {
        ((p1.tail==null) && (p2.tail!=null))))  {b=false;}
   return b;
   };
+  
+    /** Wandelt einen Pfad in einen String um.*/
   
     String PathtoString(Path p) {
     String s=p.head;
