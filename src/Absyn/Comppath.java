@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Operation on path of statenames.
  * @author Initially provided by Martin Steffen.
- * @version $Id: Comppath.java,v 1.11 1999-01-11 17:23:48 swtech00 Exp $
+ * @version $Id: Comppath.java,v 1.12 1999-02-09 10:40:12 swtech00 Exp $
  */
 public class Comppath extends Absyn implements Serializable, Cloneable {
 /**
@@ -42,7 +42,8 @@ public class Comppath extends Absyn implements Serializable, Cloneable {
  */
   public Object clone() throws CloneNotSupportedException {
     Location  locationclone  = (location == null) ? null : (Location)location.clone();  
-    return new Comppath (pathop, (Path)path.clone(), locationclone);
+    Path      pathclone      = (path == null)     ? null : (Path)path.clone();
+    return new Comppath (pathop, pathclone, locationclone);
   };
 }
 
@@ -50,9 +51,19 @@ public class Comppath extends Absyn implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Comppath.java,v 1.11 1999-01-11 17:23:48 swtech00 Exp $
+//	$Id: Comppath.java,v 1.12 1999-02-09 10:40:12 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.11  1999/01/11 17:23:48  swtech00
+//	Alle Bestandteile der abstrakten Syntax mit Locations (= nicht-abstrakte
+//	Unterklassen von Absyn) in der Form modifiziert, da"s das Locations-Feld
+//	mit-geklont wird. =>
+//
+//	     o	Jeweils neuer Kontruktor hinzugef"ugt
+//	     o  clone-Methode angepa"st
+//
+//	[Steffen]
+//
 //	Revision 1.10  1998/12/15 16:33:26  swtech00
 //	Towards new package names.
 //
