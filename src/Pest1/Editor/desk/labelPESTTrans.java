@@ -28,11 +28,14 @@ Statechart root;
    boolean drawtest = true;  
    static int laufname = 0;
    static String temptranslabel;
+    static Statematrix matrix;
     
     public labelPESTTrans(Statechart nroot, int cx1, int cy1,Tr akttrans) 
     {
+	//tempobj = PESTdrawutil.getState(root,cx1,cy1);
 	root = nroot;
-	akttrans.label.position = new CPoint(cx1,cy1);
+	matrix = PESTdrawutil.getState(root,cx1,cy1);
+	akttrans.label.position = new CPoint(cx1-matrix.x,cy1-matrix.y);
 	temptranslabel = Editor.labelObject(akttrans);
 	// System.out.println("Neues Label :"+temptranslabel);
 
