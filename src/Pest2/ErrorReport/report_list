@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	--------------
 //
-//	$Id: report_list,v 1.46 1999-02-09 15:43:15 swtech23 Exp $
+//	$Id: report_list,v 1.47 1999-02-09 16:50:06 swtech23 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -578,7 +578,7 @@ beide Basic States als Default angegeben sind. Syntaxcheck meldet keine Fehler.
 #Number:	38
 #Autor:		Bernd Weber bwe
 #Subject:	Tesc: Falscher Default State wird nicht erkannt
-#Status:	reported
+#Status:	fixed/reported
 #Description:
 
 Importiere ~swtech12/Examples/misc/faulty3.tesc2. Ergibt keine Fehler, obwohl
@@ -586,6 +586,8 @@ root als sein eigener default markiert ist. Syntaxcheck meldet keine Fehler.
 
 Zurückgesetzt weil das Beispiel noch immer importierbar ist und keine
 Fehler gemeldet werden.
+
+Von Seiten des SyntaxChecks gefixed
 //------------------------------------------------------------------------------
 #Number:	39
 #Autor:		Bernd Weber bwe
@@ -619,4 +621,3 @@ Man importiere ~swtech12/Examples/misc/nondet-test1.tesc2. Dann
 versuche man, den Zustand Init umzubenennen. Bei mir erscheint immer
 das Menu fr den Zustand Nondet.
 //------------------------------------------------------------------------------
-
