@@ -42,6 +42,29 @@ public class Communicator extends Frame{
     return true;
   }
 
+  /* to be done... */
+  public Vector solveNonDeterminism(Vector v){
+    Vector result=null;
+    System.err.println("Nicht-Determinismus");
+    NonDeterminismDialog dialog=new NonDeterminismDialog(this,v);
+    dialog.show();
+    result=dialog.getAnswer();
+    return result;
+  }
+
+  /* to be done */
+  public Status solveBVarRacing(RacingException e){
+    System.err.println("Racing....");
+    Status result=new Status();
+    BooleanTabelle racing_status=e.status;
+    Bvar racing_var=e.var;
+    BVarRacingDialog dialog=new BVarRacingDialog(this,racing_status,racing_var);
+    dialog.show();
+    racing_status=dialog.getAnswer();
+    return result;
+  }
+
+
   /* loeseNDeterm bekommt einen Vector mit mehreren moeglichen Transitionen */
   /* und liefert einen Vector mit genau einer Transition zurueck.           */
   /* Funktioniert noch nicht, da keine Rueckgabe bei knopfdruck....         */

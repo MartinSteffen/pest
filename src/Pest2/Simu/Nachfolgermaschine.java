@@ -61,9 +61,7 @@ class Nachfolgermaschine extends Object{
        result=result.verbinde(statusse);                              /* results verschmelzen     */ 
      }
      catch (RacingException e){
-       /* Racing-Situation bei Conditions aufgetreten!*/
-       /* Frage an Communicator                       */
-       System.err.println("Racing bei Condition!");
+       result=comm.solveBVarRacing(e);
      }
      return result;
    };
@@ -90,9 +88,7 @@ class Nachfolgermaschine extends Object{
 	}
 	System.err.println("Gefunden: "+transitionen.size());
 	if (transitionen.size()>1){                  /* Gibt es mehr als eine moegliche Transition */
-	  System.err.println("Nichtdeterminismus.......");
-	  /* Hier den Communicator fragen, und den Vector dann auf eine */
-	  /* Transition beschneiden.                                    */
+	  transitionen=comm.solveNonDeterminism(transitionen);
 	}
 	/* BEGIN HACK: Damit das folgende Code-Stueck funktioniert, muss in result     */
 	/* der momentan aktive Substate und os aktiv gesetzt werden.                          */
@@ -115,7 +111,7 @@ class Nachfolgermaschine extends Object{
 	/* ENDE HACK....                                                               */
 	if (transitionen.size()>0){                  /* Gibt es denn mindestens eine?              */
 	  Tr transit=(Tr)transitionen.firstElement();
-	  result=progress(path,transit,result);    /* Führe die Transition aus. */
+	  result=progress(path,transit,os,result);    /* Führe die Transition aus. */
 	}
 	/* Dann fuer den aktiven State step ausfuehren                        */
 	/* Aktiven State bestimmen: (1)                                       */
@@ -135,9 +131,7 @@ class Nachfolgermaschine extends Object{
 	   result=result.verbinde(step(path.append((tempstate.name).name),tempstate));
 	 }
 	 catch (RacingException e){
-	   /* Racing-Situation bei Conditions aufgetreten!*/
-	   /* Frage an Communicator                       */
-	   System.err.println("Racing bei Condition!");
+	   result=comm.solveBVarRacing(e);
 	 }
      }
      else{
@@ -163,9 +157,7 @@ class Nachfolgermaschine extends Object{
 	   result=result.verbinde(step(path.append((defaultstate.name).name),defaultstate)); /* rekursiver Abstieg */
 	 }
 	 catch (RacingException e){
-	   /* Racing-Situation bei Conditions aufgetreten!*/
-	   /* Frage an Communicator                       */
-	   System.err.println("Racing bei Condition!");
+	   result=comm.solveBVarRacing(e);
 	 }
        }
      }
@@ -217,8 +209,11 @@ class Nachfolgermaschine extends Object{
      /*wende step-Relation auf rootstate an*/
      System.err.println("Ausgangssituation:");
      act_states.debug();
+     Status result=new Status();
      State rootstate=chart.state;
-     Status result=step((new Path((rootstate.name).name,null)),rootstate);
+     if (rootstate!=null){
+       result=step((new Path((rootstate.name).name,null)),rootstate);
+     }
      return result;
    };
 
@@ -315,55 +310,217 @@ class Nachfolgermaschine extends Object{
    }
 
   /* enabled prueft, ob eine Transition anwendbar ist */
-   boolean enabled(Path path,Tr t){
-      TrAnchor ta=t.source;
-      TLabel   tl=t.label;
-      Guard    tg=tl.guard;
-      String sname=null;
-      boolean result=false;
-
-      /*Achtung! Noch keine Connectoren benutzbar*/
+  /* Bei Transitionen, die einen Connector als Ausgangspunkt haben, wird grundsaetzlich */
+  /* false geliefert, das wir nicht ohne weiteres wissen, ob der Connector "aktiv ist */
+  boolean enabled(Path path,Tr t){
+    TrAnchor ta=t.source;
+    TLabel   tl=t.label;
+    Guard    tg=tl.guard;
+    String sname=null;
+    boolean result=false;
+    
+    if (ta instanceof Conname){
+      result=false;
+    }
+    if (ta instanceof Statename){
       Statename statename=(Statename)ta;
       sname=statename.name;
-      /*Achtung! */
-
       /* Ist der betr. State aktiv und der Guard erfuellt? */
       if (((act_states.isActive(path.append(sname)))) && (isSatisfied(tg))){
-         result=true;
+	result=true;
       }
       else{
-         result=false;
+	result=false;
       }
-      return result;
-   }
+    }
+    return result;
+  }
+
+  /* Zwei Hilfsfunktionen, die durch State- oder Transitionslisten iterieren */
+  State getStateByName(String name, StateList states){
+    State result=null;
+    State head=states.head;
+    String headname=(head.name).name;
+    StateList tail=states.tail;
+    if (headname.equals(name)){
+      result=head;
+    }
+    while (result==null){
+      head=tail.head;
+      headname=(head.name).name;
+      tail=tail.tail;
+      if (headname.equals(name)){
+	result=head;
+      }
+    }
+    return result;
+  }
+
+  TrList getTrsFromConnectorname(String name, TrList list){
+    TrList result=null;
+    Tr head=list.head;
+    TrAnchor headsource=head.source;
+    TrList tail=list.tail;
+    String headname=((Conname)headsource).name;
+    if (headname.equals(name)){
+      result=new TrList(head,result);
+    }
+    while (tail!=null){
+      head=tail.head;
+      headsource=head.source;
+      headname=((Conname)headsource).name;
+      if (headname.equals(name)){
+	result=new TrList(head,result);
+      }
+    }
+    return result;
+  }
+      
+    
+  /* Progress fuer Transitionen von einem State zu einem State */ 
+  Status progress (Path path, Or_State os, Tr t, Statename from, Statename to, Status status){
+    Status result=new Status();
+    try{
+      result=result.verbinde(status);
+    }
+    catch (RacingException e){
+      result=comm.solveBVarRacing(e);
+    }
+    TLabel tl=t.label;
+    result.states.setInActive(path.append(from.name));
+    result.states.setActive(path.append(to.name),getStateByName(to.name,os.substates));
+    Action action=tl.action;
+    result=progress(action,result);
+    return result;
+  }
+  
+  /* Progress fuer Transitionen von einem State zu einem Connector */ 
+  Status progress (Path path, Or_State os, Tr t, Statename from, Conname to, Status status){
+    Status result=new Status();
+    try{
+      result=result.verbinde(status);
+    }
+    catch (RacingException e){
+      result=comm.solveBVarRacing(e);
+    }
+    TLabel tl=t.label;
+    result.states.setInActive(path.append(from.name));
+    Action action=tl.action;
+    result=progress(action,result);
+    TrList possibles=getTrsFromConnectorname(to.name,os.trs);
+    Tr head=possibles.head;
+    TrList tail=possibles.tail;
+    Vector transitionen=new Vector();
+    Guard headguard=head.label.guard;
+    if (isSatisfied(headguard)){
+      transitionen.addElement(head);
+    }
+    while (tail!=null){
+      head=tail.head;
+      headguard=head.label.guard;
+      tail=tail.tail;
+      if (isSatisfied(headguard)){
+	transitionen.addElement(head);
+      }
+    }
+    if (transitionen.size()>1){
+      transitionen=comm.solveNonDeterminism(transitionen);
+    }
+    if (transitionen.size()>0){
+      Tr transit=(Tr)transitionen.firstElement();
+      result=progress(path,transit,os,result);
+    }
+    return result;
+  }
+
+  /* Progress fuer Transitionen von einem Connector zu einem State */
+   Status progress (Path path, Or_State os, Tr t, Conname from, Statename to, Status status){
+    Status result=new Status();
+    try{
+      result=result.verbinde(status);
+    }
+    catch (RacingException e){
+      result=comm.solveBVarRacing(e);
+    }
+    TLabel tl=t.label;
+    result.states.setActive(path.append(to.name),getStateByName(to.name,os.substates));
+    Action action=tl.action;
+    result=progress(action,result);
+    return result;
+  }
+
+   /* Progress fuer Transitionen von einem Connector zu einem Connector */ 
+  Status progress (Path path, Or_State os, Tr t, Conname from, Conname to, Status status){
+    Status result=new Status();
+    try{
+      result=result.verbinde(status);
+    }
+    catch (RacingException e){
+      result=comm.solveBVarRacing(e);
+    }
+    TLabel tl=t.label;
+    Action action=tl.action;
+    result=progress(action,result);
+    TrList possibles=getTrsFromConnectorname(to.name,os.trs);
+    Tr head=possibles.head;
+    TrList tail=possibles.tail;
+    Vector transitionen=new Vector();
+    Guard headguard=head.label.guard;
+    if (isSatisfied(headguard)){
+      transitionen.addElement(head);
+    }
+    while (tail!=null){
+      head=tail.head;
+      headguard=head.label.guard;
+      tail=tail.tail;
+      if (isSatisfied(headguard)){
+	transitionen.addElement(head);
+      }
+    }
+    if (transitionen.size()>1){
+      transitionen=comm.solveNonDeterminism(transitionen);
+    }
+    if (transitionen.size()>0){
+      Tr transit=(Tr)transitionen.firstElement();
+      result=progress(path,transit,os,result);
+    }
+    return result;
+  }
+  
+    
+      
+      
 
   /* Progress führt die Transition t auf status aus, indem rekursiv die action aufgeloest wird, */
   /* und liefert einen lokal veränderten Status zurück */
-  Status progress(Path path, Tr t, Status status){
+  Status progress(Path path, Tr t, Or_State os, Status status){
     System.err.println("Progress....");
     Status result=new Status();
     try{
       result=result.verbinde(status);
     }
     catch (RacingException e){
-      /* Racing-Situation bei Conditions aufgetreten!*/
-      /* Frage an Communicator                       */
-      System.err.println("Racing bei Condition!");
+      result=comm.solveBVarRacing(e);
     }
-    TLabel tl=t.label;
     TrAnchor from=t.source;
     TrAnchor to=t.target;
     
-    /*Achtung! Noch keine Connectoren benutzbar*/
-    String fromname=((Statename)from).name;
-    String toname=((Statename)to).name;
-    /*Achtung! */
-
-    result.states.setActive(path.append(toname),(new Basic_State(new Statename("Dummi"))) ); /*WICHTIG: Statt null den State uebergeben!!!*/
-    result.states.setInActive(path.append(fromname)); 
-    Action action=tl.action;
-    result=progress(action,result);
-    
+    if (from instanceof Statename){
+      if (to instanceof Statename){
+	result=progress(path,os,t,(Statename)from,(Statename)to,status);
+      }
+      if (to instanceof Conname){
+	result=progress(path,os,t,(Statename)from,(Conname)to,status);
+      }
+    }
+    if (from instanceof Conname){
+      if (to instanceof Statename){
+	result=progress(path,os,t,(Conname)from,(Statename)to,status);
+      }
+      if (to instanceof Conname){
+	result=progress(path,os,t,(Conname)from,(Conname)to,status);
+      }
+    }
     return result;
   }
       
@@ -440,7 +597,7 @@ class Nachfolgermaschine extends Object{
   
 
   Status progress(Action a, Status status){
-    Status result=null;
+    Status result=new Status();
     Class klasse=a.getClass();
     String klassenname=klasse.getName();
     if (klassenname.equals("absyn.ActionBlock")){

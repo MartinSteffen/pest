@@ -32,6 +32,8 @@ public class BooleanTabelle extends Object{
 
    public BooleanTabelle verbinde(BooleanTabelle tab) throws RacingException{
     BooleanTabelle result=new BooleanTabelle();
+    boolean racing_occured=false;;
+    Bvar racing_var=null;
     Bvar tempkey=null;
     String tempvalue=null;
     Enumeration keys=null;
@@ -55,13 +57,17 @@ public class BooleanTabelle extends Object{
 	else{
 	  /* Racing-Condition: Zwei unterschiedliche Aktionen wollten quasi gleichzeitig*/
 	  /* eine boolesche Variable unterschiedlich setzen.... Finden wir nicht schoen..*/
-	  throw (new RacingException());
+	  racing_occured=true;
+	  racing_var=tempkey;
 	}
       }
       else{
 	/* tempkey gibt es noch nicht, also einfach ´reinkopieren ...*/
 	(result.data).put(tempkey,tempvalue);
       }
+    }
+    if (racing_occured){
+      throw (new RacingException(result,racing_var));
     }
     return result;
   }
