@@ -3,4 +3,4 @@ compile : Editor.java
 run : Editor.java
 	java Editor
 clean : 
-	rm -i *.class *.class~
+	rm -f *.class *.class~

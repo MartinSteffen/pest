@@ -4,6 +4,7 @@
 
 
 import absyn.*;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -14,7 +15,7 @@ public class Editor extends Frame implements ActionListener {
     private String label;
     public Point startPoint = null;
     public Point endPoint = null;
-    public Rectangle newRect = null;
+    public CRectangle newRect = null;
     public boolean actionOk = false;
     public StateList stateList = null;
     private String status = "";
@@ -33,7 +34,7 @@ public class Editor extends Frame implements ActionListener {
         if (statechart.state == null)  {
             statechart.state = new Or_State(null, null, null, null, null);
             statechart.state.name = new Statename("root");
-            statechart.state.rect = new Rectangle(0,0, 400, 300);
+            statechart.state.rect = new CRectangle(0,0, 400, 300);
         }
         stateList = EditorUtils.getSubStateList(statechart.state);
         label = l;
@@ -120,18 +121,31 @@ public class Editor extends Frame implements ActionListener {
 	        false, falls der Statechart nicht geaendert wurde.
     */
 
+
+    /**
+    */   
     public boolean listenEditor() {
         return false;
     }
 
+    /**
+       schliesst das Editorfenster
+    */   
     public static void Dispose() {
     }
 
-    public static void work(boolean b) {
+    /**
+       @param boolean b -
+    */
+    public static boolean work(boolean b) {
+	return b;
     }
 
-    public static boolean work() {
-	return b;
+
+    /**
+     */
+    public static void work() {
+       
     }
 
     public void actionPerformed(ActionEvent e) {

@@ -14,7 +14,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import absyn.*;
-import editor.desk.*;
 public class highlightObject {
 
 
