@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestTransitions.java,v 1.20 1999-01-26 14:28:05 swtech11 Exp $
+ *  @version  $Id: TestTransitions.java,v 1.21 1999-01-26 22:39:37 swtech11 Exp $
  */
 class TestTransitions extends ModelCheckBasics {
   Vector newPLV = new Vector(); // Vector fuer die selbst angelegte PathList der States
@@ -32,25 +32,28 @@ class TestTransitions extends ModelCheckBasics {
 
   // Eindeutigkeit der Connectoren testen
   void ConnectorenEindeutig() {
+    String t;
     boolean ab = false;
     while ( ab == false ) {
       ConE co = (ConE)newCL.firstElement();
       if (newCL.size()>1) {
         Vector h = new Vector();
         h.addElement(co.c);
+        t = "Connector "+co.name+ " in "+co.d;
         int l=newCL.size()-1;
         for (int i=l; i>0; i--) {
           ConE ct = (ConE)newCL.elementAt(i);
           if (ct.name.equals(co.name)) {
             h.addElement(ct.c);
             newCL.removeElementAt(i);
+            t = t + ", "+ct.d;;
 
           }
        
         }
         newCL.removeElementAt(0);
-        if (h.size()>1) {msg.addError(426,"uebergebender Statechart",h);} 
-	if (newCL.size()==0) {ab=true;}
+        if (h.size()>1) {msg.addError(426,t,h);} 
+	      if (newCL.size()==0) {ab=true;}
       }
       else { ab = true; }
     }
@@ -268,7 +271,7 @@ class TestTransitions extends ModelCheckBasics {
   void gC_ConnectorInConnectorList(ConnectorList cl, String p, Vector clv) {
     String np = getAddPathPart(p, cl.head.name.name);
     clv.addElement(np);
-    ConE ce = new ConE(cl.head.name.name, cl.head);
+    ConE ce = new ConE(cl.head.name.name, p, cl.head);
     newCL.addElement(ce); //
     if (cl.tail != null) { gC_ConnectorInConnectorList(cl.tail, p, clv); }
   }
@@ -560,8 +563,9 @@ class ConE {
 
   ConE () {}
 
-  ConE (String _n, Connector _c) {
+  ConE (String _n, String _d, Connector _c) {
     name =_n;
+    d = _d;
     c = _c; 
   }
 

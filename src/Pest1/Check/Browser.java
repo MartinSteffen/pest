@@ -11,12 +11,13 @@ import java.util.*;
  * Browser
  *
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: Browser.java,v 1.10 1999-01-26 10:03:39 swtech11 Exp $
+ *  @version  $Id: Browser.java,v 1.11 1999-01-26 22:39:32 swtech11 Exp $
  */
 class Browser extends Dialog implements ActionListener {
   pest parent = null;
   Editor edit = null;
   ModelCheckMsg mcm;
+  CheckConfig cf;
   List lst; // Liste für Meldungen
   Button button1; // OK Knopf
   Panel panel;
@@ -27,18 +28,20 @@ class Browser extends Dialog implements ActionListener {
   /**
    * Konstruktor für das Eingabefenster
    */
-  public Browser(pest parent,Editor _edit,ModelCheckMsg _mcm)  {
+  public Browser(pest parent,Editor _edit,ModelCheckMsg _mcm, CheckConfig _cf)  {
     super(parent,"Message-Browser",false);
     edit = _edit;
     mcm = _mcm;
+    cf = _cf;
     this.parent = parent;
     Point p = parent.getLocation();
     setLocation(p.x + 30 , p.y + 30);
     setLayout(new BorderLayout());
 
     // Liste für Messages anlegen
-    int ml = mcm.getErrorNumber()*2+mcm.getWarningNumber()*2+2+1;
-    if (ml>30) { ml = 30; } 
+    int ml = mcm.getErrorNumber()*2+2;
+    if (cf.sc_warning==true) { ml = ml + mcm.getWarningNumber()*2+1; }
+    if (ml>30) { ml = 30; }
     lst = new List(ml);
     lst.setMultipleMode(true);
     // Fehler ausgeben
@@ -50,15 +53,17 @@ class Browser extends Dialog implements ActionListener {
         lst.add("- "+mcm.getErrorMsg(i)+" ("+mcm.getErrorCode(i)+")");
         lst.add("     "+mcm.getErrorPath(i)); }}
     // Warnungen ausgeben
-    lst.setFont(new Font("Serif",Font.BOLD,16));
-    lst.add("Warnmeldungen ( Anzahl " + mcm.getWarningNumber() +  " ):");
-    if (mcm.getWarningNumber()>0) {
-      for (int i=1; (i<=mcm.getWarningNumber()); i++) {
-        lst.setFont(new Font("Serif",Font.PLAIN,14));
-        lst.add("- "+mcm.getWarningMsg(i)+" ("+mcm.getWarningCode(i)+")");
-        lst.add("     "+mcm.getWarningPath(i)); }}
+    if (cf.sc_warning==true) {
+      lst.setFont(new Font("Serif",Font.BOLD,16));
+      lst.add("Warnmeldungen ( Anzahl " + mcm.getWarningNumber() +  " ):");
+      if (mcm.getWarningNumber()>0) {
+        for (int i=1; (i<=mcm.getWarningNumber()); i++) {
+          lst.setFont(new Font("Serif",Font.PLAIN,14));
+          lst.add("- "+mcm.getWarningMsg(i)+" ("+mcm.getWarningCode(i)+")");
+          lst.add("     "+mcm.getWarningPath(i)); }}}
+
     // Markierungen auswerten
-    if (mcm.getWarningNumber()>0 | mcm.getErrorNumber()>0) {
+    if ( (mcm.getWarningNumber()>0 & cf.sc_warning==true) | mcm.getErrorNumber()>0) {
       lst.addItemListener( new ItemListener() {
         public void itemStateChanged(ItemEvent e) {
           selectConfirm();
@@ -133,21 +138,21 @@ class Browser extends Dialog implements ActionListener {
       if (ix[i]>0 & ix[i]<mcm.getErrorNumber()*2+1) { // Fehler bearbeiten
         int c = (ix[i]+1) / 2;
         Object o = mcm.getErrorHiObj(c);
-        if ( o instanceof Absyn & high==true) { ho = new highlightObject((Absyn)o,Color.black); }
+        if ( o instanceof Absyn & high==true) { ho = new highlightObject((Absyn)o,cf.color[cf.high_color]); }
         else if ( o instanceof Vector & high==true) {
           Vector v = (Vector)o;
           for (int j=0; j<v.size(); j++) {
             Absyn ao = (Absyn)v.elementAt(j);
-            ho = new highlightObject(ao,Color.black); }}}
+            ho = new highlightObject(ao,cf.color[cf.high_color]); }}}
       if (ix[i]>mcm.getErrorNumber()*2+1 & ix[i]<mcm.getErrorNumber()*2+mcm.getWarningNumber()*2+2) { // Warnungen bearbeiten
         int c = ix[i]/2 - mcm.getErrorNumber();
         Object o = mcm.getWarningHiObj(c);
-        if ( o instanceof Absyn & high==true) { ho = new highlightObject((Absyn)o,Color.black); }
+        if ( o instanceof Absyn & high==true) { ho = new highlightObject((Absyn)o,cf.color[cf.high_color]); }
         else if ( o instanceof Vector & high==true) {
           Vector v = (Vector)o;
           for (int j=0; j<v.size(); j++) {
             Absyn ao = (Absyn)v.elementAt(j);
-            ho = new highlightObject(ao,Color.black); }}}
+            ho = new highlightObject(ao,cf.color[cf.high_color]); }}}
     }
     if (high==true) { ho = new highlightObject(); }
   }

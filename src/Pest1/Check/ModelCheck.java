@@ -12,7 +12,7 @@ import editor.*;
  * <h1>Syntax Check für Statecharts</h1>
  * <h2>Empfohlender Aufruf:</h2>
  * <ol>
- * <li>Initialisierung:   ModelCheck mc = new ModelCheck(GUI_Referenz,EDITOR_Referenz)
+ * <li>Initialisierung:   ModelCheck mc = new ModelCheck(GUI_Referenz,EDITOR_Referenz, CheckConfig)
  * <li>Aufruf des Checks: boolean = mc.checkModel(Statechart)
  * </ol>
  * <h2>Forderungen an die an den Check übergebene Statechart:</h2>
@@ -34,24 +34,26 @@ import editor.*;
  * <br>
  * <DL COMPACT>
  * <DT><STRONG>STATUS: </STRONG><br>
- * Unserer Syntax Check ist soweit fertig.
+ * Unserer Syntax Check ist soweit fertig, <br>
+ * allerdings sind noch nicht alle Fehler highlightbar und die Optionen hadern noch mit der GUI.
  * <DT><STRONG>To Do: </STRONG><br>
  * Testen, Testen, Testen.
  * <DT><STRONG>Bekannte Fehler: </STRONG><br>
  * keine
  * <DT><STRONG>Temporäre Features: </STRONG><br>
- * Ausgabe der Dauer der einzelnen Tests in Sekunden.
+ * keine
  * </DL COMPACT>
  *
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: ModelCheck.java,v 1.30 1999-01-25 23:21:41 swtech11 Exp $
+ * @version  $Id: ModelCheck.java,v 1.31 1999-01-26 22:39:34 swtech11 Exp $
+ * @see CheckConfig
  */
 public class ModelCheck {
   private ModelCheckMsg mcm; // Object, um die Fehler und Warnungen zu speichern
   private boolean outputGUI; // Meldungen auf die GUI ausgeben
   private GUIInterface gui = null; // Referenz auf die GUI
   private Editor edit = null;
-  private CheckConfig cf = null;
+  private CheckConfig cf = new CheckConfig();
 
 /**
  * Der Constructor des Syntax Checkers.
@@ -108,7 +110,7 @@ public class ModelCheck {
     Panel pan;
     Label l2;
 
-    boolean BrowserOut = true; // hier später Config
+    // CheckOption co = new CheckOption((pest)gui,cf); // zu Testzwecken
 
     // Fortschrittsanzeige
     V = new Dialog((pest)gui,"Fortschrittanzeige");
@@ -184,9 +186,8 @@ public class ModelCheck {
     V.dispose();
 
     if ( outputGUI == true ) {
-      if (BrowserOut==true) { // Browser-Ausgabe
-	      // CheckOption co = new CheckOption((pest)gui,new CheckConfig()); // zu Testzwecken
-        Browser b = new Browser((pest)gui,edit,mcm);
+      if (cf.sc_browser==true) { // Browser-Ausgabe
+        Browser b = new Browser((pest)gui,edit,mcm,cf);
       }
       else { outputToGUI(); } // Ausgabe an die GUI
     }
@@ -228,7 +229,7 @@ public class ModelCheck {
       for (int i=1; (i<=getErrorNumber()); i++) {
         gui.userMessage("Check: - "+getErrorMsg(i)+" ("+getErrorCode(i)+")" );
         gui.userMessage("Check:   ["+getErrorPath(i)+"]"); }}
-    if (getWarningNumber()>0) {
+    if (getWarningNumber()>0 & cf.sc_warning==true) {
       gui.userMessage("Check:");
       gui.userMessage("Check: Warnmeldungen ( Anzahl: " + getWarningNumber() +  " ):");
       for (int i=1; (i<=getWarningNumber()); i++) {

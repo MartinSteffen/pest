@@ -35,7 +35,7 @@ import java.awt.*;
  * keine
  * </DL COMPACT>
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: Crossreference.java,v 1.15 1999-01-25 08:00:27 swtech11 Exp $
+ * @version  $Id: Crossreference.java,v 1.16 1999-01-26 22:39:33 swtech11 Exp $
  */
 public class Crossreference extends ModelCheckBasics {
   private GUIInterface gui = null; // Referenz auf die GUI
@@ -44,20 +44,32 @@ public class Crossreference extends ModelCheckBasics {
   private Vector items = new Vector();
   private boolean high = false; // highlighten ?
 
-  /**
-  * Der Konstruktor der Crossreference.
-  * @param _gui Referenz auf die GUI
-  * @param _edit Referenz auf den Editor
-  */
-  public Crossreference(GUIInterface _gui, Editor _edit) {
+
+  /**
+  * Der Konstruktor der Crossreference.
+  * @param _gui Referenz auf die GUI
+  * @param _edit Referenz auf den Editor
+  */
+  public Crossreference(GUIInterface _gui, Editor _edit) {
+    gui = _gui;
+    edit = _edit;
+  }
+
+  /**
+  * Der Konstruktor der Crossreference.
+  * @param _gui Referenz auf die GUI
+  * @param _edit Referenz auf den Editor
+  * @param _cf Konfigurationsklasse des Syntax Checks
+  */
+  public Crossreference(GUIInterface _gui, Editor _edit, CheckConfig _cf) {
     gui = _gui;
     edit = _edit;
   }
 
   /**
   * Führt die Crossreference aus.
-  * @param sc  die zu checkende Statechart
-  */
+  * @param sc  die zu checkende Statechart
+  */
   public void report(Statechart _sc) {
     sc=_sc;
     // Eingabe
@@ -280,7 +292,8 @@ public class Crossreference extends ModelCheckBasics {
     items.addElement(ri);
   }
 }
-
+
+
 class ReportItem {
   // die Art des Elementes, evtl. überflüssig
   Object Obj = null;
