@@ -101,7 +101,7 @@ import tesc2.*;
 
   }
 
-      //  protected Dimension getPreferredSize() { return new Dimension(width, height); }
+       public Dimension getPreferredSize() { return new Dimension(width, height); }
 
   // pop-up Menueabfrage
  // pop-up Menueabfrage 
