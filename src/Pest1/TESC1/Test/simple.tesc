@@ -25,7 +25,7 @@ or S3:
 	cons: c1, c2;
 
 	transitions:
-	from S4 to S2 on C && e1 || e2 do C := e1 && e2 || C , e2;
+	from S4 to S2 on e2 [C]  do C := e1 && e2 || C , e2;
 	from S2 to S4 on e2 do ~ ;
 	
 end S3;
