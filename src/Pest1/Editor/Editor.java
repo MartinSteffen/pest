@@ -410,7 +410,7 @@ public static void fehlermeldung1()
 
 public static String Stringeingabe(String a, String b, String c,Absyn type)
     {
-	String tempname="",tempstring;
+	String tempname=c,tempstring;
 	if (type instanceof State)
 	{
 	        if (c.length() >= 3) {
@@ -450,7 +450,7 @@ public static String labelObject (Absyn obj)
 	   {
 		transobj = (Tr) obj;
 		name = transobj.label.caption;
-		ausgabe2 = Stringeingabe("Transition umbenennen","Neuer Name fuer die gewaehlten Transition :",name,obj);
+		ausgabe2 = Stringeingabe("Transition umbenennen","Neuer Name fuer die gewaehlten Transition :",name,obj);  if (ausgabe2 == null) {ausgabe2 = name;}
 		TESCLoader tl = new TESCLoader(gui);
 		 tlab = tl.getLabel(new BufferedReader(new StringReader(ausgabe2)),nroot);
 		if (tlab == null)
