@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.98 1999-02-11 09:56:48 swtech00 Exp $
+//	$Id: report_list,v 1.99 1999-02-11 10:11:15 swtech15 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -22,7 +22,7 @@
 #Number: 	1
 #Autor:   	Erich Mikk erm
 #Subject:	Wiederholtes Starten des Editors nicht möglich
-#Status: 	reported
+#Status:        fixed 	
 #Description: 
 
 Zurückgesetzt, weil die gleiche Sequenz ist möglich, wenn man statt
@@ -847,7 +847,7 @@ dann meldet einen Fehler.
 #Number:        57
 #Autor:         Erich Mikk erm
 #Subject:       Fehlerreports (Import STM und Import TESC) nicht einheitlich.
-#Status:        reported
+#Status:        fixed
 #Description:
 
 Wenn Import->Statemate fehlschlägt, gibt es ein pop-up window.
@@ -871,7 +871,7 @@ Speicherfunktion, wo man die Fehler in eine File abspeichern kann).
 #Number:        59
 #Autor:         Erich Mikk erm
 #Subject:       GUI: Graphische Benutzerführung und Menü Werkzeuge inkonsistent
-#Status:        reported
+#Status:        fixed
 #Description:
 
 Nach dem ein Editor geschlossen  worden ist,
@@ -952,7 +952,7 @@ Interessanterweise verstaerkt sich dieser Effekt, je weiter man hineinzoomt.
 #Number:        62
 #Autor:         Erich Mikk erm
 #Subject:       GUI: zu viele redraws?
-#Status:        reported
+#Status:        fixed (war bei uns nicht erkennbar, Solaris speziefisch ?)
 #Description:
 
 das Bild der graphishen Benutzerführung wird jedes mal, wenn die maus 
@@ -1052,7 +1052,7 @@ Simulation. Diese oeffnet kein Fenster, um Events zu generieren.
 #Number:	67
 #Autor:		Bernd Weber bwe
 #Subject:	Einstellungen fuer Check Check haben keinen Effekt.
-#Status: 	reported
+#Status: 	processing
 #Description: 
 Erzeuge neue Chart. Checke Chart mit und ohne Option "Warnungen
 anzeigen" bzw. Message-Browser benutzen. Ausgaben sind identisch.

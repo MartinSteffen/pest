@@ -38,19 +38,19 @@ public void actionPerformed(ActionEvent e) {
       }else if (cmd.equals("Codegenerator")) {
 	  if (myWindow.checkSB(false))
 	      {
-		  //myWindow.OkDialog("FEHLER","Wegen nicht compilierbarem Quelltext nicht implementiert");
 		  try{
-// 		    	myWindow.fDialog.setMode(FileDialog.SAVE);
-// 			myWindow.fDialog.setTitle("Generierten Code speichern");			
-// 			myWindow.fDialog.show();
-// 			String path = myWindow.fDialog.getDirectory();
-		        String path = myWindow.EingabeDialog("","Geben Sie bitte einen Pfad an",myWindow.SBPfad);
-			//			System.out.println(path);
+ 		    	myWindow.fDialog.setMode(FileDialog.SAVE);
+ 			myWindow.fDialog.setTitle("Generierten Code speichern");
+                        myWindow.fDialog.setFile("<OUTFILES>");			
+ 			myWindow.fDialog.show();
+ 			String path = myWindow.fDialog.getDirectory();
+//		        String path = myWindow.EingabeDialog("","Geben Sie bitte einen Pfad an",myWindow.SBPfad);
+			System.out.println(path);
 			if (path != null)
 			    {
 				new codegen.CodeGen(path,myWindow.SyntaxBaum);
 			    }
-// 			myWindow.fDialog.dispose();
+ 			myWindow.fDialog.dispose();
 
       		}catch(codegen.CodeGenException cge)
 		    {
