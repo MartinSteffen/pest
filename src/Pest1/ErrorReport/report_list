@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.113 1999-02-24 13:17:13 swtech00 Exp $
+//	$Id: report_list,v 1.114 1999-02-25 10:01:17 swtech15 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -22,7 +22,7 @@
 #Number: 	1
 #Autor:   	Erich Mikk erm
 #Subject:	Wiederholtes Starten des Editors nicht möglich
-#Status:        reported 	
+#Status:        fixed(unter Linux gibt es diesen Fehler nicht) 	
 #Description: 
 
 Wieder zurückgesetzt, mit der gleichen Begründung:
@@ -872,7 +872,7 @@ Speicherfunktion, wo man die Fehler in eine File abspeichern kann).
 #Number:        59
 #Autor:         Erich Mikk erm
 #Subject:       GUI: Graphische Benutzerführung und Menü Werkzeuge inkonsistent
-#Status:        reported
+#Status:        fixed(gibt es unter Linux nicht)
 #Description:
 
 Zurückgesetzt: es ist immer noch so. Siehe auch #1.
