@@ -12,13 +12,14 @@ import java.util.*;
  * Browser
  *
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: Browser.java,v 1.13 1999-02-11 01:06:18 swtech11 Exp $
+ *  @version  $Id: Browser.java,v 1.14 1999-02-11 17:21:32 swtech11 Exp $
  */
 class Browser extends Dialog implements ActionListener {
   pest parent = null;
+  GUIInterface gui;
   Editor edit = null;
   ModelCheckMsg mcm;
-  ModelCheck mc;
+    //ModelCheck mc;
   CheckConfig cf;
   List lst; // Liste für Meldungen
   Button button1; // OK Knopf
@@ -33,10 +34,11 @@ class Browser extends Dialog implements ActionListener {
   /**
    * Konstruktor für das Eingabefenster
    */
-  public Browser(pest parent,ModelCheck _mc, Editor _edit,ModelCheckMsg _mcm, CheckConfig _cf)  {
-    super(parent,"Message-Browser",false);
+  public Browser(GUIInterface _gui, Editor _edit,ModelCheckMsg _mcm, CheckConfig _cf)  {
+    super((pest)_gui,"Message-Browser",false);
+    gui=_gui;
+    parent=(pest)gui;
     edit = _edit;
-    mc   = _mc;
     mcm  = _mcm;
     cf   = _cf;
     this.parent = parent;
@@ -194,11 +196,50 @@ class Browser extends Dialog implements ActionListener {
 	  	dispose();
 	  }
     else if (cmd.equals(button2.getActionCommand())) {
-      mc.outputToFile("Check_Ergebnis.txt");
+      Frame _f=new Frame();
+      FileDialog fd=new FileDialog(_f,new String("Checkergebnis"),FileDialog.SAVE);
+      
+      fd.show();
+   
+      String fn=fd.getFile();
+      String dn=fd.getDirectory();
+      try {
+      FileOutputStream fos = new FileOutputStream(dn+fn);
+      PrintWriter out = new PrintWriter(fos);
+      out.println("Meldungen des Syntax Check:");
+      out.println();
+      out.println("Fehlermeldungen ( Anzahl: " + mcm.getErrorNumber() +  " ):");
+      if (mcm.getErrorNumber()>0) {
+        for (int i=1;(i<=mcm.getErrorNumber());i++) {
+          out.println( mcm.getError(i) ); } }
+      out.println();
+      out.println("Warnmeldungen ( Anzahl: " + mcm.getWarningNumber() +  " ):");
+      if (mcm.getWarningNumber()>0) {
+        for (int i=1;(i<=mcm.getWarningNumber());i++) {
+          out.println( mcm.getWarning(i) ); } }
+      out.flush();
+      out.close();
+    }
+    catch (Exception ex) { 
+
+     gui.OkDialog("Errormeldung","Die Speicherung ist fehlgeschlagen!");
+     //System.out.println(e);
+ }
+
+
 	  }
     else if (cmd.equals(button3.getActionCommand())) {
       try {
-        FileOutputStream fos = new FileOutputStream("Check_Ergebnis_selektiert.txt");
+      Frame _f=new Frame();
+      FileDialog fd=new FileDialog(_f,new String("selektiertes Checkergebnis"),FileDialog.SAVE);
+      
+      fd.show();
+   
+      String fn=fd.getFile();
+      String dn=fd.getDirectory();
+
+
+        FileOutputStream fos = new FileOutputStream(dn+fn);
         PrintWriter out = new PrintWriter(fos);
         out.println("Selektierte Meldungen des Syntax Check:");
         out.println();
@@ -223,7 +264,10 @@ class Browser extends Dialog implements ActionListener {
         out.flush();
         out.close();
       }
-      catch (Exception ex) { System.out.println(ex); }
+      catch (Exception ex) { 
+	  gui.OkDialog("Errormeldung","Die Speicherung ist fehlgeschlagen!");
+	  //System.out.println(ex);
+      }
     }
   }
 

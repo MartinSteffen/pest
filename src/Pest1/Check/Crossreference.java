@@ -44,7 +44,7 @@ import java.awt.*;
  * keine
  * </DL COMPACT>
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: Crossreference.java,v 1.21 1999-02-10 12:38:50 swtech11 Exp $
+ * @version  $Id: Crossreference.java,v 1.22 1999-02-11 17:21:33 swtech11 Exp $
  */
 public class Crossreference extends ModelCheckBasics {
   private GUIInterface gui = null;     // Referenz auf die GUI
@@ -96,7 +96,8 @@ public class Crossreference extends ModelCheckBasics {
       highlightObject ho;
       if (items.size()>0) {
         if (high==true) { ho = new highlightObject(true); }// Highlighten vorbereiten
-        gui.userMessage("Check: "+such+" ist ein:");
+	if (cf.sc_browser==false) { 
+       gui.userMessage("Check: "+such+" ist ein:");
         for (int i=0; i<items.size(); i++) {
           ReportItem rp = (ReportItem)items.elementAt(i);
           gui.userMessage("Check:   - "+rp.Pth);
@@ -104,6 +105,12 @@ public class Crossreference extends ModelCheckBasics {
             ho = new highlightObject((Absyn)rp.HiObj,cf.color[cf.high_color]); // Object highlighten
   	      }
         }
+	}
+        else {
+        Browser b = new Browser(gui, edit, CrossToError(),cf);
+
+
+	}
         if (high==true) {ho = new highlightObject(); }// Highlighten aktivieren
       }
       else { gui.userMessage("Check: "+such+" wurde nicht gefunden."); }
@@ -306,6 +313,9 @@ public class Crossreference extends ModelCheckBasics {
     items.addElement(ri);
   }
 
+
+
+
 /**
  * Gibt alle Meldungen des Syntax Checkers in eine Datei aus.
  * Die Methode gibt alle Fehler- und Warnungmeldungen in einer Textdatei im ASCII-Format aus.
@@ -332,6 +342,18 @@ public class Crossreference extends ModelCheckBasics {
     }
     catch (Exception e) { System.out.println(e); }
   }
+
+  ModelCheckMsg CrossToError() {
+    ModelCheckMsg msg=new ModelCheckMsg();
+    for (int i=0; i<items.size(); i++) {
+    msg.addError(0, ((ReportItem)items.elementAt(i)).Pth, ((ReportItem)items.elementAt(i)).HiObj);
+
+    }
+
+
+    return msg;
+    }
+
 
 }
 

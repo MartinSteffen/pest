@@ -140,13 +140,13 @@ import editor.*;
  *</Table>
  * <br>
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: ModelCheck.java,v 1.41 1999-02-11 01:06:27 swtech11 Exp $
+ * @version  $Id: ModelCheck.java,v 1.42 1999-02-11 17:21:34 swtech11 Exp $
  * @see CheckConfig
  */
 public class ModelCheck {
   private ModelCheckMsg mcm; // Object, um die Fehler und Warnungen zu speichern
   private boolean outputGUI; // Meldungen auf die GUI ausgeben
-  private GUIInterface gui = null; // Referenz auf die GUI
+  protected GUIInterface gui = null; // Referenz auf die GUI
   private Editor edit = null;
   private CheckConfig cf = new CheckConfig();
 
@@ -282,7 +282,7 @@ public class ModelCheck {
 
     if ( outputGUI == true ) {
       if (cf.sc_browser==true) { // Browser-Ausgabe
-        Browser b = new Browser((pest)gui,this,edit,mcm,cf);
+        Browser b = new Browser(gui,edit,mcm,cf);
       }
       else { outputToGUI(); } // Ausgabe an die GUI
     }
@@ -313,7 +313,11 @@ public class ModelCheck {
       out.flush();
       out.close();
     }
-    catch (Exception e) { System.out.println(e); }
+    catch (Exception e) { 
+
+     gui.OkDialog("Errormeldung","Die Speicherung ist fehlgeschlagen!");
+     //System.out.println(e);
+ }
   }
 
   // Ausgabe an die GUI
