@@ -4,7 +4,7 @@
  * This class is responsible for generating our hierarchical
  * automaton.
  *
- * @version $Id: dumpHA.java,v 1.27 1999-03-11 15:36:43 swtech25 Exp $
+ * @version $Id: dumpHA.java,v 1.28 1999-03-11 16:58:01 swtech25 Exp $
  * @author Marcel Kyas
  */
 package codegen;
@@ -591,7 +591,7 @@ public class dumpHA
     }
     try {
       fw = new FileWriter(opt.path + "/SymbolTable.java");
-      DT.dump(fw);
+      DT.dump(fw, opt.PrettyTraces);
       fw.flush();
       fw.close();
       fw = new FileWriter(opt.path + "/" + opt.name1 + ".java");

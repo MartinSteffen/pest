@@ -14,7 +14,7 @@ import java.util.*;
  * an interface to the original textual representations of
  * states, events and conditions.
  *
- * @version $Id: dumpTables.java,v 1.17 1999-03-11 15:36:44 swtech25 Exp $
+ * @version $Id: dumpTables.java,v 1.18 1999-03-11 16:58:02 swtech25 Exp $
  * @author Marcel Kyas
  */
 public class dumpTables
@@ -107,29 +107,6 @@ public class dumpTables
     "\t * This method is generating traces.",
     "\t * @exception IOException self-explanatory.",
     "\t */",
-    "\tpublic void trace(OutputStreamWriter f) throws IOException {",
-    "\t\tint i;",
-    "",
-    "\t\tf.write(\"(\\n  (\\n\");",
-    "\t\tfor (i = 0; i < statenames.length; ++i) {",
-    "\t\t\tif(post_states[i]) {",
-    "\t\t\t\tf.write(\"    \" + statenames[i] + \"\\n\");",
-    "\t\t\t}",
-    "\t\t}",
-    "\t\tf.write(\"  )\\n  (\\n\");",
-    "\t\tfor (i = 0; i < eventnames.length; ++i) {",
-    "\t\t\tif(post_events[i]) {",
-    "\t\t\t\tf.write(\"    \" + eventnames[i] + \"\\n\");",
-    "\t\t\t}",
-    "\t\t}",
-    "\t\tf.write(\"  )\\n  (\\n\");",
-    "\t\tfor (i = 0; i < condition_names.length; ++i) {",
-    "\t\t\tif(post_cond[i]) {",
-    "\t\t\t\tf.write(\"    \" + condition_names[i] + \"\\n\");",
-    "\t\t\t}",
-    "\t\t}",
-    "\t\tf.write(\"  )\\n)\");",
-    "\t}",
     "",
     "\t/**",
     "\t * This method updates the different fields after",

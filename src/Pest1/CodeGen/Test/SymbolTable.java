@@ -114,34 +114,6 @@ public class SymbolTable {
 	boolean[] post_cond = new boolean[condition_names.length];
 
 	/**
-	 * This method is generating traces.
-	 * @exception IOException self-explanatory.
-	 */
-	public void trace(OutputStreamWriter f) throws IOException {
-		int i;
-
-		f.write("(\n  (\n");
-		for (i = 0; i < statenames.length; ++i) {
-			if(post_states[i]) {
-				f.write("    " + statenames[i] + "\n");
-			}
-		}
-		f.write("  )\n  (\n");
-		for (i = 0; i < eventnames.length; ++i) {
-			if(post_events[i]) {
-				f.write("    " + eventnames[i] + "\n");
-			}
-		}
-		f.write("  )\n  (\n");
-		for (i = 0; i < condition_names.length; ++i) {
-			if(post_cond[i]) {
-				f.write("    " + condition_names[i] + "\n");
-			}
-		}
-		f.write("  )\n)");
-	}
-
-	/**
 	 * This method updates the different fields after
 	 * the completion of a step of the automaton
 	 */

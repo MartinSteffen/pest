@@ -2,9 +2,10 @@
  * This class is a very simple environment.
  *
  * @author
- * @version $Id: SimpleEnvironment.java,v 1.1 1999-03-11 15:37:16 swtech25 Exp $
+ * @version $Id: SimpleEnvironment.java,v 1.2 1999-03-11 16:58:12 swtech25 Exp $
  */
 import java.io.*;
+import codegen.EnvUtil;
 
 public class SimpleEnvironment {
 
@@ -40,7 +41,7 @@ public class SimpleEnvironment {
 		for(; steps > 0; --steps) {
 			a.step(s);
 			try {
-			     s.trace(f);
+			     EnvUtil.traceSimple(f, s);
 			     f.flush();
 			}
 			catch(IOException e) {

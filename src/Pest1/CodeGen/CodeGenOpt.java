@@ -9,7 +9,7 @@ import java.io.*;
  *
  * @see CodeGenConfig
  * @author Marcel Kyas, Walter Loeser, Andre Paetzold.
- * @version $Id: CodeGenOpt.java,v 1.9 1999-03-11 14:58:22 swtech25 Exp $
+ * @version $Id: CodeGenOpt.java,v 1.10 1999-03-11 16:57:59 swtech25 Exp $
  */
 public class CodeGenOpt implements Serializable {
 
@@ -66,6 +66,11 @@ public class CodeGenOpt implements Serializable {
   boolean twoStatecharts;
 
   /**
+   * This is public due to a compiler bug in java.
+   */
+  boolean PrettyTraces;
+
+  /**
    * Path, where we will store the generated code.  This must be
    * a fully qualified path name, without trailing "/".
    */
@@ -93,6 +98,7 @@ public class CodeGenOpt implements Serializable {
     traceCodeGen = true;
     verbose = false;
     twoStatecharts = false;
+    PrettyTraces = true;
     path = new String(".");
     name1 = new String("Automaton1");
     name2 = new String("Automaton2");
