@@ -38,9 +38,9 @@ implements GUIInterface
     boolean ResultSC = false;
     boolean isDirty = false;
 
-    Color stateColor = Color.red;
-    Color connectorColor = Color.blue;
-    Color transitionColor = Color.green;
+    int stateColorIndex = 0;
+    int conColorIndex = 1;
+    int transColorIndex = 2;
 
    public static void main(String[] args)
     {
@@ -99,9 +99,9 @@ implements GUIInterface
 	theConfig.GUILoc = getLocation();
 	theConfig.Dateiname = SBDateiname;
 
-	theConfig.stateColor      = stateColor;
-	theConfig.transitionColor = transitionColor;
-	theConfig.connectorColor  = connectorColor;
+	//	theConfig.stateColor      = stateColor;
+	//	theConfig.transitionColor = transitionColor;
+	//	theConfig.connectorColor  = connectorColor;
 
 	if (PEditor == null)
 	    {
@@ -136,9 +136,9 @@ implements GUIInterface
 	    pestConfig theConfig = (pestConfig)ois.readObject();
 	    ois.close();
 
-	    stateColor      = theConfig.stateColor;
-	    transitionColor = theConfig.transitionColor;
-	    connectorColor  = theConfig.connectorColor;
+	    // stateColor      = theConfig.stateColor;
+	    //  transitionColor = theConfig.transitionColor;
+	    // connectorColor  = theConfig.connectorColor;
 	    
 	    setSize(theConfig.GUIDim);
 	    setLocation(theConfig.GUILoc);

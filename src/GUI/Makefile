@@ -23,8 +23,16 @@ gui:    $(patsubst %.java,%.class,$(wildcard *.java))
 
 
 clean:
-	cd ..
-	rm -rf *.class *~
+	cd .. 
+	rm -rf *.class *~ 
+	(cd ../absyn ; make clean) 
+	(cd ../editor ; make clean) 
+	(cd ../check ; make clean) 
+	(cd ../simu ; make clean) 
+	(cd ../tesc1 ; make clean) 
+	(cd ../tesc2 ; make clean) 
+	(cd ../codegen ; make clean) 
+	(cd ../stm ; make clean) 
 
 localdocu:	
 	javadoc  -version -author -d Docu *.java

@@ -12,6 +12,7 @@ implements ActionListener
 GUIMenu myMenu;
 pest myWindow;
 EditorOption option;
+boolean isEdOpOpen = false;
 
 
 public GUIoptionML(GUIMenu myMenu,pest myWindow)
@@ -26,21 +27,14 @@ public void actionPerformed(ActionEvent e) {
   
   if(cmd.equals("Farben"))
       {
-          option = new EditorOption(myWindow,this);
-      }
-     else if (cmd.equals(option.button1.getActionCommand())){
-	     myWindow.stateColor = option.getStateColor();
-	     myWindow.transitionColor = option.getTransColor();
-	     myWindow.connectorColor = option.getConColor();
-	     option.setVisible(false);
-	     option.dispose();	     
-    }else if (cmd.equals(option.button2.getActionCommand())) {
-	     option.setVisible(false);
-	     option.dispose();
-	     }
+      if (!isEdOpOpen)
+	  {
+	      {
+		  option = new EditorOption(myWindow,this);
+	      }
+	  }
 
-
-      else if (cmd.equals("")) {
+     } else if (cmd.equals("")) {
       }else if (cmd.equals("")) {
       }else{  
 	 myWindow.userMessage("GUI   : NOCH NICHT IMPLEMENTIERT"); 
