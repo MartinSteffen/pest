@@ -4,7 +4,7 @@
  * This class is responsible for generating our hierarchical
  * automaton.
  *
- * @version $Id: dumpHA.java,v 1.13 1999-01-25 14:21:49 swtech25 Exp $
+ * @version $Id: dumpHA.java,v 1.14 1999-01-25 14:46:15 swtech25 Exp $
  * @author Marcel Kyas
  */
 package codegen;
@@ -454,7 +454,7 @@ public class dumpHA
 		printlnPP(f, 1, " * This method will simulate a single step");
 		printlnPP(f, 1, " * of the hierarchical automaton");
 		printlnPP(f, 1, " */");
-		printlnPP(f, 1, "public void step() {");
+		printlnPP(f, 1, "public static void step() {");
 		printlnPP(f, 1, "// Handle endEvent first");
 		printlnPP(f, 2, "if ( pre_events[" +
 			dumpTables.generateSymEvent(new SEvent(
