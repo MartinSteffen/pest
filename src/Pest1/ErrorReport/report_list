@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.2 1999-01-12 13:27:30 swtech00 Exp $
+//	$Id: report_list,v 1.3 1999-01-12 21:46:22 swtech13 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -74,3 +74,22 @@ die Menüpunkte heißen verschieden, obwohl die gleiche Funktionalität
 dahinter verbergt ist.
 //------------------------------------------------------------------------------
 
+#Number:        4
+#Autor:         Arne Koch swtech13
+#Subject:       Warnings bei SyntaxCheck
+#Status:        reported
+#Description:
+
+Falls in einer Action einer Transition Events generiert werden, auf die in
+keiner Transition reagiert wird, soll es eine Warnung geben. 
+Falls man aber eine Liste von Events angibt, wird nur eine Warnung
+ausgegeben, falls auf das LETZTE Element der Sequenz nicht reagiert wird.
+Bsp.: Als Events werden E1, E2, E3 generiert
+
+Check: - Deklarierter Event wurde nicht verwendet (202)
+Check:   [E3]
+
+Falls auf E3 reagiert wird, gibt es gar keine Meldung.
+
+(Import->TESC->tesc1/Test/bsp1.tesc->SyntaxCheck)
+//------------------------------------------------------------------------------
