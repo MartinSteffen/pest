@@ -1,6 +1,4 @@
 JDK = /opt/jdk/jdk1.1.6/lib/classes.zip
-PEST = .:..
-CLASSPATH = $(PEST):$(JDK)
 COMPILER = javac
 VM = java
 COPTIONS = -g -deprecation
@@ -20,5 +18,5 @@ clean:
 # Implicit rule for making Java class files from Java
 # source files.
 .java.class:
-	$(COMPILER) $(COPTIONS) -classpath "$(CLASSPATH)"  $?
+	$(COMPILER) $(COPTIONS) $?
 

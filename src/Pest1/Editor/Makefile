@@ -7,7 +7,6 @@ all : Editor.class
 
 
 Editor.class :
-	rm -rf *.class
 	$(cc) *.java 
 
 clean :

@@ -1,6 +1,3 @@
-JDK = /opt/jdk/jdk1.1.6/lib/classes.zip:/usr/lib/jdk1.1.6/lib/classes.zip:
-PEST = .:..
-CLASSPATH = $(PEST):$(JDK)
 COMPILER = javac
 VM = java
 COPTIONS = -g -deprecation
@@ -17,5 +14,5 @@ clean:
 	rm -f *.class *~
 
 .java.class:
-	$(COMPILER) $(COPTIONS) -classpath "$(CLASSPATH)"  $?
+	$(COMPILER) $(COPTIONS)  $?
 
