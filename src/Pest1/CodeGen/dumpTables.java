@@ -14,7 +14,7 @@ import java.util.*;
  * an interface to the original textual representations of
  * states, events and conditions.
  *
- * @version $Id: dumpTables.java,v 1.6 1999-01-21 12:28:06 swtech25 Exp $
+ * @version $Id: dumpTables.java,v 1.7 1999-01-21 12:29:20 swtech25 Exp $
  * @author Marcel Kyas
  */
 public class dumpTables
@@ -216,7 +216,6 @@ public class dumpTables
 		SEventList current = S.events;
 		Integer key;
 
-		System.out.println("generateEventTable");
 		// Hash the stop event first:
 		key = new Integer(event_curr_key);
 		events_sym.put(SEndEvent, key);
@@ -224,7 +223,6 @@ public class dumpTables
 		while (current != null) {
 			if (!events_sym.containsKey(current.head)) {
 				key = new Integer(event_curr_key);
-				System.out.println(key + ": " + current.head.name);
 				events_sym.put(current.head, key);
 				event_curr_key++;
 			}
@@ -266,7 +264,6 @@ public class dumpTables
 		while (e.hasMoreElements()) {
 			p = (Path) e.nextElement();
 			i = (Integer) states_sym.get(p);
-			 System.out.println(p + ": " + i);
 			states[i.intValue()] = p;
 		}
 	}
@@ -281,13 +278,11 @@ public class dumpTables
 		SEvent p;
 		Integer i;
 
-		System.out.println("event array");
 		events = new SEvent[events_sym.size()];
 		e = events_sym.keys();
 		while (e.hasMoreElements()) {
 			p = (SEvent) e.nextElement();
 			i = (Integer) events_sym.get(p);
-			System.out.println(p.name + ": " + i);
 			events[i.intValue()] = p;
 		}
 	}
