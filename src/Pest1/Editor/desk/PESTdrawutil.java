@@ -93,7 +93,7 @@ public static Statematrix getState(Statechart nroot, int x1, int y1) {
 			   templist = atemp.substates;
  			   ttest = false;
 			if (lauf.rect !=null)
-			    { if (lauf.rect.contains(tempx1,tempy1)) {
+			    { if (lauf.rect.intersects(new Rectangle(tempx1-1,tempy1-1,2,2))) {
 				  tempstate = lauf;
 				  tempstate1 = tempstate;
 				  tempx1 = tempx1-lauf.rect.x;
@@ -102,7 +102,7 @@ public static Statematrix getState(Statechart nroot, int x1, int y1) {
 				ty = ty + lauf.rect.y;
 				 while (templist != null) { 
 					lauf2 = templist.head;
-					if (lauf2.rect.contains(tempx1,tempy1)) {
+					if (lauf2.rect.intersects(new Rectangle(tempx1-1,tempy1-1,2,2))) {
 						tempstate2 = tempstate1;
 						tempstate = lauf2;
 						tempstate1 = lauf2;
@@ -117,7 +117,7 @@ public static Statematrix getState(Statechart nroot, int x1, int y1) {
 				  tempstate1 = tempstate;
 				 while (templist != null) { 
 					lauf2 = templist.head;
-					if (lauf2.rect.contains(tempx1,tempy1)) {
+					if (lauf2.rect.intersects(new Rectangle(tempx1-1,tempy1-1,2,2))) {
 						tempstate2 = tempstate1;
 						tempstate = lauf2;
 						tempstate1 = lauf2;

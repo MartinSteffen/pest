@@ -214,7 +214,7 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans")
 					     (int) (e.getY()/Editor.ZoomFaktor),
 					     Color.green);
 		    Editor.SetListen();trroot = false;
-
+		    repaint();
 		}
 
 	//if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Draw_Trans"))

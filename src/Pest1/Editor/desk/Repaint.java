@@ -84,7 +84,11 @@ if (tr.source instanceof UNDEFINED) {h.setColor(def_tr);
 	      System.out.println("aktueller TRAnchor source :"+localobject);
 		   if (localobject instanceof State) {
 		       State hier = (State) localobject;
-		       tr.source = new Statename(hier.name.name);
+		       Statematrix matrix = PESTdrawutil.getState(root,tr.points[0].x+nx,tr.points[0].y+ny);
+		      if (matrix.prev instanceof And_State) {System.out.println("AND>"+matrix.prev);
+			  System.out.println("AND>"+matrix.prev.name.name);
+			  tr.source = new Statename(matrix.prev.name.name);} else 
+			      {tr.source = new Statename(hier.name.name);}
 		   };
 	      }
 
@@ -96,7 +100,11 @@ if (tr.target instanceof UNDEFINED) {h.setColor(def_tr);
 	      System.out.println("aktueller TRAnchor target :"+localobject);
 		   if (localobject instanceof State) {
 		       State hier = (State) localobject;
-		       tr.target = new Statename(hier.name.name);
+		       Statematrix matrix = PESTdrawutil.getState(root,tr.points[trsize].x+nx,tr.points[trsize].y+ny);
+		       if (matrix.prev instanceof And_State) {System.out.println("AND>"+matrix.prev);
+			  System.out.println("AND>"+matrix.prev.name.name);
+			  tr.target = new Statename(matrix.prev.name.name);} else 
+			      {tr.target = new Statename(hier.name.name);}
 		   };
 	      }
 
