@@ -2,41 +2,46 @@ package Check;
 
 import java.util.*;
 import Absyn.*;
+import GUI.*;
 
 /**
  * <b>Syntax Check für Statecharts</b>
  * <br><a href="#Codes">Codes von Fehlern und Warnungen beim Syntax Check</a>
  * @author   Daniel Wendorff und Magnus Stiller<br><a href="mailto:swtech11@informatik.uni-kiel.de">eMail an uns</a>
- * @version  $Id: modelCheck.java,v 1.11 1998-12-10 10:45:02 swtech11 Exp $
+ * @version  $Id: modelCheck.java,v 1.12 1998-12-10 22:24:07 swtech11 Exp $
  */
 public class modelCheck {
   private modelCheckMsg mcm;
   private boolean warning = true;
-  private boolean outputGUI = true;
+  private boolean outputGUI;
   private boolean donePI = false;
   private boolean NoFatalError = true;
+  private GUIInterface gui = null;
 
 /**
- * Constructor des Syntax Checkers,
- * der keine Ausgabe auf die GUI ermöglicht
+ * Der Constructor des Syntax Checkers.
+ * Es wird keine Ausgabe auf die GUI ermöglicht.
  */
   public modelCheck() {
     mcm = new modelCheckMsg();
     setOutputGUI(false);
   }
 
-/**
- * Constructor des Syntax Checkers,
- * der, wenn man die Einstellungen nicht ändert, Meldungen auf der GUI ausgibt
+/** 
+ * Der Constructor des Syntax Checkers.
+ * Es werden, wenn man die Einstellungen nicht ändert, Meldungen von Fehlern und Warnungen auf der GUI ausgegeben.
+ * @param _gui Referenz auf die GUI
+ * @see        #setOutputGUI(boolean)
  */
-  public modelCheck(String EigentlichPlatzFuerReferenzAufGUI) {
+  public modelCheck(GUIInterface _gui) {
     mcm = new modelCheckMsg();
     setOutputGUI(true);
   }
 
 /**
- * Führt den gesamten Syntax Check bei der Statechart sc durch
- * und gibt <b>true</b> zurück, falls keine Fehler aufgetreten sind, sonst <b>false</b>.
+ * Führt den gesamten Syntax Check durch.
+ * Die Methode gibt <b>true</b> zurück, falls keine Fehler aufgetreten sind, sonst <b>false</b>.
+ * @param sc  die zu checkende Statechart
  */
   public boolean checkModel(Statechart sc) {
     return (checkEvents(sc) & checkStates(sc) &
@@ -44,8 +49,9 @@ public class modelCheck {
   };
 
 /**
- * Checkt die Events der Statechart sc
- * und gibt <b>true</b> zurück, falls keine Fehler aufgetreten sind, sonst <b>false</b>.
+ * Checkt die Events.
+ * Die Methode gibt <b>true</b> zurück, falls keine Fehler aufgetreten sind, sonst <b>false</b>.
+ * @param sc  die zu checkende Statechart
  */
   public boolean checkEvents(Statechart sc) {
     boolean pi = false;
@@ -58,8 +64,9 @@ public class modelCheck {
   }
 
 /**
- * Checkt die States der Statechart sc
- * und gibt <b>true</b> zurück, falls keine Fehler aufgetreten sind, sonst <b>false</b>.
+ * Checkt die States.
+ * Die Methode gibt <b>true</b> zurück, falls keine Fehler aufgetreten sind, sonst <b>false</b>.
+ * @param sc  die zu checkende Statechart
  */
   public boolean checkStates(Statechart sc) {
     boolean pi = false;
@@ -72,8 +79,9 @@ public class modelCheck {
   }
 
 /**
- * Checkt die Transitionen der Statechart sc
- * und gibt <b>true</b> zurück, falls keine Fehler aufgetreten sind, sonst <b>false</b>.
+ * Checkt die Transitionen.
+ * Die Methode gibt <b>true</b> zurück, falls keine Fehler aufgetreten sind, sonst <b>false</b>.
+ * @param sc  die zu checkende Statechart
  */
   public boolean checkTransitions(Statechart sc) {
     boolean pi = false;
@@ -86,8 +94,9 @@ public class modelCheck {
   }
 
 /**
- * Checkt die booleschen Variablen der Statechart sc
- * und gibt <b>true</b> zurück, falls keine Fehler aufgetreten sind, sonst <b>false</b>.
+ * Checkt die booleschen Variablen.
+ * Die Methode gibt <b>true</b> zurück, falls keine Fehler aufgetreten sind, sonst <b>false</b>.
+ * @param sc  die zu checkende Statechart
  */
   public boolean checkBVars(Statechart sc) {
     boolean pi = false;
@@ -100,8 +109,12 @@ public class modelCheck {
   }
 
 /**
- * Checkt die Statechart sc auf schwerwiegende Fehler der Programmierer (Kreise)
- * und gibt <b>true</b> zurück, falls keine Fehler aufgetreten sind, sonst <b>false</b>.
+ * Checkt auf schwerwiegende Fehler der Programmierer.
+ * Bei diesem Check geht es darum, Fehler zu finden, die den Syntax Checker zu falschen Ergebnissen führen würde
+ * (z.B. Zyklen in den Statelisten oder States).
+ * <br>Diese Methode wird <b>einmalig</b> aufgerufen, wenn ein oder mehrere Tests ausgeführt werden.
+ * Die Methode gibt <b>true</b> zurück, falls keine Fehler aufgetreten sind, sonst <b>false</b>.
+ * @param sc  die zu checkende Statechart
  */
   public boolean checkPI(Statechart sc) {
     testPI tpi = new testPI(sc, mcm);
@@ -116,10 +129,14 @@ public class modelCheck {
   public void setWarning(boolean _w) { warning = _w;}
 
 /**
- * Legt fest, ob die Fehler und Warnungen auf der GUI erscheinen sollen
+ * Legt fest, ob die Fehler und Warnungen auf der GUI erscheinen sollen.
+ * Diese Methode funktioniert nur, wenn im Constructor-Aufruf eine Referenz auf die GUI übergeben wurde
  * (Voreinstellung: <b>true</b>).
  */
-  public void setOutputGUI(boolean _w) { outputGUI = _w;}
+  public void setOutputGUI(boolean _w) {
+    if (gui != null & _w==true) { outputGUI = true; }
+    else { outputGUI = false; }
+  }
 
 /**
  * Gibt die Anzahl der aufgetretenen Fehler zurück.
@@ -127,23 +144,35 @@ public class modelCheck {
   public int getErrorNumber() { return mcm.getErrorNumber(); }
 
 /**
- * Liefert alle vorhandenen Fakten über den Fehler mit der entsprechenden Nummer als <b>String</b> zurück.
+ * Liefert alle vorhandenen Fakten über den entsprechenden Fehler.
+ * Die Methode gibt alle vorhandenen Fakten über den Fehler mit der entsprechenden Nummer als <b>String</b> zurück.
+ * @param _number Index des Fehlers (1 bis #getErrorNumber() )
+ * @see           #getErrorNumber()
  */
   public String getError(int _number) { return mcm.getError(_number); }
 
 /**
- * Liefert den Code des Fehlers mit der entsprechenden Nummer als <b>int</b> zurück.
+ * Liefert den Code des entsprechenden Fehlers.
+ * Die Methode gibt den Code des Fehlers mit der entsprechenden Nummer als <b>int</b> zurück.
  * <br><a href="#Codes">Codes von Fehlern und Warnungen beim Syntax Check</a>
+ * @param _number Index des Fehlers (1 bis getErrorNumber() )
+ * @see           #getErrorNumber()
  */
   public int getErrorCode(int _number) { return mcm.getErrorCode(_number); }
 
 /**
- * Liefert die Beschreibung des Fehlers mit der entsprechenden Nummer als <b>String</b> zurück.
+ * Liefert die Beschreibung des entsprechenden Fehlers.
+ * Die Methode gibt die Beschreibung des Fehlers mit der entsprechenden Nummer als <b>String</b> zurück.
+ * @param _number Index des Fehlers (1 bis getErrorNumber() )
+ * @see           #getErrorNumber()
  */
   public String getErrorMsg(int _number) { return mcm.getErrorMsg(_number); }
 
 /**
- * Liefert den Pfad des Fehlers mit der entsprechenden Nummer als <b>String</b> zurück.
+ * Liefert den Pfad des entsprechenden Fehlers.
+ * Die Methode gibt den Pfad des Fehlers mit der entsprechenden Nummer als <b>String</b> zurück.
+ * @param _number Index des Fehlers (1 bis getErrorNumber() )
+ * @see           #getErrorNumber()
  */
   public String getErrorPath(int _number) { return mcm.getErrorPath(_number); }
 
@@ -153,12 +182,16 @@ public class modelCheck {
   public int getWarningNumber() { return mcm.getWarningNumber(); }
 
 /**
- * Liefert alle vorhandenen Fakten über die Warnung mit der entsprechenden Nummer als <b>String</b> zurück.
+ * Liefert alle vorhandenen Fakten über die entsprechende Warnung.
+ * Die Methode gibt alle vorhandenen Fakten über die Warnung mit der entsprechenden Nummer als <b>String</b> zurück.
+ * @param _number Index der Warnung (1 bis getWarningNumber() )
+ * @see           #getWarningNumber()
  */
   public String getWarning(int _number) { return mcm.getWarning(_number); }
 
 /**
- * Liefert den Code der Warnung mit der entsprechenden Nummer als <b>int</b> zurück.
+ * Liefert den Code der entsprechenden Warnung.
+ * Die Methode gibt den Code der Warnung mit der entsprechenden Nummer als <b>int</b> zurück.
  *
  *<a name="Codes"><h1>Codes von Fehlern und Warnungen beim Syntax Check</h1></a>
  *<b>Grobe Fehlerklassifizierung:</b><br>
@@ -168,48 +201,70 @@ public class modelCheck {
  * 300 - 399 State Fehler und Warnungen<br>
  * 400 - 499 Transitions Fehler und Warnungen<br>
  *<br>
- *<TABLE BORDER CELLSPACING=3 BORDERCOLOR="#000000" CELLPADDING=3>
- *<TR><TH><B>Code</B></TH><TH><P ALIGN="CENTER"><B>Fehler</B></TH><TH><P ALIGN="CENTER">Warnung</B></TH></TR>
- *<TR><TD><P ALIGN="RIGHT">1</td><td></td><td>Der Syntax Check funktioniert noch nicht einwandfrei.</td></TR>
- *<tr><TD><P ALIGN="RIGHT">2</td><td></td><td>Der Event Check funktioniert noch nicht einwandfrei.</td></TR>
- *<tr><TD><P ALIGN="RIGHT">3</td><td></td><td>Der State Check funktioniert noch nicht einwandfrei.</td></TR>
- *<tr><TD><P ALIGN="RIGHT">4</td><td></td><td>Der Transition Check funktioniert noch nicht einwandfrei.</td></TR>
- *<tr><TD><P ALIGN="RIGHT">5</td><td></td><td>Der BVars Check funktioniert noch nicht einwandfrei.</td></TR>
- *<tr><TD><P ALIGN="RIGHT">100</td><td>Doppelte Definition von BVar</td><td></td></TR>
- *<tr><TD><P ALIGN="RIGHT">101</td><td>Keine Deklaration von BVar</td><td></td></TR>
- *<tr><TD><P ALIGN="RIGHT">102</td><td></td><td>Deklarierte BVar wurde nicht verwendet</td></TR>
- *<tr><TD><P ALIGN="RIGHT">200</td><td>Doppelte Definition von Events</td><td></td></TR>
- *<tr><TD><P ALIGN="RIGHT">201</td><td>Keine Deklaration von Event</td><td></td></TR>
- *<tr><TD><P ALIGN="RIGHT">202</td><td></td><td>Deklarierter Event wurde nicht verwendet</td></TR>
- *<tr><TD><P ALIGN="RIGHT">203</td><td>Der Pathname in einem GuardComppath ist nicht vorhanden.</td><td></td></TR>
- *<tr><TD><P ALIGN="RIGHT">204</td><td></td><td>Der Pathname in einem GuardComppath ist mehrfach vorhanden.</td></TR>
- *<tr><TD><P ALIGN="RIGHT">400</td><td>Der Start-State der Transition ist nicht definiert.</td><td></td></TR>
- *<tr><TD><P ALIGN="RIGHT">401</td><td>Der Ziel-State der Transition ist nicht definiert.</td><td></td></TR>
- *<tr><TD><P ALIGN="RIGHT">402</td><td>Beide States der Transition sind nicht definiert.</td><td></td></TR>
- *<tr><TD><P ALIGN="RIGHT">403</td><td>Der Start-State der Transition ist unbekannt.</td><td></td></TR>
- *<tr><TD><P ALIGN="RIGHT">404</td><td>Der Ziel-State der Transition ist unbekannt.</td><td></td></TR>
- *<tr><TD><P ALIGN="RIGHT">405</td><td>Beide States der Transition sind unbekannt.</td><td></td></TR>
- *<tr><TD><P ALIGN="RIGHT">406</td><td>Interlevel-Transition: Der Start-State liegt falsch.</td><td></td></TR>
- *<tr><TD><P ALIGN="RIGHT">407</td><td>Interlevel-Transition: Der Ziel-State liegt falsch.</td><td></td></TR>
- *<tr><TD><P ALIGN="RIGHT">408</td><td>Interlevel-Transition: Beide States liegt falsch.</td><td></td></TR>
- *<tr><TD><P ALIGN="RIGHT">409</td><td>Der Start-Connenctor der Transition ist unbekannt.</td><td></td></TR>
- *<tr><TD><P ALIGN="RIGHT">410</td><td>Der Ziel-Connenctor der Transition ist unbekannt.</td><td></td></TR>
- *<tr><TD><P ALIGN="RIGHT">411</td><td>Beide Connenctoren der Transition sind unbekannt.</td><td></td></TR>
- *<tr><TD><P ALIGN="RIGHT">412</td><td>Interlevel-Transition: Der Start-Connenctor liegt falsch.</td><td></td></TR>
- *<tr><TD><P ALIGN="RIGHT">413</td><td>Interlevel-Transition: Der Ziel-Connenctor liegt falsch.</td><td></td></TR>
- *<tr><TD><P ALIGN="RIGHT">414</td><td>Interlevel-Transition: Beide Connenctoren liegten falsch.</td><td></td></TR>
- *<TR><TD><P ALIGN="RIGHT">X</td><td>unbekannter Fehler</td><td>unbekannte Warnung</td></TR>
- *</TABLE>
+ *<Table border CELLSPACING=3 BORDERCOLOR="#000000" CELLPADDING=3>
+*<TR ALIGN="center" VALIGN="middle"><TH><B>Code</B></TH><TH><B>F</B></TH><TH><B>W</B></TH><TH><B>Beschreibung</B></TH></TR>
+*<TR><TD ALIGN="right">1</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Der Syntax Check funktioniert noch nicht einwandfrei.</TD></TR>
+*<TR><TD ALIGN="right">2</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Der Event Check funktioniert noch nicht einwandfrei.</TD></TR>
+*<TR><TD ALIGN="right">3</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Der State Check funktioniert noch nicht einwandfrei.</TD></TR>
+*<TR><TD ALIGN="right">4</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Der Transition Check funktioniert noch nicht einwandfrei.</TD></TR>
+*<TR><TD ALIGN="right">5</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Der BVars Check funktioniert noch nicht einwandfrei.</TD></TR>
+*<TR><TD ALIGN="right">6</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Der Check auf Fehler der Programmierer funktioniert noch nicht einwandfrei.</TD></TR>
+*<TR><TD ALIGN="right">10</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Fataler Fehler: EIN Objekt des Types Or-State wird mehrfach referenziert.</TD></TR>
+*<TR><TD ALIGN="right">11</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Fataler Fehler: EIN Objekt des Types And-State wird mehrfach referenziert.</TD></TR>
+*<TR><TD ALIGN="right">12</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Fataler Fehler: EIN Objekt des Types Basic-State wird mehrfach referenziert.</TD></TR>
+*<TR><TD ALIGN="right">13</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Fataler Fehler: EIN Objekt des Types Transition wird mehrfach referenziert.</TD></TR>
+*<TR><TD ALIGN="right">99</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Aufgrund eines fatalen Fehlers wird der Syntax Check abgebrochen.</TD></TR>
+*<TR><TD ALIGN="right">100</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Doppelte Definition von BVar</TD></TR>
+*<TR><TD ALIGN="right">101</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Keine Deklaration von BVar</TD></TR>
+*<TR><TD ALIGN="right">102</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Deklarierte BVar wurde nicht verwendet</TD></TR>
+*<TR><TD ALIGN="right">200</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Doppelte Definition von Events</TD></TR>
+*<TR><TD ALIGN="right">201</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Keine Deklaration von Event</TD></TR>
+*<TR><TD ALIGN="right">202</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Deklarierter Event wurde nicht verwendet</TD></TR>
+*<TR><TD ALIGN="right">203</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Der Pathname in einem GuardComppath ist nicht vorhanden.</TD></TR>
+*<TR><TD ALIGN="right">204</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Der Pathname in einem GuardComppath ist mehrfach vorhanden.</TD></TR>
+*<TR><TD ALIGN="right">300</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Mehrfache Definition von Statename</TD></TR>
+*<TR><TD ALIGN="right">301</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Bezeichnung von Statename nicht eindeutig</TD></TR>
+*<TR><TD ALIGN="right">302</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Deklarierter State wurde nicht verwendet</TD></TR>
+*<TR><TD ALIGN="right">303</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Keine Deklaration von Statename</TD></TR>
+*<TR><TD ALIGN="right">304</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Ein Or-State enthaelt nur einen inneren State</TD></TR>
+*<TR><TD ALIGN="right">305</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Ein Or-State enthaelt keinen inneren State</TD></TR>
+*<TR><TD ALIGN="right">306</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Ein And-State enthaelt nur einen inneren State</TD></TR>
+*<TR><TD ALIGN="right">307</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Ein And-State enthaelt keinen inneren State</TD></TR>
+*<TR><TD ALIGN="right">400</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Der Start-State der Transition ist nicht definiert.</TD></TR>
+*<TR><TD ALIGN="right">401</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Der Ziel-State der Transition ist nicht definiert.</TD></TR>
+*<TR><TD ALIGN="right">402</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Beide States der Transition sind nicht definiert.</TD></TR>
+*<TR><TD ALIGN="right">403</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Der Start-State der Transition ist unbekannt.</TD></TR>
+*<TR><TD ALIGN="right">404</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Der Ziel-State der Transition ist unbekannt.</TD></TR>
+*<TR><TD ALIGN="right">405</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Beide States der Transition sind unbekannt.</TD></TR>
+*<TR><TD ALIGN="right">406</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Interlevel-Transition: Der Start-State liegt falsch.</TD></TR>
+*<TR><TD ALIGN="right">407</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Interlevel-Transition: Der Ziel-State liegt falsch.</TD></TR>
+*<TR><TD ALIGN="right">408</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Interlevel-Transition: Beide States liegt falsch.</TD></TR>
+*<TR><TD ALIGN="right">409</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Der Start-Connenctor der Transition ist unbekannt.</TD></TR>
+*<TR><TD ALIGN="right">410</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Der Ziel-Connenctor der Transition ist unbekannt.</TD></TR>
+*<TR><TD ALIGN="right">411</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Beide Connenctoren der Transition sind unbekannt.</TD></TR>
+*<TR><TD ALIGN="right">412</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Interlevel-Transition: Der Start-Connenctor liegt falsch.</TD></TR>
+*<TR><TD ALIGN="right">413</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Interlevel-Transition: Der Ziel-Connenctor liegt falsch.</TD></TR>
+*<TR><TD ALIGN="right">414</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Interlevel-Transition: Beide Connenctoren liegten falsch.</TD></TR>
+*<TR><TD ALIGN="right">X</TD><TD ALIGN="center">X</TD><TD ALIGN="center">X</TD><TD>unbekannter Code</TD></TR>
+*</Table>
+ * @param _number Index der Warnung (1 bis getWarningNumber() )
+ * @see           #getWarningNumber()
  */
   public int getWarningCode(int _number) { return mcm.getWarningCode(_number); }
 
 /**
- * Liefert die Beschreibung der Warnung mit der entsprechenden Nummer als <b>String</b> zurück.
+ * Liefert die Beschreibung der entsprechenden Warnung.
+ * Die Methode gibt die Beschreibung der Warnung mit der entsprechenden Nummer als <b>String</b> zurück.
+ * @param _number Index der Warnung (1 bis getWarningNumber() )
+ * @see           #getWarningNumber()
  */
   public String getWarningMsg(int _number) { return mcm.getWarningMsg(_number); }
 
 /**
- * Liefert den Pfad der Warnung mit der entsprechenden Nummer als <b>String</b> zurück.
+ * Liefert den Pfad der entsprechenden Warnung.
+ * Die Methode gibt den Pfad der Warnung mit der entsprechenden Nummer als <b>String</b> zurück.
+ * @param _number Index der Warnung (1 bis getWarningNumber() )
+ * @see           #getWarningNumber()
  */
   public String getWarningPath(int _number) { return mcm.getWarningPath(_number); }
 

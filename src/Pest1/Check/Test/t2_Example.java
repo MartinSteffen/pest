@@ -2,7 +2,7 @@ import Absyn.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: t2_Example.java,v 1.3 1998-12-09 14:28:59 swtech11 Exp $
+ *  @version  $Id: t2_Example.java,v 1.4 1998-12-10 22:23:02 swtech11 Exp $
  */
 public class t2_Example {
   
@@ -37,29 +37,22 @@ Bvar a3 = new Bvar ("A");
             new SEventList (D,
               new SEventList (G,null))));
 
-      
     Path sudp = new Path ("SUD", null);
-    Path p1p  = sudp.append("P1");
-    Path p2p  = sudp.append("P2");
-    Path p3p  = sudp.append("P3");
-    Path q1p  = p3p.append("Q1");
-    Path q2p  = p3p.append("Q2");
-    Path r1p = q2p.append("R1");
-    Path r2p = q2p.append("R2");
-    Path s1p = r1p.append("S1");
-    Path s2p = r1p.append("S2");
-    Path t1p = r2p.append("T1");
-    Path t2p = r2p.append("T2");
-
-
-
-
-
+    Path p1p  = new Path ("P1", sudp);
+    Path p2p  = new Path ("P2", sudp);
+    Path p3p  = new Path ("P3", sudp);
+    Path q1p  = new Path ("Q1", p3p);
+    Path q2p  = new Path ("Q2", p3p);
+    Path r1p  = new Path ("R1", q2p);
+    Path r2p  = new Path ("R2", q2p);
+    Path s1p  = new Path ("S1", r1p);
+    Path s2p  = new Path ("S2", r1p);
+    Path t1p  = new Path ("T0", r2p);
+    Path t2p  = new Path ("T2", r2p);
     PathList pathlist =
     new PathList (sudp,
       new PathList (p1p,
        new PathList (p2p,
-         new PathList (p3p,
            new PathList (q1p,
              new PathList (q2p,
                new PathList (r1p,
@@ -67,7 +60,7 @@ Bvar a3 = new Bvar ("A");
                    new PathList (s1p,
 	             new PathList (s2p,
                        new PathList (t1p,
-                         new PathList (t2p,null))))))))))));
+                         new PathList (t2p,null)))))))))));
 
   Basic_State S1 = new Basic_State (new Statename("S1"));
   Basic_State S2 = new Basic_State (new Statename("S2"));
@@ -147,23 +140,18 @@ Bvar a3 = new Bvar ("A");
 
 public static Statechart getExample_m() {
     
-    Path sudp = new Path ("SUD", null);
-    Path p1p  = sudp.append("P1");
-    Path p2p  = sudp.append("P2");
-    Path p3p  = sudp.append("P3");
-    Path q1p  = p3p.append("Q1");
-    Path q2p  = p3p.append("Q2");
-    Path r1p = q2p.append("R1");
-    Path r2p = q2p.append("R2");
-    Path s1p = r1p.append("S1");
-    Path s2p = r1p.append("S2");
-    Path t1p = r2p.append("T1");
-    Path t2p = r2p.append("T2");
-
-
-
-
-
+    Path sudp = new Path ("Sud", null);
+    Path p1p  = new Path ("P1", sudp);
+    Path p2p  = new Path ("P2", sudp);
+    Path p3p  = new Path ("P3", sudp);
+    Path q1p  = new Path ("Q1", p3p);
+    Path q2p  = new Path ("Q2", p3p);
+    Path r1p  = new Path ("R1", q2p);
+    Path r2p  = new Path ("R2", q2p);
+    Path s1p  = new Path ("S1", r1p);
+    Path s2p  = new Path ("S2", r1p);
+    Path t1p  = new Path ("T1", r2p);
+    Path t2p  = new Path ("T2", r2p);
     PathList pathlist =
     new PathList (sudp,
       new PathList (p1p,
@@ -176,8 +164,7 @@ public static Statechart getExample_m() {
                    new PathList (s1p,
 	             new PathList (s2p,
                        new PathList (t1p,
-                         new PathList (t2p,null))))))))))));   
-    
+                         new PathList (t2p,null))))))))))));
 
 
     Basic_State P1 = new Basic_State (new Statename("P1"));
@@ -245,48 +232,7 @@ public static Statechart getExample_m() {
     return new Statechart (null, null, null, SUD);
   }
 
-  public static Statechart getExample_m3() {
 
-    Basic_State P1 = new Basic_State (new Statename("P1"));
-    Basic_State Z1 = new Basic_State (new Statename("Z1"));
-    Basic_State Z2 = new Basic_State (new Statename("Z2"));
-
-    Or_State d1 = new Or_State (
-			       new Statename ("d1"),
-             new StateList (Z2, null),
-             null,
-             null,
-             null);
-
-    Or_State P2 = new Or_State (
-			       new Statename ("P2"),
-			       new StateList (Z1,new StateList (d1,null)),
-			       new TrList (new Tr (new Statename ("Z1"), new Conname("BLABLA-CON"), new TLabel (null,null)),
-					     new TrList (new Tr (new Statename ("Z2"), new Statename ("Z1"), new TLabel (null,null)),
-						     new TrList (new Tr (new Conname("SUD-1-CON"), new Statename ("P1"), new TLabel (null,null)),
-                   new TrList (new Tr (new Statename ("Z2"), new UNDEFINED (), new TLabel (null,null)),
-                     new TrList (new Tr (new Statename ("Z1"), new Conname("P2-CON"), new TLabel (null,null)),
-              null))))),
-			       new StatenameList (new Statename("Z2"), null),
-			       new ConnectorList (new Connector(new Conname("P2-CON")), null));
-
-    Or_State SUD = new Or_State (
-			       new Statename ("SUD"),
-			       new StateList (P1,new StateList (P2,null)),
-			       new TrList (new Tr (new Conname("sud-3-CON"), new Statename ("P2"), new TLabel (null,null)),
-					     new TrList (new Tr (new Statename ("P1"), new Conname("P2-CON"), new TLabel (null,null)),
-						     new TrList (new Tr (new Statename ("P3"), new Statename ("P1"),	new TLabel (null,null)),
-                   new TrList (new Tr (new Conname("SUD-1-CON"), new Conname("sud-2-CON"), new TLabel (null,null)),
-                     new TrList (new Tr (new Statename ("P2"), new Statename ("P1"), new TLabel (null,null)),
-              null))))),
-			       new StatenameList (new Statename("P1"), null),
-			       new ConnectorList (new Connector(new Conname("SUD-1-CON")),
-               new ConnectorList(new Connector(new Conname("sud-2-CON")), null))    );
-
-    d1.substates.head=P2;
-
-    return new Statechart (null, null, null, SUD);
-  }
 
 }
 

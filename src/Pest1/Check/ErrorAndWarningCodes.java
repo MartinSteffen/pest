@@ -2,7 +2,7 @@ package Check;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: ErrorAndWarningCodes.java,v 1.10 1998-12-10 11:40:11 swtech11 Exp $
+ *  @version  $Id: ErrorAndWarningCodes.java,v 1.11 1998-12-10 22:24:06 swtech11 Exp $
  */
 class ErrorAndWarningCodes {
   ErrorAndWarningCodes() {
@@ -19,10 +19,16 @@ class ErrorAndWarningCodes {
       case   5: { _s = "Der BVars Check funktioniert noch nicht einwandfrei."; break;  }
       case   6: { _s = "Der Check auf Fehler der Programmierer funktioniert noch nicht einwandfrei."; break;  }
 
-      case  10: { _s = "Fataler Fehler: EIN Objekt des Types State wird mehrfach referenziert"; break;  }
-      case  11: { _s = "Fataler Fehler: EIN Objekt des Types Transition wird mehrfach referenziert"; break;  }
+      case  10: { _s = "Fataler Fehler: EIN Objekt des Types Or-State wird mehrfach referenziert."; break;  }
+      case  11: { _s = "Fataler Fehler: EIN Objekt des Types And-State wird mehrfach referenziert."; break;  }
+      case  12: { _s = "Fataler Fehler: EIN Objekt des Types Basic-State wird mehrfach referenziert."; break;  }
+      case  13: { _s = "Fataler Fehler: EIN Objekt des Types Transition wird mehrfach referenziert."; break;  }
+      case  14: { _s = "Fataler Fehler: EIN Objekt des Types TransitionList wird mehrfach referenziert."; break;  }
+      case  15: { _s = "Fataler Fehler: EIN Objekt des Types PathList wird mehrfach referenziert."; break;  }
+      case  16: { _s = "Fataler Fehler: EIN Objekt des Types Path wird mehrfach referenziert."; break;  }
+      case  99: { _s = "Aufgrund eines fatalen Fehlers wird der Syntax Check abgebrochen."; break;  }
 
-      case 100: {_s = "Name von BVar nicht eindeutig."; break; }
+      case 100: {_s = "Doppelte Definition von BVar"; break; }
       case 101: {_s = "Keine Deklaration von BVar"; break; }
       case 102: {_s = "Deklarierte BVar wurde nicht verwendet"; break; }
       
@@ -37,9 +43,9 @@ class ErrorAndWarningCodes {
       case 303: {_s = "Keine Deklaration von Statename"; break; }
       case 304: {_s = "Ein Or-State enthaelt nur einen inneren State"; break; }
       case 305: {_s = "Ein Or-State enthaelt keinen inneren State"; break; }
-      case 307: {_s = "Ein And-State enthaelt nur einen inneren State"; break; }
       case 306: {_s = "Ein And-State enthaelt keinen inneren State"; break; }
-     
+      case 307: {_s = "Ein And-State enthaelt nur einen inneren State"; break; }
+
       case 400: {_s = "Der Start-State der Transition ist nicht definiert."; break; }
       case 401: {_s = "Der Ziel-State der Transition ist nicht definiert."; break; }
       case 402: {_s = "Beide States der Transition sind nicht definiert."; break; }

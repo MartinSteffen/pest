@@ -6,7 +6,7 @@ import Util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: t.java,v 1.5 1998-12-08 20:48:18 swtech11 Exp $
+ *  @version  $Id: t.java,v 1.6 1998-12-10 22:23:01 swtech11 Exp $
  */
 public class t {
 
@@ -27,8 +27,8 @@ public class t {
       System.out.println("      m  = Beispiel 1 von Magnus fuer Transitionen");
       System.out.println("      m2 = Beispiel 2 von Magnus fuer Transitionen und Connectoren");
       System.out.println("      l  = leere Statechart");
-      System.out.println("      m3 = VORSICHT: Beispiel 3 von Magnus mit Zyklus in den States");
-
+      System.out.println("      f* = VORSICHT: diverse Beispiele für Statecharts mit mehrfacher Referenzierung");
+      System.out.println("              * = 1,2,3,4,5   ");
       System.out.println("  op2 ruft den entsprechenden Check auf und ist optional:");
       System.out.println("      a  = kompletter Model Check (oder keine Eingabe)");
       System.out.println("      b  = BVars checken");
@@ -59,9 +59,25 @@ public class t {
         t2_Example t = new t2_Example();
         sc = t.getExample_m2();
 	    }
-      if (argv[0].equalsIgnoreCase("m3")) {
-        t2_Example t = new t2_Example();
-        sc = t.getExample_m3();
+      if (argv[0].equalsIgnoreCase("f1")) {
+        tf_Example t = new tf_Example();
+        sc = t.getExample_f1();
+	    }
+      if (argv[0].equalsIgnoreCase("f2")) {
+        tf_Example t = new tf_Example();
+        sc = t.getExample_f2();
+	    }
+      if (argv[0].equalsIgnoreCase("f3")) {
+        tf_Example t = new tf_Example();
+        sc = t.getExample_f3();
+	    }
+      if (argv[0].equalsIgnoreCase("f4")) {
+        tf_Example t = new tf_Example();
+        sc = t.getExample_f4();
+	    }
+      if (argv[0].equalsIgnoreCase("f5")) {
+        tf_Example t = new tf_Example();
+        sc = t.getExample_f5();
 	    }
 
       // Check auswählen
@@ -78,7 +94,8 @@ public class t {
 
       // PrettyPrint pp = new PrettyPrint();
       // pp.start(sc);
-
+      
+      System.out.println("Rueckgabestatus der Checks: "+ok);
       System.out.println("Fehlermeldungen ( " + mc.getErrorNumber() +  " Stueck ):");
       if (mc.getErrorNumber()>0) {
         for (int i=1;(i<=mc.getErrorNumber());i++) {
