@@ -14,7 +14,7 @@ TESCTokenizer.class
 all : $(CLASSES)
 
 clean:
-	rm *.class *~
+	rm -f *.class *~
 
 .java.class:
 	$(COMPILER) $(COPTIONS) -classpath "$(CLASSPATH)"  $?
