@@ -2,9 +2,12 @@
 #	Abstract Syntax for PEST Statecharts
 #	------------------------------------
 #
-#	$Id: Makefile,v 1.1 1998-11-30 11:43:30 swtech11 Exp $
+#	$Id: Makefile,v 1.2 1998-12-07 11:42:36 swtech11 Exp $
 #
 #	$Log: not supported by cvs2svn $
+#	Revision 1.1  1998/11/30 11:43:30  swtech11
+#	*** empty log message ***
+#
 #	Revision 1.4  1998/11/27 16:11:20  swtech00
 #	Ich habe damit angefangen, die Abstrakte Syntax so zu kommentieren, dass
 #	javadoc das auch verstehen kann. Das bereitet die Benutzung von javadoc vor.
@@ -22,8 +25,8 @@
 all:
 	javac *.java
 
-clean:
-	\rm -f *.class *~
+clean:  
+	rm -rf *.class *~
 
 localdocu:	;
 	javadoc  -version -author -d Docu *.java

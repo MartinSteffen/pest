@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: modelCheckBasics.java,v 1.2 1998-12-06 23:03:54 swtech11 Exp $
+ *  @version  $Id: modelCheckBasics.java,v 1.3 1998-12-07 11:42:37 swtech11 Exp $
  */
 class modelCheckBasics {
   modelCheckMsg msg = new modelCheckMsg();
@@ -30,6 +30,8 @@ class modelCheckBasics {
   }
 
 
+
+
 // ******* Methoden, um sich durch den Baum zu hangeln ********************
 
   // Transition bearbeiten und evtl. naechste aufrufen
@@ -42,6 +44,8 @@ class modelCheckBasics {
     }
     if (tl.tail != null) { nextTransInTransList(tl.tail); }
   }
+
+
 
   // Transition bearbeiten und evtl. naechste aufrufen
   void nextTransInTransList(TrList tl, State _s, String p) {
@@ -56,6 +60,7 @@ class modelCheckBasics {
     if (tl.tail != null) { nextTransInTransList(tl.tail, _s, p); }
   }
 
+
   // Art des States festellen und evtl. naechsten aufrufen
   void nextStateInStateList(StateList sl) {
     if (sl.head instanceof Or_State) {testTransOrState ((Or_State)sl.head); }
@@ -63,6 +68,7 @@ class modelCheckBasics {
     if (sl.head instanceof Basic_State) {testTransBasicState ((Basic_State)sl.head); }
     if (sl.tail != null) { nextStateInStateList(sl.tail); }
   }
+
 
   // Art des States festellen und evtl. naechsten aufrufen
   void nextStateInStateList(StateList sl, State _s, String p) {

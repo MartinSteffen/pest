@@ -3,7 +3,7 @@ import Absyn.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: t_Example.java,v 1.4 1998-12-06 23:12:04 swtech11 Exp $
+ *  @version  $Id: t_Example.java,v 1.5 1998-12-07 11:43:07 swtech11 Exp $
  */
 public class t_Example{
 
@@ -42,7 +42,7 @@ public class t_Example{
     PathList pathlist =
         new PathList (new Path ("SUD"),
           new PathList (new Path ("P1"),
-            new PathList (new Path ("P2"),
+            new PathList (new Path ("P1"),
               new PathList (new Path ("P3"),
 		new PathList (new Path ("Q1"),
                   new PathList (new Path ("Q2"),
@@ -51,12 +51,12 @@ public class t_Example{
                         new PathList (new Path ("S1"),
 			  new PathList (new Path ("S2"),
                             new PathList (new Path ("T1"),
-                              new PathList (new Path ("T2"),null))))))))))));  
+                              new PathList (new Path ("P1"),null))))))))))));  
 
   Basic_State S1 = new Basic_State (new Statename("S1"));
   Basic_State S2 = new Basic_State (new Statename("S2"));
   Basic_State T1 = new Basic_State (new Statename("T1"));
-  Basic_State T2 = new Basic_State (new Statename("T2"));
+  Basic_State T2 = new Basic_State (new Statename("T1"));
   
   Tr tr1 = new Tr (new Statename ("S1"), 
 		   new Statename ("S2"),
