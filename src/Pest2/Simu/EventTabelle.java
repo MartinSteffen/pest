@@ -55,6 +55,18 @@ public class EventTabelle extends Object{
     return result;
    }
 
+  public String toString(){
+    String result="";
+    Enumeration enum=data.keys();
+    result+="( ";
+    while (enum.hasMoreElements()){
+      result+=(String)enum.nextElement();
+      result+=" ";
+    }
+    result+=")";
+    return result;
+  }
+
 }
 
 

@@ -56,6 +56,15 @@ public class Status extends Object{
     transitions.debug();
   }
 
+  public String toString(){
+    String result="";
+    result+="(";
+    result+=states.toString();
+    result+=events.toString();
+    result+=booleans.toString();
+    result+=")";
+    return result;
+  }
 
 
 }

@@ -129,7 +129,17 @@ public class BooleanTabelle extends Object{
     return result;
   }
 
-
+  public String toString(){
+    String result="";
+    result+="( ";
+    Enumeration enum=data.keys();
+    while (enum.hasMoreElements()){
+      result+=(String)enum.nextElement();
+      result+=" ";
+    }
+    result+=")";
+    return result;
+  }
 
 
 }

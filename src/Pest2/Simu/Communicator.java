@@ -21,8 +21,15 @@ public class Communicator extends Frame implements ActionListener, ItemListener{
   boolean autodet=false;
   Vector brkpts=null;
 
+  boolean record_trace=false;
+
   Monitor monitor=null;
+  Tracer tracer=null;
+
+
   BreakpointDialog brdialog=null;
+
+
 
   List list=null;
   Vector listvector=null;
@@ -36,6 +43,7 @@ public class Communicator extends Frame implements ActionListener, ItemListener{
     running=true;
     chart=s;
     monitor=new Monitor(chart,this);
+    tracer=new Tracer(this);
     brdialog=new BreakpointDialog(this,chart,gui,new Vector());
     brkpts=new Vector();
     buildFrame();
@@ -90,7 +98,34 @@ public class Communicator extends Frame implements ActionListener, ItemListener{
     return result;
   }
 
+  void trace_record(boolean recording){
+    record_trace=recording;
+  }
 
+  void trace_set(Status status){
+    prev_status=akt_status;
+    akt_status=status;
+    unhighlightPrevStates();
+    unhighlightPrevTrs();
+    highlightAktStates();
+    highlightAktTrs();
+    monitor.setStatus(akt_status);      
+    brkpts=brdialog.getAnswer();
+    TLabel label=null;
+    Guard gres=null;
+    if (brkpts!=null){
+      if (brkpts.size()>0){
+	for (int i=0; i<brkpts.size(); i++){
+	  label=(TLabel)brkpts.elementAt(i);
+	  gres=label.guard;
+	  if (maschine.isSatisfied(gres)){
+	    int j=gui.OkDialog("Breakpoint erfuellt!",""+label.caption+"");
+	  }
+	}
+      }
+    }
+  }
+    
   void vor(){
     for (int i=1; i<=Schrittanzahl; i++){
       Status temp=maschine.liefereNachfolger(prev_status,akt_status);
@@ -106,13 +141,20 @@ public class Communicator extends Frame implements ActionListener, ItemListener{
       unhighlightPrevTrs();
       highlightAktStates();
       highlightAktTrs();
+      if (record_trace){
+	tracer.add(akt_status);
+      }
       monitor.setStatus(akt_status);      
       brkpts=brdialog.getAnswer();
+      TLabel label=null;
+      Guard gres=null;
       if (brkpts!=null){
 	if (brkpts.size()>0){
 	  for (i=0; i<brkpts.size(); i++){
-	    if (maschine.isSatisfied((Guard)brkpts.elementAt(i))){
-	      System.out.println("Breakpoint erfuellt!!!!");
+	    label=(TLabel)brkpts.elementAt(i);
+	    gres=label.guard;
+	    if (maschine.isSatisfied(gres)){
+	      int j=gui.OkDialog("Breakpoint erfuellt!",""+label.caption+"");
 	    }
 	  }
 	}
@@ -221,6 +263,13 @@ public class Communicator extends Frame implements ActionListener, ItemListener{
 	monitor.show();
       }
     });  
+
+    Button b6=new Button("Tracer");
+    b6.addActionListener(new ActionListener(){
+      public void actionPerformed(ActionEvent e){
+	tracer.show();
+      }
+    });  
     
     MenuBar bar=new MenuBar();
     setMenuBar(bar);
@@ -240,12 +289,12 @@ public class Communicator extends Frame implements ActionListener, ItemListener{
 	brpo();
       }
     });
-    breakpoints.setEnabled(false);
     MenuItem schrittweite=new MenuItem("Schrittweite");
     einstellungen.add(schrittweite);
     schrittweite.addActionListener(this);
     add(b1);
     add(b5);
+    add(b6);
     pack();
     setVisible(true);
   }

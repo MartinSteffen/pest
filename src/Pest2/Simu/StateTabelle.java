@@ -23,7 +23,19 @@ public class StateTabelle extends Object{
       tail=tail.tail;
     }
     System.out.print(head);
-    System.out.print("\n");
+  }
+
+  public String pathToString(Path path){
+    String result="";
+    String head=path.head;
+    Path   tail=path.tail;
+    while (tail!=null){
+      result+=head+",";
+      head=tail.head;
+      tail=tail.tail;
+    }
+    result+=head;
+    return result;
   }
 
   public void debug(){
@@ -106,6 +118,17 @@ public class StateTabelle extends Object{
     return result;
   }
 
+  public String toString(){
+    String result="";
+    Enumeration enum=data.keys();
+    result+="( ";
+    while (enum.hasMoreElements()){
+      result+=pathToString((Path)enum.nextElement());
+      result+=" ";
+    }
+    result+=")";
+    return result;
+  }
 
 }
 

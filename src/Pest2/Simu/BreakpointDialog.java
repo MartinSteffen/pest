@@ -43,7 +43,8 @@ public class BreakpointDialog extends Dialog implements ActionListener{
     add(list);
     if (result.size()>0){
       for (int i=0; i<result.size(); i++){
-	String stringres=(String)result.elementAt(i);
+	TLabel label=(TLabel)result.elementAt(i);
+	String stringres=label.caption;
 	list.add(stringres);
       }
     }
@@ -78,7 +79,7 @@ public class BreakpointDialog extends Dialog implements ActionListener{
       if (label!=null){
 	String labelstring=label.caption;
 	list.add(labelstring);
-	result.insertElementAt(labelstring,result.size());
+	result.insertElementAt(label,result.size());
       }
     }
   }

@@ -15,6 +15,13 @@ public class Trace extends Object{
     pos=0;
   }
 
+  public int size(){
+    return statusse.size();
+  }
+
+  public void add(Status status){
+    statusse.addElement(status);
+  }
 
   public Status prev(){
     Status result=new Status();
@@ -36,6 +43,14 @@ public class Trace extends Object{
   }
 
 
+  public Status go(int position){
+    Status result=new Status();
+    pos=position;
+    if ((pos<=0)||(pos<statusse.size())){
+      result=(Status)statusse.elementAt(pos);
+    }
+    return result;
+  }
 
   public void read(BufferedReader r) throws IOException{
     String status=null;
@@ -124,9 +139,9 @@ public class Trace extends Object{
     booleans=(booleans.substring(booleans.indexOf("(")+1,booleans.lastIndexOf(")"))).trim();
     
     Status stat=new Status();
-    stat.states=stat.states.insert(states);
-    stat.events=stat.events.insert(events);
-    stat.booleans=stat.booleans.insert(booleans);
+    //stat.states=stat.states.insert(states);
+    //stat.events=stat.events.insert(events);
+    //stat.booleans=stat.booleans.insert(booleans);
     
     StringTokenizer strtok=new StringTokenizer(inline,"() \n\t");
     while (strtok.hasMoreTokens()){
@@ -135,6 +150,18 @@ public class Trace extends Object{
 
   }
     
+
+  public String toString(){
+    String result="";
+    Status temp=null;
+    Enumeration enum=statusse.elements();
+    while (enum.hasMoreElements()){
+      temp=(Status)enum.nextElement();
+      result+=temp.toString()+"\n";
+    }
+    return result;
+  }
+      
 }    
 
 
