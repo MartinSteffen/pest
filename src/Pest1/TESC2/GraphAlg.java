@@ -38,7 +38,7 @@ public class GraphAlg {
   } // constructor GraphAlg
 
 
-/*
+/**
  * Starte Graphplazierungsalgorithmus.
  * Uebergabewert:
  * - Integer-Wert fuer Algorithmus-Art (siehe Konstanten oben!)
@@ -51,7 +51,8 @@ public class GraphAlg {
 
   } // method start
 
-/*
+
+/**
  * Teste, ob Fehler aufgetreten ist.
  * Rueckgabewert:
  * - true, falls Fehler aufgetreten
@@ -62,7 +63,7 @@ public class GraphAlg {
   } // method errorOccured
 
 
-/* Gib Fehlercode-Interpretation zurueck.
+/** Gib Fehlercode-Interpretation zurueck.
  * Rueckgabewert:
  * - String mit verbalisierter Fehlermeldung
  */
