@@ -513,7 +513,7 @@ log "Searching for all public declarations in $org_package"
 
 # find all public declarations
 all_pub_functions=`find_public_functions "$org_package.*"`
-
+all_pub_functions=`(for fct in $all_pub_functions; do echo $fct; done)|sort -u`
 # find occurences of functions in each external package
 all_deps=
 for ext_package in $ext_packages; do
