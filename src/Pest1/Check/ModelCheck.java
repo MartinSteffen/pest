@@ -28,7 +28,7 @@ import gui.*;
  * <a href="#Codes">Codes von Fehlern und Warnungen beim Syntax Check</a><br>
  * <br>
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: ModelCheck.java,v 1.4 1998-12-17 21:16:16 swtech11 Exp $
+ * @version  $Id: ModelCheck.java,v 1.5 1998-12-18 07:23:29 swtech11 Exp $
  */
 public class ModelCheck {
   private ModelCheckMsg mcm; // Object, um die Fehler und Warnungen zu speichern
@@ -163,6 +163,9 @@ public class ModelCheck {
     TestPI tpi = new TestPI(sc, mcm);
     NoFatalError=tpi.check();
     donePI = true;
+    if (outputGUI==true & NoFatalError==false) {
+      int j = gui.OkDialog("Fataler Fehler","Der beschriebene Fehler führt zum Abbruch des Syntax Checks !");
+    }
     return NoFatalError;
   }
 
@@ -196,13 +199,13 @@ public class ModelCheck {
 
   void outputToGUI() {
     if (getErrorNumber()>0) {
-      gui.userMessage("Check  : Fehlermeldungen ( Anzahl: " + getErrorNumber() +  " ):");
+      gui.userMessage("Check	: Fehlermeldungen ( Anzahl: " + getErrorNumber() +  " ):");
       for (int i=1;(i<=getErrorNumber());i++) {
-            gui.userMessage("Check  : "+getError(i) ); } }
+            gui.userMessage("Check	: "+getError(i) ); } }
     if (getWarningNumber()>0) {
-      gui.userMessage("Check  : Warnmeldungen ( Anzahl: " + getWarningNumber() +  " ):");
+      gui.userMessage("Check	: Warnmeldungen ( Anzahl: " + getWarningNumber() +  " ):");
       for (int i=1;(i<=getWarningNumber());i++) {
-        gui.userMessage("Check  : "+getWarning(i) ); } }
+        gui.userMessage("Check	: "+getWarning(i) ); } }
   }
 
 /**
