@@ -54,6 +54,7 @@ class CheckLabels {
     boolean ok=true;
     boolean found;
     ActionEvt a;
+    CheckDupes checkDupes = new CheckDupes(statechart, error, warning); 
 
     // nur im Falle eines OrStates überprüfen
     if (s instanceof Or_State) {
@@ -125,7 +126,7 @@ class CheckLabels {
 
   // diese Methode an allen Substates aufrufen
   while (substates != null) {
-
+    ok = checkDupes.check(substates, path) && ok;
     ok = new CheckLabels(statechart,
                          substates.head,
                          path+"."+substates.head.name.name, error, warning).check() && ok;
