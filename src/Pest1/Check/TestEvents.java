@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestEvents.java,v 1.6 1999-01-06 12:56:31 swtech11 Exp $
+ *  @version  $Id: TestEvents.java,v 1.7 1999-01-06 15:58:41 swtech11 Exp $
  */
 /** Diese Testklasse testet, ob alle Events deklariert worden sind, 
     <br>ob die deklarierten eindeutig sind und ob sie alle verwendet werden.*/
@@ -81,8 +81,12 @@ class TestEvents extends ModelCheckBasics{
   /** Ueberprueft den Action auf Verwendung von Events.*/
 
      void pruefeAction(Action a, Tr t, String p){
-    if (a instanceof ActionBlock)  { for(Aseq as=((ActionBlock)a).aseq;as.tail!=null;as=as.tail) 
-	{ pruefeAction(as.head, t, p);};}
+    if (a instanceof ActionBlock)  { if ((((ActionBlock)a).aseq)!=null)
+for(Aseq as=((ActionBlock)a).aseq; (as.tail!=null); as=as.tail) 
+	{ pruefeAction(as.head, t, p);}
+
+    else {msg.addError(24, t , p);};
+    }
     if (a instanceof ActionEvt) {pruefeEvent (((ActionEvt)a).event, t, p);};
     }
 
@@ -90,23 +94,15 @@ class TestEvents extends ModelCheckBasics{
  
   void pruefePath(Path p, Tr t, String s){
       PathList pl=sc.cnames;
-      Path p1;
-      //Path p2;
-      System.out.println(PathtoString(p));
-      boolean b1=true;
-      boolean b2=true;
-      for(; ((pl != null) && b1) ; pl=pl.tail){ 
-          p1=p;
-          b2=true;
-          for(Path p2=pl.head; ((p2 != null) && (p1!=null) && b2); p2=p2.tail) { 
-          System.out.println("Guard /"+p1.head+"/ Pfad /"+p2.head+"/"); 
-          System.out.println(PathtoString(p1)+" "+PathtoString(p2));
-	  if (p1.head != p2.head) {System.out.println("f"); b2=false;} 
-              else {System.out.println("t"); p1=p1.tail;};};
-      b1=!b2; 
-      };
       
-      if (b1==false) {msg.addError(203,"Pfad: "+PathtoString(p), t, s);}
+      
+      boolean b=false;
+ 
+      for(; ((pl != null) && (!b)) ; pl=pl.tail){ 
+          if (PathtoString(pl.head).equals(PathtoString(p))) {b=true;};}              
+          
+      
+      if (b==false) {msg.addError(203,"Pfad: "+PathtoString(p), t, s);}
      
   };
 

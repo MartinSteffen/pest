@@ -2,7 +2,7 @@ package check;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: ErrorAndWarningCodes.java,v 1.18 1999-01-03 15:14:26 swtech11 Exp $
+ *  @version  $Id: ErrorAndWarningCodes.java,v 1.19 1999-01-06 15:58:39 swtech11 Exp $
  */
 class ErrorAndWarningCodes {
   ErrorAndWarningCodes() {
@@ -33,6 +33,7 @@ class ErrorAndWarningCodes {
       case  21: { _s = "Fataler Fehler: EIN Objekt des Typs Label wird in Transitionen mehrfach referenziert."; break;  }
       case  22: { _s = "Fataler Fehler: EIN Objekt des Typs Gauard wird in Transitionen mehrfach referenziert."; break;  }
       case  23: { _s = "Fataler Fehler: EIN Objekt des Typs Actions wird in Transitionen mehrfach referenziert."; break;  }
+    case  24: { _s = "Fataler Fehler: EIN Objekt des Typs Aseq ist ein Nullpointer."; break;  }
 
       case  99: { _s = "Aufgrund eines fatalen Fehlers wird der Syntax Check abgebrochen."; break;  }
 

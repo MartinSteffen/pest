@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestBVars.java,v 1.7 1999-01-06 12:56:29 swtech11 Exp $
+ *  @version  $Id: TestBVars.java,v 1.8 1999-01-06 15:58:40 swtech11 Exp $
  */
 
 /** Diese Testklasse testet, ob alle BVars deklariert worden sind, 
@@ -90,8 +90,10 @@ class TestBVars extends ModelCheckBasics{
    /** Ueberprueft den Action auf Verwendung von BVars.*/
 
     void pruefeAction(Action a, Tr t, String p){
-    if (a instanceof ActionBlock)  { for(Aseq as=((ActionBlock)a).aseq;as.tail!=null;as=as.tail) 
-	      { pruefeAction(as.head, t, p);};}
+    if (a instanceof ActionBlock)  {if ((((ActionBlock)a).aseq)!=null) for(Aseq as=((ActionBlock)a).aseq;as.tail!=null;as=as.tail) 
+	{ pruefeAction(as.head, t, p);}
+      else {msg.addError(24, t , p);};
+      }
       else {
       if (a instanceof ActionStmt) {pruefeBool (((ActionStmt)a).stmt, t, p);}
         else {
