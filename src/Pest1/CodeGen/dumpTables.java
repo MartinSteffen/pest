@@ -14,7 +14,7 @@ import java.util.*;
  * an interface to the original textual representations of
  * states, events and conditions.
  *
- * @version $Id: dumpTables.java,v 1.3 1999-01-18 12:33:30 swtech25 Exp $
+ * @version $Id: dumpTables.java,v 1.4 1999-01-18 15:55:25 swtech25 Exp $
  * @author Marcel Kyas
  */
 public class dumpTables
@@ -136,10 +136,13 @@ public class dumpTables
 		SEventList current = S.events;
 		Integer key;
 
+		System.out.println("generateEventTable");
 		while (current != null) {
 			// put them into Hash table, but check first.
+
 			if (!events_sym.containsKey(current.head)) {
 				key = new Integer(event_curr_key);
+				System.out.println(key + ": " + current.head.name);
 				events_sym.put(current.head, key);
 				event_curr_key++;
 			}
@@ -181,6 +184,7 @@ public class dumpTables
 		while (e.hasMoreElements()) {
 			p = (Path) e.nextElement();
 			i = (Integer) states_sym.get(p);
+			 System.out.println(p + ": " + i);
 			states[i.intValue()] = p;
 		}
 	}
@@ -192,15 +196,17 @@ public class dumpTables
 	private void generateEventArray()
 	{
 		Enumeration e;
-		String p;
+		SEvent p;
 		Integer i;
 
+		System.out.println("event array");
 		events = new String[events_sym.size()];
 		e = events_sym.keys();
 		while (e.hasMoreElements()) {
-			p = (String) e.nextElement();
+			p = (SEvent) e.nextElement();
 			i = (Integer) states_sym.get(p);
-			events[i.intValue()] = p;
+			System.out.println(p.name + ": " + i);
+			events[i.intValue()] = p.name;
 		}
 	}
 
@@ -219,6 +225,7 @@ public class dumpTables
 		while (e.hasMoreElements()) {
 			p = (String) e.nextElement();
 			i = (Integer) states_sym.get(p);
+			System.out.println(p + ": " + i);
 			cond[i.intValue()] = p;
 		}
 	}
