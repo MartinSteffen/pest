@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.83 1999-02-09 10:38:48 swtech00 Exp $
+//	$Id: report_list,v 1.84 1999-02-09 13:07:00 swtech24 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -477,6 +477,9 @@ Start Editor.
 Erneut SyntaxCheck.
 Jetzt werden IT-Fehler gemeldet.
 Offensichtlich wurden die Koordinaaten umberechnet (Editor?).
+
+Von Editor : Das Problem liegt in den Koordinatenangaben vom STM-Import,
+hier sind besonders die And-States zu nennen.
 
 //------------------------------------------------------------------------------
 #Number:	31
