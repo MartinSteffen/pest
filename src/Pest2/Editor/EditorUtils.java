@@ -20,7 +20,7 @@ public class EditorUtils {
     private static int getCoordY(MouseEvent e, Editor editor)
     {
 	return (e.getY()+editor.scrollY);
-    } 
+    }
 
 
 
@@ -36,7 +36,7 @@ public class EditorUtils {
 // **************************************************************************
 
     public static void createStateMouseDragged(MouseEvent e, Editor editor) {
-        
+
         Graphics g = editor.getGraphics();
 
         // altes Rectangle loeschen
@@ -56,9 +56,9 @@ public class EditorUtils {
 
         int help;
         if (x1 > x2) {help = x1; x1 = x2; x2 = help; }
-        if (y1 > y2) {help = y1; y1 = y2; y2 = help; }      
-  
-        editor.newRect = new CRectangle(x1,y1,(x2-x1), (y2-y1) );                
+        if (y1 > y2) {help = y1; y1 = y2; y2 = help; }
+
+        editor.newRect = new CRectangle(x1,y1,(x2-x1), (y2-y1) );
 
         // ueberpruefe, ob sich der neue Zustand mit einem anderen
         // Zustand ueberschneidet.
@@ -68,16 +68,16 @@ public class EditorUtils {
         editor.actionOk = true;
 
         showStates(editor);
-                
+
         StateList list = editor.stateList;
 
         while (list != null) {
-            if (!(editor.newRect.intersection(list.head.rect)
-                    .equals(list.head.rect))
-              & (!(editor.newRect.intersection(list.head.rect)
+            if (!(editor.newRect.intersection(abs(editor,list.head))
+                    .equals(abs(editor,list.head)))
+              & (!(editor.newRect.intersection(abs(editor,list.head))
                     .equals(editor.newRect)))
-              & (editor.newRect.intersects(list.head.rect))) {
-                 
+              & (editor.newRect.intersects(abs(editor,list.head)))) {
+
                 g.setColor(Color.gray);
                 g.drawRoundRect(editor.newRect.x-editor.scrollX, editor.newRect.y-editor.scrollY, editor.newRect.width, editor.newRect.height,10,10);
                 editor.actionOk = false;
@@ -98,11 +98,11 @@ public class EditorUtils {
         if (editor.actionOk) { // Zustand darf erzeugt werden
 
             stateCount++;
-            Or_State newState = new Or_State(new Statename("Nr. "+stateCount), null, null, null, null);
-            newState.rect = editor.newRect;
+            Or_State newState      = new Or_State(new Statename("...defaultName"+stateCount), null, null, null, null);
+                     newState.rect = rel(editor,editor.newRect);
 
             // *** Bestimme den Vater
-                        
+
             State father = getInnermostStateOf(editor.newRect.x,
                                                editor.newRect.y, editor);
 
@@ -111,8 +111,10 @@ public class EditorUtils {
 
             Or_State orFather = null;
 
-            if (father instanceof Or_State) 
+            if (father instanceof Or_State) {
                 orStateSplit((Or_State) father, newState, editor);
+                fitComponentsOf(newState, newState.rect.x, newState.rect.y);
+            }
 
             if (father instanceof Basic_State) {
 
@@ -122,7 +124,7 @@ public class EditorUtils {
 
                 // *** Bestimme den Gro·vater, er ist vorhanden, weil
                 // *** Vater ein Basic_State
-                
+
                 State grandfather = getFatherOf(father, editor);
 
                 // trage in die gro·vater.substates den Vater um
@@ -157,7 +159,7 @@ public class EditorUtils {
             if (newState.substates == null & newState.trs == null
               & newState.connectors == null) {
                 Basic_State neu = new Basic_State(
-                        new Statename("Nr. "+stateCount), newState.rect);
+                        new Statename("...defaultName"+stateCount), newState.rect);
                 orFather.substates = new StateList(neu, orFather.substates);
                 orFather.defaults = new StatenameList(neu.name, orFather.defaults);
             }
@@ -178,19 +180,20 @@ public class EditorUtils {
         editor.stateList = getSubStateList(editor.statechart.state);
         showStates(editor);
     }
-  
+
 // **************************************************************************
 
     public static void andStateMouseMoved(MouseEvent e, Editor editor) {
-    
+
         // *** loesche eine evtl. schon gezeigte Linie
 
-        if (editor.endPoint != null) 
+        if (editor.endPoint != null)
             showAndLine(editor.startPoint, editor.endPoint, editor.getBackground(), editor);
 
         // *** In welchem Zustand liegt der Mauszeiger gerade?
 
         State inState = getInnermostStateOf(getCoordX(e,editor), getCoordY(e,editor), editor);
+
         if (inState.equals(editor.statechart.state)) inState = null;
 
         // *** Weiter nur, wenn Maus in einem Zustand ist
@@ -203,34 +206,44 @@ public class EditorUtils {
             CRectangle a = null;
             CRectangle b = null;
 
-            if (getSideOf(inState, getCoordX(e,editor), getCoordY(e,editor)) == 0) {
-     
-                // *** senkrechte TrennLinie
-           
-                editor.startPoint = new Point(getCoordX(e,editor), inState.rect.y);
-                editor.endPoint   = new Point(getCoordX(e,editor), inState.rect.y+ inState.rect.height);
+            if (getSideOf(editor,inState, getCoordX(e,editor),
+                getCoordY(e,editor)) == 0) {
 
-                a = new CRectangle(inState.rect.x, inState.rect.y,
-                                  editor.endPoint.x-inState.rect.x,
-                                  inState.rect.height);
+                // *** senkrechte TrennLinie
+
+                editor.startPoint = new Point(getCoordX(e,editor),
+                                              abs(editor,inState).y);
+                editor.endPoint   = new Point(getCoordX(e,editor),
+                                              abs(editor,inState).y
+                                              + inState.rect.height);
+
+                a = new CRectangle(abs(editor,inState).x,
+                                   abs(editor,inState).y,
+                                   editor.endPoint.x-abs(editor,inState).x,
+                                   inState.rect.height);
                 b = new CRectangle(editor.startPoint.x, editor.startPoint.y,
-                                  inState.rect.x+inState.rect.width-editor.startPoint.x,
-                                  inState.rect.height);
+                                   abs(editor,inState).x
+                                   +inState.rect.width-editor.startPoint.x,
+                                   inState.rect.height);
             }
             else {
 
                 // *** waagerechte TrennLinie
 
-                editor.startPoint = new Point(inState.rect.x, getCoordY(e,editor));
-                editor.endPoint   = new Point(inState.rect.x+inState.rect.width, getCoordY(e,editor));
+                editor.startPoint = new Point(abs(editor,inState).x,
+                                              getCoordY(e,editor));
+                editor.endPoint   = new Point(abs(editor,inState).x
+                                              +inState.rect.width,
+                                              getCoordY(e,editor));
 
-                a = new CRectangle(inState.rect.x, inState.rect.y,
-                                  inState.rect.width,
-                                  editor.endPoint.y-inState.rect.y);
+                a = new CRectangle(abs(editor,inState).x,
+                                   abs(editor,inState).y,
+                                   inState.rect.width,
+                                   editor.endPoint.y - abs(editor,inState).y);
                 b = new CRectangle(editor.startPoint.x, editor.startPoint.y,
-                                  inState.rect.width,
-                                  inState.rect.y+inState.rect.height
-                                  -editor.endPoint.y);
+                                   inState.rect.width,
+                                   abs(editor,inState).y + inState.rect.height
+                                   -editor.endPoint.y);
             }
 
             editor.actionOk = true;
@@ -242,48 +255,218 @@ public class EditorUtils {
                 StateList list = ((Or_State) inState).substates;
 
                 while (list != null) {
-                    if (! a.union(list.head.rect).equals(a)
-                     &  ! b.union(list.head.rect).equals(b)) 
+                    if (! a.union(abs(editor,list.head)).equals(a)
+                     &  ! b.union(abs(editor,list.head)).equals(b))
                         editor.actionOk = false;
                     list = list.tail;
                 }
             }
             if (editor.actionOk)
-                 showAndLine(editor.startPoint, editor.endPoint, Color.red, editor);
-            else showAndLine(editor.startPoint, editor.endPoint, Color.gray, editor);
+                 showAndLine(editor.startPoint, editor.endPoint,
+                             Color.red, editor);
+            else showAndLine(editor.startPoint, editor.endPoint,
+                             Color.gray, editor);
         }
-        else 
+        else
             // *** Maus ist in keinem Zustand
 
             if (editor.endPoint != null) {
-                showAndLine(editor.startPoint, editor.endPoint, editor.getBackground(), editor);
+                showAndLine(editor.startPoint, editor.endPoint,
+                            editor.getBackground(), editor);
                 editor.startPoint = null;
                 editor.endPoint = null;
                 editor.actionOk = false;
             }
         showStates(editor);
     }
-    
+
 // **************************************************************************
 
     public static void andStateMouseReleased(MouseEvent e, Editor editor) {
 
+
         if (editor.actionOk) {
 
-            State inState = getInnermostStateOf(getCoordX(e,editor), getCoordY(e,editor), editor);
+            State inState = getInnermostStateOf(getCoordX(e,editor),
+                                                getCoordY(e,editor), editor);
 
-            And_State inStateAnd = new And_State(new Statename("andState"), null);
+            stateCount++;
+            And_State inStateAnd = new And_State(new Statename("...defaultNameAndState"+stateCount), null);
                       inStateAnd.rect = inState.rect;
+
+            int getSideOfVar = getSideOf(editor,inState, getCoordX(e,editor),
+                                         getCoordY(e,editor));
+            CRectangle absInStateVar = abs(editor, inState);
 
             // *** Bestimme den Vater, dies ist ein Or oder AndState
 
             State father = getFatherOf(inState, editor);
 
-            // *** 1. lîsche in Vater.substates inState.
-            // *** 2. Falls Vater ein Or_State, fÅge inStateAnd in seine
+            // ***    lîsche den Namen von inState auch aus der StatenameList,
+            // ***    falls der Vater ein Or_State
+            // ***    und fÅge den Namen in die StatenameList ein, falls der
+            // ***    Vater ein Or_State
+            // ***    Falls Vater ein Or_State, fÅge inStateAnd in seine
             // ***    substateList ein
 
             StateList help = null;
+
+            if (father instanceof Or_State) {
+                ((Or_State) father).substates = new StateList(inStateAnd, ((Or_State) father).substates);
+            }
+
+            // *** Lîsche den Namen von inState aus father.defaults
+
+            StatenameList helpnames = null;
+
+            if (father instanceof Or_State) {
+                if ( ((Or_State) father).defaults.head.equals(inState.name) )
+                    ((Or_State) father).defaults = ((Or_State) father).defaults.tail;
+                else
+                    helpnames = ((Or_State) father).defaults;
+
+                if (helpnames != null)
+                    while (helpnames.tail != null) {
+                        if (helpnames.tail.head.equals(inState.name)) {
+                            helpnames.tail = helpnames.tail.tail;
+                        }
+                        else helpnames = helpnames.tail;
+                    }
+            }
+
+            // *** fÅge inStateAnd.name in father.defaults ein, falls father
+            // *** Or_State
+
+            if (father instanceof Or_State)
+                ((Or_State) father).defaults = new StatenameList(inStateAnd.name,
+                                                ((Or_State) father).defaults);
+
+            // *** erzeuge 2 Or_States aState und bState und
+
+            stateCount++;
+            Or_State aState = new Or_State(new Statename("...defaultName"+stateCount),
+                              null, null, null, null, null);
+            stateCount++;
+            Or_State bState = new Or_State(new Statename("...defaultName"+stateCount),
+                              null, null, null, null);
+
+            // *** Bestimme Start und Endpunkt der Linie
+
+            if (getSideOfVar == 0) {
+
+                // *** senkrechte TrennLinie (abs(inState) darf nicht mehr
+                // *** angewendet werden, deshalb wurde der Wert vorher
+                // *** schon gespeichhert in absInStateVar
+                // *** getSideOf == 0 ==> senkrechteLinie
+
+                editor.startPoint = new Point(getCoordX(e,editor),
+                                              absInStateVar.y);
+                editor.endPoint   = new Point(getCoordX(e,editor),
+                                              absInStateVar.y
+                                              + inState.rect.height);
+
+                aState.rect = new CRectangle(0, 0,
+                                             editor.endPoint.x
+                                             - absInStateVar.x,
+                                             inState.rect.height);
+
+                bState.rect = new CRectangle(editor.startPoint.x
+                                             - absInStateVar.x, 0,
+                                             absInStateVar.x
+                                             + inState.rect.width
+                                             - editor.startPoint.x,
+                                            inState.rect.height);
+            }
+            else {
+
+                // *** waagerechte TrennLinie
+
+                editor.startPoint = new Point(absInStateVar.x,
+                                              getCoordY(e,editor));
+                editor.endPoint   = new Point(absInStateVar.x
+                                              + inState.rect.width,
+                                              getCoordY(e,editor));
+
+                aState.rect = new CRectangle(0, 0,
+                                             inState.rect.width,
+                                             editor.endPoint.y
+                                             - absInStateVar.y);
+                bState.rect = new CRectangle(0,
+                                             editor.startPoint.y-absInStateVar.y,
+                                             inState.rect.width,
+                                             absInStateVar.y
+                                             +inState.rect.height
+                                             -editor.endPoint.y);
+            }
+
+            // *** Weiter nur, wenn inState ein Or_State
+
+            if (inState instanceof Or_State) {
+
+                // *** verteile inState auf aState und bState
+                // *** orStateSplit(inState, aState) liefert korrektes
+                // *** aState
+                // *** bState := inState; bState.rect bleibt!
+
+                orStateSplit((Or_State) inState, aState, editor);
+
+                bState.substates  = ((Or_State) inState).substates;
+                bState.defaults   = ((Or_State) inState).defaults;
+                bState.trs        = ((Or_State) inState).trs;
+                bState.connectors = ((Or_State) inState).connectors;
+
+                if (getSideOfVar == 0)
+                     fitComponentsOf(bState, aState.rect.width, 0);
+                else fitComponentsOf(bState, 0, aState.rect.height);
+            }
+
+            // *** hÑnge aState und bState in die inStateAnd.substates
+            // *** ein als Basic oder orState oder, falls father ein AndState,
+            // *** direkt in die father.substates
+
+            if (aState.substates == null & aState.trs == null
+              & aState.connectors == null) {
+                Basic_State neu1 = new Basic_State(aState.name, aState.rect);
+                if (father instanceof Or_State) {
+                     inStateAnd.substates = new StateList(neu1, inStateAnd.substates);
+                }
+                else {
+                    ((And_State) father).substates = new StateList(neu1,
+                         ((And_State) father).substates);
+                }
+            }
+            else {
+                if (father instanceof Or_State) {
+                    inStateAnd.substates = new StateList(aState, inStateAnd.substates);
+                }
+                else {
+                    ((And_State) father).substates = new StateList(aState,
+                         ((And_State) father).substates);
+                }
+            }
+
+            if (bState.substates == null & bState.trs == null
+              & bState.connectors == null) {
+                Basic_State neu2 = new Basic_State(bState.name, bState.rect);
+                if (father instanceof Or_State) {
+                    inStateAnd.substates = new StateList(neu2, inStateAnd.substates);
+                }
+                else {
+                    ((And_State) father).substates = new StateList(neu2,
+                         ((And_State) father).substates);
+                }
+            }
+            else {
+                if (father instanceof Or_State) {
+                    inStateAnd.substates = new StateList(bState, inStateAnd.substates);
+                }
+                else {
+                    ((And_State) father).substates = new StateList(bState,
+                         ((And_State) father).substates);
+                }
+            }
+
+            // ***    lîsche in Vater.substates inState.
 
             if (father instanceof Or_State) {
                 if (((Or_State) father).substates.head.equals(inState)) {
@@ -305,111 +488,13 @@ public class EditorUtils {
                     }
                     else help = help.tail;
                 }
-            if (father instanceof Or_State) {
-                ((Or_State) father).substates = new StateList(inStateAnd, ((Or_State) father).substates);
-            }    
-
-            // *** erzeuge 2 Or_States aState und bState und
-
-            stateCount++;
-            Or_State aState = new Or_State(new Statename("Nr. "+stateCount),
-                              null, null, null, null, null);
-            stateCount++;
-            Or_State bState = new Or_State(new Statename("Nr. "+stateCount),
-                              null, null, null, null);
-
-            // *** Bestimme Start und Endpunkt der Linie
-
-            if (getSideOf(inState, getCoordX(e,editor), getCoordY(e,editor)) == 0) {
-          
-                // *** senkrechte TrennLinie
-           
-                editor.startPoint = new Point(getCoordX(e,editor), inState.rect.y);
-                editor.endPoint   = new Point(getCoordX(e,editor), inState.rect.y+ inState.rect.height);
-
-                aState.rect = new CRectangle(inState.rect.x, inState.rect.y,
-                                            editor.endPoint.x-inState.rect.x,
-                                            inState.rect.height);
-                bState.rect = new CRectangle(editor.startPoint.x, editor.startPoint.y,
-                                            inState.rect.x+inState.rect.width-editor.startPoint.x,
-                                            inState.rect.height);
-            }
-            else {
-
-                // *** waagerechte TrennLinie
-
-                editor.startPoint = new Point(inState.rect.x, getCoordY(e,editor));
-                editor.endPoint   = new Point(inState.rect.x+inState.rect.width, getCoordY(e,editor));
-
-                aState.rect = new CRectangle(inState.rect.x, inState.rect.y,
-                                            inState.rect.width,
-                                            editor.endPoint.y-inState.rect.y);
-                bState.rect = new CRectangle(editor.startPoint.x, editor.startPoint.y,
-                                            inState.rect.width,
-                                            inState.rect.y+inState.rect.height
-                                            -editor.endPoint.y);
-            }
-
-            // *** Weiter nur, wenn inState ein Or_State
-
-            if (inState instanceof Or_State) {
-
-                // *** verteile inState auf aState und bState
-                // *** orStateSplit(inState, aState) liefert korrektes
-                // *** aState
-                // *** bState := inState; bState.rect bleibt!
-
-
-                orStateSplit((Or_State) inState, aState, editor);
-                CRectangle h = bState.rect;
-                String n = bState.name.name;
-
-                bState = (Or_State) inState;
-
-                bState.rect = h;
-                bState.name.name = n;
-            }
-
-            // *** hÑnge aState und bState in die inStateAnd.substates
-            // *** ein als Basic oder orState oder, falls father ein AndState,
-            // *** direkt in die father.substates
-
-            if (aState.substates == null & aState.trs == null
-              & aState.connectors == null) {
-                Basic_State neu1 = new Basic_State(aState.name, aState.rect);
-                if (father instanceof Or_State)
-                     inStateAnd.substates = new StateList(neu1, inStateAnd.substates);
-                else ((And_State) father).substates = new StateList(neu1,
-                     ((And_State) father).substates);
-            }
-            else {
-                if (father instanceof Or_State)
-                    inStateAnd.substates = new StateList(aState, inStateAnd.substates);
-                else ((And_State) father).substates = new StateList(aState,
-                     ((And_State) father).substates);
-            }
-
-            if (bState.substates == null & bState.trs == null
-              & bState.connectors == null) {
-                Basic_State neu2 = new Basic_State(bState.name, bState.rect);
-                if (father instanceof Or_State)
-                    inStateAnd.substates = new StateList(neu2, inStateAnd.substates);
-                else ((And_State) father).substates = new StateList(neu2,
-                     ((And_State) father).substates);
-            }
-            else {
-                if (father instanceof Or_State)
-                    inStateAnd.substates = new StateList(bState, inStateAnd.substates);
-                else ((And_State) father).substates = new StateList(bState,
-                     ((And_State) father).substates);
-            }
 
             editor.stateList = getSubStateList(editor.statechart.state);
         }
         else { // action nicht ok
             // loesche eine evtl. schon gezeigte Linie
             if (editor.endPoint != null) showAndLine(editor.startPoint, editor.endPoint, editor.getBackground(), editor);
-        }                
+        }
         editor.startPoint = null;
         editor.endPoint = null;
         editor.actionOk = false;
@@ -418,29 +503,44 @@ public class EditorUtils {
   // **************************************************************************
 
     public static void showStates(Editor editor) {
-	StateList list = editor.stateList;
-        Graphics g = editor.getGraphics();
-	g.setColor(Color.red);
-        StateList help = list;
-        while (help != null) {
-            g.drawRoundRect(help.head.rect.x-editor.scrollX, help.head.rect.y-editor.scrollY, help.head.rect.width, help.head.rect.height,10,10);
-            help = help.tail;
+
+        StateList list = null;
+        Graphics g = null;
+        try {
+            list = editor.stateList;
+            g = editor.getGraphics();
+
+            g.setColor(Color.red);
+            StateList help = list;
+            while (help != null) {
+                Rectangle r = abs(editor,help.head);
+                g.drawRoundRect(abs(editor,help.head).x-editor.scrollX,
+                                abs(editor,help.head).y-editor.scrollY,
+                                help.head.rect.width,
+                                help.head.rect.height,10,10);
+                help = help.tail;
+            }
         }
+        catch (Exception e) {}
     }
 
 // **************************************************************************
 
     public static StateList getSubStateList(State state) {
 
+        // erzeugt eine Liste, die state beinhaltet und alle States, die
+        // innerhalb von state liegen, also auch die substates der substates
+        // usw.
+
         StateList returnList = null;
         StateList help       = null;
         StateList substates  = null;
 
-        if (state instanceof Basic_State) 
+        if (state instanceof Basic_State)
             returnList = new StateList(state, null);
-            
+
         else {
-            if (state instanceof Or_State) 
+            if (state instanceof Or_State)
                  help = ((Or_State) state).substates;
             else help = ((And_State) state).substates;
 
@@ -466,7 +566,7 @@ public class EditorUtils {
     }
 
 // **************************************************************************
-                                        
+
     public static void showAndLine(Point start, Point end, Color color, Editor editor) {
         Graphics g = editor.getGraphics();
         g.setColor(color);
@@ -475,15 +575,17 @@ public class EditorUtils {
 
 // **************************************************************************
 
-    public static int getSideOf(State state, int x, int y) {                
+    public static int getSideOf(Editor editor, State state, int x, int y) {
 
         // ziehe durch den State beide Diagonalen und berechne dann, in welchem
-        // der 4 Teile sich die Maus gerade befindet.
+        // der 4 Dreiecke sich x,y befindet.
+        // Befindet sich x,y im oberen oder unteren Dreieck, so wird 0 zurÅck-
+        // gegeben, sonst 1;
 
         // bestimme die rel. Koordinaten der Maus bzgl des States
 
-        x = x - state.rect.x;
-        y = y - state.rect.y;
+        x = x - abs(editor,state).x;
+        y = y - abs(editor,state).y;
 
         double schranke = (1-
                           (Math.abs(x-(state.rect.width / 2))
@@ -494,15 +596,17 @@ public class EditorUtils {
              return 0;
         else return 1;
     }
-                
+
 // **************************************************************************
 
     public static State getFatherOf(State state, Editor editor) {
 
+        // liefert den Vater von state, aber Vorsicht:
+        // Liefert nur dann ein Ergebnis, wenn der State im Baum hÑngt
+
         StateList list = editor.stateList;
         State father = null;
         StateList substates = null;
-
         while (list != null) {
             if (list.head instanceof Or_State)
                 substates = ((Or_State) list.head).substates;
@@ -520,19 +624,23 @@ public class EditorUtils {
 // **************************************************************************
 
     public static State getInnermostStateOf(int x, int y, Editor editor) {
-                
+
+        // Liefert den kleinsten (= innersten) Zustand, der x,y IM INNEREN
+        // enthÑlt. Im Falle, da· x,y auf der Kante eines And_States liegt,
+        // wird der And_State zurÅckgeliefert. Liegt x,y auf der Kantes eines
+        // Or_States, wird der Vater dieses Or_States zurÅckgeliefert.
+
         StateList list = editor.stateList;
         State smallest = null;
 
         // *** Bestimme Liste der Zustaende, die x,y enthalten
 
         StateList inStates = null;
-
         while (list != null) {
-            if (list.head.rect.contains(x-1,y-1)
+            if (abs(editor,list.head).contains(x-1,y-1)
               & (!(list.head instanceof And_State)))
                 inStates = new StateList(list.head, inStates);
-            if (list.head.rect.contains(x,y)
+            if (abs(editor,list.head).contains(x,y)
                & (list.head instanceof And_State))
                 inStates = new StateList(list.head, inStates);
 
@@ -544,24 +652,29 @@ public class EditorUtils {
         if (inStates != null) smallest = inStates.head;
 
         while (inStates != null) {
-            if (!(inStates.head.rect.contains(smallest.rect.x, smallest.rect.y)))
+            if (!(abs(editor,inStates.head)
+                    .contains(abs(editor,smallest).x, abs(editor,smallest).y)))
                 smallest = inStates.head;
             inStates = inStates.tail;
         }
         return smallest;
     }
-  
+
 // **************************************************************************
-  
+
     public static void orStateSplit(Or_State alt, Or_State neu, Editor editor) {
 
+        // alt ist der werdende Vater des in ihm enthaltenen States neu.
+        // die Substates, Defaults, Connectors und Trs werden, sofern sie
+        // in neu liegen, auf neu umgetragen.
 
         StateList     substateList         = alt.substates;
         StateList     altSubstates = null;
         StatenameList altDefaults  = null;
+
         while (substateList != null) {
-            if (neu.rect.contains(substateList.head.rect.x,
-                                  substateList.head.rect.y)) {
+            if (abs(editor,neu,alt).contains(abs(editor,substateList.head).x,
+                                         abs(editor,substateList.head).y)) {
                 neu.substates = new StateList(substateList.head, neu.substates);
                 neu.defaults  = new StatenameList(substateList.head.name, neu.defaults);
             }
@@ -578,9 +691,11 @@ public class EditorUtils {
         TrList trList   = alt.trs;
         TrList altTrs = null;
         while (trList != null) {
-            if (neu.rect.contains(trList.head.points[0]))
+
+            System.out.println(trList.head.points[0].x);
+	    if (abs(editor,neu).contains(abs(editor,trList.head.points[0],alt)))
                 neu.trs = new TrList(trList.head, neu.trs);
-            else altTrs = new TrList(trList.head, altTrs); 
+            else altTrs = new TrList(trList.head, altTrs);
             trList = trList.tail;
         }
         alt.trs = altTrs;
@@ -588,9 +703,9 @@ public class EditorUtils {
 
         ConnectorList connectorList          = alt.connectors;
         ConnectorList altConnectors = null;
-                                
+
         while (connectorList != null) {
-            if (neu.rect.contains(connectorList.head.position))
+            if (abs(editor,neu, alt).contains(abs(editor,connectorList.head.position, alt)))
                 neu.connectors = new ConnectorList(connectorList.head, neu.connectors);
             else altConnectors = new ConnectorList(connectorList.head, altConnectors);
             connectorList = connectorList.tail;
@@ -599,122 +714,119 @@ public class EditorUtils {
     }
 
 // **************************************************************************
-// **************************************************************************
 
-// *** nachfolgende Methode wird noch nicht eingesetzt (printStatechart)
+    private static void fitComponentsOf(Or_State orstate, int x, int y) {
 
-// **************************************************************************
+        // von allen Komponenten von orstate (substates, connectors, trs)
+        // werden bei deren relativen Koordinaten x,y abgezogen.
 
-    public static void printStatechart(State state, Point relativeTo, Editor editor) {
-		
-        Graphics g = editor.getGraphics();
+        // 1. die Substates:
 
-        if (state instanceof Basic_State) printState(state, relativeTo, editor, g);         
-        if (state instanceof And_State) printAnd_State((And_State) state, relativeTo, editor, g);    
-		if (state instanceof Or_State) {
+        StateList substates = orstate.substates;
 
-            Or_State orState = (Or_State) state;
-            StateList help = orState.substates;
+        while (substates != null) {
+            substates.head.rect.x = substates.head.rect.x - x;
+            substates.head.rect.y = substates.head.rect.y - y;
+            substates = substates.tail;
+        }
 
-			// zeichne den Or-Zustand
+        // 2. die Connectors
 
-            if (! state.equals(editor.statechart.state))
-                printState(state, relativeTo, editor, g);
+        ConnectorList connectors = orstate.connectors;
 
-			// zeichne die untergeordneten Zustaende
+        while (connectors != null) {
+            connectors.head.position.x = connectors.head.position.x - x;
+            connectors.head.position.y = connectors.head.position.y - y;
+            connectors = connectors.tail;
+        }
 
-            while (help != null) {
-                printStatechart(help.head, new Point(help.head.rect.x, help.head.rect.y), editor);
-                help = help.tail;
-			}
+        // 3. die Trs
+        // TrAnchors noch nicht implementiert !!!!!!!!!!!!!!!!!!!
 
-			// Zeichne die Transitionen
+        TrList trs = orstate.trs;
 
-                        TrList trList = orState.trs;
-
-                        while (trList.head != null) {
-                                printTr(trList.head, relativeTo, editor, g);
-                                trList = trList.tail;
-			}
-
-			// zeichne die Connectoren
-
-                        ConnectorList connList = orState.connectors;
-
-                        while (connList.head != null) {
-                                printConnector(connList.head, relativeTo, g);
-                                connList = connList.tail;
-			}
-
-		}					
-	}
-
-        public static void printState(State state, Point relativeTo, Editor editor, 
-					    Graphics g) { 
-
-		g.drawRoundRect(relativeTo.x+state.rect.x,
-			        relativeTo.y+state.rect.y,
-  			        state.rect.width,
-			        state.rect.height,						
-			        10, 10);
-                TextField t = new TextField(state.name.name);
-		t.setBounds(    relativeTo.x+state.rect.x+3, 
-			        relativeTo.y+state.rect.y+3,
-  			        state.rect.width-6,
-			        20);
-                editor.add(t);
-	}
-	  
-        public static void printAnd_State(And_State state, Point relativeTo, Editor editor,
-					  Graphics g) {
-	
-		g.drawRoundRect(relativeTo.x+state.rect.x, 
-			        relativeTo.y+state.rect.y,
-  			        state.rect.width,
-			        state.rect.height,						
-			        10, 10);
-                TextField t = new TextField(state.name.name);
-		t.setBounds(    relativeTo.x+state.rect.x+3, 
-			        relativeTo.y+state.rect.y-22,
-  			        state.rect.width-6,
-			        20);
-                editor.add(t);
-
-		// Ermittle Anzahl paralleler Ebenen
-
-		int i=0;
-
-                while (state.substates.head != null) {
-			i++;
-                        state.substates = state.substates.tail;
-		}
-
-		// damit wird noch nichts gemacht...
-
-                while (state.substates.head != null) {
-                        printStatechart(state.substates.head, new Point(state.rect.x, state.rect.y), editor);
-			state.substates = state.substates.tail;
-		}
-	}
-
-        public static void printTr(Tr tr, Point relativeTo, Editor editor, Graphics g) { 
-	
-		for (int i=0; i < tr.points.length-1; i++) {
-	
-			g.drawLine(tr.points[i].x,   tr.points[i].y,
-			           tr.points[i+1].x, tr.points[i+1].y);
-                }
-                TextField t = new TextField();
-		t.setBounds(    tr.points[0].x, tr.points[0].y,
-  			        50, 20);
-                editor.add(t);
-	}
-		
-	public static void printConnector(Connector conn, Point relativeTo, Graphics g) {
-			
-		g.drawOval(conn.position.x,conn.position.y,10,10);	
-	}
+        while (trs != null) {
+            for (int i=0; i < trs.head.points.length; i++) {
+                trs.head.points[i].x = trs.head.points[i].x - x;
+                trs.head.points[i].y = trs.head.points[i].y - y;
+            }
+            trs = trs.tail;
+        }
+    }
 
 // **************************************************************************
 
+    private static CRectangle abs(Editor editor, State state) {
+
+        // liefert das Rectangle von state mit absoluten Koordinaten
+        // Achtung: state mu· im Baum hÑngen. Ist dies nicht der Fall
+        // so ist die andere abs-Methode zu benutzen!
+
+        if (state.equals(editor.statechart.state))
+            return state.rect;
+        State father = getFatherOf(state, editor);
+
+        if (father.equals(editor.statechart.state))
+            return state.rect;
+        else {
+            CRectangle fatherAbsRect = abs(editor, father);
+
+            return new CRectangle(fatherAbsRect.x + state.rect.x,
+                                  fatherAbsRect.y + state.rect.y,
+                                  state.rect.width, state.rect.height);
+        }
+    }
+
+// **************************************************************************
+
+    private static CRectangle abs(Editor editor, State state, State father) {
+
+        // liefert das Rectangle von state mit absoluten Koordinaten
+        // Achtung: father mu· im Baum hÑngen.
+
+
+        if (state.equals(editor.statechart.state))
+            return state.rect;
+
+        if (father.equals(editor.statechart.state))
+            return state.rect;
+        else {
+            CRectangle fatherAbsRect = abs(editor, father);
+
+            return new CRectangle(fatherAbsRect.x + state.rect.x,
+                                  fatherAbsRect.y + state.rect.y,
+                                  state.rect.width, state.rect.height);
+        }
+    }
+
+// **************************************************************************
+
+    private static Point abs(Editor editor, Point point, State state) {
+
+        // liefert die absoluten Koordinaten eines beliebigen Punktes, der
+        // innerhalb von state liegt. Achtung: state mu· im Baum hÑngen.
+
+        CRectangle fatherAbsRect = abs(editor, state);
+
+        return new Point(fatherAbsRect.x + point.x,
+                         fatherAbsRect.y + point.y);
+    }
+
+// **************************************************************************
+
+    private static CRectangle rel(Editor editor, CRectangle rect) {
+
+        // rechnet die absoluten Koordinaten von rect in relative Koordinaten
+        // um.
+
+        State father = getInnermostStateOf(rect.x, rect.y, editor);
+
+        CRectangle fatherAbsRect = abs(editor, father);
+
+        return new CRectangle(rect.x - fatherAbsRect.x,
+                              rect.y - fatherAbsRect.y,
+                              rect.width, rect.height);
+    }
+
+// **************************************************************************
 }

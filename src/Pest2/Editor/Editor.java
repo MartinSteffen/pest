@@ -23,6 +23,9 @@ public class Editor extends Frame implements ActionListener {
     public int scrollX=0,scrollY=0;
     public GUIInterface gui = null;
 
+    private MenuItem copyOneCon,copyOneTr,insertOne,moveOne;
+    private Menu copy = new Menu("Kopieren");
+
     final Editor editor = this;
 
 /**
@@ -42,8 +45,8 @@ public class Editor extends Frame implements ActionListener {
             statechart.state.rect = new CRectangle(0,0, 4000, 3000);
         }
         stateList = EditorUtils.getSubStateList(statechart.state);
-        label = l;
-        setBounds(x,y,400,300);
+        setTitle(l);
+        setBounds(x,y,width,height);
         gui = gui_interface;
         mainproc();
     }
@@ -57,10 +60,17 @@ public class Editor extends Frame implements ActionListener {
 
         Menu datei = new Menu("Datei");
         mb.add(datei);
+
         Menu bearbeiten = new Menu("Bearbeiten");
         mb.add(bearbeiten);
 
-	MenuItem mi = new MenuItem("PrettyPrint");
+        Menu Extras = new Menu("Extras");
+        mb.add(Extras);
+
+        Menu Zoom = new Menu("Zoom");
+        mb.add(Zoom);
+
+	    MenuItem mi = new MenuItem("PrettyPrint");
         mi.addActionListener(this);
         mi.setActionCommand("PrettyPrint");
         datei.add(mi);
@@ -75,25 +85,109 @@ public class Editor extends Frame implements ActionListener {
         mi.setActionCommand("Zustand hinzufuegen");
         bearbeiten.add(mi);
 
+        mi = new MenuItem("Andstate erzeugen");
+        mi.addActionListener(this);
+        mi.setActionCommand("Andstate erzeugen");
+        bearbeiten.add(mi);
+
         mi = new MenuItem("Transition hinzufuegen");
         mi.addActionListener(this);
         mi.setActionCommand("Transition hinzufuegen");
         bearbeiten.add(mi);
 
-        mi = new MenuItem("Andstate erzeugen");
+        mi = new MenuItem("Connector hinzufuegen");
         mi.addActionListener(this);
-        mi.setActionCommand("Andstate erzeugen");
+        mi.setActionCommand("Connector hinzufuegen");
         bearbeiten.add(mi);
+
+        bearbeiten.addSeparator();
 
         mi = new MenuItem("Zustand benennen");
         mi.addActionListener(this);
         mi.setActionCommand("Zustand benennen");
         bearbeiten.add(mi);
 
+        mi = new MenuItem("And_Zustand benennen");
+        mi.addActionListener(this);
+        mi.setActionCommand("And_Zustand benennen");
+        bearbeiten.add(mi);
+
         mi = new MenuItem("Transition benennen");
         mi.addActionListener(this);
         mi.setActionCommand("Transition benennen");
         bearbeiten.add(mi);
+
+        mi = new MenuItem("Connector benennen");
+        mi.addActionListener(this);
+        mi.setActionCommand("Connector benennen");
+        bearbeiten.add(mi);
+
+    	mi = new MenuItem("10%");
+        mi.addActionListener(this);
+        mi.setActionCommand("10%");
+        Zoom.add(mi);
+
+    	mi = new MenuItem("Markieren");
+        mi.addActionListener(this);
+        mi.setActionCommand("Markieren");
+        Extras.add(mi);
+
+        Extras.add(copy);
+        copy.setEnabled(false);
+
+    	copyOneCon = new MenuItem("Connector");
+        copyOneCon.addActionListener(this);
+        copyOneCon.setActionCommand("Connector");
+        copyOneCon.setEnabled(false);
+        copy.add(copyOneCon);
+
+    	copyOneTr = new MenuItem("Transition");
+        copyOneTr.addActionListener(this);
+        copyOneTr.setActionCommand("Transition");
+        copyOneTr.setEnabled(false);
+        copy.add(copyOneTr);
+
+    	insertOne = new MenuItem("Einfuegen");
+        insertOne.addActionListener(this);
+        insertOne.setActionCommand("Einfuegen");
+        insertOne.setEnabled(false);
+        Extras.add(insertOne);
+
+    	moveOne = new MenuItem("Verschieben");
+        moveOne.addActionListener(this);
+        moveOne.setActionCommand("Verschieben");
+        moveOne.setEnabled(false);
+        Extras.add(moveOne);
+
+    	mi = new MenuItem("25%");
+        mi.addActionListener(this);
+        mi.setActionCommand("25%");
+        Zoom.add(mi);
+
+    	mi = new MenuItem("50%");
+        mi.addActionListener(this);
+        mi.setActionCommand("50%");
+        Zoom.add(mi);
+
+    	mi = new MenuItem("100%");
+        mi.addActionListener(this);
+        mi.setActionCommand("100%");
+        Zoom.add(mi);
+
+    	mi = new MenuItem("200%");
+        mi.addActionListener(this);
+        mi.setActionCommand("200%");
+        Zoom.add(mi);
+
+    	mi = new MenuItem("300%");
+        mi.addActionListener(this);
+        mi.setActionCommand("300%");
+        Zoom.add(mi);
+
+    	mi = new MenuItem("400%");
+        mi.addActionListener(this);
+        mi.setActionCommand("400%");
+        Zoom.add(mi);
 
         add("East",vert = new Scrollbar(Scrollbar.VERTICAL));
         add("South",horiz = new Scrollbar(Scrollbar.HORIZONTAL));
@@ -147,10 +241,37 @@ public class Editor extends Frame implements ActionListener {
                 {
                     Methoden_1.addStatenameMouseClicked(e.getX()+scrollX,e.getY()+scrollY,editor);
                 }
+                if (status.equals("And_Zustand benennen"))
+                {
+                    Methoden_1.addAndNameMouseClicked(e.getX()+scrollX,e.getY()+scrollY,editor);
+                }
                 if (status.equals("Transition benennen"))
                 {
                     Methoden_1.addTransNameMouseClicked(e.getX()+scrollX,e.getY()+scrollY,editor);
                 }
+                if (status.equals("Connector hinzufuegen"))
+                {
+                    Methoden_0.addConnectorMouseClicked(e.getX()+scrollX,e.getY()+scrollY,editor);
+                }
+                if (status.equals("Connector benennen"))
+                {
+                    Methoden_1.addConNameMouseClicked(e.getX()+scrollX,e.getY()+scrollY,editor);
+                }
+                if (status.equals("Markieren"))
+                {
+                    Methoden_1.selectOneConnector(e.getX()+scrollX,e.getY()+scrollY,editor);
+                    if (Methoden_1.selectOneConnector != null)
+                    {initMarkCon();}
+                    Methoden_1.selectOneTr(e.getX()+scrollX,e.getY()+scrollY,editor);
+                    if (Methoden_1.selectOneTr != null)
+                    {initMarkTr();}
+                }
+                if (status.equals("Einfuegen"))
+                {
+                    Methoden_1.insertOneConnector(e.getX()+scrollX,e.getY()+scrollY,editor);
+                    Methoden_1.insertOneTr(e.getX()+scrollX,e.getY()+scrollY,editor);
+                }
+                Methoden_0.updateAll(editor);
 	    }
         });
 
@@ -162,11 +283,22 @@ public class Editor extends Frame implements ActionListener {
                 if (status.equals("Transition hinzufuegen"))
                 {
                     Methoden_0.transitionMouseMoved(statechart.state,e.getX()+scrollX,e.getY()+scrollY,editor);
+                    Methoden_0.markConMouseMoved(e.getX()+scrollX,e.getY()+scrollY,editor);
+                }
+                if (status.equals("Connector benennen") | status.equals("Markieren"))
+                {
+                    Methoden_0.markConMouseMoved(e.getX()+scrollX,e.getY()+scrollY,editor);
                 }
             }
-            public void mouseDragged(MouseEvent e) {
+            public void mouseDragged(MouseEvent e)
+            {
                 if (status.equals("Zustand hinzufuegen"))
                     EditorUtils.createStateMouseDragged(e, editor);
+                if (status.equals("Markieren"))
+                {
+                    EditorUtils.createStateMouseDragged(e,editor);
+                    Methoden_1.selectMouseDragged(editor);
+                }
             }
         });
 
@@ -233,17 +365,57 @@ public class Editor extends Frame implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
+//bearbeiten
         if (command.equals("Zustand hinzufuegen")) status = "Zustand hinzufuegen";
         if (command.equals("Beenden")) this.dispose();
         if (command.equals("Andstate erzeugen")) status = "Andstate erzeugen";
         if (command.equals("Transition hinzufuegen")) status = "Transition hinzufuegen";
+//benennen
         if (command.equals("Zustand benennen")) status = "Zustand benennen";
+        if (command.equals("And_Zustand benennen")) status = "And_Zustand benennen";
         if (command.equals("Transition benennen")) status = "Transition benennen";
+        if (command.equals("Connector hinzufuegen")) status = "Connector hinzufuegen";
+        if (command.equals("Connector benennen")) status = "Connector benennen";
+//extras
+        if (command.equals("Markieren")) {status = "Markieren";}
+        if (command.equals("Connector")) {status = "Connector";initCopyCon();}
+        if (command.equals("Transition")) {status = "Transition";initCopyTr();}
+        if (command.equals("Einfuegen")) {status = "Einfuegen";}
+        if (command.equals("Verschieben")) {status = "Verschieben";}
+
+//Zoomen
+        if (command.equals("10%")) {Methoden_1.setFactor(10);repaint();}
+        if (command.equals("25%")) {Methoden_1.setFactor(25);repaint();}
+        if (command.equals("50%")) {Methoden_1.setFactor(50);repaint();}
+        if (command.equals("100%")) {Methoden_1.setFactor(100);repaint();}
+        if (command.equals("200%")) {Methoden_1.setFactor(200);repaint();}
+        if (command.equals("300%")) {Methoden_1.setFactor(300);repaint();}
+        if (command.equals("400%")) {Methoden_1.setFactor(400);repaint();}
         if (command.equals("PrettyPrint")) {
             util.PrettyPrint p = new util.PrettyPrint();
             p.start(statechart);
         }
     }
+
+    private void initMarkCon()
+    {
+        copy.setEnabled(true);
+        copyOneCon.setEnabled(true);
+    }
+    private void initMarkTr()
+    {
+        copy.setEnabled(true);
+        copyOneTr.setEnabled(true);
+    }
+    private void initCopyCon()
+    {
+        Methoden_1.copyOneConnector(this);insertOne.setEnabled(true);
+    }
+    private void initCopyTr()
+    {
+        Methoden_1.copyOneTr(this);insertOne.setEnabled(true);
+    }
+
 
     public void paint(Graphics g) {
         try {
