@@ -178,7 +178,7 @@ public class PrettyPrint {
       System.out.println (whiteSpace (column) + "[PathList] ");
       PrettyPrint ppPList = new PrettyPrint (column + tab, tab);
       while (pListIterator != null) {
-	  System.out.print (whiteSpace (column+tab) + "[Path:] ");
+	  System.out.print (whiteSpace (column+tab) + "[Path] ");
 	  ppPList.start (pListIterator.head);
 	  System.out.println();
 	  pListIterator = pListIterator.tail;
@@ -323,10 +323,14 @@ public class PrettyPrint {
       if (sn != null) {
 	  System.out.println (whiteSpace (column) + "[Statename] " +
 			      sn.name);
-	  //Gib Location aus.
-	  start(sn.location);
-      }
+	  PrettyPrint ppSn = new PrettyPrint (column + tab, tab);
 
+	  // Gib Location aus.
+	  ppSn.start (sn.location);
+
+	  // Gib Point aus.
+	  ppSn.start (sn.position);
+      }
   } // method output (Statename)
 
 
@@ -432,24 +436,29 @@ public class PrettyPrint {
   // Starte Ausgabe auf Bildschirm (Conname).
 
   private void output (Conname cn) {
-      if (cn != null) {
-	  System.out.println (whiteSpace (column) + "[Conname] " +
-			      cn.name);
-	  //Gib Location aus.
-	  start(cn.location);
-      }
+    if (cn != null) {
+      System.out.println (whiteSpace (column) + "[Conname] " +
+			  cn.name);
+      PrettyPrint ppCn = new PrettyPrint (column + tab, tab);
+
+      // Gib Location aus.
+      ppCn.start (cn.location);
+      
+      // Gib Point aus.
+      ppCn.start (cn.position);
+    }
   } // method output (Conname)
 
 
   // Starte Ausgabe auf Bildschirm (UNDEFINED).
 
   private void output (UNDEFINED un) {
-      if (un != null) {
-	  System.out.println (whiteSpace (column) + "[UNDEFINED] ");
+    if (un != null) {
+      System.out.println (whiteSpace (column) + "[UNDEFINED] ");
 
-	  //Gib Location aus.
-	  start(un.location);
-      }
+      //Gib Location aus.
+      start(un.location);
+    }
   } // method output (UNDEFINED)
 
 
