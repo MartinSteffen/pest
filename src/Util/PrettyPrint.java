@@ -315,7 +315,7 @@ public class PrettyPrint {
    * Starte Ausgabe auf Bildschirm (java.awt.Rectangle).
    */
 
-  public void start (java.awt.Rectangle re) {
+  public void start (CRectangle re) {
     if (re != null)
       System.out.println (whiteSpace (column) + "[Rectangle] " +
 			  re.toString());
