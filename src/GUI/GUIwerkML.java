@@ -62,7 +62,7 @@ public void actionPerformed(ActionEvent e) {
 		  //myWindow.OkDialog("FEHLER","Wegen nicht compilierbarem Quelltext nicht implementiert");
 		  try{
 		    
-		    new codegen.CodeGen(".",myWindow.SyntaxBaum);
+		    new codegen.CodeGen(myWindow.SBPfad,myWindow.SyntaxBaum);
       		}catch(codegen.CodeGenException cge)
 		    {
 		      myWindow.OkDialog("Fehler","Fehler bei der Code-Generierung");

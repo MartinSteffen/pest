@@ -34,8 +34,10 @@ public void actionPerformed(ActionEvent e) {
      }else if(cmd.equals("Graphische Benutzerfuehrung"))
 	 {
 	     GUIColor = new GUIFarbOption(myWindow,this);
-      }else if (cmd.equals("")) { 
-      }else if (cmd.equals("")) {
+      }else if (cmd.equals("SyntaxCheck")) { 
+	  new check.CheckOption(myWindow,myWindow.checkConfig);
+      }else if (cmd.equals("Statemate")) {
+	  new stmOption(myWindow);
       }else{  
 	 myWindow.userMessage("GUI   : NOCH NICHT IMPLEMENTIERT"); 
       }	

@@ -15,13 +15,11 @@ implements ActionListener
 
 GUIMenu myMenu;
 pest myWindow;
-boolean hil[];
 
 public GUIimportML(GUIMenu myMenu,pest myWindow)
   {
   this.myMenu = myMenu;
   this.myWindow = myWindow;
-  hil = myWindow.controlWindow.highLight;
   }
 
 
@@ -45,19 +43,9 @@ public void actionPerformed(ActionEvent e) {
 				      myWindow.userMessage("GUI   : TESC1 erfolgreich");
 				      GraphOptimizer go = new GraphOptimizer(Synb,myWindow.getGraphics().getFontMetrics());
 				      Synb = go.start();
-				      myWindow.setStatechart(Synb,"UNBENANNT");
+				      myWindow.setStatechart(Synb,".","UNBENANNT");
 				      myWindow.setDirty(true);		  
-				      hil[4] = true;
-				      if (myWindow.PEditor == null)
-					  {
-					      hil[5] = true;
-					  }
-				      hil[6] = false;
-				      hil[7] = true;
-				      hil[8] = false;
-				      hil[9] = false;
-				      hil[10] = false;
-				      myWindow.controlWindow.repaint();
+
 				  }
 			      else
 				  {
@@ -78,26 +66,16 @@ public void actionPerformed(ActionEvent e) {
 		      {
 			  try{
 			      HAImport imp = new HAImport(new BufferedReader(stImp),myWindow);
-			      Statechart Synb = imp.getStatechart();
+			      Statechart Synb = imp.getStatechart(myWindow.stmKoord,myWindow.stmXSize,myWindow.stmYSize);
 			      if (Synb == null)
 				  {
 				      myWindow.OkDialog("Fehler","Der Import ist fehlgeschlagen !");
 				  }
 			      else
 				  {
-				      myWindow.setStatechart(Synb,"UNBENANNT");
+				      myWindow.setStatechart(Synb,".","UNBENANNT");
 				      myWindow.setDirty(true);
-				      hil[4] = true;
-				      if (myWindow.PEditor == null)
-					  {
-					      hil[5] = true;
-					  }
-				      hil[6] = false;
-				      hil[7] = true;
-				      hil[8] = false;
-				      hil[9] = false;
-				      hil[10] = false;
-				      myWindow.controlWindow.repaint();
+
 				  }
 			      
 			      

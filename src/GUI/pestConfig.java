@@ -11,5 +11,18 @@ class pestConfig
     Point GUILoc, EditorLoc;
     boolean isEditor;
     String Dateiname;
+    String Pfad;
     int stateColorIndex,transColorIndex,conColorIndex;
+    int BgColorIndex,ActColorIndex,InactColorIndex;
+
+    boolean CheckedSC;
+    boolean ResultSC;
+    boolean isDirty;
+    boolean ctrlWin;
+
+    int stmXSize;
+    int stmYSize;
+    boolean stmKoord;
+
+    check.CheckConfig checkConfig;
 }

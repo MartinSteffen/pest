@@ -3,7 +3,6 @@ import java.awt.event.*;
 
 class GUIexitLis
 extends WindowAdapter
-implements ActionListener
 {
     pest myWindow;
     ControlWindow ctrlWin;
@@ -41,15 +40,4 @@ implements ActionListener
 	ctrlWin.repaint();
     }
 
-    public void actionPerformed(ActionEvent e)
-    {
-	myWindow.isDirty();
-	myWindow.EditorDim = myWindow.PEditor.getSize();
-	myWindow.EditorLoc = myWindow.PEditor.getLocation();
-	myWindow.PEditor.Dispose();
-	// hiernach sollte der Editor beendet sein !
-	myWindow.PEditor = null;
-	ctrlWin.highLight[5] = true;
-	ctrlWin.repaint();
-    }
 }

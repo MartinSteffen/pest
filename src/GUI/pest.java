@@ -67,6 +67,7 @@ implements GUIInterface
     ControlWindow controlWindow;
     GUIControlWindowML cwlis;
     GUIexitLis exlis;
+    check.CheckConfig checkConfig;
 
     editor.Editor PEditor = null;
     Dimension EditorDim = null;
@@ -74,6 +75,7 @@ implements GUIInterface
 
     Statechart SyntaxBaum = null;
     String     SBDateiname = null;
+    String     SBPfad = null;
 
     boolean CheckedSC = false;
     boolean ResultSC = false;
@@ -89,6 +91,10 @@ implements GUIInterface
     int BgColorIndex = 10;
     int ActColorIndex = 0;
     int InactColorIndex = 9;
+
+    int stmXSize = 640;
+    int stmYSize = 480;
+    boolean stmKoord = true;
 
    public static void main(String[] args)
     {
@@ -136,7 +142,7 @@ implements GUIInterface
 	add("South",MsgWindow);
 
 	setVisible(true);
-	//restoreConfig();
+	restoreConfig();
 	fDialog = new FileDialog(this);
 	theGUIMenu.updateMenu();
 	userMessage("GUI   : PEST initialisiert");
@@ -167,11 +173,27 @@ implements GUIInterface
 	pestConfig theConfig = new pestConfig();
 	theConfig.GUIDim = getSize();
 	theConfig.GUILoc = getLocation();
+	theConfig.GUILoc.y = theConfig.GUILoc.y + getInsets().top;
 	theConfig.Dateiname = SBDateiname;
+	theConfig.Pfad = SBPfad;
+        theConfig.CheckedSC = CheckedSC;
+        theConfig.ResultSC = ResultSC;
+        theConfig.isDirty = isDirty;
+        theConfig.ctrlWin = ctrlWin;
 
-	//	theConfig.stateColor      = stateColor;
-	//	theConfig.transitionColor = transitionColor;
-	//	theConfig.connectorColor  = connectorColor;
+	theConfig.checkConfig = checkConfig;
+
+	theConfig.stateColorIndex      = stateColorIndex;
+	theConfig.transColorIndex      = transColorIndex;
+	theConfig.conColorIndex        = conColorIndex;
+
+	theConfig.BgColorIndex         = BgColorIndex;
+	theConfig.ActColorIndex        = ActColorIndex;
+	theConfig.InactColorIndex      = InactColorIndex; 
+
+	theConfig.stmXSize = stmXSize;
+	theConfig.stmYSize = stmYSize;
+	theConfig.stmKoord = stmKoord;
 
 	if (PEditor == null)
 	    {
@@ -203,18 +225,49 @@ implements GUIInterface
 	try {
 	    FileInputStream inf = new FileInputStream("pest.cfg");
 	    ObjectInputStream ois = new ObjectInputStream(inf);
-	    pestConfig theConfig = (pestConfig)ois.readObject();
+	    pestConfig theConfig = (pestConfig)ois.readObject();	    
 	    ois.close();
 
-	    // stateColor      = theConfig.stateColor;
-	    //  transitionColor = theConfig.transitionColor;
-	    // connectorColor  = theConfig.connectorColor;
+	    stateColorIndex      = theConfig.stateColorIndex;
+	    transColorIndex      = theConfig.transColorIndex;
+	    conColorIndex        = theConfig.conColorIndex;
+
+	    BgColorIndex         = theConfig.BgColorIndex;
+	    ActColorIndex        = theConfig.ActColorIndex;
+	    InactColorIndex      = theConfig.InactColorIndex;
+
+	    stmXSize = theConfig.stmXSize;
+	    stmYSize = theConfig.stmYSize;
+	    stmKoord = theConfig.stmKoord;
+
+	    if (theConfig.checkConfig == null)
+		{
+		    checkConfig = new check.CheckConfig();
+		}
+	    else
+		{
+		    checkConfig = theConfig.checkConfig;
+		}
+
+	    SBDateiname = theConfig.Dateiname;
+	    SBPfad = theConfig.Pfad;
 	    
 	    setSize(theConfig.GUIDim);
 	    setLocation(theConfig.GUILoc);
- 	    if(theConfig.Dateiname !=null)
+ 	    if(theConfig.Dateiname !=null)		
  		{
- 		    load_named_sc(theConfig.Dateiname);
+ 		    load_named_sc(theConfig.Pfad,theConfig.Dateiname);
+
+		    CheckedSC = theConfig.CheckedSC;
+		    ResultSC = theConfig.ResultSC;
+		    isDirty = theConfig.isDirty;
+		    ctrlWin = theConfig.ctrlWin;
+		    
+		    controlWindow.highLight[4] = !CheckedSC;
+		    controlWindow.highLight[6] = ResultSC;
+		    controlWindow.highLight[7] = true; 
+		    controlWindow.highLight[8] = ResultSC;
+		    controlWindow.highLight[9] = true;
  		}
 
 	    EditorLoc = theConfig.EditorLoc;
@@ -223,9 +276,17 @@ implements GUIInterface
  	    if (theConfig.isEditor)
  		{
 		    startEditor();
-		    //		    PEditor.setLocation(EditorLoc);
-		    //		    PEditor.setSize(EditorDim);
+		    PEditor.setLocation(EditorLoc.x,EditorLoc.y + PEditor.getInsets().top);
+		    PEditor.setSize(EditorDim);
+		    controlWindow.highLight[5] = false;
+		    if (ResultSC)
+			{
+			    controlWindow.highLight[10] = true;
+			}
 		}
+	    
+	    controlWindow.repaint();
+		    
 
 	} catch(Exception e){
 	    userMessage("GUI   : Die PEST-Parameter konnten nicht geladen werden.");
@@ -255,21 +316,14 @@ implements GUIInterface
     {
 	if (PEditor == null)
 	    {
-		PEditor = new editor.Editor(SyntaxBaum,SBDateiname,x,y,b,h,this);
-		//		PEditor.addWindowListener(new GUIeditorWinLis(this));
+		PEditor = new editor.Editor(SyntaxBaum,SBPfad + SBDateiname,x,y,b,h,this);
+
 		if(EditorDim != null)
 		    {
 			PEditor.setSize(EditorDim);
 			PEditor.setLocation(EditorLoc);
 		    }
-	// 	PEditor.menufeld.Select.addActionListener(cwlis);
-// 		PEditor.menufeld.State.addActionListener(cwlis);
-// 		PEditor.menufeld.Trans.addActionListener(cwlis);
-// 		PEditor.menufeld.Defconn.addActionListener(cwlis);
-// 		PEditor.menufeld.Par.addActionListener(cwlis);
-// 		PEditor.menufeld.TLabelS.addActionListener(cwlis);
-// 		PEditor.menufeld.TLabelT.addActionListener(cwlis);
-// 		PEditor.menufeld.setdef.addActionListener(cwlis);
+
  		PEditor.addWindowListener(exlis);							  
 // 		PEditor.w2.addActionListener(exlis);
 	    }
@@ -304,11 +358,11 @@ implements GUIInterface
 
 		if (PEditor != null)
 		    {
-			SCchecker = new check.ModelCheck(this,PEditor);
+			SCchecker = new check.ModelCheck(this);
 		    }
 		else
 		    {
-			SCchecker = new check.ModelCheck(this);
+			SCchecker = new check.ModelCheck(this,PEditor);
 		    }
 		ResultSC = SCchecker.checkModel(SyntaxBaum);
 		CheckedSC = true;
@@ -329,7 +383,6 @@ implements GUIInterface
 		userMessage("GUI   : SyntaxCheck erfolgreich :-)");
 		controlWindow.highLight[4] = false;
 		controlWindow.highLight[8] = true;
-		controlWindow.highLight[9] = true;
 		controlWindow.highLight[6] = true;
 		if (PEditor != null)
 		    {
@@ -343,12 +396,24 @@ implements GUIInterface
     }
 
 
-    void setStatechart(Statechart sc,String name)
+    void setStatechart(Statechart sc,String pfad,String datei)
     {
 	SyntaxBaum = sc;
-	SBDateiname = name;
+	SBDateiname = datei;
+	SBPfad = pfad;
 	CheckedSC = false;
 	ResultSC  = false;
+	controlWindow.highLight[4] = true;
+	if (PEditor == null)
+	    {
+		controlWindow.highLight[5] = true;
+	    }
+	controlWindow.highLight[6] = false;
+	controlWindow.highLight[7] = true;
+	controlWindow.highLight[8] = false;
+	controlWindow.highLight[9] = true;
+	controlWindow.highLight[10] = false;
+	controlWindow.repaint();
 	userMessage("GUI   : Neues Statechart erzeugt");
 	theGUIMenu.updateMenu();	
     }
@@ -363,11 +428,18 @@ implements GUIInterface
 		controlWindow.highLight[4] = true;
 		controlWindow.highLight[6] = false;
 		controlWindow.highLight[8] = false;
-		controlWindow.highLight[9] = false;
 		controlWindow.highLight[10] = false;
+		controlWindow.repaint();
 	    }
     }
 
+
+    public void editorClosing()
+    {
+	exlis.windowClosing(new WindowEvent(this,WindowEvent.WINDOW_CLOSING));
+    }
+
+	
 
     boolean isSaved()
     {
@@ -533,7 +605,8 @@ implements GUIInterface
 		    oos.flush();
 		    oos.close();
       		    setDirty(false);
-		    SBDateiname = fDialog.getDirectory()+FileName;
+		    SBPfad = fDialog.getDirectory();
+		    SBDateiname = FileName;
 		}catch (Exception e)
 		    {
 			OkDialog("Fehler","Die Datei kann nicht gespeichert werden");
@@ -555,21 +628,21 @@ implements GUIInterface
 	String FileName = fDialog.getFile();
 	if (FileName != null)//Ok gewählt
 	    {
-		load_named_sc(fDialog.getDirectory()+FileName);		
+		load_named_sc(fDialog.getDirectory(),FileName);		
 	    }
 	
 	fDialog.setVisible(false);
 	fDialog.dispose();
     }
 
-    void load_named_sc(String name)
+    void load_named_sc(String pfad,String datei)
     {
 	try {
-	    FileInputStream fis = new FileInputStream(name);
+	    FileInputStream fis = new FileInputStream(pfad + datei);
 	    ObjectInputStream ois = new ObjectInputStream(fis);
 	    absyn.Statechart Synb = (absyn.Statechart) ois.readObject();
 	    ois.close();
-	    setStatechart(Synb,name);
+	    setStatechart(Synb,pfad,datei);
 	    setDirty(false);
 	}catch (Exception e)
 	    {
