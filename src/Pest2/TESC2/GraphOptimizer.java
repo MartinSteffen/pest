@@ -34,7 +34,19 @@ import absyn.*;
  *   dieser Darstellung, die die Gr&ouml;&szlig;e der Unterzust&auml;nde nicht
  *   ber&uuml;cksichtigt, werden die Unterzust&auml;nde dann endg&uuml;ltig 
  *   plaziert.
- *  <p>Weitere Algorithmen (einer) in Planung.<p>
+ *  <p>CircleLayoutAlgorithm: Die Knoten werden in einem Kreis angeordnet.
+ *   Zuerst werden f&uuml;r jeden Knoten ein umgebender Kreis berechnet,
+ *   dann diese Kreise um einen Transitionskreis so angeordnet, da&szlig;
+ *   sich je zwei ber&uuml;hren und alle den Transitionskreis ber&uuml;hren.
+ *   Die Transitionen von einem State zu einem anderen verlaufen dann
+ *   vom Startstate zu einem Punkt auf dem Transitionskreis, zu einem
+ *   zweiten Punkt auf dem Transitionskreis und von da zum Endstate.
+ *   Dadurch ist gew&auml;hrleistet, da&szlig; Transitionen keine States
+ *   schneiden.
+ *   <br> Bei diesem Algorithmus entstehen gro&szlig;e Statecharts, er
+ *   empfiehlt sich also nur f&uuml;r kleinere Beispiele.
+ *   
+ *  <p>
  *
  * <p>Vorbedingungen:
  * <br> Das beim Konstruktor &uuml;bergebene Statechart mu&szlig; folgende
@@ -54,8 +66,10 @@ import absyn.*;
  * <dt><strong>
  * STATUS
  * </strong>
- * <p>Wir haben die Beta-Version erreicht.
- * 
+ *
+ * Layout wird nicht wie oben beschrieben durchgef&uuml;hrt. 
+ * Die Minimierung der Kanten&uuml;berschneidungen funktioniert noch nicht
+ * und ist deswegen deaktiviert.
  * <br>
  * Im Verzeichnis
  * tesc2/Test findet sich ein Programm TestFrame, das in diesem
@@ -66,15 +80,13 @@ import absyn.*;
  * <dt><strong>
  * TODO 
  * </strong>
- * Verbesserung der optischen Erscheinung, weiterer Algorithmus.
- * Aktivierung der Optimierung.
+ * Verbesserung der optischen Erscheinung.
  *
  * <dt><strong>
  * BEKANNTE FEHLER
  * </strong>
- * Das Erscheinungsbild ist noch nicht ,,optimal''.
- * Geschachtelte And_States, also And_State mit einem And_State als 
- * substate, werden nicht korrekt angezeigt.
+ * Das Erscheinungsbild ist noch nicht ,,optimal''
+ *
  * <dt><strong>
  * TEMPOR&Auml;RE FEATURES
  * </strong>
@@ -84,7 +96,7 @@ import absyn.*;
  * Created: Fri Nov 27 11:26:25 1998
  *
  * @author Software Technologie 19, Klaus H&ouml;ppner, Achim Abeling
- * @version $Id: GraphOptimizer.java,v 1.10 1999-01-12 10:35:49 swtech19 Exp $
+ * @version $Id: GraphOptimizer.java,v 1.11 1999-01-27 14:01:13 swtech19 Exp $
  *
  */
 
@@ -101,7 +113,8 @@ public class GraphOptimizer {
      */
 
     public static final String[] LIST_OF_ALGORITHMS = {
-	"SugiyamaBCM-Algorithmus"
+	"SugiyamaBCM-Algorithmus",
+	"CircleLayout-Algorithmus"
     };
 
 
@@ -148,6 +161,9 @@ public class GraphOptimizer {
 	    scclone = (Statechart) sc.clone();
 
 	    switch (algorithm) {
+	    case 1:
+		layoutAR = new CircleLayoutAlgorithm(this);
+		break;
 	    default: 
 		layoutAR = new SugiyamaBCMAlgorithm(this);
 	    }
@@ -157,8 +173,7 @@ public class GraphOptimizer {
 	} catch (CloneNotSupportedException e) {
 
 	}
-	
-	
+	       
 	return scclone;
     }
 
