@@ -4,12 +4,12 @@ import absyn.*;
 import java.util.*;
 
 /**
+ *  Diese Testklasse testet, ob alle Events deklariert worden sind,
+ *  ob die deklarierten eindeutig sind und ob sie alle verwendet werden.
+ *
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestEvents.java,v 1.13 1999-01-20 15:06:55 swtech11 Exp $
+ *  @version  $Id: TestEvents.java,v 1.14 1999-01-28 20:56:23 swtech11 Exp $
  */
-/** Diese Testklasse testet, ob alle Events deklariert worden sind, 
-    <br>ob die deklarierten eindeutig sind und ob sie alle verwendet werden.*/
-
 class TestEvents extends ModelCheckBasics{
   private Vector Ist;
   private Vector GSoll;
@@ -19,18 +19,17 @@ class TestEvents extends ModelCheckBasics{
     super();
     Ist=new Vector();
     GSoll=new Vector();
-ASoll=new Vector();
+    ASoll=new Vector();
   }
 
   TestEvents(Statechart s, ModelCheckMsg m) {
     super(s,m);
     Ist=new Vector();
     GSoll=new Vector();
-ASoll=new Vector();
+    ASoll=new Vector();
   }
 
- /** Die Methode check ueberprueft die Statechart auf Fehler bzgl. Events.*/
-
+  /** Die Methode check ueberprueft die Statechart auf Fehler bzgl. Events.*/
   boolean check() {
     int m=msg.getErrorNumber();
     erstelle_Ist();
@@ -38,9 +37,9 @@ ASoll=new Vector();
     vergleiche();
     return ((msg.getErrorNumber()-m)==0);
   }
-   /** Die Methode erstellt einen Vector Ist der deklarierten Events, 
-	<br>dabei wird ueberprueft, ob alle Namen eindeutig sind.*/
 
+  /** Die Methode erstellt einen Vector Ist der deklarierten Events,
+	* dabei wird ueberprueft, ob alle Namen eindeutig sind.*/
   void erstelle_Ist() {
      for(SEventList e=sc.events; e!=null;e=e.tail){
         if (equalString(Ist, e.head.name)) {msg.addError(200,"Event: "+e.head.name+" aus Def.Liste");}
@@ -48,18 +47,16 @@ ASoll=new Vector();
       Ist.addElement(new EventC(e.head, "Def.Liste"));};}
         };
 
-/** Die Methode ueberprueft saemtliche Transitionen auf eine Verwendung von Events.
-	<br>Es werden alle Eventnamen in einen Vector Soll geschrieben.*/
-
+  /** Die Methode ueberprueft saemtliche Transitionen auf eine Verwendung von Events.
+	* Es werden alle Eventnamen in einen Vector Soll geschrieben.*/
   void erstelle_Soll() {
     if (sc.state instanceof Or_State) {navOrState((Or_State)sc.state, null, ""); }
     if (sc.state instanceof And_State) {navAndState((And_State)sc.state, null, ""); }
-
   };
 
     /** prueft den Guard und den Action einer Transition.*/
 
- void navTransInTransList(TrList tl, State _s, String p) {
+  void navTransInTransList(TrList tl, State _s, String p) {
     pruefeGuard(tl.head.label.guard, tl.head, p);
     pruefeAction(tl.head.label.action, tl.head, p);
     if (tl.tail != null) { navTransInTransList(tl.tail, _s, p); }

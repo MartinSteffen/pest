@@ -10,7 +10,7 @@ import java.awt.*;
  * <h1>Crossreference für Statecharts</h1>
  * <h2>Empfohlender Aufruf:</h2>
  * <ol>
- * <li>Initialisierung:    Crossreference cr = new Crossreference(GUI_Referenz, EDITOR_Referenz)
+ * <li>Initialisierung:    Crossreference cr = new Crossreference(GUI_Referenz, EDITOR_Referenz, CheckConfig)
  * <li>Aufruf des Reports: cr.report(Statechart)
  * </ol>
  * <h2>Forderungen an die an den Report übergebene Statechart:</h2>
@@ -35,14 +35,15 @@ import java.awt.*;
  * keine
  * </DL COMPACT>
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: Crossreference.java,v 1.16 1999-01-26 22:39:33 swtech11 Exp $
+ * @version  $Id: Crossreference.java,v 1.17 1999-01-28 20:56:17 swtech11 Exp $
  */
 public class Crossreference extends ModelCheckBasics {
-  private GUIInterface gui = null; // Referenz auf die GUI
-  private Editor edit = null;
-  String such = new String("");
-  private Vector items = new Vector();
-  private boolean high = false; // highlighten ?
+  private GUIInterface gui = null;     // Referenz auf die GUI
+  private Editor edit = null;          // Referenz des Editors
+  String such = new String("");        // Suchstring
+  private Vector items = new Vector(); // Vector zum Speichern der Einträge
+  private boolean high = false;        // highlighten ?
+  private CheckConfig cf = new CheckConfig();
 
 
   /**
@@ -62,8 +63,9 @@ public class Crossreference extends ModelCheckBasics {
   * @param _cf Konfigurationsklasse des Syntax Checks
   */
   public Crossreference(GUIInterface _gui, Editor _edit, CheckConfig _cf) {
-    gui = _gui;
+    gui  = _gui;
     edit = _edit;
+    cf   = _cf;
   }
 
   /**
@@ -81,7 +83,7 @@ public class Crossreference extends ModelCheckBasics {
       if (sc.state instanceof And_State) {navAndState ((And_State)sc.state, null,""); }
       if (sc.state instanceof Basic_State) {navBasicState ((Basic_State)sc.state, null,""); }
       // Ausgabe
-      if (edit != null) { high = true; } else { high = false; } // muß noch um Config erweiter werden
+      if (edit != null & cf.cr_highlight==true) { high = true; } else { high = false; } // muß noch um Config erweiter werden
       highlightObject ho;
       if (items.size()>0) {
         if (high==true) { ho = new highlightObject(true); }// Highlighten vorbereiten
@@ -285,6 +287,7 @@ public class Crossreference extends ModelCheckBasics {
     items.addElement(ri);
   }
 
+  // Eingabe eines Report Ergebnises
   void itemInput(Object o, Object ho, String p1, Tr t, String p) {
     String s1=msg.getTrSourceName(t);
     String s2=msg.getTrTargetName(t);
@@ -295,9 +298,9 @@ public class Crossreference extends ModelCheckBasics {
 
 
 class ReportItem {
-  // die Art des Elementes, evtl. überflüssig
+  // das Objekt
   Object Obj = null;
-  // das Objekt selbst, z.B. zum Highlighten, evtl. überflüssig
+  // das Objekt zum Highlighten
   Object HiObj = null;
   // die texttuelle Art des Elementes plus seiner Beschreibung der Lage
   String Pth = null;

@@ -4,13 +4,12 @@ import absyn.*;
 import java.util.*;
 
 /**
+ * Diese Testklasse testet, ob alle BVars deklariert worden sind,
+ * ob die Deklarierten eindeutig sind und ob sie alle verwendet werden.
+ *
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestBVars.java,v 1.13 1999-01-20 15:06:54 swtech11 Exp $
+ *  @version  $Id: TestBVars.java,v 1.14 1999-01-28 20:56:22 swtech11 Exp $
  */
-
-/** Diese Testklasse testet, ob alle BVars deklariert worden sind, 
-    <br>ob die Deklarierten eindeutig sind und ob sie alle verwendet werden.*/
-
 class TestBVars extends ModelCheckBasics{
   private Vector Ist;
   private Vector GSoll;
