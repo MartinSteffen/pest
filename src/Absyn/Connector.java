@@ -7,7 +7,7 @@ import java.awt.Point;
 /**
  * Connector.
  * @author Initially provided by Martin Steffen.
- * @version $Id: Connector.java,v 1.7 1998-12-15 07:11:08 swtech01 Exp $
+ * @version $Id: Connector.java,v 1.8 1998-12-15 11:04:35 swtech00 Exp $
  */
 public class Connector  extends Absyn implements Serializable, Cloneable {
 /**
@@ -17,7 +17,7 @@ public class Connector  extends Absyn implements Serializable, Cloneable {
 /**
  * Position of the Connector.
  */
-    public Point position;
+    public CPoint position;
 /**
  * Constructor.
  */
@@ -28,14 +28,14 @@ public class Connector  extends Absyn implements Serializable, Cloneable {
 /**
  * Constructor with Position.
  */
-    public Connector(Conname n, Point p) {
+    public Connector(Conname n, CPoint p) {
 	name = n;
 	position = p;
     };
 
     public Object clone() throws CloneNotSupportedException {
 	return new Connector((Conname)name.clone(),
-			     position);
+			     (CPoint)position.clone());
     };
 
 }
@@ -43,9 +43,12 @@ public class Connector  extends Absyn implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Connector.java,v 1.7 1998-12-15 07:11:08 swtech01 Exp $
+//	$Id: Connector.java,v 1.8 1998-12-15 11:04:35 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.7  1998/12/15 07:11:08  swtech01
+//	Added Serialization to all classes
+//
 //	Revision 1.6  1998/12/11 17:42:57  swtech00
 //	Cloneable
 //
