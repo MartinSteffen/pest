@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.67 1999-02-05 12:00:43 swtech24 Exp $
+//	$Id: report_list,v 1.68 1999-02-05 13:24:12 swtech01 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -578,7 +578,7 @@ Nach Beenden einer Simulation taucht das Editor-Menu nicht wieder auf.
 #Number:	36
 #Autor:		Bernd Weber bwe
 #Subject:	Syntaxfehler in von CodeGen erzeugtem Code
-#Status: 	fixed
+#Status: 	confirmed
 #Description: 
 
 Default-Namen (beginnen mit "...") verursachen Syntax-Fehler im
@@ -678,7 +678,7 @@ aktiv).
 #Number:        46
 #Autor:         Bernd Weber bwe
 #Subject:       Editor: Editor erzeugt falsche Transition
-#Status:        fixed
+#Status:        confirmed
 #Description:
 
 Man erstelle zwei Zustaende wie in Number 43. Zeichne eine Transition
@@ -768,7 +768,7 @@ deswegen, weil Codegen die Default-Namen nicht vertraegt.
 #Number:        53
 #Autor:         Bernd Weber bwe
 #Subject:       Editor: erzeugt Interlevel-Transitionen in AND-Sates
-#Status:        fixed 
+#Status:        reported
 #Description:
 
 Man erzeuge einen AND-State und in einer der Komponenten zwei Basic-Zustaende
@@ -778,11 +778,20 @@ Target den AND-State. Natürlich meldet Check dann eine Interlevel-Transition.
 Fehler passieren auch beim Importieren via Tesc-Import. Man importiere z.B.
 ~swtech12/Examples/misc/and-test1.tesc1. SyntaxCheck ergibt ohne
 geöffneten Editor keine Fehler, mit schon.
+
+Zurückgesetzt auf "reported" !!!
+Das funktioniert noch immer:
+State zeichnen, mit parallel teilen. In der OBEREN Komponente linken Basic
+State, dann rechten Basic State erstellen und Transition von links nach rechts
+einzeichnen. Aufruf von SyntaxCheck meldet Interlevel-Transition. Im der unteren
+Komponente geht's gut.
+
+Auch das Importieren zeigt noch dasselbe Verhalten wie vorher !?!
 //------------------------------------------------------------------------------
 #Number:        54
 #Autor:         Bernd Weber bwe
 #Subject:       Editor: entstellt Grafik beim Erzeugen von Or-States
-#Status:        fixed
+#Status:        confirmed
 #Description:
 
 Erstelle zwei Zustaende mit UNbeschrifteter Trasition. Erzeuge einen
