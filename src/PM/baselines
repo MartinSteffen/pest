@@ -95,3 +95,87 @@ cloneable sein.
 Nach unsere Kenntniss muss nur noch Location mit "Leben gefuellt werden",
 was die TESC1-Leute machen muessten. Sonst durfte in die abstrakte Syntax
 nichts mehr dazukommen.
+
+
+PEST1_6 PEST2_6
+================
+
+KOMPILIERBARKEIT 
+
+ist zur Zeit nicht gegeben! Es scheitert in PEST2/gui. Das liegt daran, daß PEST2/editor mit einer
+Interfaceänderung im Rückzug ist. Wer PEST2 trotzdem starten möchte, kann das mit einer lokalen Änderung
+in gui/GUIMenu.java machen. Der Fehler 
+
+javac GUIMenu.java 
+/home/swtech00/PEST2/gui/GUIwerkML.java:29: Wrong number of arguments in constructor.
+        myWindow.PEditor = new editor.Editor(myWindow.SyntaxBaum,myWindow.SBDateiname,100,100,200,200,myWindow);
+                           ^
+1 error
+
+kann vermieden werden, wenn man den "alten" Konstruktor editor.Editor benutzt, dem noch das letzte
+Argument fehlt. Sobald PEST2/editor die Anpassung der Schnittstelle durchführt, wir es hier bekanntgegeben. 
+
+STATUS 
+
+Während der Besprechung haben die Gruppen den Status der Pakete folgendermassen beschrieben: 
+
+GUI             beta
+CODEGEN         -
+STM             alpha
+
+PEST1/EDITOR    -
+PEST1/CHECK     beta
+PEST1/TESC1     alpha
+PEST1/TESC2     alpha
+
+PEST2/EDITOR    -
+PEST2/CHECK     alpha
+PEST2/TESC1     beta
+PEST2/TESC2     -
+
+Legende 
+
+-: wesentliche Teile der Funktionalität fehlen. Die Aufrufe sind wie Stubs: nehmen Argumente entgegen und
+liefern Ergebnisse vom korrekten Typ, jedoch sind fest Aussagen über die Funktionalität nicht möglich. 
+
+alpha: wesentliche Teile der Funktionalität sind implementiert. Das Paket befindet sich in der Testphase. 
+
+beta: alle Teile der Funktionalität sind implementiert und ausführlich getestet (unit-test). Andere Teilnehmer
+werden eingeladen, das Paket zu benutzen und die Gruppe über Fehler zu informieren. 
+
+Leider haben nicht alle Gruppen den Status auch bei Ihren Klassen dokumentiert! 
+
+KONZEPTIONELLE KONSISTENZ 
+
+Leider ist es immer noch nicht möglich, das Zusammenspiel der Module auf konzeptionelle Konsistenz hin zu
+überprüfen. Folgende Gruppen haben es noch nicht geschafft, die Anforderungen und Garantien
+aufzuschreiben: 
+
+CODEGEN
+GUI
+STM
+
+PEST1/EDITOR
+PEST1/TESC1     muß der Sache auf den Grund gehen und dafür sorgen,
+                daß Probleme erkannt werden (statt mit unbekannt
+                gekennzeichnet).
+PEST1/TESC2
+
+PEST2/EDITOR
+
+VORBEREITUNG DER NÄCHSTEN BASELINE 
+
+Jetzt heißt es aufzusteigen: alle, die im Moment des Status '-' haben,
+sollten zum Montag 'alpha' erreichen, alle alpha-Gruppen sollten 'beta'
+erreichen und die beta-Gruppen sollten die Integrationstests vorantrieben.
+
+Mal sollte unbedingt darauf achten, daß man bei Änderungen in den Paketen
+auch die dazugehörigen Kommentare ggf. anpaßt. Das betrifft insbesondere
+die Kommentare zu Anforderungen, Garantien und den Statusbericht.
+
+Ich werde versuchen, die Integrationstests zu formulieren, die dann
+hoffentlich am Montag zur Verfügung stehen.
+
+Wenn ich die Informationen zu Anforderungen und Garantien bekomme, kann ich
+die Pakete auf konzeptionelle Konsistenz hin überprüfen. Wenn ich die
+fehlenden Infos nicht bekomme, werde ich mich nur ärgern.
