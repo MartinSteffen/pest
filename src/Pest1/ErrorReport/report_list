@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.30 1999-01-26 14:52:31 swtech18 Exp $
+//	$Id: report_list,v 1.31 1999-01-27 14:02:15 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -318,7 +318,6 @@ So sehen die Berschrifungen z.Zt. so aus: ~[~]/~.
 
 Sein soll: ein String der Länge null.
 //------------------------------------------------------------------------------
-------------
 
 #Number:	23
 #Autor:		Daniel Wendorff Magnus Stiller swtech11
@@ -328,5 +327,30 @@ Sein soll: ein String der Länge null.
 
 Man importiert mit TESC examples ein. Dann einen SyntaxCheck, der keine Fehler anzeigt. Anschliessend oeffnet man den Editor und fuehrt erneut den Check durch, jetzt hat man viele Interlevel Transitionen, die als Fehler angezeigt werden.
 
+
+//------------------------------------------------------------------------------
+
+#Number:	24
+#Autor:		Erich Mikk
+#Subject:	Interlevel Trs in SE-Examples/cd.st
+#Status:	reported
+#Description:
+
+STM-Import SE-Examples/cd.st.
+TESC-Export nach cd.tesc
+TESC-Import von cd.tesc.
+Start Editor.
+Start Simulation.
+
+Jetzt wird im Errorbrowser angezeigt, dass eine Menge von Trs Interlevel
+sei.  Leider konnte ich die Bilder dazu nicht finden (Chart ist einfach zu
+gross), aber das faellt mir schwer zu glauben. Schliesslich sind die
+Koordinaaten von TESC2 berechnet und in der Originalchart gibt es keine
+Interlevel Trs.
+
+Was geht hier schief:
+
+(1) Koordinatenberechnung?
+(2) Ermittlung von Interlevel Trs anhand von Koordinaaten?
 
 //------------------------------------------------------------------------------
