@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.9 1999-01-16 14:07:01 swtech13 Exp $
+//	$Id: report_list,v 1.10 1999-01-18 10:22:07 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -79,7 +79,7 @@ dahinter verbergt ist.
 #Number:        4 
 #Autor:         Sven Jorga, Werner Lehmann swtech18
 #Subject:       HA-Format Fehler 
-#Status:        reported
+#Status:        fixed
 #Description:
 
 Die Dateien ~/swtech12/Examples/SE-Systems/cd.st und ~/swtech12/Examples/TV/system.st
