@@ -140,7 +140,7 @@ import editor.*;
  *</Table>
  * <br>
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: ModelCheck.java,v 1.40 1999-02-10 11:52:25 swtech11 Exp $
+ * @version  $Id: ModelCheck.java,v 1.41 1999-02-11 01:06:27 swtech11 Exp $
  * @see CheckConfig
  */
 public class ModelCheck {
@@ -324,12 +324,21 @@ public class ModelCheck {
       for (int i=1; (i<=getErrorNumber()); i++) {
         gui.userMessage("Check: - "+getErrorMsg(i)+" ("+getErrorCode(i)+")" );
         gui.userMessage("Check:   ["+getErrorPath(i)+"]"); }}
-    if (getWarningNumber()>0 & cf.sc_warning==true) {
+    if (getWarningNumber()>0 & cf.sc_warning==1) {
       gui.userMessage("Check:");
       gui.userMessage("Check: Warnmeldungen ( Anzahl: " + getWarningNumber() +  " ):");
       for (int i=1; (i<=getWarningNumber()); i++) {
         gui.userMessage("Check: - "+getWarningMsg(i)+" ("+getWarningCode(i)+")" );
         gui.userMessage("Check:   ["+getWarningPath(i)+"]"); }}
+    else if (getWarningNumber()>0 & cf.sc_warning==2) {
+      gui.userMessage("Check:");
+      gui.userMessage("Check: Warnmeldungen ( Anzahl: " + getWarningNumber() +  " ):");
+      for (int i=1; (i<=getWarningNumber()); i++) {
+        int wci = mcm.getWarningCode(i);
+        String wc = new String();
+        if ( cf.sc_warnStr.indexOf(";"+ wc.valueOf(wci) +";" ) ==-1  ) {
+          gui.userMessage("Check: - "+getWarningMsg(i)+" ("+getWarningCode(i)+")" );
+          gui.userMessage("Check:   ["+getWarningPath(i)+"]"); }} }
   }
 
 /**

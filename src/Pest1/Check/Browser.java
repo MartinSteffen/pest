@@ -3,6 +3,7 @@ package check;
 import gui.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
 import editor.*;
 import absyn.*;
 import java.util.*;
@@ -11,7 +12,7 @@ import java.util.*;
  * Browser
  *
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: Browser.java,v 1.12 1999-02-10 01:11:01 swtech11 Exp $
+ *  @version  $Id: Browser.java,v 1.13 1999-02-11 01:06:18 swtech11 Exp $
  */
 class Browser extends Dialog implements ActionListener {
   pest parent = null;
@@ -21,7 +22,9 @@ class Browser extends Dialog implements ActionListener {
   CheckConfig cf;
   List lst; // Liste für Meldungen
   Button button1; // OK Knopf
-  Button button2; // SAVE Knopf
+  Button button2; // SAVE All Knopf
+  Button button3; // SAVE Selected Knopf
+
   Panel panel;
   boolean high = false; // highlighten ?
   boolean SE = false;
@@ -43,28 +46,38 @@ class Browser extends Dialog implements ActionListener {
 
     // Liste für Messages anlegen
     int ml = mcm.getErrorNumber()*2+2;
-    if (cf.sc_warning==true) { ml = ml + mcm.getWarningNumber()*2+1; }
+    if (cf.sc_warning!=0) { ml = ml + mcm.getWarningNumber()*2+1; }
     if (ml>30) { ml = 30; }
     lst = new List(ml);
     lst.setMultipleMode(true);
     // Fehler ausgeben
-    lst.setFont(new Font("Serif",Font.BOLD,16));
+    lst.setFont(new Font("Serif",Font.PLAIN,14));
     lst.add("Fehlermeldungen ( Anzahl " + mcm.getErrorNumber() +  " ):");
     if (mcm.getErrorNumber()>0) {
       for (int i=1; (i<=mcm.getErrorNumber()); i++) {
-        lst.setFont(new Font("Serif",Font.PLAIN,14));
         lst.add("- "+mcm.getErrorMsg(i)+" ("+mcm.getErrorCode(i)+")");
         lst.add("     "+mcm.getErrorPath(i)); }}
     // Warnungen ausgeben
-    if (cf.sc_warning==true) {
-      lst.setFont(new Font("Serif",Font.BOLD,16));
+    if (cf.sc_warning==1) { // alle
       lst.add("Warnmeldungen ( Anzahl " + mcm.getWarningNumber() +  " ):");
       if (mcm.getWarningNumber()>0) {
         for (int i=1; (i<=mcm.getWarningNumber()); i++) {
-          lst.setFont(new Font("Serif",Font.PLAIN,14));
           lst.add("- "+mcm.getWarningMsg(i)+" ("+mcm.getWarningCode(i)+")");
           lst.add("     "+mcm.getWarningPath(i)); }}}
-
+    else if (cf.sc_warning==2){ // nur bestimmte
+      lst.setFont(new Font("Serif",Font.PLAIN,14));
+      lst.add("Warnmeldungen ( Anzahl " + mcm.getWarningNumber() +  " ):");
+      if (mcm.getWarningNumber()>0) {
+        for (int i=1; (i<=mcm.getWarningNumber()); i++) {
+          int wci = mcm.getWarningCode(i);
+          String wc = new String();
+          if ( cf.sc_warnStr.indexOf(";"+ wc.valueOf(wci) +";" ) ==-1  ) {
+            lst.add("- "+mcm.getWarningMsg(i)+" ("+mcm.getWarningCode(i)+")");
+            lst.add("     "+mcm.getWarningPath(i));
+          }
+        }
+      }
+    }
     // Markierungen auswerten
     // if ( (mcm.getWarningNumber()>0 & cf.sc_warning==true) | mcm.getErrorNumber()>0) {
       lst.addItemListener( new ItemListener() {
@@ -84,11 +97,16 @@ class Browser extends Dialog implements ActionListener {
 	  button1.setActionCommand("OK");
   	button1.addActionListener(this);
 	  panel.add(button1);
-    panel.add(new Label("   "));
-  	button2 = new Button("Speichern als Textfile");
+    panel.add(new Label(" "));
+  	button2 = new Button("Alles Speichern");
 	  button2.setActionCommand("SAVE");
   	button2.addActionListener(this);
 	  panel.add(button2);
+    panel.add(new Label(" "));    
+  	button3 = new Button("Selektiertes Speichern");
+	  button3.setActionCommand("SAVE Sel");
+  	button3.addActionListener(this);
+	  panel.add(button3);
   	add(panel,"South");
     pack();
 	  setResizable(true);
@@ -178,8 +196,38 @@ class Browser extends Dialog implements ActionListener {
     else if (cmd.equals(button2.getActionCommand())) {
       mc.outputToFile("Check_Ergebnis.txt");
 	  }
+    else if (cmd.equals(button3.getActionCommand())) {
+      try {
+        FileOutputStream fos = new FileOutputStream("Check_Ergebnis_selektiert.txt");
+        PrintWriter out = new PrintWriter(fos);
+        out.println("Selektierte Meldungen des Syntax Check:");
+        out.println();
 
+    int ix[] = lst.getSelectedIndexes();
+    out.println("Fehlermeldungen ( Anzahl: " + mcm.getErrorNumber() +  " ):");
+    for (int i=0; i < ix.length; i++) {
+      if (ix[i]>0 & ix[i]<mcm.getErrorNumber()*2+1) { // Fehler bearbeiten
+        int c = (ix[i]+1) / 2;
+        out.println( mcm.getError(c) );
+      }
+    }
+    out.println();
+    out.println("Warnmeldungen ( Anzahl: " + mcm.getWarningNumber() +  " ):");
+    for (int i=0; i < ix.length; i++) {
+      if (ix[i]>mcm.getErrorNumber()*2+1 & ix[i]<mcm.getErrorNumber()*2+mcm.getWarningNumber()*2+2) { // Warnungen bearbeiten
+        int c = ix[i]/2 - mcm.getErrorNumber();
+        out.println( mcm.getWarning(c) );
+      }
+    }
+
+        out.flush();
+        out.close();
+      }
+      catch (Exception ex) { System.out.println(ex); }
+    }
   }
 
 
 }
+
+

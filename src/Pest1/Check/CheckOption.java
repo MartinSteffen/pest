@@ -8,7 +8,7 @@ import java.awt.event.*;
  * Fenster zur Eingabe der Optionen des Syntax Checks, die in der Klasse CheckConfig gespeichert werden
  *
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: CheckOption.java,v 1.6 1999-02-08 23:38:48 swtech11 Exp $
+ *  @version  $Id: CheckOption.java,v 1.7 1999-02-11 01:06:22 swtech11 Exp $
  *  @see CheckConfig
  */
 public class CheckOption extends Dialog implements ActionListener {
@@ -16,7 +16,11 @@ public class CheckOption extends Dialog implements ActionListener {
   CheckConfig cf;
   Button button1;
   Button button2;
-  Checkbox sc_warn;
+  Button button_warn;
+
+  CheckboxGroup sc_warn;
+  Checkbox[] sc_warn_e;
+
   Checkbox cr_high;
   Checkbox sc_brow;
   Choice ch;
@@ -40,7 +44,7 @@ public class CheckOption extends Dialog implements ActionListener {
 
     Point p = parent.getLocation();
 	  setLocation(p.x + 30 , p.y + 30);
-    setLayout(new GridLayout(8,1));
+    setLayout(new GridLayout(11,1)); // vorher 8
     // Ueberschrift Syntax Check
   	Panel panel = new Panel(new GridLayout(1,1));
 	  panel.setBackground(Color.gray);
@@ -54,13 +58,50 @@ public class CheckOption extends Dialog implements ActionListener {
     sc_brow = new Checkbox("Message Browser benutzen",cf.sc_browser );
     panel.add(sc_brow);
     add(panel);
+
     // Check Warnungen
-  	panel = new Panel(new GridLayout(1,1));
+    sc_warn = new CheckboxGroup();
+    sc_warn_e = new Checkbox[3];
+
+    // Überschrift Warnungen
+    panel = new Panel(new GridLayout(1,1));
     panel.setBackground(Color.lightGray);
     panel.setForeground(Color.black);
-    sc_warn = new Checkbox("Warnungen ausgeben",cf.sc_warning);
-    panel.add(sc_warn);
+  	panel.add(new Label("Warnungen ausgeben:"));
     add(panel);
+
+    // keine Warnungen ausgeben
+    panel = new Panel(new GridLayout(1,1));
+    panel.setBackground(Color.lightGray);
+    panel.setForeground(Color.black);
+    sc_warn_e[0] = new Checkbox("keine",sc_warn,false);
+    panel.add(sc_warn_e[0]);
+    add(panel);
+
+    // bestimmte Warnungen ausgeben
+    panel = new Panel(new GridLayout(1,2));   // new GridLayout(1,2)
+    panel.setBackground(Color.lightGray);
+    panel.setForeground(Color.black);
+    sc_warn_e[2] = new Checkbox("bestimmte",sc_warn,false);
+    panel.add(sc_warn_e[2]);
+      // Auswahl-Button
+  	button_warn = new Button("Auswahl");
+	  button_warn.setActionCommand("warn");
+  	button_warn.addActionListener(this);
+	  panel.add(button_warn);
+
+    add(panel);
+
+    // alle Warnungen ausgeben
+    panel = new Panel(new GridLayout(1,1));
+    panel.setBackground(Color.lightGray);
+    panel.setForeground(Color.black);
+    sc_warn_e[1] = new Checkbox("alle",sc_warn,false);
+    panel.add(sc_warn_e[1]);
+    add(panel);
+
+    sc_warn_e[cf.sc_warning].setState(true);
+
     // Ueberschrift Crossreference
   	panel = new Panel(new GridLayout(1,1));
 	  panel.setBackground(Color.gray);
@@ -119,6 +160,7 @@ public class CheckOption extends Dialog implements ActionListener {
   	button2.addActionListener(this);
 	  panel.add(button2);
   	add(panel);
+    
   	pack();
 	  setResizable(true);
   	setVisible(true);
@@ -127,7 +169,10 @@ public class CheckOption extends Dialog implements ActionListener {
   public void actionPerformed(ActionEvent e) {
   	String cmd = e.getActionCommand();
   	if (cmd.equals(button1.getActionCommand())) {
-	  	cf.sc_warning   = sc_warn.getState();
+	  	// cf.sc_warning   = sc_warn.getState();
+      for (int i=0; i<3; i++) {
+        if (sc_warn_e[i].getState()==true) { cf.sc_warning = i; }
+      }
 		  cf.cr_highlight = cr_high.getState();
   		cf.sc_browser   = sc_brow.getState();
       cf.high_color   = ch.getSelectedIndex();
@@ -138,6 +183,9 @@ public class CheckOption extends Dialog implements ActionListener {
   		setVisible(false);
 	  	dispose();
 	  }
+    else if (cmd.equals(button_warn.getActionCommand())) {
+      CheckOptionWarnung cow = new CheckOptionWarnung(parent, cf);
+    }
   }
 
 

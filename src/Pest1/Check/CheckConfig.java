@@ -7,29 +7,37 @@ import java.awt.*;
  * Klasse zum Speichern der Optionen des Syntax Checks.
  *
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: CheckConfig.java,v 1.4 1999-02-01 12:06:12 swtech11 Exp $
+ *  @version  $Id: CheckConfig.java,v 1.5 1999-02-11 01:06:20 swtech11 Exp $
  */
 public class CheckConfig implements Serializable {
 
   /**
   * Browser benutzen ?
   */
-  public boolean sc_browser = true;
+  boolean sc_browser = true;
 
   /**
   * Warnung ausgeben ?
+  *   0: keine Warnungen
+  *   1: alle Warnungen
+  *   2: bestimmte Warnungen
   */
-  public boolean sc_warning = true;
+  int sc_warning = 1;
+
+  /**
+  * String für Warnungs-Codes
+  */
+  String sc_warnStr = new String("");
 
   /**
   * Ergebnisse der Crossreference highlighten ?
   */
-  public boolean cr_highlight = true;
+  boolean cr_highlight = true;
 
   /**
   * Index der Highlight Color
   */
-  public int high_color = 8;
+  int high_color = 8;
 
   /**
   * Array für die Farben

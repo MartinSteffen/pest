@@ -1,5 +1,7 @@
 package check;
 
+import java.util.*;
+
 /**
  * Grobe Fehlereinordnung:
  *     0- 99 allgemein und fatal
@@ -9,12 +11,27 @@ package check;
  *   400-499 Transitions Fehler
  *
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: ErrorAndWarningCodes.java,v 1.34 1999-02-10 11:52:24 swtech11 Exp $
+ *  @version  $Id: ErrorAndWarningCodes.java,v 1.35 1999-02-11 01:06:25 swtech11 Exp $
  */
 class ErrorAndWarningCodes {
 
   ErrorAndWarningCodes() { }
-  
+
+  // Vector mit allen Warnungs Codes
+  Vector codeWarnings() {
+    Vector v = new Vector();
+    v.addElement(new Integer(1));   v.addElement(new Integer(2));
+    v.addElement(new Integer(3));   v.addElement(new Integer(4));
+    v.addElement(new Integer(5));   v.addElement(new Integer(6));
+    v.addElement(new Integer(102)); v.addElement(new Integer(104));
+    v.addElement(new Integer(105)); v.addElement(new Integer(110));
+    v.addElement(new Integer(202)); v.addElement(new Integer(204));
+    v.addElement(new Integer(205)); v.addElement(new Integer(210));
+    v.addElement(new Integer(304)); v.addElement(new Integer(307));
+    v.addElement(new Integer(416));
+    return v;
+  }
+
   String codeToString(int _i) {
     String _s = new String();
     switch (_i) {
