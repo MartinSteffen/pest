@@ -63,6 +63,15 @@ static Statechart nroot = new Statechart(null,null,null,null);
     
     new Editor(nroot,name,100,100,500,400);}
 
+
+/**
+ * Generiert einen Menu-Frame 
+ * <ul>
+ * <li>name   : windowname 
+ * </ul>
+ */
+
+
     public Editor (String name) {
 	super(name);
 	this.setLayout(new GridLayout(0,1,5,5));
@@ -195,7 +204,7 @@ private static void RemoveListen() {update = false;}
  * Gibt den Status des  update-Listener zurueck
  */
 
-public static boolean ListenEditor() {
+public static boolean listenEditor() {
     boolean Listentemp = update;
     RemoveListen();
     return Listentemp;

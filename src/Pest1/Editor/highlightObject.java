@@ -35,20 +35,20 @@ public class highlightObject {
  */
 
 
-    public highlightObject(Graphics g, Basic_State obj) { }
-    public highlightObject(Graphics g, Basic_State obj, Color col) { }
+    public highlightObject(Basic_State obj) { }
+    public highlightObject(Basic_State obj, Color col) { }
 
-    public highlightObject(Graphics g, And_State obj) { }
-    public highlightObject(Graphics g, And_State obj, Color col) { }
+    public highlightObject(And_State obj) { }
+    public highlightObject(And_State obj, Color col) { }
    
-    public highlightObject(Graphics g, Or_State obj) { }
-    public highlightObject(Graphics g, Or_State obj, Color col) { }
+    public highlightObject(Or_State obj) { }
+    public highlightObject(Or_State obj, Color col) { }
 
-    public highlightObject(Graphics g, Tr obj) { }
-    public highlightObject(Graphics g, Tr obj, Color col) { }
+    public highlightObject(Tr obj) { }
+    public highlightObject(Tr obj, Color col) { }
 
-    public highlightObject(Graphics g, Connector obj) { }
-    public highlightObject(Graphics g, Connector obj, Color col) { }
+    public highlightObject(Connector obj) { }
+    public highlightObject(Connector obj, Color col) { }
 
 
 } // highlightObject
