@@ -1,6 +1,9 @@
-/* Grammatik fuer Tesc - $Id: grammatik.txt,v 1.1 1998-12-07 13:20:42 swtech13 Exp $ 
+/* Grammatik fuer Tesc - $Id: grammatik.txt,v 1.2 1998-12-07 13:50:20 swtech13 Exp $ 
  *
  * $Log: not supported by cvs2svn $
+ * Revision 1.1  1998/12/07 13:20:42  swtech13
+ * Grammatik muss noch ueberarbeitet werden.
+ *
  */
 
 <NUM> ::= 0|1|2|3|4|5|6|7|8|9|0
@@ -9,12 +12,6 @@
 
 <STRING> ::= <LET><STRING> | <LET> |
 	     <NUM><STRING> | <NUM>
-
-// Wieso Pathnames?
-<PATHNAMES>   ::= pathnames: <PATHLIST>
-
-<PATHLIST>    ::= <STRING>,<PATHLIST> | <STRING>;
-
 
 <BVARS>       ::= bvars: <BVARLIST>
 
@@ -28,7 +25,7 @@
 
 <CONLIST>     ::= <STRING>,<CONLIST> | <STRING>;
 
-<CHART>       ::= <EVENTS> <BVARS> <PATHNAMES> <STATE>
+<CHART>       ::= <EVENTS> <BVARS> <STATE>
 
 <STATE>       ::= <BASICSTATE> | <ORSTATE> | <ANDSTATE>
 
@@ -36,27 +33,29 @@
 
 <ORSTATE>     ::= or <STRING>: <STATES> <TRANSDEF> <CONS> end <STRING>;
 
-<STATES>      ::= <ORSTATE>;<STATES>    | <ORSTATE>;   |
-		  <ANDSTATE>;<STATES>   | <ANDSTATE>;  |
-		  <BASICSTATE>;<STATES> | <BASICSTATE>;
+<STATES>      ::= <ORSTATE>;<STATES>     | <ORSTATE>;   |
+		  <ANDSTATE>;<STATES>    | <ANDSTATE>;  |
+		  <BASICSTATE>;<STATES>  | <BASICSTATE>;
 
 <ASTATES>     ::= <ORSTATE>;<ASTATES>    | <ORSTATE>;   |
                   <BASICSTATE>;<ASTATES> | <BASICSTATE>;
 
-<BASICSTATE>  ::= <STRING>;
+<BASICSTATE>  ::= basic <STRING>;
 
-// wozu transitions einf’hren?
+
 <TRANSDEF>    ::= transitions: <TRLIST>
 
-<TRLIST>      ::= <TRANSITION>,<TRLIST> | <TRANSITION>
+<TRLIST>      ::= <TRANSITION>,<TRLIST> | <TRANSITION>;
 
 
-<TRANSITION>  ::= from <SNAME> to <SNAME> on <GUARD> do <ACTION>;
+<TRANSITION>  ::= from <SNAME> to <SNAME> on <GUARD> <ACTIONSTMT>
+
+<ACTIONSTMT   ::= do <ACTION>; | ;
 
 <SNAME>	      ::= undefined | <STRING> 
 
 <GUARD>       ::= <EMPTYSTR>  | 
-	          not <GUARD> | // ??????
+	          not <GUARD> |
                   <COMPPATH>  |
 		  <COMPGUARD> |
 		  <STRING>
@@ -71,11 +70,17 @@
 
 <ACTION>      ::= <ACTIONLIST>
 
-<ACTIONLIST>  ::= <AKTION>;<ACTIONLIST> | <AKTION>;
+<ACTIONLIST>  ::= <AKTION>,<ACTIONLIST> | <AKTION>;
 
 <AKTION>      ::= <STRING> | <BOOLSTMT> | <BASSIGN> 
 
-<BASSIGN>     ::= <STRING>:=<GUARD>
+<BASSIGN>     ::= <STRING>:=<BOOLOP>
+
+<BOOLOP>      ::= true | false |
+		  not <GUARD> |
+                  <COMPPATH>  |
+		  <COMPGUARD> |
+		  <STRING>
 
 <BOOLSTMT>    ::= false(<STRING>) | true(<STRING>) | <BASSIGN>  //???
 
