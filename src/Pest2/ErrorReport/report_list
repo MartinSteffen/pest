@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	--------------
 //
-//	$Id: report_list,v 1.52 1999-02-11 07:56:14 swtech01 Exp $
+//	$Id: report_list,v 1.53 1999-02-11 09:18:04 swtech20 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -103,7 +103,7 @@ Fehler: Oberer Rand (etwa 1/5)der Chart ist nicht sichtbar.
 #Number:	6
 #Autor:		Erich Mikk erm
 #Subject:	TESC Export/Import Probleme
-#Status: 	reported 
+#Status: 	fixed/Fehler nicht mehr feststellbar (swtech20)
 #Description: 
 
 Importiere File X.st aus SE-Systems.
@@ -609,7 +609,7 @@ beide Basic States als Default angegeben sind. Syntaxcheck meldet keine Fehler.
 #Number:	38
 #Autor:		Bernd Weber bwe
 #Subject:	Tesc: Falscher Default State wird nicht erkannt
-#Status:	fixed/reported
+#Status:	fixed
 #Description:
 
 Importiere ~swtech12/Examples/misc/faulty3.tesc2. Ergibt keine Fehler, obwohl
@@ -618,7 +618,8 @@ root als sein eigener default markiert ist. Syntaxcheck meldet keine Fehler.
 Zurückgesetzt weil das Beispiel noch immer importierbar ist und keine
 Fehler gemeldet werden.
 
-Von Seiten des SyntaxChecks gefixed
+Von Seiten des SyntaxChecks gefixed.
+Von tesc1 auch nochmal vorsichtshalber gefixed.
 //------------------------------------------------------------------------------
 #Number:	39
 #Autor:		Bernd Weber bwe
