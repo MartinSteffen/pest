@@ -28,7 +28,8 @@ class TrView extends Checkbox{
      if (nach instanceof absyn.Conname){
        nachtext=((Conname)nach).name;
      }
-     label=vontext+"->"+nachtext; /*+TLabel?*/
+     TLabel tlabel=t.label;
+     label=vontext+"->"+nachtext+": "+tlabel.caption; 
      setLabel(label);
    } 
 }    
