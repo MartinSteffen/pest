@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestEvents.java,v 1.12 1999-01-18 14:15:21 swtech11 Exp $
+ *  @version  $Id: TestEvents.java,v 1.13 1999-01-20 15:06:55 swtech11 Exp $
  */
 /** Diese Testklasse testet, ob alle Events deklariert worden sind, 
     <br>ob die deklarierten eindeutig sind und ob sie alle verwendet werden.*/
@@ -43,9 +43,9 @@ ASoll=new Vector();
 
   void erstelle_Ist() {
      for(SEventList e=sc.events; e!=null;e=e.tail){
-        if (equalString(Ist, e.head.name)) {msg.addError(200,"Event: "+e.head.name);}
-          else {  if (e.head.name.equals("")) {msg.addError(206,"");};
-      Ist.addElement(e.head.name);};}
+        if (equalString(Ist, e.head.name)) {msg.addError(200,"Event: "+e.head.name+" aus Def.Liste");}
+          else {  if (e.head.name.equals("")) {msg.addError(206,"aus Def.Liste");};
+      Ist.addElement(new EventC(e.head, "Def.Liste"));};}
         };
 
 /** Die Methode ueberprueft saemtliche Transitionen auf eine Verwendung von Events.
@@ -81,9 +81,9 @@ ASoll=new Vector();
   void pruefeEvent(SEvent e, Tr t, String p, int i){
       
       if (equalString(Ist, e.name)) {
-          if ((!equalString(GSoll,e.name)) && (i==1))  {GSoll.addElement(e.name);
+          if ((!equalString(GSoll,e.name)) && (i==1))  {GSoll.addElement(new EventC(e, t, p));
 };
-           if ((!equalString(ASoll, e.name)) && (i==2)) {ASoll.addElement(e.name);
+           if ((!equalString(ASoll, e.name)) && (i==2)) {ASoll.addElement(new EventC(e, t, p));
 	  };}
 	  
       else {msg.addError(201,"Event: "+e.name, t, p);};
@@ -122,16 +122,21 @@ ASoll=new Vector();
 
   void vergleiche(){
 	for( int i=0; i<ASoll.size();i++) {
-        if (!equalString_r(GSoll, (String)ASoll.elementAt(i))) {
-                 msg.addWarning(205,(String)ASoll.elementAt(i));};
+        if (!equalString_r(GSoll, ((EventC)ASoll.elementAt(i)).e.name)) {
+                 msg.addWarning(205, "Event: "+((EventC)ASoll.elementAt(i)).e.name,
+                                     ((EventC)ASoll.elementAt(i)).t,
+                                     ((EventC)ASoll.elementAt(i)).ort);};
 };
         for(int i=0; i<GSoll.size(); i++) {
-                 equalString_r(Ist, (String)GSoll.elementAt(i)); 
-                 msg.addWarning(204,(String)GSoll.elementAt(i));};
+                 equalString_r(Ist, ((EventC)GSoll.elementAt(i)).e.name); 
+                 msg.addWarning(204, "Event: "+((EventC)GSoll.elementAt(i)).e.name,
+                                     ((EventC)GSoll.elementAt(i)).t,
+                                     ((EventC)GSoll.elementAt(i)).ort);};
+
 	for (int i=0; i<ASoll.size(); i++){
-	    equalString_r(Ist, (String)ASoll.elementAt(i));}
+	    equalString_r(Ist, ((EventC)ASoll.elementAt(i)).e.name);}
             for(int i=0; i<Ist.size(); i++) {
-                 msg.addWarning(202,(String)Ist.elementAt(i));};
+                 msg.addWarning(202,"Event: "+((EventC)Ist.elementAt(i)).e.name+" : "+((EventC)Ist.elementAt(i)).ort);};
     };
 }
 

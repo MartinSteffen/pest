@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestBVars.java,v 1.12 1999-01-18 14:15:20 swtech11 Exp $
+ *  @version  $Id: TestBVars.java,v 1.13 1999-01-20 15:06:54 swtech11 Exp $
  */
 
 /** Diese Testklasse testet, ob alle BVars deklariert worden sind, 
@@ -48,7 +48,7 @@ class TestBVars extends ModelCheckBasics{
        if (equalString(Ist, b.head.var)) { msg.addError(100,"BVar: "+b.head.var);}
                                 else {
 				    if (b.head.var.equals("")) {msg.addError(106,"");};
-                             Ist.addElement(b.head.var);};
+                             Ist.addElement(new BVarC(b.head, "Def.Liste"));};
         }
    };
     /** Die Methode ueberprueft saemtliche Transitionen auf eine Verwendung von BVars.
@@ -93,9 +93,9 @@ class TestBVars extends ModelCheckBasics{
   void pruefeBVar(Bvar b, Tr t, String p, int i){
 
       if (equalString(Ist, b.var)) {
-          if ((!equalString(GSoll,b.var)) && (i==1))  {GSoll.addElement(b.var);
+          if ((!equalString(GSoll,b.var)) && (i==1))  {GSoll.addElement(new BVarC(b, t, p));
 };
-           if ((!equalString(ASoll, b.var)) && (i==2)) {ASoll.addElement(b.var);
+           if ((!equalString(ASoll, b.var)) && (i==2)) {ASoll.addElement(new BVarC(b, t, p));
 	  };}
       else {msg.addError(101,"BVar: "+b.var, t, p);};
   };
@@ -135,17 +135,22 @@ class TestBVars extends ModelCheckBasics{
 
     void vergleiche(){
 	for( int i=0; i<ASoll.size();i++) { 
-            if (!equalString_r(GSoll, (String)ASoll.elementAt(i))) {
-                 msg.addWarning(105,"BVar: "+(String)ASoll.elementAt(i));};
+            if (!equalString_r(GSoll, ((BVarC)ASoll.elementAt(i)).b.var)) {
+                 msg.addWarning(105,"BVar: "+((BVarC)ASoll.elementAt(i)).b.var,
+                                             ((BVarC)ASoll.elementAt(i)).t,
+                                             ((BVarC)ASoll.elementAt(i)).ort );};
 };
 
         for(int i=0; i<GSoll.size(); i++) {
-                 equalString_r(Ist, (String)GSoll.elementAt(i)); 
-                 msg.addWarning(104,"BVar: "+(String)GSoll.elementAt(i));};
+                 equalString_r(Ist, ((BVarC)GSoll.elementAt(i)).b.var); 
+                 msg.addWarning(104,"BVar: "+((BVarC)GSoll.elementAt(i)).b.var,
+                                             ((BVarC)GSoll.elementAt(i)).t,
+                                             ((BVarC)GSoll.elementAt(i)).ort );};
 	for (int i=0; i<ASoll.size(); i++){
-	    equalString_r(Ist, (String)ASoll.elementAt(i));}
+	    equalString_r(Ist, ((BVarC)ASoll.elementAt(i)).b.var);}
             for(int i=0; i<Ist.size(); i++) {
-                 msg.addWarning(102,"BVar: "+(String)Ist.elementAt(i));};
+                 msg.addWarning(102,"BVar: "+((BVarC)Ist.elementAt(i)).b.var+" : "+((BVarC)Ist.elementAt(i)).ort);};
     };
 }
+
 

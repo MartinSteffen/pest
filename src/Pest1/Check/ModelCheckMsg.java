@@ -5,7 +5,7 @@ import absyn.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: ModelCheckMsg.java,v 1.7 1999-01-20 13:46:01 swtech11 Exp $
+ *  @version  $Id: ModelCheckMsg.java,v 1.8 1999-01-20 15:06:53 swtech11 Exp $
  */
 class ModelCheckMsg {
   private Vector ErrorCode;
@@ -66,16 +66,16 @@ class ModelCheckMsg {
   if (t.target instanceof Conname)  { s2=((Conname)t.target).name;};
   if (t.source instanceof UNDEFINED)  { s1="UNDEFINED";};
   if (t.target instanceof UNDEFINED)  { s2="UNDEFINED";};
-  if (t2.source instanceof Statename) { s1=((Statename)t2.source).name;};
-  if (t2.target instanceof Statename) { s2=((Statename)t2.target).name;};
-  if (t2.source instanceof Conname)  { s1=((Conname)t2.source).name;};
-  if (t2.target instanceof Conname)  { s2=((Conname)t2.target).name;};
-  if (t2.source instanceof UNDEFINED)  { s1="UNDEFINED";};
-  if (t2.target instanceof UNDEFINED)  { s2="UNDEFINED";};
+  if (t2.source instanceof Statename) { s3=((Statename)t2.source).name;};
+  if (t2.target instanceof Statename) { s4=((Statename)t2.target).name;};
+  if (t2.source instanceof Conname)  { s3=((Conname)t2.source).name;};
+  if (t2.target instanceof Conname)  { s4=((Conname)t2.target).name;};
+  if (t2.source instanceof UNDEFINED)  { s3="UNDEFINED";};
+  if (t2.target instanceof UNDEFINED)  { s4="UNDEFINED";};
 
 
 
-  this.addError(n,p1 +" Trans: "+s1+" -> "+s2+" Trans: "+s1+" -> "+s2+" in State: "+p);
+  this.addError(n,p1 +" Trans: "+s1+" -> "+s2+" Trans: "+s3+" -> "+s4+" in State: "+p);
   }
   // gesamte Error-Meldung des _number. Errors
   // zurueckmelden, der erste Index ist 1 nicht 0
@@ -140,16 +140,16 @@ class ModelCheckMsg {
   if (t.target instanceof Conname)  { s2=((Conname)t.target).name;};
   if (t.source instanceof UNDEFINED)  { s1="UNDEFINED";};
   if (t.target instanceof UNDEFINED)  { s2="UNDEFINED";};
-  if (t2.source instanceof Statename) { s1=((Statename)t2.source).name;};
-  if (t2.target instanceof Statename) { s2=((Statename)t2.target).name;};
-  if (t2.source instanceof Conname)  { s1=((Conname)t2.source).name;};
-  if (t2.target instanceof Conname)  { s2=((Conname)t2.target).name;};
-  if (t2.source instanceof UNDEFINED)  { s1="UNDEFINED";};
-  if (t2.target instanceof UNDEFINED)  { s2="UNDEFINED";};
+  if (t2.source instanceof Statename) { s3=((Statename)t2.source).name;};
+  if (t2.target instanceof Statename) { s4=((Statename)t2.target).name;};
+  if (t2.source instanceof Conname)  { s3=((Conname)t2.source).name;};
+  if (t2.target instanceof Conname)  { s4=((Conname)t2.target).name;};
+  if (t2.source instanceof UNDEFINED)  { s3="UNDEFINED";};
+  if (t2.target instanceof UNDEFINED)  { s4="UNDEFINED";};
 
 
 
-  this.addWarning(n,p1 +" Trans: "+s1+" -> "+s2+" Trans: "+s1+" -> "+s2+" in State: "+p);
+  this.addWarning(n,p1 +" Trans: "+s1+" -> "+s2+" Trans: "+s3+" -> "+s4+" in State: "+p);
   }
 
   // gesamte Warning-Meldung des _number. Warnings zurueckmelden,

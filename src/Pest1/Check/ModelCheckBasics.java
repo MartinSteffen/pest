@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: ModelCheckBasics.java,v 1.8 1999-01-18 08:00:33 swtech11 Exp $
+ *  @version  $Id: ModelCheckBasics.java,v 1.9 1999-01-20 15:06:51 swtech11 Exp $
  */
 class ModelCheckBasics {
   ModelCheckMsg msg = new ModelCheckMsg();
@@ -157,18 +157,87 @@ class ModelCheckBasics {
     boolean equalString(Vector v, String s) {
     boolean b=true;
     for (int j=0; ((j<v.size()) && b); j++) {
-            if (((String)v.elementAt(j)).equals(s)) {
-		            b=false;};
-    };
+              if ((v.elementAt(j) instanceof String) && (((String)v.elementAt(j)).equals(s))) {
+		            b=false;
+			    System.out.println("String "+j); 
+                            //v.removeElementAt(j);
+}
+           else { System.out.println("not String");
+           if ((v.elementAt(j) instanceof BVarC) && ((((BVarC)v.elementAt(j)).b.var).equals(s))) {
+		            b=false; 
+                            //v.removeElementAt(j);
+}
+
+
+           else {
+           if ((v.elementAt(j) instanceof EventC) && ((((EventC)v.elementAt(j)).e.name).equals(s))) {
+		            b=false; 
+                            //v.removeElementAt(j);
+};};};};       
+
+
+    
     return !b;}
 
     boolean equalString_r(Vector v, String s) {
     boolean b=true;
     for (int j=0; ((j<v.size()) && b); j++) {
-            if (((String)v.elementAt(j)).equals(s)) {
-            		b=false;
-                v.removeElementAt(j);
-                };
-    };
+
+           if ((v.elementAt(j) instanceof String) && (((String)v.elementAt(j)).equals(s))) {
+		            b=false;
+			    System.out.println("String "+j); 
+                            v.removeElementAt(j);}
+           else { System.out.println("not String");
+           if ((v.elementAt(j) instanceof BVarC) && ((((BVarC)v.elementAt(j)).b.var).equals(s))) {
+		            b=false; 
+                            v.removeElementAt(j);}
+
+
+           else {
+           if ((v.elementAt(j) instanceof EventC) && ((((EventC)v.elementAt(j)).e.name).equals(s))) {
+		            b=false; 
+                            v.removeElementAt(j);};};};};
+
     return !b;}
 }
+
+ class BVarC {
+    Bvar b;
+    Tr   t=null;
+    String ort="";
+    
+      BVarC(Bvar _b) {
+	b=_b;}
+
+    BVarC(Bvar _b, Tr _t) {
+    b=_b;
+    t=_t;};
+
+      BVarC(Bvar _b, String o) {
+	  this(_b,null,o);}
+
+    BVarC(Bvar _b, Tr _t, String o) {
+    b=_b;
+    t=_t;
+    ort=o;};}
+
+
+ class EventC {
+    SEvent e;
+    Tr   t=null;
+    String ort="";
+    
+    EventC(SEvent _e) {
+	e=_e;}
+
+    EventC(SEvent _e, Tr _t) {
+    e=_e;
+    t=_t;};
+
+    EventC(SEvent _e, String o) {
+	  this(_e,null,o);}
+
+    EventC(SEvent _e, Tr _t, String o) {
+    e=_e;
+    t=_t;
+    ort=o;};}
