@@ -71,6 +71,10 @@ if (matrix2.akt == matrix3.akt & matrix1.akt instanceof Basic_State)
 		    }
 
                  matrix1 = PESTdrawutil.getStateFrame(root,cx1,cy1,cx1+allstate.rect.width,cy1+allstate.rect.height);
+		 if (matrix2.akt == matrix3.akt & matrix1.akt==null)
+		     {
+System.out.println("nichts");
+		     }
 		if (matrix2.akt == matrix3.akt & matrix1.akt instanceof Or_State)
 		    {
 			allorstate = (Or_State) matrix1.akt;
