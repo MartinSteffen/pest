@@ -6,6 +6,36 @@
  *
  * @author Software Technologie 19
  * @version
+ *
+ * Der GraphOptimizer stellt Algorithmen zur Verfuegung, die das Layout
+ * eines Statecharts uebernehmen. Die Variable LIST_OF_ALGORITHMS 
+ * beinhaltet die Namen der implementierten Algorithmen. Ueber die
+ * Groesse dieses Arrays ermittelt man die Anzahl der verwendbaren
+ * Algorithmen. Ueber die Methode start wird der Layoutprozess
+ * gestartet. Dabei wird eine Kopie des uebergebenen Statecharts
+ * erzeugt.
+ *
+ * Erklaerung der Algorithmen: 
+ *  Das Layout erfolgt rekursiv ueber den Aufbau der abstrakten Syntax.
+ *  Die Groesse von Basic-States wird entsprechend ihres Namens 
+ *  durchgefuehrt. Bei AND-States wird zuerst das Layout der
+ *  Unterzustaende bestimmt und diese dann so angeordnet, dass
+ *  der Raum moeglichst optimal ausgenutzt wird. Bei OR-States wird
+ *  das Layout der Unterzustaende bestimmt und diese dann nach
+ *  einem bestimmten Verfahren im Zustand angeordnet. Diese Verfahren
+ *  unterscheiden sich fuer die verschiedenen Algorithmen, der Rest ist
+ *  gleich. 
+ *  
+ *  SugiyamaBCM: Die Knoten (Unterzustaende) werden so in Ebenen
+ *   angeordnet, dass in einer Ebene keine Transitionen verlaufen.
+ *   Transitionen verlaufen nur von einer Ebene zur naechsten, wobei
+ *   fuer Transitionen, die eigentlich ueber mehrere Ebenen verlaufen,
+ *   Dummy-Knoten in den Zwischenebenen eingefuegt werden. Dann werden
+ *   die Knoten in den Ebenen so permutiert, dass moeglichst wenige
+ *   Kantenueberschneidungen vorkommen (heuristisch). Ausgehend von
+ *   dieser Darstellung, die die Groesse der Unterzustaende nicht
+ *   beruecksichtigt, werden die Unterzustaende dann endgueltig plaziert.
+ *   
  */
 
 package TESC2;
@@ -21,12 +51,12 @@ public class GraphOptimizer {
 
     /**
      * Die Eintraege des Arrays sind Namen fuer die verwendbaren
-     * Algorithmen. DIe Anzahl der Algorithmen erhaelt man ueber die
+     * Algorithmen. Die Anzahl der Algorithmen erhaelt man ueber die
      * Laenge des Array.
      */
 
     public static final String[] LIST_OF_ALGORITHMS = {
-	"Dummy-Algorithmus"
+	"SugiyamaBCM-Algorithmus"
     };
 
 
@@ -40,7 +70,7 @@ public class GraphOptimizer {
     }
     
     /**
-     * erzeugt Optimierer fuer Statechart _sc mit FontMetrics _fm
+     * Erzeugt Optimierer fuer Statechart _sc mit FontMetrics _fm
      */
     public GraphOptimizer(Statechart _sc,FontMetrics _fm) {
 	sc = _sc;
@@ -49,7 +79,7 @@ public class GraphOptimizer {
     }
 	
     /**
-     * optimiert das aktuelle Statechart mit Algorithmus _algorithm
+     * Optimiert das aktuelle Statechart mit Algorithmus _algorithm
      */
     public Statechart start(int _algorithm) throws AlgorithmException {
 	algorithm = _algorithm;
@@ -57,35 +87,35 @@ public class GraphOptimizer {
     };
 	
     /**
-     * optimiert aktuelles Statechart mit aktuellem Algorithmus
+     * Optimiert aktuelles Statechart mit aktuellem Algorithmus
      */
     public Statechart start() throws AlgorithmException {
 	// return sc.clone();
 	return sc;
     }
 
-    // plaziert beliebiges Statechart (auch ohne Koordinaten)
+    // Plaziert beliebiges Statechart (auch ohne Koordinaten)
     Statechart place() {
 	// return sc.clone();
 	return sc;
     }
 
     /**
-     * setzt das aktuelle Statechart
+     * Setzt das aktuelle Statechart
      */
     public void setStatechart(Statechart _sc) {
 	sc = _sc;
     }
 
     /**
-     * setzt die aktuelle FontMetrics
+     * Setzt die aktuelle FontMetrics
      */
     public void setFontMetrics(FontMetrics _fm) {
 	fm = _fm;
     }
 
     /**
-     * setzt den aktuellen Algorithmus
+     * Setzt den aktuellen Algorithmus
      */
     public void setAlgorithm(int _algorithm) {
 	algorithm = _algorithm;
