@@ -3,7 +3,7 @@ package gui;
 // empfiehlt es sich hier NICHT "Absyn" zu importieren !
 
 import java.awt.event.*;
-
+import java.io.*;
 
 class GUIdateiML
 implements ActionListener
@@ -26,9 +26,22 @@ public void actionPerformed(ActionEvent e) {
       {
 	  System.exit(0);
       }else if (cmd.equals("Oeffnen")) {
-	  myWindow.load("Statechart laden");
-      }else if (cmd.equals("Speichern")) {
-	  myWindow.save("Statechart speichern");
+/*	  BufferedReader inf = myWindow.load("Statechart laden");
+          if(inf != null) {
+              ObjectInputStream ois = new ObjectInputStream(inf);
+              myWindow.SyntaxBaum = (Statechart) ois.readObject();
+              ois.close();
+              }
+*/ 
+     }else if (cmd.equals("Speichern")) {
+/*	  BufferedWriter outf = myWindow.save("Statechart speichern");
+          if(outf != null) {
+              ObjectOutputStream oos = new ObjectOutputStream(outf);
+              oos.writeObject(myWindow.SyntaxBaum);
+              oos.flush();
+              oos.close();
+              }
+*/
       }else if (cmd.equals("Neu")) {
 	  myWindow.setStatechart(new absyn.Statechart(myWindow.SBDateiname),"UNBENANNT");
       }else{
