@@ -118,19 +118,79 @@ public class Test {
                        new PathList (t1p,
                          new PathList (t2p,null))))))))))));
 
-    pathlist.clone();
+    PathList pathlistclone = (PathList)pathlist.clone();
+    pp.start(pathlist);
+    pp.start(pathlistclone);
+    pathlistclone.tail = null;
 
-  Basic_State S1 = new Basic_State (new Statename("S1"));
+    pp.start(pathlist);
+    pp.start(pathlistclone);
+
+    Basic_State S1 = new Basic_State (new Statename("S1"));
+    Basic_State S1clone = (Basic_State)S1.clone();
+    S1clone.name = new Statename("neu");
+    pp.start(S1);
+    pp.start(S1clone);
+
   Basic_State S2 = new Basic_State (new Statename("S2"));
   Basic_State T1 = new Basic_State (new Statename("T1"));
   Basic_State T2 = new Basic_State (new Statename("T2"));
   S1.clone();
   
+
+  Statename sname       = new Statename("Vorher",
+					new CPoint(3,6),
+					new Location(42));
+  Statename snameclone  = (Statename)sname.clone();
+
+  snameclone.name = "Nachher";
+  snameclone.position = new CPoint(111,2343);
+  snameclone.location = new Location(456);
+  pp.start(sname);
+  pp.start(snameclone);
   Tr tr1 = new Tr (new Statename ("S1"), 
 		   new Statename ("S2"),
 		   new TLabel (new GuardEvent(new SEvent("C")),new ActionEmpty(new Dummy())));
 
-  tr1.clone();
+  Tr tr1clone  = (Tr)tr1.clone();
+  pp.start(tr1);
+  pp.start(tr1clone);
+
+  tr1clone.label = new TLabel (new GuardEvent(new SEvent("Cneu")),new ActionEmpty(new Dummy()));
+  tr1clone.source = new Statename ("neu");
+  tr1clone.target = new Statename ("neu");
+
+
+  pp.start(tr1);
+  pp.start(tr1clone);
+
+
+
+
+  CPoint[] parray = {new CPoint(4,4), new CPoint(5,5)};
+  CPoint[] parray2 = {new CPoint(777,777), new CPoint(999,999)};
+  Tr tr4 = new Tr (new Statename ("S1"), 
+		   new Statename ("S2"),
+		   new TLabel (new GuardEvent(new SEvent("C")),new ActionEmpty(new Dummy())),
+		   parray,
+		   new Location(5));
+
+  Tr tr4clone  = (Tr)tr4.clone();
+  System.out.println("------------");
+  pp.start(tr4);
+  pp.start(tr4clone);
+
+
+  tr4clone.label = new TLabel (new GuardEvent(new SEvent("Cneu")),new ActionEmpty(new Dummy()));
+  tr4clone.source = new Statename ("neu");
+  tr4clone.target = new Statename ("neu");
+  tr4clone.location = new Location (444444);
+  tr4clone.points   = parray2;
+
+  System.out.println("-----nach dem Aendern -------");
+
+  pp.start(tr4);
+  pp.start(tr4clone);
 
   Tr tr2 = new Tr (new Statename ("S2"), 
 		   new Statename ("S1"),
@@ -205,6 +265,17 @@ public class Test {
 			      new StatenameList( new Statename("Q1"), null),	
 			      new ConnectorList(new Connector(new Conname("Und nun")), null));
 
+  Conname cname = new Conname ("CN", new CPoint(3,4), new Location(7));
+  Conname cnameclone  = (Conname) cname.clone();
+
+  pp.start(cname);
+  pp.start(cnameclone);
+  
+  cnameclone.name = "Nachher";
+  cnameclone.location = new Location(57777);
+  cnameclone.position = new CPoint(678,890);
+  pp.start(cname);
+  pp.start(cnameclone);
   (new Conname("Und nun")).clone();
   (new Connector(new Conname("Und nun"))).clone();
   (new ConnectorList(new Connector(new Conname("Und nun")), null)).clone();
@@ -244,4 +315,5 @@ public class Test {
   } // method main
 
 } // class PrettyEx
+
 
