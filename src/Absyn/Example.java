@@ -2,7 +2,6 @@ package absyn;
 
 
 
-
 public class Example {
   
   public static Statechart getExample() {
@@ -38,6 +37,21 @@ public class Example {
 
 
 
+    Path sudpp = new Path ("SUD", null);
+    Path p1pp  = sudpp.append("P1");
+    Path p2pp  = sudpp.append("P2");
+    Path p3pp  = sudpp.append("P3");
+    Path q1pp  = p3pp.append("Q1");
+    Path q2pp  = p3pp.append("Q2");
+    Path r1pp = q2pp.append("R1");
+    Path r2pp = q2pp.append("R2");
+    Path s1pp = r1pp.append("S1");
+    Path s2pp = r1pp.append("S2");
+    Path t1pp = r2pp.append("T1");
+    Path t2pp = r2pp.append("T2");
+
+
+
 
     PathList pathlist =
     new PathList (sudp,
@@ -66,7 +80,7 @@ public class Example {
 		   new Statename ("S1"),
 		   new TLabel (new GuardCompg (new Compguard (Compguard.AND,
 							  new GuardEvent(new SEvent("G")),
-							  new GuardCompp (new Comppath (Comppath.IN,t2p)))),
+							  new GuardCompp (new Comppath (Comppath.IN,t2pp)))),
 					   new ActionEmpty (new Dummy())));
 
 
