@@ -3,8 +3,8 @@
 //   Autor:                 Tobias Kunz, Mario Thies
 //
 //
-//   Letzte Aenderung von:  Tobias Kunz
-//                          11.01.1999
+//   Letzte Aenderung von:  Mario Thies
+//                          11.02.1999
 //
 // ****************************************************************************
 
@@ -104,9 +104,10 @@ class CheckEvents {
 
   // diese Methode an allen Substates aufrufen
   while (substates != null) {
-    ok = ok && new CheckEvents(statechart,
-                              substates.head,
-                              path+"."+substates.head.name.name, error, warning).check();
+ 
+    ok = new CheckEvents(statechart,
+                         substates.head,
+                         path+"."+substates.head.name.name, error, warning).check() && ok;
     substates = substates.tail;
     }
 

@@ -4,7 +4,7 @@
 //
 //
 //   Letzte Aenderung von:  Mario Thies
-//                          10.02.1999
+//                          11.02.1999
 //
 // ****************************************************************************
 
@@ -58,6 +58,10 @@ class CheckBVars {
     TrList trl = null;
     boolean ok = true;
     boolean found;
+    String source;
+    String target;
+    Statename statename;
+    Conname conname;
 
     if (s instanceof Or_State) {
       os = (Or_State)s;
@@ -104,9 +108,26 @@ class CheckBVars {
 
       trl = os.trs;
       while (trl != null) {
+        if (trl.head.source instanceof Statename) {
+          statename=(Statename)trl.head.source;
+          source=statename.name; } else
+        if (trl.head.source instanceof Conname) {
+          conname=(Conname)trl.head.source;
+          source=conname.name; } else { source=""; }
+        if (trl.head.target instanceof Statename) {
+          statename=(Statename)trl.head.target;
+          target=statename.name; } else
+        if (trl.head.target instanceof Conname) {
+          conname=(Conname)trl.head.target;
+          target=conname.name; } else { target=""; }
+
         // Faengt GuardUndet ab
+        if (trl.head.label==null || trl.head.label.guard==null) {
+          error.addError(new ItemError(100,"undefinierter Guard (Null) gefunden, "+source+"->"+target, path));     
+          ok = false;
+          } else
         if (trl.head.label.guard instanceof GuardUndet) {
-          error.addError(new ItemError(100,"undefinierter Guard (GuardUndet) gefunden", path));     
+          error.addError(new ItemError(100,"undefinierter Guard (GuardUndet) gefunden, "+source+"->"+target, path));     
           ok = false;
           }
 
@@ -122,7 +143,6 @@ class CheckBVars {
 
           // BVar aus der Transitionsliste wurde nicht gefunden
           if (found == false) {
-            //System.out.println(path+"BVar("+g.bvar.var+") nicht gefunden");
             error.addError(new ItemError(100,"BVar ("+g.bvar.var+") nicht gefunden", path));
             ok = false;
             }
@@ -144,7 +164,6 @@ class CheckBVars {
 
           // Event aus der Transitionsliste wurde nicht gefunden
           if (found == false) {
-            //System.out.println(path+"BVar("+ba.ass.blhs.var+") nicht gefunden");
             error.addError(new ItemError(100,"BVar ("+ba.ass.blhs.var+") nicht gefunden", path));
             ok = false;
             }
@@ -161,9 +180,9 @@ class CheckBVars {
 
   // diese Methode an allen Substates aufrufen
   while (substates != null) {
-    ok = ok && new CheckBVars(statechart,
-                              substates.head,
-                              path+"."+substates.head.name.name,error,warning).check();
+    ok = new CheckBVars(statechart,
+                        substates.head,
+                        path+"."+substates.head.name.name,error,warning).check() && ok;
     substates = substates.tail;
     }
 

@@ -153,12 +153,11 @@ private boolean       OutputToGUI = false;
       if (!ok) gui.userMessage("Test auf inkonsistente Statenamen ist fehlgeschlagen");
 
       CheckStates cs = new CheckStates(statechart, errors, warnings);
-      ok = ok && cs.check();
 
-      // ok = ok && checkDupes.check();
-      ok = ok && checkEvents.check();
-      ok = ok && checkBVars.check();
-      ok = ok && checkConnectors.check();
+      ok = cs.check() && ok;
+      ok = checkEvents.check() && ok;
+      ok = checkBVars.check() && ok;
+      ok = checkConnectors.check() && ok;
 
       // Fehlerausgabe, falls "gui" zugewiesen ist
       if (gui != null) {

@@ -2,7 +2,7 @@
 //
 //
 //   Letzte Aenderung von:  Tobias Kunz
-//                          11.01.1999
+//                          11.02.1999
 //
 // ****************************************************************************
 
@@ -23,11 +23,11 @@ class CheckStates {
 
   boolean check() {
     //System.out.println("Check State!");
-    boolean ok = checkState(statechart.state);
+    boolean ok = checkState(statechart.state, statechart.state.name.name);
     return ok;
   }
 
-  boolean checkState(State state) {
+  boolean checkState(State state, String path) {
     boolean ok = true;
     And_State as;
     Or_State os;
@@ -51,8 +51,9 @@ class CheckStates {
     // diese Methode an allen Substates aufrufen
     while (substates != null) {
       //System.out.println(substates.head.name.name);
-      ok = ok && checkSingleState(substates.head);
-      ok = ok && checkState(substates.head);
+      ok = checkSingleState(substates.head, path) && ok;
+      ok = checkState(substates.head, path+"."+substates.head.name.name) && ok;
+System.out.println(ok);
       substates = substates.tail;
     }
 
@@ -63,7 +64,7 @@ class CheckStates {
   /**
   * ueberprueft einen einzelnen "State"
   */
-  boolean checkSingleState(State s) {
+  boolean checkSingleState(State s, String path) {
     boolean ok = true;
 
     // Gueltiger Bezeichner
@@ -89,8 +90,8 @@ class CheckStates {
       }
     }
     // enthaltene Transitionen pruefen
-    CheckTransitions trans = new CheckTransitions(s, error, warning);
-    ok = ok && trans.check();
+    CheckTransitions trans = new CheckTransitions(s, error, warning, path);
+    ok = trans.check() && ok;
 
     return ok;
   }
