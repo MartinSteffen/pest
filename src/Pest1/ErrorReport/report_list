@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.89 1999-02-09 16:38:48 swtech21 Exp $
+//	$Id: report_list,v 1.90 1999-02-09 16:42:06 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -949,3 +949,13 @@ Interessanterweise verstaerkt sich dieser Effekt, je weiter man hineinzoomt.
 
 //----------------------------------------------------------------------------
  
+#Number:        62
+#Autor:         Erich Mikk erm
+#Subject:       GUI: zu viele redraws?
+#Status:        reported
+#Description:
+
+das Bild der graphishen Benutzerführung wird jedes mal, wenn die maus 
+das Fenster der Haupinstanz verlässt, neu gezeichnet. 
+Wenn das so weitergeht, muss ich bald zum Augenarzt...
+//----------------------------------------------------------------------------
