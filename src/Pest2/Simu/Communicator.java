@@ -17,6 +17,9 @@ public class Communicator extends Frame{
   boolean running=false;
   TextField tf=null;
 
+  List list=null;
+  Vector listvector=null;
+
   public Communicator(GUIInterface g){
     super("PEST: Simulation");
     gui=g;
@@ -37,6 +40,59 @@ public class Communicator extends Frame{
   public boolean isRunning(){
     return true;
   }
+
+  /* loeseNDeterm bekommt einen Vector mit mehreren moeglichen Transitionen */
+  /* und liefert einen Vector mit genau einer Transition zurueck.           */
+  /* Funktioniert noch nicht, da keine Rueckgabe bei knopfdruck....         */
+  public Vector loeseNDeterm(Vector v){
+    Vector result=new Vector(1);
+    Tr transition=null;
+    TrAnchor von=null;
+    TrAnchor nach=null;
+    String vontext=null;
+    String nachtext=null;
+    listvector=v;
+    int count=listvector.size();
+    Frame f=new Frame("Nichtdeterminismus aufgetreten");
+    int listsize=0;
+    if (count>10){
+      listsize=10;
+    }
+    else{
+      listsize=count;
+    }
+    list=new List(listsize,false);
+    for (int i=0; i<count; i++){
+      transition=(Tr)listvector.elementAt(i);
+      von=transition.source;
+      nach=transition.target;
+      if (von instanceof absyn.Statename){
+	vontext=((Statename)von).name;
+      }
+      else{
+	vontext=((Conname)von).name;
+      }
+      if (nach instanceof absyn.Statename){
+	nachtext=((Statename)nach).name;
+      }
+      else{
+	nachtext=((Conname)nach).name;
+      }
+      list.addItem(vontext+"->"+nachtext);
+    }
+    list.select(1);
+    Button b=new Button("Auswählen");
+    b.addActionListener(new ActionListener(){
+      public void actionPerformed(ActionEvent e){
+	int index=list.getSelectedIndex();
+	Tr t=(Tr)listvector.elementAt(index);
+	/* result.addElement(t); kann nicht funktionieren, nur zur Erinnerung da... */
+      }
+    });  
+    return result;
+  }
+    
+    
 
   void vor(){
     Status temp=maschine.liefereNachfolger(prev_status,akt_status);
