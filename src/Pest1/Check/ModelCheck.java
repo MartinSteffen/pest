@@ -27,8 +27,25 @@ import gui.*;
  * <br>
  * <a href="#Codes">Codes von Fehlern und Warnungen beim Syntax Check</a><br>
  * <br>
+ * <br>
+ * <DL COMPACT>
+ * <DT><STRONG>STATUS: </STRONG>
+ * Unserer Syntax Check ist fertig, abgesehen davon,
+ * daß wir unseren Test nicht in der Praxis testen können, da die Module ( z.B. Editor )
+ * nicht fertig sind, und daß es noch keine genauen Informationen der anderen Module
+ * über die Konsequenzen der <b>NULL</b> gab. Ein Test des Syntax Checkers ist über
+ * das selbsterklärende Programm t im Directory check/test möglich.
+ * <DT><STRONG>To Do: </STRONG>
+ * Testen, Testen, Testen.<br>Wir müssen den Umgang mit der NULL, nachdem wir
+ * die Informationen der anderen Module bekommen haben, entweder kompletieren
+ * oder wieder entfernen.
+ * <DT><STRONG>Bekannte Fehler: </STRONG>
+ * <DT><STRONG>Temporäre Features: </STRONG>
+ * Ausgabe der Dauer der einzelnen Tests in Sekunden.
+ * </DL COMPACT>
+ *
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: ModelCheck.java,v 1.9 1998-12-29 15:27:06 swtech11 Exp $
+ * @version  $Id: ModelCheck.java,v 1.10 1998-12-29 20:56:24 swtech11 Exp $
  */
 public class ModelCheck {
   private ModelCheckMsg mcm; // Object, um die Fehler und Warnungen zu speichern
@@ -68,8 +85,6 @@ public class ModelCheck {
     boolean NoStateError = false;
     boolean NoFatalError = false;
     boolean result = false;
-
-    Date now;
 
     long s0=0; long e0=0; long s1=0; long e1=0; long s2=0; long e2=0;
     long s3=0; long e3=0; long s4=0; long e4=0; long s5=0; long e5=0;
@@ -312,17 +327,20 @@ public class ModelCheck {
  *<TR><TD ALIGN="right">18</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Fataler Fehler: EIN Objekt des Types Event wird in der EventList mehrfach referenziert.</TD></TR>
  *<TR><TD ALIGN="right">19</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Fataler Fehler: EIN Objekt des Types BVarList wird mehrfach referenziert.</TD></TR>
  *<TR><TD ALIGN="right">20</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Fataler Fehler: EIN Objekt des Types BVar wird in der BVarList mehrfach referenziert.</TD></TR>
+ *<TR><TD ALIGN="right">21</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Fataler Fehler: EIN Objekt des Typs Label wird in Transitionen mehrfach referenziert.</TD></TR>
+ *<TR><TD ALIGN="right">22</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Fataler Fehler: EIN Objekt des Typs Guard wird in Transitionen mehrfach referenziert.</TD></TR>
+ *<TR><TD ALIGN="right">23</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Fataler Fehler: EIN Objekt des Typs Action wird in Transitionen mehrfach referenziert.</TD></TR>
  *<TR><TD ALIGN="right">99</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Aufgrund eines fatalen Fehlers wird der Syntax Check abgebrochen.</TD></TR>
  *<TR><TD ALIGN="right">100</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Doppelte Definition von BVar</TD></TR>
  *<TR><TD ALIGN="right">101</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Keine Deklaration von BVar</TD></TR>
  *<TR><TD ALIGN="right">102</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Deklarierte BVar wurde nicht verwendet</TD></TR>
- *<TR><TD ALIGN="right">110</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Die Statechart enthält keine Liste der booleschen Variablen.</TD></TR>
+ *<TR><TD ALIGN="right">110</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Die Statechart enthält keine Liste der booleschen Variablen.</TD></TR>
  *<TR><TD ALIGN="right">200</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Doppelte Definition von Events</TD></TR>
  *<TR><TD ALIGN="right">201</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Keine Deklaration von Event</TD></TR>
  *<TR><TD ALIGN="right">202</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Deklarierter Event wurde nicht verwendet</TD></TR>
  *<TR><TD ALIGN="right">203</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Der Pathname in einem GuardComppath ist nicht vorhanden.</TD></TR>
  *<TR><TD ALIGN="right">204</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Der Pathname in einem GuardComppath ist mehrfach vorhanden.</TD></TR>
- *<TR><TD ALIGN="right">210</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Die Statechart enthält keine Eventliste.</TD></TR>
+ *<TR><TD ALIGN="right">210</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Die Statechart enthält keine Eventliste.</TD></TR>
  *<TR><TD ALIGN="right">300</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Mehrfache Definition von Statename</TD></TR>
  *<TR><TD ALIGN="right">301</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Bezeichnung von Statename nicht eindeutig</TD></TR>
  *<TR><TD ALIGN="right">302</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Deklarierter State wurde nicht verwendet</TD></TR>

@@ -2,7 +2,7 @@ package check;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: ErrorAndWarningCodes.java,v 1.16 1998-12-29 14:25:48 swtech11 Exp $
+ *  @version  $Id: ErrorAndWarningCodes.java,v 1.17 1998-12-29 20:56:23 swtech11 Exp $
  */
 class ErrorAndWarningCodes {
   ErrorAndWarningCodes() {
@@ -30,6 +30,10 @@ class ErrorAndWarningCodes {
       case  18: { _s = "Fataler Fehler: EIN Objekt des Types Event wird in der EventList mehrfach referenziert."; break;  }
       case  19: { _s = "Fataler Fehler: EIN Objekt des Types BVarList wird mehrfach referenziert."; break;  }
       case  20: { _s = "Fataler Fehler: EIN Objekt des Types BVar wird in der BVarList mehrfach referenziert."; break;  }
+      case  21: { _s = "Fataler Fehler: EIN Objekt des Typs Label wird in Transitionen mehrfach referenziert."; break;  }
+      case  22: { _s = "Fataler Fehler: EIN Objekt des Typs Gauard wird in Transitionen mehrfach referenziert."; break;  }
+      case  23: { _s = "Fataler Fehler: EIN Objekt des Typs Actions wird in Transitionen mehrfach referenziert."; break;  }
+
       case  99: { _s = "Aufgrund eines fatalen Fehlers wird der Syntax Check abgebrochen."; break;  }
 
       case 100: {_s = "Doppelte Definition von BVar"; break; }

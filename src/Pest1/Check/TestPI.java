@@ -5,12 +5,9 @@ import java.util.*;
 
 /**
  *  Test auf doppelte Referenzierung:
- *  es fehlt auf jeden Fall noch der Check
- *  auf mehrfach referenzierte Koordinatenangaben
- *  und Label der Transitionen
  *
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestPI.java,v 1.2 1998-12-15 17:51:40 swtech00 Exp $
+ *  @version  $Id: TestPI.java,v 1.3 1998-12-29 20:56:26 swtech11 Exp $
  */
 class TestPI  {
   ModelCheckMsg msg = new ModelCheckMsg();
@@ -30,8 +27,12 @@ class TestPI  {
   Vector ev  = new Vector(); // Vektor um Event zu speichern
   Vector blv = new Vector(); // Vektor um BVarList zu speichern
   Vector bv  = new Vector(); // Vektor um BVar zu speichern
-
-
+  Vector lv  = new Vector(); // Vektor um Label zu speichern
+  Vector lvn = new Vector(); // Vektor um den Pfad des Label zu speichern
+  Vector gv  = new Vector(); // Vektor um Guard zu speichern
+  Vector gvn = new Vector(); // Vektor um den Pfad des Guards zu speichern
+  Vector av  = new Vector(); // Vektor um Guard zu speichern
+  Vector avn = new Vector(); // Vektor um den Pfad des Guards zu speichern
 
 
   TestPI(Statechart _s, ModelCheckMsg _m) {
@@ -193,9 +194,11 @@ class TestPI  {
   void controlTransInTransList(TrList tl, State _s, String p) throws PIException {
     String z1 = new String();
     String z2 = new String();
+    String zn = new String();
+    int i;
     // TransitionList testen
     if (tlv.size()>0) {
-      int i = tlv.indexOf(tl);
+      i = tlv.indexOf(tl);
       if (i!=-1) {
         FatalMsg=(String)tlvn.elementAt(i)+" und "+ p;
         throw (new PIException(14)); }
@@ -208,9 +211,9 @@ class TestPI  {
       tlv.addElement(tl);
       tlvn.addElement(p);
     }
-    // Transition testen
+    // Transition testen (Ziel und Anker)
     if (tv.size()>0) {
-      int i = tv.indexOf(tl.head);
+      i = tv.indexOf(tl.head);
       if (i!=-1) {
         // Name des Startanker der Transition herausfinden
         if (tl.head.source instanceof UNDEFINED) { z1 = new String("UNDEFINED"); }
@@ -231,6 +234,74 @@ class TestPI  {
       tv.addElement(tl.head);
       tvn.addElement(p);
     }
+    // Transition testen (Guard und Action)
+    if (tl.head.label != null) {
+      // Name des Startanker der Transition herausfinden
+      if (tl.head.source instanceof UNDEFINED) { z1 = new String("UNDEFINED"); }
+      else if (tl.head.source instanceof Statename) { z1 = new String(((Statename)tl.head.source).name); }
+      else if (tl.head.source instanceof Conname) { z1 = new String(((Conname)tl.head.source).name); }
+      // Name des Zielanker der Transition herausfinden
+      if (tl.head.target instanceof UNDEFINED) { z2 = new String("UNDEFINED"); }
+      else if (tl.head.target instanceof Statename) { z2 = new String(((Statename)tl.head.target).name); }
+      else if (tl.head.target instanceof Conname) { z2 = new String(((Conname)tl.head.target).name); }
+      zn = "Trans: "+z1+" -> "+z2+" in State "+ p;
+
+      // Label gesamt
+        if (lv.size() > 0) {
+          i = lv.indexOf(tl.head.label);
+          if (i!=-1) {
+            FatalMsg= zn + " und " + lvn.elementAt(i);
+            throw (new PIException(21));
+          }
+          else {
+            lv.addElement(tl.head.label);
+            lvn.addElement(zn);
+          }
+        }
+        else {
+          lv.addElement(tl.head.label);
+          lvn.addElement(zn);
+        }
+
+      // Guard
+      if (tl.head.label.guard != null) {
+        if (gv.size() > 0) {
+          i = gv.indexOf(tl.head.label.guard);
+          if (i!=-1) {
+            FatalMsg= zn + " und " + lvn.elementAt(i);
+            throw (new PIException(22));
+          }
+          else {
+            gv.addElement(tl.head.label.guard);
+            gvn.addElement(zn);
+          }
+        }
+        else {
+          gv.addElement(tl.head.label.guard);
+          gvn.addElement(zn);
+        }
+      }
+
+      // Action
+      if (tl.head.label.guard != null) {
+        if (av.size() > 0) {
+          i = av.indexOf(tl.head.label.action);
+          if (i!=-1) {
+            FatalMsg= zn + " und " + lvn.elementAt(i);
+            throw (new PIException(23));
+          }
+          else {
+            lv.addElement(tl.head.label.action);
+            lvn.addElement(zn);
+          }
+        }
+        else {
+          av.addElement(tl.head.label.action);
+          avn.addElement(zn);
+        }
+      }  
+    }
+
     if (tl.tail != null) { controlTransInTransList(tl.tail, _s, p); }
   }
 
