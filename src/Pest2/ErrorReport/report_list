@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	------------
 //
-//	$Id: report_list,v 1.74 1999-03-01 08:29:44 swtech00 Exp $
+//	$Id: report_list,v 1.75 1999-03-01 14:20:39 swtech22 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -715,8 +715,12 @@ von Ready to Ready abgefragt wird.
 #Number:	46
 #Autor:		Bernd Weber bwe
 #Subject:	Simu: Zustandsnamen im Monitor nicht eindeutig
-#Status:	reported
+#Status:	fixed
 #Description:
+
+swtech22: Wir zeigen jetzt im Monitor 
+          den kompletten Pfad jedes aktiven States an,
+          zusaetzlich werden jetzt bei Transitionen die Labels angegeben.
 
 Enthält eine Chart mehrere States mit demselben Namen, kann diese im
 Monitor nicht unterscheiden.
