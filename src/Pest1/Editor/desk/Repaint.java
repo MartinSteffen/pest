@@ -144,6 +144,11 @@ if (matrix2.prev.rect != null)
 	matrix = PESTdrawutil.getState(root,tr.points[0].x+nx,tr.points[0].y+ny);
 System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
 	}
+	if (matrix2.prev instanceof Or_State & matrix2.akt.rect.x != 0)
+	  {
+	matrix = PESTdrawutil.getState(root,tr.points[0].x+nx,tr.points[0].y+ny);
+System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+	}
 }
 
 
@@ -213,6 +218,11 @@ if (matrix2.prev.rect != null)
 	{
 	matrix = PESTdrawutil.getState(root,tr.points[trsize].x+nx,tr.points[trsize].y+ny);
 System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+	}
+	if (matrix2.prev instanceof Or_State & matrix2.akt.rect.x != 0)
+	  {
+	    matrix = PESTdrawutil.getState(root,tr.points[trsize].x+nx,tr.points[trsize].y+ny);
+	    System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 	}
 }
 
