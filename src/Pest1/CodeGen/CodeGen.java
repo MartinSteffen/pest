@@ -13,23 +13,24 @@ import absyn.*;
  * of pest.
  * path is a path name to a directory, where CodeGen will
  * store its files.
- * We expect path to be a valid path name, that is, it is
- * a directory, indeed, and the directory is writable.
- *
- * Statechart is a syntactically correct and valid statechart.
  *
  * If an error occures, we will throw a CodeGenException.
  *
  * <DL COMPACT>
  * <DT><STRONG>Status</STRONG>
- * Most of the code is implemented, but does not compile without
- * errors.  Non-determinism is not handled correctly yet.
+ * Most of the code is implemented.  Non-determinism is not handled
+ * correctly yet.
  * <DT><STRONG>To Do</STRONG>
- * Fix compiler errors.  Need to debug the code properly.
- * Need to fix transitions with connectors.  Need to fix
- * code for non-determinism.  We currently do not produce traces.
+ *   <UL>
+ *   <LI>Need to debug the code properly.
+ *   <LI>Need to fix transitions with connectors.
+ *   <LI>Need to fix code for non-determinism.
+ *   <LI>Symbolic names for conditions and events.
+ *   <LI>We currently do not produce traces.
  * <DT><STRONG>Known Bugs</STRONG>
- * Currently none.  Send a bug report to
+ *   <UL>
+ *     <LI>Transitions are produced incorrectly.
+ *   </UL>
  * <A HREF="mailto:swtech25@informatik.uni-kiel.de">swtech25</A>
  * </DL>
  *
@@ -42,10 +43,14 @@ import absyn.*;
  *   <LI>  The pathname is assumed to be a fully qualified path to an
  *     existing directory without trailing "/".
  *   </UL>
+ * <DT><STRONG>Assertions:</STRONG>
+ *   <UL>
+ *   <LI>none.
+ *   </UL>
  * </DL>
  *
  * @author Marcel Kyas, Walter Loeser, Andre Paetzold.
- * @version $Id: CodeGen.java,v 1.10 1999-01-11 15:10:59 swtech25 Exp $
+ * @version $Id: CodeGen.java,v 1.11 1999-01-18 12:36:41 swtech25 Exp $
  */
 public class CodeGen
 {
