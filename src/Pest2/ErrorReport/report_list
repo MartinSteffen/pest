@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	------------------
 //
-//	$Id: report_list,v 1.26 1999-02-04 09:16:13 swtech00 Exp $
+//	$Id: report_list,v 1.27 1999-02-04 10:11:36 swtech01 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -274,11 +274,11 @@ Aus diesem Grund ist auch SyntaxCheck nur einmal (aus graf. Menu) aufrufbar.
 //------------------------------------------------------------------------------
 #Number:	18
 #Autor:		Bernd Weber bwe
-#Subject:	Editor: noch mehr Default States
+#Subject:	Editor: Alle States auf einem Level bekommen Default Connectoren
 #Status:	reported
 #Description:
 
-Erzeugt in eienm Or State neue Basic States werden alle Zustaende des
+Erzeugt man in einem Or State neue Basic States werden alle Zustaende des
 Or States zu Default States !?!
 //------------------------------------------------------------------------------
 #Number:	19
@@ -305,26 +305,300 @@ als einen State zum Default zu machen, gibt es eine Exception:
 //------------------------------------------------------------------------------
 #Number:	20
 #Autor:		Bernd Weber bwe
-#Subject:	Editor: Default States, die Vierte
+#Subject:	Editor: Default Connectoren von Or States nicht zu löschen
 #Status:	reported
 #Description:
 
-Default Connectoren von Or States koennen nicht geloescht
-werden. 
+Default Connectoren von Or States koennen nicht geloescht werden. 
 Workaround: Erst Default Connector des Basic States loeschen, dann
 Substates erzeugen (und keine neuen Basic States auf gleicher Ebene
 wie ein Or State, sonst ist alles hin.
 //------------------------------------------------------------------------------
 #Number:	21
 #Autor:		Bernd Weber bwe
-#Subject:	Editor: Default States, die Vierte
+#Subject:	Check: Mehrere oder keine Default States werden nicht erkannt
 #Status:	reported
 #Description:
 
-Default Connectoren von Or States koennen nicht geloescht
-werden. 
-Workaround: Erst Default Connector des Basic States loeschen, dann
-Substates erzeugen (und keine neuen Basic States auf gleicher Ebene
-wie ein Or State, sonst ist alles hin.
+Check gibt weder Fehler noch Warnungen aus, obwohl keine bzw. zu viele
+Default States vorhanden sind.
 //------------------------------------------------------------------------------
+#Number:	22
+#Autor:		Bernd Weber bwe
+#Subject:	Editor: Transition werden bei Zoom verschoben
+#Status:	reported
+#Description:
 
+Erstellt man eine Chart mit Transitionbeschriftungen und wählt einen
+neuen Zoomfaktor, werden die Labels an anderer Stelle nochmal
+plaziert, wenn man sich ihnen mit dem Mauszeiger nähert.
+//------------------------------------------------------------------------------
+#Number:	23
+#Autor:		Bernd Weber bwe
+#Subject:	Crossreferenz funktioniert nicht
+#Status:	reported
+#Description:
+
+Aufruf von Crossreferenz ergibt Meldungen der GUI:
+GUI   : starte Crossreferenz
+GUI   : ende Crossreferenz
+Das war's. Mehr passiert nicht.
+//------------------------------------------------------------------------------
+#Number:	24
+#Autor:		Bernd Weber bwe
+#Subject:	Check: erkennt multiple bzw. fehlende Default Connectoren nicht
+#Status:	reported
+#Description:
+
+Or State mit mehreren Default Connectoren bzw. gar keinen wird nicht bemängelt.
+//------------------------------------------------------------------------------
+#Number:	25
+#Autor:		Bernd Weber bwe
+#Subject:	Editor: Or-State kann nicht in And-State gewandelt werden
+#Status:	reported
+#Description:
+
+Erzeuge einen Or-State mit zwei Zustanden und einen Basic-State neben dem
+Or-State. Zeichne eine Transition vom Or-State zum Basic-State. Versucht man
+nun, den Or-State zwischen den zwei Basic-States in einen And-State zu teilen,
+gibt's eine Exception (und unzählige folgen):
+
+Exception occurred during event dispatching:
+java.lang.NullPointerException: 
+        at editor.EditorUtils.abs(EditorUtils.java:774)
+        at editor.EditorUtils.orStateSplit(EditorUtils.java:702)
+        at editor.EditorUtils.andStateMouseReleased(EditorUtils.java:412)
+        at editor.Editor$12.mouseReleased(Editor.java:379)
+        at java.awt.Component.processMouseEvent(Component.java:1901)
+        at java.awt.Component.processEvent(Component.java:1778)
+        at java.awt.Container.processEvent(Container.java:792)
+        at java.awt.Window.processEvent(Window.java:273)
+        at java.awt.Component.dispatchEventImpl(Component.java:1456)
+        at java.awt.Container.dispatchEventImpl(Container.java:837)
+        at java.awt.Window.dispatchEventImpl(Window.java:401)
+        at java.awt.Component.dispatchEvent(Component.java:1393)
+        at java.awt.EventDispatchThread.run(EventDispatchThread.java:63)
+//------------------------------------------------------------------------------
+#Number:	24
+#Autor:		Bernd Weber bwe
+#Subject:	Check: erkennt Interlevel-Transition nicht.
+#Status:	reported
+#Description:
+
+Erzeugt man einen Or-State und einen Basic-State wie in Nr. 24 und zieht eine
+Transition von einem der Basic-States im Or-State zum Basic-State neben dem
+Or-State gibt's beim Syntaxcheck keine Fehler.
+//------------------------------------------------------------------------------
+#Number:	25
+#Autor:		Bernd Weber bwe
+#Subject:	Editor: Nach "Datei-Neu" arbeiten GUI noch mit der alten Chart
+#Status:	reported
+#Description:
+
+Erzeugt man eine Chart und wählt im Datei-Menu "Neu" wirkt sich dies nur auf den
+Editor aus. Hier beginnt man eine neue Chart, während der PrettyPrinter noch die
+alte Chart anzeigt. Änderungen im Editor haben keine Wirkung, da GUI die Chart
+an weitere Methoden wie Check, Export, Speichern usw. übergibt.
+//------------------------------------------------------------------------------
+#Number:	25
+#Autor:		Bernd Weber bwe
+#Subject:	Editor: Nach "Datei-Neu" arbeiten GUI noch mit der alten Chart
+#Status:	reported
+#Description:
+
+Erzeugt man eine Chart und wählt im Datei-Menu "Neu" wirkt sich dies nur auf den
+Editor aus. Hier beginnt man eine neue Chart, während der PrettyPrinter noch die
+alte Chart anzeigt. Änderungen im Editor haben keine Wirkung, da GUI die Chart
+an weitere Methoden wie Check, Export, Speichern usw. übergibt.
+//------------------------------------------------------------------------------
+#Number:	26
+#Autor:		Bernd Weber bwe
+#Subject:	Editor: Exception bei neuem Zustand wenn Interlevel-Tr. existieren
+#Status:	reported
+#Description:
+
+Erzeuge einen State und darin einen Substate.Erzeuge neben dem Or-State einen
+Basic-State. Erstelle Interlevel Transitionen vom Basic-State zum Substate des
+Or-States und eine in die umgekehrte Richtung.  Dann erzeuge neben Or- und
+Basic-State einen weiteren Zustand. Dann gibt's eine Exception:
+
+  java.lang.NullPointerException: 
+        at editor.EditorUtils.abs(EditorUtils.java:774)
+        at editor.EditorUtils.orStateSplit(EditorUtils.java:702)
+        at editor.EditorUtils.createStateMouseReleased(EditorUtils.java:107)
+        at editor.Editor$12.mouseReleased(Editor.java:377)
+        at java.awt.Component.processMouseEvent(Component.java:1901)
+        at java.awt.Component.processEvent(Component.java:1778)
+        at java.awt.Container.processEvent(Container.java:792)
+        at java.awt.Window.processEvent(Window.java:273)
+        at java.awt.Component.dispatchEventImpl(Component.java:1456)
+        at java.awt.Container.dispatchEventImpl(Container.java:837)
+        at java.awt.Window.dispatchEventImpl(Window.java:401)
+        at java.awt.Component.dispatchEvent(Component.java:1393)
+        at java.awt.EventDispatchThread.run(EventDispatchThread.java:63)
+//------------------------------------------------------------------------------
+#Number:	27
+#Autor:		Bernd Weber bwe
+#Subject:	Editor: Rückgängig löscht alle Zustände
+#Status:	reported
+#Description:
+
+Man erzeuge eine Chart und darin drei Basic-States nebeneinander. Nun wählt man
+Rückgängig:Zustand hinzufügen, und alle States sind wieder weg (sagt auch
+PrettyPrinter).
+//------------------------------------------------------------------------------
+#Number:	28
+#Autor:		Bernd Weber bwe
+#Subject:	Editor: Rückgängig löscht alle Transitionen
+#Status:	reported
+#Description:
+
+Man erzeuge eine Chart und darin drei Basic-States nebeneinander. Nun zeichnet
+man mehrere Transitionen und wählt Rückgängig:Transition hinzufügen, und alle
+Transitionen sind wieder weg (sagt auch PrettyPrinter).
+//------------------------------------------------------------------------------
+#Number:	29
+#Autor:		Bernd Weber bwe
+#Subject:	Editor: Rückgängig löscht alle Elemente eines Typs
+#Status:	reported
+#Description:
+
+Anscheinend löscht Rückgängig wie in Nr. 27 und 28 immer alle Elemente eines
+Typs, die zuletzt in einem Rutsch erstellt wurden.
+//------------------------------------------------------------------------------
+#Number:	30
+#Autor:		Bernd Weber bwe
+#Subject:	Editor: Nach Transition können Zustände nicht mehr erzeugt werden
+#Status:	reported
+#Description:
+
+Wie Nr. 26, nur mit einfacherem Beispiel:
+Erzeuge neue Chart mit einem Basic State, erstelle Transition von diesem Zustand
+zu sich selbst (selbstverständlich erlaubt!) und versuche, einen neuen Zustand
+zu erzeugen. Das ergibt eine Exception:
+  java.lang.NullPointerException: 
+        at editor.EditorUtils.abs(EditorUtils.java:774)
+        at editor.EditorUtils.orStateSplit(EditorUtils.java:702)
+        at editor.EditorUtils.createStateMouseReleased(EditorUtils.java:107)
+        at editor.Editor$12.mouseReleased(Editor.java:377)
+        at java.awt.Component.processMouseEvent(Component.java:1901)
+        at java.awt.Component.processEvent(Component.java:1778)
+        at java.awt.Container.processEvent(Container.java:792)
+        at java.awt.Window.processEvent(Window.java:273)
+        at java.awt.Component.dispatchEventImpl(Component.java:1456)
+        at java.awt.Container.dispatchEventImpl(Container.java:837)
+        at java.awt.Window.dispatchEventImpl(Window.java:401)
+        at java.awt.Component.dispatchEvent(Component.java:1393)
+        at java.awt.EventDispatchThread.run(EventDispatchThread.java:63)
+//------------------------------------------------------------------------------
+#Number:	31
+#Autor:		Bernd Weber bwe
+#Subject:	Check: Erkennt Schleife an Connector nicht
+#Status:	reported
+#Description:
+
+Erstellt man einen Connector und darin eine Transition von diesem zu sich
+zurück, meldet Check keine Fehler.
+Genauso verhält es sich, wenn man Connectoren ohne ausgehende bzw. eingehende
+Transitionen hat: keine Warnung, kein Fehler.
+//------------------------------------------------------------------------------
+#Number:	32
+#Autor:		Bernd Weber bwe
+#Subject:	Editor: Connector-Namen nicht eindeutig
+#Status:	reported
+#Description:
+
+Erstellt man mehrere Connectoren in einem State, haben diese alle den gleichen
+Namen.
+Erzeugt man eine Chart mit mehreren Basic States und Connectoren und ein paar
+Transitionen zwischen States und Connectoren, schlägt nach einem Tesc-Export der
+Import fehl (mit der spärlichen Meldung: FEHLER).
+//------------------------------------------------------------------------------
+#Number:	33
+#Autor:		Bernd Weber bwe
+#Subject:	Simulation: Kommt mit Connectoren nicht klar
+#Status:	reported
+#Description:
+
+Man erzeuge drei Basic-States und einen Connector. Nun generiert man eine
+Transition von einem der States zum Connector. Es folgen zwei Transitionen vom
+Connector zu den zwei anderen Zuständen. Jetzt startet man die Simulation und
+macht zwei Schritte. 
+Die Simulation terminiert nun nicht mehr, sondern bläht sich im Speicher auf und
+frisst Speicher weg (bis mangels Swap-Space mein Linux-rechner
+stehenbleibt :-( ). 
+Sicherung dagegen: Mit ulimit maximalen Speicherverbrauch festlegen, dann wird
+PEST irgendwann gekillt AFAIK.
+//------------------------------------------------------------------------------
+#Number:	34
+#Autor:		Bernd Weber bwe
+#Subject:	Simulation: Transition bei Nicht-Determinismus nicht wählbar
+#Status:	reported
+#Description:
+
+Tritt in der Simulation ein Nicht-Determinismus auf, erscheint ein Fenster, in
+dem man die Transition(en) auswählen können soll. Mir ist dies nicht möglich
+(Fenster zu klein, Funktionalität nicht klar, Docu nicht vorhanden.)
+//------------------------------------------------------------------------------
+#Number:	35
+#Autor:		Bernd Weber bwe
+#Subject:	Simulation: Kommt i.A. mit Connectoren nicht klar
+#Status:	reported
+#Description:
+
+Erzeuge zwei States, dazwischen einen Connector und ein Transition vom einen
+State zum Connector und eine vom Connector zum zweiten State. Nach zwei
+Schritten in der Simulation gibt's eine Exception:
+  Exception occurred during event dispatching:
+  java.lang.ClassCastException: 
+        at simu.Nachfolgermaschine.getTrsFromConnectorname(Nachfolgermaschine.java:384)
+        at simu.Nachfolgermaschine.progress(Nachfolgermaschine.java:423)
+        at simu.Nachfolgermaschine.progress(Nachfolgermaschine.java:526)
+        at simu.Nachfolgermaschine.step(Nachfolgermaschine.java:122)
+        at simu.Nachfolgermaschine.step(Nachfolgermaschine.java:199)
+        at simu.Nachfolgermaschine.liefereNachfolger(Nachfolgermaschine.java:225)
+        at simu.Communicator.vor(Communicator.java:69)
+        at simu.Communicator$2.actionPerformed(Communicator.java:141)
+        at java.awt.Button.processActionEvent(Button.java:172)
+        at java.awt.Button.processEvent(Button.java:153)
+        at java.awt.Component.dispatchEventImpl(Component.java:1456)
+        at java.awt.Component.dispatchEvent(Component.java:1393)
+        at java.awt.EventDispatchThread.run(EventDispatchThread.java:63)
+//------------------------------------------------------------------------------
+#Number:	36
+#Autor:		Bernd Weber bwe
+#Subject:	Tesc: Fehlender Default State wird nicht erkannt
+#Status:	reported
+#Description:
+
+Importiere ~swtech12/Examples/misc/faulty1.tesc2. Ergibt keine Fehler, obwohl
+kein Default State markiert ist. Syntaxcheck meldet keine Fehler.
+//------------------------------------------------------------------------------
+#Number:	37
+#Autor:		Bernd Weber bwe
+#Subject:	Tesc: Zu viele Default States werden nicht erkannt
+#Status:	reported
+#Description:
+
+Importiere ~swtech12/Examples/misc/faulty2.tesc2. Ergibt keine Fehler, obwohl
+beide Basic States als Default angegeben sind. Syntaxcheck meldet keine Fehler.
+//------------------------------------------------------------------------------
+#Number:	37
+#Autor:		Bernd Weber bwe
+#Subject:	Tesc: Zu viele Default States werden nicht erkannt
+#Status:	reported
+#Description:
+
+Importiere ~swtech12/Examples/misc/faulty3.tesc2. Ergibt keine Fehler, obwohl
+root als sein eigener default markiert ist. Syntaxcheck meldet keine Fehler.
+//------------------------------------------------------------------------------
+#Number:	38
+#Autor:		Bernd Weber bwe
+#Subject:	Check: Terminiert nicht !!!
+#Status:	reported
+#Description:
+
+Importiere ~swtech12/Examples/misc/bvar-test1.tesc2. Chart wird im Editor
+richtig angezeigt und enthält AFAIK keine Fehler. Der Syntaxcheck terminiert
+jedoch nicht und verbrät die gesamte Rechenzeit :-( .
+//------------------------------------------------------------------------------
