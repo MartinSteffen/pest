@@ -17,7 +17,7 @@ import editor.*;        // Editor zwecks Highlight Funktionalitaet
 
 
 /**
-*<h1 align="center">Syntax Check für Statecharts, PEST2</h1>
+*<h1 align="center">Syntax Check fr Statecharts, PEST2</h1>
 *
 *<h2>Aufruf</h2>
 *
@@ -28,7 +28,7 @@ import editor.*;        // Editor zwecks Highlight Funktionalitaet
 *        ModelCheck(GUIInterface, Editor);</font></td>
 *    </tr>
 *    <tr>
-*        <td>Ausführung:</td>
+*        <td>Ausfhrung:</td>
 *        <td><font face="Courier">boolean ok =
 *        check.checkModel(Statechart);</font></td>
 *    </tr>
@@ -36,10 +36,10 @@ import editor.*;        // Editor zwecks Highlight Funktionalitaet
 *
 *<h2>Anforderungen</h2>
 *
-*<p>Es werden keinerlei Anforderungen an die übergebene
+*<p>Es werden keinerlei Anforderungen an die bergebene
 *Statechart gestellt; sobald alle Projektteilnehmer die
 *programmiertechnische Kreisfreiheit einer Statechart
-*sicherstellen k”nnen, werden wir unseren eigenen Test auf eben
+*sicherstellen können, werden wir unseren eigenen Test auf eben
 *diese Kreisfreiheit entfernen.</p>
 *
 *<p>Was wir unbedingt brauchen sind ein brauchbarer funktionaler
@@ -65,11 +65,11 @@ import editor.*;        // Editor zwecks Highlight Funktionalitaet
 *<h2>Anmerkungen</h2>
 *
 *<ul>
-*    <li>Die Handhabung der GUI halte ich noch für sehr
-*        gew”hnungsbedürftig.</li>
+*    <li>Die Handhabung der GUI halte ich noch fr sehr
+*        gewöhnungsbedrftig.</li>
 *    <li>die PERL Geschichte der STM Gruppe macht das Compilieren
-*        (ohne groÿe Änderungen am Quelltext) auf heimischen
-*        Rechner unm”glich.</li>
+*        (ohne gro e nderungen am Quelltext) auf heimischen
+*        Rechner unmöglich.</li>
 *</ul>
 *
 *<h2>Kontakt</h2>
@@ -121,7 +121,7 @@ private boolean       OutputToGUI = false;
 // ****************************************************************************
 
 // ****************************************************************************
-// ”ffentliche Instanzmethoden
+// öffentliche Instanzmethoden
 // ****************************************************************************
 
 	/** Ueberprueft die komplette "Statechart"
@@ -193,8 +193,8 @@ private boolean       OutputToGUI = false;
     return ok;
 	}
 
-	/** ueberprüft alle Events, die innerhalb der "Statechart" definiert sind
-	*   ueberflüssige Events koennten "Warnungen" sein.
+	/** ueberprft alle Events, die innerhalb der "Statechart" definiert sind
+	*   ueberflssige Events koennten "Warnungen" sein.
   *   Rueckgabe der Methode ist TRUE, wenn keine Fehler oder Warnungen vorhanden
   *   sind, FALSE sonst.
   */
@@ -216,8 +216,8 @@ private boolean       OutputToGUI = false;
     return ok;
   }
 
-	/** ueberprüft den Zustand, sowie alle Subzustaende, damit ist es moeglich
-  *   nur Teile der Statechart zu ueberprüfen
+	/** ueberprft den Zustand, sowie alle Subzustaende, damit ist es moeglich
+  *   nur Teile der Statechart zu ueberprfen
   *   Rueckgabe der Methode ist TRUE, wenn keine Fehler oder Warnungen vorhanden
   *   sind, FALSE sonst.
   */
@@ -228,7 +228,7 @@ private boolean       OutputToGUI = false;
   */
 
 
-	/** ueberprüft innerhalb eines OR-Zustandes die Transitionen auf Korrektheit
+	/** ueberprft innerhalb eines OR-Zustandes die Transitionen auf Korrektheit
   *   Rueckgabe der Methode ist TRUE, wenn keine Fehler oder Warnungen vorhanden
   *   sind, FALSE sonst.
   */
@@ -242,7 +242,7 @@ private boolean       OutputToGUI = false;
 	}
 
 
-	/** ueberprüft innerhalb eines OR-Zustandes die Connectors auf Korrektheit
+	/** ueberprft innerhalb eines OR-Zustandes die Connectors auf Korrektheit
   *   Rueckgabe der Methode ist TRUE, wenn keine Fehler oder Warnungen vorhanden
   *   sind, FALSE sonst.
   */
@@ -250,7 +250,7 @@ private boolean       OutputToGUI = false;
     boolean ok = true;
 
     CheckConnectors checkConn = new CheckConnectors(statechart, errors, warnings);
-    ok = checkConn.check(s);
+    ok = checkConn.check(s,"");
 
     return ok;
 	}
@@ -262,7 +262,7 @@ private boolean       OutputToGUI = false;
     return errors;
 	}
 
-  /** Rückgabe der Methode ist eine Liste (JAVA Klasse Vector) mit Warnungen
+  /** Rckgabe der Methode ist eine Liste (JAVA Klasse Vector) mit Warnungen
   *   von Typ itemWarning
   */
 	public SyntaxWarning getWarnings() {
