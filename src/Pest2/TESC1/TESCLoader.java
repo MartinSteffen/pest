@@ -6,8 +6,33 @@ import gui.*;
 
 /**
  * Schnittstellenklasse fuer TESC1.        
- * @version  $Id: TESCLoader.java,v 1.6 1998-12-17 11:14:10 swtech20 Exp $
+ *
+ * <p>
+ * <STRONG> Garantie: </STRONG> Wir garantieren, dass die von unseren
+ * Module erzeugten Statecharts folgende Eingenschaften haben:
+ * 
+ * <ul>
+ * <li> Ein konsistenter Absyn-Baum eines Statecharts wird zur’ckgeliefert, d.h.
+ *    <ul>
+ *    <li> der Baum ist nicht notwendigerweise als Statechart darstellbar
+ *    <li> das Statechart ist nicht notwendigerweise semantisch korrekt
+ *    </ul>
+ * </ul>
+ * 
+ * <p>
+ * 
+ * <STRONG> Anforderungen: </STRONG> Wir verlassen uns darauf, dass die
+ * Statecharts, die uns uebergeben werden, folgende Eigenschaften haben: 
+ * 
+ * <ul>
+ * <li> Derzeit haben wir keine Anforderungen!
+ * </ul>
+ * <br>
+ *
+ * @version  $Id: TESCLoader.java,v 1.7 1998-12-21 12:34:22 swtech20 Exp $
  * @author Michael Suelzer, Christoph Schuette.
+ * 
+ * 
  */   
 public class TESCLoader {
 
@@ -31,6 +56,7 @@ public class TESCLoader {
      * </ul>
      * @param br BufferedReader
      * @see tesc1.TESCParser
+
      */
     public Statechart getStatechart (BufferedReader br) throws IOException {
 	TESCParser parser = new TESCParser();
@@ -88,11 +114,14 @@ public class TESCLoader {
 //	----------------------
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.6  1998/12/17 11:14:10  swtech20
+//	BufferedReader statt FileInputStream.
+//
 //	Revision 1.5  1998/12/15 18:11:37  swtech00
 //	Towards new naming conventions for PEST2
 //
 //	Revision 1.4  1998/12/13 17:49:05  swtech20
-//	Checkin für Baseline
+//	Checkin f’r Baseline
 //
 //	Revision 1.3  1998/12/07 19:55:16  swtech20
 //	Wir geben Fehlermeldungen jetzt direkt an die GUI.
