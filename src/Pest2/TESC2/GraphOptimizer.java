@@ -39,7 +39,7 @@ import absyn.*;
  * Created: Fri Nov 27 11:26:25 1998
  *
  * @author Software Technologie 19, Klaus H&ouml;ppner, Achim Abeling
- * @version $Id: GraphOptimizer.java,v 1.5 1998-12-15 18:11:39 swtech00 Exp $
+ * @version $Id: GraphOptimizer.java,v 1.6 1998-12-21 13:13:14 swtech19 Exp $
  *
  */
 
@@ -94,8 +94,25 @@ public class GraphOptimizer {
      * (was wissen wir auch noch nicht)
      */
     public Statechart start() throws AlgorithmException {
-	// return sc.clone();
-	return sc;
+	Statechart scclone = null;
+	LayoutAlgorithm layoutAR;
+
+	try {
+	    scclone = (Statechart) sc.clone();
+
+	    switch (algorithm) {
+	    default: 
+		layoutAR = new SugiyamaBCMAlgorithm(this);
+	    }
+	    
+	    layoutAR.layoutStatechart(scclone);
+
+	} catch (CloneNotSupportedException e) {
+
+	}
+
+	
+	return scclone;
     }
 
     // Plaziert beliebiges Statechart (auch ohne Koordinaten)
