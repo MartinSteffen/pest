@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	--------------
 //
-//	$Id: report_list,v 1.60 1999-02-11 15:03:19 swtech16 Exp $
+//	$Id: report_list,v 1.61 1999-02-11 15:54:49 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -671,7 +671,7 @@ Offenbar liegen dir TrAnchors nicht auf den Lienien der Zustände.
 
 Nachtrag.
 --------
-Ich wollte wissen, ob der IT-Chjeck von check auch richtig funktioniert.
+Ich wollte wissen, ob der IT-Check von check auch richtig funktioniert.
 Sieht nicht so aus: wenn man die Datei, für die check ITs meldet, in
 PEST-Format speichert und in PEST1 lädt, dann werden keine IT-Probleme in
 PEST1 gemeldet.  Vielleicht ist das denn doch ein check-Fehler und kein
@@ -686,3 +686,14 @@ TESC2.
 ~swtech12/Examples/ex_undet.pest laden, Editor oeffnen und Kurven bei
 Transitionen aktivieren, dann gehen von SAFE zwei Linien ins Nichts
 //------------------------------------------------------------------------------ 
+#Number:	44
+#Autor:		Erich Mikk erm
+#Subject:	Nur eine Simulation pro Session möglich
+#Status:	reported
+#Description:
+
+GUI bekommt es nicht mit, dass die Simulation beendet wurde. 
+Deswegen weigert die GUI die zweite Simulation (Meldung: nur eine Simulation kann 
+gestartet werden).
+
+//------------------------------------------------------------------------------
