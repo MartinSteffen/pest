@@ -1,6 +1,9 @@
-/* Grammatik fuer Tesc - $Id: grammatik.txt,v 1.2 1998-12-07 13:50:20 swtech13 Exp $ 
+/* Grammatik fuer Tesc - $Id: grammatik.txt,v 1.3 1998-12-07 13:59:09 swtech13 Exp $ 
  *
  * $Log: not supported by cvs2svn $
+ * Revision 1.2  1998/12/07 13:50:20  swtech13
+ * Vorlaeufig fertige Grammatik
+ *
  * Revision 1.1  1998/12/07 13:20:42  swtech13
  * Grammatik muss noch ueberarbeitet werden.
  *
@@ -72,7 +75,7 @@
 
 <ACTIONLIST>  ::= <AKTION>,<ACTIONLIST> | <AKTION>;
 
-<AKTION>      ::= <STRING> | <BOOLSTMT> | <BASSIGN> 
+<AKTION>      ::= <STRING> | <BASSIGN> 
 
 <BASSIGN>     ::= <STRING>:=<BOOLOP>
 
@@ -81,8 +84,6 @@
                   <COMPPATH>  |
 		  <COMPGUARD> |
 		  <STRING>
-
-<BOOLSTMT>    ::= false(<STRING>) | true(<STRING>) | <BASSIGN>  //???
 
 <EMPTYSTR>    ::= ~
 
