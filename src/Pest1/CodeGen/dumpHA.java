@@ -4,7 +4,7 @@
  * This class is responsible for generating our hierarchical
  * automaton.
  *
- * @version $Id: dumpHA.java,v 1.19 1999-02-12 15:13:08 swtech25 Exp $
+ * @version $Id: dumpHA.java,v 1.20 1999-02-17 11:00:02 swtech25 Exp $
  * @author Marcel Kyas
  */
 package codegen;
@@ -286,11 +286,6 @@ public class dumpHA
 	  TLabel l = current.head.label;
 
 	  trs++;
-	  // TODO: Handle non-determinism here
-	  // with care.
-	  // let the generated code
-	  // count the eligible transitions
-	  // first and choose one?
 	  f.write(printlnPP(lvl, "if (" +
 			    dumpGuard(l.guard)
 			    + ") {"));
@@ -434,8 +429,9 @@ public class dumpHA
 	    printlnPP(1, " * Init method for state chart") +
 	    printlnPP(1, " */") +
 	    printlnPP(1, "public void init(SymbolTable a) {") +
-	    printlnPP(2, "a.pre_states[ 0 ] = true;") +
-	    printlnPP(2, "a.pre_states[ 1 ] = true;") +
+	    printlnPP(2, "pre_states[ " +
+		      dumpTables.generateSymState(p) + " ] = true;") +
+	    dumpDefaultState(2, p, S1.state, null) +
 	    printlnPP(1, "}") +
 	    printlnPP(1, "") +
 	    printlnPP(1, "/**") +
