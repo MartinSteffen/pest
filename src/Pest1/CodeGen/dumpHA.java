@@ -4,7 +4,7 @@
  * This class is responsible for generating our hierarchical
  * automaton.
  *
- * @version $Id: dumpHA.java,v 1.11 1999-01-21 15:18:11 swtech25 Exp $
+ * @version $Id: dumpHA.java,v 1.12 1999-01-21 15:35:30 swtech25 Exp $
  * @author Marcel Kyas
  */
 package codegen;
@@ -267,7 +267,6 @@ public class dumpHA
 			printlnPP(f, lvl, "post_states[" +
 				dumpTables.generateSymState(q) +
 				"] = true;");
-			//This needs a fix.
 			State v = null;
 			if (v instanceof Or_State) {
 				Or_State u = (Or_State) v;
