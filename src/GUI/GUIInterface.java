@@ -159,5 +159,11 @@ public interface GUIInterface{
      */
 
     public boolean isDebug();
+
+    /** simuExit
+     * Diese Funktion dient dazu,der GUI mitzuteilen,dass der Simulator geschlosen wurde.
+     */  
+
+    public void simuExit();
 }
 

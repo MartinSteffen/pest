@@ -17,18 +17,25 @@ extends WindowAdapter
     {
 	//	e.getWindow().dispose();            
 	//e.getWindow().setVisible(false)
-
-	myWindow.isDirty();
-	myWindow.EditorDim = myWindow.PEditor.getSize();
-	myWindow.EditorLoc = myWindow.PEditor.getLocation();
-	myWindow.PEditor.Dispose();
-	// hiernach sollte der Editor beendet sein !
-	myWindow.PEditor = null;
-
-	ctrlWin.highLight[10] = false;
-	ctrlWin.highLight[5] = true;
-	ctrlWin.repaint();
-	myWindow.theGUIMenu.updateMenu();
+// 	if (myWindow.simu == null)
+// 	    {
+		myWindow.isDirty();
+		myWindow.EditorDim = myWindow.PEditor.getSize();
+		myWindow.EditorLoc = myWindow.PEditor.getLocation();
+		myWindow.PEditor.Dispose();
+		// hiernach sollte der Editor beendet sein !
+		myWindow.PEditor = null;
+		
+		ctrlWin.highLight[10] = false;
+		ctrlWin.highLight[5] = true;
+		ctrlWin.repaint();
+		myWindow.theGUIMenu.updateMenu();
+// 	    }
+// 	else
+// 	    {
+// 		myWindow.OkDialog("Warnung","Schliessen Sie bitte zuerst den Simulator");
+// 	    }
+		    
     }
 
     public void windowActivated(WindowEvent e)

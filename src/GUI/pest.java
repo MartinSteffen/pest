@@ -379,17 +379,19 @@ void startSimulator()
 	    {
 		if (PEditor != null)
 		    {
-//			if(simu == null)
-//			    {
+			if(simu == null)
+			    {
 				PEditor.work(false);   // Änderungen verbieten
 				simu = new simu.Simu(SyntaxBaum,PEditor,this);
                                 PEditor.work(true);
-//				simu.addWindowListener(simexitlis);
-//			    }
-//			else
-//			    {
-//			        OkDialog("Fehler","Es kann nur ein Simulator gestartet werden");
-//			    }
+				controlWindow.highLight[10] = false;
+				theGUIMenu.M_Simulator.setEnabled(false);
+				//				simu.addWindowListener(simexitlis);
+			    }
+			else
+			    {
+			        OkDialog("Fehler","Es kann nur ein Simulator gestartet werden");
+			    }
 			
 		    }
 		  else
@@ -523,6 +525,17 @@ void newStatechart()
 	exlis.windowClosing(new WindowEvent(this,WindowEvent.WINDOW_CLOSING));
     }
 
+    public void simuExit()
+    {
+	simu = null;
+	if (PEditor != null)
+	    {
+		PEditor.work(true);
+		controlWindow.highLight[10] = true;
+		theGUIMenu.M_Simulator.setEnabled(true);
+	    }
+	
+    }
 	
 
     boolean isSaved()

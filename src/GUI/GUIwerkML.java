@@ -34,7 +34,7 @@ public void actionPerformed(ActionEvent e) {
 	  myWindow.checkSB(true);
 	  
       }else if (cmd.equals("Simulator")) {
-	      myWindow.startSimulator();
+	  myWindow.startSimulator();
       }else if (cmd.equals("Codegenerator")) {
 	  if (myWindow.checkSB(false))
 	      {
