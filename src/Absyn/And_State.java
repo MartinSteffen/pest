@@ -1,5 +1,6 @@
 package Absyn;
 
+import java.awt.Rectangle;
 
 public class And_State extends State{
     public StateList substates;
@@ -7,17 +8,31 @@ public class And_State extends State{
 		     StateList sl) 
     {
 	name = n;
+	rect = null;
 	substates = sl;
-    }
-	
+    };
+    public And_State(Statename n,
+		     StateList sl,
+		     Rectangle r) 
+    {
+	name = n;
+	rect = r;
+	substates = sl;
+    };	
 }
 //----------------------------------------------------------------------
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: And_State.java,v 1.3 1998-11-30 17:07:40 swtech00 Exp $
+//	$Id: And_State.java,v 1.4 1998-12-02 12:40:35 swtech19 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.3  1998/11/30 17:07:40  swtech00
+//	-  Namens-feld entfernt (da es nun in der Oberklasse ist)
+//	-  Konventionen vereinfacht ("_s" und "o"-Praefix entfernt)
+//
+//	(Steffen)
+//
 //	Revision 1.2  1998/11/26 16:32:10  swtech00
 //	Id and Log extension
 //

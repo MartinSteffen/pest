@@ -1,5 +1,7 @@
 package Absyn;
 
+import java.awt.Rectangle;
+
 public class Or_State extends State{
     public StateList     substates;
     public TrList        trs;
@@ -11,6 +13,20 @@ public class Or_State extends State{
 		    StatenameList snl,
 		    ConnectorList cl) {
       name         = n;
+      rect         = null;
+      substates    = sl;
+      trs          = tl;
+      defaults     = snl;
+      connectors   = cl;
+    }
+    public Or_State(Statename n,
+		    StateList sl,
+		    TrList tl,
+		    StatenameList snl,
+		    ConnectorList cl,
+		    Rectangle r) {
+      name         = n;
+      rect         = r;
       substates    = sl;
       trs          = tl;
       defaults     = snl;
@@ -22,9 +38,18 @@ public class Or_State extends State{
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Or_State.java,v 1.4 1998-11-30 17:05:10 swtech00 Exp $
+//	$Id: Or_State.java,v 1.5 1998-12-02 12:41:37 swtech19 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.4  1998/11/30 17:05:10  swtech00
+//	- Namens-Feld entfernt (da es in der Oberklasse State ist)
+//
+//	- Konvention der Felder vereinfacht ("s_" entfernt, "o"-Praefix entfernt
+//
+//
+//
+//	(Martin)
+//
 //	Revision 1.3  1998/11/27 10:04:07  swtech20
 //	Neuer Konstruktor.
 //

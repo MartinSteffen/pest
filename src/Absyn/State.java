@@ -1,7 +1,10 @@
 package Absyn;
 
+import java.awt.Rectangle;
+
 abstract public class State extends Absyn {
     public Statename name;
+    public Rectangle rect;
 }
 
 
@@ -10,9 +13,12 @@ abstract public class State extends Absyn {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: State.java,v 1.8 1998-12-01 09:47:59 swtech00 Exp $
+//	$Id: State.java,v 1.9 1998-12-02 12:37:16 swtech19 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.8  1998/12/01 09:47:59  swtech00
+//	*** empty log message ***
+//
 //	Revision 1.7  1998/11/30 08:24:06  swtech00
 //	Das Feld 'name' wieder aufgenommen.
 //
