@@ -4,21 +4,29 @@ package Absyn;
 /**
  * One kind of transition action: generation of events.
  * @author Initially provided by Martin Steffen.
- * @version  $Id: ActionEvt.java,v 1.1 1998-12-07 12:01:58 swtech24 Exp $
+ * @version  $Id: ActionEvt.java,v 1.2 1998-12-11 17:39:13 swtech00 Exp $
  */
-public class ActionEvt extends Action {
+public class ActionEvt extends Action implements Cloneable {
   public SEvent event;
   public ActionEvt (SEvent e) {
     event  =  e;
   };
+
+    public Object clone() throws CloneNotSupportedException {
+	return new ActionEvt((SEvent)event.clone());
+    };
+    
 };
 //----------------------------------------------------------------------
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: ActionEvt.java,v 1.1 1998-12-07 12:01:58 swtech24 Exp $
+//	$Id: ActionEvt.java,v 1.2 1998-12-11 17:39:13 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.1  1998/12/07 12:01:58  swtech24
+//	*** empty log message ***
+//
 //	Revision 1.2  1998/12/03 17:10:48  swtech00
 //	Felder public gemacht
 //

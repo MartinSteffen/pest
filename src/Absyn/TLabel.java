@@ -6,7 +6,7 @@ import java.awt.Point;
  * Transition label.
  * @author Initially provided by Martin Steffen.
  */
-public class TLabel extends Absyn {
+public class TLabel extends Absyn implements Cloneable {
 /**
  * Position of the label.
  */
@@ -35,12 +35,21 @@ public class TLabel extends Absyn {
 	guard = g;
 	action = a;
     };
+
+    public Object clone() throws CloneNotSupportedException {
+	return new TLabel (
+			   (Guard)guard.clone(),
+			   (Action)action.clone(),
+			   (Point)position
+			   );
+    };
 }
+
 
 
 //----------------------------------------------------------------------
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: TLabel.java,v 1.2 1998-12-07 15:08:01 swtech00 Exp $
+//	$Id: TLabel.java,v 1.3 1998-12-11 17:43:02 swtech00 Exp $
 //----------------------------------------------------------------------

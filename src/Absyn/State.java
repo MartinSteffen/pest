@@ -2,9 +2,11 @@ package Absyn;
 
 import java.awt.Rectangle;
 
-abstract public class State extends Absyn {
+abstract public class State extends Absyn implements Cloneable {
     public Statename name;
     public Rectangle rect;
+
+    public abstract Object clone() throws  CloneNotSupportedException;
 }
 
 
@@ -13,9 +15,12 @@ abstract public class State extends Absyn {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: State.java,v 1.9 1998-12-02 12:37:16 swtech19 Exp $
+//	$Id: State.java,v 1.10 1998-12-11 17:43:01 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.9  1998/12/02 12:37:16  swtech19
+//	Einfuegen der Positionen.
+//
 //	Revision 1.8  1998/12/01 09:47:59  swtech00
 //	*** empty log message ***
 //

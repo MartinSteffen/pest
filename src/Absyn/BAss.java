@@ -3,9 +3,9 @@ package  Absyn;
 /**
  * One kind of boolean statement: assignment.
  * @author Initially provided by Martin Steffen.
- * @version $Id: BAss.java,v 1.2 1998-12-03 17:10:48 swtech00 Exp $
+ * @version $Id: BAss.java,v 1.3 1998-12-11 17:42:55 swtech00 Exp $
  */
-public class BAss extends Boolstmt{
+public class BAss extends Boolstmt implements Cloneable {
 /**
  * Contents of the assignment.
  */
@@ -15,15 +15,23 @@ public class BAss extends Boolstmt{
  */
   public BAss (Bassign a) {
     ass = a;
-  }
+  };
+
+    public Object clone() throws CloneNotSupportedException {
+	return new BAss ((Bassign)ass.clone());
+    };
+
 }
 //----------------------------------------------------------------------
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: BAss.java,v 1.2 1998-12-03 17:10:48 swtech00 Exp $
+//	$Id: BAss.java,v 1.3 1998-12-11 17:42:55 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.2  1998/12/03 17:10:48  swtech00
+//	Felder public gemacht
+//
 //	Revision 1.1  1998/12/01 17:52:53  swtech00
 //	Anderungen in der Abstrakten Syntax:
 //
@@ -42,3 +50,5 @@ public class BAss extends Boolstmt{
 //
 //
 //----------------------------------------------------------------------
+
+

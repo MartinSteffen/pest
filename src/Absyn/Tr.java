@@ -2,7 +2,7 @@ package Absyn;
 
 import java.awt.Point;
 
-public class Tr  {   // Transition
+public class Tr  implements Cloneable {   // Transition
     public Point[]  points;
     public TrAnchor source;
     public TrAnchor target;
@@ -19,6 +19,15 @@ public class Tr  {   // Transition
 	target = t;
 	label  = l;
     };
+
+    public Object clone () throws CloneNotSupportedException {
+	return new Tr(
+		      (TrAnchor)source.clone(),
+		      (TrAnchor)target.clone(),
+		      (TLabel)label.clone(),
+		      points
+		      );
+    };
 };
 
 
@@ -31,9 +40,16 @@ public class Tr  {   // Transition
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Tr.java,v 1.5 1998-12-07 15:08:02 swtech00 Exp $
+//	$Id: Tr.java,v 1.6 1998-12-11 17:43:02 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.5  1998/12/07 15:08:02  swtech00
+//	- TLabel anstelle Label
+//
+//	- Path verbessert: path ist nun eine Liste von Strings
+//
+//	- Example.java angepasst
+//
 //	Revision 1.4  1998/12/02 12:32:54  swtech19
 //	Einfuegen der Positionen.
 //

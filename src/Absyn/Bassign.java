@@ -3,9 +3,9 @@ package Absyn;
 /**
  * Boolean assignment.
  * @author Initially provided by Martin Steffen.
- * @version  $Id: Bassign.java,v 1.5 1998-12-01 10:35:41 swtech00 Exp $
+ * @version  $Id: Bassign.java,v 1.6 1998-12-11 17:42:55 swtech00 Exp $
  */
-public class Bassign extends Absyn {
+public class Bassign extends Absyn implements Cloneable {
 /**
  * Left-hand-side of a boolean assignment.
  */
@@ -21,6 +21,11 @@ public class Bassign extends Absyn {
 	blhs = l;
 	brhs = r;
     };
+
+    public Object clone() throws CloneNotSupportedException {
+	return new Bassign((Bvar)blhs.clone(),(Guard)brhs.clone());
+    };
+
 };
     
 
@@ -30,9 +35,12 @@ public class Bassign extends Absyn {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Bassign.java,v 1.5 1998-12-01 10:35:41 swtech00 Exp $
+//	$Id: Bassign.java,v 1.6 1998-12-11 17:42:55 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.5  1998/12/01 10:35:41  swtech00
+//	Die Selektoren geaendert ("s_") entfernt
+//
 //	Revision 1.4  1998/11/27 16:03:53  swtech00
 //	Ich habe damit angefangen, die Abstrakte Syntax so zu kommentieren, dass
 //	javadoc das auch verstehen kann. Das bereitet die Benutzung von javadoc vor.
@@ -42,3 +50,4 @@ public class Bassign extends Absyn {
 //
 //
 //----------------------------------------------------------------------
+

@@ -2,7 +2,7 @@ package Absyn;
 
 import java.awt.Rectangle;
 
-public class Or_State extends State{
+public class Or_State extends State implements Cloneable {
     public StateList     substates;
     public TrList        trs;
     public StatenameList defaults;
@@ -32,15 +32,37 @@ public class Or_State extends State{
       defaults     = snl;
       connectors   = cl;
     }
+    
+    
+    public Object clone() throws CloneNotSupportedException {
+
+	ConnectorList connectorsclone;
+	if (connectors !=null) 
+	    connectorsclone = (ConnectorList)connectors.clone();
+	else
+	    connectorsclone = null;
+	
+	    
+	return new Or_State(name, 
+			    (StateList) substates.clone(), 
+			    (TrList)trs.clone(), 
+			    (StatenameList)defaults.clone(), 
+			    (ConnectorList)connectorsclone, 
+			    (Rectangle)rect);
+    };
+
 }
 
 //----------------------------------------------------------------------
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Or_State.java,v 1.5 1998-12-02 12:41:37 swtech19 Exp $
+//	$Id: Or_State.java,v 1.6 1998-12-11 17:43:00 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.5  1998/12/02 12:41:37  swtech19
+//	Einfuegen der Positionen.
+//
 //	Revision 1.4  1998/11/30 17:05:10  swtech00
 //	- Namens-Feld entfernt (da es in der Oberklasse State ist)
 //

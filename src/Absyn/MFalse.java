@@ -3,9 +3,9 @@ package Absyn;
 /**
  * One kind of boolean statement: assigns false to the variable
  * @author Initially provided by Martin Steffen.
- * @version $Id: MFalse.java,v 1.2 1998-12-03 17:10:48 swtech00 Exp $
+ * @version $Id: MFalse.java,v 1.3 1998-12-11 17:42:59 swtech00 Exp $
  */
-public class MFalse extends Boolstmt{
+public class MFalse extends Boolstmt implements Cloneable {
 /**
  * Variable to change.
  */
@@ -16,15 +16,23 @@ public class MFalse extends Boolstmt{
   public MFalse(Bvar v){
     var = v;
   };
+    
+    
+    public Object clone () throws CloneNotSupportedException {
+	return new MFalse((Bvar)var.clone());
+    };
 }
 
 //----------------------------------------------------------------------
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: MFalse.java,v 1.2 1998-12-03 17:10:48 swtech00 Exp $
+//	$Id: MFalse.java,v 1.3 1998-12-11 17:42:59 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.2  1998/12/03 17:10:48  swtech00
+//	Felder public gemacht
+//
 //	Revision 1.1  1998/12/01 17:52:55  swtech00
 //	Anderungen in der Abstrakten Syntax:
 //

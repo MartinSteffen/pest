@@ -6,9 +6,9 @@ package Absyn;
  * One kind of transition action.
  * <br> Collects a sequence of actions into one block.
  * @author Initially provided by Martin Steffen.
- * @version $Id: ActionBlock.java,v 1.2 1998-12-07 14:58:31 swtech18 Exp $
+ * @version $Id: ActionBlock.java,v 1.3 1998-12-11 17:38:58 swtech00 Exp $
  */
-public class ActionBlock extends Action {
+public class ActionBlock extends Action implements Cloneable {
 /**
  * Contents of the block.
  */
@@ -16,15 +16,22 @@ public class ActionBlock extends Action {
     public ActionBlock (Aseq a) {
 	aseq = a;
     };
+
+    public Object clone() throws CloneNotSupportedException {
+	return new ActionBlock((Aseq)aseq.clone());
+    };
     
 };
 //----------------------------------------------------------------------
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: ActionBlock.java,v 1.2 1998-12-07 14:58:31 swtech18 Exp $
+//	$Id: ActionBlock.java,v 1.3 1998-12-11 17:38:58 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.2  1998/12/07 14:58:31  swtech18
+//	Konstruktor public gesetzt.
+//
 //	Revision 1.1  1998/12/01 17:52:52  swtech00
 //	Anderungen in der Abstrakten Syntax:
 //

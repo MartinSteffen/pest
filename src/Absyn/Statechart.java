@@ -1,7 +1,7 @@
 package Absyn;
 
 
-public class Statechart extends Absyn {
+public class Statechart extends Absyn implements Cloneable  {
     public SEventList  events;
     public BvarList    bvars;
     public PathList    cnames;
@@ -17,14 +17,30 @@ public class Statechart extends Absyn {
     }
     public Statechart(String filename) {
     }
+
+    public Object clone () throws CloneNotSupportedException {
+	BvarList bvarsclone;
+	if (bvars != null)
+	    bvarsclone = (BvarList) bvars.clone();
+	else
+	    bvarsclone = null;
+	return new Statechart((SEventList)events.clone(),
+			      (BvarList)bvarsclone,
+			      (PathList)cnames.clone(),
+			      (State)state.clone());
+    };
+
 };
 //----------------------------------------------------------------------
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Statechart.java,v 1.8 1998-12-01 17:46:24 swtech00 Exp $
+//	$Id: Statechart.java,v 1.9 1998-12-11 17:43:01 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.8  1998/12/01 17:46:24  swtech00
+//	Unverandert
+//
 //	Revision 1.7  1998/11/26 17:11:18  swtech00
 //	*** empty log message ***
 //

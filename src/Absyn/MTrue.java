@@ -4,9 +4,9 @@ package Absyn;
 /**
  * One kind of boolean statement: assigns true to the variable.
  * @author Initially provided by Martin Steffen.
- * @version $Id: MTrue.java,v 1.2 1998-12-03 17:10:49 swtech00 Exp $
+ * @version $Id: MTrue.java,v 1.3 1998-12-11 17:42:59 swtech00 Exp $
  */
-public class MTrue extends Boolstmt{
+public class MTrue extends Boolstmt implements Cloneable {
 /**
  * Variable to change.
  */
@@ -14,15 +14,24 @@ public class MTrue extends Boolstmt{
   public MTrue(Bvar v){
     var = v;
   };
+
+    public Object clone () throws CloneNotSupportedException {
+	return new MTrue((Bvar)var.clone());
+    };
+
+    
 }
 
 //----------------------------------------------------------------------
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: MTrue.java,v 1.2 1998-12-03 17:10:49 swtech00 Exp $
+//	$Id: MTrue.java,v 1.3 1998-12-11 17:42:59 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.2  1998/12/03 17:10:49  swtech00
+//	Felder public gemacht
+//
 //	Revision 1.1  1998/12/01 17:52:55  swtech00
 //	Anderungen in der Abstrakten Syntax:
 //

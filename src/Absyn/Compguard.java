@@ -3,9 +3,9 @@ package Absyn;
 /**
  * Composition of two guards.
  * @author Initially provided by Martin Steffen.
- * @version $Id: Compguard.java,v 1.5 1998-12-01 17:42:30 swtech00 Exp $
+ * @version $Id: Compguard.java,v 1.6 1998-12-11 17:42:56 swtech00 Exp $
  */
-public class Compguard extends Absyn {
+public class Compguard extends Absyn implements Cloneable {
 /**
  * Biary operation.
  */
@@ -33,6 +33,11 @@ public class Compguard extends Absyn {
 	elhs = g1;
 	erhs = g2;
     };
+
+    public Object clone() throws CloneNotSupportedException {
+	return new Compguard(eop, (Guard)elhs.clone(), (Guard)erhs.clone());
+    };
+
 };
 
 
@@ -40,9 +45,12 @@ public class Compguard extends Absyn {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Compguard.java,v 1.5 1998-12-01 17:42:30 swtech00 Exp $
+//	$Id: Compguard.java,v 1.6 1998-12-11 17:42:56 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.5  1998/12/01 17:42:30  swtech00
+//	Die Operatoren als konstante Felder mit aufgenommen
+//
 //	Revision 1.4  1998/11/27 16:07:02  swtech00
 //	Ich habe damit angefangen, die Abstrakte Syntax so zu kommentieren, dass
 //	javadoc das auch verstehen kann. Das bereitet die Benutzung von javadoc vor.

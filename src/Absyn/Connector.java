@@ -5,9 +5,9 @@ import java.awt.Point;
 /**
  * Connector.
  * @author Initially provided by Martin Steffen.
- * @version $Id: Connector.java,v 1.5 1998-12-02 12:35:40 swtech19 Exp $
+ * @version $Id: Connector.java,v 1.6 1998-12-11 17:42:57 swtech00 Exp $
  */
-public class Connector  extends Absyn {
+public class Connector  extends Absyn implements Cloneable {
 /**
  * Connector name is used for initial bookkeeping only.
  */
@@ -30,14 +30,23 @@ public class Connector  extends Absyn {
 	name = n;
 	position = p;
     };
+
+    public Object clone() throws CloneNotSupportedException {
+	return new Connector((Conname)name.clone(),
+			     position);
+    };
+
 }
 //----------------------------------------------------------------------
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Connector.java,v 1.5 1998-12-02 12:35:40 swtech19 Exp $
+//	$Id: Connector.java,v 1.6 1998-12-11 17:42:57 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.5  1998/12/02 12:35:40  swtech19
+//	Einfuegen der Positionen.
+//
 //	Revision 1.4  1998/11/27 16:08:16  swtech00
 //	Ich habe damit angefangen, die Abstrakte Syntax so zu kommentieren, dass
 //	javadoc das auch verstehen kann. Das bereitet die Benutzung von javadoc vor.
@@ -47,3 +56,5 @@ public class Connector  extends Absyn {
 //
 //
 //----------------------------------------------------------------------
+
+

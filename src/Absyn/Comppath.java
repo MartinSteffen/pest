@@ -3,9 +3,9 @@ package Absyn;
 /**
  * Operation on path of statenames.
  * @author Initially provided by Martin Steffen.
- * @version $Id: Comppath.java,v 1.6 1998-12-01 17:43:07 swtech00 Exp $
+ * @version $Id: Comppath.java,v 1.7 1998-12-11 17:42:56 swtech00 Exp $
  */
-public class Comppath extends Absyn {
+public class Comppath extends Absyn implements Cloneable {
 /**
  * Path operation.
  */
@@ -26,16 +26,24 @@ public class Comppath extends Absyn {
     public Comppath(int op, Path p) {
 	pathop  = op;
 	path    = p;
-    }
+    };
+
+    public Object clone() throws CloneNotSupportedException {
+	return new Comppath (pathop, (Path)path.clone());
+    };
+
 }
 
 //----------------------------------------------------------------------
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Comppath.java,v 1.6 1998-12-01 17:43:07 swtech00 Exp $
+//	$Id: Comppath.java,v 1.7 1998-12-11 17:42:56 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.6  1998/12/01 17:43:07  swtech00
+//	Die operatoren als Konstante Felder mit aufgenommen
+//
 //	Revision 1.5  1998/12/01 10:48:04  swtech00
 //	Die Selektor-Felder umbenannt ("s_" entfernt)
 //
