@@ -1,17 +1,23 @@
 package simu;
 
 /**
+ * Hauptklasse Simulation
  * @author: SWTECH 26
- * @version: $Id
+ * @version:
  */
 
+import java.util.*;
+ 
 import absyn.*;
 import editor.*;
 
 public class Simu extends Object{
-	
+	Vector EventList;
+	Vector InList;
+	Vector EnteredList;
+	Vector ExitedList;	
 /**
- * Simu constructor comment.
+ * Simulator Main-Klasse
  */
 public Simu(Statechart Daten) {
 	Statechart SDaten = Daten;
@@ -22,48 +28,28 @@ public Simu(Statechart Daten) {
 		System.out.println("Keine Statechart angekommen ! Objekt war null");
 	}
 }
-
 /**
+ * Bestimmt den Wert des Guards und liefert
+ * entsprechend true oder false zurueck
  */
-private void get_guard(Guard waechter) {
+private boolean get_guard(Guard waechter) {
+	return true;
 }
-
 /**
+ * This method was created in VisualAge.
  */
 private void getNext() {
 }
-
 /**
+ * Fuehrt eine Action aus
  * @param aktion Absyn.Action
  */
-private void make_action(Action aktion) {
+private boolean make_action(Action aktion) {
+	return false;
 }
-
 /**
+ * Erstellt die noetigen Tabellen
  */
 private void makeTab(Statechart Daten) {
 }
-
-/**
- * @param Daten Absyn.Statechart
- * @param eEdit Editor
- */
-public void Simu(Statechart Daten, Editor eEdit) {
-/* Nur fuer Testlaeufe der GUI-Gruppe und Uebergabetests
- * Test, ob das uebergebene Objekt null ist
- */
-	if (Daten != null) {
-		System.out.println("Statechart angekommen !");
-	}
-	else {
-		System.out.println("Keine Statechart angekommen ! Objekt war null");
-	}
-	if (eEdit != null) {
-		System.out.println("Editorobjekt uebergeben !");
-	}
-	else {
-		System.out.println("Keine Editorreferenz bekommen !");
-	}
 }
-}
-
