@@ -4,13 +4,39 @@
  * Created: Mon Dec 07 16:43:30 1998
  * 
  * @author swtech14 : Eike Schulz & Martin Poerksen
- * @version $Id: GraphOptimizer.java,v 1.5 1998-12-15 17:51:59 swtech00 Exp $
+ * @version $Id: GraphOptimizer.java,v 1.6 1998-12-21 10:17:58 swtech14 Exp $
  */
 
 package tesc2;
 
 import absyn.*;
 import java.awt.FontMetrics;
+
+/**
+ * Wir erwarten:
+ * -------------
+ *   Syntaktisch korrektes Statechart-Objekt
+ *   (d.h. keine Interlevel-Transitionen; fuer alle Statechart-
+ *    komponenten muss ein EINDEUTIGES Objekt vorhanden sein
+ *    -> keine kopierten/geclonten Objekte!);
+ *   Das Statechart-Objekt wird direkt dem Konstruktor oder der
+ *   Methode 'setStatechart' uebergeben.
+ *
+ *   Wir erwarten keine Fehlermeldung aus dem Syntaxcheck!
+ *
+ *
+ * Wir erzeugen:
+ * -------------
+ *   Syntaktisch korrektes Statechart-Objekt (sofern uebergeben)
+ *   mit Koordinaten fuer alle Komponenten;
+ *
+ *   Fehler-Exception, falls Fehler auftreten (z.B. zu viele
+ *   States vorhanden, Zeichenflaechenbegrenzung wird durch
+ *   Koordinaten ueberschritten)
+ *   Die Fehler-Exception wird von der Gruppe abgefangen, die
+ *   unseren Algorithmus aufruft, daher sollte diese Gruppe
+ *   evtl. aufgetretene Fehler entsprechend behandeln.
+ */
 
 public class GraphOptimizer {
 
