@@ -53,7 +53,7 @@ public void actionPerformed(ActionEvent e) {
 	  if (stImp != null)
 	      {
 		  try{
-		  HAImport imp = new HAImport(stImp);
+		  HAImport imp = new HAImport(new BufferedReader(stImp));
 		  Statechart Synb = imp.getStatechart();
 		  myWindow.setStatechart(Synb,"UNBENANNT");
 

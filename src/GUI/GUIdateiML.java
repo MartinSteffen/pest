@@ -26,22 +26,9 @@ public void actionPerformed(ActionEvent e) {
       {
 	  System.exit(0);
       }else if (cmd.equals("Oeffnen")) {
-/*	  BufferedReader inf = myWindow.load("Statechart laden");
-          if(inf != null) {
-              ObjectInputStream ois = new ObjectInputStream(inf);
-              myWindow.SyntaxBaum = (Statechart) ois.readObject();
-              ois.close();
-              }
-*/ 
-     }else if (cmd.equals("Speichern")) {
-/*	  BufferedWriter outf = myWindow.save("Statechart speichern");
-          if(outf != null) {
-              ObjectOutputStream oos = new ObjectOutputStream(outf);
-              oos.writeObject(myWindow.SyntaxBaum);
-              oos.flush();
-              oos.close();
-              }
-*/
+	  myWindow.load_sc();
+      }else if (cmd.equals("Speichern")) {
+	  myWindow.save_sc();
       }else if (cmd.equals("Neu")) {
 	  myWindow.setStatechart(new absyn.Statechart(myWindow.SBDateiname),"UNBENANNT");
       }else{

@@ -146,13 +146,6 @@ implements GUIInterface
 
     
     
-    /**
-     * Verwirft das aktuelle StateChart und laedt ein neues aus einer Datei,
-     * welche mittels eines FileDialog Abgefragt wird.
-     *
-     * @see            java.awt.FileDialog
-     */
-    
     BufferedReader load(String titel)
     {
 	BufferedReader resp = null;
@@ -218,6 +211,61 @@ implements GUIInterface
 	fDialog.setVisible(false);
 	fDialog.dispose();
 	return resp;
+    }
+
+
+    void save_sc()
+    {
+	fDialog.setMode(FileDialog.SAVE);
+	fDialog.setTitle("Statechart speichern");
+	fDialog.setVisible(true);
+	String FileName = fDialog.getFile();
+	if (FileName != null)//Ok gewählt
+	    {
+		try {
+
+		    FileOutputStream outf = new FileOutputStream(fDialog.getDirectory()+FileName);
+                    ObjectOutputStream oos = new ObjectOutputStream(outf);
+		    oos.writeObject(SyntaxBaum);
+		    oos.flush();
+		    oos.close();
+      		    
+		}catch (Exception e)
+		    {
+			OkDialog("Fehler","Die Datei kann nicht gespeichert werden");
+			// Alarm !
+		    }
+	    }
+
+	fDialog.setVisible(false);
+	fDialog.dispose();
+    }
+
+
+    
+    void load_sc()
+    {
+	fDialog.setMode(FileDialog.LOAD);
+	fDialog.setTitle("Statechart laden");
+	fDialog.setVisible(true);
+	String FileName = fDialog.getFile();
+	if (FileName != null)//Ok gewählt
+	    {
+		try {
+		    FileInputStream fis = new FileInputStream(fDialog.getDirectory()+FileName);
+		    ObjectInputStream ois = new ObjectInputStream(fis);
+		    SyntaxBaum = (absyn.Statechart) ois.readObject();
+		    ois.close();
+		}catch (Exception e)
+		    {
+			OkDialog("Fehler","Das Laden ist fehlgeschlagen !");
+			// Alarm !
+		    }
+		
+	    }
+	
+	fDialog.setVisible(false);
+	fDialog.dispose();
     }
 
 
