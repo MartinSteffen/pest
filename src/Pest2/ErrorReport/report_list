@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	------------
 //
-//	$Id: report_list,v 1.78 1999-03-11 15:31:21 swtech25 Exp $
+//	$Id: report_list,v 1.79 1999-03-12 11:05:49 swtech22 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -728,8 +728,14 @@ Monitor nicht unterscheiden.
 #Number:	47
 #Autor:		Marcel Kyas swtech25
 #Subject:	Simu: Exception beim Laden von traces.
-#Status:	reported
+#Status:	processing
 #Description:
+
+swtech22: Dieser Trace haelt sich nicht an das Format in 
+          codegen/Docu/traces.txt.
+          Es fehlen die umschliessenden Klammern, fuegt man 
+          am Anfang und Ende eine hinzu, dann klappt es...
+          Test hierfuer in simu/Test/Fehler47.trace
 
 beim einlades des traces
 
@@ -1028,5 +1034,8 @@ java.lang.StringIndexOutOfBoundsException: String index out of range: -1
         at java.awt.MenuComponent.dispatchEventImpl(MenuComponent.java:177)
         at java.awt.MenuComponent.dispatchEvent(MenuComponent.java:169)
         at java.awt.EventDispatchThread.run(EventDispatchThread.java:83)
+
+
+
 
 //------------------------------------------------------------------------------
