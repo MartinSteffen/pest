@@ -49,8 +49,8 @@ boolean drawtest = true;
 	matrix1 = PESTdrawutil.getState(root,cx1-2,cy1-2);
 	matrix2 = PESTdrawutil.getState(root,cx1+14,cy1+14);
 	
-System.out.println("ma1 : "+matrix1.akt);
-System.out.println("ma2 : "+matrix2.akt);
+//System.out.println("ma1 : "+matrix1.akt);
+//System.out.println("ma2 : "+matrix2.akt);
 
 
 	if (matrix1.akt == matrix2.akt)
@@ -133,7 +133,9 @@ System.out.println("ma2 : "+matrix2.akt);
 		drawConn(g,cx1,cy1,c_color);
 	      }	      
 	
-	} else {System.out.println("Conn Fehler");}	
+	} else {//System.out.println("Conn Fehler");
+		Editor.fehlermeldung1();
+		}	
 
 }
 

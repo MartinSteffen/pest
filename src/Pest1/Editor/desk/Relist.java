@@ -37,7 +37,7 @@ public class Relist {
 	root.bvars = null;
 	root.events = null;
 	if (sc.state != null) { Relist re = new Relist(); re.start(root,pathlist,path,sc.state);
-	System.out.println("Statechart");
+	//System.out.println("Statechart");
 	}
        }
 
@@ -61,7 +61,7 @@ public class Relist {
 
 	pathlist = new PathList(temppath2,temppathlist);
 	root.cnames = pathlist;
-	System.out.println("Basic_State");
+	//System.out.println("Basic_State");
 	//PrettyPrint pp = new PrettyPrint();
   	//pp.start(root);
     	}
@@ -87,7 +87,7 @@ public class Relist {
 
 	pathlist = new PathList(temppath2,temppathlist);
 	root.cnames = pathlist;
-	System.out.println("Basic_State");
+	//System.out.println("Basic_State");
 	//PrettyPrint pp = new PrettyPrint();
   	//pp.start(root);
     	}
@@ -140,7 +140,7 @@ public class Relist {
 	}
 
 
-	System.out.println("Or_State");
+	//System.out.println("Or_State");
     	}
 
 
@@ -174,7 +174,7 @@ public class Relist {
 	templist = templist.tail;
 	}
 
-	System.out.println("And_State");
+	//System.out.println("And_State");
     	}
 
 

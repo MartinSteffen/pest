@@ -57,12 +57,14 @@ matrix2 = PESTdrawutil.getState(root,dx2,dy2);
 
 
 if ( delx  <  dely) { 
-		System.out.println("kleiner"); dx2 = cx1; quer = false;
+		//System.out.println("kleiner"); 
+		dx2 = cx1; quer = false;
 		dy1 = matrix1.y;
 		dy2 = matrix1.y+matrix1.akt.rect.height;
 		} else  
 		{
-		System.out.println("groesser"); dy2 = cy1;quer = true;
+		//System.out.println("groesser");
+		 dy2 = cy1;quer = true;
 		dx1 = matrix1.x;
 		dx2 = matrix1.x+matrix1.akt.rect.width;
 		}
@@ -75,14 +77,14 @@ if ( delx  <  dely) {
 
 
 
-System.out.println("matrix1 "+matrix1.akt); 
-System.out.println("matrix2 "+(matrix2.akt == matrix1.akt)); 
+//System.out.println("matrix1 "+matrix1.akt); 
+//System.out.println("matrix2 "+(matrix2.akt == matrix1.akt)); 
 
 
 if (matrix1.akt == matrix2.akt & matrix1.akt != null ) 
     {
 	if (matrix1.akt.rect != null) {
-	    System.out.println("par");
+	    //System.out.println("par");
 
 
 	    if (quer == false) {temprect1 = new CRectangle(0,0,dx1-matrix1.x,matrix1.akt.rect.height) ; 
@@ -91,17 +93,17 @@ if (matrix1.akt == matrix2.akt & matrix1.akt != null )
 		{temprect1 = new CRectangle(0,0                      ,matrix1.akt.rect.width  ,dy1-matrix1.y) ; 
 		temprect2 = new CRectangle(0,dy1-matrix1.y,matrix1.akt.rect.width  ,matrix1.akt.rect.height-(dy1-matrix1.y)) ; }
  	 
-	    System.out.println("quer : "+quer+"    dx:"+delx  +"  dy"+dely );
-	    System.out.println("r1 : "+matrix1.akt.rect);
-	    System.out.println("rn1 : "+temprect1);
-	    System.out.println("rn2 : "+temprect2);
+	    //System.out.println("quer : "+quer+"    dx:"+delx  +"  dy"+dely );
+	    //System.out.println("r1 : "+matrix1.akt.rect);
+	    //System.out.println("rn1 : "+temprect1);
+	    //System.out.println("rn2 : "+temprect2);
 
 	    // } else {System.out.println("FEHLER1");}
 	    //   } else {System.out.println("FEHLER2");}
 
 
 // ************************************
-System.out.println("suche State"); 
+//System.out.println("suche State"); 
 
 
 if (matrix1.akt instanceof Basic_State & matrix1.prev instanceof Or_State)
@@ -168,8 +170,8 @@ if (matrix1.akt instanceof Basic_State & matrix1.prev instanceof And_State)
 	   templist3 = null;
 
 	   templist = atemp1.substates;
-System.out.println("temprect1 : "+temprect1);
-System.out.println("temprect2 : "+temprect2);
+//System.out.println("temprect1 : "+temprect1);
+//System.out.println("temprect2 : "+temprect2);
 
 	      while (templist  != null) {
 		if (templist.head != matrix1.akt) {templist4 = templist3; templist3 = new StateList(templist.head,templist4);}
@@ -206,7 +208,7 @@ System.out.println("temprect2 : "+temprect2);
 		}
 	
 	temprect3 = new CRectangle(dx1-matrix1.x,dy1-matrix1.y,dx2-dx1,dy2-dy1);
-                System.out.println("temprect : "+temprect1);
+                //System.out.println("temprect : "+temprect1);
 
 	while (templist != null)
 	{
@@ -229,14 +231,14 @@ System.out.println("temprect2 : "+temprect2);
 	if (temppoint1.x <= temppoint2.x) {tp3.x = temppoint1.x;} else {tp3.x = temppoint2.x;}
 	if (temppoint1.y <= temppoint2.y) {tp3.y = temppoint1.y;} else {tp3.y = temppoint2.y;}
 	temprect4 = new CRectangle(tp3.x,tp3.y,Math.abs(temppoint1.x-temppoint2.x),Math.abs(temppoint1.y-temppoint2.y));
-System.out.println("temprect4 : "+temprect4);
+//System.out.println("temprect4 : "+temprect4);
 //	if (temprect.contains(temppoint1.x,temppoint1.y) & temprect.contains(temppoint2.x,temppoint2.y))
 	if (temprect3.intersects(temprect4)) {test = false;}
  	trlist = trlist.tail;
 	}
 
 	if (test == true)
-	    {      System.out.println("ja, dass klappt");     // hier Zuweisung zu den einzelnen And_Unterstates
+	    {      //System.out.println("ja, dass klappt");     // hier Zuweisung zu den einzelnen And_Unterstates
 	// ****************************************************************************
 	if (matrix1.akt instanceof And_State) {
 		atemp1 = (And_State) matrix1.akt;
@@ -291,7 +293,7 @@ System.out.println("temprect4 : "+temprect4);
 	colist = colist.tail;
 	} 
 
-System.out.println("connector hier");
+//System.out.println("connector hier");
 	
 	trlist4 = null;
 
@@ -303,7 +305,7 @@ System.out.println("connector hier");
 	if (temppoint1.x <= temppoint2.x) {tp3.x = temppoint1.x;} else {tp3.x = temppoint2.x;}
 	if (temppoint1.y <= temppoint2.y) {tp3.y = temppoint1.y;} else {tp3.y = temppoint2.y;}
 	temprect4 = new CRectangle(tp3.x,tp3.y,Math.abs(temppoint1.x-temppoint2.x),Math.abs(temppoint1.y-temppoint2.y));
-System.out.println("temprect4 : "+temprect4);
+//System.out.println("temprect4 : "+temprect4);
 
 	
 	if (temprect1.intersects(temprect4))
@@ -316,7 +318,7 @@ System.out.println("temprect4 : "+temprect4);
  	trlist = trlist.tail;
 	}
 
-System.out.println("hhiieerr");
+//System.out.println("hhiieerr");
 
 
 	if (colist2 == null & templist2 == null & trlist2 == null)
@@ -343,7 +345,7 @@ System.out.println("hhiieerr");
 {
 	if (matrix1.prev instanceof And_State)  // O.K.
 	{ 
-	System.out.println("proc 1");
+	//System.out.println("proc 1");
 	templist3 = null;
 	atemp2 = (And_State) matrix1.prev;
 	temprect4 = matrix1.prev.rect;
@@ -374,7 +376,7 @@ drawPar(g,matrix1.x+tempstate9.rect.x,matrix1.y+tempstate9.rect.y,tempstate9.rec
 	}
 
 	if (matrix1.prev instanceof Or_State) // O.K.
-	{   System.out.println("proc 202");
+	{   //System.out.println("proc 202");
 	templist3 = null;
 	otemp2 = (Or_State) matrix1.prev;
 	templist2 = otemp2.substates;
@@ -405,7 +407,7 @@ if (matrix1.akt == root.state)
 {
 	if (matrix1.akt instanceof And_State)  // 
 	{ 
-	System.out.println("proc 1");
+	//System.out.println("proc 1");
 	templist3 = null;
 	atemp2 = (And_State) matrix1.prev;
 	temprect4 = matrix1.prev.rect;
@@ -436,7 +438,7 @@ drawPar(g,matrix1.x+tempstate9.rect.x,matrix1.y+tempstate9.rect.y,tempstate9.rec
 	}
 
 	if (matrix1.akt instanceof Or_State) // O.K.
-	{   System.out.println("proc 2xxxxx");
+	{   //System.out.println("proc 2xxxxx");
 	templist3 = null;
 	otemp2 = (Or_State) matrix1.akt;
 	templist2 = otemp2.substates;
@@ -464,15 +466,18 @@ drawPar(g,temprect2.x+matrix1.x,temprect2.y+matrix1.y,temprect2.width,temprect2.
 }
 
 	// ****************************************************************************
-	    } 	else {System.out.println("FEHLER3");}
+	    } 	else {Editor.fehlermeldung1();//System.out.println("FEHLER3");
+			}
 
 
 	}
 
 	// **************
 
-    } else {System.out.println("FEHLER1");}
-    } else {System.out.println("FEHLER2");}
+    } else {Editor.fehlermeldung1();//System.out.println("FEHLER1");
+	}
+    } else {Editor.fehlermeldung1();//System.out.println("FEHLER2");
+	}
 
 }
 

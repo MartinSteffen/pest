@@ -48,7 +48,7 @@ public class Repaint {
    boolean test = true;
 		if (sn.name.length() >= 3) {
 		tempstring = sn.name.substring(0,3);
-		System.out.println("<<"+tempstring+">>");
+		//System.out.println("<<"+tempstring+">>");
 		if (tempstring.compareTo("...")==0) test = false;}
  
 		if (test == true)
@@ -94,14 +94,14 @@ private void redraw(Tr tr,int nx, int ny, boolean drawflag) {
 if (tr.source instanceof UNDEFINED) {h.setColor(def_tr);
 				h.fillOval(	(int) (((tr.points[0].x+nx)-3)*Editor.ZoomFaktor),
 						(int) (((tr.points[0].y+ny)-3)*Editor.ZoomFaktor),
-						6,6);} else
+						(int) (6*Editor.ZoomFaktor),(int) (6*Editor.ZoomFaktor));} else
 	      {localobject = PESTdrawutil.getSmallObject(root,tr.points[0].x+nx,tr.points[0].y+ny);
-	      System.out.println("aktueller TRAnchor source :"+localobject);
+	      //System.out.println("aktueller TRAnchor source :"+localobject);
 		   if (localobject instanceof State) {
 		       State hier = (State) localobject;
 		       Statematrix matrix = PESTdrawutil.getState(root,tr.points[0].x+nx,tr.points[0].y+ny);
-		      if (matrix.prev instanceof And_State) {System.out.println("AND>"+matrix.prev);
-			  System.out.println("AND>"+matrix.prev.name.name);
+		      if (matrix.prev instanceof And_State) {//System.out.println("AND>"+matrix.prev);
+			  //System.out.println("AND>"+matrix.prev.name.name);
 			  tr.source = new Statename(matrix.prev.name.name);} else 
 			      {tr.source = new Statename(hier.name.name);}
 		   };
@@ -111,16 +111,19 @@ if (tr.target instanceof UNDEFINED) {h.setColor(def_tr);
  
 				h.fillOval(	(int) (((tr.points[trsize].x+nx)-3)*Editor.ZoomFaktor),
 						(int) (((tr.points[trsize].y+ny)-3)*Editor.ZoomFaktor),
-						6,6);} else
+						(int) (6*Editor.ZoomFaktor),(int) (6*Editor.ZoomFaktor));} 
 	      {localobject = PESTdrawutil.getSmallObject(root,tr.points[trsize].x+nx,tr.points[trsize].y+ny);
-	      System.out.println("aktueller TRAnchor target :"+localobject);
+	      //System.out.println("aktueller TRAnchor target :"+localobject);
 		   if (localobject instanceof State) {
 		       State hier = (State) localobject;
+			if (hier.rect != null)
+			{
 		       Statematrix matrix = PESTdrawutil.getState(root,tr.points[trsize].x+nx,tr.points[trsize].y+ny);
-		       if (matrix.prev instanceof And_State) {System.out.println("AND>"+matrix.prev);
-			  System.out.println("AND>"+matrix.prev.name.name);
+		       if (matrix.prev instanceof And_State) {//System.out.println("AND>"+matrix.prev);
+			  //System.out.println("AND>"+matrix.prev.name.name);
 			  tr.target = new Statename(matrix.prev.name.name);} else 
 			      {tr.target = new Statename(hier.name.name);}
+			}
 		   };
 	      }
 
@@ -225,7 +228,7 @@ if (tr.target instanceof UNDEFINED) {h.setColor(def_tr);
 	while (templist != null)
 	    {
 	                if (templist.head.name == tempstatelist.head) {
-		System.out.println("Default : "+templist.head.name);
+		//System.out.println("Default : "+templist.head.name);
 		h.setColor(def_state);
 		h.drawRect((int) ((templist.head.rect.x+neux)*Editor.ZoomFaktor)+2,
 			(int) ((templist.head.rect.y+neuy)*Editor.ZoomFaktor)+2,

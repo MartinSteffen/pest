@@ -53,6 +53,7 @@ import editor.*;
     this.xpanel = panel;
     this.width = width;
     this.height = height;
+    this.xpanel.setForeground(Color.black);
 
     // low-level Implementierungen
     this.enableEvents(AWTEvent.MOUSE_EVENT_MASK);
@@ -72,6 +73,7 @@ import editor.*;
     }
     // Registrierung von pop-up
     this.add(popup);
+    this.show();
 
 
   }
@@ -82,8 +84,9 @@ import editor.*;
  // pop-up Menueabfrage 
   public void actionPerformed(ActionEvent event) {
     String command = event.getActionCommand();
-    if (command.equals("undo")) undo(root);
-    else if (command.equals("restore")) redo(root);
+	Editor.Buttontype = "Select";
+    if (command.equals("undo")) {root = undo();Editor.newdraw();}
+    else if (command.equals("restore")) {root = redo();Editor.newdraw();}
     else if (command.equals("loeschen")){ 
 	if (deleteobj instanceof State) { Delete d = new Delete((State) deleteobj,root);}
                                         }
@@ -95,7 +98,7 @@ import editor.*;
       public void paint(Graphics g) { 	  new Repaint(g,root);Repaint r = new Repaint(); r.start(root,0,0,true);
 				  new highlightObject(g,root);
 
-   System.out.println("repaint gestartet");  
+  // System.out.println("repaint gestartet");  
  
   }
 
@@ -109,7 +112,7 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Select")
 	if (PESTdrawutil.getSmallObject(root,(int) (e.getX()/Editor.ZoomFaktor),(int) (e.getY()/Editor.ZoomFaktor)) != aktcomp) 
 	{
 		aktcomp = PESTdrawutil.getSmallObject(root,(int) (e.getX()/Editor.ZoomFaktor),(int) (e.getY()/Editor.ZoomFaktor));
-		System.out.println("Akt. Komponente : "+aktcomp);
+	//	System.out.println("Akt. Komponente : "+aktcomp);
 		new highlightObject(true);
 		new highlightObject(aktcomp,Color.black);
 		new highlightObject();
@@ -124,7 +127,7 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_StateLabel")
 		aktmatrix2 = PESTdrawutil.getState(root,(int) (e.getX()/Editor.ZoomFaktor),(int) (e.getY()/Editor.ZoomFaktor)+10);
 		if (aktmatrix.akt != aktmatrix2.akt & aktmatrix2.prev instanceof And_State & aktmatrix.prev != aktmatrix2.akt) 
 			{aktmatrix.akt = aktmatrix2.prev;}
-		System.out.println("Akt. Komponente : "+aktmatrix.akt);
+		// System.out.println("Akt. Komponente : "+aktmatrix.akt);
 		if (tempstate1 != aktmatrix.akt)
 		{
 		new highlightObject(true);
@@ -140,7 +143,7 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_TransLabel")
 	if (PESTdrawutil.getSmallObject(root,(int) (e.getX()/Editor.ZoomFaktor),(int) (e.getY()/Editor.ZoomFaktor)) != aktcomp) 
 	{
 		aktcomp = PESTdrawutil.getSmallObject(root,(int) (e.getX()/Editor.ZoomFaktor),(int) (e.getY()/Editor.ZoomFaktor));
-		System.out.println("Akt. Komponente : "+aktcomp);
+	//	System.out.println("Akt. Komponente : "+aktcomp);
 		if (aktcomp instanceof Tr)
 		{
 		new highlightObject(true);
@@ -157,7 +160,7 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_TransLabel")
 if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans")
       {
 	aktcomp = PESTdrawutil.getSmallObject(root,(int) (e.getX()/Editor.ZoomFaktor),(int) (e.getY()/Editor.ZoomFaktor));
-	System.out.println("Akt. Komponente : "+aktcomp);
+	// System.out.println("Akt. Komponente : "+aktcomp);
 	//new highlightObject(true);
 	//new highlightObject(aktcomp,Color.black);
 	//new highlightObject();
@@ -198,7 +201,7 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans")
 		if (trroot == false) {trroot = true;last_x = (short) e.getX(); last_y = (short) e.getY();
 		       laufwaypoint = 0; 
 		       tempwaypoint = new Point[100];
-		       tempwaypoint[0] = new Point ((int) last_x, (int) last_y);
+		       tempwaypoint[0] = new Point ((int) (last_x /Editor.ZoomFaktor), (int) (last_y/Editor.ZoomFaktor) );
 		}
 		else {
 			if (e.getClickCount() < 2)
@@ -206,12 +209,12 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans")
 			    laufwaypoint++;
 			g.setColor(Color.magenta);
 			g.drawLine(last_x,last_y,e.getX(),e.getY());last_x = (short) e.getX(); last_y = (short) e.getY();		
-			tempwaypoint[laufwaypoint] = new Point((int) last_x,(int) last_y);
+			tempwaypoint[laufwaypoint] = new Point((int) (last_x/Editor.ZoomFaktor),(int) (last_y/Editor.ZoomFaktor));
 			} else
 			{
 			if (laufwaypoint > 0)
 			{
-			System.out.println("Pfeilspitze");
+		//	System.out.println("Pfeilspitze");
 			TrAnchor an1 = null;
 			TrAnchor an2 = null;
 			drawPESTTrans.drawTrans(g,tempwaypoint[laufwaypoint-1].x
@@ -220,19 +223,19 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans")
 						,tempwaypoint[laufwaypoint].y
 						,an1,an2,Color.magenta);
 			new drawPESTTrans(g,root,tempwaypoint,laufwaypoint,Color.magenta);
-			trroot = false;
+			Editor.SetListen();trroot = false;
 			repaint();
 			} else {trroot = false;}
 			}
 		}
-		System.out.println("Waylist :"+tempwaypoint+"    lauf : "+laufwaypoint);
+	//	System.out.println("Waylist :"+tempwaypoint+"    lauf : "+laufwaypoint);
 	    }
 
 	    if ((e.getID() == MouseEvent.MOUSE_PRESSED) & (Editor.Editor() =="Draw_StateLabel"))
 		{ 
+		Editor.SetListen();
 		    new labelPESTState(root,(int) (e.getX()/Editor.ZoomFaktor),
 					     (int) (e.getY()/Editor.ZoomFaktor));
-		    Editor.SetListen();
 		    trroot = false;
 		   repaint();
 		}
@@ -242,10 +245,9 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans")
 		    Absyn akttrans;
 		    akttrans = PESTdrawutil.getSmallObject(root,(int) (e.getX()/Editor.ZoomFaktor),(int) (e.getY()/Editor.ZoomFaktor)); 
 		   if (akttrans instanceof Tr)
-		  {
+		  {Editor.SetListen();
 		    new labelPESTTrans(root,(int) (e.getX()/Editor.ZoomFaktor),
 		 		                 (int) (e.getY()/Editor.ZoomFaktor),(Tr) akttrans);
-		    Editor.SetListen();
 		    trroot = false;
 		new highlightObject();
 		   repaint();
@@ -255,42 +257,42 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans")
 
 
 	    if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Draw_State"))
-		{ 
+		{ Editor.SetListen();
 		    new drawPESTState(g,root,(int) (last_x/Editor.ZoomFaktor),
 					     (int) (last_y/Editor.ZoomFaktor),
 					     (int) (e.getX()/Editor.ZoomFaktor),
 					     (int) (e.getY()/Editor.ZoomFaktor),
 						Color.green);
-		    Editor.SetListen();trroot = false;
+		    trroot = false;
 
 		}
 	if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Draw_Par"))
-		{ 
+		{ Editor.SetListen();
 		    new drawPESTParallel(g,root,(int) (last_x/Editor.ZoomFaktor),
 					     (int) (last_y/Editor.ZoomFaktor),
 					     (int) (e.getX()/Editor.ZoomFaktor),
 					     (int) (e.getY()/Editor.ZoomFaktor),
 					     Color.green);
-		    Editor.SetListen();trroot = false;
+		    trroot = false;
 		    repaint();
 		}
 
 	//if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Draw_Trans"))
-	//	{ 
+	//	{ Editor.SetListen();
 	//	    new drawPESTTrans(g,root,(int) (last_x/Editor.ZoomFaktor),
 	//				     (int) (last_y/Editor.ZoomFaktor),
 	//				     (int) (e.getX()/Editor.ZoomFaktor),
 	//				     (int) (e.getY()/Editor.ZoomFaktor),
 	//				     Color.magenta);
-	//	    Editor.SetListen();trroot = false;
+	//	    trroot = false;
 	//	}
 
 	if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Set_Default"))
-		{ 
+		{ Editor.SetListen();
 		    new setDefault(g,root,(int) (last_x/Editor.ZoomFaktor),
 					     (int) (last_y/Editor.ZoomFaktor),
 					     Color.magenta);
-		    Editor.SetListen();trroot = false;
+		    trroot = false;
 
 		    repaint();
 		}
@@ -303,23 +305,23 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans")
 			(int) (last_x/Editor.ZoomFaktor),
 			(int) (last_y/Editor.ZoomFaktor)
 				).akt;
-		System.out.println("akt :  "+test);
+	//	System.out.println("akt :  "+test);
 		//if (test instanceof Basic_State) {new highlightObject((Basic_State)test,Color.red);}
 		//if (test instanceof And_State) {new highlightObject((And_State)test,Color.red);}
 		//if (test instanceof Or_State) {new highlightObject((Or_State)test,Color.red);}
 		//if (test instanceof Connector) {new highlightObject((Connector)test,Color.red);}
 	//	if (test instanceof Tr) {new highlightObject((Tr)test,Color.red);}
 		deleteobj = test;
-		System.out.println(">>>"+PESTdrawutil.getSmallObject(root,last_x,last_y));
+	//	System.out.println(">>>"+PESTdrawutil.getSmallObject(root,last_x,last_y));
 		System.out.println("to delete >>>"+deleteobj);
 		}
 	if ((e.getID() == MouseEvent.MOUSE_PRESSED) & (Editor.Editor() =="Draw_Conn"))
-		{ 
+		{ Editor.SetListen();
 		    new drawPESTConn(g,root,
 			(int) (e.getX()/Editor.ZoomFaktor)-6,
 			(int) (e.getY()/Editor.ZoomFaktor)-6,
 			Color.blue);
-		    Editor.SetListen(); trroot = false;
+		     trroot = false;
 
 		}
 	}
@@ -375,24 +377,28 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans")
 	  }
       }
 
-private static void undo(Statechart xroot) { 
+private static Statechart undo() { 
       	System.out.println("UNDO");
 	  lauf = lauf.prev;
-	xroot.state = lauf.chart.state;
-	xroot.events = lauf.chart.events;
-	xroot.bvars = lauf.chart.bvars;
-	xroot.cnames = lauf.chart.cnames;
-	Editor.newdraw();
+	//xroot.state = lauf.chart.state;
+	//xroot.events = lauf.chart.events;
+	//xroot.bvars = lauf.chart.bvars;
+	//xroot.cnames = lauf.chart.cnames;
+	//Editor.newdraw();
+	return lauf.chart;
+
    }
 
-private static void redo(Statechart xroot) { 
+private static Statechart redo() { 
    	System.out.println("REDO");
 	  if (lauf != basis) {lauf = lauf.next;
-	xroot.state = lauf.chart.state;
-	xroot.events = lauf.chart.events;
-	xroot.bvars = lauf.chart.bvars;
-	xroot.cnames = lauf.chart.cnames;
-	Editor.newdraw();}
+	//xroot.state = lauf.chart.state;
+	//xroot.events = lauf.chart.events;
+	//xroot.bvars = lauf.chart.bvars;
+	//xroot.cnames = lauf.chart.cnames;
+	//Editor.newdraw();
+	}
+	return lauf.chart;
    }
 
       public static void addundo(Statechart nroot)

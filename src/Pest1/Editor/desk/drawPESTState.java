@@ -22,7 +22,6 @@ import editor.desk.*;
 import editor.*;
 
 
-
 public class drawPESTState
 {
 Statechart root;
@@ -30,14 +29,13 @@ Statechart root;
 boolean drawtest = true;  
     static int laufname = 0;
    
-    
     public drawPESTState(Graphics g,Statechart nroot, int cx1, int cy1, int cx2, int cy2, Color c_color) 
               {
 
 root = nroot;
 
-System.out.println("arbeit");
-System.out.println("dieser :  "+PESTdrawutil.getStateFrame(root,cx1,cy1,cx2,cy2).akt);
+//System.out.println("arbeit");
+//System.out.println("dieser :  "+PESTdrawutil.getStateFrame(root,cx1,cy1,cx2,cy2).akt);
 	
 	laufname = laufname + 1;
 		if (root.state != null)
@@ -68,8 +66,6 @@ System.out.println("dieser :  "+PESTdrawutil.getStateFrame(root,cx1,cy1,cx2,cy2)
 										(int) ((cy2-cy1)*Editor.ZoomFaktor)
 										);} 
 		} 
-
-
 	}
 	else
 	{
@@ -81,7 +77,6 @@ System.out.println("dieser :  "+PESTdrawutil.getStateFrame(root,cx1,cy1,cx2,cy2)
 			(int) ((cy2-cy1)*Editor.ZoomFaktor)
 		);	
 	}
-
        }
 
 private boolean s_basic(Statechart root,int cx1, int cy1, int cx2, int cy2) {
@@ -105,7 +100,7 @@ boolean ttest = false;
 		root.state = new Or_State(temp,new StateList(btemp2,null),null,null,null,btemp.rect);
 		ttest = true;
 
-  System.out.println("no1");
+  //System.out.println("no1");
 		}
 	
 if ( brect.intersects(btemp.rect) == false)
@@ -115,10 +110,9 @@ if ( brect.intersects(btemp.rect) == false)
 		laufname = laufname +1;
 		root.state = new Or_State( new Statename("...state"+laufname) ,new StateList(btemp2,new StateList(btemp,null)),null,null,null);
 		ttest = true;
- System.out.println("no3");
+ //System.out.println("no3");
 
 		}
-
 
 	if ( brect.contains(btemp.rect.x,btemp.rect.y) & brect.contains(btemp.rect.x+btemp.rect.width,btemp.rect.y+btemp.rect.height) )
 		{
@@ -128,7 +122,7 @@ if ( brect.intersects(btemp.rect) == false)
 		btemp2.rect.y = btemp2.rect.y-cy1;
 		root.state = new Or_State(  new Statename("...state"+laufname)  ,new StateList(btemp2,null),null,null,null,new CRectangle(cx1,cy1,cx2-cx1,cy2-cy1));
 		ttest = true;
- System.out.println("no2");
+ //System.out.println("no2");
 
 		}
 		if (ttest == false)  {  Editor.fehlermeldung1(); // System.out.println("Fehler01");
@@ -185,7 +179,7 @@ ttest = true;
 	   templist = new StateList(btemp,null);
 	    laufname++;
 	   root.state = new Or_State(new Statename("...State"+laufname),new StateList(tempstate,templist),null,null,null);
-	   System.out.println("aussen");
+//	   System.out.println("aussen");
 	   } 
 	  else 
 	       {  if (temprect.contains(temprect2.x,temprect2.y) & temprect.contains( temprect2.x+temprect2.width,temprect2.y+temprect2.height ))
@@ -202,8 +196,6 @@ ttest = true;
 			ttest = false;}
 	       }
 	}
-
-
 
 	if (matrix.akt instanceof Basic_State)
 	{
@@ -224,8 +216,6 @@ ttest = true;
 		} 
 	}
 
-
-
 	if (matrix.akt instanceof Or_State)
 	{
 	ttest2 = true;
@@ -236,18 +226,20 @@ ttest = true;
 	trlist = otemp.trs;
 	colist = otemp.connectors;
 	temprect = new CRectangle(cx1-matrix.x,cy1-matrix.y,cx2-cx1,cy2-cy1);	
-System.out.println("rect  : "+temprect);
+//System.out.println("rect  : "+temprect);
 
 	ortyp = false; 
 	while (templist != null) { 
-	    if  (templist.head.rect.intersects(temprect)== false) {System.out.println("out");} 
+	    if  (templist.head.rect.intersects(temprect)== false) {//System.out.println("out");
+							} 
 	    else {temprect2 = templist.head.rect;
-System.out.println("rect2 : "+temprect2);
+//System.out.println("rect2 : "+temprect2);
 		if (temprect.contains(temprect2.x,temprect2.y) &
 		     temprect.contains(temprect2.x+temprect2.width,temprect2.y+temprect2.height)) 
-		{System.out.println("in");} else{   Editor.fehlermeldung1();
-						ttest2 = false; // System.out.println("Fehler 001");
-						}
+		{//System.out.println("in");
+		} else{   Editor.fehlermeldung1();
+		ttest2 = false; // System.out.println("Fehler 001");
+		}
 	} 
 	    templist = templist.tail;
 	}	
@@ -268,16 +260,12 @@ System.out.println("rect2 : "+temprect2);
 		{ colist4 = colist2; colist2 = new ConnectorList(colist.head,colist4);System.out.println("con in");
 			colist2.head.position.x = colist.head.position.x-(cx1-matrix.x);
 			    colist2.head.position.y = colist.head.position.y-(cy1-matrix.y);
-
-
 		} else
 		    { if (temprect.contains(temppoint1)== false & temprect.contains(temppoint2) == false &
 			  new Rectangle(temppoint1.x,temppoint1.y,12,12).intersects(temprect) == false)
 			{
-			    colist4 = colist3;colist3 = new ConnectorList(colist.head,colist4);
-			    
-System.out.println("con out");
-
+			    colist4 = colist3;colist3 = new ConnectorList(colist.head,colist4);			  
+//System.out.println("con out");
 			} else 
 			    { Editor.fehlermeldung1();//System.out.println("Fehler in stateconn");
 			      ttest = false;
@@ -313,7 +301,7 @@ System.out.println("con out");
 	}
 
           if (ttest == true & ttest2 == true) { templist = otemp.substates;
-           System.out.println("movexx");
+           //System.out.println("movexx");
 
               while (templist != null) { 
 	    if  (templist.head.rect.intersects(temprect)== false) {templist4 = templist3; templist3 = new StateList(templist.head,templist4); System.out.println("moveyy"); } 
@@ -321,22 +309,18 @@ System.out.println("con out");
 	    templist2 = new StateList(templist.head,templist4);
 	    templist2.head.rect.x = templist.head.rect.x-(cx1-matrix.x);
 	    templist2.head.rect.y = templist.head.rect.y-(cy1-matrix.y);
-System.out.println("move");
+// System.out.println("move");
 		} 
 	    templist = templist.tail;
 	}
              }
 
-
-
 	if (ttest == true & ttest2 == true)
 		{
 
-
-
 if ((matrix.akt instanceof Or_State)  & (colist2 != null | templist2 != null | trlist2 != null) &
    (colist3 != null | templist3 != null | trlist3 != null) )
-  //  {System.out.println("neue Funktion");}
+    {System.out.println("neue Funktion");}
 		            	{System.out.println("Or ein");
 			tempstate5 = new Or_State(new Statename ("...State"+laufname),templist2,trlist2,null,colist2,new CRectangle(cx1-matrix.x,cy1-matrix.y,cx2-cx1,cy2-cy1));
 			otemp = (Or_State) matrix.akt;
@@ -344,12 +328,7 @@ if ((matrix.akt instanceof Or_State)  & (colist2 != null | templist2 != null | t
 			otemp.substates = templist4;
 			otemp.connectors = colist3;
 			otemp.trs = trlist3;
-			
-			}
-
-	
-	
-		
+						}		
 		if ((matrix.akt instanceof Or_State)  & (colist2 != null | templist2 != null | trlist2 != null) & matrix.akt != root.state)
 			{System.out.println("Or ein");
 			tempstate5 = new Or_State(new Statename ("...State"+laufname),templist2,trlist2,null,colist2,new CRectangle(cx1-matrix.x,cy1-matrix.y,cx2-cx1,cy2-cy1));
@@ -358,25 +337,18 @@ if ((matrix.akt instanceof Or_State)  & (colist2 != null | templist2 != null | t
 			otemp.substates = templist4;
 			otemp.connectors = colist3;
 			otemp.trs = trlist3;
-			
 			}
 
 		if (matrix.akt instanceof Or_State & colist3 == null & trlist3 == null & templist3 == null & matrix.akt.rect != null)
-		{//System.out.println("wagadugu");
-
+		{System.out.println("wagadugu");
 			tempstate5 = new Or_State(new Statename ("...State"+laufname),templist2,trlist2,null,colist2,new CRectangle(cx1-matrix.x,cy1-matrix.y,cx2-cx1,cy2-cy1));
 			otemp = (Or_State) matrix.akt;
 			templist4 = new StateList(tempstate5,templist3);
 			otemp.substates = templist4;
 			otemp.connectors = colist3;
 			otemp.trs = trlist3;
-
-
 		}
      
-
-
-
 		 if ((matrix.akt instanceof Or_State)  & colist2 == null & templist2 == null & trlist2 == null) // O.K.
 		                 {System.out.println("Basic ein");
 			btemp = new Basic_State(new Statename ("...State"+laufname),new CRectangle(cx1-matrix.x,cy1-matrix.y,cx2-cx1,cy2-cy1));
@@ -386,21 +358,17 @@ if ((matrix.akt instanceof Or_State)  & (colist2 != null | templist2 != null | t
 			otemp.substates = templist2;
 			}
 
-
-
 		if (matrix.akt == root.state & templist3 == null & trlist3 == null & colist3 == null & root.state.rect == null)  // O.K.
 			{matrix.akt.rect = new CRectangle(cx1-matrix.x,cy1-matrix.y,cx2-cx1,cy2-cy1);
 			System.out.println("333334433333333333333333333");	}
-
 	}
-
 }
 	
    } else
    { Editor.fehlermeldung1();//System.out.println("Fehler in xx");
 	ttest = false;}   
 
-System.out.println("test : "+ttest+" "+ttest2);
+// System.out.println("test : "+ttest+" "+ttest2);
 
   if (ttest2 == false) {ttest = false;}
   return ttest;
