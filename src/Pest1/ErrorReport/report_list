@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.97 1999-02-11 09:24:11 swtech11 Exp $
+//	$Id: report_list,v 1.98 1999-02-11 09:56:48 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -859,7 +859,7 @@ Mir gefällt die Variante mit pop-up besser.
 #Number:        58
 #Autor:         Erich Mikk erm
 #Subject:       Message-Browser, varia
-#Status:        fixed
+#Status:        confirmed
 #Description:
 
 (1) Meldungen benutzen Umlaute und stattdessen ae, ue usw.  durcheinander. 
@@ -1069,3 +1069,19 @@ Setze in Einstellungen fuer STM Option "Koordinaten uebernehmen"
 ausser Kraft. Dann importiere File tv.st und starte den Editor.
 Keine Chart zu sehen, und beim Versuch, etwas zu machen  gibts
 hunderte von Exceptions.
+//------------------------------------------------------------------------------
+#Number:	69
+#Autor:		Erich Mikk
+#Subject:	Neue Koordinaten - neue Probleme
+#Status: 	reported
+#Description: 
+
+STM-Import a1.st
+Werkzeuge -> Neue Koordinaten
+Werkzeuge -> Editor
+Editor meldet: Koordinatenproblem aufgetreten.
+Das ist aber sehr seltsam.
+
+Wenn man die gleiche Chart erstmal TESC-Exportieren würde und
+dann wieder TESC-Importieren, dann gibt es das Problem nicht.
+//------------------------------------------------------------------------------
