@@ -40,7 +40,7 @@ public void actionPerformed(ActionEvent e) {
       }else if (cmd.equals("Neu")) {
 	  if (myWindow.isSaved())
 	      {
-		  myWindow.setStatechart(new absyn.Statechart(myWindow.SBDateiname),".","UNBENANNT");
+		  myWindow.setStatechart(new absyn.Statechart(myWindow.SBDateiname),"./","UNBENANNT");
 
 	      }
       }else{

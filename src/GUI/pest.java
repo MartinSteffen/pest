@@ -520,6 +520,12 @@ implements GUIInterface
 	return color[conColorIndex];
     }
     
+
+    public check.CheckConfig getCheckConfig()
+    {
+	return checkConfig;
+    }
+
     
     BufferedReader load(String titel)
     {
