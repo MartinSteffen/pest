@@ -6,7 +6,7 @@ import java.awt.Rectangle;
 
 abstract public class State extends Absyn implements Serializable, Cloneable {
     public Statename name;
-    public Rectangle rect;
+    public CRectangle rect;
 
     public abstract Object clone() throws  CloneNotSupportedException;
 }
@@ -17,9 +17,12 @@ abstract public class State extends Absyn implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: State.java,v 1.11 1998-12-15 07:11:10 swtech01 Exp $
+//	$Id: State.java,v 1.12 1998-12-15 11:30:38 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.11  1998/12/15 07:11:10  swtech01
+//	Added Serialization to all classes
+//
 //	Revision 1.10  1998/12/11 17:43:01  swtech00
 //	Cloneable
 //

@@ -9,7 +9,7 @@ public class Basic_State extends State implements Serializable, Cloneable {
 	name = n;
 	rect = null;
     }
-    public Basic_State (Statename n, Rectangle r) {
+    public Basic_State (Statename n, CRectangle r) {
 	name = n;
 	rect = r;
     };
@@ -24,9 +24,12 @@ public class Basic_State extends State implements Serializable, Cloneable {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Basic_State.java,v 1.6 1998-12-15 07:11:07 swtech01 Exp $
+//	$Id: Basic_State.java,v 1.7 1998-12-15 11:30:38 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.6  1998/12/15 07:11:07  swtech01
+//	Added Serialization to all classes
+//
 //	Revision 1.5  1998/12/11 17:42:55  swtech00
 //	Cloneable
 //

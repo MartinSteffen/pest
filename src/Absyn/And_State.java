@@ -15,7 +15,7 @@ public class And_State extends State implements Serializable, Cloneable {
     };
     public And_State(Statename n,
 		     StateList sl,
-		     Rectangle r) 
+		     CRectangle r) 
     {
 	name = n;
 	rect = r;
@@ -25,16 +25,19 @@ public class And_State extends State implements Serializable, Cloneable {
     public Object clone() throws CloneNotSupportedException {
 	return new And_State(name, 
 			     (StateList)substates.clone(), 
-			     (Rectangle)rect);
+			     (CRectangle)rect.clone());
     };
 }
 //----------------------------------------------------------------------
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: And_State.java,v 1.6 1998-12-15 07:11:06 swtech01 Exp $
+//	$Id: And_State.java,v 1.7 1998-12-15 11:30:38 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.6  1998/12/15 07:11:06  swtech01
+//	Added Serialization to all classes
+//
 //	Revision 1.5  1998/12/11 17:39:18  swtech00
 //	*** empty log message ***
 //
