@@ -54,7 +54,7 @@ import gui.GUIInterface;
  * </DL COMPACT>
  *
  * @author  Sven Jorga, Werner Lehmann
- * @version $Id: HAImport.java,v 1.9 1999-01-11 12:27:12 swtech18 Exp $
+ * @version $Id: HAImport.java,v 1.10 1999-01-11 13:25:26 swtech18 Exp $
  */
 public class HAImport implements Patterns {
   Perl5Util perl = new Perl5Util();
@@ -82,7 +82,7 @@ public class HAImport implements Patterns {
   private Hashtable coordHash = null;
   private Hashtable initHash = null;
 
-/** Der Konstruktor dient zum Importieren einer StateChart
+  /** Der Konstruktor dient zum Importieren einer StateChart
    * im HA-Format. Es wird erwartet, da&szlig; reader ein
    * Stream auf eine entsprechende Eingabedatei ist.
    */
@@ -91,7 +91,8 @@ public class HAImport implements Patterns {
     initImport(reader);
   }
 
-  /** Dieser Konstruktor erwartet zus&auml;tzlich ein GUIInterface
+  /** Konstruktor mit GUI-Unterst&uuml;tzung. 
+   * Dieser Konstruktor erwartet zus&auml;tzlich ein GUIInterface
    * und sollte nun anstelle des bisherigen verwendet werden, damit
    * Fehlermeldungen im Logfenster des GUIs erscheinen und nicht als
    * Dialoge.
