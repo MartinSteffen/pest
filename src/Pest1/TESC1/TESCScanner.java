@@ -251,7 +251,11 @@ class TESCScanner {
 	    }
 	    else {
 		// sonst aus Stream lesen
-		b = is.read();	
+		b = is.read(); 
+
+		// Zusatzfeature des Scanners: Alles nach # ist comment
+		if (b=='#') while (b!='\n' && b != -1) b = is.read();
+
 		// und sicherstellen, dass volständige Space-Klammerung
 		b = trim(b);
 	    }
@@ -277,7 +281,7 @@ class TESCScanner {
 	while(is_white((char)b) && b != -1) b = readStream();
 
 	// Token extrahieren
-	while (!is_white((char)b) && b != -1) {   // -1 => EOF
+	while (!is_white((char)b) && b != -1 && b!='#') {   // -1 => EOF, # comment
 	    sb.append((char)b);
 	    b = readStream();
 	}
@@ -286,6 +290,7 @@ class TESCScanner {
 	    token.value_str = sb.toString();
 	    token.token     = typeOfToken(sb.toString());
 	    token.linenum   = ln;
+	    
 	}
 	else {
 	    token.value_str = "";
@@ -356,7 +361,7 @@ class TESCScanner {
 	else if (s.compareTo((String)"undef") == 0)       i = vTOKEN.UNDEF;
 	else if (s.compareTo((String)"transitions") == 0) i = vTOKEN.TRANSITIONS;
 	else if (s.compareTo((String)"bvars") == 0)       i = vTOKEN.BVARS;
-	else if (s.compareTo((String)"pathnames") == 0)   i = vTOKEN.PATHNAMES;
+	
 	else if (s.compareTo((String)"connectors") == 0)  i = vTOKEN.CONS;
 	else if (s.compareTo((String)":=") == 0)          i = vTOKEN.BASSIGN;
 	else if (s.compareTo((String)"not") == 0)         i = vTOKEN.NOT;
@@ -370,6 +375,11 @@ class TESCScanner {
 
 
 /* TESCScanner
- * $Id: TESCScanner.java,v 1.2 1998-12-07 13:20:16 swtech13 Exp $
+ * $Id: TESCScanner.java,v 1.3 1998-12-07 15:13:23 swtech13 Exp $
  * $Log: not supported by cvs2svn $
+ * Revision 1.2  1998/12/07 13:20:16  swtech13
+ * Scanner geht, aber noch nicht vollstaendig,
+ * Parser nix,
+ * Grammatik muss noch ueberarbeitet werden.
+ *
  */
