@@ -42,7 +42,7 @@ public void actionPerformed(ActionEvent e) {
 				  {
 				      myWindow.userMessage("GUI   : TESC1 erfolgreich");
 				      GraphOptimizer go = new GraphOptimizer(Synb,myWindow.getGraphics().getFontMetrics());
-				      Synb = go.start();
+				      Synb = go.start(myWindow.layoutAlgorithm);
 				      myWindow.setStatechart(Synb,"./","UNBENANNT");
 				      myWindow.setDirty(true);		  
 
