@@ -6,7 +6,7 @@ import java.awt.Point;
  * Transition label.
  * @author Initially provided by Martin Steffen.
  */
-public class Label extends Absyn {
+public class TLabel extends Absyn {
 /**
  * Position of the label.
  */
@@ -22,7 +22,7 @@ public class Label extends Absyn {
 /**
  * Constructor.
  */
-    public Label (Guard g, Action a) {
+    public TLabel (Guard g, Action a) {
 	position = null;
 	guard = g;
 	action = a;
@@ -30,7 +30,7 @@ public class Label extends Absyn {
 /**
  * Constructor with Position.
  */
-    public Label (Guard g, Action a, Point p) {
+    public TLabel (Guard g, Action a, Point p) {
 	position = p;
 	guard = g;
 	action = a;
@@ -42,4 +42,5 @@ public class Label extends Absyn {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-
+//	$Id: TLabel.java,v 1.2 1998-12-07 15:08:01 swtech00 Exp $
+//----------------------------------------------------------------------

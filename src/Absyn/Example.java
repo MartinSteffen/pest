@@ -18,19 +18,31 @@ public class Example {
             new SEventList (D,
               new SEventList (G,null)))));
 
-    PathList pathlist =  
-        new PathList (new Path ("SUD"),
-          new PathList (new Path ("P1"),
-            new PathList (new Path ("P2"),
-              new PathList (new Path ("P3"),
-		new PathList (new Path ("Q1"),
-                  new PathList (new Path ("Q2"),
-                    new PathList (new Path ("R1"),
-                      new PathList (new Path ("R2"),
-                        new PathList (new Path ("S1"),
-			  new PathList (new Path ("S2"),
-                            new PathList (new Path ("T1"),
-                              new PathList (new Path ("T2"),null))))))))))));  
+    Path sudp = new Path ("Sud", null);
+    Path p1p  = new Path ("P1", sudp);
+    Path p2p  = new Path ("P2", sudp);
+    Path p3p  = new Path ("P3", sudp);
+    Path q1p  = new Path ("Q1", p3p);
+    Path q2p  = new Path ("Q2", p3p);
+    Path r1p  = new Path ("R1", q2p);
+    Path r2p  = new Path ("R2", q2p);
+    Path s1p  = new Path ("S1", r1p);
+    Path s2p  = new Path ("S2", r1p);
+    Path t1p  = new Path ("T1", r2p);
+    Path t2p  = new Path ("T2", r2p);
+    PathList pathlist =
+    new PathList (sudp,
+      new PathList (p1p,
+       new PathList (p2p,
+         new PathList (p3p,
+           new PathList (q1p,
+             new PathList (q2p,
+               new PathList (r1p,
+                 new PathList (r2p,
+                   new PathList (s1p,
+	             new PathList (s2p,
+                       new PathList (t1p,
+                         new PathList (t2p,null))))))))))));
 
   Basic_State S1 = new Basic_State (new Statename("S1"));
   Basic_State S2 = new Basic_State (new Statename("S2"));
@@ -45,8 +57,7 @@ public class Example {
 		   new Statename ("S1"),
 		   new TLabel (new GuardCompg (new Compguard (Compguard.AND,
 							  new GuardEvent(G),
-							  new GuardCompp (new Comppath (Comppath.IN,
-											new Path ("T2"))))),
+							  new GuardCompp (new Comppath (Comppath.IN,t2p)))),
 					   new ActionEmpty (new Dummy())));
 
 
@@ -83,7 +94,7 @@ public class Example {
 			      new StateList (Q1,new StateList (Q2,null)),
 			      new TrList (new Tr (new Statename ("Q1"), 
 						  new Statename ("Q2"),
-						  new TLabel (new GuardEvent(A),new ActionEvent (C))),
+						  new TLabel (new GuardEvent(A),new ActionEvt (C))),
 					  null),
 			      new StatenameList( new Statename("Q1"), null),	
 			      null);
