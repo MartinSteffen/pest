@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	--------------
 //
-//	$Id: report_list,v 1.41 1999-02-08 15:36:01 swtech01 Exp $
+//	$Id: report_list,v 1.42 1999-02-09 09:02:32 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -94,8 +94,7 @@ Transitionsbeschriftungen nicht sichtbar.
 #Number:	5
 #Autor:		Erich Mikk erm
 #Subject:	Chart nicht vollstndig sichtbar
-#Status: 	processing und fixed 
->>>>>>> 1.38
+#Status: 	confirmed
 #Description: 
 
 Lade Statechart wie in Nr. 4. und starte Editor.
@@ -187,7 +186,7 @@ Im Editor wird nichts gehighlightet.
 #Number:	10
 #Autor:		Erich Mikk erm
 #Subject:	Default states nicht erkennbar.
-#Status: 	processing und fixed 
+#Status: 	confirmed 
 #Description: 
 
 
@@ -222,8 +221,11 @@ Man knnte mit der gleichen Methode noch mehr davon starten.
 #Number:	13
 #Autor:		Erich Mikk
 #Subject:	Einstellungsmglichkeiten nicht vorhanden
-#Status:	fixed
+#Status:	reported
 #Description:
+
+Am 9.2. zurückgesetzt. Ich kann nicht erkennen, dass hier sich irgendwas getan hat.
+[Erich]
 
 Einstellungen->TESC1 sagt
 	GUI   : NOCH NICHT IMPLEMENTIERT
