@@ -14,8 +14,17 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import absyn.*;
-
+import editor.desk.*;
 public class highlightObject {
+
+
+  static Graphics h;
+       
+  public highlightObject (Graphics g) {h = g;};
+   
+    
+  public highlightObject () { h.drawRect(10,10,100,100);}
+
     
 /**
  * Generates a change to default color of object 
@@ -24,6 +33,7 @@ public class highlightObject {
  * <li>obj  :  
  * </ul>
  */
+
 
     public highlightObject(Graphics g, Basic_State obj) { }
     public highlightObject(Graphics g, Basic_State obj, Color col) { }
