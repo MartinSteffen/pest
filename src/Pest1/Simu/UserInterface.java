@@ -1,12 +1,11 @@
-package Simu;
+package simu;
 
 /**
- * This type was created in VisualAge.
  */
 
 import java.awt.*;
 import java.awt.event.*;
-import Absyn.*;
+import absyn.*;
  
 public class UserInterface {
 	protected Frame f;
@@ -31,7 +30,6 @@ public UserInterface() {
  * Return the Button1 property value.
  * @return java.awt.Button
  */
-/* WARNING: THIS METHOD WILL BE REGENERATED. */
 private Button getButton1() {
 	if (ivjButton1 == null) {
 		try {
@@ -54,7 +52,6 @@ private Button getButton1() {
  * Return the Button2 property value.
  * @return java.awt.Button
  */
-/* WARNING: THIS METHOD WILL BE REGENERATED. */
 private Button getButton2() {
 	if (ivjButton2 == null) {
 		try {
@@ -76,7 +73,6 @@ private Button getButton2() {
  * Return the Button3 property value.
  * @return java.awt.Button
  */
-/* WARNING: THIS METHOD WILL BE REGENERATED. */
 private Button getButton3() {
 	if (ivjButton3 == null) {
 		try {
@@ -98,7 +94,6 @@ private Button getButton3() {
  * Return the Button4 property value.
  * @return java.awt.Button
  */
-/* WARNING: THIS METHOD WILL BE REGENERATED. */
 private Button getButton4() {
 	if (ivjButton4 == null) {
 		try {
@@ -120,7 +115,6 @@ private Button getButton4() {
  * Return the ContentsPane property value.
  * @return java.awt.Panel
  */
-/* WARNING: THIS METHOD WILL BE REGENERATED. */
 private Panel getContentsPane() {
 	if (ivjContentsPane == null) {
 		try {
@@ -143,7 +137,6 @@ private Panel getContentsPane() {
  * Return the Frame1 property value.
  * @return java.awt.Frame
  */
-/* WARNING: THIS METHOD WILL BE REGENERATED. */
 private Frame getFrame1() {
 	if (ivjFrame1 == null) {
 		try {
@@ -167,7 +160,6 @@ private Frame getFrame1() {
  * Return the Panel1 property value.
  * @return java.awt.Panel
  */
-/* WARNING: THIS METHOD WILL BE REGENERATED. */
 private Panel getPanel1() {
 	if (ivjPanel1 == null) {
 		try {
@@ -190,7 +182,6 @@ private Panel getPanel1() {
  * Return the Panel2 property value.
  * @return java.awt.Panel
  */
-/* WARNING: THIS METHOD WILL BE REGENERATED. */
 private Panel getPanel2() {
 	if (ivjPanel2 == null) {
 		try {
@@ -216,7 +207,6 @@ private Panel getPanel2() {
  * Return the TextField1 property value.
  * @return java.awt.TextField
  */
-/* WARNING: THIS METHOD WILL BE REGENERATED. */
 private TextField getTextField1() {
 	if (ivjTextField1 == null) {
 		try {
@@ -246,7 +236,6 @@ private void handleException(Throwable exception) {
 /**
  * Initialize the class.
  */
-/* WARNING: THIS METHOD WILL BE REGENERATED. */
 private void initialize() {
 	// user code begin {1}
 	// user code end
@@ -254,7 +243,6 @@ private void initialize() {
 	// user code end
 }
 /**
- * This method was created in VisualAge.
  * 
  */
 public void start() {
