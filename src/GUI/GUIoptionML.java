@@ -37,6 +37,8 @@ public void actionPerformed(ActionEvent e) {
 	  //new check.CheckOption(myWindow,myWindow.checkConfig);
       }else if (cmd.equals("Statemate")) {
 	  new stmOption(myWindow);
+      }else if (cmd.equals("TESC2")) {
+	  new tesc2Option(myWindow);
       }else{  
 	 myWindow.userMessage("GUI   : NOCH NICHT IMPLEMENTIERT"); 
       }	
