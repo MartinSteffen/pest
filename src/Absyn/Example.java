@@ -79,10 +79,10 @@ public class Example {
 			      new StateList (T1,new StateList (T2,null)),
 			      new TrList  (new Tr (new Statename ("T1"), 
 						   new Statename ("T2"),
-						   new TLabel (new GuardEvent(new SEvent("D")),null)),
+						   new TLabel (new GuardEvent(new SEvent("D")),new ActionEmpty(new Dummy()))),
 					   new TrList (new Tr (new Statename ("T2"), 
 							       new Statename ("T1"),
-							       new TLabel (new GuardEvent(new SEvent("G")),null)),null)),
+							       new TLabel (new GuardEvent(new SEvent("G")),new ActionEmpty(new Dummy()))),null)),
 			      new StatenameList (new Statename("T1"), null),	
 			      null);
   
