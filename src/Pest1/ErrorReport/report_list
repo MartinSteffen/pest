@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.16 1999-01-19 09:53:09 swtech24 Exp $
+//	$Id: report_list,v 1.17 1999-01-19 14:11:48 swtech24 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -120,7 +120,7 @@ als Interlevel-Transition dargestellt werden.
 #Number:        7
 #Autor:         Erich Mikk erm
 #Subject:       Default States im Editor nicht sichtbar.
-#Status:        reported
+#Status:        fixed
 #Description:
 
 
@@ -145,7 +145,7 @@ geschrieben. Die Label von States hingegen werden korrekt gezoomt.
 #Number:	9
 #Autor:		Stefan Lemke swtech21
 #Subject:	PEST1: Benennung von States im Zoom-Modus
-#Status:	reported
+#Status:	fixed
 #Description:
 
 In eine Chart hineingezoomt.
@@ -176,7 +176,7 @@ Kontextmenue hat keine Wirkung.
 #Number:	12
 #Autor:		Stefan Lemke swtech21
 #Subject:	Benennung von kleinen States
-#Status:	reported
+#Status:	fixed
 #Description:
 
 3x in eine Statechart gezoomt. State (Groesse auf Bildschirm ca. 1 cm x 3 cm)
