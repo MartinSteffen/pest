@@ -18,15 +18,14 @@ or S3:
 		basic B2;
 	end S2;
 
-	or StateX:	
-	end StateX;
-
 	basic S5;
 
-	connectors: c1, c2;
+	defcon : S4;
+
+	cons: c1, c2;
 
 	transitions:
-	from S4 to c1 on C && e1 || e2 do C := e1 && e2 || C , e2;
-	from S2 to S5 on e2 do ~ ;
+	from S4 to S2 on C && e1 || e2 do C := e1 && e2 || C , e2;
+	from S2 to S4 on e2 do ~ ;
 	
 end S3;
