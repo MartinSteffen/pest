@@ -34,6 +34,8 @@ import java.util.*;
  * Statecharts, die uns uebergeben werden, folgende Eigenschaften haben: 
  * 
  * <ul>
+ * <li> SyntaxCheck darf keine Fehler melden.
+ * <li> TrAnchors duerfen nicht UNDEFINED() sein.
  * <li> Keine Schleifen bei Listen.
  * <li> Keine unartigen Nullpointer.
  * </ul>
@@ -89,7 +91,7 @@ import java.util.*;
  * <br>
  * <hr>
  * @author Arne Koch/Mike Rumpf.
- * @version  $Id: TESCLoader.java,v 1.15 1999-01-12 21:20:00 swtech13 Exp $ 
+ * @version  $Id: TESCLoader.java,v 1.16 1999-01-13 18:43:07 swtech13 Exp $ 
  */ 
 public class TESCLoader {
 
@@ -136,24 +138,6 @@ public class TESCLoader {
 	
 	return stchart;
     }
-
-
-    /** 
-     * Export eines Syntaxbaums in ein Tesc-File. 
-     * @return 
-     * <ul> 
-     * <li> <code>true</code>  : Export erfolgreich 
-     * <li> <code>false</code> : Export fehlgeschlagen 
-     * </ul> 
-     * @param bw BufferedWriter 
-     * @param sc Statechart 
-     */ 
-    public boolean saveStatechart (BufferedWriter bw, Statechart sc) throws IOException { 
-	
-	
-	return false; 
-    } 
- 
 
 
     /** 

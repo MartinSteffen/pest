@@ -989,10 +989,7 @@ class TESCParser {
 	    match(vTOKEN.EMPTYEXP);
 	    // Rekursion ??? oder kann ~ nur für sich stehen ?
 	    grd = new GuardEmpty((Dummy)setLoc(new Dummy(), loc)); 
-	}
-	else if(tok.token == vTOKEN.IN || tok.token == vTOKEN.ENTERED || tok.token == vTOKEN.EXITED) {
-	    grd = pathop(p);
-	}
+	}	
 	else if (tok.token == vTOKEN.IDENT) {
 	    // ???
 	    SEvent ev = (SEvent)setLoc(new SEvent(tok.value_str), loc);
@@ -1706,7 +1703,7 @@ class TESCParser {
 }
 
 /* TESCParser
- * $Id: TESCParser.java,v 1.16 1999-01-12 21:20:00 swtech13 Exp $
+ * $Id: TESCParser.java,v 1.17 1999-01-13 18:43:07 swtech13 Exp $
  * $Log: not supported by cvs2svn $
  * Revision 1.15  1999/01/11 23:20:10  swtech13
  * ~ in Guards, bassign in Action wird jetzt erkannt
