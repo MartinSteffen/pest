@@ -134,9 +134,12 @@ public class PrettyPrint {
    */
 
   public void start (SEvent ev) {
-    if (ev != null)
+    if (ev != null) {
       System.out.println (whiteSpace (column) + "[SEvent] " +
 			  ev.name);
+      //Gib Location aus.
+      start(ev.location); 
+    }
   } // method start (SEvent)
 
 
@@ -157,9 +160,12 @@ public class PrettyPrint {
   // Starte Ausgabe auf Bildschirm (Bvar).
 
   private void output (Bvar bv) {
-    if (bv != null)
-      System.out.println (whiteSpace (column) + "[Bvar] " +
-			  bv.var);
+      if (bv != null) {
+	  System.out.println (whiteSpace (column) + "[Bvar] " +
+			      bv.var);
+	  //Gib Location aus.
+	  start(bv.location);
+      }
   } // method output (Bvar)
 
 
@@ -237,6 +243,9 @@ public class PrettyPrint {
 
       // Gib java.awt.Rectangle aus.
       ppBasicSt.start (bState.rect);
+
+      //Gib Location aus.
+      //ppBasicSt.start (bState.location); 
     }
   } // method output (Basic_State)
 
@@ -253,6 +262,9 @@ public class PrettyPrint {
 
       // Gib java.awt.Rectangle aus.
       ppAndSt.start (aState.rect);
+
+      // Gib Location aus.
+      //ppAndSt.start (aState.location);
 
       // Gib StateList aus.
       ppAndSt.start (aState.substates);
@@ -272,6 +284,9 @@ public class PrettyPrint {
 
       // Gib java.awt.Rectangle aus.
       ppOrSt.start (oState.rect);
+
+      // Gib Location aus.
+      //ppOrSt.start (oState.location);
 
       // Gib StateList aus.
       ppOrSt.start (oState.substates);
@@ -305,9 +320,13 @@ public class PrettyPrint {
   // Starte Ausgabe auf Bildschirm (Statename).
 
   private void output (Statename sn) {
-    if (sn != null)
-      System.out.println (whiteSpace (column) + "[Statename] " +
-			  sn.name);
+      if (sn != null) {
+	  System.out.println (whiteSpace (column) + "[Statename] " +
+			      sn.name);
+	  //Gib Location aus.
+	  start(sn.location);
+      }
+
   } // method output (Statename)
 
 
@@ -320,6 +339,16 @@ public class PrettyPrint {
       System.out.println (whiteSpace (column) + "[Rectangle] " +
 			  re.toString());
   } // method start (java.awt.Rectangle)
+
+  /**
+   * Starte Ausgabe auf Bildschirm (Location).
+   */
+
+  public void start (Location lo) {
+    if (lo != null)
+      System.out.println (whiteSpace (column) + "[location] " +
+			  lo.toString());
+  } // method start (Location)
 
 
   /**
@@ -349,6 +378,9 @@ public class PrettyPrint {
 
       // Gib java.awt.Point[] aus.
       ppTr.start (t.points);
+
+      // Gib Location aus.
+      ppTr.start (t.location);
 
       // Gib TrAnchor aus.
       ppTr.start (t.source);
@@ -400,17 +432,24 @@ public class PrettyPrint {
   // Starte Ausgabe auf Bildschirm (Conname).
 
   private void output (Conname cn) {
-    if (cn != null)
-      System.out.println (whiteSpace (column) + "[Conname] " +
-			  cn.name);
+      if (cn != null) {
+	  System.out.println (whiteSpace (column) + "[Conname] " +
+			      cn.name);
+	  //Gib Location aus.
+	  start(cn.location);
+      }
   } // method output (Conname)
 
 
   // Starte Ausgabe auf Bildschirm (UNDEFINED).
 
   private void output (UNDEFINED un) {
-    if (un != null)
-      System.out.println (whiteSpace (column) + "[UNDEFINED] ");
+      if (un != null) {
+	  System.out.println (whiteSpace (column) + "[UNDEFINED] ");
+
+	  //Gib Location aus.
+	  start(un.location);
+      }
   } // method output (UNDEFINED)
 
 
@@ -423,6 +462,9 @@ public class PrettyPrint {
 
       // Gib Point aus.
       ppLab.start (l.position);
+
+      //Gib Location aus.
+      ppLab.start(l.location);
 
       // Gib Guard aus.
       ppLab.start (l.guard);
@@ -475,6 +517,9 @@ public class PrettyPrint {
 
       // Gib Compguard aus.
       ppGcg.start (gcg.cguard);
+
+     //Gib Location aus.
+      start(gcg.location); 
     }
   } // method output (GuardCompg)
 
@@ -488,6 +533,9 @@ public class PrettyPrint {
 
       // Gib Comppath aus.
       ppGcp.start (gcp.cpath);
+
+      //Gib Location aus.
+      start(gcp.location);
     }
   } // method output (GuardCompp)
 
@@ -501,6 +549,9 @@ public class PrettyPrint {
 
       // Gib Dummy aus.
       ppGe.start (ge.dummy);
+
+      //Gib Location aus.
+      start(ge.location);
     }
   } // method output (GuardEmpty)
 
@@ -527,6 +578,9 @@ public class PrettyPrint {
 
       // Gib Guard aus.
       ppGn.start (gn.guard);
+
+      //Gib Location aus.
+      start(gn.location);
     }
   } // method output (GuardNeg)
 
@@ -562,6 +616,9 @@ public class PrettyPrint {
       // Gib Guard aus.
       ppCg.start (cg.elhs);
       ppCg.start (cg.erhs);
+
+      //Gib Location aus.
+      start(cg.location);
     }
   } // method output (Compguard)
 
@@ -587,6 +644,9 @@ public class PrettyPrint {
       // Gib Path aus.
       ppCp.start (cp.path);
       System.out.println();
+
+      //Gib Location aus.
+      start(cp.location);
     }
   } // method output (Comppath)
 
@@ -612,8 +672,13 @@ public class PrettyPrint {
       System.out.println (whiteSpace (column) + "[ActionBlock] ");
       PrettyPrint ppAb = new PrettyPrint (column + tab, tab);
 
+      //Gib Location aus.
+      start(ab.location);
+
       // Gib Aseq aus.
       ppAb.start (ab.aseq);
+
+      
     }
   } // method output (ActionBlock)
 
@@ -653,6 +718,9 @@ public class PrettyPrint {
 
       // Gib Boolstmt aus.
       ppAst.start (ast.stmt);
+
+      //Gib Location aus.
+      start(ast.location);
     }
   } // method output (ActionStmt)
 
@@ -692,6 +760,9 @@ public class PrettyPrint {
 
       // Gib Bassign aus.
       ppBass.start (bass.ass);
+
+      //Gib Location aus.
+      start(bass.location);
     }
   } // method output (BAss)
 
@@ -705,6 +776,9 @@ public class PrettyPrint {
 
       // Gib Bvar aus.
       ppMf.start (mf.var);
+
+      //Gib Location aus.
+      start(mf.location);
     }
   } // method output (MFalse)
 
@@ -718,6 +792,9 @@ public class PrettyPrint {
 
       // Gib Bvar aus.
       ppMt.start (mt.var);
+
+      //Gib Location aus.
+      start(mt.location);
     }
   } // method output (Mtrue)
 
@@ -734,6 +811,7 @@ public class PrettyPrint {
 
       // Gib Guard aus.
       ppBa.start (ba.brhs);
+
     }
   } // method output (Bassign)
 
@@ -771,8 +849,12 @@ public class PrettyPrint {
   // Starte Ausgabe auf Bildschirm (Dummy).
 
   private void output (Dummy d) {
-    if (d != null)
-      System.out.println (whiteSpace (column) + "[Dummy] ");
+      if (d != null) {
+	  System.out.println (whiteSpace (column) + "[Dummy] ");
+	  
+	  //Gib Location aus.
+	  start(d.location);
+      }
   } // method output (Dummy)
 
 
