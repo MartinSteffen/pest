@@ -1,11 +1,28 @@
+// ****************************************************************************
+//   Projekt:               PEST2
+//   Klasse:                itemWarning
+//   Autor:                 Tobias Kunz, Mario Thies
+//
+//
+//   Letzte Aenderung von:  Tobias Kunz
+//                          07.12.1998
+//
+// ****************************************************************************
+
 package Check;
 
-import Absyn.*;
+import Absyn.*;         // abstrakte Syntax
 
 public class modelCheck {
 
-// öffentliche Konstruktoren
-	
+private SyntaxWarning warnings;
+private SyntaxError   errors;
+
+// ****************************************************************************
+// Konstruktoren
+// ****************************************************************************
+
+  // Konstruktor
 	public modelCheck() {
 		// denkbar ist eine Überladung des Konstruktors mit Schaltern vom Typ
 		// "boolean" - beipielsweise: Test auf Kreisfreiheit oder Unterdrückung
@@ -15,62 +32,86 @@ public class modelCheck {
 		//   public boolean getXXX() {}		für den lesenden Zugriff und
 		//   public void    setXXX() {}     für den schreibenden Zugriff
 		// zur Verfügung gestellt.
+
+    // initialisieren
+    warnings = new SyntaxWarning();
+    errors   = new SyntaxError();
 	}
 
+  // Konstruktor
+	public modelCheck(Statechart statechart) {
+		// denkbar ist eine Überladung des Konstruktors mit Schaltern vom Typ
+		// "boolean" - beipielsweise: Test auf Kreisfreiheit oder Unterdrückung
+		// der Warnungen oder ((Optimierung))
 
+		// Properties (Schalter) werden über die JAVA konforme Methode des Aufrufs
+		//   public boolean getXXX() {}		für den lesenden Zugriff und
+		//   public void    setXXX() {}     für den schreibenden Zugriff
+		// zur Verfügung gestellt.
+
+    // initialisieren
+    warnings = new SyntaxWarning();
+    errors   = new SyntaxError();
+
+    // Ueberpruefung starten
+    checkModel(statechart);
+	}
+
+// ****************************************************************************
 // öffentliche Instanzmethoden
+// ****************************************************************************
 
-	// überprüft die komplette "Statechart"
-	public boolean modelCheck(Statechart statechart) { 
-		// Rückgabe der Methode ist TRUE, wenn keine Fehler oder Warnungen vorhanden
-		// sind, FALSE sonst.
-           return true;
-	}
-	
-
-	// überprüft alle Events, die innerhalb der "Statechart" definiert sind
-	// überflüssige Events könnten "Warnungen" sein.
-	public boolean checkEvents(Statechart statechart) { 
-		// Rückgabe der Methode ist TRUE, wenn keine Fehler oder Warnungen vorhanden
-		// sind, FALSE sonst.
-           return true;
+	// Ueberprueft die komplette "Statechart"
+  // Rueckgabe der Methode ist TRUE, wenn keine Fehler oder Warnungen vorhanden
+  // sind, FALSE sonst.
+	public boolean checkModel(Statechart statechart) {
+    return true;
 	}
 
 
-	// überprüft den Zustand, sowie alle Subzustände, damit ist es möglich nur Teile
-	// der Statechart zu überprüfen
+	// ueberprüft alle Events, die innerhalb der "Statechart" definiert sind
+	// ueberflüssige Events koennten "Warnungen" sein.
+  // Rueckgabe der Methode ist TRUE, wenn keine Fehler oder Warnungen vorhanden
+  // sind, FALSE sonst.
+	public boolean checkEvents(Statechart statechart) {
+    return true;
+	}
+
+
+	// ueberprüft den Zustand, sowie alle Subzustaende, damit ist es moeglich
+  // nur Teile der Statechart zu ueberprüfen
+  // Rueckgabe der Methode ist TRUE, wenn keine Fehler oder Warnungen vorhanden
+  // sind, FALSE sonst.
 	public boolean checkStates(State s) {
-		// Rückgabe der Methode ist TRUE, wenn keine Fehler oder Warnungen vorhanden
-		// sind, FALSE sonst.
-           return true;
+    return true;
 	}
 
 
-	// überprüft innerhalb eines OR-Zustandes die Transitionen auf Korrektheit
+	// ueberprüft innerhalb eines OR-Zustandes die Transitionen auf Korrektheit
+  // Rueckgabe der Methode ist TRUE, wenn keine Fehler oder Warnungen vorhanden
+  // sind, FALSE sonst.
 	public boolean checkTransitions(State s) {
-		// Rückgabe der Methode ist TRUE, wenn keine Fehler oder Warnungen vorhanden
-		// sind, FALSE sonst.
-           return true;
+    return true;
 	}
 
 
-	// überprüft innerhalb eines OR-Zustandes die Connectors auf Korrektheit
-	public boolean checkConnectors(State s) { 
-		// Rückgabe der Methode ist TRUE, wenn keine Fehler oder Warnungen vorhanden
-		// sind, FALSE sonst.
-          return true;
+	// ueberprüft innerhalb eines OR-Zustandes die Connectors auf Korrektheit
+  // Rueckgabe der Methode ist TRUE, wenn keine Fehler oder Warnungen vorhanden
+  // sind, FALSE sonst.
+	public boolean checkConnectors(State s) {
+    return true;
 	}
 
+  // Rueckgabe der Methode ist eine Liste (JAVA Klasse Vector) mit Fehlern
+  // von Typ itemError
 	public SyntaxError getErrors() {
-		// Rückgabe der Methode ist eine Liste (JAVA Klasse Vector) mit Fehlern
-		// von Typ itemError
-          return null;
+    return errors;
 	}
 
+  // Rückgabe der Methode ist eine Liste (JAVA Klasse Vector) mit Warnungen
+  // von Typ itemWarning
 	public SyntaxWarning getWarnings() {
-		// Rückgabe der Methode ist eine Liste (JAVA Klasse Vector) mit Warnungen
-		// von Typ itemWarning
-           return null;
+    return warnings;
 	}
 
 }
