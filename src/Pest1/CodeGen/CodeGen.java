@@ -28,7 +28,7 @@ import absyn.*;
  *     directory without trailing "/".
  *
  * @author Marcel Kyas, Walter Loeser, Andre Paetzold.
- * @version $Id: CodeGen.java,v 1.6 1998-12-21 13:33:47 swtech25 Exp $
+ * @version $Id: CodeGen.java,v 1.7 1998-12-21 14:43:33 swtech25 Exp $
  */
 public class CodeGen
 {
@@ -47,7 +47,7 @@ public class CodeGen
 	 * This method will cause the CodeGenerator to do
 	 * its work.  If will return after successful completion.
 	 *
-	 * @exception codegen.CodeGenException
+	 * @exception CodeGenException if code generation fails.
 	 */
 	public CodeGen(String path, Statechart statechart)
 		throws CodeGenException
@@ -60,7 +60,7 @@ public class CodeGen
          * its work.  If will return after successful completion.
 	 * This will activate some options. 
 	 *
-	 * @exception codegen.CodeGenException
+	 * @exception CodeGenException if code generation fails.
          */
         public CodeGen(String path, Statechart statechart, int options)
 		throws CodeGenException
@@ -73,7 +73,7 @@ public class CodeGen
 	 * if you do not want to create a new instance of
 	 * the code generator.
 	 *
-	 * @exception codegen.CodeGenException
+	 * @exception CodeGenException if code generation fails.
 	 */
 	public void Generate(String path, Statechart statechart)
 		throws CodeGenException
@@ -86,7 +86,7 @@ public class CodeGen
          * if you do not want to create a new instance of
          * the code generator.  This time with options.
 	 *
-	 * @exception codegen.CodeGenException
+	 * @exception CodeGenException if code generation fails.
          */
         public void Generate(String path, Statechart statechart, int options)
 		throws CodeGenException
