@@ -13,7 +13,7 @@ or S1:
 	cons: C1;	
       
 	transitions:
-	from B2 to B1 on E;	
+	from B2 to B1 on E do E1, E2, E3;	
 
 end S1;
 
