@@ -173,6 +173,7 @@ public static void drawTrans(Graphics g,int cx1, int cy1, int cx2, int cy2,TrAnc
 	
 	double dx ,dy ,d ,ws ,winkel ,xu ,yu ,wneu;
 	int size = 10;
+	int size2 = 5;
 	int x, y;
 
 	winkel = 0;
@@ -199,14 +200,27 @@ public static void drawTrans(Graphics g,int cx1, int cy1, int cx2, int cy2,TrAnc
 	xu = cx2-Math.round(50*Math.cos(winkel)); 	
 	yu = cy2-Math.round(50*Math.sin(winkel));	
 		
-	wneu = winkel +Math. PI-((Math.PI)/4);	
-	g.drawLine(cx2,cy2,cx2+ (int) Math.round((4+size*Editor.ZoomFaktor)*Math.cos(wneu)),cy2- (int) Math.round((4+size*Editor.ZoomFaktor)*Math.sin(wneu)));
-		
-	wneu = winkel - Math.PI +((Math.PI)/4);	//    wneu:=wwinkel+ ((180-ww)*(pi/180));
-	g.drawLine(cx2,cy2,cx2+ (int) Math.round((4+size*Editor.ZoomFaktor)*Math.cos(wneu)),cy2- (int) Math.round((4+size*Editor.ZoomFaktor)*Math.sin(wneu)));
+
+	Polygon po = new Polygon();
+	po.addPoint(cx2,cy2);
+
+	wneu = winkel +Math. PI-((Math.PI)/7);	
+	//g.drawLine(cx2,cy2,cx2+ (int) Math.round((4+size*Editor.ZoomFaktor)*Math.cos(wneu)),cy2- (int) Math.round((4+size*Editor.ZoomFaktor)*Math.sin(wneu)));
+	po.addPoint(cx2+ (int) Math.round((4+size*Editor.ZoomFaktor)*Math.cos(wneu)),cy2- (int) Math.round((4+size*Editor.ZoomFaktor)*Math.sin(wneu)));	
+
+	wneu = winkel - Math.PI;	//    wneu:=wwinkel+ ((180-ww)*(pi/180));
+	//g.drawLine(cx2,cy2,cx2+ (int) Math.round((4+size*Editor.ZoomFaktor)*Math.cos(wneu)),cy2- (int) Math.round((4+size*Editor.ZoomFaktor)*Math.sin(wneu)));
+	po.addPoint(cx2+ (int) Math.round((4+size2*Editor.ZoomFaktor)*Math.cos(wneu)),cy2- (int) Math.round((4+size2*Editor.ZoomFaktor)*Math.sin(wneu)));
+
+
+	wneu = winkel - Math.PI +((Math.PI)/7);	//    wneu:=wwinkel+ ((180-ww)*(pi/180));
+	//g.drawLine(cx2,cy2,cx2+ (int) Math.round((4+size*Editor.ZoomFaktor)*Math.cos(wneu)),cy2- (int) Math.round((4+size*Editor.ZoomFaktor)*Math.sin(wneu)));
+	po.addPoint(cx2+ (int) Math.round((4+size*Editor.ZoomFaktor)*Math.cos(wneu)),cy2- (int) Math.round((4+size*Editor.ZoomFaktor)*Math.sin(wneu)));
+
 
 	//if (ta1 instanceof UNDEFINED) {g.fillOval(cx1-3,cy1-3,6,6);}
        	//if (ta2 instanceof UNDEFINED) {g.fillOval(cx2-3,cy2-3,6,6);} 
+	g.fillPolygon(po);
     } 
 
 
@@ -236,8 +250,8 @@ public static CPoint transpoint(Statechart root,int cx1, int cy1)
 	     {
 	      matrix1 = PESTdrawutil.getState(root,ncx1,ncy1);	
 	      tempcon = (Connector) tempabsyn;
-	      ncx1 = matrix1.x+tempcon.position.x+6;
- 	      ncy1 = matrix1.y+tempcon.position.y+6;
+	     // ncx1 = matrix1.x+tempcon.position.x+6;
+ 	     // ncy1 = matrix1.y+tempcon.position.y+6;
 	movetest = true;
 	     }
 
@@ -249,8 +263,8 @@ public static CPoint transpoint(Statechart root,int cx1, int cy1)
  public static void  BTrans (Graphics h,Tr tr, int cx1, int cy1,Color def_tr)
 {
 	CPoint[] tp = tr.points;
-	  
-	CPoint[] ta = Bezier(tp,30);
+	int lauf2 = tp.length-1;  
+	CPoint[] ta = Bezier(tp,4*(lauf2));
 	int trsize = ta.length-1;
 	//System.out.println("Anzahl ZeigerPunkte : "+(int) (trsize+1));
 	for (int lauf = 0;lauf < (trsize-1);lauf++) {h.setColor(def_tr);h.drawLine(	(int) ((ta[lauf].x+cx1)*Editor.ZoomFaktor),
