@@ -1,4 +1,3 @@
-
 /**
  * MapConnector.java
  *
@@ -26,16 +25,36 @@ class MapConnector extends MapElement {
 	return con.name;
     }
 
+    boolean equalAnchor(TrAnchor ta) {
+	if (ta.getClass().getName().equals("absyn.Conname")) {
+	    return ((Conname) ta).name.equals(con.name.name);
+	} else {
+	    return false;
+	}
+    }
+
     CPoint getPosition() {
 	return con.position;
     }
 
+    CPoint getTransPosition(MapTransition mt) {
+	return this.getPosition();
+    }
+	
     void setPosition(CPoint p) {
 	con.position = p;
     }
 
+    void setNamePosition(CPoint p) {
+	con.name.position = p;
+    }
+
     CRectangle getRect() {
 	return new CRectangle(con.position);
+    }
+
+    public String toString() {
+	return con.name.name+" "+con.position;
     }
 
 } // MapConnector

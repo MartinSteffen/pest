@@ -66,23 +66,25 @@ class ProperMap {
 		countW--;
 		// aus X alle zu w inzidenten Knoten loeschen
 		for (int i=0;i<X.length;i++) {
-		    // pruefen, ob X[i] inzident zu w ist
-		    boolean isIncident = false;
-		    for (int j=0;(j<transition.length)&&(!isIncident);j++) {
-			
-			// Achtung: Vergleich von Objekten, kein Vergleich
-			// von Zeichenketten fuer Statename und Conname
-			if (((transition[j].source == w.getAnchor())&&
-			     (transition[j].target == X[i].getAnchor()))||
-			    ((transition[j].source == X[i].getAnchor())&&
-			     (transition[j].target == w.getAnchor()))) {
-			    isIncident = true;
+		    if (X[i] != null) {
+			// pruefen, ob X[i] inzident zu w ist
+			boolean isIncident = false;
+			for (int j=0;(j<transition.length)&&(!isIncident);j++) {
+			    
+			    // Achtung: Vergleich von Objekten, kein Vergleich
+			    // von Zeichenketten fuer Statename und Conname
+			    if ((w.equalAnchor(transition[j].source)&&
+				 X[i].equalAnchor(transition[j].target))||
+				(X[i].equalAnchor(transition[j].source)&&
+				 w.equalAnchor(transition[j].target))) {
+				isIncident = true;
+			    }
 			}
-		    }
-		    // wenn ja, X[i] streichen
-		    if (isIncident) {
-			X[i] = null;
-			countX--;
+			// wenn ja, X[i] streichen
+			if (isIncident) {
+			    X[i] = null;
+			    countX--;
+			}
 		    }
 		}
 		/*System.out.print("X=");
@@ -131,21 +133,19 @@ class ProperMap {
 	    targetRow = -1;
 	    for (int j=0;(j<rows)&&((sourceRow==-1)||(targetRow==-1));j++) {
 		level = (Vector) vlevel.elementAt(j);
-		for (int col = 0; (i<level.size())&&((sourceRow==-1)||(targetRow==-1)); col++) {
+		for (int col = 0; (col<level.size())&&((sourceRow==-1)||(targetRow==-1)); col++) {
 		    MapElement el = (MapElement) level.elementAt(col);
-		    if (el.getAnchor() == source) {
+		    if (el.equalAnchor(source)) {
 			sourceRow = j;
 			sourceColumn = col;
 		    }
-		    if (el.getAnchor() == target) {
+		    if (el.equalAnchor(target)) {
 			targetRow = j;
-			targetColumn = level.indexOf(target);
+			targetColumn = col;
 		    }
 		}
 	    }
-	    
-	    //System.out.println("sourcePos=("+sourceRow+","+sourceColumn+") targetPos=("+targetRow+","+targetColumn+")");
-	    
+	    	    
 	    // Unterscheidung nach Ebenenabstand
 	    int diffRow = Math.abs(sourceRow-targetRow);
 	    if (diffRow <= 1) { // aufeinanderfolgende oder gleiche Ebenen
@@ -258,11 +258,255 @@ class ProperMap {
 	for (c=0;(c<width)&&(res==-1);c++) {
 	    if (map[row][c] == null) res = c;
 	}
-	if (c==width) {
+	if (res==-1) {
 	    return width;
 	} else {
 	    return res;
 	}
+    }
+
+
+    /* Die down_up-Methode optimiert je zwei Schichten der ProperMap, wobei
+       eine festgehalten und die andere verändert wird. Und zwar von der
+       obersten Schicht nach unten und dann wieder hoch. */
+    void down_up() {
+	
+	int[][] sigma = new int[height][width]; // Umsortierungsmatrix
+	for (int i=0;i<height;i++)
+	    for (int j=0;j<width;j++) sigma[i][j] = j;
+
+	/* Aufstellung der Inzidenzmatrizen fuer die Transitionen zwischen
+	   zwei aufeinanderfolgenden Ebenen */
+
+	int[][][] M = new int[height-1][width][width];
+	for (int i=0;i<height-1;i++) 
+	    for (int j=0;j<width;j++)
+		for (int k=0;k<width;k++) M[i][j][k] = 0;
+	MapTransition h;
+	int rowL,rowG,colL,colG;
+	for (int i=0;i<mapTransition.length;i++) {
+	    h = mapTransition[i];
+	    if (h.startRow>h.endRow) {
+		rowL=h.endRow;rowG=h.startRow;
+		colL=h.endColumn;colG=h.startColumn;
+		M[rowL][colL][colG] = 1;
+	    } else if (h.startRow<h.endRow) {
+		rowL=h.startRow;rowG=h.endRow;
+		colL=h.startColumn;colG=h.endColumn;
+		M[rowL][colL][colG] = 1;
+	    }
+	    
+	}
+
+
+	/*
+	System.out.println("Ausgabe der Inzidenzmatrizen:");
+	for (int i=0;i<height-1;i++) {
+	    System.out.println("Inzidenzmatrix zwischen "+i+" und "+(i+1));
+	    for (int j=0;j<width;j++) {
+		for (int k=0;k<width;k++) 
+		    System.out.print(M[i][j][k]+" ");
+		System.out.println();
+	    }
+	}
+	*/
+	
+
+	/* down-Schleife */
+	for (int i=0;i<height-1;i++) {
+	    barycentricMethod(i,i+1,sigma[i],sigma[i+1],M);
+	}
+	
+	/* up-Schleife */
+	for (int i=height-1;i>0;i--) {
+	    barycentricMethod(i,i-1,sigma[i],sigma[i-1],M);
+	}
+
+	/*
+	System.out.println("Umsortierungsmatrix:");
+	for (int i=0;i<height;i++) {
+	    for (int j=0;j<width;j++)
+		System.out.print(sigma[i][j]+" ");
+	    System.out.println();
+	}
+	*/
+  
+	/* Umordnen der Knoten und Transitionen */
+       
+	MapElement dummy;
+	for (int i=0;i<height;i++) {
+	    for (int j=0;j<width;j++) {
+		if (j<sigma[i][j]) {
+		    dummy = map[i][j];
+		    map[i][j] = map[i][sigma[i][j]];
+		    map[i][sigma[i][j]] = dummy;
+		}
+	    }
+	}
+
+	for (int i=0;i<mapTransition.length;i++) {
+	    h = mapTransition[i];
+	    int j;
+	    for (j=0;sigma[h.startRow][j]!=h.startColumn;j++) ;
+	    h.startColumn = j;
+	    for (j=0;sigma[h.endRow][j]!=h.endColumn;j++) ;
+	    h.endColumn   = j;
+	}
+	
+    }
+
+    /* Barycentric-Method */
+    private void barycentricMethod(int fixedRow,int variableRow,
+			      int[] sigmafR,
+			      int[] sigmavR,
+			      int[][][] M) {
+
+	// Testausgabe
+	/*
+	System.out.println("barycentricMethod for fixedRow="+fixedRow+" variableRow="+variableRow);
+	System.out.print("sigmafR=");
+	for (int i=0;i<width;i++) 
+	    System.out.print(sigmafR[i]+" ");
+	System.out.println();
+	System.out.print("sigmavR=");
+	for (int i=0;i<width;i++) 
+	    System.out.print(sigmavR[i]+" ");
+	System.out.println();
+	*/
+
+	/* Minimum von fixedRow und variableRow fuer die Indizierung von M */
+	int minRow = Math.min(fixedRow,variableRow);
+	boolean down = (fixedRow<variableRow);
+
+	/* Testpermutation */
+	int[] sigmavRtest = new int[width];
+	for (int i=0;i<width;i++) sigmavRtest[i] = sigmavR[i];
+
+	/* Berechnung der Kantenueberschneidungen */
+
+	int KUE;
+	if (down) {
+	    KUE = kantenueberschneidungen(fixedRow,sigmafR,sigmavR,M);
+	} else {
+	    KUE = kantenueberschneidungen(variableRow,sigmavR,sigmafR,M);
+	}
+
+	/*
+	System.out.println("Kantenueberschneidungen zwischen "+fixedRow+" und "+variableRow+" = "+KUE);
+	*/
+
+	/* Schleife, bis ,,optimale'' Loesung gefunden wurde oder maximale
+	   Anzahl von Schritten durchgefuehrt wurde */
+
+	int iterCount = 4;
+	boolean changed;
+	int testKUE = KUE;
+
+	do {
+	    
+	    /* Verbesserung nur versuchen, falls Kantenueberschneidungen
+	       existieren */
+	    changed = false;
+	    if (testKUE>0) {
+		
+		/* Berechnung der Barycenter */
+		float[] B = new float[width];
+		int s1,s2;
+		int m;
+		
+		for (int z=0;z<width;z++) {
+		    s1 = 0;
+		    s2 = 0;
+		    for (int y=0;y<width;y++) {
+			if (down) {
+			    m = M[minRow][sigmafR[y]][z];
+			} else {
+			    m = M[minRow][z][sigmafR[y]];
+			}
+			s1 = s1 + (y+1) * m;
+			s2 = s2 + m;
+		    }
+		    if (s2!=0) {
+			B[z] = (float) s1 / (float) s2;
+		    } else {
+			B[z] = (float) (width*width);
+		    }
+		    /*
+		    System.out.println("B["+z+"]="+B[z]);
+		    */
+		    
+		}
+
+		/* Umordnen von sigmavRtest nach den barycenter-Werten */
+		int help;
+		changed = false;
+		for (int i=0;i<width-1;i++)
+		    for (int j=i+1;j<width;j++) {
+			if (B[sigmavRtest[i]]>B[sigmavRtest[j]]) {
+			    changed = true;
+			    help = sigmavRtest[i];
+			    sigmavRtest[i] = sigmavRtest[j];
+			    sigmavRtest[j] = help;
+			}
+		    }
+
+		/* Berechnung der Kantenueberschneidungen nach dem
+		   Umordnen */
+		
+		if (down) {
+		    testKUE = kantenueberschneidungen(minRow,
+						      sigmafR,
+						      sigmavRtest,M);
+		} else {
+		    testKUE = kantenueberschneidungen(minRow,
+						      sigmavRtest,
+						      sigmafR,M);
+		}
+
+		/* falls die Testloesung besser ist, dann uebernehme sie */
+		if (testKUE<KUE) {
+		    KUE = testKUE;
+		    /*
+		    System.out.println("bessere Loesung mit "+KUE+" Ueberschneidungen");
+		    System.out.print("sigmavR=");
+		    */
+
+		    for (int i=0;i<width;i++) {
+			sigmavR[i] = sigmavRtest[i];
+			/*
+			System.out.print(sigmavR[i]+" ");
+			*/
+		    }
+		    /*
+		    System.out.println();
+		    */
+		    
+		}
+	    }
+	    
+	    iterCount--;
+	} while ((iterCount>0)&&(!changed));
+
+    }
+
+    /* Berechnung der Kantenueberschneidungen zwischen Ebene fixedRow
+       und fixedRow+1 */
+    private int kantenueberschneidungen(int minRow,
+					int[] sigmaUpperR,
+					int[] sigmaLowerR,
+					int[][][] M) {
+	int KM = 0;
+      
+	for (int j=0;j<width-1;j++)
+	    for (int k=j+1;k<width;k++)
+		for (int alpha=0;alpha<width-1;alpha++)
+		    for (int beta=alpha+1;beta<width;beta++)
+			KM = KM + 
+			    M[minRow][sigmaUpperR[j]]
+			    [sigmaLowerR[beta]]*
+			    M[minRow][sigmaUpperR[k]]
+			    [sigmaLowerR[alpha]];
+	return KM;
     }
 
 } // ProperMap

@@ -1,4 +1,3 @@
-
 /**
  * MapUNDEF.java
  *
@@ -28,7 +27,15 @@ class MapUNDEF extends MapElement {
 	return anchor;
     }
 
+    boolean equalAnchor(TrAnchor ta) {
+	return (anchor == ta);
+    }
+
     CPoint getPosition() {
+	return Position;
+    }
+
+    CPoint getTransPosition(MapTransition mt) {
 	return Position;
     }
 
@@ -36,8 +43,33 @@ class MapUNDEF extends MapElement {
 	Position = p;
     }
 
+    void setNamePosition(CPoint p) {}
+
     CRectangle getRect() {
 	return new CRectangle(Position);
+    }
+
+    MapTransition findOpposite(MapTransition mt) {
+	if (upper.contains(mt)) {
+	    if (lower.size()>0) {
+		return (MapTransition) lower.firstElement();
+	    }
+	    else {
+		return null;
+	    }
+	}
+	else {
+	    if (upper.size()>0) {
+		return (MapTransition) upper.firstElement();
+	    }
+	    else {
+		return null;
+	    }
+	}
+    }
+
+    public String toString() {
+	return "UNDEFINED "+Position;
     }
 
 } // MapUNDEF

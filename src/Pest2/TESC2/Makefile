@@ -4,14 +4,17 @@ COPTIONS = -g -deprecation
 ROPTIONS = 
  
 CLASSES = \
-GraphOptimizer.class \
 AlgorithmException.class \
 LayoutAlgorithm.class \
-ProperMap.class \
-MapElement.class \
 MapTransition.class \
 MapEndTr.class \
-SugiyamaBCMAlgorithm.class
+MapElement.class \
+MapState.class \
+MapConnector.class \
+MapUNDEF.class \
+ProperMap.class \
+SugiyamaBCMAlgorithm.class \
+GraphOptimizer.class
 
 .SUFFIXES: .java .class
  

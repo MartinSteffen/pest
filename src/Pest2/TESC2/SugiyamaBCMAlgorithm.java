@@ -16,7 +16,7 @@ import java.awt.*;
 
 class SugiyamaBCMAlgorithm implements LayoutAlgorithm {
     
-/**
+    /**
      * Klassenkonstanten
      */
     static final int WIDTH_BONUS = 10;
@@ -41,7 +41,7 @@ class SugiyamaBCMAlgorithm implements LayoutAlgorithm {
     public void layoutBasicState(Basic_State s) {
 	
 	/* $Testausgabe */
-	System.out.println("layoutBasicState:"+s.name.name);
+	//System.out.println("layoutBasicState:"+s.name.name);
 	
 	String text = s.name.name;
 
@@ -60,7 +60,7 @@ class SugiyamaBCMAlgorithm implements LayoutAlgorithm {
 	s.rect.height = textHeight + HEIGHT_BONUS;
 	
 	/* $Testausgabe */
-	System.out.println("width="+s.rect.width+" height="+s.rect.height);
+	//System.out.println("width="+s.rect.width+" height="+s.rect.height);
 	
 	/* x- und y-Wert werden beim Layout des Superstate gesetzt */
     };  
@@ -69,37 +69,239 @@ class SugiyamaBCMAlgorithm implements LayoutAlgorithm {
      * F&uuml;hrt das Layout f&uuml;r einen Or_State durch
      */
     public void layoutORState(Or_State s) {
-	Vector anchors = new Vector();
-	StateList sl = s.substates;
 
 	/* $Testausgabe */
-	System.out.println("layoutORState:"+s.name.name);
+	//System.out.println("layoutORState:"+s.name.name);
 
+	/* Sammeln und layout der Substates */
+	Vector anchors = new Vector();
+	StateList sl = s.substates;
 	while (sl != null) {
 	    anchors.addElement(new MapState(sl.head));
+	    layoutState(sl.head);
 	    sl = sl.tail;
 	}
+	/* $Testausgabe */
+	//System.out.println("layoutORState2:"+s.name.name);
+
+	/* Sammeln der Connectors */
 	ConnectorList cl = s.connectors;
 	while (cl != null) {
+	    cl.head.position = new CPoint();
 	    anchors.addElement(new MapConnector(cl.head));
 	    cl = cl.tail;
 	}
+
+	/* Sammeln der Transitionen und der UNDEFINED-Objekten */
 	TrList tl = s.trs;
 	Vector transitions = new Vector();
 	while (tl != null) {
-	    /* feststellen aller UNDEFINED in tl und anfu"gen an anchors */
+	    Class coa = tl.head.source.getClass();
+	    if (coa.getName().compareTo("absyn.UNDEFINED")==0) {
+		UNDEFINED newAnchor = new UNDEFINED();
+		anchors.addElement(new MapUNDEF(newAnchor));
+		tl.head.source = newAnchor;
+	    }
+	    coa = tl.head.target.getClass();
+	    if (coa.getName().compareTo("absyn.UNDEFINED")==0) {
+		UNDEFINED newAnchor = new UNDEFINED();
+		anchors.addElement(new MapUNDEF(newAnchor));
+		tl.head.target = newAnchor;
+	    }
 	    transitions.addElement(tl.head);
 	    tl = tl.tail;
 	}
+
+	/* Erzeugen von Arrays und berechnen der ProperMap */
+	int i;
 	MapElement[] al = new MapElement[anchors.size()];
-	for (int i = 0; i<anchors.size(); i++) {
+	for (i = anchors.size()-1; i>=0; i--) {
 	    al[i] = (MapElement) anchors.elementAt(i);
 	}
 	Tr[] ntl = new Tr[transitions.size()];
-	for (int i = 0; i<transitions.size(); i++) {
+	for (i = transitions.size()-1; i>=0; i--) {
 	    ntl[i] = (Tr) transitions.elementAt(i);
 	}
 	ProperMap pm = new ProperMap(al, ntl);
+	
+	/* Optimierung der Kantenueberschneidungen */
+
+	/* pm.down_up(); */
+
+	/* Zuordnen der Transitionen zu den MapElements */
+	MapElement me;
+	MapTransition[] mt = pm.getMapTransitions();
+	for (i = 0; i<mt.length; i++) {
+	    if (mt[i].startRow == mt[i].endRow) {
+		me = pm.getElement(mt[i].startRow, mt[i].startColumn);
+		me.addLoop(mt[i]);
+	    }
+	    else {
+		if (mt[i].startRow > mt[i].endRow) {
+		    me = pm.getElement(mt[i].startRow, mt[i].startColumn);
+		    me.addUpper(mt[i]);
+		    me = pm.getElement(mt[i].endRow, mt[i].endColumn);
+		    me.addLower(mt[i]);
+		}
+		else {
+		    me = pm.getElement(mt[i].startRow, mt[i].startColumn);
+		    me.addLower(mt[i]);
+		    me = pm.getElement(mt[i].endRow, mt[i].endColumn);
+		    me.addUpper(mt[i]);
+		}
+	    }
+	}
+
+	/* ermitteln der Maximalen Zeilenbreite */
+	int j, xpos, maxWidth = 0;
+	int[] RowWidth = new int[pm.getHeight()];
+	for (i = pm.getHeight()-1; i>=0; i--) {
+	    xpos = WIDTH_BONUS;
+	    for (j = pm.getWidthOfRow(i)-1; j>=0; j--) {
+		xpos = xpos + pm.getElement(i, j).getRect().width + WIDTH_BONUS;
+		xpos = xpos + (pm.getElement(i, j).countLoops() * WIDTH_BONUS);
+	    }
+	    if (maxWidth<xpos) {
+		maxWidth = xpos;
+	    }
+	    RowWidth[i] = xpos;
+	}
+
+	/* plazieren der SubStates */
+	CPoint p;
+	int maxHeight = 0;
+	int actHeight = 0;
+	int ypos = -1;
+	for (i = 0; i<pm.getHeight(); i++) {
+	    xpos = WIDTH_BONUS + ((maxWidth - RowWidth[i]) / 2);
+	    maxHeight = 0;
+	    for (j = pm.getWidthOfRow(i)-1; j>=0; j--) {
+		actHeight = pm.getElement(i, j).getRect().height;
+		if (actHeight>maxHeight) {
+		    maxHeight = actHeight;
+		}
+	    }
+	    if (i == 0) {
+		ypos = HEIGHT_BONUS;
+	    }
+	    else {
+		if (((RowWidth[i-1]+RowWidth[i]) /8) < HEIGHT_BONUS) {
+		    ypos = ypos + HEIGHT_BONUS;
+		}
+		else {
+		    ypos = ypos + ((RowWidth[i-1]+RowWidth[i]) / 8);
+		}
+	    }
+	    for (j = 0; j<pm.getWidthOfRow(i); j++) {
+		actHeight = pm.getElement(i, j).getRect().height;
+		p = new CPoint(xpos, ypos + ((maxHeight-actHeight) / 2));
+		pm.getElement(i, j).setPosition(p);
+
+		/* Plazieren des Substate-Namens */
+		p = new CPoint(p);
+		p.translate(5,10);
+		pm.getElement(i, j).setNamePosition(p);
+
+		xpos = xpos + pm.getElement(i, j).getRect().width + WIDTH_BONUS;
+		xpos = xpos + (pm.getElement(i, j).countLoops() * WIDTH_BONUS);
+
+		/* $Testausgabe */
+		//System.out.println("Position des States "+pm.getElement(i, j));
+	    }
+	    ypos = ypos + maxHeight;
+	}
+	s.rect.height = ypos + HEIGHT_BONUS;
+	s.rect.width = maxWidth;
+	
+	/* $Testausgabe */
+	//System.out.println("width="+s.rect.width+" height="+s.rect.height);
+
+	for (i = 0; i<mt.length; i++) {
+	    if (mt[i] != null) {
+		transitions = new Vector();
+		me = pm.getElement(mt[i].startRow, mt[i].startColumn);
+		p = me.getTransPosition(mt[i]);
+		transitions.addElement(p);
+		MapTransition amt = mt[i];
+		if (me.isLoop(amt)) {
+		    CPoint h = new CPoint(p);
+		    h.translate(WIDTH_BONUS*(me.countLoops()-me.loops.indexOf(amt)), 0);
+		    transitions.addElement(h);
+		    h = new CPoint(h);
+		    h.y = 2*me.getPosition().y+me.getRect().height-p.y;
+		    transitions.addElement(h);
+		    h = new CPoint(h);
+		    h.x = p.x;
+		    transitions.addElement(h);
+		}
+		else {
+		    /* Vorgng&auml;ertransitionen sammeln */
+		    boolean search = true;
+		    while (search) {
+			MapTransition omt = me.findOpposite(amt);
+			if (omt != null) {
+			    for (j = i; (j+1<mt.length) && search; j++) {
+				search = (mt[j+1] != omt);
+			    }
+			    amt = mt[j];
+			    mt[j] = null;
+			    me = pm.getElement(amt.startRow, amt.startColumn);
+			    transitions.insertElementAt(me.getTransPosition(amt), 0);
+			    search = true;
+			}
+			else {
+			    search = false;
+			}
+		    }
+		    me = pm.getElement(mt[i].endRow, mt[i].endColumn);
+		    transitions.addElement(me.getTransPosition(mt[i]));
+		    amt = mt[i];
+		    /* Nachfolgertransitionen sammeln */
+		    search = true;
+		    while (search) {
+			MapTransition omt = me.findOpposite(amt);
+			if (omt != null) {
+			    for (j = i; (j+1<mt.length) && search; j++) {
+				search = (mt[j+1] != omt);
+			    }
+			    amt = mt[j];
+			    mt[j] = null;
+			    me = pm.getElement(amt.endRow, amt.endColumn);
+			    transitions.addElement(me.getTransPosition(amt));
+			    search = true;
+			}
+			else {
+			    search = false;
+			}
+		    }
+		}
+		/* Punkteliste in Transition eintragen */
+		CPoint[] tpos = new CPoint[transitions.size()];
+		/* $Testausgabe */
+		//System.out.print("Transition: ");
+		for (j = transitions.size()-1; j >= 0; j--) {
+		    tpos[j] = (CPoint) transitions.elementAt(j);
+		    /* $Testausgabe */
+		    //System.out.print("("+tpos[j].x+","+tpos[j].y+"),");
+		}
+		((MapEndTr) amt).transition.points = tpos;		
+		/* Label platzieren */
+		p = new CPoint(tpos[0]);
+		if (amt.endColumn < amt.startColumn) {
+		    p.translate(0, 10);
+		}
+		else{
+		    p.translate(0, -10);
+		}
+		((MapEndTr) amt).transition.label.position = p;
+		/* $Testausgabe */
+		//System.out.println("Label:"+p.x+","+p.y);
+				
+		mt[i] = null;
+	    }
+	}
+	/* $Testausgabe */
+	//System.out.println("layoutORStateExited:"+s.name.name);
     };
 
     /**
@@ -108,7 +310,7 @@ class SugiyamaBCMAlgorithm implements LayoutAlgorithm {
     public void layoutANDState(And_State s) {
 
 	/* $Testausgabe */
-	System.out.println("layoutANDState:"+s.name.name);
+	//System.out.println("layoutANDState:"+s.name.name);
 
 	/* Layout für Substates durchführen */
 	StateList stateList = s.substates;
@@ -292,10 +494,13 @@ class SugiyamaBCMAlgorithm implements LayoutAlgorithm {
 	    substate.rect.y = starty;
 	    substate.rect.width = endx - startx;
 	    substate.rect.height = endy - starty;
+	    /* Substate-Namen plazieren */
+	    substate.name.position.x = startx+5;
+	    substate.name.position.y = starty-5;
 	    stateList = stateList.tail;
 
-	    /* Ausgabe */
-	    System.out.println("Position des States "+substate.name.name+":"+substate.rect);
+	    /* $Testausgabe */
+	    //System.out.println("Position des States "+substate.name.name+":"+substate.rect);
 	    
 	}
 	
@@ -311,6 +516,7 @@ class SugiyamaBCMAlgorithm implements LayoutAlgorithm {
     void layoutState(State s) {
 		
 	s.rect = new CRectangle();
+	s.name.position = new CPoint();
 
 	Class classOfState = s.getClass();
 	
@@ -358,3 +564,4 @@ class SugiyamaBCMAlgorithm implements LayoutAlgorithm {
 	int getLength() {return length;}
     }
 } // SugiyamaBCMAlgorithm
+

@@ -45,13 +45,47 @@ import absyn.*;
  * d&uuml;rfen keine null-Pointer vorkommen
  *
  * <p>Nachbedingungen:
- * <br> Bis jetzt wird die unver&auml;nderte Statechart zur&uuml;ckgegeben.
- * <br> Die Koordinateninstanzvariablen bleiben also unver&auml;ndert.
+ * Es wird ein Clone des Statecharts mit Koordinaten zur&uuml;ckgegeben.
+ * 
+ *
+ * <p>
+ * <dl compact>
+ *
+ * <dt><strong>
+ * STATUS
+ * </strong>
+ *
+ * Layout wird nicht wie oben beschrieben durchgef&uuml;hrt. 
+ * Die Minimierung der Kanten&uuml;berschneidungen funktioniert noch nicht
+ * und ist deswegen deaktiviert.
+ * <br>
+ * Im Verzeichnis
+ * tesc2/Test findet sich ein Programm TestFrame, das in diesem
+ * Verzeichnis mit 'make frame' gestartet werden kann. Es wird dann
+ * ein Zufallsstatechart erzeugt und 'behelfsm&auml;&szlig;ig 
+ * angezeigt.
+ *
+ * <dt><strong>
+ * TODO 
+ * </strong>
+ * Verbesserung der optischen Erscheinung, weiterer Algorithmus.
+ * Aktivierung der Optimierung.
+ *
+ * <dt><strong>
+ * BEKANNTE FEHLER
+ * </strong>
+ * Das Erscheinungsbild ist noch nicht ,,optimal''
+ *
+ * <dt><strong>
+ * TEMPOR&Auml;RE FEATURES
+ * </strong>
+ * 
+ * </dl compact>
  *
  * Created: Fri Nov 27 11:26:25 1998
  *
  * @author Software Technologie 19, Klaus H&ouml;ppner, Achim Abeling
- * @version $Id: GraphOptimizer.java,v 1.7 1998-12-21 14:06:34 swtech19 Exp $
+ * @version $Id: GraphOptimizer.java,v 1.8 1999-01-11 10:32:14 swtech19 Exp $
  *
  */
 
@@ -107,7 +141,7 @@ public class GraphOptimizer {
      */
     public Statechart start() throws AlgorithmException {
 
-	/*
+       
 	Statechart scclone = null;
 	LayoutAlgorithm layoutAR;
 
@@ -124,9 +158,9 @@ public class GraphOptimizer {
 	} catch (CloneNotSupportedException e) {
 
 	}
-	*/
 	
-	return sc;
+	
+	return scclone;
     }
 
     // Plaziert beliebiges Statechart (auch ohne Koordinaten)
