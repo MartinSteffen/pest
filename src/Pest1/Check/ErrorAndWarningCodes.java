@@ -2,7 +2,7 @@ package check;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: ErrorAndWarningCodes.java,v 1.14 1998-12-15 17:51:38 swtech00 Exp $
+ *  @version  $Id: ErrorAndWarningCodes.java,v 1.15 1998-12-22 10:05:20 swtech11 Exp $
  */
 class ErrorAndWarningCodes {
   ErrorAndWarningCodes() {
@@ -35,11 +35,13 @@ class ErrorAndWarningCodes {
       case 100: {_s = "Doppelte Definition von BVar"; break; }
       case 101: {_s = "Keine Deklaration von BVar"; break; }
       case 102: {_s = "Deklarierte BVar wurde nicht verwendet"; break; }
+      case 110: {_s = "Die Statechart enthält keine Liste der booleschen Variablen."; break; }
       
       case 200: {_s = "Name von Event nicht eindeutig"; break; }
       case 201: {_s = "Keine Deklaration von Event"; break; }
       case 202: {_s = "Deklarierter Event wurde nicht verwendet"; break; }
       case 203: {_s = "Der Pathname in einem GuardComppath ist nicht vorhanden."; break; }
+      case 210: {_s = "Die Statechart enthält keine Eventliste."; break; }
 
       case 300: {_s = "Mehrfache Definition von Statename"; break; }
       case 301: {_s = "Bezeichnung von Statename nicht eindeutig"; break;}
@@ -49,6 +51,8 @@ class ErrorAndWarningCodes {
       case 305: {_s = "Ein Or-State enthaelt keinen inneren State"; break; }
       case 306: {_s = "Ein And-State enthaelt keinen inneren State"; break; }
       case 307: {_s = "Ein And-State enthaelt nur einen inneren State"; break; }
+      case 310: {_s = "Die Statechart enthält keine Pfadliste."; break; }
+      case 311: {_s = "Die Statechart enthält keine States."; break; }
 
       case 400: {_s = "Der Start-State der Transition ist nicht definiert."; break; }
       case 401: {_s = "Der Ziel-State der Transition ist nicht definiert."; break; }
@@ -66,6 +70,7 @@ class ErrorAndWarningCodes {
       case 413: {_s = "Interlevel-Transition: Der Ziel-Connenctor liegt falsch."; break; }
       case 414: {_s = "Interlevel-Transition: Beide Connenctoren liegten falsch."; break; }
       case 415: {_s = "Die Transition hat den gleichen Start- und Ziel-Connector."; break; }
+      case 420: {_s = "Die Statechart enthält keine Transitionen."; break; }
 
       default:  _s = "Dieser Code wurde noch nicht erfasst.";
     }

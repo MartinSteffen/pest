@@ -28,7 +28,7 @@ import gui.*;
  * <a href="#Codes">Codes von Fehlern und Warnungen beim Syntax Check</a><br>
  * <br>
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: ModelCheck.java,v 1.6 1998-12-20 17:21:01 swtech11 Exp $
+ * @version  $Id: ModelCheck.java,v 1.7 1998-12-22 10:05:21 swtech11 Exp $
  */
 public class ModelCheck {
   private ModelCheckMsg mcm; // Object, um die Fehler und Warnungen zu speichern
@@ -62,10 +62,20 @@ public class ModelCheck {
  * @param sc  die zu checkende Statechart
  */
   public boolean checkModel(Statechart sc) {
-    boolean NoEventError, NoBooleanError, NoTransError, NoStateError, NoFatalError;
+    boolean NoEventError = false;
+    boolean NoBooleanError = false;
+    boolean NoTransError = false;
+    boolean NoStateError = false;
+    boolean NoFatalError = false;
     boolean result = false;
 
+         // Calendar now = Calendar.getInstance();
+         // long sz, ez;
+
     // Test auf Kreisfreiheit und doppelte Referenzierung
+
+         //  sz = System.currentTimeMillis();
+
     TestPI tpi = new TestPI(sc, mcm);
     NoFatalError=tpi.check();
 
@@ -76,28 +86,64 @@ public class ModelCheck {
     }
     else {
       // Checkt die States.
-      TestStates ts = new TestStates(sc, mcm);
-      NoStateError = ts.check();
-      // Checkt die Transitionen.
-      TestTransitions tt = new TestTransitions(sc,mcm);
-      NoTransError = tt.check();
-      // Checkt die Events.
-      TestEvents te = new TestEvents(sc, mcm);
-      NoEventError = te.check();
-      // Checkt die booleschen Variablen.
-      TestBVars tb = new TestBVars(sc, mcm);
-      NoBooleanError = tb.check();
+      if (sc.state == null) {
+        mcm.addError(311,"uebergebene Statechart");
+        if ( outputGUI == true ) { gui.userMessage("Check: Der Check für die Überprüfung der States wurde nicht ausgeführt."); }
+      }
+      else if (sc.cnames == null) {
+        mcm.addError(310,"uebergebene Statechart");
+        if ( outputGUI == true ) { gui.userMessage("Check: Der Check für die Überprüfung der States wurde nicht ausgeführt."); }
+      }
+      else {
+        TestStates ts = new TestStates(sc, mcm);
+        NoStateError = ts.check();
+        if ( outputGUI == true ) { gui.userMessage("Check: Keine Fehler während der Überprüfung der States gefunden."); }
+      }
 
+      // Checkt die Transitionen.
+      if (sc.state == null) {
+        mcm.addError(420,"uebergebene Statechart");
+        if ( outputGUI == true ) { gui.userMessage("Check: Der Check für die Überprüfung der Transitionen wurde nicht ausgeführt."); }
+      }
+      else {
+        TestTransitions tt = new TestTransitions(sc,mcm);
+        NoTransError = tt.check();
+        if ( outputGUI == true & NoTransError == true ) {
+          gui.userMessage("Check: Keine Fehler während der Überprüfung der Transitions gefunden.");
+        }
+      }
+
+      // Checkt die Events.
+      if (sc.events == null) {
+        mcm.addError(210,"uebergebene Statechart");
+        if ( outputGUI == true ) { gui.userMessage("Check: Der Check für die Überprüfung der Events wurde nicht ausgeführt."); }
+      }
+      else {
+        TestEvents te = new TestEvents(sc, mcm);
+        NoEventError = te.check();
+        if ( outputGUI == true & NoEventError == true ) { gui.userMessage("Check: Keine Fehler während der Überprüfung der Events gefunden."); }
+      }
+
+      // Checkt die booleschen Variablen.
+      if (sc.bvars == null) {
+        mcm.addError(110,"uebergebene Statechart");
+        if ( outputGUI == true ) { gui.userMessage("Check: Der Check für die Überprüfung der Booleschen Variablen wurde nicht ausgeführt."); }
+      }
+      else {
+        TestBVars tb = new TestBVars(sc, mcm);
+        NoBooleanError = tb.check();
+        if ( outputGUI == true & NoBooleanError == true) { gui.userMessage("Check: Keine Fehler während der Überprüfung der Booleschen Variablen gefunden."); }
+      }
+
+      // Gesamtergebnis erstellen
       result = ( NoEventError & NoBooleanError & NoTransError & NoStateError );
 
-      if ( outputGUI == true ) {
-        outputToGUI();
-        if ( NoStateError == true ) { gui.userMessage("Check: Keine Fehler während der Überprüfung der States gefunden."); }
-        if ( NoTransError == true ) { gui.userMessage("Check: Keine Fehler während der Überprüfung der Transitions gefunden."); }
-        if ( NoEventError == true ) { gui.userMessage("Check: Keine Fehler während der Überprüfung der Events gefunden."); }
-        if ( NoBooleanError == true) { gui.userMessage("Check: Keine Fehler während der Überprüfung der Booleschen Variablen gefunden."); }
-      }
+      if ( outputGUI == true ) { outputToGUI(); }
     }
+
+
+                // ez = System.currentTimeMillis();
+                // System.out.println(sz+" "+ez+" "+(long)(ez-sz));
 
     return result;
   };
@@ -131,13 +177,11 @@ public class ModelCheck {
 
   void outputToGUI() {
     if (getErrorNumber()>0) {
-      gui.userMessage("Check	: Fehlermeldungen ( Anzahl: " + getErrorNumber() +  " ):");
-      for (int i=1;(i<=getErrorNumber());i++) {
-            gui.userMessage("Check	: "+getError(i) ); } }
+      gui.userMessage( "Check: Fehlermeldungen ( Anzahl: " + getErrorNumber() +  " ):");
+      for (int i=1;(i<=getErrorNumber());i++) {gui.userMessage("Check: "+getError(i) ); } }
     if (getWarningNumber()>0) {
-      gui.userMessage("Check	: Warnmeldungen ( Anzahl: " + getWarningNumber() +  " ):");
-      for (int i=1;(i<=getWarningNumber());i++) {
-        gui.userMessage("Check	: "+getWarning(i) ); } }
+      gui.userMessage( "Check: Warnmeldungen ( Anzahl: " + getWarningNumber() +  " ):");
+      for (int i=1;(i<=getWarningNumber());i++) {gui.userMessage("Check: "+getWarning(i) ); } }
   }
 
 /**
@@ -236,11 +280,13 @@ public class ModelCheck {
  *<TR><TD ALIGN="right">100</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Doppelte Definition von BVar</TD></TR>
  *<TR><TD ALIGN="right">101</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Keine Deklaration von BVar</TD></TR>
  *<TR><TD ALIGN="right">102</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Deklarierte BVar wurde nicht verwendet</TD></TR>
+ *<TR><TD ALIGN="right">110</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Die Statechart enthält keine Liste der booleschen Variablen.</TD></TR>
  *<TR><TD ALIGN="right">200</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Doppelte Definition von Events</TD></TR>
  *<TR><TD ALIGN="right">201</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Keine Deklaration von Event</TD></TR>
  *<TR><TD ALIGN="right">202</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Deklarierter Event wurde nicht verwendet</TD></TR>
  *<TR><TD ALIGN="right">203</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Der Pathname in einem GuardComppath ist nicht vorhanden.</TD></TR>
  *<TR><TD ALIGN="right">204</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Der Pathname in einem GuardComppath ist mehrfach vorhanden.</TD></TR>
+ *<TR><TD ALIGN="right">210</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Die Statechart enthält keine Eventliste.</TD></TR>
  *<TR><TD ALIGN="right">300</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Mehrfache Definition von Statename</TD></TR>
  *<TR><TD ALIGN="right">301</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Bezeichnung von Statename nicht eindeutig</TD></TR>
  *<TR><TD ALIGN="right">302</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Deklarierter State wurde nicht verwendet</TD></TR>
@@ -249,6 +295,8 @@ public class ModelCheck {
  *<TR><TD ALIGN="right">305</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Ein Or-State enthaelt keinen inneren State</TD></TR>
  *<TR><TD ALIGN="right">306</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Ein And-State enthaelt nur einen inneren State</TD></TR>
  *<TR><TD ALIGN="right">307</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Ein And-State enthaelt keinen inneren State</TD></TR>
+ *<TR><TD ALIGN="right">310</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Die Statechart enthält keine Pfadliste.</TD></TR>
+ *<TR><TD ALIGN="right">311</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Die Statechart enthält keine States.</TD></TR>
  *<TR><TD ALIGN="right">400</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Der Start-State der Transition ist nicht definiert.</TD></TR>
  *<TR><TD ALIGN="right">401</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Der Ziel-State der Transition ist nicht definiert.</TD></TR>
  *<TR><TD ALIGN="right">402</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Beide States der Transition sind nicht definiert.</TD></TR>
@@ -265,6 +313,7 @@ public class ModelCheck {
  *<TR><TD ALIGN="right">413</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Interlevel-Transition: Der Ziel-Connenctor liegt falsch.</TD></TR>
  *<TR><TD ALIGN="right">414</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Interlevel-Transition: Beide Connenctoren liegten falsch.</TD></TR>
  *<TR><TD ALIGN="right">415</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Die Transition hat den gleichen Start- und Ziel-Connector.</TD></TR>
+ *<TR><TD ALIGN="right">420</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Die Statechart enthält keine Transitionen.</TD></TR> 
  *<TR><TD ALIGN="right">X</TD><TD ALIGN="center">X</TD><TD ALIGN="center">X</TD><TD>unbekannter Code</TD></TR>
  *</Table>
  * @param _number Index der Warnung (1 bis getWarningNumber() )
