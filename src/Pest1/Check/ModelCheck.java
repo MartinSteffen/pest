@@ -48,7 +48,7 @@ import gui.*;
  * </DL COMPACT>
  *
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: ModelCheck.java,v 1.13 1999-01-04 22:36:37 swtech11 Exp $
+ * @version  $Id: ModelCheck.java,v 1.14 1999-01-05 22:05:23 swtech11 Exp $
  */
 public class ModelCheck {
   private ModelCheckMsg mcm; // Object, um die Fehler und Warnungen zu speichern
@@ -113,7 +113,11 @@ public class ModelCheck {
       }
       else if (sc.cnames == null) {
         mcm.addError(310,"uebergebene Statechart");
-        if ( outputGUI == true ) { gui.userMessage("Check: Der Check für die Überprüfung der States wurde nicht ausgeführt."); }
+        s2 = getT();
+        TestStates ts = new TestStates(sc, mcm);
+        NoStateError = ts.check();
+        e2 = getT();
+        //if ( outputGUI == true ) { gui.userMessage("Check: Der Check für die Überprüfung der States wurde nicht ausgeführt."); }
       }
       else {
         s2 = getT();
@@ -141,7 +145,11 @@ public class ModelCheck {
       // Checkt die Events.
       if (sc.events == null) {
         mcm.addWarning(210,"uebergebene Statechart");
-        if ( outputGUI == true ) { gui.userMessage("Check: Der Check für die Überprüfung der Events wurde nicht ausgeführt."); }
+        s4 = getT();
+        TestEvents te = new TestEvents(sc, mcm);
+        NoEventError = te.check();
+        e4 = getT();
+        //if ( outputGUI == true ) { gui.userMessage("Check: Der Check für die Überprüfung der Events wurde nicht ausgeführt."); }
       }
       else {
         s4 = getT();
@@ -154,7 +162,11 @@ public class ModelCheck {
       // Checkt die booleschen Variablen.
       if (sc.bvars == null) {
         mcm.addWarning(110,"uebergebene Statechart");
-        if ( outputGUI == true ) { gui.userMessage("Check: Der Check für die Überprüfung der Booleschen Variablen wurde nicht ausgeführt."); }
+        s5 = getT();
+        TestBVars tb = new TestBVars(sc, mcm);
+        NoBooleanError = tb.check();
+        e5 = getT();
+        //if ( outputGUI == true ) { gui.userMessage("Check: Der Check für die Überprüfung der Booleschen Variablen wurde nicht ausgeführt."); }
       }
       else {
         s5 = getT();

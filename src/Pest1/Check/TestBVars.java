@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestBVars.java,v 1.5 1999-01-03 15:14:30 swtech11 Exp $
+ *  @version  $Id: TestBVars.java,v 1.6 1999-01-05 22:05:25 swtech11 Exp $
  */
 
 /** Diese Testklasse testet, ob alle BVars deklariert worden sind, 
@@ -76,11 +76,11 @@ class TestBVars extends ModelCheckBasics{
           if ((g instanceof GuardEmpty) || (g instanceof GuardEvent) ||
              (g instanceof GuardCompp)) {}
             else {
-            if (g instanceof GuardUndet) {msg.addWarning(416,"Trans: "+
-                ((Statename)t.source).name+" -> "+((Statename)t.target).name+" in State: "+p); }
-              else {msg.addError(417,"Trans: "+
-                ((Statename)t.source).name+" -> "+((Statename)t.target).name+" in State: "+p); };
+            if (g instanceof GuardUndet) {ausgabe(416, t, p, false);}
+              else {ausgabe(417, t, p, true); };
     };};};};};
+
+
 
     /** Ueberprueft, ob ein BVar, der in einem Guard oder einem Action verwendet wird, 
 	<br>deklariert worden ist.*/
@@ -99,8 +99,7 @@ class TestBVars extends ModelCheckBasics{
       if (a instanceof ActionStmt) {pruefeBool (((ActionStmt)a).stmt, t, p);}
         else {
           if ((a instanceof ActionEvt) || (a instanceof ActionEmpty)) {}
-            else {msg.addError(418,"Trans: "+
-                ((Statename)t.source).name+" -> "+((Statename)t.target).name+" in State: "+p);};
+            else {ausgabe(418, t, p, true);};
     }; }; };
 
   /** Ueberprueft einen boolschen Block auf Verwendung von BVars.*/
@@ -124,5 +123,17 @@ class TestBVars extends ModelCheckBasics{
         for(int i=0; i<Ist.size(); i++) { msg.addWarning(102,"BVar: "+(String)Ist.elementAt(i));};
 
     };
+    void ausgabe(int n, Tr t, String p, boolean b) {
+  String s1="";
+  String s2="";
+  if (t.source instanceof Statename) { s1=((Statename)t.source).name;};
+  if (t.target instanceof Statename) { s2=((Statename)t.target).name;};
+  if (t.source instanceof Conname)  { s1=((Conname)t.source).name;};
+  if (t.target instanceof Conname)  { s2=((Conname)t.target).name;};
+  if (t.source instanceof UNDEFINED)  { s1="UNDEFINED";};
+  if (t.target instanceof UNDEFINED)  { s2="UNDEFINED";};
+  if (b) {msg.addError(n,"Trans: "+s1+" -> "+s2+" in State: "+p);}
+     else {msg.addWarning(n,"Trans: "+s1+" -> "+s2+" in State: "+p);};
+  }
 }
 
