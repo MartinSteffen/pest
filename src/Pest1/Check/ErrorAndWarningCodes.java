@@ -2,7 +2,7 @@ package check;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: ErrorAndWarningCodes.java,v 1.27 1999-01-18 16:30:39 swtech11 Exp $
+ *  @version  $Id: ErrorAndWarningCodes.java,v 1.28 1999-01-20 11:24:11 swtech11 Exp $
  */
 class ErrorAndWarningCodes {
   ErrorAndWarningCodes() {
@@ -39,8 +39,8 @@ class ErrorAndWarningCodes {
       case  99: { _s = "Aufgrund eines fatalen Fehlers wird der Syntax Check abgebrochen."; break;  }
 
       case 100: {_s = "Doppelte Definition von BVar"; break; }
-      case 101: {_s = "Keine Deklaration von BVar"; break; }
-      case 102: {_s = "Deklarierte BVar wurde nicht verwendet"; break; }
+      case 101: {_s = "Keine Definition von BVar"; break; }
+      case 102: {_s = "Definierte BVar wurde nicht verwendet"; break; }
       case 103: {_s = "Der Boolsche Ausdruck im Guard der Transition laesst sich nicht spezifizieren."; break;}
       case 104: {_s = "Die Boolsche Variable wird in keinem Action veraendert."; break; }
       case 105: {_s = "Kein Guard fragt den Wert der boolschen Variable ab."; break; }
