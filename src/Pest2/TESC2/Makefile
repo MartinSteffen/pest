@@ -21,6 +21,7 @@ GeneralLayoutAlgorithm.class
 .SUFFIXES: .java .class
  
 all : $(CLASSES)
+debug:	; make JAVACOPTS="-g" all
   
 # Remove all class files from the project directory.
 clean:
@@ -29,5 +30,5 @@ clean:
 # Implicit rule for making Java class files from Java
 # source files.
 .java.class:
-	$(COMPILER) $(COPTIONS) $?
+	$(COMPILER) $(COPTIONS) $(JAVACOPTS) $?
 

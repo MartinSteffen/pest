@@ -4,11 +4,12 @@ cc = javac
 
 
 all : $(patsubst %.java,%.class,$(wildcard *.java))
+debug:	; make JAVACOPTS="-g" all
 
 #Editor.class 
 
 %.class:	%.java
-		$(cc) $<
+		$(cc) $(JAVACOPTS) $<
 
 
 #Editor.class :

@@ -4,6 +4,7 @@
 
 
 all:    others $(patsubst %.java,%.class,$(wildcard *.java))  
+debug:	; make JAVACOPTS="-g" all
 
 
 others:
@@ -19,7 +20,7 @@ others:
 gui:    $(patsubst %.java,%.class,$(wildcard *.java))  
 
 %.class: %.java 
-	javac $< 
+	javac $(JAVACOPTS) $< 
 
 
 clean:

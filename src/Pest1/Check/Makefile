@@ -2,9 +2,12 @@
 #	Abstract Syntax for PEST Statecharts
 #	------------------------------------
 #
-#	$Id: Makefile,v 1.3 1998-12-09 14:28:50 swtech11 Exp $
+#	$Id: Makefile,v 1.4 1999-02-09 11:07:18 swtech00 Exp $
 #
 #	$Log: not supported by cvs2svn $
+#	Revision 1.3  1998/12/09 14:28:50  swtech11
+#	*** empty log message ***
+#
 #	Revision 1.5  1998/12/08 14:49:33  swtech00
 #	Optimierung.
 #
@@ -23,9 +26,10 @@
 
 
 all:	$(patsubst %.java,%.class,$(wildcard *.java))
+debug:	; make JAVACOPTS="-g" all
 
 %.class:	%.java
-		javac $<
+		javac $(JAVACOPTS) $<
 
 
 clean:

@@ -2,9 +2,10 @@
 
 
 all:	$(patsubst %.java,%.class,$(wildcard *.java))
+debug:	; make JAVACOPTS="-g" all
 
- %.class:	%.java
-		javac $<
+%.class:	%.java
+		javac  $(JAVACOPTS) $<
 
 clean:
 	\rm -f *.class *~

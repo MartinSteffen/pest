@@ -24,7 +24,8 @@ GraphOptimizer.class
 .SUFFIXES: .java .class
  
 all : $(CLASSES)
-  
+debug:	; make JAVACOPTS="-g" all
+ 
 # Remove class files 
 clean:
 	rm *.class
@@ -32,7 +33,7 @@ clean:
 # Implicit rule for making Java class files from Java source files
 
 .java.class:
-	$(COMPILER) $(COPTIONS)  GraphOptimizer.java
+	$(COMPILER) $(COPTIONS)  $(JAVACOPTS) GraphOptimizer.java
 
 #=================================================================
 
