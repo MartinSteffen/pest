@@ -1,13 +1,12 @@
-package Simu;
+package simu;
 
 /**
- * This type was created in VisualAge.
  * @author: SWTECH 26
  * @version: $Id
  */
 
-import Absyn.*;
-import Editor.*;
+import absyn.*;
+import editor.*;
 
 public class Simu extends Object{
 	
@@ -25,32 +24,27 @@ public Simu(Statechart Daten) {
 }
 
 /**
- * This method was created in VisualAge.
  */
-public void get_guard(Guard waechter) {
+private void get_guard(Guard waechter) {
 }
 
 /**
- * This method was created in VisualAge.
  */
-public void getNext() {
+private void getNext() {
 }
 
 /**
- * This method was created in VisualAge.
  * @param aktion Absyn.Action
  */
-public void make_action(Action aktion) {
+private void make_action(Action aktion) {
 }
 
 /**
- * This method was created in VisualAge.
  */
-public void makeTab(Statechart Daten) {
+private void makeTab(Statechart Daten) {
 }
 
 /**
- * This method was created in VisualAge.
  * @param Daten Absyn.Statechart
  * @param eEdit Editor
  */
@@ -72,8 +66,4 @@ public void Simu(Statechart Daten, editor eEdit) {
 	}
 }
 }
-
-
-
-
 
