@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.62 1999-02-05 09:34:00 swtech00 Exp $
+//	$Id: report_list,v 1.63 1999-02-05 10:22:47 swtech01 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -772,6 +772,10 @@ deswegen, weil Codegen die Default-Namen nicht vertraegt.
 Man erzeuge einen AND-State und in einer der Komponenten zwei Basic-Zustaende
 und eine Transition zwischen beiden. Die Transition erhaelt als Source und
 Target den AND-State. Natürlich meldet Check dann eine Interlevel-Transition.
+
+Fehler passieren auch beim Importieren via Tesc-Import. Man importiere z.B.
+~swtech12/Examples/misc/and-test1.tesc1. SyntaxCheck ergibt ohne
+geöffneten Editor keine Fehler, mit schon.
 //------------------------------------------------------------------------------
 #Number:        54
 #Autor:         Bernd Weber bwe
@@ -783,6 +787,3 @@ Erstelle zwei Zustaende mit UNbeschrifteter Trasition. Erzeuge einen
 parent state aussenrum. Dabei wird die Anzeige total entstellt (Or-State
 geloescht, Zustaende und Transition verschoben).
 //------------------------------------------------------------------------------
-
-
-

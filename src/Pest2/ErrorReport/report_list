@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	------------------
 //
-//	$Id: report_list,v 1.32 1999-02-05 09:47:21 swtech00 Exp $
+//	$Id: report_list,v 1.33 1999-02-05 10:22:56 swtech01 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -613,4 +613,14 @@ Der Import meldet sehr viele (!!!) Warnings (Undet-Guard).
 SyntaxCheck ist aber erfolgreich...
 Das kann aber nicht sein (auch deswegen nicht, weil TESC-Export die importierte Chart
 nicht exportieren kann).
+//------------------------------------------------------------------------------
+#Number:	41
+#Autor:		Bernd Weber bwe
+#Subject:	BASIC-State kann nicht benannt werden
+#Status:	reported
+#Description:
+
+Man importiere ~swtech12/Examples/misc/nondet-test1.tesc2. Dann
+versuche man, den Zustand Init umzubenennen. Bei mir erscheint immer
+das Menu für den Zustand Nondet.
 //------------------------------------------------------------------------------
