@@ -18,9 +18,8 @@ import Absyn.*;
 import Editor.desk.*;
 
 public class Editor extends Frame {
-    public static String Buttontype = "";
-    public static String locstring = "";
-    public static boolean update = false;
+    private static String Buttontype = "";
+    private static boolean update = false;
 
     ActionListener listener = new ActionListener() {
        public void actionPerformed(ActionEvent e){
@@ -125,7 +124,7 @@ public static String Editor () {return Buttontype ;}
 public static void SetListen() {  update = true;    }
 
 /**
- * This Method returns the atatus of the update-Listener 
+ * This Method returns the status of the update-Listener 
  */
 
 public static boolean ListenEditor() {
