@@ -1,18 +1,23 @@
-COMPILER = javac
-VM = java
-COPTIONS = -g -deprecation
+#----------------------------------------------------------------------
+#	TESC for PEST Statecharts
+#	-------------------------
+#
+#	$Id: Makefile,v 1.4 1998-12-17 11:05:47 swtech20 Exp $
+#
+#	$Log: not supported by cvs2svn $
+#
+#----------------------------------------------------------------------
 
-CLASSES = TESCLoader.class\
-TESCParser.class\
-TESCTokenizer.class
 
-.SUFFIXES: .java .class
+all:	$(patsubst %.java,%.class,$(wildcard *.java))
 
-all : $(CLASSES)
+%.class:	%.java
+		javac $<
+
 
 clean:
-	rm -f *.class *~
+	\rm -f *.class *~
 
-.java.class:
-	$(COMPILER) $(COPTIONS)  $?
+localdocu:	;
+	javadoc  -version -author -d Docu *.java
 
