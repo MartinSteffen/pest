@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	--------------
 //
-//	$Id: report_list,v 1.35 1999-02-07 11:52:53 swtech20 Exp $
+//	$Id: report_list,v 1.36 1999-02-07 14:29:40 swtech15 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -221,7 +221,7 @@ Man knnte mit der gleichen Methode noch mehr davon starten.
 #Number:	13
 #Autor:		Erich Mikk
 #Subject:	Einstellungsmglichkeiten nicht vorhanden
-#Status:	processing
+#Status:	fixed
 #Description:
 
 Einstellungen->TESC1 sagt
@@ -232,7 +232,7 @@ Einstellungen->SyntaxCheck
 #Number:	14
 #Autor:		Mario Thies swtech23
 #Subject:	Inkonsistenzen GUI
-#Status:	processing
+#Status:	fixed
 #Description:
 
 Das Fenster "Statechart wurde geaendert, troztdem fortfahren" scheint nicht, wenn 
