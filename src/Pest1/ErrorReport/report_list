@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.85 1999-02-09 13:39:30 swtech13 Exp $
+//	$Id: report_list,v 1.86 1999-02-09 14:43:32 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -816,7 +816,7 @@ Ich habe PC/a1.st importiert. Nachdem Aufruf des Editors zeigt der Check zwei In
 #Number:        56
 #Autor:         Erich Mikk erm
 #Subject:       TESC-Import kann sein eigenes Export-Resultat nicht einlesen.
-#Status:        fixed
+#Status:        confirmed
 #Description:
 
 STM-Import von PC/a1.st
