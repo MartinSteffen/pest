@@ -75,6 +75,13 @@ public void actionPerformed(ActionEvent e) {
 				  {
 				      myWindow.setStatechart(Synb,"./","UNBENANNT");
 				      myWindow.setDirty(true);
+				      if(!imp.hasCoords())
+					  {
+					      myWindow.userMessage("GUI   : SC koordinatenlos ! Berechne Koordinaten...");
+					      GraphOptimizer go = new GraphOptimizer(Synb,myWindow.getGraphics().getFontMetrics());
+					      Synb = go.start(myWindow.layoutAlgorithm);
+					      
+					  }
 				      myWindow.userMessage("GUI   : Statemate erfolgreich");
 
 				  }

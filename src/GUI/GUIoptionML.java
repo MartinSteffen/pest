@@ -41,6 +41,8 @@ public void actionPerformed(ActionEvent e) {
 	  new tesc2Option(myWindow);
 	  //      }else if (cmd.equals("Codegenerator")) {
 	  //	  new codegen.CodeGenOpt();
+//      }else if (cmd.equals("Codegenerator")) {
+//	  codegen.CodeGenConfig(myWindow);
       }else{  
 	 myWindow.userMessage("GUI   : NOCH NICHT IMPLEMENTIERT"); 
       }	
