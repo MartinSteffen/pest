@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.40 1999-01-29 08:19:03 swtech00 Exp $
+//	$Id: report_list,v 1.41 1999-01-29 13:52:36 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -279,7 +279,7 @@ Setzt man in einem leeren Editor einen State und will diesen als Default kennzei
 #Number:	20
 #Autor:		Erich Mikk
 #Subject:	STM-Importierten Labels werden nicht angezeigt: Koordinaaten fehlen
-#Status:	fixed
+#Status:	confirmed
 #Description:
 
 Importiere z.B. TV/tv.st und starte Editor.
