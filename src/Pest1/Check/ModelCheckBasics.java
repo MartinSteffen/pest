@@ -4,8 +4,8 @@ import absyn.*;
 import java.util.*;
 
 /**
- *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: ModelCheckBasics.java,v 1.14 1999-01-26 12:33:01 swtech11 Exp $
+ * @author Java Praktikum: <a href="mailto:dw@ks.informatik.uni-kiel.de">Daniel Wendorff</a> und <a href="mailto:Stiller@T-Online.de">Magnus Stiller</a>
+ *  @version  $Id: ModelCheckBasics.java,v 1.15 1999-02-14 20:56:28 swtech11 Exp $
  */
 class ModelCheckBasics {
   ModelCheckMsg msg = new ModelCheckMsg();
@@ -166,7 +166,8 @@ class ModelCheckBasics {
 		            b=false; 
                             
 }
-         else { 
+
+         else { 
            if ((v.elementAt(j) instanceof StateC) && ((((StateC)v.elementAt(j)).Pfad).equals(s))) {
 		            b=false; 
                             }
@@ -194,7 +195,8 @@ class ModelCheckBasics {
 		            b=false; 
                             v.removeElementAt(j);}
 
-         else { 
+
+         else { 
            if ((v.elementAt(j) instanceof StateC) && ((((StateC)v.elementAt(j)).Pfad).equals(s))) {
 		            b=false; 
                             v.removeElementAt(j);}

@@ -7,8 +7,8 @@ import java.util.*;
  *  Diese Testklasse testet, ob alle Events deklariert worden sind,
  *  ob die deklarierten eindeutig sind und ob sie alle verwendet werden.
  *
- *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestEvents.java,v 1.15 1999-02-05 10:29:35 swtech11 Exp $
+ * @author Java Praktikum: <a href="mailto:dw@ks.informatik.uni-kiel.de">Daniel Wendorff</a> und <a href="mailto:Stiller@T-Online.de">Magnus Stiller</a>
+ *  @version  $Id: TestEvents.java,v 1.16 1999-02-14 20:56:32 swtech11 Exp $
  */
 class TestEvents extends ModelCheckBasics{
   private Vector Ist;

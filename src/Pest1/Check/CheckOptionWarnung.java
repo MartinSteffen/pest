@@ -8,8 +8,8 @@ import java.awt.event.*;
 /**
  * Fenster zur Eingabe der gewünschten Warnungen des Syntax Checks, die im Browser ausgegeben werden sollen
  *
- *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: CheckOptionWarnung.java,v 1.2 1999-02-11 22:29:12 swtech11 Exp $
+ * @author Java Praktikum: <a href="mailto:dw@ks.informatik.uni-kiel.de">Daniel Wendorff</a> und <a href="mailto:Stiller@T-Online.de">Magnus Stiller</a>
+ *  @version  $Id: CheckOptionWarnung.java,v 1.3 1999-02-14 20:56:23 swtech11 Exp $
  *  @see CheckConfig, CheckOption
  */
 class CheckOptionWarnung extends Dialog implements ActionListener {

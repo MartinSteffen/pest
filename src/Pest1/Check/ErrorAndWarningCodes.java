@@ -10,8 +10,8 @@ import java.util.*;
  *   300-399 State Fehler
  *   400-499 Transitions Fehler
  *
- *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: ErrorAndWarningCodes.java,v 1.36 1999-02-11 22:29:14 swtech11 Exp $
+ * @author Java Praktikum: <a href="mailto:dw@ks.informatik.uni-kiel.de">Daniel Wendorff</a> und <a href="mailto:Stiller@T-Online.de">Magnus Stiller</a>
+ *  @version  $Id: ErrorAndWarningCodes.java,v 1.37 1999-02-14 20:56:25 swtech11 Exp $
  */
 class ErrorAndWarningCodes {
 

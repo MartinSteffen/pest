@@ -11,8 +11,8 @@ import java.util.*;
 /**
  *  Browser
  *
- *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: Browser.java,v 1.15 1999-02-11 22:29:09 swtech11 Exp $
+ * @author Java Praktikum: <a href="mailto:dw@ks.informatik.uni-kiel.de">Daniel Wendorff</a> und <a href="mailto:Stiller@T-Online.de">Magnus Stiller</a>
+ *  @version  $Id: Browser.java,v 1.16 1999-02-14 20:56:20 swtech11 Exp $
  */
 class Browser extends Dialog implements ActionListener {
   pest parent = null;
@@ -214,7 +214,7 @@ class Browser extends Dialog implements ActionListener {
         fd.show();
         String fn=fd.getFile();
         String dn=fd.getDirectory();
-        try {
+        if (fn!=null) { try {
           FileOutputStream fos = new FileOutputStream(dn+fn);
           PrintWriter out = new PrintWriter(fos);
           out.println("Meldungen des Syntax Check:");
@@ -232,13 +232,13 @@ class Browser extends Dialog implements ActionListener {
           out.close();
         }
         catch (Exception ex) { gui.OkDialog("Fehlermeldung","Die Speicherung ist fehlgeschlagen!"); }
-      }
-      else {
+      }}
+      else  {
         FileDialog fd=new FileDialog(parent,new String("Ergebnis von Crossreference"),FileDialog.SAVE);
         fd.show();
         String fn=fd.getFile();
         String dn=fd.getDirectory();
-        try {
+        if (fn!=null) { try {
           FileOutputStream fos = new FileOutputStream(dn+fn);
           PrintWriter out = new PrintWriter(fos);
           out.println("Meldungen von Crossreference:");
@@ -250,7 +250,7 @@ class Browser extends Dialog implements ActionListener {
           out.close();
         }
         catch (Exception ex) { gui.OkDialog("Fehlermeldung","Die Speicherung ist fehlgeschlagen!"); }
-      }
+      }}
     }
     else if (cmd.equals(button3.getActionCommand())) {
       if (art.equals("")) {
@@ -258,7 +258,7 @@ class Browser extends Dialog implements ActionListener {
         fd.show();
         String fn=fd.getFile();
         String dn=fd.getDirectory();
-        try {
+        if (fn!=null) {try {
           FileOutputStream fos = new FileOutputStream(dn+fn);
           PrintWriter out = new PrintWriter(fos);
           out.println("Selektierte Meldungen des Syntax Check:");
@@ -283,13 +283,13 @@ class Browser extends Dialog implements ActionListener {
           out.close();
         }
         catch (Exception ex) { gui.OkDialog("Fehlermeldung","Die Speicherung ist fehlgeschlagen!");  }
-      }
+      } }
       else {
         FileDialog fd=new FileDialog(parent,new String("Selektiertes Ergebnis von Crossreference"),FileDialog.SAVE);
         fd.show();
         String fn=fd.getFile();
         String dn=fd.getDirectory();
-        try {
+        if (fn!=null) {try {
           FileOutputStream fos = new FileOutputStream(dn+fn);
           PrintWriter out = new PrintWriter(fos);
           out.println("Selektierte Meldungen von Crossreference:");
@@ -306,7 +306,7 @@ class Browser extends Dialog implements ActionListener {
           out.close();
         }
         catch (Exception ex) { gui.OkDialog("Fehlermeldung","Die Speicherung ist fehlgeschlagen!");  }
-      }
+      } }
     }
   }
 

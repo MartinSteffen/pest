@@ -6,8 +6,8 @@ import java.util.*;
 /**
  *  Test auf doppelte Referenzierung:
  *
- *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestPI.java,v 1.4 1999-01-03 15:14:31 swtech11 Exp $
+ * @author Java Praktikum: <a href="mailto:dw@ks.informatik.uni-kiel.de">Daniel Wendorff</a> und <a href="mailto:Stiller@T-Online.de">Magnus Stiller</a>
+ *  @version  $Id: TestPI.java,v 1.5 1999-02-14 20:56:33 swtech11 Exp $
  */
 class TestPI  {
   ModelCheckMsg msg = new ModelCheckMsg();

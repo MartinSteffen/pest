@@ -28,11 +28,14 @@ import editor.*;
  * keine Fehler mehr enthält, die den Simulator oder den CodeGenerator zu
  * zu falschen Ergebnissen führen würde.
  * </ul>
+ * <br>
+ * <a name="Codes"><h2>Codes von Fehlern und Warnungen beim Syntax Check:</h2></a>
+ * Die genaue Spezifizierung kann man im Programm in der Menuezeile unter Einstellungen -> Syntax Check -> Meldungen nachschauen.
  * <h2>Testmöglichkeiten:</h2>
  * Das Testprogramm t.java im Directory test erzeugt fehlerhafte Statecharts,
  * deren Resultate man gezielt analysieren kann (näheres siehe README).
  * <br>
- * <br>  
+ * <br>
  * <br>
  * <DL COMPACT>
  * <DT><STRONG>STATUS: </STRONG><br>
@@ -46,101 +49,8 @@ import editor.*;
  * keine
  * </DL COMPACT>
  * <br>
- *<a name="Codes"><h1>Codes von Fehlern und Warnungen beim Syntax Check</h1></a>
- *<b>Grobe Fehlerklassifizierung:</b><br>
- * 000 - 099 allgemeine Fehler und Warnungen<br>
- * 100 - 199 BVars Fehler und Warnungen<br>
- * 200 - 299 Events Fehler und Warnungen<br>
- * 300 - 399 State Fehler und Warnungen<br>
- * 400 - 499 Transitions Fehler und Warnungen<br>
- *<br>
- *<Table border CELLSPACING=3 BORDERCOLOR="#000000" CELLPADDING=3>
- *<TR ALIGN="center" VALIGN="middle"><TH><B>Code</B></TH><TH><B>F</B></TH><TH><B>W</B></TH><TH><B>Beschreibung</B></TH></TR>
- *<TR><TD ALIGN="right">1</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Der Syntax Check funktioniert nicht einwandfrei.</TD></TR>
- *<TR><TD ALIGN="right">2</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Der Event Check funktioniert nicht einwandfrei.</TD></TR>
- *<TR><TD ALIGN="right">3</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Der State Check funktioniert nicht einwandfrei.</TD></TR>
- *<TR><TD ALIGN="right">4</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Der Transition Check funktioniert nicht einwandfrei.</TD></TR>
- *<TR><TD ALIGN="right">5</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Der BVars Check funktioniert nicht einwandfrei.</TD></TR>
- *<TR><TD ALIGN="right">6</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Der Check auf Fehler der Programmierer funktioniert nicht einwandfrei.</TD></TR>
- *<TR><TD ALIGN="right">10</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Fataler Fehler: EIN Objekt des Types Or-State wird mehrfach referenziert.</TD></TR>
- *<TR><TD ALIGN="right">11</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Fataler Fehler: EIN Objekt des Types And-State wird mehrfach referenziert.</TD></TR>
- *<TR><TD ALIGN="right">12</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Fataler Fehler: EIN Objekt des Types Basic-State wird mehrfach referenziert.</TD></TR>
- *<TR><TD ALIGN="right">13</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Fataler Fehler: EIN Objekt des Types Transition wird mehrfach referenziert.</TD></TR>
- *<TR><TD ALIGN="right">14</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Fataler Fehler: EIN Objekt des Types TransitionList wird mehrfach referenziert.</TD></TR>
- *<TR><TD ALIGN="right">15</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Fataler Fehler: EIN Objekt des Types PathList wird mehrfach referenziert.</TD></TR>
- *<TR><TD ALIGN="right">16</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Fataler Fehler: EIN Objekt des Types Path wird in EINER PathList mehrfach referenziert.</TD></TR>
- *<TR><TD ALIGN="right">17</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Fataler Fehler: EIN Objekt des Types EventList wird mehrfach referenziert.</TD></TR>
- *<TR><TD ALIGN="right">18</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Fataler Fehler: EIN Objekt des Types Event wird in der EventList mehrfach referenziert.</TD></TR>
- *<TR><TD ALIGN="right">19</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Fataler Fehler: EIN Objekt des Types BVarList wird mehrfach referenziert.</TD></TR>
- *<TR><TD ALIGN="right">20</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Fataler Fehler: EIN Objekt des Types BVar wird in der BVarList mehrfach referenziert.</TD></TR>
- *<TR><TD ALIGN="right">21</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Fataler Fehler: EIN Objekt des Typs Label wird in Transitionen mehrfach referenziert.</TD></TR>
- *<TR><TD ALIGN="right">22</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Fataler Fehler: EIN Objekt des Typs Guard wird in Transitionen mehrfach referenziert.</TD></TR>
- *<TR><TD ALIGN="right">23</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Fataler Fehler: EIN Objekt des Typs Action wird in Transitionen mehrfach referenziert.</TD></TR>
- *<TR><TD ALIGN="right">24</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Fataler Fehler: EIN Objekt des Typs Aseq ist ein Nullpointer.</TD></TR>
- *<TR><TD ALIGN="right">99</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Aufgrund eines fatalen Fehlers wird der Syntax Check abgebrochen.</TD></TR>
- *<TR><TD ALIGN="right">100</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Doppelte Definition von BVar</TD></TR>
- *<TR><TD ALIGN="right">101</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Keine Definition von BVar</TD></TR>
- *<TR><TD ALIGN="right">102</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Definierte BVar wurde nicht verwendet</TD></TR>
- *<TR><TD ALIGN="right">103</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Der Boolsche Ausdruck im Guard der Transition laesst sich nicht spezifizieren. </TD></TR>
- *<TR><TD ALIGN="right">104</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Die Boolsche Variable wird in keinem Action veraendert. </TD></TR>
- *<TR><TD ALIGN="right">105</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Kein Guard fragt den Wert der boolschen Variable ab. </TD></TR>
- *<TR><TD ALIGN="right">106</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Der Name des BVars ist ein leerer String.</TD></TR>
- *<TR><TD ALIGN="right">110</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Die Statechart enthält keine Liste der booleschen Variablen.</TD></TR>
- *<TR><TD ALIGN="right">200</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Name von Event nicht eindeutig</TD></TR>
- *<TR><TD ALIGN="right">201</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Keine Deklaration von Event</TD></TR>
- *<TR><TD ALIGN="right">202</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Deklarierter Event wurde nicht verwendet</TD></TR>
- *<TR><TD ALIGN="right">203</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Der Pathname in einem GuardComppath ist nicht vorhanden.</TD></TR>
- *<TR><TD ALIGN="right">204</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Das Guardevent wird nie von einem Actionevent ausgeloest.</TD></TR>
- *<TR><TD ALIGN="right">205</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Das Actionevent loest kein  Guardevent aus.</TD></TR>
- *<TR><TD ALIGN="right">206</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Der Name des Events ist ein leerer String.</TD></TR>
- *<TR><TD ALIGN="right">210</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Die Statechart enthält keine Eventliste.</TD></TR>
- *<TR><TD ALIGN="right">300</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Mehrfache Definition von Statename</TD></TR>
- *<TR><TD ALIGN="right">301</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Bezeichnung von Statename nicht eindeutig</TD></TR>
- *<TR><TD ALIGN="right">302</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Deklarierter State wurde nicht verwendet</TD></TR>
- *<TR><TD ALIGN="right">303</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Keine Deklaration von Statename</TD></TR>
- *<TR><TD ALIGN="right">304</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Ein Or-State enthaelt nur einen inneren State</TD></TR>
- *<TR><TD ALIGN="right">305</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Fataler Fehler: Ein Or-State enthaelt keinen inneren State.</TD></TR>
- *<TR><TD ALIGN="right">306</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Fataler Fehler: Ein And-State enthaelt keinen inneren State.</TD></TR>
- *<TR><TD ALIGN="right">307</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Ein And-State enthaelt nur einen inneren State</TD></TR>
- *<TR><TD ALIGN="right">308</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp</TD><TD>Der Statename ist ein leerer String</TD></TR>
- *<TR><TD ALIGN="right">310</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Die Statechart enthält keine Pfadliste.</TD></TR>
- *<TR><TD ALIGN="right">311</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Die Statechart enthält keine States.</TD></TR>
- *<TR><TD ALIGN="right">312</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Zu diesem Defaultconnector gibt es keinen State.</TD></TR>
- *<TR><TD ALIGN="right">313</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Der Defaultconnector ist mehrfach eingetragen.</TD></TR>
- *<TR><TD ALIGN="right">314</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>In diesem State gibt es keinen Defaultconnector.</TD></TR>
- *<TR><TD ALIGN="right">315</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>IN diesem State gibt es mehr als einen Defaultconnector.</TD></TR>
- *<TR><TD ALIGN="right">316</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Der Statename ist ein leerer String.</TD></TR>
- *<TR><TD ALIGN="right">317</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Fataler Fehler: Unbekannter Statetyp.</TD></TR>
- *<TR><TD ALIGN="right">400</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Der Start-State der Transition ist nicht definiert.</TD></TR>
- *<TR><TD ALIGN="right">401</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Der Ziel-State der Transition ist nicht definiert.</TD></TR>
- *<TR><TD ALIGN="right">402</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Beide States der Transition sind nicht definiert.</TD></TR>
- *<TR><TD ALIGN="right">403</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Der Start-State der Transition ist unbekannt.</TD></TR>
- *<TR><TD ALIGN="right">404</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Der Ziel-State der Transition ist unbekannt.</TD></TR>
- *<TR><TD ALIGN="right">405</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Beide States der Transition sind unbekannt.</TD></TR>
- *<TR><TD ALIGN="right">406</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Interlevel-Transition: Der Start-State liegt falsch.</TD></TR>
- *<TR><TD ALIGN="right">407</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Interlevel-Transition: Der Ziel-State liegt falsch.</TD></TR>
- *<TR><TD ALIGN="right">408</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Interlevel-Transition: Beide States liegt falsch.</TD></TR>
- *<TR><TD ALIGN="right">409</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Der Start-Connenctor der Transition ist unbekannt.</TD></TR>
- *<TR><TD ALIGN="right">410</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Der Ziel-Connenctor der Transition ist unbekannt.</TD></TR>
- *<TR><TD ALIGN="right">411</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Beide Connenctoren der Transition sind unbekannt.</TD></TR>
- *<TR><TD ALIGN="right">412</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Interlevel-Transition: Der Start-Connenctor liegt falsch.</TD></TR>
- *<TR><TD ALIGN="right">413</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Interlevel-Transition: Der Ziel-Connenctor liegt falsch.</TD></TR>
- *<TR><TD ALIGN="right">414</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Interlevel-Transition: Beide Connenctoren liegten falsch.</TD></TR>
- *<TR><TD ALIGN="right">415</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Die Transition hat den gleichen Start- und Ziel-Connector.</TD></TR>
- *<TR><TD ALIGN="right">416</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Der Guard der Transitionen sind syntaktisch gleich.</TD></TR>
- *<TR><TD ALIGN="right">417</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Der Guard der Transition laesst sich nicht spezifizieren.</TD></TR>
- *<TR><TD ALIGN="right">418</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Der Action der Transition laesst sich nicht spezifizieren.</TD></TR>
- *<TR><TD ALIGN="right">419</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Die Transition ist auf keinem Weg mit einem State verbunden.</TD></TR>
- *<TR><TD ALIGN="right">420</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Die Statechart enthält keine Transitionen.</TD></TR>
- *<TR><TD ALIGN="right">421</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Dieser Connector ist Teil eines Zyklus.</TD></TR>
- *<TR><TD ALIGN="right">422</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Die Transition ist an ihrem Startpunkt nicht durch andere Transitionen mit einem Startstate verbunden.</TD></TR>
- *<TR><TD ALIGN="right">423</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Die Transition ist an ihrem Zielpunkt nicht durch andere Transitionen mit einem Zielstate verbunden.</TD></TR>
- *<TR><TD ALIGN="right">423</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Der Guard hat den Typ GuardUndet.</TD></TR>
- *<TR><TD ALIGN="right">X</TD><TD ALIGN="center">X</TD><TD ALIGN="center">X</TD><TD>unbekannter Code</TD></TR>
- *</Table>
- * <br>
- * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: ModelCheck.java,v 1.43 1999-02-11 22:29:16 swtech11 Exp $
+ * @author Java Praktikum: <a href="mailto:dw@ks.informatik.uni-kiel.de">Daniel Wendorff</a> und <a href="mailto:Stiller@T-Online.de">Magnus Stiller</a>
+ * @version  $Id: ModelCheck.java,v 1.44 1999-02-14 20:56:27 swtech11 Exp $
  * @see CheckConfig
  */
 public class ModelCheck {
@@ -286,7 +196,7 @@ public class ModelCheck {
       }
       else { outputToGUI(); } // Ausgabe an die GUI
     }
-      //outputToFile("test.txt");
+
     return result;
   };
 

@@ -43,8 +43,8 @@ import java.awt.*;
  * <DT><STRONG>Temporäre Features: </STRONG><br>
  * keine
  * </DL COMPACT>
- * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: Crossreference.java,v 1.23 1999-02-11 22:29:13 swtech11 Exp $
+ * @author Java Praktikum: <a href="mailto:dw@ks.informatik.uni-kiel.de">Daniel Wendorff</a> und <a href="mailto:Stiller@T-Online.de">Magnus Stiller</a>
+ * @version  $Id: Crossreference.java,v 1.24 1999-02-14 20:56:24 swtech11 Exp $
  */
 public class Crossreference extends ModelCheckBasics {
   private GUIInterface gui = null;     // Referenz auf die GUI
@@ -102,7 +102,10 @@ public class Crossreference extends ModelCheckBasics {
       	}
         else { Browser b = new Browser(gui, edit, CrossToError(),cf,such); }
       }
-      else { gui.userMessage("Check: "+such+" wurde nicht gefunden."); }
+      else {
+        if (cf.cr_highlight==false) { gui.userMessage("Check: "+such+" wurde nicht gefunden."); }
+        else { gui.OkDialog("Fehlermeldung",such+" wurde nicht gefunden."); }
+      }
     }
   }
 
@@ -308,7 +311,8 @@ public class Crossreference extends ModelCheckBasics {
     return msg;
   }
 
-}
+
+}
 
 
 class ReportItem {

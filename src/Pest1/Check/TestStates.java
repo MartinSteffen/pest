@@ -7,8 +7,8 @@ import java.util.*;
  * Diese Testklasse testet, ob alle Statenamen deklariert worden sind, 
  * ob die Deklarierten eindeutig sind und ob sie alle verwendet werden.
  *
- *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestStates.java,v 1.17 1999-02-10 11:52:26 swtech11 Exp $
+ * @author Java Praktikum: <a href="mailto:dw@ks.informatik.uni-kiel.de">Daniel Wendorff</a> und <a href="mailto:Stiller@T-Online.de">Magnus Stiller</a>
+ *  @version  $Id: TestStates.java,v 1.18 1999-02-14 20:56:34 swtech11 Exp $
  */
 class TestStates extends ModelCheckBasics{
   private Vector Pfad1=new Vector();

@@ -3,8 +3,8 @@ package check;
 import absyn.*;
 
 /**
- *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: BVarC.java,v 1.2 1999-01-28 20:56:16 swtech11 Exp $
+ * @author Java Praktikum: <a href="mailto:dw@ks.informatik.uni-kiel.de">Daniel Wendorff</a> und <a href="mailto:Stiller@T-Online.de">Magnus Stiller</a>
+ *  @version  $Id: BVarC.java,v 1.3 1999-02-14 20:56:19 swtech11 Exp $
  */
 class BVarC {
   Bvar b;

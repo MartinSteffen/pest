@@ -6,8 +6,8 @@ import java.awt.*;
 /**
  * Klasse zum Speichern der Optionen des Syntax Checks.
  *
- *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: CheckConfig.java,v 1.6 1999-02-11 22:29:10 swtech11 Exp $
+ * @author Java Praktikum: <a href="mailto:dw@ks.informatik.uni-kiel.de">Daniel Wendorff</a> und <a href="mailto:Stiller@T-Online.de">Magnus Stiller</a>
+ *  @version  $Id: CheckConfig.java,v 1.7 1999-02-14 20:56:20 swtech11 Exp $
  */
 public class CheckConfig implements Serializable {
 

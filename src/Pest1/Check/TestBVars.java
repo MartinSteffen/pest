@@ -7,8 +7,8 @@ import java.util.*;
  * Diese Testklasse testet, ob alle BVars deklariert worden sind,
  * ob die Deklarierten eindeutig sind und ob sie alle verwendet werden.
  *
- *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestBVars.java,v 1.14 1999-01-28 20:56:22 swtech11 Exp $
+ * @author Java Praktikum: <a href="mailto:dw@ks.informatik.uni-kiel.de">Daniel Wendorff</a> und <a href="mailto:Stiller@T-Online.de">Magnus Stiller</a>
+ *  @version  $Id: TestBVars.java,v 1.15 1999-02-14 20:56:31 swtech11 Exp $
  */
 class TestBVars extends ModelCheckBasics{
   private Vector Ist;

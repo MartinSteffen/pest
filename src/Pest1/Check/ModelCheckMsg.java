@@ -4,8 +4,8 @@ import java.util.*;
 import absyn.*;
 
 /**
- *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: ModelCheckMsg.java,v 1.10 1999-01-22 11:07:17 swtech11 Exp $
+ * @author Java Praktikum: <a href="mailto:dw@ks.informatik.uni-kiel.de">Daniel Wendorff</a> und <a href="mailto:Stiller@T-Online.de">Magnus Stiller</a>
+ *  @version  $Id: ModelCheckMsg.java,v 1.11 1999-02-14 20:56:29 swtech11 Exp $
  */
 class ModelCheckMsg {
   private Vector ErrorCode;
