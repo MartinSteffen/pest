@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.112 1999-02-17 11:23:48 swtech24 Exp $
+//	$Id: report_list,v 1.113 1999-02-24 13:17:13 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -1076,7 +1076,7 @@ hunderte von Exceptions.
 #Number:	69
 #Autor:		Erich Mikk
 #Subject:	Neue Koordinaten - neue Probleme
-#Status: 	fixed
+#Status: 	confirmed
 #Description: 
 
 STM-Import a1.st
@@ -1091,7 +1091,7 @@ dann wieder TESC-Importieren, dann gibt es das Problem nicht.
 #Number:	70
 #Autor:		Erich Mikk
 #Subject:	TESC2 berechnet Koordinaten, die Editor durcheinanderbringen (IT)
-#Status: 	fixed
+#Status: 	confirmed
 #Description: 
 
 TESC-Import ~swtech12/Examples/TV/tv_system.pest1.tesc
