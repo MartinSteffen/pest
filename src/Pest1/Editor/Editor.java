@@ -450,7 +450,8 @@ public static String labelObject (Absyn obj)
 	   {
 		transobj = (Tr) obj;
 		name = transobj.label.caption;
-		ausgabe2 = Stringeingabe("Transition umbenennen","Neuer Name fuer die gewaehlten Transition :",name,obj);  if (ausgabe2 == null) {ausgabe2 = name;}
+		ausgabe2 = Stringeingabe("Transition umbenennen","Neuer Name fuer die gewaehlten Transition :",name,obj);
+  if (ausgabe2 == null) {ausgabe2 = name;}
 		transobj.label.caption = ausgabe2;
 		TESCLoader tl = new TESCLoader(gui);
 		 tlab = tl.getLabel(transobj.label,nroot);
