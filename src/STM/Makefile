@@ -1,18 +1,13 @@
-HTMLDIR = Docu
-DOCCFLAGS = -author -version -d $(HTMLDIR)
-DOCC = javadoc $(DOCCFLAGS) 
-CC = javac -depend  
 
-all:	classes
+JAVAC=javac
+JAVACFLAGS=-g
+files=HAImport.java Patterns.java
 
-classes:	
-	$(CC) *.java
+all: $(files:.java=.class)
 
-docu:	
-	$(DOCC) *.java
- 
-clean:	
-	rm *.class *.~jav
+clean:
+	rm -rf *class
 
-cleandocu:	
-	rm $(HTMLDIR)/*.html
+%.class: %.java
+	$(JAVAC) $(JAVACFLAGS) $<
+
