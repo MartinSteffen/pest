@@ -4,7 +4,7 @@
  * This class is responsible for generating our hierarchical
  * automaton.
  *
- * @version $Id: dumpHA.java,v 1.15 1999-01-25 14:53:24 swtech25 Exp $
+ * @version $Id: dumpHA.java,v 1.16 1999-02-03 20:02:50 swtech25 Exp $
  * @author Marcel Kyas
  */
 package codegen;
@@ -89,19 +89,16 @@ public class dumpHA
 	/**
 	 * This method will write a line to a file and pretty-print
 	 * it.
-	 *
-	 * @exception IOException RTFM
 	 */
-	private void printlnPP(OutputStreamWriter f, int lvl, String s)
-		throws IOException
+	private String printlnPP(int lvl, String s)
 	{
 		int i;
+		String t = new String();
 
 		for (i = lvl; i > 0; --i) {
-			f.write(indentLevel);
+			t += indentLevel;
 		}
-		f.write(s);
-		f.write("\n");
+		return (t + s + "\n");
 	}
 
 
@@ -157,18 +154,18 @@ public class dumpHA
 				current = current.tail;
 			}
 		} else if (a instanceof ActionEmpty) {
-			printlnPP(f, lvl, "// Empty action");
+			f.write(printlnPP(lvl, "// Empty action"));
 			return;
 		} else if (a instanceof ActionEvt) {
 			ActionEvt b = (ActionEvt) a;
 
-			printlnPP(f, lvl, "post_events[" +
+			f.write(printlnPP(lvl, "post_events[" +
 				dumpTables.generateSymEvent(b.event)
-				+ "] = true;");
+				+ "] = true;"));
 		} else if (a instanceof ActionStmt) {
 			ActionStmt b = (ActionStmt) a;
 
-			printlnPP(f, lvl, dumpStatement(b.stmt));
+			f.write(printlnPP(lvl, dumpStatement(b.stmt)));
 		} else {
 			throw(new CodeGenException("Unknown Action."));
 		}
@@ -203,7 +200,9 @@ public class dumpHA
 				return "(( " + s + " && " + t + ") || ( !" +
 					s + " && !" + t + "))";
 			default:
-				throw(new CodeGenException("Unsupported binary operation"));
+				throw(new CodeGenException(
+					"Unsupported binary operation"
+				));
 			}
 		} else if (g instanceof GuardCompp) {
 			GuardCompp h = (GuardCompp) g;
@@ -258,6 +257,7 @@ public class dumpHA
 	private void dumpNextState(OutputStreamWriter f,
 				   int lvl,
 				   Path p,
+				   Or_State o,
 				   TrList tl,
 				   TrAnchor t)
 		throws CodeGenException, IOException
@@ -265,22 +265,22 @@ public class dumpHA
 		Path q;
 
 		if (t instanceof Conname) {
-			dumpTransitions(f, lvl, p, tl, t);
+			dumpTransitions(f, lvl, p, o, tl, t);
 		} else if (t instanceof Statename) {
 			Statename s = (Statename) t;
 
 			q = p.append(s.name);
-			printlnPP(f, lvl, "post_states[" +
+			f.write(printlnPP(lvl, "post_states[" +
 				dumpTables.generateSymState(q) +
-				"] = true;");
+				"] = true;"));
 			// TODO
 			State v = null;
 			if (v instanceof Or_State) {
 				Or_State u = (Or_State) v;
-				printlnPP(f, lvl, "post_states[" +
+				f.write(printlnPP(lvl, "post_states[" +
 					dumpTables.generateSymState(
 						q.append(u.defaults.head.name)
-					) + "] = true;");
+					) + "] = true;"));
 			}
 		} else if (t instanceof UNDEFINED) {
 			throw(new CodeGenException("Undefined target"));
@@ -297,6 +297,7 @@ public class dumpHA
 	private void dumpTransitions(OutputStreamWriter f,
 				     int lvl,
 				     Path p,
+				     Or_State o,
 				     TrList tl,
 				     TrAnchor s)
 		throws CodeGenException, IOException
@@ -319,19 +320,26 @@ public class dumpHA
 					// let the generated code
 					// count the eligible transitions
 					// first and choose one?
-					printlnPP(f, lvl, "if (" +
+					f.write(printlnPP(lvl, "if (" +
 						dumpGuard(l.guard)
-						+ ") {");
+						+ ") {"));
 					dumpNewEvents(f, lvl + 1, l.action);
-					dumpNextState(f, lvl + 1, p, tl,
+					dumpNextState(f, lvl + 1, p, o, tl,
 						      current.head.target);
-					printlnPP(f, lvl, "}");
+					f.write(printlnPP(lvl, "}"));
 				}
 			}
 			current = current.tail;
 		}
 		if (trs == 0) {
-			printlnPP(f, lvl, "// no outgoing transitions found");
+			f.write(printlnPP(lvl,
+				"// no outgoing transitions found") +
+				printlnPP(lvl,
+				"//Need to stutter here.") +
+				printlnPP(lvl, "post_states[" +
+					dumpTables.generateSymState(p) +
+					"] = true;")
+			);
 		}
 	}
 
@@ -347,7 +355,7 @@ public class dumpHA
 				    Basic_State s)
 		throws IOException, CodeGenException
 	{
-		printlnPP(f, lvl, "// Basic State " + s.name.name);
+		f.write(printlnPP(lvl, "// Basic State " + s.name.name));
 	}
 
 
@@ -366,20 +374,20 @@ public class dumpHA
 		TrList currTr = s.trs;
 		Path q;
 
-		printlnPP(f, lvl, "// Or State " + s.name.name);
+		f.write(printlnPP(lvl, "// Or State " + s.name.name));
 		while (current != null) {
 			q = p.append(current.head.name.name);
-			printlnPP(f, lvl, "if (pre_states[" +
+			f.write(printlnPP(lvl, "if (pre_states[" +
 				dumpTables.generateSymState(q) +
-				"]) {");
-			dumpTransitions(f, lvl + 1, p, s.trs,
+				"]) {"));
+			dumpTransitions(f, lvl + 1, p, s, s.trs,
 					current.head.name);
-			printlnPP(f, lvl, "} else");
+			f.write(printlnPP(lvl, "} else"));
 			current = current.tail;
 		}
-		printlnPP(f, lvl, "{");
+		f.write(printlnPP(lvl, "{"));
 		iterateStateList(f, lvl + 1, p, s.substates);
-		printlnPP(f, lvl, "}");
+		f.write(printlnPP(lvl, "}"));
 	}
 
 
@@ -395,7 +403,7 @@ public class dumpHA
 				  And_State s)
 		throws IOException, CodeGenException
 	{
-		printlnPP(f, lvl, "// And State " + s.name.name);
+		f.write(printlnPP(lvl, "// And State " + s.name.name));
 		iterateStateList(f, lvl, p, s.substates);
 	}
 
@@ -445,27 +453,28 @@ public class dumpHA
 	{
 		Path p = new Path(S.state.name.name, null);
 
-		printlnPP(f, 0, "/**");
-		printlnPP(f, 0, " * This code was automatically generated by codegen");
-		printlnPP(f, 0, " */");
-		printlnPP(f, 0, "public class Automaton extends SymbolTable {");
-		printlnPP(f, 0, "");
-		printlnPP(f, 1, "/**");
-		printlnPP(f, 1, " * This method will simulate a single step");
-		printlnPP(f, 1, " * of the hierarchical automaton");
-		printlnPP(f, 1, " */");
-		printlnPP(f, 1, "public void step() {");
-		printlnPP(f, 1, "// Handle endEvent first");
-		printlnPP(f, 2, "if ( pre_events[" +
+		f.write(
+		printlnPP(0, "/**") +
+		printlnPP(0, " * This code was automatically generated by codegen") +
+		printlnPP(0, " */") +
+		printlnPP(0, "public class Automaton extends SymbolTable {") +
+		printlnPP(0, "") +
+		printlnPP(1, "/**") +
+		printlnPP(1, " * This method will simulate a single step") +
+		printlnPP(1, " * of the hierarchical automaton") +
+		printlnPP(1, " */") +
+		printlnPP(1, "public void step() {") +
+		printlnPP(1, "// Handle endEvent first") +
+		printlnPP(2, "if ( pre_events[" +
 			dumpTables.generateSymEvent(new SEvent(
 				dumpTables.endEvent
 			)) +
-			"]) {");
-		printlnPP(f, 3, "// Stutter in this state");
-		printlnPP(f, 3, "post_events[" + dumpTables.generateSymEvent(
-			  new SEvent(dumpTables.endEvent)) + "] = true;");
-		printlnPP(f, 3, "return;");
-		printlnPP(f, 2, "}");
+			"]) {") +
+		printlnPP(3, "// Stutter in this state") +
+		printlnPP(3, "post_events[" + dumpTables.generateSymEvent(
+			  new SEvent(dumpTables.endEvent)) + "] = true;") +
+		printlnPP(3, "return;") +
+		printlnPP(2, "}"));
 		if (S.state instanceof And_State) {
 			dumpAndState(f, 2, p, (And_State) S.state);
 		} else if (S.state instanceof Or_State) {
@@ -477,8 +486,9 @@ public class dumpHA
 				"Cannot determine type of state."
 			));
 		}
-		printlnPP(f, 1, "}");
-		printlnPP(f, 0, "}");
+		f.write(
+		printlnPP(1, "}") +
+		printlnPP(0, "}"));
 	}
 
 
