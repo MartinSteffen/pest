@@ -324,6 +324,7 @@ import tesc2.*;
   // Grafik herstellen
       public void paint(Graphics g) { 
 	  //System.out.println("repaint gestartet");
+	drawLined(g,0,0,width,height,Color.black);
 	  	new Repaint(g,root);
 		Repaint r = new Repaint(); 
 		r.start(root,0,0,true);
@@ -452,6 +453,7 @@ if ((e.getID() == MouseEvent.MOUSE_DRAGGED) & (Editor.Editor() =="Draw_State"))
 					    (int) (old_x),
 					    (int) (old_y));
 
+		    drawLined(bufferGraphics,0,0,width,height,Color.black);
 		    bufferGraphics.setColor(Color.black);
 		    bufferGraphics.drawRect((int) (last_x),
 					    (int) (last_y),
@@ -601,7 +603,13 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans" & trro
 		//	System.out.println("Pfeilspitze");
 			TrAnchor an1 = null;
 			TrAnchor an2 = null;
-			new drawPESTTrans(g,root,tempwaypoint,laufwaypoint,Color.magenta);
+			if (tempwaypoint[0].x <= 4000 &
+			    tempwaypoint[0].y <= 4000 &
+			    tempwaypoint[laufwaypoint].x <= 4000 &
+			    tempwaypoint[laufwaypoint].y <= 4000)
+			  {
+			    new drawPESTTrans(g,root,tempwaypoint,laufwaypoint,Color.magenta);
+			  } else {Editor.fehlermeldung2();}
 			Editor.SetListen();trroot = false;
 			repaint();
 			} else {trroot = false;}
@@ -638,11 +646,17 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans" & trro
 	    if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Draw_State"))
 		{// Editor.SetListen();
 		       repaint();
-		    new drawPESTState(g,root,(int) (last_x/Editor.ZoomFaktor),
-					     (int) (last_y/Editor.ZoomFaktor),
-					     (int) (e.getX()/Editor.ZoomFaktor),
-					     (int) (e.getY()/Editor.ZoomFaktor),
-						Editor.st_color());
+		       if ((int) (last_x/Editor.ZoomFaktor) <= 4000 &
+			   (int) (last_y/Editor.ZoomFaktor) <= 4000&
+			   (int) (e.getX()/Editor.ZoomFaktor) <= 4000 &
+			   (int) (e.getY()/Editor.ZoomFaktor) <= 4000)
+		       {
+			 new drawPESTState(g,root,(int) (last_x/Editor.ZoomFaktor),
+					   (int) (last_y/Editor.ZoomFaktor),
+					   (int) (e.getX()/Editor.ZoomFaktor),
+					   (int) (e.getY()/Editor.ZoomFaktor),
+					   Editor.st_color());
+		       } else {Editor.fehlermeldung2();}
 		    Editor.SetListen();trroot = false;
 
 		}
@@ -738,10 +752,14 @@ if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Info"))
 
 	if ((e.getID() == MouseEvent.MOUSE_PRESSED) & (Editor.Editor() =="Draw_Conn"))
 	    {   Editor.SetListen();
+	    if ((int) (e.getX()/Editor.ZoomFaktor) <= 4000 &
+		(int) (e.getY()/Editor.ZoomFaktor) <= 4000)
+	      {
 		    new drawPESTConn(g,root,
 			(int) (e.getX()/Editor.ZoomFaktor)-6,
 			(int) (e.getY()/Editor.ZoomFaktor)-6,
-			Editor.con_color());
+				     Editor.con_color());}
+	        else {Editor.fehlermeldung2();}
 		    //     Editor.SetListen();
 		     trroot = false;
 		     repaint();
@@ -831,6 +849,44 @@ public static void redo() {
 	//System.out.println("basis : "+basis);
       }
 
+protected static void drawLined(Graphics g,int cx1, int cy1, int cx2, int cy2, Color c_color) {
+	int l1,l2;
+	int abg;
+
+	g.setColor(c_color);
+
+	l1 = (cy1 / 8) +1;
+	l2 = ((cy1+cy2) / 8);
+              
+	for (int i = l1; i < l2; i++)
+	{
+	g.drawLine(cx1+cx2,i*8,cx1+cx2,i*8+5);
+	}
+	if  ((l1 * 8) > (cy1+3)) {
+	g.drawLine(cx1+cx2,cy1,cx1+cx2,(8*l1) - 3);
+	} 
+	if  ((l2 * 8) < (cy1+cy2)) {
+	if ((l2*8)+5 < (cy1+cy2)) abg = (l2*8)+5; else abg = cy1+cy2;
+	g.drawLine(cx1+cx2,l2 * 8,cx1+cx2,abg);
+	} 
+	
+	l1 = (cx1 / 8) +1;
+	l2 = ((cx1+cx2) / 8);
+              
+	for (int i = l1; i < l2; i++)
+	{
+	g.drawLine(i*8,cy1+cy2,i * 8+5,cy1+cy2);
+	}
+	if  ((l1 * 8) > (cx1+3)) {
+	g.drawLine(cx1,cy1+cy2,(8*l1) - 3,cy1+cy2);
+	} 
+	if  ((l2 * 8) < (cx1+cx2)) {
+	if ((l2*8)+5 < (cx1+cx2)) abg = (l2*8)+5; else abg = cx1+cx2;
+	g.drawLine(l2 * 8,cy1+cy2,abg,cy1+cy2);
+	}  
+    } 
+
+
 protected static Dimension sizer() {return dpanel.getSize();}
 
 protected static void resizer(int fak) {
@@ -852,7 +908,7 @@ protected static void resizer(int fak) {
 	  }
       }
 
-} // PESTDrawDesk
+  } // PESTDrawDesk
 
 
 

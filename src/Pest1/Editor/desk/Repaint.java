@@ -113,7 +113,7 @@ if (tr.source instanceof UNDEFINED) {h.setColor( Editor.tr_color());
 		       Statematrix matrix2 =  PESTdrawutil.getState(root,tr.points[0].x+nx,tr.points[0].y+ny);
 		 Statematrix matrix3 =  PESTdrawutil.getState(root,tr.points[trsize].x+nx,tr.points[trsize].y+ny);
 	
-                  Statename trtest=null;
+                  Statename trtest=new Statename("");
 	 if (tr.source instanceof Statename) trtest = (Statename)tr.source; 
 		       if (tr.source instanceof Conname) 
 			   {
@@ -190,7 +190,7 @@ if (tr.target instanceof UNDEFINED) {h.setColor( Editor.tr_color());
 		 Statematrix matrix3 =  PESTdrawutil.getState(root,tr.points[0].x+nx,tr.points[0].y+ny);
 
 	//Statename trtest = (Statename)tr.source;
-		       Statename trtest2=null;
+		       Statename trtest2=new Statename("");
 		       if (tr.target instanceof Statename) trtest2 = (Statename)tr.target; 
 		       if (tr.target instanceof Conname) 
 			   {
