@@ -5,11 +5,12 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestTransitions.java,v 1.19 1999-01-26 10:15:36 swtech11 Exp $
+ *  @version  $Id: TestTransitions.java,v 1.20 1999-01-26 14:28:05 swtech11 Exp $
  */
 class TestTransitions extends ModelCheckBasics {
   Vector newPLV = new Vector(); // Vector fuer die selbst angelegte PathList der States
   Vector newCLV = new Vector(); // Vector fuer die selbst angelegte PathList der Connectoren
+  Vector newCL  = new Vector(); // Vector für alle Connectorennamen
   Vector Guardlist = new Vector();
   Vector newLTL; // lokale Transitionsliste (d.h. Transitionen in EINEM State)
   Vector newLCL; // lokale Connectorenliste (d.h. Connectoren in EINEM State)
@@ -23,10 +24,38 @@ class TestTransitions extends ModelCheckBasics {
     int m = msg.getErrorNumber();
     newPLV = getPathListFromState(sc.state);
     newCLV = getConnectorPathListFromState(sc.state);
+    if (newCL.size()>0) {ConnectorenEindeutig(); }
     if (sc.state instanceof Or_State) {navOrState ((Or_State)sc.state, null,""); }  // null, da es keinen übergeordneten State gibt
     if (sc.state instanceof And_State) {navAndState ((And_State)sc.state, null,""); }
     return ((msg.getErrorNumber()-m)==0);
   }
+
+  // Eindeutigkeit der Connectoren testen
+  void ConnectorenEindeutig() {
+    boolean ab = false;
+    while ( ab == false ) {
+      ConE co = (ConE)newCL.firstElement();
+      if (newCL.size()>1) {
+        Vector h = new Vector();
+        h.addElement(co.c);
+        int l=newCL.size()-1;
+        for (int i=l; i>0; i--) {
+          ConE ct = (ConE)newCL.elementAt(i);
+          if (ct.name.equals(co.name)) {
+            h.addElement(ct.c);
+            newCL.removeElementAt(i);
+
+          }
+       
+        }
+        newCL.removeElementAt(0);
+        if (h.size()>1) {msg.addError(426,"uebergebender Statechart",h);} 
+	if (newCL.size()==0) {ab=true;}
+      }
+      else { ab = true; }
+    }
+  }
+
 
   // übergebenen Statenamen in der Pfadliste der Statechart suchen und die Anzahl zurückgeben
   int AnzStatenameInPathList(Vector pl, String s) {
@@ -239,6 +268,8 @@ class TestTransitions extends ModelCheckBasics {
   void gC_ConnectorInConnectorList(ConnectorList cl, String p, Vector clv) {
     String np = getAddPathPart(p, cl.head.name.name);
     clv.addElement(np);
+    ConE ce = new ConE(cl.head.name.name, cl.head);
+    newCL.addElement(ce); //
     if (cl.tail != null) { gC_ConnectorInConnectorList(cl.tail, p, clv); }
   }
   void gC_OrState(Or_State os, String p, Vector clv) {
@@ -509,7 +540,7 @@ class TransE {
   String d = new String();
   int count=0;
   // ist ein State hier oder in der Transition vorher (nachher) vorhanden
-  int sz = 0; // 0: noch nicht getestet, 1: JA, 2:NEIN
+  int sz = 0; // 0: noch(cl.head.name.nam nicht getestet, 1: JA, 2:NEIN
   int zz = 0;
   // Transition
   Tr t = null;
@@ -521,11 +552,19 @@ class ConE {
   int sz = 0; // 0: noch nicht getestet, 1: JA, 2:NEIN
   int zz = 0;
   int count = 0;
-  // Beschreibung: Connector plus Path
+  // Beschreibung d: Connector plus Path
   String d = new String();
   String name = null;
   // Connector
-  Connector c;
+  Connector c=null;
+
+  ConE () {}
+
+  ConE (String _n, Connector _c) {
+    name =_n;
+    c = _c; 
+  }
+
 }
 
 class GuardE {

@@ -2,7 +2,7 @@ package check;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: ErrorAndWarningCodes.java,v 1.29 1999-01-25 23:21:40 swtech11 Exp $
+ *  @version  $Id: ErrorAndWarningCodes.java,v 1.30 1999-01-26 14:28:00 swtech11 Exp $
  */
 class ErrorAndWarningCodes {
   ErrorAndWarningCodes() {
@@ -101,6 +101,7 @@ class ErrorAndWarningCodes {
       case 424: {_s = "Der Guard hat den Typ GuardUndet."; break;}
       case 425: {_s = "Die Transition kann nicht gecheckt werden, da 2 oder mehr States auf einem Level nicht eindeutig sind."; break;}
 
+    case 426: {_s = "Die Connectoren haben den gleichen Namen"; break; }
       default:  _s = "Dieser Code wurde noch nicht erfasst.";
     }
     return _s;
