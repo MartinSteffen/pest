@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.87 1999-02-09 15:58:11 swtech00 Exp $
+//	$Id: report_list,v 1.88 1999-02-09 16:11:36 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -861,5 +861,14 @@ Bitte vollständig auf ae, ue usw. umsteigen, wegen rest-PEST.
 nicht möglich weil es ein Browser ist, aber dann hätte ich gerne eine 
 Speicherfunktion, wo man die Fehler in eine File abspeichern kann).
 //----------------------------------------------------------------------------
+#Number:        59
+#Autor:         Erich Mikk erm
+#Subject:       GUI: Graphische Benutzerführung und Menü Werkzeuge inkonsistent
+#Status:        reported
+#Description:
 
+Nach dem ein Editor geschlossen  worden ist,
+kann man den Editor nur über Werkzeuge->Editor starten, aber
+nicht auf der Graphik.
+//----------------------------------------------------------------------------
 
