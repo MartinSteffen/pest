@@ -8,6 +8,7 @@ import java.awt.Rectangle;
 import com.oroinc.text.perl.*;
 import util.PrettyPrint;
 import gui.GUIInterface;
+import tesc1.TESCSaver;
 
 /**
  * Die Klasse HAImport dient zur Konvertierung des HA-Formates in eine
@@ -62,7 +63,7 @@ import gui.GUIInterface;
  * </DL COMPACT>
  *
  * @author  Sven Jorga, Werner Lehmann
- * @version $Id: HAImport.java,v 1.14 1999-01-13 22:20:49 swtech18 Exp $
+ * @version $Id: HAImport.java,v 1.15 1999-01-18 16:11:01 swtech18 Exp $
  */
 public class HAImport implements Patterns {
   Perl5Util perl = new Perl5Util();
@@ -95,6 +96,7 @@ public class HAImport implements Patterns {
   private Hashtable coordHash = null;
   private Hashtable initHash = null;
   private Hashtable pathHash = new Hashtable();
+  private TESCSaver tesc = null;
 
   /** Der Konstruktor dient zum Importieren einer StateChart
    * im HA-Format. Es wird erwartet, da&szlig; reader ein
@@ -102,6 +104,7 @@ public class HAImport implements Patterns {
    */
 
   public HAImport(BufferedReader reader) throws Exception {
+    this.tesc = new TESCSaver(null);
     initImport(reader);
   }
 
@@ -114,6 +117,7 @@ public class HAImport implements Patterns {
 
   public HAImport(BufferedReader reader, GUIInterface gui ) throws Exception {
     this.gui = gui;
+    this.tesc = new TESCSaver(gui);
     try {
       initImport(reader);}
     catch ( Exception e) {
@@ -271,6 +275,8 @@ public class HAImport implements Patterns {
 
   // Pattern darf nicht in Stringset enthalten sein
   private Vector splitStringset(String stringset, String pattern) {
+    if (stringset.equals(""))
+      return new Vector();
     Vector strVec = perl.split(pattern,stringset);
     for (int i=0; i < strVec.size(); i++)
       strVec.setElementAt(perl.substitute("s/\"//g",(String)strVec.elementAt(i)),i);
@@ -368,6 +374,9 @@ public class HAImport implements Patterns {
         // trVec: 6 Parameter von mk_tr
         trVec = deliSplit(perl.group(1),',');
         trVec.setElementAt(removeQuotes((String)trVec.firstElement()),0);
+        // td nicht leer? Interleveltransitionen sind nicht zulässig
+        if (!((String)trVec.elementAt(1)).equals("{}"))
+          throw new Exception("Interleveltransitionen nicht zulässig");
         // Transitionsstring durch Vector mit 6 Elementen (Parameter von mk_tr) ersetzen
         mktrVec.setElementAt(trVec,j);
       }
@@ -447,7 +456,8 @@ public class HAImport implements Patterns {
     Double xCoord = null, yCoord = null;
     Double resizedX = null, resizedY = null, resizedWidth = null, resizedHeight = null;
     Guard newGuard = null;
-
+    TLabel tLabel = null;
+    
     stateName = perl.substitute("s/\"//g",stateName);
     stateType = (String)tyHash.get(stateName);
     if (parseCoords) {
@@ -501,13 +511,15 @@ public class HAImport implements Patterns {
                                           createGuard("",condStr)));
             }else
               newGuard = createGuard(exprStr, condStr);
+            tLabel =  new TLabel(newGuard,
+                                 createAction((String)currentTrVec.elementAt(5)),
+                                 null, // CPoint
+                                 null, // Location
+                                 "");
+            tesc.setCaption(tLabel);
             tl = new TrList(new Tr(new Statename((String)hiVec.elementAt(i-1)),
                                    new Statename((String)currentTrVec.elementAt(0)),
-                                   new TLabel(newGuard,
-                                             createAction((String)currentTrVec.elementAt(5)),
-                                             null, // CPoint
-                                             null, // Location
-                                             "Default"),
+                                   tLabel,
                                    pointArray),
                             tl);
           }
