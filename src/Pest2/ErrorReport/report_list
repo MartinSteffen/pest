@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	--------------
 //
-//	$Id: report_list,v 1.43 1999-02-09 14:28:29 swtech16 Exp $
+//	$Id: report_list,v 1.44 1999-02-09 14:54:57 swtech16 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -329,7 +329,7 @@ Default States vorhanden sind.
 #Number:	22
 #Autor:		Bernd Weber bwe
 #Subject:	Editor: Transition werden bei Zoom verschoben
-#Status:	reported
+#Status:	processing
 #Description:
 
 Erstellt man eine Chart mit Transitionbeschriftungen und whlt einen
@@ -395,7 +395,7 @@ Or-State gibt's beim Syntaxcheck keine Fehler.
 #Number:	25.2
 #Autor:		Bernd Weber bwe
 #Subject:	Editor: Nach "Datei-Neu" arbeiten GUI noch mit der alten Chart
-#Status:	reported
+#Status:	processing und fixed
 #Description:
 
 Erzeugt man eine Chart und whlt im Datei-Menu "Neu" wirkt sich dies nur auf den
