@@ -7,7 +7,8 @@
 #=========================================================
 
 
-JDK = /opt/jdk/jdk1.1.6/lib/classes.zip
+#JDK = /opt/jdk/jdk1.1.6/lib/classes.zip
+JDK = /opt/jdk/jdk1.1.6/lib/classes.zip:/usr/lib/jdk1.1.5/lib/classes.zip
 PEST = .:..
 CLASSPATH = $(PEST):$(JDK)
 COMPILER = javac
@@ -17,6 +18,8 @@ ROPTIONS =
  
 CLASSES = \
 GraphOptimizer.class
+#GraphOptimizer.class \
+#AlgorithmException.class \
 
 .SUFFIXES: .java .class
  
