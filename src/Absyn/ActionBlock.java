@@ -6,14 +6,14 @@ package Absyn;
  * One kind of transition action.
  * <br> Collects a sequence of actions into one block.
  * @author Initially provided by Martin Steffen.
- * @version $Id: ActionBlock.java,v 1.1 1998-12-01 17:52:52 swtech00 Exp $
+ * @version $Id: ActionBlock.java,v 1.2 1998-12-07 14:58:31 swtech18 Exp $
  */
 public class ActionBlock extends Action {
 /**
  * Contents of the block.
  */
     public Aseq aseq;
-    ActionBlock (Aseq a) {
+    public ActionBlock (Aseq a) {
 	aseq = a;
     };
     
@@ -22,9 +22,18 @@ public class ActionBlock extends Action {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: ActionBlock.java,v 1.1 1998-12-01 17:52:52 swtech00 Exp $
+//	$Id: ActionBlock.java,v 1.2 1998-12-07 14:58:31 swtech18 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.1  1998/12/01 17:52:52  swtech00
+//	Anderungen in der Abstrakten Syntax:
+//
+//		- die _s-Klassen sind alle rausgeworfen, wie besprochen
+//		- gleichfalls _s-Felder
+//		- Die Operatorkonstanten in die jeweiligen Klassen als Konstanten
+//		  mit aufgenommen
+//		- Alle Klassen beginnen nun mit einem Gro"sbuchstaben
+//
 //	Revision 1.3  1998/11/27 16:13:55  swtech00
 //	Ich habe damit angefangen, die Abstrakte Syntax so zu kommentieren, dass
 //	javadoc das auch verstehen kann. Das bereitet die Benutzung von javadoc vor.
