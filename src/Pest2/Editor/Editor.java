@@ -53,6 +53,15 @@ public class Editor extends Frame
 	return true;
     }
 
+    /**
+     *public static boolean listenEditor()
+     */
+
+    public static boolean listenEditor()
+    {
+	return true;
+    }
+
 }
 
 
