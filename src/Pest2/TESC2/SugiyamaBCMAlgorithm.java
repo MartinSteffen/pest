@@ -81,8 +81,6 @@ class SugiyamaBCMAlgorithm implements LayoutAlgorithm {
 	    layoutState(sl.head);
 	    sl = sl.tail;
 	}
-	/* $Testausgabe */
-	//System.out.println("layoutORState2:"+s.name.name);
 
 	/* Sammeln der Connectors */
 	ConnectorList cl = s.connectors;
@@ -96,14 +94,12 @@ class SugiyamaBCMAlgorithm implements LayoutAlgorithm {
 	TrList tl = s.trs;
 	Vector transitions = new Vector();
 	while (tl != null) {
-	    Class coa = tl.head.source.getClass();
-	    if (coa.getName().compareTo("absyn.UNDEFINED")==0) {
+	    if (tl.head.source instanceof UNDEFINED) {
 		UNDEFINED newAnchor = new UNDEFINED();
 		anchors.addElement(new MapUNDEF(newAnchor));
 		tl.head.source = newAnchor;
 	    }
-	    coa = tl.head.target.getClass();
-	    if (coa.getName().compareTo("absyn.UNDEFINED")==0) {
+	    if (tl.head.target instanceof UNDEFINED) {
 		UNDEFINED newAnchor = new UNDEFINED();
 		anchors.addElement(new MapUNDEF(newAnchor));
 		tl.head.target = newAnchor;
@@ -126,8 +122,14 @@ class SugiyamaBCMAlgorithm implements LayoutAlgorithm {
 	
 	/* Optimierung der Kantenueberschneidungen */
 
-	/* pm.down_up(); */
-
+	//System.out.println("vor down_up()");
+	//System.out.println(pm);
+	
+	pm.down_up();
+	
+	//System.out.println("nach down_up()");	
+	//System.out.println(pm);
+	
 	/* Zuordnen der Transitionen zu den MapElements */
 	MapElement me;
 	MapTransition[] mt = pm.getMapTransitions();
@@ -216,7 +218,14 @@ class SugiyamaBCMAlgorithm implements LayoutAlgorithm {
 	/* $Testausgabe */
 	//System.out.println("width="+s.rect.width+" height="+s.rect.height);
 
+	/**
+	 * Plazieren der Transitionen 
+	 */
+
 	for (i = 0; i<mt.length; i++) {
+	    //System.out.println("i="+i);
+	    //System.out.println(pm);
+	    
 	    if (mt[i] != null) {
 		transitions = new Vector();
 		me = pm.getElement(mt[i].startRow, mt[i].startColumn);
@@ -278,12 +287,15 @@ class SugiyamaBCMAlgorithm implements LayoutAlgorithm {
 		/* Punkteliste in Transition eintragen */
 		CPoint[] tpos = new CPoint[transitions.size()];
 		/* $Testausgabe */
-		//System.out.print("Transition: ");
+	      	//System.out.print("Transition: ");
+		
 		for (j = transitions.size()-1; j >= 0; j--) {
 		    tpos[j] = (CPoint) transitions.elementAt(j);
-		    /* $Testausgabe */
-		    //System.out.print("("+tpos[j].x+","+tpos[j].y+"),");
 		}
+		
+		/* $ */
+		//System.out.println("amt instanceof MapEndTr="+(amt instanceof MapEndTr));		
+		
 		((MapEndTr) amt).transition.points = tpos;		
 		/* Label platzieren */
 		p = new CPoint(tpos[0]);
@@ -304,9 +316,14 @@ class SugiyamaBCMAlgorithm implements LayoutAlgorithm {
 	//System.out.println("layoutORStateExited:"+s.name.name);
     };
 
+
+
+
+
     /**
      * Führt das Layout für einen And_State durch
      */
+
     public void layoutANDState(And_State s) {
 
 	/* $Testausgabe */
@@ -384,6 +401,7 @@ class SugiyamaBCMAlgorithm implements LayoutAlgorithm {
 	}
 
 	/* Ausgabe der Plazierungsgraphen */
+	
 	/*
 	System.out.println("Ausgabe der Plazierungsgraphen für den And_State '"+s.name.name+"'");
 	System.out.println("Gx=");
