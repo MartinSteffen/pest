@@ -19,11 +19,11 @@ import util.PrettyPrint;
  *    BufferedReader buf = new BufferedReader(new FileReader(new File(ha-format.txt)));
  *    HAImport imp = new HAImport(buf);
  *
- *    st = imp.import();
+ *    st = imp.getStatechart();
  * </pre>
  *
  * @author  Sven Jorga, Werner Lehmann
- * @version $Id: HAImport.java,v 1.3 1998-12-16 20:16:44 swtech18 Exp $
+ * @version $Id: HAImport.java,v 1.4 1998-12-16 20:29:54 swtech18 Exp $
  */
 public class HAImport implements Patterns {
   Perl5Util perl = new Perl5Util();
