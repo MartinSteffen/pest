@@ -17,37 +17,37 @@ public class TransitionTabelle extends Object{
     PrettyPrint out=new PrettyPrint();
     Enumeration keys=data.keys();
     while (keys.hasMoreElements()){
-      out.start((Path)(keys.nextElement()));
+      out.start((Tr)(keys.nextElement()));
     }
   }
 
 
-  public boolean isActive(Path p){
-    Tr transition=(Tr)data.get(p);
+  public boolean isActive(Tr t){
+    Tr transition=(Tr)data.get(t);
     return (transition!=null);
   }
 
-  public void setActive(Path p,Tr t){
-    data.put(p,t);
+  public void setActive(Tr k,Tr t){
+    data.put(k,t);
   }
 
-  public Tr getTransition(Path p){
-    return ((Tr)data.get(p));
+  public Tr getTransition(Tr t){
+    return ((Tr)data.get(t));
   }
 
    public TransitionTabelle verbinde(TransitionTabelle tab){
     TransitionTabelle result=new TransitionTabelle();
-    Path temp=null;
+    Tr temp=null;
     Enumeration keys=null;
     keys=(tab.data).keys(); /* Zunaechst alle aktiven aus tab nach result...*/
     while (keys.hasMoreElements()){
-      temp=(Path)keys.nextElement();
+      temp=(Tr)keys.nextElement();
       result.setActive(temp,tab.getTransition(temp));
     }
     keys=data.keys();      /* und dann alle aktiven der Instanz */
     while (keys.hasMoreElements()){
-      temp=(Path)keys.nextElement();
-      result.setActive(temp,tab.getTransition(temp));
+      temp=(Tr)keys.nextElement();
+      result.setActive(temp,getTransition(temp));
     }
     return result;
   }

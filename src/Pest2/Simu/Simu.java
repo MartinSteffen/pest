@@ -11,7 +11,7 @@ import java.io.*;
  * Statecharts, die uns uebergeben werden, folgende Eigenschaften haben:
  *
  * <ul>
- * <li> Syntaktisch korrekte Statechart, wie im Pflichtenheft angegeben, d.h ohne Schleifen und andere Widrigkeiten (z.B. fehlende Start- oder Endpunkte von Transitionen)
+ * <li> Syntaktisch korrekte Statechart, wie im Pflichtenheft angegeben, d.h ohne Schleifen und andere Widrigkeiten (z.B. fehlende Start- oder Endpunkte von Transitionen, unerlaubte Null-Pointer(ausser als Listen))
  * </ul>
  *
  * die mit folgenden Checks ueberprueft werden koennen:
@@ -24,28 +24,27 @@ import java.io.*;
  * STATUS
  * </STRONG>
  * <BR>
- * Bisher ist der Nachfolgeralgorithmus zum groessten Teil implementiert, 
- * man kann auch schon etwas simulieren.<BR>
+ * Bisher ist der Nachfolgeralgorithmus implementiert, aber noch nicht ausreichend getestet. 
+ * Man kann auch schon etwas simulieren.<BR>
  * Es werden Racing-Situationen bei Conditions und Nichtdeterminismus bei Transitionen erkannt,
- * koennen aber wegen fehlender GUI noch nicht richtig behandelt werden.
- * Connectoren funktionieren (noch) nicht!!!<BR>
+ * unsere GUI ist aber noch bearbeitungswuerdig.<BR>
+ * Connectoren solten inzwischen funktionieren, sind aber noch nicht ausrichend getestet.<BR>
  * Getestet haben wir bisher nur am Beispiel aus absyn.Example,
  * welches auch funktioniert, d.h. es koennen Events eingeben werden, die States werden erreicht
  * und die Transitionen und Aktionen werden ausgefuehrt. <BR>
  * Die Aktiven States werden noch nicht im Editor angezeigt, dafuer aber auf der Console.
+ * Die Aufrufe der Highlight-Funktionen sind schon vorgesehen, wir haben nur noch ein Problem
+ * mit der Parameteruebergabe.
  * <DT><STRONG>
  * TODO.
  * </STRONG>
  * <UL>
- * <LI> Abfrage bei Nichtdeterminismus                     (-9.1)
- * <LI> Ausfuehrliche, dokumentierte Tests                 (-10.1)
+ * <LI> Ausfuehrliche, dokumentierte Tests                 (-14.1)
  * </UL>
  * <DT><STRONG>
  * BEKANNTE FEHLER.
  * </STRONG>
  * <UL>
- * <LI> Connectoren sind nicht benutzbar: -> ClassCastException
- * <LI> Nichtdeterminismus wird erkannt, kann aber nicht aufgelöst werden (GUI fehlt)
  * <LI> Noch nicht getestet, was absyn.Dummy anrichten kann
  * <LI> 
  * </UL>
@@ -53,7 +52,7 @@ import java.io.*;
  * TEMPORÄRE FEATURES.
  * </STRONG>
  * Unheimlich viel Muell auf System.err und System.out.<BR> Nebenbei werden pro Simulationsschritt 
- * die aktiven States angezeigt.
+ * die aktiven States angezeigt.<BR>
  * Achtung: Momentan sind einige Klassen public, bis auf Simu wird alles wieder verschwinden!!!!!!
  * </DL COMPACT>                    
  */

@@ -111,6 +111,7 @@ class Nachfolgermaschine extends Object{
 	/* ENDE HACK....                                                               */
 	if (transitionen.size()>0){                  /* Gibt es denn mindestens eine?              */
 	  Tr transit=(Tr)transitionen.firstElement();
+	  result.transitions.setActive(transit,transit);
 	  result=progress(path,transit,os,result);    /* Führe die Transition aus. */
 	}
 	/* Dann fuer den aktiven State step ausfuehren                        */
