@@ -98,6 +98,8 @@ implements GUIInterface
     int stmYSize = 480;
     boolean stmKoord = true;
 
+    int layoutAlgorithm=0;
+
    public static void main(String[] args)
     {
 	new pest();
