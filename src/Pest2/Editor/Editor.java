@@ -1,8 +1,9 @@
-/*
-swtech16
+/**
+ * Editor.java
+ */
 
+package Editor;
 
-*/
 import java.awt.*;
 import java.awt.event.*;
 import Absyn.*;
@@ -11,6 +12,10 @@ public class Editor extends Frame
 {
     private Statechart statechart;
     private String label;
+
+    /**
+     * public Editor(Statechart st, String l)
+     */
 
     public Editor(Statechart st, String l)
     {
@@ -39,9 +44,17 @@ public class Editor extends Frame
 
     }
 
+    /** 
+     * public static boolean highlight(Path obj)
+     */
+
     public static boolean highlight(Path obj)
     {
 	return true;
     }
 
 }
+
+
+
+
