@@ -85,6 +85,7 @@ public class Editor extends Frame {
     public static double ZoomFaktor = 1;
     public static double zoomfk = 1;
     public static final String LongLabel = "<LongLabel>";
+    public static boolean init = true;
     private static GUIInterface gui = null; // Referenz auf die GUI (mit NULL vorbelegen)
 
     static PESTDrawDesk scribble;
@@ -494,7 +495,14 @@ public static Color tr_color()
 public static Color st_color()
 {return gui.getStatecolor();}
 
+public static void dislocation() {
+    if (init == true)
+	{
+	    init = false;
+	    gui.OkDialog("Editor","Koordinatenproblem aufgetreten"); 
+	    gui.editorClosing();
+	}
 }
-
+}
 
 // Editor 
