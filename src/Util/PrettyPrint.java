@@ -583,9 +583,10 @@ public class PrettyPrint {
 
       System.out.println (whiteSpace (column) + "[Comppath] " + op);
       PrettyPrint ppCp = new PrettyPrint (column + tab, tab);
-
+      System.out.print (whiteSpace (column +tab) + "[Path] ");
       // Gib Path aus.
       ppCp.start (cp.path);
+      System.out.println();
     }
   } // method output (Comppath)
 
