@@ -5,9 +5,9 @@ import Absyn.*;
 
 /**
  * <b>Syntax Check für Statecharts</b>
- * <br><a href="..\Check\Docu\ErrorAndWarningCodes.html">Codes von Fehlern und Warnungen beim Syntax Check</a> 
+ * <br><a href="../Check/Docu/ErrorAndWarningCodes.html">Codes von Fehlern und Warnungen beim Syntax Check</a> 
  * @author Daniel Wendorff und Magnus Stiller
- * @version  $Id: modelCheck.java,v 1.3 1998-12-01 09:18:54 swtech11 Exp $
+ * @version  $Id: modelCheck.java,v 1.4 1998-12-01 09:42:01 swtech11 Exp $
  */
 public class modelCheck {
   private modelCheckMsg mcm;
