@@ -75,7 +75,7 @@ import util.*;
  * </ul>
  * <p>
  * <DT><STRONG>
- * TEMPORÄRE FEATURES:</strong>
+ * TEMPORRE FEATURES:</strong>
  * <ul>
  * <li> Ueber die GUI:
  * <ul>
@@ -471,7 +471,7 @@ public void checkbox2_ItemStateChanged(java.awt.event.ItemEvent itemEvent) {
  * @param arg1 absyn.Path
  * @param arg2 absyn.Path
  * Diese Methode vergleich zwei Paths auf Stringebene miteinander und liefert bei Gleichheit
- * "true" zurück ( sonst "false" ).
+ * "true" zurck ( sonst "false" ).
  *
  * Benutzte globale Objekte	: ----
  * Aufruf von 				: removePathInList
@@ -487,7 +487,7 @@ private boolean comparePaths(Path arg1, Path arg2) {
 
 	boolean result = true;					// Setze Default
 	Path argcopy1, argcopy2;				// Kopien der Argumente anlegen, weil sie
-											// verändert werden.
+											// ver„ndert werden.
 	argcopy1 = arg1;
 	argcopy2 = arg2;
 	
@@ -501,7 +501,7 @@ private boolean comparePaths(Path arg1, Path arg2) {
 			result = false;					// und Ergebnis merken.
 		}
 	}
-	if (argcopy2 != null) {					// argcopy2 war einfach nur länger.
+	if (argcopy2 != null) {					// argcopy2 war einfach nur l„nger.
 		result = false;
 	}
 	return result;
@@ -614,7 +614,7 @@ public Statechart example() {
 
  *  @author   Daniel Wendorff und Magnus Stiller
 
- *  @version  $Id: Simu.java,v 1.15 1999-01-18 13:44:15 swtech26 Exp $
+ *  @version  $Id: Simu.java,v 1.16 1999-01-22 14:04:52 swtech26 Exp $
 
  */
 
@@ -1472,7 +1472,7 @@ private TextField getTextField1() {
 private boolean greaterAndContains(Path arg1, Path arg2) {
 	boolean result = true;					// Setze Default
 	Path argcopy1, argcopy2;				// Kopien der Argumente anlegen, weil sie
-											// verändert werden.
+											// ver„ndert werden.
 	argcopy1 = arg1;
 	argcopy2 = arg2;
 
@@ -1495,7 +1495,7 @@ private boolean greaterAndContains(Path arg1, Path arg2) {
 }
 /**
  *
- * Liefert die Anzahl der von "null" ungleichen Elemente der uebergebenen BvarList zurück.
+ * Liefert die Anzahl der von "null" ungleichen Elemente der uebergebenen BvarList zurck.
  *
  * Benutzt globale Objekte			: SDaten.bvars
  * Aufgerufen von					: simu(,,)
@@ -1528,7 +1528,7 @@ private int groesse(BvarList arg1)
 }
 /**
  *
- * Liefert die Anzahl der von "null" ungleichen Elemente der uebergebenen BvarList zurück.
+ * Liefert die Anzahl der von "null" ungleichen Elemente der uebergebenen BvarList zurck.
  *
  * Benutzt globale Objekte	 		: SDaten.events
  * Aufgerufen von					: simu();
@@ -1626,8 +1626,8 @@ private void initialize() {
  *
  * Diese Methode initialisiert die InListe. Sie bekommt als Parameter den bisher 
  * ( rekursiv ) erreichten Pfad und den bisher ( rekursiv ) erreichten State.
- * Beim Grundaufruf aus firstStep() heraus werden demzufolge der Name des äußersten
- * States und dieser äußerste State selbst als Parameter an initInList() übergeben.
+ * Beim Grundaufruf aus firstStep() heraus werden demzufolge der Name des „u˜ersten
+ * States und dieser „u˜erste State selbst als Parameter an initInList() bergeben.
  * 
  * Benutzt globale Objekte			: InList
  * Aufgerufen von					: firstStep(), initInList()
@@ -1656,18 +1656,18 @@ private void initInList(State x, Path y) {
 	
 	if (x instanceof And_State) {				// Handelt es sich um einen And_State, muss zuerst der
 		InList.addElement(y);					// And_State selbst und dann alle Substates aus der
-		liste = ((And_State)x).substates;		// Substateliste in die InList eingefügt werden.
+		liste = ((And_State)x).substates;		// Substateliste in die InList eingefgt werden.
 		while (liste.head != null) {
 			y = y.append(liste.head.name.name);
 			InList.addElement(y);
-			initInList(liste.head, y);			// Ausserdem muss für diese (Substates) ein rekursiver 
+			initInList(liste.head, y);			// Ausserdem muss fr diese (Substates) ein rekursiver 
 			killLastElement(y);					// Aufruf von initInList erfolgen.
 			liste = liste.tail;
 		}
 	}
 	if (x instanceof Or_State) {				// Handelt es sich um einen Or_State, muss zuerst der
-		InList.addElement(y);					// Or_State selbst und dann der dazugehörige Default-State
-		nameList = ((Or_State)x).defaults;		// in die InListe eingefügt werden.
+		InList.addElement(y);					// Or_State selbst und dann der dazugeh÷rige Default-State
+		nameList = ((Or_State)x).defaults;		// in die InListe eingefgt werden.
 		compareName = nameList.head.name;
 		liste = ((Or_State)x).substates;
 		while (found == false) {							// Die Schleife dient zum identifizieren
@@ -1680,8 +1680,8 @@ private void initInList(State x, Path y) {
 			}
 		}
 		y = y.append(compareName);
-		InList.addElement(y);					// Hier wird der Pfad des Default_States eingefügt.
-		initInList(targetState, y);				// Für den Default_State muss ebenso ein rekursiver 
+		InList.addElement(y);					// Hier wird der Pfad des Default_States eingefgt.
+		initInList(targetState, y);				// Fr den Default_State muss ebenso ein rekursiver 
 		killLastElement(y);						// Aufruf von InitInList erfolgen.
 	} 
 }
@@ -2186,25 +2186,29 @@ private Vector makeTab(BvarList daten) {
 	int i = 0;			// Debug - Zaehlvariable
 	
 	if (data != null) {
-		 System.out.println("Die ursprüngliche BvarList ist nicht leer");
-	}
-			
-	while (data.tail != null) {									// "data.tail" statt "data"
-			BvarTab newElement = new BvarTab(data.head, false);
-			result.addElement(newElement);
-			data = data.tail;
-			i++;
-	}
-	// Weil nur auf (data.tail != null) geprueft werden kann, muß das letzte Element
-	// außerhalb der Schleife exrahiert werden.
-	
-	BvarTab newElement = new BvarTab(data.head, false);
-	result.addElement(newElement);
-	i++;
+	    System.out.println("Die ursprngliche BvarList ist nicht leer");
+	    
+	    
+	    while (data.tail != null) {		   // "data.tail" statt "data"
+		BvarTab newElement = new BvarTab(data.head, false);
+		result.addElement(newElement);
+		data = data.tail;
+		i++;
+	    }
+	    // Weil nur auf (data.tail != null) geprueft werden kann, mu˜ das letzte Element
+	    // au˜erhalb der Schleife exrahiert werden.
+	    
+	    BvarTab newElement = new BvarTab(data.head, false);
+	    result.addElement(newElement);
+	    i++;
 
-	//	};	FTA
-	if (debug==true){
-	System.out.println(i+" Bvars gezaehlt und in bvList eingefuegt!");
+	    //	};	FTA
+	    if (debug==true){
+		System.out.println(i+" Bvars gezaehlt und in bvList eingefuegt!");
+	    }
+	}
+	else {
+	    result = null;
 	}
 	return result;
 }
@@ -2226,23 +2230,31 @@ private Vector makeTab(SEventList daten) {
 	SEventList data;
 	data = daten;
 	int i=0;
-	
-	while (data.tail != null) {
+
+	if (data != null) {
+	    System.out.println("Die urspruengliche EventList ist nicht leer");
+
+	    
+	    while (data.tail != null) {
 		SEventTab newElement = new SEventTab(data.head, false); 
 		result.addElement(newElement);
 		data = data.tail;
 		i++;
+	    }
+	    
+	    // Weil nur auf (data.tail != null) geprueft werden kann, mu˜ das letzte Element
+	    // au˜erhalb der Schleife exrahiert werden.
+	    SEventTab newElement = new SEventTab(data.head, false); 
+	    result.addElement(newElement);
+	    i++;
+	    
+	    if (debug==true){
+		System.out.println(i+" Events gez„hlt und in seList eingefuegt !");
+	    } 
 	}
-	
-	// Weil nur auf (data.tail != null) geprueft werden kann, muß das letzte Element
-	// außerhalb der Schleife exrahiert werden.
-	SEventTab newElement = new SEventTab(data.head, false); 
-	result.addElement(newElement);
-	i++;
-
-	if (debug==true){
-	System.out.println(i+" Events gezählt und in seList eingefuegt !");
-	} 
+	else {
+	    result = null;
+	}
 	
 	return result;
 }
@@ -2553,7 +2565,7 @@ public void mouseReleased(java.awt.event.MouseEvent e) {
 }
 /**
  * Diese Methode sucht einen zu KillPath identischen Path in der InList, entfernt selbigen
- * aus der InList und fügt ihn in die ExitedList ein. Dabei wird die InList von hinten nach
+ * aus der InList und fgt ihn in die ExitedList ein. Dabei wird die InList von hinten nach
  * vorne durchlaufen.
  *
  * Benutzte globale Objekte : InList, ExitedList
