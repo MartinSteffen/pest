@@ -16,7 +16,7 @@ import GUI.*;
  * <br><a href="#Codes">Codes von Fehlern und Warnungen beim Syntax Check</a>
  * <br>
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: modelCheck.java,v 1.14 1998-12-14 20:40:29 swtech11 Exp $
+ * @version  $Id: modelCheck.java,v 1.15 1998-12-14 21:55:56 swtech11 Exp $
  */
 public class modelCheck {
   private modelCheckMsg mcm; // Object, um die Fehler und Warnungen zu speichern
@@ -46,6 +46,7 @@ public class modelCheck {
  */
   public modelCheck(GUIInterface _gui) {
     this();
+    gui = _gui;
     outputGUI = true;
   }
 
@@ -55,8 +56,10 @@ public class modelCheck {
  * @param sc  die zu checkende Statechart
  */
   public boolean checkModel(Statechart sc) {
-    return (checkEvents(sc) & checkStates(sc) &
-            checkTransitions(sc) & checkBVars(sc));
+    boolean m = (checkEvents(sc) & checkStates(sc) &
+                   checkTransitions(sc) & checkBVars(sc));
+    if (outputGUI==true) { outputToGUI(); }
+    return m;
   };
 
 /**
@@ -162,6 +165,16 @@ public class modelCheck {
   }
 
 
+  void outputToGUI() {
+    if (getErrorNumber()>0) {
+      gui.userMessage("Check  : Fehlermeldungen ( Anzahl: " + getErrorNumber() +  " ):");
+      for (int i=1;(i<=getErrorNumber());i++) {
+            gui.userMessage("Check  : "+getError(i) ); } }
+    if (getWarningNumber()>0) {
+      gui.userMessage("Check  : Warnmeldungen ( Anzahl: " + getWarningNumber() +  " ):");
+      for (int i=1;(i<=getWarningNumber());i++) {
+        gui.userMessage("Check  : "+getWarning(i) ); } }
+  }
 
 /**
  *
