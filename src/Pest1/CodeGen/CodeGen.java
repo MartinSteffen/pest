@@ -23,15 +23,12 @@ import absyn.*;
  * <DT><STRONG>To Do</STRONG>
  *   <UL>
  *   <LI>Need to fix code for non-determinism.
+ *   <LI>Need to check constructor for boolean arrays.
+ *   <LI>Default connectors currently do not work.
  *   </UL>
  * <DT><STRONG>Known Bugs</STRONG>
  *   <UL>
- *     <LI>Code emission for transition hangs PEST.
- *     <LI>Perhaps we need to check the identifiers and think of
- *       a way to convert identifiers into valid Java identifiers.
- *       Question is:  Do we want to restrict the choice of valid
- *       Identifiers?  This would be simpler, since it would avoid
- *       name clashes during conversion.
+ *   <LI>No Bugs nown.  But see Prerequisites.
  *   </UL>
  * <A HREF="mailto:swtech25@informatik.uni-kiel.de">swtech25</A>
  * </DL>
@@ -55,7 +52,7 @@ import absyn.*;
  * </DL>
  *
  * @author Marcel Kyas, Walter Loeser, Andre Paetzold.
- * @version $Id: CodeGen.java,v 1.14 1999-01-21 13:46:24 swtech25 Exp $
+ * @version $Id: CodeGen.java,v 1.15 1999-01-21 15:27:32 swtech25 Exp $
  */
 public class CodeGen
 {
