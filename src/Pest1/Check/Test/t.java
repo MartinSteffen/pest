@@ -7,7 +7,7 @@ import java.io.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: t.java,v 1.11 1998-12-22 17:30:31 swtech11 Exp $
+ *  @version  $Id: t.java,v 1.12 1998-12-29 14:25:32 swtech11 Exp $
  */
 public class t {
 
@@ -22,11 +22,12 @@ public class t {
     if (argv.length<1) { // Hilfssystem
       System.out.println();
       System.out.println("t - Das Testsystem fuer den Syntax Check");
-      System.out.println("Version: $Id: t.java,v 1.11 1998-12-22 17:30:31 swtech11 Exp $ ");
+      System.out.println("Version: $Id: t.java,v 1.12 1998-12-29 14:25:32 swtech11 Exp $ ");
       System.out.println("Aufruf: t op1 [op2]");
       System.out.println("  op1 enthaelt die zucheckende Statechart und muss angegeben werden:");
       System.out.println("      s  = Standard Beispiel aus der abstrakten Syntax");
-      System.out.println("      d  = Beispiel 1 von Daniel fuer BVars und Events");
+      System.out.println("      d  = Beispiel 1 von Daniel fuer BVars, Events und States");
+      System.out.println("      d2 = Beispiel 2 von Daniel fuer States");
       System.out.println("      m  = Beispiel 1 von Magnus fuer Transitionen");
       System.out.println("      m2 = Beispiel 2 von Magnus fuer Transitionen und Connectoren");
       System.out.println("      l  = leere Statechart");
@@ -45,6 +46,11 @@ public class t {
         t2_Example t = new t2_Example();
         sc = t.getExample_d();
         n = "Daniel1";
+	    }
+      if (argv[0].equalsIgnoreCase("d2")) {
+        t2_Example t = new t2_Example();
+        sc = t.getExample_d2();
+        n = "Daniel2";
 	    }
       if (argv[0].equalsIgnoreCase("s")) {
         Example t = new Example();

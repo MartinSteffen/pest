@@ -6,7 +6,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestTransitions.java,v 1.3 1998-12-15 17:51:40 swtech00 Exp $
+ *  @version  $Id: TestTransitions.java,v 1.4 1998-12-29 14:25:51 swtech11 Exp $
  */
 class TestTransitions extends ModelCheckBasics {
   Vector newPLV = new Vector(); // Vector fuer die selbst angelegte PathList der States
@@ -81,6 +81,8 @@ class TestTransitions extends ModelCheckBasics {
       w1 = !StatenameInPathList(newCLV, z1); // Connector -> nicht vorhanden ?
       if (w1==false) { j1 = !ConnectorNameInThisStateConnectorList(((Or_State)_s).connectors, z1); } // Connector -> Interlevel ?
     }
+    else {System.out.println("unbekannter StartAnker");};
+    
 
     // Zielanker der Transition bearbeiten
     if (tl.head.target instanceof UNDEFINED) { // undefiniert ?
@@ -98,6 +100,8 @@ class TestTransitions extends ModelCheckBasics {
       w2 = !StatenameInPathList(newCLV, z2); // Connector -> nicht vorhanden ?
       if (w2==false) { j2 = !ConnectorNameInThisStateConnectorList(((Or_State)_s).connectors, z2); } // Connector -> Interlevel ?
     }
+    else {System.out.println("unbekannter ZielAnker");};
+
 
     // Auswertung auf undefiniert
     if (u1==true & u2==false) { msg.addError(400,"Trans: "+z1+" -> "+z2+" in State: " + p); }

@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestEvents.java,v 1.2 1998-12-15 17:51:39 swtech00 Exp $
+ *  @version  $Id: TestEvents.java,v 1.3 1998-12-29 14:25:49 swtech11 Exp $
  */
 /** Diese Testklasse testet, ob alle Events deklariert worden sind, 
     <br>ob die deklarierten eindeutig sind und ob sie alle verwendet werden.*/
@@ -76,7 +76,7 @@ class TestEvents extends ModelCheckBasics{
   void pruefeEvent(SEvent e, Tr t, String p){
       if (Ist.contains(e.name)) {if (!Soll.contains(e.name)) { Soll.addElement(e.name);};}
       else {msg.addError(201,"Event: "+e.name+
-                           "/ Transition: "+((Statename)t.source).name+" -> "+((Statename)t.target).name+
+                           "/ Trans: "+((Statename)t.source).name+" -> "+((Statename)t.target).name+
                            " in State: "+p);};
   };
 
@@ -96,7 +96,7 @@ class TestEvents extends ModelCheckBasics{
       for(; ((pl != null) && b) ; pl=pl.tail){ 
 	  if (p==pl.head) {b=false;};};
       
-      if (b) {msg.addError(203,"Statename: "+p+"/ Transition: "
+      if (b) {msg.addError(203,"Statename: "+p+"/ Trans: "
                                +((Statename)t.source).name+" -> "+((Statename)t.target).name+
                            " in State: "+s);}
      

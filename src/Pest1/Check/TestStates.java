@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestStates.java,v 1.2 1998-12-15 17:51:40 swtech00 Exp $
+ *  @version  $Id: TestStates.java,v 1.3 1998-12-29 14:25:50 swtech11 Exp $
  */
 
 /** Diese Testklasse testet, ob alle Statenamen deklariert worden sind, 
@@ -60,6 +60,8 @@ class TestStates extends ModelCheckBasics{
     for(PathList p=sc.cnames; p!=null; p=p.tail){
        Path p_=p.head;
        s=p_.head;
+       
+
        p_=p_.tail;
        for(;p_!=null; p_=p_.tail) {s=s+"."+p_.head;};
    
@@ -105,4 +107,12 @@ class TestStates extends ModelCheckBasics{
 	 for (; sl.tail!=null; sl=sl.tail) {i++;};
 
       return i;};
+
+        // gibt den kompletten Pfad des States _n zurueck, d.h. _p + "." +_n
+  String getAddPathPart(String _p, String _n) {   // _p Pfad, _n Name des States
+    String _np = new String();
+    if (_p.equals("")) { _np = _n; } else { _np = _p + ts + _n; }
+    if (_n=="") {msg.addWarning(308,"State: "+_p);};
+    return _np;
+  }
 }

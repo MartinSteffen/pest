@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestBVars.java,v 1.2 1998-12-15 17:51:39 swtech00 Exp $
+ *  @version  $Id: TestBVars.java,v 1.3 1998-12-29 14:25:49 swtech11 Exp $
  */
 
 /** Diese Testklasse testet, ob alle BVars deklariert worden sind, 
@@ -66,11 +66,21 @@ class TestBVars extends ModelCheckBasics{
     /** Ueberprueft den Guard auf Verwendung von BVars.*/
 
     void pruefeGuard(Guard g, Tr t, String p){
-    if (g instanceof GuardBVar)  {pruefeBVar  (((GuardBVar )g).bvar, t, p);};
-    if (g instanceof GuardCompg) {pruefeGuard (((GuardCompg)g).cguard.elhs, t, p);
-                                  pruefeGuard (((GuardCompg)g).cguard.erhs, t, p); };
-    if (g instanceof GuardNeg)   {pruefeGuard (((GuardNeg)g).guard, t, p);};
-    }
+    if (g instanceof GuardBVar)  {pruefeBVar  (((GuardBVar )g).bvar, t, p);}
+      else {
+      if (g instanceof GuardCompg) {pruefeGuard (((GuardCompg)g).cguard.elhs, t, p);
+                                  pruefeGuard (((GuardCompg)g).cguard.erhs, t, p); }
+        else {
+        if (g instanceof GuardNeg)   {pruefeGuard (((GuardNeg)g).guard, t, p);}
+          else {
+          if ((g instanceof GuardEmpty) || (g instanceof GuardEvent) ||
+             (g instanceof GuardCompp)) {}
+            else {
+            if (g instanceof GuardUndet) {msg.addWarning(416,"Trans: "+
+                ((Statename)t.source).name+" -> "+((Statename)t.target).name+" in State: "+p);}
+              else {msg.addError(417,"Trans: "+
+                ((Statename)t.source).name+" -> "+((Statename)t.target).name+" in State: "+p);};
+    };};};};};
 
     /** Ueberprueft, ob ein BVar, der in einem Guard oder einem Action verwendet wird, 
 	<br>deklariert worden ist.*/
@@ -78,23 +88,32 @@ class TestBVars extends ModelCheckBasics{
   void pruefeBVar(Bvar b, Tr t, String p){
       if (Ist.contains(b.var)) {if (!Soll.contains(b.var)) { Soll.addElement(b.var);};}
       else {msg.addError(101,"BVar: "+b.var+
-                  "/ Transition: "+((Statename)t.source).name+" -> "+((Statename)t.target).name+" in State: "+p);};
+                  "Trans: "+((Statename)t.source).name+" -> "+((Statename)t.target).name+" in State: "+p);};
   };
    /** Ueberprueft den Action auf Verwendung von BVars.*/
 
     void pruefeAction(Action a, Tr t, String p){
     if (a instanceof ActionBlock)  { for(Aseq as=((ActionBlock)a).aseq;as.tail!=null;as=as.tail) 
-	{ pruefeAction(as.head, t, p);};}
-    if (a instanceof ActionStmt) {pruefeBool (((ActionStmt)a).stmt, t, p);};
-    };
+	      { pruefeAction(as.head, t, p);};}
+      else {
+      if (a instanceof ActionStmt) {pruefeBool (((ActionStmt)a).stmt, t, p);}
+        else {
+          if ((a instanceof ActionEvt) || (a instanceof ActionEmpty)) {}
+            else {msg.addError(418,"Trans: "+
+                ((Statename)t.source).name+" -> "+((Statename)t.target).name+" in State: "+p);};
+    }; }; };
 
   /** Ueberprueft einen boolschen Block auf Verwendung von BVars.*/
 
   void pruefeBool(Boolstmt b, Tr t, String p) {
-     if (b instanceof BAss)  {pruefeBVar(((BAss)b).ass.blhs, t, p); pruefeGuard(((BAss)b).ass.brhs, t, p);};
-     if (b instanceof MTrue)  {pruefeBVar(((MTrue)b).var, t, p);};
-     if (b instanceof MFalse) {pruefeBVar(((MFalse)b).var, t, p);};
-    };
+     if (b instanceof BAss)  {pruefeBVar(((BAss)b).ass.blhs, t, p); pruefeGuard(((BAss)b).ass.brhs, t, p);}
+       else {
+       if (b instanceof MTrue)  {pruefeBVar(((MTrue)b).var, t, p);}
+         else {
+         if (b instanceof MFalse) {pruefeBVar(((MFalse)b).var, t, p);}
+           else {msg.addError(103,"Trans: "+
+                ((Statename)t.source).name+" -> "+((Statename)t.target).name+" in State: "+p);};
+     };};};
 
     /** Die Vectoren Ist und soll werden verglichen. 
 <br>Wenn BVars aus dem Vector Ist nicht verwendet werden , wird gewarnt.*/
