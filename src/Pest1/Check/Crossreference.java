@@ -35,7 +35,7 @@ import java.awt.*;
  * keine
  * </DL COMPACT>
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: Crossreference.java,v 1.14 1999-01-22 20:33:22 swtech11 Exp $
+ * @version  $Id: Crossreference.java,v 1.15 1999-01-25 08:00:27 swtech11 Exp $
  */
 public class Crossreference extends ModelCheckBasics {
   private GUIInterface gui = null; // Referenz auf die GUI
@@ -127,7 +127,7 @@ public class Crossreference extends ModelCheckBasics {
     String z1 = msg.getTrSourceName(tl.head);
     String z2 = msg.getTrTargetName(tl.head);
     // Ueberpruefe Guards und Actions
-    // pruefeString(tl.head.label, tl.head, p); //ueberprueft den Caption auf infixStrings
+   
     pruefeGuard(tl.head.label.guard, tl.head, p);
     pruefeAction(tl.head.label.action, tl.head, p);
     // Auswertung der Anker
