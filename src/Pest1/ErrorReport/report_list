@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.20 1999-01-22 10:41:12 swtech11 Exp $
+//	$Id: report_list,v 1.21 1999-01-22 10:42:58 swtech11 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -185,7 +185,7 @@ ist nicht benennbar, groessere States jedoch schon.
 #Number:	13
 #Autor:		Magnus Stiller swtech11
 #Subject:	Namensgleichheit von States bei Interlevel Transitionen
-#Status:	reported
+#Status:	fixed
 #Description:
 
 Wenn in verschiedenen Ebenenen States den gleichen Namen haben, kann man bei einer Transition nicht sagen, ob sie nun von einem State zum selben geht, oder eine IT vorliegt.
