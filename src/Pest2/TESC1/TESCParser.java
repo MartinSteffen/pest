@@ -10,12 +10,10 @@ import util.*;
  * Parser fuer TESC.
  * <p>
  * @author Michael Suelzer, Christoph Schuette.
- * @version  $Id: TESCParser.java,v 1.11 1999-01-20 17:32:11 swtech20 Exp $
+ * @version  $Id: TESCParser.java,v 1.12 1999-02-01 11:52:59 swtech20 Exp $
  */   
 class TESCParser {
     
-    protected static final boolean DEBUG = false;  
-
     protected static final int createEvent = 1;
     protected static final int createBvar  = 2;
 
@@ -56,13 +54,7 @@ class TESCParser {
 	debug("parseTESC");
 
         pathlist = null;
-	Statechart statechart = parseTesc();
-
-	if (DEBUG) {
-	    (new util.PrettyPrint()).start(statechart);
-	}
-
-	return statechart;
+	return parseTesc();
     }
 
 
@@ -86,13 +78,7 @@ class TESCParser {
         bvarlist = null;
         eventlist = null;
 
-	Guard guard = parseGuardSTMStyle();
-
-	if (DEBUG) {
-	    (new util.PrettyPrint()).start(guard);
-	}
-
-        return guard;
+	return parseGuardSTMStyle();
     }
 
 
@@ -115,13 +101,7 @@ class TESCParser {
         bvarlist = null;
         eventlist = null;
 
-	Action action = parseActions();
-
-	if (DEBUG) {
-	    (new util.PrettyPrint()).start(action);
-	}
-
-        return action;
+	return parseActions();
     }
 
 
@@ -182,14 +162,14 @@ class TESCParser {
 
 
     /**
-     * Gibt einen String aus, falls der Schalter DEBUG gesetzt ist.
+     * Gibt einen String aus, falls der globale Debug-Schalter gesetzt ist.
      * @param s Text
-     * @see DEBUG
      */    
     protected void debug(String s) {
-        if (DEBUG) System.out.println(s);
+        if (TESCLoader.gui != null) {
+	    if (TESCLoader.gui.isDebug()) System.out.println( TESCLoader.PACKAGE_NAME + s);
+	}
     }
-
 
     //------------------------------------------------------------------------
     //  Hilsfunktion(en) zum Parsen
@@ -781,7 +761,7 @@ class TESCParser {
 	matchToken(Token.KeyEnd);
 	String end_identifier = token.getValue(); 
 	matchToken(Token.Identifier);
-	debug("End " + end_identifier);
+
 	if (!end_identifier.equalsIgnoreCase(or_identifier)) {
 	    Error("Bezeichner stimmt nicht mit voriger Definition ueberein."); 
 	}
@@ -1556,6 +1536,11 @@ class TESCParser {
 //      ----------------------------               
 //
 //      $Log: not supported by cvs2svn $
+//      Revision 1.11  1999/01/20 17:32:11  swtech20
+//      - Status und Doku aktualisiert
+//      - Fehler, dass Anderungen an Bvarlisten ... nicht nach aussen-
+//        gegeben werden behoben.
+//
 //      Revision 1.10  1999/01/18 17:08:52  swtech20
 //      - okDialog -> userMessage
 //      - Pruefung auf gui==null

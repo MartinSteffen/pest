@@ -34,9 +34,6 @@ import gui.*;
  *
  * <p><STRONG>Todo: </STRONG>
  * <ul>
- * <li> Grammatik aktualisieren
- * <li> Struktur GUARD/ACTION mit STM abstimmen.
- * <li> Doku TESC
  * <li> Weiteres Bug Fixing.
  * </ul>
  *
@@ -52,14 +49,14 @@ import gui.*;
  * dem Pflichtenheft verwendet werden.
  * <p>
  * <hr>
- * @version  $Id: TESCLoader.java,v 1.13 1999-01-20 17:32:11 swtech20 Exp $
+ * @version  $Id: TESCLoader.java,v 1.14 1999-02-01 11:52:59 swtech20 Exp $
  * @author Michael Suelzer, Christoph Schuette.
  *  
  */   
 public final class TESCLoader {
 
-    private static String PACKAGE_NAME = "TESC1 : ";
-    private GUIInterface gui = null;
+    static String PACKAGE_NAME = "TESC1 : ";
+    static GUIInterface gui = null;
     private TESCParser parser = null;
 
     /**
@@ -257,6 +254,11 @@ public final class TESCLoader {
 //	----------------------
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.13  1999/01/20 17:32:11  swtech20
+//	- Status und Doku aktualisiert
+//	- Fehler, dass Anderungen an Bvarlisten ... nicht nach aussen-
+//	  gegeben werden behoben.
+//
 //	Revision 1.12  1999/01/18 17:08:52  swtech20
 //	- okDialog -> userMessage
 //	- Pruefung auf gui==null

@@ -48,14 +48,14 @@ import gui.*;
  * Jedes Statechart, z.B. das <A HREF="./tesc1/Docu/Example.tesc">Beispiel</A> aus
  * dem Pflichtenheft, kann testweise exportiert werden. 
  * <hr>
- * @version  $Id: TESCSaver.java,v 1.4 1999-01-20 17:32:12 swtech20 Exp $
+ * @version  $Id: TESCSaver.java,v 1.5 1999-02-01 11:52:59 swtech20 Exp $
  * @author Michael Suelzer, Christoph Schuette.
  *  
  */   
 public final class TESCSaver {
 
-    private static String PACKAGE_NAME = "TESC1 : ";
-    private GUIInterface gui = null;
+    static String PACKAGE_NAME = "TESC1 : ";
+    static GUIInterface gui = null;
     private TESCWriter writer = null;
 
     /**
@@ -147,7 +147,7 @@ public final class TESCSaver {
      * aufgetreten sind.
      * @return Anzahl der Fehler.
      */
-    protected int getErrorCount() {return writer.errorCount;}
+    int getErrorCount() {return writer.errorCount;}
     
     
     /**
@@ -156,7 +156,7 @@ public final class TESCSaver {
      * @param n Fehlerindex
      * @return Fehlertext des n-ten Fehlers.
      */
-    protected String getErrorText(int n) {return (String)writer.errorText.elementAt(n);}
+    String getErrorText(int n) {return (String)writer.errorText.elementAt(n);}
     
 
     /**
@@ -164,7 +164,7 @@ public final class TESCSaver {
      * aufgetreten sind.
      * @return Anzahl der Warnungen.
      */
-    protected int getWarningCount() {return writer.warningCount;}
+    int getWarningCount() {return writer.warningCount;}
     
     
     /**
@@ -173,7 +173,7 @@ public final class TESCSaver {
      * @param n imdex
      * @return Text.
      */
-    protected String getWarningText(int n) {return (String)writer.warningText.elementAt(n);}
+    String getWarningText(int n) {return (String)writer.warningText.elementAt(n);}
    
 }
       
@@ -182,6 +182,11 @@ public final class TESCSaver {
 //	----------------------
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.4  1999/01/20 17:32:12  swtech20
+//	- Status und Doku aktualisiert
+//	- Fehler, dass Anderungen an Bvarlisten ... nicht nach aussen-
+//	  gegeben werden behoben.
+//
 //	Revision 1.3  1999/01/18 17:08:53  swtech20
 //	- okDialog -> userMessage
 //	- Pruefung auf gui==null

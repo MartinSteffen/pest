@@ -10,13 +10,11 @@ import java.util.*;
  * <hr>
  * Die Grobstruktur stammt aus dem Pretty-Printer von Eike Schulz. 
  * <hr>
- * @version  $Id: TESCWriter.java,v 1.2 1999-01-20 17:32:12 swtech20 Exp $
+ * @version  $Id: TESCWriter.java,v 1.3 1999-02-01 11:53:00 swtech20 Exp $
  * @author Michael Suelzer, Christoph Schuette.
  *  
  */   
 class TESCWriter {
-  
-    protected static boolean DEBUG = false;
 
     protected int column;                        // Offset-Spalte
     protected int tab;                           // Einrueck-Tabulator
@@ -115,12 +113,13 @@ class TESCWriter {
 
 
     /**
-     * Gibt einen String aus, falls der Schalter DEBUG gesetzt ist.
+     * Gibt einen String aus, falls der globale Debug-Schalter gesetzt ist.
      * @param s Text
-     * @see DEBUG
      */    
     protected void debug(String s) {
-        if (DEBUG) System.out.println(s);
+        if (TESCSaver.gui != null) {
+	    if (TESCSaver.gui.isDebug()) System.out.println(TESCSaver.PACKAGE_NAME + s);
+	}
     }
 
 
@@ -595,7 +594,7 @@ class TESCWriter {
 
 	if (cp != null) {
 
-	    debug("Wandle Klassenkonstanten in Tokenstrings um");
+	    // Wandle Klassenkonstanten in Tokenstrings um
 	    String op;
 
 	    switch (cp.pathop) {
@@ -807,6 +806,11 @@ class TESCWriter {
 //	----------------------
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.2  1999/01/20 17:32:12  swtech20
+//	- Status und Doku aktualisiert
+//	- Fehler, dass Anderungen an Bvarlisten ... nicht nach aussen-
+//	  gegeben werden behoben.
+//
 //	Revision 1.1  1999/01/17 17:19:25  swtech20
 //	Implementierung der Export-Funktionen. Neue Funktion zum Erzeugen
 //	einer textuellen Darstellung eines TLabels mit Syntax Guard / Action.

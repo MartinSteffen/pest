@@ -10,7 +10,7 @@ import util.*;
  * Label-Parser fuer den Editor.
  * <p>
  * @author Michael Suelzer, Christoph Schuette.
- * @version  $Id: TESCLabelParser.java,v 1.3 1999-01-20 17:32:10 swtech20 Exp $
+ * @version  $Id: TESCLabelParser.java,v 1.4 1999-02-01 11:52:58 swtech20 Exp $
  */   
 class TESCLabelParser extends TESCParser {
 
@@ -49,10 +49,6 @@ class TESCLabelParser extends TESCParser {
 	debug ("parseLabel");
 
 	TLabel label = parseLabel ();
-
-	if (DEBUG) {
-	    (new util.PrettyPrint ()).start (label);
-	}
 
 	// Die geaenderten Listen nach aussen geben
 	statechart.bvars = bvarlist;
@@ -99,6 +95,11 @@ class TESCLabelParser extends TESCParser {
 //	------------
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.3  1999/01/20 17:32:10  swtech20
+//	- Status und Doku aktualisiert
+//	- Fehler, dass Anderungen an Bvarlisten ... nicht nach aussen-
+//	  gegeben werden behoben.
+//
 //	Revision 1.2  1999/01/18 17:08:52  swtech20
 //	- okDialog -> userMessage
 //	- Pruefung auf gui==null
