@@ -32,7 +32,7 @@ import editor.*;
  * <DL COMPACT>
  * <DT><STRONG>STATUS: </STRONG><br>
  * Unserer Syntax Check ist soweit fertig, <br>
- * allerdings sind noch nicht alle Fehler highlightbar und die Optionen hadern noch mit der GUI.
+ * aber die Optionen hadern noch mit der GUI.
  * <DT><STRONG>To Do: </STRONG><br>
  * Testen, Testen, Testen.
  * <DT><STRONG>Bekannte Fehler: </STRONG><br>
@@ -133,7 +133,7 @@ import editor.*;
  *</Table>
  * <br>
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: ModelCheck.java,v 1.34 1999-01-29 10:43:42 swtech11 Exp $
+ * @version  $Id: ModelCheck.java,v 1.35 1999-02-01 11:57:00 swtech11 Exp $
  * @see CheckConfig
  */
 public class ModelCheck {
