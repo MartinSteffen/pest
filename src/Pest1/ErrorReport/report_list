@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.38 1999-01-28 17:04:52 swtech18 Exp $
+//	$Id: report_list,v 1.39 1999-01-29 08:16:30 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -368,16 +368,22 @@ history connectors vergisst. Also: Hier fehlt eine Warnung!
 //------------------------------------------------------------------------------
 #Number:	26
 #Autor:		Erich Mikk erm
-#Subject:	Check achtet nicht auf Keywords
+#Subject:	STM-Import achtet nicht auf Keywords
 #Status: 	reported
 #Description: 
 
 Importiere SE-Systems/vcr.st 
-Syntaxcheck ist erfolgreich.  
+Mit dieser Chart gibt es Probleme, die man sieht, wenn man TESC benutzt.
+Zuerst Chart über TESC exportieren.
+Dann versuchen wieder über TESC zu Importieren.
+Das geht jetzt nicht, weil TESC Keywords in Guards nicht zulässt 
+(das wird auch richtig gemeldet).
 
-Das kann aber nicht sein, denn in den Guards kommen Keywords vor (zumindest
-meckert tesc1 darüber; das sieht man, wenn man die Chart Exportiert und
-wieder Importiert über die TESC-Schnittstelle, der Import geht nicht wegen Keywords).
+Def Fehler besteht darin, dass STM es zugelassen hat, eine "kranke" Chart zu importieren.
+
+Check muss auf Keywords nicht prüfen, weil wir es so vereinbart haben
+(stattdessen müssen es TESC und STM-Iport).
+
 
 (Dieser Fehler ist auch bei PEST2 gemeldet, Nr. 7)
 //------------------------------------------------------------------------------

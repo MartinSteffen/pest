@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	------------------
 //
-//	$Id: report_list,v 1.20 1999-01-28 15:53:44 swtech22 Exp $
+//	$Id: report_list,v 1.21 1999-01-29 08:19:20 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -116,16 +116,22 @@ der vorangegangene Export erfolgreich war.
 //------------------------------------------------------------------------------
 #Number:	7
 #Autor:		Erich Mikk erm
-#Subject:	Check achtet nicht auf Keywords
-#Status: 	processed
+#Subject:	STM-Import achtet nicht auf Keywords
+#Status: 	reported
 #Description: 
 
 Importiere SE-Systems/vcr.st 
-Syntaxcheck ist erfolgreich.  
+Mit dieser Chart gibt es Probleme, die man sieht, wenn man TESC benutzt.
+Zuerst Chart über TESC exportieren.
+Dann versuchen wieder über TESC zu importieren.
+Das geht jetzt nicht, weil TESC Keywords in Guards nicht zuläßt 
+(das wird auch richtig gemeldet).
 
-Das kann aber nicht sein, denn in den Guards kommen Keywords vor (zumindest
-meckert tesc1 darüber; das sieht man, wenn man die Chart Exportiert und
-wieder Importiert über die TESC-Schnittstelle, der Import geht nicht wegen Keywords).
+Der Fehler besteht darin, daß STM es zugelassen hat, eine "kranke" Chart zu importieren.
+
+Check muß auf Keywords nicht prüfen, weil wir es so vereinbart haben
+(stattdessen müssen es TESC und STM-Import).
+
 
 //------------------------------------------------------------------------------
 #Number:	8
