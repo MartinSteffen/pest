@@ -2,7 +2,7 @@ package Check;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: ErrorAndWarningCodes.java,v 1.9 1998-12-08 20:49:12 swtech11 Exp $
+ *  @version  $Id: ErrorAndWarningCodes.java,v 1.10 1998-12-10 11:40:11 swtech11 Exp $
  */
 class ErrorAndWarningCodes {
   ErrorAndWarningCodes() {
@@ -22,15 +22,14 @@ class ErrorAndWarningCodes {
       case  10: { _s = "Fataler Fehler: EIN Objekt des Types State wird mehrfach referenziert"; break;  }
       case  11: { _s = "Fataler Fehler: EIN Objekt des Types Transition wird mehrfach referenziert"; break;  }
 
-      case 100: {_s = "Doppelte Definition von BVar"; break; }
+      case 100: {_s = "Name von BVar nicht eindeutig."; break; }
       case 101: {_s = "Keine Deklaration von BVar"; break; }
       case 102: {_s = "Deklarierte BVar wurde nicht verwendet"; break; }
       
-      case 200: {_s = "Doppelte Definition von Event"; break; }
+      case 200: {_s = "Name von Event nicht eindeutig"; break; }
       case 201: {_s = "Keine Deklaration von Event"; break; }
       case 202: {_s = "Deklarierter Event wurde nicht verwendet"; break; }
       case 203: {_s = "Der Pathname in einem GuardComppath ist nicht vorhanden."; break; }
-      case 204: {_s = "Der Pathname in einem GuardComppath ist mehrfach vorhanden."; break; }
 
       case 300: {_s = "Mehrfache Definition von Statename"; break; }
       case 301: {_s = "Bezeichnung von Statename nicht eindeutig"; break;}

@@ -5,8 +5,12 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: testStates.java,v 1.6 1998-12-09 14:28:53 swtech11 Exp $
+ *  @version  $Id: testStates.java,v 1.7 1998-12-10 11:40:14 swtech11 Exp $
  */
+
+/** Diese Testklasse testet, ob alle Statenamen deklariert worden sind, 
+    <br>ob die Deklarierten eindeutig sind und ob sie alle verwendet werden.*/
+
 class testStates extends modelCheckBasics{
   private Vector Pfad1=new Vector();
   private Vector Pfad2=new Vector();
@@ -14,14 +18,22 @@ class testStates extends modelCheckBasics{
   testStates(Statechart _s, modelCheckMsg _m) {
     super(_s,_m);
   }
+
+ /** Die Methode check ueberprueft die Statechart auf Fehler bzgl. States.*/
+
   boolean check() {
+    int m=msg.getErrorNumber();
     erstelle_Pfad2();
     erstelle_Pfad1();
     vergleiche_Pfade();
     pruefeState(sc.state);
     msg.addWarning(3,"bei allen States");
-    return (msg.getErrorNumber()==0);;
+    return ((msg.getErrorNumber()-m)==0);;
   }
+
+   /** Die Methode erstellt einen Vector Pfad1 der verwendeten States, 
+   <br>dabei wird ueberprueft, ob alle Namen eindeutig sind und
+   <br> ob die States deklariert worden sind.*/
 
     void erstelle_Pfad1(){
     Pfad1=getPathListFromState(sc.state);
@@ -40,6 +52,9 @@ class testStates extends modelCheckBasics{
 	};
     }
 
+/** Die Methode erstellt einen Vector Pfad2 der deklarierten States, 
+	<br>dabei wird ueberprueft, ob alle Namen eindeutig sind.*/
+
     void erstelle_Pfad2(){
     String s;
     for(PathList p=sc.cnames; p!=null; p=p.tail){
@@ -53,12 +68,15 @@ class testStates extends modelCheckBasics{
         }; 
     };
 
+   /** Die Vectoren Pfad1 und Pfad2 werden verglichen. 
+<br>Wenn States aus dem Vector Pfad2 nicht verwendet werden, wird gewarnt.*/
+ 
     void vergleiche_Pfade(){
     Vector p2=(Vector)Pfad2.clone();
     for (int i=0; i<Pfad1.size(); i++){
       p2.removeElement(Pfad1.elementAt(i)); };
   
-    for(int i=0; i<p2.size(); i++) { msg.addWarning(302,"State: "+(String)p2.elementAt(i));};
+    for(int i=0; i<p2.size(); i++) { msg.addError(302,"State: "+(String)p2.elementAt(i));};
     };
  
     
