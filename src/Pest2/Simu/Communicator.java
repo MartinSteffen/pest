@@ -7,8 +7,21 @@ import absyn.*;
 import editor.*;
 import gui.*;
 import util.*;
+import tesc1.*;
+
+import java.lang.reflect.*;
 
 class Communicator extends Frame implements ActionListener, ItemListener{
+
+  int PEST=0;
+  /* Moeglichkeiten: PEST=1 fuer PEST1 */
+  /*                 PEST=2 fuer PEST2 */
+  /*                 PEST=0 fuer Autodetect*/
+  /* Autodetect prueft, ob bestimmte Funktionen vorhanden sind */
+  /* und setzt dann PEST korrekt.                              */
+  /* TESCLoader.getLabel(BufferedReader,Statechart)=>PEST2     */
+  /* TESCLoader.getLabel(TLabel,Statechart)=>PEST1             */
+
   Statechart chart=null;
   Editor editor=null;
   GUIInterface gui=null;
@@ -38,6 +51,11 @@ class Communicator extends Frame implements ActionListener, ItemListener{
   public Communicator(GUIInterface g,Statechart s){
     super("PEST: Simulation");
     gui=g;
+    
+    if (PEST==0){
+      PEST=autodetectPest();
+    }
+
     akt_status=new Status();
     prev_status=new Status();
     running=true;
@@ -59,6 +77,47 @@ class Communicator extends Frame implements ActionListener, ItemListener{
 
   public boolean isRunning(){
     return true;
+  }
+
+  /* Liefert 1 oder 2 zurueck, s.o. */
+  /* falls nicht eindeutig bestimmt werden kann, */
+  /* in welcher PEST Communicator laeuft, so ist der default=2 */
+  int autodetectPest(){
+    int result=2;
+    TESCLoader loader=new TESCLoader(gui);
+    Class loaderclass=loader.getClass();
+    Class[] parameters=new Class[2];
+    Method getlabel=null;
+    try{
+      parameters[0]=Class.forName("java.io.BufferedReader");
+      parameters[1]=Class.forName("absyn.Statechart");
+      getlabel=loaderclass.getMethod("getLabel",parameters);
+      result=2;
+      if (gui.isDebug()){
+	System.out.println("Communicator: PEST2 erkannt");
+      }
+    }
+    catch (Exception e){
+      try{
+	parameters[0]=Class.forName("absyn.TLabel");
+	parameters[1]=Class.forName("absyn.Statechart");
+	getlabel=loaderclass.getMethod("getLabel",parameters);
+	result=1;
+	if (gui.isDebug()){
+	  System.out.println("Communicator: PEST1 erkannt");
+	}
+      }
+      catch (Exception f){
+	if (gui.isDebug()){
+	  System.out.println("Communicator; PEST nicht eindeutig erkannt, default ist PEST"+result);
+	}
+      }
+    }
+    return result;
+  }
+
+  public int getPEST(){
+    return PEST;
   }
 
   public Vector solveNonDeterminism(Vector v){
@@ -181,6 +240,22 @@ class Communicator extends Frame implements ActionListener, ItemListener{
     StateTabelle states=akt_status.states;
     Enumeration actives=states.data.elements();
     State element=null;
+    if (PEST==1){
+      try{
+	Class highlightClass=Class.forName("editor.highlightObject");
+	Class[] parameters=new Class[1];
+	parameters[0]=Class.forName("java.lang.Boolean");
+	Constructor construct=highlightClass.getConstructor(parameters);
+	Object[] constructparameters=new Object[1];
+	constructparameters[0]=new Boolean(true);
+	highlight=(highlightObject)construct.newInstance(constructparameters);
+      }
+      catch (Exception e){
+	if (gui.isDebug()){
+	  System.out.println(e);
+	}
+      }
+    }
     while (actives.hasMoreElements()){
       element=(State)actives.nextElement();
       if (element!=null){
@@ -200,7 +275,22 @@ class Communicator extends Frame implements ActionListener, ItemListener{
 	}
       }
     }
+    if (PEST==1){
+      try{
+	Class highlightClass=Class.forName("editor.highlightObject");
+	Class[] parameters=null;
+	Constructor construct=highlightClass.getConstructor(parameters);
+	Object[] constructparameters=null;
+	highlight=(highlightObject)construct.newInstance(constructparameters);
+      }
+      catch (Exception e){
+	if (gui.isDebug()){
+	  System.out.println(e);
+	}
+      }
+    }
   }
+  
 
   void unhighlightPrevStates(){
     highlightObject highlight=null;

@@ -8,7 +8,11 @@ import tesc1.*;
 import java.io.*;
 import gui.*;
 
+import java.lang.reflect.*;
+
 class BreakpointDialog extends Dialog implements ActionListener{
+
+  int PEST=0;
 
   Button b1=null;
   Button b2=null;
@@ -17,6 +21,8 @@ class BreakpointDialog extends Dialog implements ActionListener{
   GUIInterface gui=null;
   Statechart chart=null;
   Vector result=null;
+
+
   
   BreakpointDialog(Frame parent, Statechart s, GUIInterface g, Vector res){
     super(parent,"Breakpoints",false);
@@ -26,6 +32,7 @@ class BreakpointDialog extends Dialog implements ActionListener{
 	setVisible(false);
       }
     });
+    PEST=((Communicator)parent).getPEST();
     result=res;
     gui=g;
     try{
@@ -66,14 +73,42 @@ class BreakpointDialog extends Dialog implements ActionListener{
   public void actionPerformed(ActionEvent e){
     String text=tf.getText();
     if ((text!="")&&(text!=null)){
-      StringReader txt=new StringReader(text);
-      BufferedReader buff=new BufferedReader(txt);
       TESCLoader loader=new TESCLoader(gui);
       TLabel label=null;
-      try{
-	label=loader.getLabel(buff,chart);
+      if (PEST==2){
+	StringReader txt=new StringReader(text);
+	BufferedReader buff=new BufferedReader(txt);
+	Method getLabel=null;
+	try{
+	  Class loaderClass=loader.getClass();
+	  Class[] parameters=new Class[2];
+	  parameters[0]=buff.getClass();
+	  parameters[1]=chart.getClass();
+	  getLabel=loaderClass.getMethod("getLabel",parameters);
+	  Object[] getLabelparameters=new Object[2];
+	  getLabelparameters[0]=buff;
+	  getLabelparameters[1]=chart;
+	  label=(TLabel)getLabel.invoke(loader,getLabelparameters);
+	}
+	catch (Exception f){
+	}
       }
-      catch (IOException f){
+      else{
+	TLabel paramlabel=new TLabel(null,null,null,null,text);
+	Method getLabel=null;
+	try{
+	  Class loaderClass=loader.getClass();
+	  Class[] parameters=new Class[2];
+	  parameters[0]=paramlabel.getClass();
+	  parameters[1]=chart.getClass();
+	  getLabel=loaderClass.getMethod("getLabel",parameters);
+	  Object[] getLabelparameters=new Object[2];
+	  getLabelparameters[0]=paramlabel;
+	  getLabelparameters[1]=chart;
+	  label=(TLabel)getLabel.invoke(loader,getLabelparameters);
+	}
+	catch (Exception g){
+	}
       }
       tf.setText("");
       if (label!=null){
@@ -93,3 +128,11 @@ class BreakpointDialog extends Dialog implements ActionListener{
   
   
  
+
+
+
+
+
+
+
+
