@@ -2,7 +2,7 @@ import absyn.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: t2_Example.java,v 1.13 1999-01-06 12:56:41 swtech11 Exp $
+ *  @version  $Id: t2_Example.java,v 1.14 1999-01-07 16:49:01 swtech11 Exp $
  */
 public class t2_Example {
   
@@ -274,8 +274,8 @@ public static Statechart getExample_m() {
     Path t1p = r2p.append("T1");
     Path t2p = r2p.append("T2");
 
-    Path sudk = new Path ("sud", null);
-    Path ttt =sudk.append("01").append("r6");
+    Path sudk = new Path ("SUD", null);
+    Path ttt =sudk.append("P1").append("T2");
 
     PathList pathlist =
     new PathList (sudp,
@@ -358,9 +358,9 @@ public static Statechart getExample_m() {
 					   new TrList (new Tr (new Statename ("P1"), 
 							       new Statename ("P3"), 
 							       new TLabel (new GuardEvent(new SEvent("A")),new ActionEmpty(new Dummy()))),
-						       new TrList (new Tr (new Statename ("P3"), 
+						       new TrList (new Tr (new Statename ("P1"), 
 									   new Statename ("P1"), 
-									   new TLabel (new GuardNeg(new GuardEvent(new SEvent("A"))),
+									   new TLabel (new GuardEvent(new SEvent("A")),
 										       new ActionEmpty(new Dummy()))),null))),
 			       new StatenameList (new Statename("P1"), null),
 			       null);  

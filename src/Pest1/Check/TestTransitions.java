@@ -6,7 +6,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestTransitions.java,v 1.7 1999-01-07 15:19:02 swtech11 Exp $
+ *  @version  $Id: TestTransitions.java,v 1.8 1999-01-07 16:48:50 swtech11 Exp $
  */
 class TestTransitions extends ModelCheckBasics {
   Vector newPLV = new Vector(); // Vector fuer die selbst angelegte PathList der States
@@ -25,7 +25,7 @@ class TestTransitions extends ModelCheckBasics {
     newCLV = getConnectorPathListFromState(sc.state);
     if (sc.state instanceof Or_State) {navOrState ((Or_State)sc.state, null,""); }  // null, da es keinen übergeordneten State gibt
     if (sc.state instanceof And_State) {navAndState ((And_State)sc.state, null,""); }
-        ND();
+    
 
     
     return ((msg.getErrorNumber()-m)==0);
@@ -185,6 +185,12 @@ class TestTransitions extends ModelCheckBasics {
     if (sl.tail != null) { gC_StateInStateList(sl.tail, p, clv); }
   }
 
+
+
+  
+
+
+
     /** Vergleicht die Liste der Guards mit sich selber und sucht nach doppelten Eintraegen.
 	<br> Dadurch moechte man den Nichtdeterminismus finden.*/
   void ND(){
@@ -194,10 +200,19 @@ class TestTransitions extends ModelCheckBasics {
      Guardlist.removeElement(g);
      for (int i=0; i<Guardlist.size(); i++){
        String text=vergleicheGuards(g,(GuardE)Guardlist.elementAt(i),"");
-       if (text!="") {msg.addWarning(416,text);};};
+       if (text!="") {
+           if ((g.t.source instanceof Conname) && (((GuardE)Guardlist.elementAt(i)).t.source instanceof Conname) &&
+                 (((Conname)g.t.source).name.equals(((Conname)((GuardE)Guardlist.elementAt(i)).t.source).name )))  
+                                    {msg.addWarning(416,text);};
+           if ((g.t.source instanceof Statename) && (((GuardE)Guardlist.elementAt(i)).t.source instanceof Statename) &&
+                 (((Statename)g.t.source).name.equals(((Statename)((GuardE)Guardlist.elementAt(i)).t.source).name )))  
+                                    {msg.addWarning(416,text);};
+
+};
 
    };
-  };
+   
+   };};
 
     /** Vergleiche zwei Guards mit sich.*/
     String vergleicheGuards(GuardE _g1, GuardE _g2, String text){
@@ -232,7 +247,9 @@ class TestTransitions extends ModelCheckBasics {
                    String s2=vergleicheGuards( new GuardE(((GuardCompg)g1).cguard.erhs, _g1.t),
                                                new GuardE(((GuardCompg)g2).cguard.erhs, _g2.t), "");
                    if ((s1!="") && (s2!="")) {text=text+"GuardCompg: "+((GuardCompg)g1).cguard.eop+" "+ s1+" " + s2;}
-                     else { if ((((GuardCompg)g1).cguard.eop == Compguard.OR) || (((GuardCompg)g1).cguard.eop == Compguard.AND)) {
+                     else { if ((((GuardCompg)g1).cguard.eop == Compguard.OR) ||
+                                (((GuardCompg)g1).cguard.eop == Compguard.EQUIV) ||
+                                (((GuardCompg)g1).cguard.eop == Compguard.AND)) {
                        s1=vergleicheGuards( new GuardE(((GuardCompg)g1).cguard.elhs, _g1.t),
                                             new GuardE(((GuardCompg)g2).cguard.erhs, _g2.t), "");
                        s2=vergleicheGuards( new GuardE(((GuardCompg)g1).cguard.erhs, _g1.t),
@@ -256,6 +273,7 @@ class TestTransitions extends ModelCheckBasics {
       navTransInTransList(os.trs, os, np);
       TransAnalyse();
     }
+    ND();
     if (os.substates != null) { navStateInStateList(os.substates, os, np); }
   }
 

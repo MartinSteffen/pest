@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestBVars.java,v 1.9 1999-01-07 15:19:00 swtech11 Exp $
+ *  @version  $Id: TestBVars.java,v 1.10 1999-01-07 16:48:49 swtech11 Exp $
  */
 
 /** Diese Testklasse testet, ob alle BVars deklariert worden sind, 
@@ -73,10 +73,12 @@ class TestBVars extends ModelCheckBasics{
         else {
         if (g instanceof GuardNeg)   {pruefeGuard (((GuardNeg)g).guard, t, p);}
           else {
-          if ((g instanceof GuardEmpty) || (g instanceof GuardUndet) || (g instanceof GuardEvent) ||
+          if ((g instanceof GuardEmpty) || (g instanceof GuardEvent) ||
              (g instanceof GuardCompp)) {}
-            else {msg.addError(417, t, p); };
-    };};};};
+	  else {
+	      if (g instanceof GuardUndet) {msg.addError(424, t, p);}
+               else {msg.addError(417, t, p); };
+	  };};};};};
 
 
 

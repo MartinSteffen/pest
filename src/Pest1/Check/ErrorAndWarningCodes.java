@@ -2,7 +2,7 @@ package check;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: ErrorAndWarningCodes.java,v 1.19 1999-01-06 15:58:39 swtech11 Exp $
+ *  @version  $Id: ErrorAndWarningCodes.java,v 1.20 1999-01-07 16:48:48 swtech11 Exp $
  */
 class ErrorAndWarningCodes {
   ErrorAndWarningCodes() {
@@ -85,7 +85,7 @@ class ErrorAndWarningCodes {
       case 421: {_s = "Dieser Connector ist Teil eines Zyklus."; break;}
       case 422: {_s = "Die Transition ist an ihrem Startpunkt nicht durch andere Transitionen mit einem Startstate verbunden."; break;}
       case 423: {_s = "Die Transition ist an ihrem Zielpunkt nicht durch andere Transitionen mit einem Zielstate verbunden."; break;}
-
+    case 424: {_s = "Der Guard hat den Typ GuardUndet."; break;}
 
       default:  _s = "Dieser Code wurde noch nicht erfasst.";
     }
