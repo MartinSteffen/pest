@@ -12,11 +12,13 @@
 package Check;
 
 import Absyn.*;         // abstrakte Syntax
+import GUI.*;           // GUI Interface
 
 public class modelCheck {
 
 private SyntaxWarning warnings;
 private SyntaxError   errors;
+private GUIInterface  gui;
 
 // ****************************************************************************
 // Konstruktoren
@@ -39,23 +41,11 @@ private SyntaxError   errors;
 	}
 
   // Konstruktor
-	public modelCheck(Statechart statechart) {
-		// denkbar ist eine Überladung des Konstruktors mit Schaltern vom Typ
-		// "boolean" - beipielsweise: Test auf Kreisfreiheit oder Unterdrückung
-		// der Warnungen oder ((Optimierung))
-
-		// Properties (Schalter) werden über die JAVA konforme Methode des Aufrufs
-		//   public boolean getXXX() {}		für den lesenden Zugriff und
-		//   public void    setXXX() {}     für den schreibenden Zugriff
-		// zur Verfügung gestellt.
-
-    // initialisieren
-    warnings = new SyntaxWarning();
-    errors   = new SyntaxError();
-
-    // Ueberpruefung starten
-    checkModel(statechart);
-	}
+  public modelCheck(GUIInterface gui) {
+     warnings = new SyntaxWarning();
+     errors   = new SyntaxError();
+     this.gui = gui;
+  }
 
 // ****************************************************************************
 // private Methoden
