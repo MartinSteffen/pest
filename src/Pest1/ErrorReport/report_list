@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.59 1999-02-04 17:56:38 swtech15 Exp $
+//	$Id: report_list,v 1.60 1999-02-05 09:03:57 swtech01 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -325,9 +325,10 @@ Sein soll: ein String der Länge null.
 #Status:	processing
 #Description:
 
-Man importiert mit TESC examples ein. Dann einen SyntaxCheck, der keine Fehler anzeigt. Anschliessend oeffnet man den Editor und fuehrt erneut den Check durch, jetzt hat man viele Interlevel Transitionen, die als Fehler angezeigt werden.
-
-
+Man importiert mit TESC examples ein. Dann einen SyntaxCheck, der
+keine Fehler anzeigt. Anschliessend oeffnet man den Editor und fuehrt
+erneut den Check durch, jetzt hat man viele Interlevel Transitionen,
+die als Fehler angezeigt werden.
 //------------------------------------------------------------------------------
 
 #Number:	24
@@ -397,7 +398,8 @@ Dann versuchen wieder über TESC zu importieren.
 Das geht jetzt nicht, weil TESC Keywords in Guards nicht zuläßt 
 (das wird auch richtig gemeldet).
 
-Der Fehler besteht darin, daß STM es zugelassen hat, eine "kranke" Chart zu importieren.
+Der Fehler besteht darin, daß STM es zugelassen hat, eine "kranke" Chart zu
+importieren. 
 
 Check muß auf Keywords nicht prüfen, weil wir es so vereinbart haben
 (stattdessen müssen es TESC und STM-Import).
@@ -410,7 +412,10 @@ Check muß auf Keywords nicht prüfen, weil wir es so vereinbart haben
 #Status: 	reported
 #Description: 
 
-Wenn man Transitionen oder States labeln will, wird das Labelfenster mit einer defaultmaessig viel zu kleinen Eingabezeile geoeffnet. Vergroessern des Fensters vergroessert auch den Eingabebereich.
+Wenn man Transitionen oder States labeln will, wird das Labelfenster
+mit einer defaultmaessig viel zu kleinen Eingabezeile
+geoeffnet. Vergroessern des Fensters vergroessert auch den
+Eingabebereich. 
 //------------------------------------------------------------------------------
 #Number:	28
 #Autor:		Heiko Haller, Stefan Lemke, swtech21
@@ -420,8 +425,10 @@ Wenn man Transitionen oder States labeln will, wird das Labelfenster mit einer d
 
 TESC importiert.
 Editor geoeffnet.
-SyntaxCheck ueber grafisches Menue gestartet und das Checkfenster wieder geschlossen.
-Danach ist der SyntaxCheck nicht mehr ueber das grafische Menue aktivierbar, ueber das normale Menue jedoch schon.
+SyntaxCheck ueber grafisches Menue gestartet und das Checkfenster wieder
+geschlossen. 
+Danach ist der SyntaxCheck nicht mehr ueber das grafische Menue aktivierbar,
+ueber das normale Menue jedoch schon.  
 
 //------------------------------------------------------------------------------
 #Number:	29
@@ -446,7 +453,8 @@ end Safer;
 
 obiges TESC-File importiert.
 Editor geoeffnet.
-Transition von Init nach P1 geloescht. Bei UNDO wird gesamtes Statechart nicht mehr angezeigt.
+Transition von Init nach P1 geloescht. Bei UNDO wird gesamtes Statechart nicht
+mehr angezeigt. 
 //------------------------------------------------------------------------------
 #Number:	30
 #Autor:		Erich Mikk erm
@@ -600,8 +608,8 @@ Von reported auf confirmed gesetzt, da der Fehler nicht reproduzierbar ist.
 #Subject:       Nach dem Aendern von Labeln von Defaultstates sind dieses nicht mehr Default!
 #Status:        fixed
 #Description:
-Um Fehler beim Anwender zu vermeiden werden bei Namensaenderungen alle Default-States einer
-Ebene geloescht
+Um Fehler beim Anwender zu vermeiden werden bei Namensaenderungen alle
+Default-States einer Ebene geloescht.
 //------------------------------------------------------------------------------
 #Number:        40
 #Autor:         stm swtech18
@@ -722,7 +730,7 @@ usw., also keine erkennbaren Zustandsaenderungen.
 #Number:        49
 #Autor:         Bernd Weber bwe
 #Subject:       Editor: Transitions-Labels werden verschoben
-#Status:        fixed
+#Status:        confirmed
 #Description:
 
 Erstelle zwei Zustaende mit beschrifteter Trasition. Erzeuge einen
@@ -751,6 +759,27 @@ Der Anfangszustand wird nicht verlassen.
 Man erzeuge einen Basic State und benenne diesen. Macht man ihn nun
 durch PARALLEL zu einem AND State, erhaelt er einen neuen Namen. Fatal
 deswegen, weil Codegen die Default-Namen nicht vertraegt.
+//------------------------------------------------------------------------------
+#Number:        53
+#Autor:         Bernd Weber bwe
+#Subject:       Editor: erzeugt Interlevel-Transitionen in AND-Sates
+#Status:        reported
+#Description:
+
+Man erzeuge einen AND-State und in einer der Komponenten zwei Basic-Zustaende
+und eine Transition zwischen beiden. Die Transition erhaelt als Source und
+Target den AND-State. Natürlich meldet Check dann eine Interlevel-Transition.
+//------------------------------------------------------------------------------
+#Number:        54
+#Autor:         Bernd Weber bwe
+#Subject:       Editor: entstellt Grafik beim Erzeugen von Or-States
+#Status:        reported
+#Description:
+
+Erstelle zwei Zustaende mit UNbeschrifteter Trasition. Erzeuge einen
+parent state aussenrum. Dabei wird die Anzeige total entstellt (Or-State
+geloescht, Zustaende und Transition verschoben).
+//------------------------------------------------------------------------------
 
 
 
