@@ -85,7 +85,7 @@ import java.util.*;
  * </DL COMPACT>
 
  * @author Arne Koch/Mike Rumpf.
- * @version  $Id: TESCLoader.java,v 1.12 1999-01-11 11:52:18 swtech13 Exp $ 
+ * @version  $Id: TESCLoader.java,v 1.13 1999-01-11 20:24:29 swtech13 Exp $ 
  */ 
 public class TESCLoader {
 
@@ -148,8 +148,10 @@ public class TESCLoader {
 	    gi.OkDialog("Fehler", "Guard ist fehlerhaft.");
 	    return null;
         }
-	else 
+	else {
+	    if (guard == null) guard = new GuardEmpty(new Dummy());
 	    return guard;
+	}
     }
 
     /** 
@@ -167,14 +169,19 @@ public class TESCLoader {
 	    gi.OkDialog("Fehler", "Action ist fehlerhaft.");
 	    return null;
         }
-	else 
+	else {
+	    if (action == null) action = new ActionEmpty(new Dummy());
 	    return action;
+	}
     }
 
 }
 
 /* 
  * $Log: not supported by cvs2svn $
+ * Revision 1.12  1999/01/11 11:52:18  swtech13
+ * Links korrigiert
+ *
  * Revision 1.11  1999/01/09 15:51:14  swtech13
  * Schnittstelle erweitert, um methoden zum Parsen von Guards/Actions
  * Angabe von Optionen
