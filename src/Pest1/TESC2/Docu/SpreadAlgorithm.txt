@@ -1,0 +1,64 @@
+
+Graphplazierungsalgorithmus Spread von swtech14 : 
+=================================================
+
+Schritt 0 :  Erstelle eine Liste "L" fuer das Statechart-Objekt.
+
+             Jedes Listenelement enthaelt folgende Informationen :
+             a.) surrounding_state "x", auf den sich das Listenelement
+                 bezieht
+                 ( Fuer alle AND-, OR-States aus gegebenem Statechart )
+             b.) Boolescher Markierungswert "marked"
+                 ( zu Anfang "false" )
+                 Gibt waehrend des Algorithmus-Durchlaufes an, ob "x"
+                 schon gezeichnet wurde.
+             c.) "depth" als Schachtelungstiefe von "x"
+             d.) Liste der Substates von "x"
+
+             Die Liste "L" ist nach abnehmender Schachtelungstiefe der
+             AND-/OR-States angeordnet, d.h. das letzte Listenelement
+             enthaelt den Root-State mit Schachtelungstiefe 0.
+
+Schritt 1a : Waehle erstes unmarkiertes Listenelement in "L".
+
+Schritt 1b : Markiere dieses Listenelement aus "L", dessen Substate-Liste
+             nur Basic-States enthaelt.
+             Zeichne Substates, die Koordinaten sind aus der Schachtelungs-
+             tiefe "t(u)" des umfassenden States "u" berechenbar.
+             Zeichne "u" ( Koordinaten ebenfalls aus "t(u)" ableitbar )
+
+Schritt 2  : Betrachte Schachtelungstiefe "t(u)" von State "u" :
+
+             Fall 1 : 
+             "t(u)" = 0 : Dann fertig ( "u" ist Root-State ).
+
+             Fall 2 :
+             "t(u)" > 0 : Suche Element "l" aus "L" mit Schachtelungstiefe
+                          "t(u)"-1, dessen Substate-Liste "u" enthaelt
+                          ( dieses Element ist eindeutig bestimmt! ).
+                          Sei "v" der umfassende State in "l" :
+
+                          Fall 2a :
+                          AND-, OR-Substates von "v" sind als umfassende
+                          States in "L" ( noch ) nicht alle markiert :
+                          Dann weiter mit Schritt 3.
+
+                          Fall 2b :
+                          AND-, OR-Substates von "v" sind als umfassende
+                          States in "L" alle markiert :
+                          Dann weiter mit Schritt 4.
+
+Schritt 3  : Waehle ersten AND-/OR-State "y" aus der Liste der Substates
+             von "v", der als umfassender State in "L" nicht markiert ist.
+             Suche erstes unmarkiertes Listenelement in "L", dessen um-
+             fassender State ein ( evtl. tieferer ) Substate von "y" ist
+             und dessen Substates nur Basic-States sind ( durch Rekursion
+             aus "L" bestimmbar ).
+             Gehe zu Schritt 1b.
+
+Schritt 4  : Zeichne die noch evtl. in der Substate-Liste von "v" vorhandenen
+             Basic-States.
+             Zeichne "v".
+             Markiere Listenelement "l".
+             Gehe zu Schritt 2 mit "u" = "v".
+                          
