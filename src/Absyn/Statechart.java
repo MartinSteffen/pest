@@ -15,4 +15,6 @@ public class Statechart extends Absyn {
 	cnames = pl;
 	state  = st;
     }
+    public Statechart(String filename) {
+    }
 };
