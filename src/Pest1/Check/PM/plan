@@ -2,7 +2,7 @@
 10.12.98 Implementierung der Basis-Checks:
          Test auf BVars ist vollstaendig
          Test auf Events ist vollstaendig
-         Test auf States ist vorhanden, wird aber noch erweitert
+         Test auf States ist vollstaendig
          Test auf Tranisitionen ist vorhanden, wird aber noch erweitert
          Test auf Kreisfreiheit, ueberprueft noch nicht alle moegliche Kreise
         
@@ -10,6 +10,6 @@
 
 21.12.98 Einbindung in die GUI
          Test auf Kreisfreiheit
-         Test auf Keywoerter
+         
 
 04.01.99 fertiger Checker zum Testen
