@@ -109,10 +109,9 @@ implements GUIInterface
 	controlWindow = new ControlWindow(this);
 	exlis = new GUIexitLis(this);
 	setBackground(Color.lightGray);
-	setSize(500,400);  
-	setLocation(200,100);
+	setSize(630,400); 
+	setLocation(50,50);
 	setFont(new Font("Serif",Font.PLAIN,18));
-	//controlWindow = new ControlWindow(this);
 	theGUIMenu = new GUIMenu(this);
 	setMenuBar(theGUIMenu);	
 	GUIWindowListener lis = new GUIWindowListener();
@@ -132,10 +131,8 @@ implements GUIInterface
 	color[9] = Color.white;
 	color[10] = Color.lightGray;
 	
-	//	controlWindow = new ControlWindow(this);
 	cwlis = new GUIControlWindowML(this);
 	controlWindow.addMouseListener(cwlis);
-	//add("Center",new Frame("Hallo"));
 	add("Center",controlWindow);
 
 	MsgWindow = new TextArea(4,80);
@@ -173,9 +170,19 @@ implements GUIInterface
     void rememberConfig()
     {
 	pestConfig theConfig = new pestConfig();
-	theConfig.GUIDim = getSize();
-	theConfig.GUILoc = getLocation();
-	theConfig.GUILoc.y = theConfig.GUILoc.y + getInsets().top;
+	theConfig.GUIDim = getSize();	
+ 	theConfig.GUILoc = getLocation();
+	// 	theConfig.GUILoc.x = theConfig.GUILoc.x + (int)(0.2 * getInsets().left);
+// 	theConfig.GUILoc.y = theConfig.GUILoc.y + getInsets().top - (int)(4.8 * getInsets().bottom);
+	//	theConfig.bounds = getBounds();
+
+	theConfig.Dateiname = SBDateiname;
+	theConfig.Pfad = SBPfad;
+        theConfig.CheckedSC = CheckedSC;
+        theConfig.ResultSC = ResultSC;
+        theConfig.isDirty = isDirty;
+	theConfig.ctrlWin = ctrlWin;
+	theConfig.debug = debugMode;
 
 
 	//	theConfig.checkConfig = checkConfig;
@@ -238,6 +245,28 @@ implements GUIInterface
 	    stmYSize = theConfig.stmYSize;
 	    stmKoord = theConfig.stmKoord;
 
+	    SBDateiname = theConfig.Dateiname;
+	    SBPfad = theConfig.Pfad;
+
+	    debugMode = theConfig.debug;
+	    theGUIMenu.cbItem2.setState(debugMode);
+
+	    ctrlWin = theConfig.ctrlWin;
+	    theGUIMenu.cbItem1.setState(ctrlWin);
+	    if (ctrlWin)
+		{
+		    MsgWindow.setRows(4);
+		    add("South",MsgWindow);
+		    add("Center",controlWindow);		    
+		}
+	    else
+		{
+		    MsgWindow.setRows(50);
+		    remove(controlWindow);
+		    add("Center",MsgWindow);
+		}
+
+
 // 	    if (theConfig.checkConfig == null)
 // 		{
 // 		    checkConfig = new check.CheckConfig();
@@ -247,19 +276,18 @@ implements GUIInterface
 // 		    checkConfig = theConfig.checkConfig;
 // 		}
 
-	    SBDateiname = theConfig.Dateiname;
-	    SBPfad = theConfig.Pfad;
-	    
-	    setSize(theConfig.GUIDim);
-	    setLocation(theConfig.GUILoc);
- 	    if(theConfig.Dateiname !=null)		
+ 	    setSize(theConfig.GUIDim);
+  	    setLocation(theConfig.GUILoc);
+// 	    //	    setBounds(theConfig.bounds);
+
+	    File file = new File(SBPfad,SBDateiname);
+ 	    if(file.exists())		
  		{
  		    load_named_sc(theConfig.Pfad,theConfig.Dateiname);
 
 		    CheckedSC = theConfig.CheckedSC;
 		    ResultSC = theConfig.ResultSC;
 		    isDirty = theConfig.isDirty;
-		    ctrlWin = theConfig.ctrlWin;
 		    
 		    controlWindow.highLight[4] = !CheckedSC;
 		    controlWindow.highLight[6] = ResultSC;
@@ -396,6 +424,8 @@ implements GUIInterface
 
     void setStatechart(Statechart sc,String pfad,String datei)
     {
+	System.out.println(String.valueOf(getAlignmentX()));
+	System.out.println(String.valueOf(getAlignmentY()));
 	SyntaxBaum = sc;
 	SBDateiname = datei;
 	SBPfad = pfad;
@@ -523,12 +553,6 @@ implements GUIInterface
 	return color[conColorIndex];
     }
     
-
-//     public check.CheckConfig getCheckConfig()
-//     {
-// 	return checkConfig;
-//     }
-
     
     BufferedReader load(String titel)
     {

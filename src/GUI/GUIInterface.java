@@ -154,13 +154,6 @@ public interface GUIInterface{
 
     public void editorClosing();
 
-    /** getCheckConfig
-     * Gibt das check.CheckConfig-Objekt mit den aktuellen Optionseinstellungen zurueck.
-     */
-
-    //    public check.CheckConfig getCheckConfig();
-
-
     /** isDebug
      * Gibt den Debugging Status zurueck.
      */

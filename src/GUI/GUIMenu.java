@@ -20,6 +20,8 @@ GUIhilfeML   mlh;
 GUIimportML  mli; 
 GUIexportML  mlex;
 
+CheckboxMenuItem cbItem1;
+CheckboxMenuItem cbItem2;
 
 public GUIMenu(pest myWindow)
   {
@@ -67,12 +69,12 @@ public GUIMenu(pest myWindow)
   addMenuItem(m,"SyntaxCheck",mle);
   addMenuItem(m,"Statemate",mle);
   m.addSeparator();
-  CheckboxMenuItem cbItem = new CheckboxMenuItem("Graphische Benutzerfuehrung",true);
-  cbItem.addItemListener(mle);
-  m.add(cbItem);
-  cbItem = new CheckboxMenuItem("Debugging",myWindow.debugMode);
-  cbItem.addItemListener(mle);
-  m.add(cbItem);
+  cbItem1 = new CheckboxMenuItem("Graphische Benutzerfuehrung",true);
+  cbItem1.addItemListener(mle);
+  m.add(cbItem1);
+  cbItem2 = new CheckboxMenuItem("Debugging",myWindow.debugMode);
+  cbItem2.addItemListener(mle);
+  m.add(cbItem2);
   //m.add(new MenuItem("Benutzerfuehrung"));
   //addMenuItem(m,"Statemate",mle);
   add(m);

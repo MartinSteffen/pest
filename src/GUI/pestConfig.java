@@ -9,6 +9,7 @@ class pestConfig
     
     Dimension GUIDim, EditorDim;
     Point GUILoc, EditorLoc;
+    Rectangle bounds;
     boolean isEditor;
     String Dateiname;
     String Pfad;
@@ -19,6 +20,7 @@ class pestConfig
     boolean ResultSC;
     boolean isDirty;
     boolean ctrlWin;
+    boolean debug;
 
     int stmXSize;
     int stmYSize;
