@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.77 1999-02-08 12:19:18 swtech25 Exp $
+//	$Id: report_list,v 1.78 1999-02-08 14:12:48 swtech18 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -361,7 +361,7 @@ Was geht hier schief:
 #Number:	25
 #Autor:		Erich Mikk
 #Subject:	STM-Import ignoriert history connectors
-#Status:	processing
+#Status:	fixed
 #Description:
 
 In manchen Files des SAFER-Projekts verwendet man history connectors
@@ -612,7 +612,7 @@ Von reported auf confirmed gesetzt, da der Fehler nicht reproduzierbar ist.
 #Number:        39
 #Autor:         stm swtech18
 #Subject:       Nach dem Aendern von Labeln von Defaultstates sind dieses nicht mehr Default!
-#Status:        fixed
+#Status:        withdrawn
 #Description:
 Um Fehler beim Anwender zu vermeiden werden bei Namensaenderungen alle
 Default-States einer Ebene geloescht.
