@@ -16,15 +16,15 @@
 <PRE>Statechart      ::      events          : Events        /* all events */
                         bvars           : Bvars         /* all bvars */
                         names           : Paths         /* min. path suffixes */
-                        state           : State         /* Rootstate */
+                        state           :<b> Or_State </b>     /* Rootstate */
 
-SubSyn          =       State 
+<b>SubSyn</b>          =       State 
                         | Tr 
                         | Connector
-                        parent          : State
+                        <b>parent          : State</b>
 
 Statenames      =       Str -set
-Statename       =       Str
+Statename       =       <b>Str</b>
 
 Paths           =       Pathname -set
 Path            =       Str *
@@ -53,7 +53,7 @@ Connectors      =       Connector -set
 
 Connector       =       name            : Conname
 
-Conname         =       Str
+Conname         =       <b>Str</b>
 
 Trs             =       Tr -set
 
@@ -64,9 +64,9 @@ Tr              ::      source          : TrAnchor
 Label           ::      guard        : Guard
                         action       : Action
 
-TrAnchor        =       State 
+TrAnchor        =       <b>State 
                         | Connector 
-                        | UNDEFINED
+                        | UNDEFINED</b>
 
 Guard           =       emptyexpr     : Dummy
                         | event       : Event
