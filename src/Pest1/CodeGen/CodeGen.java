@@ -28,7 +28,7 @@ import absyn.*;
  *     directory without trailing "/".
  *
  * @author Marcel Kyas, Walter Loeser, Andre Paetzold.
- * @version $Id: CodeGen.java,v 1.7 1998-12-21 14:43:33 swtech25 Exp $
+ * @version $Id: CodeGen.java,v 1.8 1999-01-04 14:19:54 swtech25 Exp $
  */
 public class CodeGen
 {
@@ -78,7 +78,8 @@ public class CodeGen
 	public void Generate(String path, Statechart statechart)
 		throws CodeGenException
 	{
-
+		dumpHA h = new dumpHA(statechart, path);
+		h.dump();
 	}
 
         /**
