@@ -43,7 +43,7 @@ or All_axes_off:
 		#Berechnung von IC_pitch
 		from tmp2 to tmp3 on [in(Global.grip_cmd_pitch.0)] do SET_IC_pitch_0;
 		from tmp2 to tmp3 on [in(Global.grip_cmd_pitch.NEG)] do SET_IC_pitch_NEG;
-		from tmp2 to tmp3 on [in(Global.grip_cmd_pitcg.POS)] do SET_IC_pitch_POS;
+		from tmp2 to tmp3 on [in(Global.grip_cmd_pitch.POS)] do SET_IC_pitch_POS;
 		#Berechnung von IC_yaw
 		from tmp3 to IC_set on [in(Global.grip_cmd_yaw.0)] do SET_IC_yaw_0;
 		from tmp3 to IC_set on [in(Global.grip_cmd_yaw.NEG)] do SET_IC_yaw_NEG;

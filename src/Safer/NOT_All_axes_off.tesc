@@ -22,7 +22,7 @@ events: NAaoReday,
 
 or NOT_All_axes_off:
 	basic Start;
-	ref CombineROT in combineROT.tesc type tesc;
+	ref CombineROT in CombineROT.tesc type tesc;
 	basic tmp1;
 	basic tmp2;
 	basic tmp3;
@@ -64,13 +64,13 @@ or NOT_All_axes_off:
 
 		# Berechnung von IC_y
 		from NO_ROT to tmp5 on [in(Global.grip_cmd_x.0) && !in(Global.grip_cmd_y.0)] do SET_IC_x_0, SET_IC_z_0;
-		# ÅberflÅssig: from tmp5 to IC_set on [in(Global.grip_cmd_y.0)] do SET_IC_y_0;
+		# ¸berfl¸ssig: from tmp5 to IC_set on [in(Global.grip_cmd_y.0)] do SET_IC_y_0;
 		from tmp5 to IC_set on [in(Global.grip_cmd_y.POS)] do SET_IC_y_POS;
 		from tmp5 to IC_set on [in(Global.grip_cmd_y.NEG)] do SET_IC_y_NEG;
 
 		# Berechnung von IC_x
 		from NO_ROT to tmp6 on [!in(Global.grip_cmd_x.0)] do SET_IC_y_0, SET_IC_z_0;
-		# ÅberflÅssig: from tmp6 to IC_set on [in(Global.grip_cmd_x.0)] do SET_IC_x_0;
+		# ¸berfl¸ssig: from tmp6 to IC_set on [in(Global.grip_cmd_x.0)] do SET_IC_x_0;
 		from tmp6 to IC_set on [in(Global.grip_cmd_x.POS)] do SET_IC_x_POS;
 		from tmp6 to IC_set on [in(Global.grip_cmd_x.NEG)] do SET_IC_x_NEG;
 
