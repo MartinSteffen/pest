@@ -59,6 +59,7 @@ class TESCParser {
 
     SEventList evlist;
     BvarList   bvlist;
+    StringBuffer tl_caption;
 
     // protected-Methoden für das Package
 	
@@ -132,8 +133,19 @@ class TESCParser {
 	ts = new TESCScanner(br);
 
 	tok = ts.nextToken();
-	
-	act = actionstmt(null);
+	tl_caption = new StringBuffer("/");
+
+	act = new ActionBlock(actionlist(null));
+
+	// Falls jetzt noch etwas != ; kommt, ist das falsch
+	if (tok.token == vTOKEN.SCOLON) {
+	    match(vTOKEN.SCOLON);
+	    // Falls jetzt noch etwas kommt, ist das falsch
+	    if (tok.token != vTOKEN.EOF) addError(makeError(tok,"Unerwartetes Token"));
+	}
+	else {
+	    addError(makeError(tok,"Unerwartetes Token"));
+	}
 
 	if (errorCount>0) {
            outputErrors();
@@ -142,20 +154,96 @@ class TESCParser {
 	return act;
     }
 
-    public Guard readGuard(BufferedReader br) throws IOException {
+    protected Action readAction(BufferedReader br, SEventList el, BvarList bl) throws IOException {
+	Action act = null;
+
+	evlist = el;
+	bvlist = bl;
+
+	ts = new TESCScanner(br);
+	tok = ts.nextToken();
+	tl_caption = new StringBuffer("/");
+
+	act = new ActionBlock(actionlist(null));
+
+	// Falls jetzt noch etwas != ; kommt, ist das falsch
+	if (tok.token == vTOKEN.SCOLON) {
+	    match(vTOKEN.SCOLON);
+	    // Falls jetzt noch etwas kommt, ist das falsch
+	    if (tok.token != vTOKEN.EOF) addError(makeError(tok,"Unerwartetes Token"));
+	}
+	else {
+	    addError(makeError(tok,"Unerwartetes Token"));
+	}
+
+	
+	if (errorCount>0) {
+           outputErrors();
+	}
+
+	return act;
+    }
+
+    // ohne Anlegen neuer Listen
+    protected Guard readGuard(BufferedReader br) throws IOException {
 	Guard grd = null;
+
+	debug("readGuard(BufferedReader br)");
 
 	ts = new TESCScanner(br);
 
 	tok = ts.nextToken();
 
+	tl_caption = new StringBuffer();
 	grd = guard(null);
+
+	// Falls jetzt noch etwas kommt, ist das falsch
+	if (tok.token != vTOKEN.EOF) addError(makeError(tok,"Unerwartetes Token"));
 
 	if (errorCount>0) {
            outputErrors();
 	}
 
 	return grd;
+    }
+
+    // legt neue Listen an
+    protected Guard readGuard(BufferedReader br, SEventList el, BvarList bl) throws IOException {
+	Guard grd = null;
+
+	debug("readGuard(BufferedReader br, SEventList el, BvarList bl)");
+
+	evlist = el;
+	bvlist = bl;
+
+	ts = new TESCScanner(br);
+
+	tok = ts.nextToken();
+
+	tl_caption = new StringBuffer();
+	grd = guard(null);
+
+
+	// Falls jetzt noch etwas kommt, ist das falsch
+	if (tok.token != vTOKEN.EOF) addError(makeError(tok,"Unerwartetes Token"));
+
+	if (errorCount>0) {
+           outputErrors();
+	}
+	
+	return grd;
+    }
+
+    protected String getTL_CaptionList() {
+	return tl_caption.toString();
+    }
+
+    protected SEventList getSEventList() {
+	return evlist;
+    }
+
+    protected BvarList getBvarList() {
+	return bvlist;
     }
 
     // private Methoden
@@ -642,15 +730,18 @@ class TESCParser {
 	Aseq as = null;
 	Action a;
 	
-	//Location loc = new Location(tok.linenum);
+	Location loc = new Location(tok.linenum);
 	a = aktion(p);
 	if (tok.token == vTOKEN.COMMA) {
+	    tl_caption.append(tok.value_str);
 	    match(vTOKEN.COMMA);
 	    //as = (Aseq)setLoc(new Aseq(a, actionlist(p)), loc);
 	    as = new Aseq(a, actionlist(p));
 	    
 	}
 	else if (tok.token == vTOKEN.SCOLON) {
+	    // ??? !!!
+	    if (a == null) a = new ActionEmpty((Dummy)setLoc(new Dummy(), loc), loc);
 	    as =  new Aseq( a, null);
 	    //as.location = loc;
 	}
@@ -667,6 +758,7 @@ class TESCParser {
 
 	    // Das ist unschoen, aber wir haben kein lookahead
 	    String s = new String(tok.value_str);
+	    tl_caption.append(tok.value_str);
 	    match(vTOKEN.IDENT);
 
 	    if (tok.token == vTOKEN.BASSIGN) {
@@ -694,6 +786,7 @@ class TESCParser {
 	else if (tok.token == vTOKEN.EMPTYEXP) {
 	    a = new ActionEmpty((Dummy)setLoc(new Dummy(), loc));
 	    a.location = loc;
+	    tl_caption.append(tok.value_str);
 	    match(vTOKEN.EMPTYEXP);
 	}
 	
@@ -723,6 +816,7 @@ class TESCParser {
 	    }
 
 	    //match(vTOKEN.IDENT);
+	    tl_caption.append(tok.value_str);
 	    match(vTOKEN.BASSIGN);
 	    
 	    // boolop
@@ -730,12 +824,14 @@ class TESCParser {
 		loc = new Location(tok.linenum);
 		a = new ActionStmt((MTrue)setLoc(new MTrue(bv), loc));
 		a.location = loc;
+		tl_caption.append(tok.value_str);
 		match(vTOKEN.TRUE);
 	    }
 	    else if (tok.token == vTOKEN.FALSE) {
 		loc = new Location(tok.linenum);
 		a = new ActionStmt((MFalse)setLoc(new MFalse(bv), loc));
 		a.location = loc;
+		tl_caption.append(tok.value_str);
 		match(vTOKEN.FALSE);
 	    }
 	    else {
@@ -757,10 +853,14 @@ class TESCParser {
 	Guard grd   = null;
 	Location loc = new Location(tok.linenum);
 
+	debug("guard()");
+
 	grd_e = guard_e(p);
 	if (tok.token == vTOKEN.LPAR_E) {
+	    tl_caption.append(tok.value_str);
 	    match(vTOKEN.LPAR_E);
 	    grd_b = guard_b(p);
+	    tl_caption.append(tok.value_str);
 	    match(vTOKEN.RPAR_E);
 	}
 	
@@ -789,6 +889,8 @@ class TESCParser {
 	int t = 0;
 	Location loc = new Location(tok.linenum);
 
+	debug("guard_e()");
+	
 	grd1 = ocompg_e(p);
 	grd = grd1;	
 
@@ -796,9 +898,11 @@ class TESCParser {
 	    t = tok.token;
 	    switch(t) {
 	    case vTOKEN.IMPL:
+		tl_caption.append(tok.value_str);
 		match(vTOKEN.IMPL);
 		break;
 	    case vTOKEN.AQUI:	
+		tl_caption.append(tok.value_str);
 		match(vTOKEN.AQUI);
 		break;
 	    }
@@ -826,9 +930,12 @@ class TESCParser {
 	int t = 0;
 	Location loc = new Location(tok.linenum);
 
+	debug("oguard_e()");
+
 	grd1 = acompg_e(p);
 	grd = grd1;
 	while (tok.token == vTOKEN.OR) {	    	
+	    tl_caption.append(tok.value_str);
 	    match(vTOKEN.OR);
 	    grd2 = acompg_e(p);
 	    	
@@ -847,9 +954,12 @@ class TESCParser {
 	int t = 0;
 	Location loc = new Location(tok.linenum);
 
+	debug("aguard_e()");
+
 	grd1 = kcompg_e(p);
 	grd = grd1;
-	while (tok.token == vTOKEN.AND) {	    	
+	while (tok.token == vTOKEN.AND) {
+	    tl_caption.append(tok.value_str);
 	    match(vTOKEN.AND);
 	    grd2 = kcompg_e(p);
 	    	
@@ -865,13 +975,17 @@ class TESCParser {
     private Guard kcompg_e(Path p) throws IOException {	
 	Guard grd = null;
 	Location loc = new Location(tok.linenum);
-	
+
+	debug("kguard_e()");
+
 	if (tok.token == vTOKEN.NOT) {
 	    // ???
+	    tl_caption.append(tok.value_str);
 	    match(vTOKEN.NOT);
 	    grd = new GuardNeg(kcompg_e(p));
 	}
 	else if(tok.token == vTOKEN.EMPTYEXP) {
+	    tl_caption.append(tok.value_str);
 	    match(vTOKEN.EMPTYEXP);
 	    // Rekursion ??? oder kann ~ nur für sich stehen ?
 	    grd = new GuardEmpty((Dummy)setLoc(new Dummy(), loc)); 
@@ -886,7 +1000,7 @@ class TESCParser {
 	    // falls neues event, evlist erweitern
 	    if (!is_eventname(tok.value_str)) {
 		if (!is_bvarname(tok.value_str)) {
-		    debug("Füger neues SEvent in evlist ein!");
+		    debug("Füge neues SEvent in evlist ein!");
 		    evlist = new SEventList( (SEvent)setLoc(new SEvent(tok.value_str), loc), evlist);
 		}
 		else {
@@ -895,14 +1009,20 @@ class TESCParser {
 	    } 
 	    
 	    grd = new GuardEvent(ev);
+	    tl_caption.append(tok.value_str);
 	    match(vTOKEN.IDENT);
 	}
 	else if (tok.token == vTOKEN.LPAR) {
+	    tl_caption.append(tok.value_str);
 	    match(vTOKEN.LPAR);
 	    grd = guard_e(p);
+	    tl_caption.append(tok.value_str);
 	    match(vTOKEN.RPAR);
 	}
-	
+	else {
+	    // ??? !!!
+	    if (tok.token != vTOKEN.EOF) addError(makeError(tok,"Unerwartetes Token"));
+	}
 	if (grd != null) grd.location = loc;
 	
 	return grd;
@@ -915,40 +1035,52 @@ class TESCParser {
 	Guard grd = null;
 	Location loc = new Location(tok.linenum);
 
-	if (actPath==null) addError(makeError(tok, "Internal Error!"));
+	//if (actPath==null) addError(makeError(tok, "Internal Error!"));
 
 	switch(tok.token) {
 	case vTOKEN.IN:
+	    tl_caption.append(tok.value_str);
 	    match (vTOKEN.IN);
+	    tl_caption.append(tok.value_str);
 	    match (vTOKEN.LPAR);
 	    //grd = new GuardCompp((Comppath)setLoc(new Comppath(Comppath.IN, actPath.append(tok.value_str)), loc));
 	    
 	    grd = new GuardCompp((Comppath)setLoc(new Comppath(Comppath.IN, StringToPath(tok.value_str)), loc));
 	    
 	    grd.location = loc;
+	    tl_caption.append(tok.value_str);
 	    match(vTOKEN.IDENT);
+	    tl_caption.append(tok.value_str);
 	    match(vTOKEN.RPAR);
 	    break;
 	case vTOKEN.ENTERED:
+	    tl_caption.append(tok.value_str);
 	    match (vTOKEN.ENTERED);
+	    tl_caption.append(tok.value_str);
 	    match (vTOKEN.LPAR);
 	    //grd = new GuardCompp((Comppath)setLoc(new Comppath(Comppath.ENTERED, actPath.append(tok.value_str)), loc));
 	    
 	    grd = new GuardCompp((Comppath)setLoc(new Comppath(Comppath.ENTERED, StringToPath(tok.value_str)), loc));
 	    
 	    grd.location = loc;
+	    tl_caption.append(tok.value_str);
 	    match(vTOKEN.IDENT);
+	    tl_caption.append(tok.value_str);
 	    match(vTOKEN.RPAR);
 	    break;
 	case vTOKEN.EXITED:
+	    tl_caption.append(tok.value_str);
 	    match (vTOKEN.EXITED);
+	    tl_caption.append(tok.value_str);
 	    match (vTOKEN.LPAR);
 	    //grd = new GuardCompp((Comppath)setLoc(new Comppath(Comppath.EXITED, actPath.append(tok.value_str)), loc));
 	    
 	    grd = new GuardCompp((Comppath)setLoc(new Comppath(Comppath.EXITED, StringToPath(tok.value_str)), loc));
 	    
 	    grd.location = loc;
+	    tl_caption.append(tok.value_str);
 	    match(vTOKEN.IDENT);
+	    tl_caption.append(tok.value_str);
 	    match(vTOKEN.RPAR);
 	    break;
 	}
@@ -972,9 +1104,11 @@ class TESCParser {
 	    t = tok.token;
 	    switch(t) {
 	    case vTOKEN.IMPL:
+		tl_caption.append(tok.value_str);
 		match(vTOKEN.IMPL);
 		break;
 	    case vTOKEN.AQUI:	
+		tl_caption.append(tok.value_str);
 		match(vTOKEN.AQUI);
 		break;
 	    }
@@ -1004,7 +1138,8 @@ class TESCParser {
 
 	grd1 = acompg_b(p);
 	grd = grd1;
-	while (tok.token == vTOKEN.OR) {	    	
+	while (tok.token == vTOKEN.OR) {
+	    tl_caption.append(tok.value_str);
 	    match(vTOKEN.OR);
 	    grd2 = acompg_b(p);
 	    	
@@ -1025,7 +1160,8 @@ class TESCParser {
 
 	grd1 = kcompg_b(p);
 	grd = grd1;
-	while (tok.token == vTOKEN.AND) {	    	
+	while (tok.token == vTOKEN.AND) {
+	    tl_caption.append(tok.value_str);
 	    match(vTOKEN.AND);
 	    grd2 = kcompg_b(p);
 	    	
@@ -1044,10 +1180,12 @@ class TESCParser {
 	
 	if (tok.token == vTOKEN.NOT) {
 	    // ???
+	    tl_caption.append(tok.value_str);
 	    match(vTOKEN.NOT);
 	    grd = new GuardNeg(kcompg_b(p));
 	}
 	else if(tok.token == vTOKEN.EMPTYEXP) {
+	    tl_caption.append(tok.value_str);
 	    match(vTOKEN.EMPTYEXP);
 	    // Rekursion ??? oder kann ~ nur für sich stehen ?
 	    grd = new GuardEmpty((Dummy)setLoc(new Dummy(), loc)); 
@@ -1069,14 +1207,20 @@ class TESCParser {
 		}
 	    }
 	    grd = new GuardBVar(bv);
+	    tl_caption.append(tok.value_str);
 	    match(vTOKEN.IDENT);
 	}
 	else if (tok.token == vTOKEN.LPAR) {
+	    tl_caption.append(tok.value_str);
 	    match(vTOKEN.LPAR);
 	    grd = guard_b(p);
+	    tl_caption.append(tok.value_str);
 	    match(vTOKEN.RPAR);
 	}
-	
+	else {
+	    // ??? !!!
+	    if (tok.token != vTOKEN.EOF) addError(makeError(tok,"Unerwartetes Token"));
+	}
 	if (grd != null) grd.location = loc;
 	
 	return grd;
@@ -1114,10 +1258,16 @@ class TESCParser {
 	t2 = sname(p);
 		
 	match(vTOKEN.ON);
+
+	tl_caption = new StringBuffer();
+
 	grd = guard(p);
 	
+	tl_caption.append("/");
 	act = actionstmt(p);
-	tr = new Tr(t1, t2, (TLabel)setLoc(new TLabel(grd, act), loc));
+	
+	tr = new Tr(t1, t2, new TLabel(grd, act, null, loc, tl_caption.toString()));
+
 	tr.location = loc;
 	match(vTOKEN.SCOLON);
 	    
@@ -1537,7 +1687,8 @@ class TESCParser {
 	    
 	for(int i=0;i<s;i++) {
            txt = (String ) errorList.elementAt(i);
-	   gi.userMessage(txt);
+	   if (gi != null) gi.userMessage(txt);
+	   else System.out.println(txt);
 	}
     }
 
@@ -1547,15 +1698,20 @@ class TESCParser {
 	    String txt = new String("Tesc1: DEBUG-> ");
 	    
 	    txt = txt.concat(s);
-	    gi.userMessage(txt);
+	    if (gi != null) gi.userMessage(txt);
+	    else System.out.println(txt);
 	}
     }
 
 }
 
 /* TESCParser
- * $Id: TESCParser.java,v 1.15 1999-01-11 23:20:10 swtech13 Exp $
+ * $Id: TESCParser.java,v 1.16 1999-01-12 21:20:00 swtech13 Exp $
  * $Log: not supported by cvs2svn $
+ * Revision 1.15  1999/01/11 23:20:10  swtech13
+ * ~ in Guards, bassign in Action wird jetzt erkannt
+ * Doku angepasst
+ *
  * Revision 1.14  1999/01/11 20:10:32  swtech13
  * An geaenderte Grammatik angepasst.
  * Wir koennen jetzt den Typ der Variablen bei Guards/Actions aus dem Kontext

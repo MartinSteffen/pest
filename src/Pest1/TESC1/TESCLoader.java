@@ -34,13 +34,14 @@ import java.util.*;
  * Statecharts, die uns uebergeben werden, folgende Eigenschaften haben: 
  * 
  * <ul>
- * <li> unbekannt, weil erst in Stufe 2 relevant.
+ * <li> Keine Schleifen bei Listen.
+ * <li> Keine unartigen Nullpointer.
  * </ul>
  * 
  * die mit folgenden Checks ueberprueft werden koennen:
  * 
  * <ul>
- * <li> unbekannt
+ * <li> sollte von den Modulen, die Statecharts erzeugen, sowieso garantiert werden.
  * </ul>
 
  * <DL COMPACT>
@@ -55,6 +56,7 @@ import java.util.*;
  * Die TESC-Sprache ist über die <A HREF="./tesc1/Docu/grammatik.txt">Grammatik</A> definiert. 
  * Siehe auch <A HREF="./tesc1/Docu/Doku.txt"> Doku.txt</A> <br>
  * Beispiel <A HREF="./tesc1/Test/example.tesc"> example.tesc</A>
+ * Die Parse-Methoden für den Editor haben in eigenen Tests funktioniert.
  * <br>
  * <DT><STRONG>
  * TODO.
@@ -87,7 +89,7 @@ import java.util.*;
  * <br>
  * <hr>
  * @author Arne Koch/Mike Rumpf.
- * @version  $Id: TESCLoader.java,v 1.14 1999-01-11 23:20:09 swtech13 Exp $ 
+ * @version  $Id: TESCLoader.java,v 1.15 1999-01-12 21:20:00 swtech13 Exp $ 
  */ 
 public class TESCLoader {
 
@@ -96,7 +98,9 @@ public class TESCLoader {
     private TESCParser parser;          // der Parser
     private GUIInterface gi;            // GUI
     private Vector options = null;             // enthält Optionen
-
+    private SEventList evlist = null;   // Eventliste
+    private BvarList bvlist = null;
+ 
     /** 
      * Nach der Instanzierung von TESCLoader getStatechart(...) aufrufen
      * @param Referenz auf eine GUIInterface-Instanz
@@ -147,7 +151,7 @@ public class TESCLoader {
     public boolean saveStatechart (BufferedWriter bw, Statechart sc) throws IOException { 
 	
 	
-	return true; 
+	return false; 
     } 
  
 
@@ -174,8 +178,36 @@ public class TESCLoader {
     }
 
     /** 
-     * Umwandeln eines  TESC-File aus BufferedReader in Action.<br> Die Funktion wurde noch nicht getestet!
+     * Umwandeln eines  TESC-File aus BufferedReader in Guard.<br>  Die Funktion wurde noch nicht getestet! Fehlerausgaben werden vom Parser ins gui-Fenster geschrieben.
      * @param Referenz auf einen BufferedReader
+     * @param Referenz auf SEventList
+     * @param Referenz auf BvarList
+     * @return Liefert Guard oder null bei Fehler.
+     */ 
+    public Guard getGuard(BufferedReader br, SEventList el, BvarList bl) throws IOException {
+	TESCParser parser = new TESCParser(br, gi);
+	parser.initSwitches(options);
+
+	Guard guard = parser.readGuard(br, el, bl);
+
+	if (parser.getErrorCount() > 0) {	   
+	    if (gi != null) gi.OkDialog("Fehler", "Guard ist fehlerhaft.");
+	    else System.out.println("Fehler: Guard ist fehlerhaft.");
+
+	    return null;
+        }
+	else {
+	    if (guard == null) guard = new GuardEmpty(new Dummy());
+	    evlist = parser.getSEventList();
+	    bvlist = parser.getBvarList();
+
+	    return guard;
+	}
+    }
+
+    /** 
+     * Umwandeln eines  TESC-File aus BufferedReader in Action.<br> <STRONG> Achtung: </STRONG> Der String MUSS mit einem ; abgeschlossen sein
+     * @param Referenz auf einen BufferedReader     
      * @return Liefert Action oder null bei Fehler.
      */ 
     public Action getAction(BufferedReader br) throws IOException {
@@ -193,10 +225,56 @@ public class TESCLoader {
 	}
     }
 
+    /** 
+     * Umwandeln eines  TESC-File aus BufferedReader in Action.<br> <STRONG> Achtung: </STRONG> Es werden nur Actionstatements akzeptiert, die mit einem ; abgeschlossen sind!
+     * @param Referenz auf einen BufferedReader
+     * @param Referenz auf SEventList
+     * @param Referenz auf BvarList
+     * @return Liefert Action oder null bei Fehler.
+     */ 
+    public Action getAction(BufferedReader br, SEventList el, BvarList bl) throws IOException {
+	TESCParser parser = new TESCParser(br, gi);
+	parser.initSwitches(options);
+	Action action = parser.readAction(br, el, bl);
+
+	if (parser.getErrorCount() > 0) {	    
+	    if (gi != null) gi.OkDialog("Fehler", "Action ist fehlerhaft.");
+	    else System.out.println("Fehler: Action ist fehlerhaft.");
+	    return null;
+        }
+	else {
+	    if (action == null) action = new ActionEmpty(new Dummy());
+
+	    evlist = parser.getSEventList();
+	    bvlist = parser.getBvarList();
+
+	    return action;
+	}
+    }
+
+    /** 
+     * Zugriff auf die SEventList des Parsers
+     * @return Liefert SEventList des Parsers.
+     */ 
+    public SEventList getSEventList() {
+	return evlist;
+    }
+
+    /** 
+     * Zugriff auf die BvarList des Parsers
+     * @return Liefert BvarList des Parsers.
+     */ 
+    public BvarList getBvarList() {
+	return bvlist;
+    }
 }
 
 /* 
  * $Log: not supported by cvs2svn $
+ * Revision 1.14  1999/01/11 23:20:09  swtech13
+ * ~ in Guards, bassign in Action wird jetzt erkannt
+ * Doku angepasst
+ *
  * Revision 1.13  1999/01/11 20:24:29  swtech13
  * Liefern jetzt Dummies, bei readAction/Guard(..), falls diese leer.
  *
