@@ -7,7 +7,7 @@ COPTIONS = -g -deprecation
 ROPTIONS =
  
 CLASSES = \
-Simulation.class
+Simulation.class Simu.class
 
 .SUFFIXES: .java .class
  
