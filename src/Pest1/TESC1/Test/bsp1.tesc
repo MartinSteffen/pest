@@ -1,5 +1,5 @@
 # Beispiel Tesc-File 1
-# '#' leiten als Erweiterung der Grammatik Kommentare ein
+# leiten als Erweiterung der Grammatik Kommentare ein
 # Falls ein Kommentar nicht am Anfang einer Zeile steht, muss er durch ein Space/Tab
 # vom Rest getrennt werden
 
