@@ -20,15 +20,32 @@ import absyn.*;
  *
  * If an error occures, we will throw a CodeGenException.
  *
- * Prerequisites:  We expect the Statechart to be a complete,
- *     executable and correct state chart.  We will not announce
- *     an error, but instead create incorrect code (as far as it
- *     is possible to talk about incorrect code).  The pathname
- *     is assumed to be a fully qualified path to an existing
- *     directory without trailing "/".
+ * <DL COMPACT>
+ * <DT><STRONG>Status</STRONG>
+ * Most of the code is implemented, but does not compile without
+ * errors.  Non-determinism is not handled correctly yet.
+ * <DT><STRONG>To Do</STRONG>
+ * Fix compiler errors.  Need to debug the code properly.
+ * Need to fix transitions with connectors.  Need to fix
+ * code for non-determinism.  We currently do not produce traces.
+ * <DT><STRONG>Known Bugs</STRONG>
+ * Currently none.  Send a bug report to
+ * <A HREF="mailto:swtech25@informatik.uni-kiel.de">swtech25</A>
+ * </DL>
+ *
+ * <DL COMPACT>
+ * <DT><STRONG>Prerequisites:</STRONG>
+ *   <UL>
+ *   <LI>We expect the Statechart to be a complete,  executable and
+ *     correct state chart.  We will not announce an error, but instead create
+ *     incorrect code (as far as it is possible to talk about incorrect code).
+ *   <LI>  The pathname is assumed to be a fully qualified path to an
+ *     existing directory without trailing "/".
+ *   </UL>
+ * </DL>
  *
  * @author Marcel Kyas, Walter Loeser, Andre Paetzold.
- * @version $Id: CodeGen.java,v 1.8 1999-01-04 14:19:54 swtech25 Exp $
+ * @version $Id: CodeGen.java,v 1.9 1999-01-11 13:31:55 swtech25 Exp $
  */
 public class CodeGen
 {
@@ -45,7 +62,7 @@ public class CodeGen
 
 	/**
 	 * This method will cause the CodeGenerator to do
-	 * its work.  If will return after successful completion.
+	 * its work.  It will return after successful completion.
 	 *
 	 * @exception CodeGenException if code generation fails.
 	 */
@@ -57,7 +74,7 @@ public class CodeGen
 
         /**
          * This method will cause the CodeGenerator to do
-         * its work.  If will return after successful completion.
+         * its work.  It will return after successful completion.
 	 * This will activate some options. 
 	 *
 	 * @exception CodeGenException if code generation fails.
@@ -86,12 +103,13 @@ public class CodeGen
          * This method is an alternative to produce code,
          * if you do not want to create a new instance of
          * the code generator.  This time with options.
+	 * Options are currently ignored.
 	 *
 	 * @exception CodeGenException if code generation fails.
          */
         public void Generate(String path, Statechart statechart, int options)
 		throws CodeGenException
         {
- 
+		Generate(statechart, path);
         }
 }
