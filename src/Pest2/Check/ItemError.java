@@ -11,8 +11,12 @@
 
 package check;
 
-// Wrapper Klasse fuer einen gefundenen Fehler
-public class itemError {
+/**
+* Diese Klasse repaesentiert einen gefundenen Fehler
+* @author Java Praktikum: <a href="mailto:swtech23@informatik.uni-kiel.de">Gruppe 23</a><br>Mario Thies und Tobias Kunz
+* @version $id:$
+*/
+public class ItemError {
   // private Eigenschaften der Klasse
   private int     code        = 0;
   private String  description = "";
@@ -21,11 +25,11 @@ public class itemError {
 // ****************************************************************************
 
   // Konstruktor
-  public itemError() {
+  public ItemError() {
   }
 
   // Konstruktor
-  public itemError(int code, String description, String place) {
+  public ItemError(int code, String description, String place) {
     this.code        = code;
     this.description = description;
     this.place       = place;
@@ -33,21 +37,28 @@ public class itemError {
 
 // ****************************************************************************
 
-	// liefert einen eindeutigen Fehlercode
+	/** liefert einen eindeutigen Fehlercode */
 	public int getCode() {
     return 0;
 	}
 
-	// liefert eine Fehlerbeschreibung
+	/** liefert eine Fehlerbeschreibung */
 	public String getDescription() {
     return "";
 	}
 
-	// liefert erweiterte Informationen - etwa den Zustand, in dem der Fehler
-	// aufgetreten ist.
+	/** liefert erweiterte Informationen -
+      etwa den Zustand, in dem der Fehler
+	    aufgetreten ist.
+  */
 	public String getPlace() {
     return "";
 	}
+
+  /** liefert komplette Fehlermeldung als String zurueck */
+  public String toString() {
+    return Integer.toString(code)+" "+getDescription()+", "+getPlace();
+  }
 
 // ****************************************************************************
 

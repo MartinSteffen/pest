@@ -1,10 +1,10 @@
-all:	$(patsubst %.java,%.class,$(wildcard ../Check/*.java))
+all:	$(patsubst %.java,%.class,$(wildcard *.java))
 
 %.class:	%.java
 		javac $<
  
 clean:
-	cd ..; rm -f ../Check/*.class *~
+	rm -f *.class *~
 
 localdocu:
-	cd ..; javadoc  -version -author -d Docu *.java
+	javadoc  -version -author -d Docu *.java

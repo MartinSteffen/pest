@@ -8,16 +8,20 @@
 //
 // ****************************************************************************
 
+/**
+ * @author Java Praktikum: <a href="mailto:swtech23@informatik.uni-kiel.de">Gruppe 23</a><br>Mario Thies und Tobias Kunz
+ * @version $id:$
+*/
 package check;
 
 import absyn.*;         // abstrakte Syntax
 
-public class CheckBVars {
+class CheckBVars {
   Statechart statechart;
   State s;
   String path;
-  SyntaxWarning warnings = new SyntaxWarning();
-  SyntaxError errors   = new SyntaxError();
+  SyntaxWarning warning;
+  SyntaxError error;
 
   CheckBVars(Statechart _st) {
     statechart = _st;
@@ -30,6 +34,14 @@ public class CheckBVars {
     s = _s;
     path = _path;
     }
+
+  CheckBVars(Statechart _st, State _s, String _path, SyntaxError error, SyntaxWarning warning) {
+    statechart = _st;
+    s = _s;
+    path = _path;
+    this.error = error;
+    this.warning = warning;
+  }
 
 //
 	public boolean check() {
@@ -60,7 +72,8 @@ public class CheckBVars {
 
           // BVar aus der Transitionsliste wurde nicht gefunden
           if (found == false) {
-            System.out.println(path+"BVar("+g.bvar.var+") nicht gefunden");
+            //System.out.println(path+"BVar("+g.bvar.var+") nicht gefunden");
+            warning.addWarning(new ItemWarning(100,"BVar ("+g.bvar.var+") nicht gefunden", path));
             ok = false;
             }
           }
@@ -80,7 +93,8 @@ public class CheckBVars {
 
           // Event aus der Transitionsliste wurde nicht gefunden
           if (found == false) {
-            System.out.println(path+"BVar("+ba.ass.blhs.var+") nicht gefunden");
+            //System.out.println(path+"BVar("+ba.ass.blhs.var+") nicht gefunden");
+            warning.addWarning(new ItemWarning(100,"BVar ("+ba.ass.blhs.var+") nicht gefunden", path));
             ok = false;
             }
           }
@@ -103,18 +117,6 @@ public class CheckBVars {
     }
 
     return ok;
-	}
-
-  // Rueckgabe der Methode ist eine Liste (JAVA Klasse Vector) mit Fehlern
-  // von Typ itemError
-	public SyntaxError getErrors() {
-    return errors;
-	}
-
-  // Rückgabe der Methode ist eine Liste (JAVA Klasse Vector) mit Warnungen
-  // von Typ itemWarning
-	public SyntaxWarning getWarnings() {
-    return warnings;
 	}
 
 }

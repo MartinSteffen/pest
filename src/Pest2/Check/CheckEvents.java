@@ -4,7 +4,7 @@
 //
 //
 //   Letzte Aenderung von:  Tobias Kunz
-//                          12.12.1998
+//                          21.12.1998
 //
 // ****************************************************************************
 
@@ -12,12 +12,16 @@ package check;
 
 import absyn.*;         // abstrakte Syntax
 
-public class CheckEvents {
+/**
+ * @author Java Praktikum: <a href="mailto:swtech23@informatik.uni-kiel.de">Gruppe 23</a><br>Mario Thies und Tobias Kunz
+ * @version $id:$
+*/
+class CheckEvents {
   Statechart statechart;
   State s;
   String path;
-  SyntaxWarning warnings = new SyntaxWarning();
-  SyntaxError errors   = new SyntaxError();
+  SyntaxWarning warning;
+  SyntaxError error;
 
   CheckEvents(Statechart _st) {
     statechart = _st;
@@ -30,6 +34,14 @@ public class CheckEvents {
     s = _s;
     path = _path;
     }
+
+  CheckEvents(Statechart _st, State _s, String _path, SyntaxError error, SyntaxWarning warning) {
+    statechart = _st;
+    s = _s;
+    path = _path;
+    this.error = error;
+    this.warning = warning;
+  }
 
   // überprüft, ob alle Events im State s auch in der Statechart
   // definiert sind. Zurückgegeben wird TRUE, wenn dies der Fall ist.
@@ -61,7 +73,8 @@ public class CheckEvents {
 
           // Event aus der Transitionsliste wurde nicht gefunden
           if (found == false) {
-            System.out.println(path+"Event("+g.event.name+") nicht gefunden");
+            warning.addWarning(new ItemWarning(100,"Event ("+g.event.name+") nicht gefunden", path));
+            //System.out.println(path+"Event("+g.event.name+") nicht gefunden");
             ok = false;
             }
           }
@@ -78,7 +91,8 @@ public class CheckEvents {
 
           // Event aus der Transitionsliste wurde nicht gefunden
           if (found == false) {
-            System.out.println(path+"Event("+a.event.name+") nicht gefunden");
+            warning.addWarning(new ItemWarning(100,"Event ("+a.event.name+") nicht gefunden", path));
+            //System.out.println(path+"Event("+a.event.name+") nicht gefunden");
             ok = false;
             }
           }
@@ -104,16 +118,5 @@ public class CheckEvents {
   return ok;
 	}
 
-  // Rueckgabe der Methode ist eine Liste (JAVA Klasse Vector) mit Fehlern
-  // von Typ itemError
-	public SyntaxError getErrors() {
-    return errors;
-	}
-
-  // Rückgabe der Methode ist eine Liste (JAVA Klasse Vector) mit Warnungen
-  // von Typ itemWarning
-	public SyntaxWarning getWarnings() {
-    return warnings;
-	}
 
 }

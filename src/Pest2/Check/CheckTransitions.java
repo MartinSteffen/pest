@@ -5,7 +5,7 @@
 //
 //
 //   Letzte Aenderung von:  Tobias Kunz
-//                          13.12.1998
+//                          21.12.1998
 //
 // ****************************************************************************
 
@@ -13,8 +13,13 @@ package check;
 
 import absyn.*;
 
-// Klasse zur Ueberpruefung der Transitionen
-public class CheckTransitions {
+
+/**
+ * Klasse zur Ueberpruefung der Transitionen
+ * @author Java Praktikum: <a href="mailto:swtech23@informatik.uni-kiel.de">Gruppe 23</a><br>Mario Thies und Tobias Kunz
+ * @version $id:$
+*/
+class CheckTransitions {
 
 // ****************************************************************************
 // Klassen Variablen
@@ -23,6 +28,8 @@ public class CheckTransitions {
 State    state;
 TrList   trl;
 Or_State os;
+SyntaxError   error;
+SyntaxWarning warning;
 
 // ****************************************************************************
 // Konstruktoren
@@ -31,6 +38,13 @@ Or_State os;
   CheckTransitions(State s) {
     this.state = s;
   }
+
+  CheckTransitions(State s, SyntaxError error, SyntaxWarning warning) {
+    this.state = s;
+    this.error = error;
+    this.warning = warning;
+  }
+
 
 // ****************************************************************************
 // Methoden, die nur innerhalb des "packages" zu sehen sind
@@ -63,7 +77,7 @@ Or_State os;
           ok = Contains((Statename)trans.source);
 
           if (!ok) { // Fehler
-            System.out.println("Transitions Source nicht gefunden");
+            error.addError(new ItemError(100, "Transitions Source nicht gefunden",""));
           }
         }
 
@@ -73,13 +87,14 @@ Or_State os;
           ok = Contains((Statename)trans.target);
 
           if (!ok) { // Fehler!
-            System.out.println("Transitions Target nicht gefunden");
+            error.addError(new ItemError(100, "Transitions Source nicht gefunden",""));
           }
         }
 
         // Fall c)
         if ((trans.source == null) && (trans.target != null)) {
           // warnung ausgeben
+          warning.addWarning(new ItemWarning(101, "Transition hat keine Source, aber ein Target",""));
           ok = false;
         }
 
@@ -87,6 +102,7 @@ Or_State os;
         if ((trans.source != null) && (trans.target == null)) {
           // fehler ausgeben
           ok = false;
+          error.addError(new ItemError(100, "Transition hat kein Target aber eine Source",""));
         }
 
         trl = trl.tail; // nächste Transition

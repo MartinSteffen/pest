@@ -11,7 +11,13 @@
 
 package check;
 
-public class itemWarning {
+
+/**
+* Diese Klasse repraesentiert eine gefundene Warnung
+* @author Java Praktikum: <a href="mailto:swtech23@informatik.uni-kiel.de">Gruppe 23</a><br>Mario Thies und Tobias Kunz
+* @version $id:$
+*/
+public class ItemWarning {
 
   // private Eigenschaften der Klasse
   private int     code        = 0;
@@ -21,11 +27,11 @@ public class itemWarning {
 // ****************************************************************************
 
   // Konstruktor
-  public itemWarning() {
+  public ItemWarning() {
   }
 
   // Konstruktor
-  public itemWarning(int code, String description, String place) {
+  public ItemWarning(int code, String description, String place) {
     this.code        = code;
     this.description = description;
     this.place       = place;
@@ -33,21 +39,29 @@ public class itemWarning {
 
 // ****************************************************************************
 
-	// liefert einen eindeutigen Warnungscode
+	/** liefert einen eindeutigen Warnungscode */
 	public int getCode() {
            return 0;
 	}
 
-	// liefert eine Fehlerbeschreibung
+	/** liefert eine Fehlerbeschreibung */
 	public String getDescription() {
 	   return "";
         }
 
-	// liefert erweiterte Informationen - etwa den Zustand, in dem die Warnung
-	// aufgetreten ist.
+	/** liefert erweiterte Informationen -
+      etwa den Zustand, in dem die Warnung
+      aufgetreten ist.
+  */
 	public String getPlace() {
            return "";
 	}
+
+  /** liefert komplette Fehlermeldung als String zurueck */
+  public String toString() {
+    return Integer.toString(code)+" "+getDescription()+", "+getPlace();
+  }
+
 
 // ****************************************************************************
 

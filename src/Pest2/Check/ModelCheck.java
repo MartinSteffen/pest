@@ -1,11 +1,11 @@
 // ****************************************************************************
 //   Projekt:               PEST2
-//   Klasse:                itemWarning
+//   Klasse:                ModelCheck
 //   Autor:                 Tobias Kunz, Mario Thies
 //
 //
 //   Letzte Aenderung von:  Tobias Kunz
-//                          13.12.1998
+//                          21.12.1998
 //
 // ****************************************************************************
 
@@ -14,37 +14,52 @@ package check;
 import absyn.*;         // abstrakte Syntax
 import gui.*;           // GUI Interface
 
-public class modelCheck {
+
+/**
+ * <h1>Syntax Check für Statecharts</h1>
+ * <h2>Empfohlender Aufruf:</h2>
+ * <ol>
+ * <li>Initialisierung:   ModelCheck mc = new ModelCheck(GUI_Referenz)
+ * <li>Aufruf des Checks: boolean = mc.checkModel(Statechart)
+ * </ol>
+ * <h2>Forderungen an die an den Check übergebene Statechart:</h2>
+ * <ul>
+ * <li>KEINE
+ * </ul>
+ * <h2>Garantien nach der Beendigung des Checks:</h2>
+ * <ul>
+ * <li>Der Check verändert die an ihn übergebene Statechart <b>nicht</b>.
+ * <li>Der Check liefert nur dann <b>true</b> zurück, wenn die Statechart
+ * keine Fehler mehr enthält, die den Simulator oder den CodeGenerator zu
+ * zu falschen Ergebnissen führen würde.
+ * </ul>
+ * @author Java Praktikum: <a href="mailto:swtech23@informatik.uni-kiel.de">Gruppe 23</a><br>Mario Thies und Tobias Kunz
+ * @version $id:$
+ */
+public class ModelCheck {
 
 private SyntaxWarning warnings;
 private SyntaxError   errors;
 private GUIInterface  gui;
+private boolean       OutputToGUI = false;
 
 // ****************************************************************************
 // Konstruktoren
 // ****************************************************************************
 
   // Konstruktor
-	public modelCheck() {
-		// denkbar ist eine Überladung des Konstruktors mit Schaltern vom Typ
-		// "boolean" - beipielsweise: Test auf Kreisfreiheit oder Unterdrückung
-		// der Warnungen oder ((Optimierung))
-
-		// Properties (Schalter) werden über die JAVA konforme Methode des Aufrufs
-		//   public boolean getXXX() {}		für den lesenden Zugriff und
-		//   public void    setXXX() {}     für den schreibenden Zugriff
-		// zur Verfügung gestellt.
-
+  public ModelCheck() {
     // initialisieren
     warnings = new SyntaxWarning();
     errors   = new SyntaxError();
+    OutputToGUI = false;
 	}
 
   // Konstruktor
-  public modelCheck(GUIInterface gui) {
-     warnings = new SyntaxWarning();
-     errors   = new SyntaxError();
+  public ModelCheck(GUIInterface gui) {
+     this();
      this.gui = gui;
+     OutputToGUI = true;
   }
 
 // ****************************************************************************
@@ -60,16 +75,52 @@ private GUIInterface  gui;
   // sind, FALSE sonst.
 	public boolean checkModel(Statechart statechart) {
     boolean ok = true;
-    CheckEvents checkEvents = new CheckEvents(statechart);
-    CheckBVars  checkBVars  = new CheckBVars(statechart);
 
-    ok = ok && checkEvents.check();
-    ok = ok && checkBVars.check();
+    // auf Kreisfreiheit, d.h. Programmierfehler pruefen.
+    CheckCircle checkCircle = new CheckCircle(statechart);
+    ok = checkCircle.check();
 
-    // ueberpruefen aller Transitionen
+    if (!ok) {
+      // Fataler Fehler! => Ausgabe!
+      if (gui != null) {
+        int result = gui.OkDialog("Fataler Fehler","Statechart enthaelt einen Kreis");
+      } else System.out.println("Fataler Fehler: Statechart enthaelt einen Kreis");
 
+    } else {
+      CheckEvents checkEvents = new CheckEvents(statechart);
+      CheckBVars  checkBVars  = new CheckBVars(statechart);
+      CheckConnectors checkConnectors = new CheckConnectors(statechart);
 
+      ok = ok && checkEvents.check();
+      ok = ok && checkBVars.check();
+      ok = ok && checkConnectors.check();
 
+      // ueberpruefen eine Zustandes, darunter fallen
+      //   a) Transitionen
+      //   b) Connectoren
+      //   c) der State selber
+
+      // Fehlerausgabe, falls "gui" zugewiesen ist
+      if (gui != null) {
+        for (int i = 0; i < warnings.count(); i++) {
+          ItemWarning w = warnings.warningAt(i);
+          gui.userMessage(w.toString());
+        }
+        for (int i = 0; i < errors.count(); i++) {
+          ItemError e = errors.errorAt(i);
+          gui.userMessage(e.toString());
+        }
+      } else { // Ausgabe auf Standard-Out
+        for (int i = 0; i < warnings.count(); i++) {
+          ItemWarning w = warnings.warningAt(i);
+          System.out.println(w.toString());
+        }
+        for (int i = 0; i < errors.count(); i++) {
+          ItemError e = errors.errorAt(i);
+          System.out.println(e.toString());
+        }
+      }
+    }
     return ok;
 	}
 
@@ -120,8 +171,13 @@ private GUIInterface  gui;
 	// ueberprüft innerhalb eines OR-Zustandes die Connectors auf Korrektheit
   // Rueckgabe der Methode ist TRUE, wenn keine Fehler oder Warnungen vorhanden
   // sind, FALSE sonst.
-	public boolean checkConnectors(State s) {
-    return true;
+	public boolean checkConnectors(Statechart statechart, State s) {
+    boolean ok = true;
+
+    CheckConnectors checkConn = new CheckConnectors(statechart);
+    ok = checkConn.check(s);
+
+    return ok;
 	}
 
   // Rueckgabe der Methode ist eine Liste (JAVA Klasse Vector) mit Fehlern
