@@ -28,6 +28,23 @@ public class HighObj {
 	if (ab instanceof And_State) redraw((And_State) ab,neux,neuy,drawflag,na,col);
 	if (ab instanceof Statename) redraw((Statename) ab,neux,neuy,drawflag,na,col);
 	if (ab instanceof Tr) redraw((Tr) ab,neux,neuy,drawflag,na,col);
+	if (ab instanceof Connector) redraw((Connector) ab,neux,neuy,drawflag,na,col);
+    }
+
+    private void redraw(Connector co, int nx, int ny, boolean drawflag,Absyn na,Color col) {
+	int neux = nx;
+	int neuy = ny;
+	System.out.println("Connector zeichnen");
+
+	if (co == na) { 
+			h.setColor(col);
+			h.fillOval((int) ((co.position.x+neux)*Editor.ZoomFaktor),
+			(int) ((co.position.y+neuy)*Editor.ZoomFaktor),
+			(int) (12),
+			(int) (12)
+			); System.out.println("Connector gefunden");
+			}
+	// die anderen folgen spaeter
     }
 
  
@@ -120,12 +137,8 @@ public class HighObj {
 	    {
 		if (colist.head.position != null) 
 		{
-		h.setColor(def_conn);
-		h.fillOval((int) ((colist.head.position.x+neux)*Editor.ZoomFaktor),
-			(int) ((colist.head.position.y+neuy)*Editor.ZoomFaktor),
-			(int) (12),
-			(int) (12)
-			);
+		HighObj re = new HighObj();
+		re.start(colist.head,neux,neuy,true,na,col);
 		}
 		colist = colist.tail;
 	    }

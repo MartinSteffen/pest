@@ -24,9 +24,9 @@ public class drawPESTTrans  {
 static boolean movetest=false;;
 	
 
-public drawPESTTrans(Graphics g,Statechart nroot,int cx1, int cy1, int cx2, int cy2, Color c_color) {
+public drawPESTTrans(Graphics g,Statechart nroot, Point[] pointarray, int countarray, Color c_color) {
 
-CPoint[]  temppoint = new CPoint[2];
+CPoint[]  temppoint = new CPoint[countarray+1];
 Statematrix matrix1,matrix2,matrix3;
 Statechart root = nroot;
 TrList trtemp = null;
@@ -36,6 +36,8 @@ State obname1,obname2;
 Connector obcon1,obcon2;
 TrAnchor name1= new UNDEFINED(),name2= new UNDEFINED();
 Absyn getname1=null, getname2 = null; 
+int cx1 = pointarray[0].x,cx2 = pointarray[countarray].x,cy1 = pointarray[0].y,cy2 = pointarray[countarray].y;
+
 
 
 matrix1 = PESTdrawutil.getStateFrame(root,cx1,cy1,cx2,cy2);
@@ -60,8 +62,11 @@ System.out.println("name 1 :"+getname1);
 System.out.println("name 2 :"+getname2);
 movetest = false;
       
-               if(getname1 != null)	
+        if(getname1 != null)	
 	{
+	    for (int j=0;j < countarray; j++) { pointarray[j].x = pointarray[j].x - matrix1.x;
+	                                        pointarray[j].y = pointarray[j].y - matrix1.y;
+						temppoint[j] = new CPoint(pointarray[j]);}
 	temppoint[0] = transpoint(root,cx1,cy1);
 	
 	if (movetest == true)
@@ -79,26 +84,26 @@ movetest = false;
                 movetest = false;
 	if(getname2 != null)	
 	{
-	temppoint[1] = transpoint(root,cx2,cy2);
+	temppoint[countarray] = transpoint(root,cx2,cy2);
 	if (movetest == true)
 	{
-	temppoint[1].x = temppoint[1].x - matrix1.x;
-	temppoint[1].y = temppoint[1].y - matrix1.y;
+	temppoint[countarray].x = temppoint[countarray].x - matrix1.x;
+	temppoint[countarray].y = temppoint[countarray].y - matrix1.y;
 	if (getname2 instanceof State) {  if (matrix3.prev instanceof And_State) 
 					{obname2 = (State) matrix3.prev; name2 = obname2.name;}
 					else {obname2 = (State) getname2; name2 = obname2.name;}
 				      };
 	if (getname2 instanceof Connector) {obcon2 = (Connector) getname2; name2 = obcon2.name;};
-	} else {temppoint[1] = new CPoint(cx2-matrix1.x,cy2-matrix1.y);} 
-	} else {temppoint[1] = new CPoint(cx2-matrix1.x,cy2-matrix1.y);}
+	} else {temppoint[countarray] = new CPoint(cx2-matrix1.x,cy2-matrix1.y);} 
+	} else {temppoint[countarray] = new CPoint(cx2-matrix1.x,cy2-matrix1.y);}
       
 
-  transtemp = new Tr(name1,name2,new TLabel(new GuardEmpty(new Dummy()),new ActionEmpty(new Dummy())),
-		     temppoint); // source, target, label
+  transtemp = new Tr(name1,name2,new TLabel(new GuardEmpty(new Dummy()),new ActionEmpty(new Dummy()))
+		     ,temppoint); // source, target, label
   otemp1.trs = new TrList(transtemp,trtemp);
 
 System.out.println("tempp1 :"+temppoint[0]);
-System.out.println("tempp2 :"+temppoint[1]);
+System.out.println("tempp2 :"+temppoint[countarray]);
 System.out.println("name 1 :"+name1);
 System.out.println("name 2 :"+name2);
 
@@ -111,8 +116,8 @@ if (name1 instanceof UNDEFINED) {g.setColor(c_color);
  drawTrans(g,
 		(int) ((temppoint[0].x+matrix1.x)*Editor.ZoomFaktor),
 		(int) ((temppoint[0].y+matrix1.y)*Editor.ZoomFaktor),
-		(int) ((temppoint[1].x+matrix1.x)*Editor.ZoomFaktor),
-		(int) ((temppoint[1].y+matrix1.y)*Editor.ZoomFaktor),
+		(int) ((temppoint[countarray].x+matrix1.x)*Editor.ZoomFaktor),
+		(int) ((temppoint[countarray].y+matrix1.y)*Editor.ZoomFaktor),
 		name1,
 		name2,
 		c_color);
@@ -163,7 +168,7 @@ public static void drawTrans(Graphics g,int cx1, int cy1, int cx2, int cy2,TrAnc
     } 
 
 
-private static CPoint transpoint(Statechart root,int cx1, int cy1)
+public static CPoint transpoint(Statechart root,int cx1, int cy1)
 	{
 	int ncx1=cx1,ncy1=cy1;
 	Statematrix matrix1,matrix2,matrix3;
