@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	------------------
 //
-//	$Id: report_list,v 1.17 1999-01-28 14:17:25 swtech00 Exp $
+//	$Id: report_list,v 1.18 1999-01-28 14:30:09 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -183,11 +183,24 @@ Default states nicht erkennbar.
 #Number:	11
 #Autor:		Erich Mikk
 #Subject:	Man kann mehrere Simulationen starten
-#Status:	processing
+#Status:	reported
 #Description:
 
 Lade Chart (egal wie).
 Starte Editor.
 Starte Simulation (Werkzeuge->Simulation)
 Starte noch eine Simulation (z.B. auf der Chart der gr. Benutzerführung).
+//------------------------------------------------------------------------------
+#Number:	12
+#Autor:		Erich Mikk
+#Subject:	Man kann mehrere Editore starten
+#Status:	reported
+#Description:
+
+Man bereite sich eine Chart vor und speichere es (Datei->Speichern)
+Starte pest erneut und oeffne diese Chart (Datei -> Oeffnen)
+Starte einen Editor (Chart der gr. Benutzerführung -> Editor)
+Öffne die gleiche Chart nochmal (Chart der gr. Benutzerführung -> Oeffnen)
+Jetzt sieht man 2 gleichzeitig laufende Editore!
+Man könnte mit der gleichen Methode noch mehr davon starten.
 //------------------------------------------------------------------------------
