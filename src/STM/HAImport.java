@@ -54,12 +54,12 @@ import gui.GUIInterface;
  * </DL COMPACT>
  *
  * @author  Sven Jorga, Werner Lehmann
- * @version $Id: HAImport.java,v 1.10 1999-01-11 13:25:26 swtech18 Exp $
+ * @version $Id: HAImport.java,v 1.11 1999-01-11 14:31:05 swtech18 Exp $
  */
 public class HAImport implements Patterns {
   Perl5Util perl = new Perl5Util();
 
-  private static final int SKAL = 20;
+  private static final int SKAL = 1;
   private String mkhaString = null;
   private String eventsString = null;
   private String statesString = null;
