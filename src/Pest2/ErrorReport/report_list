@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	------------------
 //
-//	$Id: report_list,v 1.21 1999-01-29 08:19:20 swtech00 Exp $
+//	$Id: report_list,v 1.22 1999-02-01 12:05:33 swtech20 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -39,7 +39,7 @@ Probleme gibt es dann spaeter beim Export/Import mit TESC.
 #Number:  	2
 #Autor:		Michael Suelzer swtech20
 #Subject:	Checker erkennt eingetragene Zustaende nicht
-#Status:	fixed
+#Status:	confirmed
 Description:
 Wenn man Import->TESC->tesc1/Test/simple.tesc und anschliežend
 den Syntax-Checker ausfuehrt, erhaelt man den Fehler:
@@ -112,6 +112,14 @@ Exportiere es über Exprt->TESC.
 X \in {vcr.st,tamagotc.st} dann kann das Exportierte File nicht mehr
 eingelesen werden, obwohl der Syntax check keine Fehler gemeldet hat und
 der vorangegangene Export erfolgreich war.
+
+swtech20: Problem liegt beim STM-Import bzw. beim Syntax-Check. Wir
+verlassen uns darauf, dass wir korrekte Statecharts bekommen (siehe
+Anforderungen in unserer Doku.)
+Hier: In tamagotc.st ergibt PrettyPrint nach STM-Import.
+|   |   |   |   [StatenameList] 
+|   |   |   |   |   [Statename] 
+Der Statename hat offensichtlich keinen Inhalt.
 
 //------------------------------------------------------------------------------
 #Number:	7
