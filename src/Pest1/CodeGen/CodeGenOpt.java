@@ -9,7 +9,7 @@ import java.io.*;
  *
  * @see CodeGenConfig
  * @author Marcel Kyas, Walter Loeser, Andre Paetzold.
- * @version $Id: CodeGenOpt.java,v 1.8 1999-03-01 17:38:35 swtech25 Exp $
+ * @version $Id: CodeGenOpt.java,v 1.9 1999-03-11 14:58:22 swtech25 Exp $
  */
 public class CodeGenOpt implements Serializable {
 
@@ -88,7 +88,7 @@ public class CodeGenOpt implements Serializable {
    * "/tmp", name[12] will be set to "Automaton[12]"
    */
   public CodeGenOpt() {
-    nondetFlavor = takeFirst;
+    nondetFlavor = random;
     envFlavor = none;
     traceCodeGen = true;
     verbose = false;
