@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.105 1999-02-12 10:26:06 swtech00 Exp $
+//	$Id: report_list,v 1.106 1999-02-12 10:37:00 swtech11 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -1143,3 +1143,17 @@ Erneut Check: ITs werden gemeldet
 
 Man kann sich die ITs anklicken und sehen, wo das schief geht.
 //------------------------------------------------------------------------------
+-
+#Number:	74
+#Autor:		Check swtech11
+#Subject:	GUI: SyntaxCheck Optionen Problem
+#Status: 	reported
+#Description: 
+
+Wenn keine pest.cfg Datei vorhanden ist, dann wird im Konstruktor CheckOption
+ ein null-Pointer fuer CheckConfig uebergeben. Diesen null-Pointer fangen wir
+ zur Zeit ab, aber Aenderungen in den Optionen gehen verloren.
+
+
+//------------------------------------------------------------------------------
+
