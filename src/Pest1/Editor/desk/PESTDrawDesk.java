@@ -29,7 +29,7 @@ import editor.*;
       protected Color current_color = Color.black;   	        // aktueller Farbe
       protected int width, height;                   		// Groessenvariablen
       protected PopupMenu popup;                     		// pop-up Menue
-      protected static Panel xpanel;                        		// Menuefenster
+      public static Panel xpanel;                        		// Menuefenster
 
       static Storelist anf;
       static Storelist lauf;
@@ -65,8 +65,6 @@ import editor.*;
     }
     // Registrierung von pop-up
     this.add(popup);
-this.show();
-
 
 
   }
@@ -77,16 +75,18 @@ this.show();
  // pop-up Menueabfrage 
   public void actionPerformed(ActionEvent event) {
     String command = event.getActionCommand();
-    if (command.equals("undo")) root = undo();
-    else if (command.equals("restore")) root = redo();
+    if (command.equals("undo")) undo(root);
+    else if (command.equals("restore")) redo(root);
     else if (command.equals("load")) ;
     
   }
  
 
   // Grafik herstellen
-      public void paint(Graphics g) { new highlightObject(g);   new highlightObject();
-     
+      public void paint(Graphics g) { 	  new Repaint(g);Repaint r = new Repaint(); r.start(root,0,0,true);
+				  new highlightObject(g,root);
+
+   System.out.println("repaint gestartet");  
   }
 
 
@@ -117,19 +117,78 @@ this.show();
 		    last_x = (short) e.getX(); last_y = (short) e.getY(); 	// Save position.
 		}
 
+	    if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Draw_StateLabel"))
+		{ 
+		    new labelPESTState(root,(int) (last_x/Editor.ZoomFaktor),
+					     (int) (last_y/Editor.ZoomFaktor));
+		    Editor.SetListen();
+		   repaint();
+		}
+
 	    if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Draw_State"))
 		{ 
-		    new drawPESTState(g,root,last_x,last_y,e.getX(),e.getY(),Color.blue);
+		    new drawPESTState(g,root,(int) (last_x/Editor.ZoomFaktor),
+					     (int) (last_y/Editor.ZoomFaktor),
+					     (int) (e.getX()/Editor.ZoomFaktor),
+					     (int) (e.getY()/Editor.ZoomFaktor),
+						Color.green);
 		    Editor.SetListen();
 		}
 	if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Draw_Par"))
 		{ 
-		    new drawPESTParallel(g,root,last_x,last_y,e.getX(),e.getY(),Color.blue);
+		    new drawPESTParallel(g,root,(int) (last_x/Editor.ZoomFaktor),
+					     (int) (last_y/Editor.ZoomFaktor),
+					     (int) (e.getX()/Editor.ZoomFaktor),
+					     (int) (e.getY()/Editor.ZoomFaktor),
+					     Color.green);
 		    Editor.SetListen();
 		}
+
+	if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Draw_Trans"))
+		{ 
+		    new drawPESTTrans(g,root,(int) (last_x/Editor.ZoomFaktor),
+					     (int) (last_y/Editor.ZoomFaktor),
+					     (int) (e.getX()/Editor.ZoomFaktor),
+					     (int) (e.getY()/Editor.ZoomFaktor),
+					     Color.magenta);
+		    Editor.SetListen();
+		}
+
+	if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Set_Default"))
+		{ 
+		    new setDefault(g,root,(int) (last_x/Editor.ZoomFaktor),
+					     (int) (last_y/Editor.ZoomFaktor),
+					     Color.magenta);
+		    Editor.SetListen();
+		    repaint();
+		}
+
+
+
 	if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Select"))
 		{ 
-		    System.out.println(PESTdrawutil.getState(root,last_x,last_y).akt);
+		    Absyn test = PESTdrawutil.getState(root,
+			(int) (last_x/Editor.ZoomFaktor),
+			(int) (last_y/Editor.ZoomFaktor)
+				).akt;
+		System.out.println("akt :  "+test);
+		if (test instanceof Basic_State) {new highlightObject((Basic_State)test,Color.red);}
+		if (test instanceof And_State) {new highlightObject((And_State)test,Color.red);}
+		if (test instanceof Or_State) {new highlightObject((Or_State)test,Color.red);}
+		if (test instanceof Connector) {new highlightObject((Connector)test,Color.red);}
+	//	if (test instanceof Tr) {new highlightObject((Tr)test,Color.red);}
+		System.out.println(">>>"+PESTdrawutil.getSmallObject(root,last_x,last_y));
+
+
+
+		}
+	if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Draw_Conn"))
+		{ 
+		    new drawPESTConn(g,root,
+			(int) (last_x/Editor.ZoomFaktor)-6,
+			(int) (last_y/Editor.ZoomFaktor)-6,
+			Color.blue);
+		    Editor.SetListen(); 
 		}
 
 
@@ -186,31 +245,33 @@ this.show();
 	  }
       }
 
-      private static Statechart undo()
-      {
+private static void undo(Statechart xroot) { 
+      	System.out.println("UNDO");
 	  lauf = lauf.prev;
-	  return lauf.chart;
-      }
+	xroot.state = lauf.chart.state;
+	xroot.events = lauf.chart.events;
+	xroot.bvars = lauf.chart.bvars;
+	xroot.cnames = lauf.chart.cnames;
+	Editor.newdraw();
+   }
 
-      private static Statechart redo()
-      {
-	  if (lauf != basis) {lauf = lauf.next;}
-	  return lauf.chart;
-      }
+private static void redo(Statechart xroot) { 
+   	System.out.println("REDO");
+	  if (lauf != basis) {lauf = lauf.next;
+	xroot.state = lauf.chart.state;
+	xroot.events = lauf.chart.events;
+	xroot.bvars = lauf.chart.bvars;
+	xroot.cnames = lauf.chart.cnames;
+	Editor.newdraw();}
+   }
 
       public static void addundo(Statechart nroot)
-      {
-	 
+      {        Statechart root = nroot;
+	 lauf = lauf.next;
+	try {lauf.chart = (Statechart) root.clone();}
+	catch (Exception e) {System.out.println("Waere die Absyn korrekt, so funktionierte auch das Undo !!!!");}
       }
 
-
-      private class  newdraw
-         {
-	newdraw() { repaint();}
-        }
-  
- 
-public PESTDrawDesk() {repaint();}
 
 } // PESTDrawDesk
 

@@ -268,6 +268,29 @@ public static Statematrix getStateFrame(Statechart nroot, int x1, int y1, int x2
 
       } 
 
+public static Absyn getSmallObject(Statechart nroot, int cx1, int cy1) {
+	Statechart root = nroot;
+	Statematrix matrix1= getState(root,cx1,cy1);
+	Absyn wert = matrix1.akt;
+	Or_State otemp1;
+	ConnectorList colist;
+	CRectangle temprect;
+
+
+	if (matrix1.akt instanceof Or_State)
+	    {
+	     otemp1 = (Or_State) matrix1.akt;
+	     colist = otemp1.connectors;
+	     while(colist != null) {
+		temprect = new CRectangle(colist.head.position.x,colist.head.position.y,12,12);
+		if (temprect.contains(cx1-matrix1.x,cy1-matrix1.y)) {wert = colist.head;}
+		colist = colist.tail;
+		}
+	    }
+
+	return wert;
+
+}
 
 
 }
