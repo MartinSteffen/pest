@@ -6,10 +6,9 @@ package Absyn;
  * <br> TESC input language may have locations.
  * <p>
  * @author Initially provided by Martin Steffen.
- * @version  $Id: Absyn.java,v 1.7 1998-11-27 16:01:32 swtech00 Exp $
+ * @version  $Id: Absyn.java,v 1.8 1998-12-02 12:29:02 swtech19 Exp $
  */
 abstract public class Absyn {
- Coord coord;
  Location location;
 };
 
@@ -17,9 +16,13 @@ abstract public class Absyn {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Absyn.java,v 1.7 1998-11-27 16:01:32 swtech00 Exp $
+//	$Id: Absyn.java,v 1.8 1998-12-02 12:29:02 swtech19 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.7  1998/11/27 16:01:32  swtech00
+//	Ich habe damit angefangen, die Abstrakte Syntax so zu kommentieren, dass
+//	javadoc das auch verstehen kann. Das bereitet die Benutzung von javadoc vor.
+//
 //	Revision 1.6  1998/11/27 09:54:11  swtech20
 //	Mergekonflikte aufgeloest.
 //
