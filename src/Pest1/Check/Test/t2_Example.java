@@ -2,7 +2,7 @@ import absyn.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: t2_Example.java,v 1.11 1999-01-04 13:50:34 swtech11 Exp $
+ *  @version  $Id: t2_Example.java,v 1.12 1999-01-04 17:29:58 swtech11 Exp $
  */
 public class t2_Example {
   
@@ -236,7 +236,6 @@ public static Statechart getExample_m() {
     return new Statechart (null, null, null, SUD);
   }
 
-   
   public static Statechart getExample_d2() {
 
  Bvar a3 = new Bvar ("A");
@@ -370,13 +369,45 @@ public static Statechart getExample_m() {
 			 SUD);
   }
 
- public static Statechart getExample_m3() {
-  return new Statechart (null,
-			null,
-			 null,
-			 null);
+  public static Statechart getExample_m3() {
+
+    Basic_State P1 = new Basic_State (new Statename("P1"));
+    Basic_State P2 = new Basic_State (new Statename("P2"));
+
+
+    Or_State SUD = new Or_State (
+			       new Statename ("SUD"),
+			       new StateList (P1,new StateList (P2,null)),
+			       new TrList (new Tr (new Statename("P1"), new Statename ("P2"), new TLabel (null,null)),
+					     new TrList (new Tr (new Statename ("P1"), new Conname("C1"), new TLabel (null,null)),
+						     new TrList (new Tr (new Conname("C1"), new Statename ("P2"),	new TLabel (null,null)),
+                   new TrList (new Tr (new Conname("C8"), new Conname("C7"), new TLabel (null,null)),
+                     new TrList (new Tr (new Conname("C5"), new Statename ("P1"), new TLabel (null,null)),
+                       new TrList (new Tr (new Statename("P1"), new Conname("C6"), new TLabel (null,null)),
+                         new TrList (new Tr (new Statename("P1"), new Conname("C2"), new TLabel (null,null)),
+                           new TrList (new Tr (new Conname("C2"), new Conname("C3"), new TLabel (null,null)),
+                             new TrList (new Tr (new Conname("C2"), new Conname("C4"), new TLabel (null,null)),
+                               new TrList (new Tr (new Conname("C4"), new Conname("C2"), new TLabel (null,null)),
+                                 new TrList (new Tr (new Conname("C3"), new Conname("C4"), new TLabel (null,null)),
+              null))))))))))),
+			       new StatenameList (new Statename("P1"), null),
+			       new ConnectorList (new Connector(new Conname("C1")),
+               new ConnectorList (new Connector(new Conname("C2")),
+                 new ConnectorList (new Connector(new Conname("C3")),
+                   new ConnectorList (new Connector(new Conname("C4")),
+                     new ConnectorList (new Connector(new Conname("C5")),
+                       new ConnectorList (new Connector(new Conname("C6")),
+                         new ConnectorList (new Connector(new Conname("C7")),
+                           new ConnectorList (new Connector(new Conname("C8")),
+             null)) ))))))
+    );
+
+    return new Statechart (null, null, null, SUD);
   }
 
+
+
 }
+
 
 

@@ -7,7 +7,7 @@ import java.io.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: t.java,v 1.13 1999-01-03 15:14:39 swtech11 Exp $
+ *  @version  $Id: t.java,v 1.14 1999-01-04 17:29:57 swtech11 Exp $
  */
 public class t {
 
@@ -22,7 +22,7 @@ public class t {
     if (argv.length<1) { // Hilfssystem
       System.out.println();
       System.out.println("t - Das Testsystem fuer den Syntax Check");
-      System.out.println("Version: $Id: t.java,v 1.13 1999-01-03 15:14:39 swtech11 Exp $ ");
+      System.out.println("Version: $Id: t.java,v 1.14 1999-01-04 17:29:57 swtech11 Exp $ ");
       System.out.println("Aufruf: t op1 [op2]");
       System.out.println("  op1 enthaelt die zucheckende Statechart und muss angegeben werden:");
       System.out.println("      s  = Standard Beispiel aus der abstrakten Syntax");
