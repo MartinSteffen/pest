@@ -26,7 +26,7 @@ class CheckBVars {
   CheckBVars(Statechart _st, SyntaxError error, SyntaxWarning warning) {
     statechart = _st;
     s = statechart.state;
-    path = "";
+    path = s.name.name;
     this.warning = warning;
     this.error = error;
     }
@@ -50,7 +50,8 @@ class CheckBVars {
     BvarList bvl = statechart.bvars;
     BvarList bv;
     BAss ba = null;
-    StateList substates = null;
+    StateList substates=null;
+    StateList sl;
     CheckDupes checkDupes = new CheckDupes(statechart, error, warning);
     Or_State os;
     And_State as;
@@ -85,7 +86,22 @@ class CheckBVars {
           error.addError(new ItemError(100,"Zuviele Defaultstates gesetzt", path));
           ok = false;
           }
-
+ 
+      // Versuche, den Defaultstate zu finden
+      if (ok) {
+        found=false;
+        sl=substates;
+        while (sl != null) {
+          if (sl.head.name.name.compareTo(os.defaults.head.name)==0) { found=true; }
+          sl=sl.tail;
+	  }
+       
+        if (!found) {
+          error.addError(new ItemError(100,"Defaultstate ist kein State in diesem Or-State", path));
+          ok = false;
+          }
+        }
+ 
       trl = os.trs;
       while (trl != null) {
         // Testen, ob die BVars in den Guards auch deklariert sind

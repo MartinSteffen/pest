@@ -67,7 +67,7 @@ class CheckConnectors {
     ConnectorList cl = state.connectors;
     boolean ok = true;
 
-    System.out.println("checking for circles in '"+path+"'");
+    // System.out.println("checking for circles in '"+path+"'");
     while (cl != null && ok) {
       // System.out.println("entering dfs at '"+cl.head.name.name+"'");
       ok = dfsConnector(state,cl.head.name.name,new Vector());

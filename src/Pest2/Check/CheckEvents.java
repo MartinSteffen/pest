@@ -26,7 +26,7 @@ class CheckEvents {
   CheckEvents(Statechart _st, SyntaxError error, SyntaxWarning warning) {
     statechart = _st;
     s = statechart.state;
-    path = "";
+    path = s.name.name;
     this.error = error;
     this.warning = warning;
     }
@@ -39,8 +39,8 @@ class CheckEvents {
     this.warning = warning;
     }
 
-  // berprft, ob alle Events im State s auch in der Statechart
-  // definiert sind. Zurckgegeben wird TRUE, wenn dies der Fall ist.
+  // überprüft, ob alle Events im State s auch in der Statechart
+  // definiert sind. Zurückgegeben wird TRUE, wenn dies der Fall ist.
 	public boolean check() {
     SEventList sel = statechart.events;
     SEventList se;
@@ -51,7 +51,7 @@ class CheckEvents {
     boolean ok=true;
     boolean found;
 
-    // nur im Falle eines OrStates berprfen
+    // nur im Falle eines OrStates überprüfen
     if (s instanceof Or_State) {
       os = (Or_State)s;
       substates=os.substates;
