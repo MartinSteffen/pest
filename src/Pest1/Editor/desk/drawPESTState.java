@@ -321,7 +321,7 @@ ttest = true;
 if ((matrix.akt instanceof Or_State)  & (colist2 != null | templist2 != null | trlist2 != null) &
    (colist3 != null | templist3 != null | trlist3 != null) )
     //  {System.out.println("neue Funktion");}
-		            	{System.out.println("Or einx");
+    {//System.out.println("Or einx");
 			tempstate5 = new Or_State(new Statename ("...State"+laufname),templist2,trlist2,null,colist2,new CRectangle(cx1-matrix.x,cy1-matrix.y,cx2-cx1,cy2-cy1));
 			otemp = (Or_State) matrix.akt;
 			templist4 = new StateList(tempstate5,templist3);
@@ -340,7 +340,7 @@ if ((matrix.akt instanceof Or_State)  & (colist2 != null | templist2 != null | t
 			}
 
 		if (matrix.akt instanceof Or_State & colist3 == null & trlist3 == null & templist3 == null & matrix.akt.rect != null)
-		{System.out.println("wagadugu");
+		    {//System.out.println("wagadugu");
 			tempstate5 = new Or_State(new Statename ("...State"+laufname),templist2,trlist2,null,colist2,new CRectangle(cx1-matrix.x,cy1-matrix.y,cx2-cx1,cy2-cy1));
 			otemp = (Or_State) matrix.akt;
 			templist4 = new StateList(tempstate5,templist3);
@@ -350,7 +350,7 @@ if ((matrix.akt instanceof Or_State)  & (colist2 != null | templist2 != null | t
 		}
      
 		 if ((matrix.akt instanceof Or_State)  & colist2 == null & templist2 == null & trlist2 == null) // O.K.
-		                 {System.out.println("Basic ein");
+		     {//System.out.println("Basic ein");
 			btemp = new Basic_State(new Statename ("...State"+laufname),new CRectangle(cx1-matrix.x,cy1-matrix.y,cx2-cx1,cy2-cy1));
 			otemp = (Or_State) matrix.akt;
 			templist = otemp.substates;
@@ -360,7 +360,8 @@ if ((matrix.akt instanceof Or_State)  & (colist2 != null | templist2 != null | t
 
 		if (matrix.akt == root.state & templist3 == null & trlist3 == null & colist3 == null & root.state.rect == null)  // O.K.
 			{matrix.akt.rect = new CRectangle(cx1-matrix.x,cy1-matrix.y,cx2-cx1,cy2-cy1);
-			System.out.println("333334433333333333333333333");	}
+			// System.out.println("333334433333333333333333333");	
+			}
 	}
 }
 	

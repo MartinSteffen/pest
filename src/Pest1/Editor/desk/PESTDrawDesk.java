@@ -73,7 +73,7 @@ import editor.*;
     }
     // Registrierung von pop-up
     this.add(popup);
-    this.show();
+    // this.show();
 
 
   }
@@ -88,7 +88,9 @@ import editor.*;
     if (command.equals("undo")) {root = undo();Editor.newdraw();}
     else if (command.equals("restore")) {root = redo();Editor.newdraw();}
     else if (command.equals("loeschen")){ 
-	if (deleteobj instanceof State) { Delete d = new Delete((State) deleteobj,root);}
+	if (deleteobj instanceof State) { 
+	    System.out.println(">>>in delete"+deleteobj);
+	    Deleter.delete((State) deleteobj,root);}
                                         }
     
   }
@@ -233,10 +235,10 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans")
 
 	    if ((e.getID() == MouseEvent.MOUSE_PRESSED) & (Editor.Editor() =="Draw_StateLabel"))
 		{ 
-		Editor.SetListen();
+		    // Editor.SetListen();
 		    new labelPESTState(root,(int) (e.getX()/Editor.ZoomFaktor),
 					     (int) (e.getY()/Editor.ZoomFaktor));
-		    trroot = false;
+		   Editor.SetListen(); trroot = false;
 		   repaint();
 		}
 
@@ -245,10 +247,10 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans")
 		    Absyn akttrans;
 		    akttrans = PESTdrawutil.getSmallObject(root,(int) (e.getX()/Editor.ZoomFaktor),(int) (e.getY()/Editor.ZoomFaktor)); 
 		   if (akttrans instanceof Tr)
-		  {Editor.SetListen();
+		       {//Editor.SetListen();
 		    new labelPESTTrans(root,(int) (e.getX()/Editor.ZoomFaktor),
 		 		                 (int) (e.getY()/Editor.ZoomFaktor),(Tr) akttrans);
-		    trroot = false;
+		    Editor.SetListen();trroot = false;
 		new highlightObject();
 		   repaint();
 		  } else {	new highlightObject(true);repaint();}
@@ -257,42 +259,32 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans")
 
 
 	    if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Draw_State"))
-		{ Editor.SetListen();
+		{// Editor.SetListen();
 		    new drawPESTState(g,root,(int) (last_x/Editor.ZoomFaktor),
 					     (int) (last_y/Editor.ZoomFaktor),
 					     (int) (e.getX()/Editor.ZoomFaktor),
 					     (int) (e.getY()/Editor.ZoomFaktor),
 						Color.green);
-		    trroot = false;
+		    Editor.SetListen();trroot = false;
 
 		}
 	if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Draw_Par"))
-		{ Editor.SetListen();
+	    {// Editor.SetListen();
 		    new drawPESTParallel(g,root,(int) (last_x/Editor.ZoomFaktor),
 					     (int) (last_y/Editor.ZoomFaktor),
 					     (int) (e.getX()/Editor.ZoomFaktor),
 					     (int) (e.getY()/Editor.ZoomFaktor),
 					     Color.green);
-		    trroot = false;
+		    Editor.SetListen();trroot = false;
 		    repaint();
 		}
 
-	//if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Draw_Trans"))
-	//	{ Editor.SetListen();
-	//	    new drawPESTTrans(g,root,(int) (last_x/Editor.ZoomFaktor),
-	//				     (int) (last_y/Editor.ZoomFaktor),
-	//				     (int) (e.getX()/Editor.ZoomFaktor),
-	//				     (int) (e.getY()/Editor.ZoomFaktor),
-	//				     Color.magenta);
-	//	    trroot = false;
-	//	}
-
 	if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Set_Default"))
-		{ Editor.SetListen();
+	    { // Editor.SetListen();
 		    new setDefault(g,root,(int) (last_x/Editor.ZoomFaktor),
 					     (int) (last_y/Editor.ZoomFaktor),
 					     Color.magenta);
-		    trroot = false;
+		    Editor.SetListen();trroot = false;
 
 		    repaint();
 		}
@@ -305,23 +297,16 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans")
 			(int) (last_x/Editor.ZoomFaktor),
 			(int) (last_y/Editor.ZoomFaktor)
 				).akt;
-	//	System.out.println("akt :  "+test);
-		//if (test instanceof Basic_State) {new highlightObject((Basic_State)test,Color.red);}
-		//if (test instanceof And_State) {new highlightObject((And_State)test,Color.red);}
-		//if (test instanceof Or_State) {new highlightObject((Or_State)test,Color.red);}
-		//if (test instanceof Connector) {new highlightObject((Connector)test,Color.red);}
-	//	if (test instanceof Tr) {new highlightObject((Tr)test,Color.red);}
 		deleteobj = test;
-	//	System.out.println(">>>"+PESTdrawutil.getSmallObject(root,last_x,last_y));
 		System.out.println("to delete >>>"+deleteobj);
 		}
 	if ((e.getID() == MouseEvent.MOUSE_PRESSED) & (Editor.Editor() =="Draw_Conn"))
-		{ Editor.SetListen();
+	    { //  Editor.SetListen();
 		    new drawPESTConn(g,root,
 			(int) (e.getX()/Editor.ZoomFaktor)-6,
 			(int) (e.getY()/Editor.ZoomFaktor)-6,
 			Color.blue);
-		     trroot = false;
+		     Editor.SetListen();trroot = false;
 
 		}
 	}
