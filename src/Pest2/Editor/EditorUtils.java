@@ -4,7 +4,7 @@ import absyn.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class EditorUtils {
+class EditorUtils {
 
     private static int stateCount = 0;
 
@@ -23,7 +23,7 @@ public class EditorUtils {
 
 // **************************************************************************
 
-    public static void createStateMousePressed(MouseEvent e, Editor editor) {
+    protected static void createStateMousePressed(MouseEvent e, Editor editor) {
 
         editor.startPoint = new Point(getCoordX(e,editor),getCoordY(e,editor));
         editor.newRect = new CRectangle(editor.startPoint.x, editor.startPoint.y,0,0);
@@ -31,7 +31,7 @@ public class EditorUtils {
 
 // **************************************************************************
 
-    public static void createStateMouseDragged(MouseEvent e, Editor editor) {
+    protected static void createStateMouseDragged(MouseEvent e, Editor editor) {
 
         Graphics g = editor.getGraphics();
 
@@ -80,7 +80,7 @@ public class EditorUtils {
 
 // **************************************************************************
 
-    public static void createStateMouseReleased(MouseEvent e, Editor editor) {
+    protected static void createStateMouseReleased(MouseEvent e, Editor editor) {
 
         Graphics g = editor.getGraphics();
 
@@ -174,7 +174,7 @@ public class EditorUtils {
 
 // **************************************************************************
 
-    public static void andStateMouseMoved(MouseEvent e, Editor editor) {
+    protected static void andStateMouseMoved(MouseEvent e, Editor editor) {
 
         // *** loesche eine evtl. schon gezeigte Linie
 
@@ -276,7 +276,7 @@ public class EditorUtils {
 
 // **************************************************************************
 
-    public static void andStateMouseReleased(MouseEvent e, Editor editor) {
+    protected static void andStateMouseReleased(MouseEvent e, Editor editor) {
 
 
         if (editor.actionOk) {
@@ -511,7 +511,7 @@ public class EditorUtils {
 
   // **************************************************************************
 
-    public static void showStates(Editor editor) {
+    protected static void showStates(Editor editor) {
         try {
             StateList list = editor.stateList;
             Graphics g = editor.getGraphics();
@@ -527,7 +527,7 @@ public class EditorUtils {
 
 // **************************************************************************
 
-    public static void show(Rectangle absRect, Color color, Editor editor,
+    protected static void show(Rectangle absRect, Color color, Editor editor,
                             Graphics g) {
         if (color.equals(Color.red))
              color = editor.gui.getStatecolor();
@@ -542,7 +542,7 @@ public class EditorUtils {
 
 // **************************************************************************
 
-    public static StateList getSubStateList(State state) {
+    protected static StateList getSubStateList(State state) {
 
         // erzeugt eine Liste, die state beinhaltet und alle States, die
         // innerhalb von state liegen, also auch die substates der substates
@@ -583,7 +583,7 @@ public class EditorUtils {
 
 // **************************************************************************
 
-    public static void showAndLine(Point start, Point end, Color color, Editor editor, MouseEvent e) {
+    protected static void showAndLine(Point start, Point end, Color color, Editor editor, MouseEvent e) {
         // start und end haben absolute Koordinaten bzgl. des abs. Ursprunges
         Graphics g = editor.getGraphics();
 	if (color.equals(Color.red))
@@ -604,7 +604,7 @@ public class EditorUtils {
 
 // **************************************************************************
 
-    public static int getSideOf(Editor editor, State state, int x, int y) {
+    protected static int getSideOf(Editor editor, State state, int x, int y) {
 
         // ziehe durch den State beide Diagonalen und berechne dann, in welchem
         // der 4 Dreiecke sich x,y befindet.
@@ -628,7 +628,7 @@ public class EditorUtils {
 
 // **************************************************************************
 
-    public static State getFatherOf(State state, Editor editor) {
+    protected static State getFatherOf(State state, Editor editor) {
 
         // liefert den Vater von state, aber Vorsicht:
         // Liefert nur dann ein Ergebnis, wenn der State im Baum h„ngt
@@ -652,7 +652,7 @@ public class EditorUtils {
 
 // **************************************************************************
 
-    public static State getInnermostStateOf(int x, int y, Editor editor) {
+    protected static State getInnermostStateOf(int x, int y, Editor editor) {
 
         // Liefert den kleinsten (= innersten) Zustand, der x,y IM INNEREN
         // enth„lt. Im Falle, daá x,y auf der Kante eines And_States liegt,
@@ -691,7 +691,7 @@ public class EditorUtils {
 
 // **************************************************************************
 
-    public static void orStateSplit(Or_State alt, Or_State neu, Editor editor) {
+    protected static void orStateSplit(Or_State alt, Or_State neu, Editor editor) {
 
         // alt ist der werdende Vater des in ihm enthaltenen States neu.
         // die Substates, Defaults, Connectors und Trs werden, sofern sie
@@ -859,7 +859,7 @@ public class EditorUtils {
 
 // **************************************************************************
 
-    public static void setPathList(Statechart statechart, Editor editor) {
+    protected static void setPathList(Statechart statechart, Editor editor) {
 
         statechart.cnames = null;
         StateList list    = editor.stateList;
@@ -890,7 +890,7 @@ public class EditorUtils {
 
 // **************************************************************************
 
-    public static void deleteStateMouseMoved(MouseEvent e, Editor editor) {
+    protected static void deleteStateMouseMoved(MouseEvent e, Editor editor) {
 
         showStates(editor);
 
@@ -914,7 +914,7 @@ public class EditorUtils {
 
 // **************************************************************************
 
-    public static void deleteStateMouseReleased(MouseEvent e, Editor editor) {
+    protected static void deleteStateMouseReleased(MouseEvent e, Editor editor) {
 
         State inState = getInnermostStateOf(getCoordX(e,editor),
                                             getCoordY(e,editor), editor);
@@ -1036,7 +1036,7 @@ public class EditorUtils {
 
 // **************************************************************************
 
-    public static void dragStateMousePressed(MouseEvent e, Editor editor) {
+    protected static void dragStateMousePressed(MouseEvent e, Editor editor) {
         State inState = getInnermostStateOf(getCoordX(e,editor),
                                             getCoordY(e,editor), editor);
         if (! inState.equals(editor.statechart.state)) {
@@ -1053,7 +1053,7 @@ public class EditorUtils {
 
 // **************************************************************************
 
-    public static void dragStateMouseDragged(MouseEvent e, Editor editor) {
+    protected static void dragStateMouseDragged(MouseEvent e, Editor editor) {
 
         if (editor.activeState != null) {
 
@@ -1148,7 +1148,7 @@ public class EditorUtils {
 
 // **************************************************************************
 
-    public static void dragStateMouseReleased(MouseEvent e, Editor editor) {
+    protected static void dragStateMouseReleased(MouseEvent e, Editor editor) {
         if (editor.activeState != null & !editor.actionOk) {
             int deltaX = editor.endPoint.x - editor.startPoint.x;
             int deltaY = editor.endPoint.y - editor.startPoint.y;

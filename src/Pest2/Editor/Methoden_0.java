@@ -20,25 +20,11 @@ class Methoden_0
     }
 
 
-/*
-    Methode: addTransitionMouseClicked(State state,MouseEvent e,int x,int y,Editor editor)
-    Funktion: Fuegt Punkt (x,y) zuerst in einem Array ein,
-              Anfangspunkt mit der linken Maustaste markiert,
-              Weitere Punkte mit der rechten Maustaste,
-              Endpunkt mit der linken Maustaste beenden.
-    Hilfsmethode: getNullIndex(Point[] p)
-                  setNullArray(CPoint[] p)
-*/
     protected static void addTransitionMouseClicked(MouseEvent e,int x,int y,Editor editor)
     {
         State s1=null,s2=null;
         Graphics g = editor.getGraphics();
         int j=getNullIndex(pointsTr);
-/*        if (j>0) //nur parallele oder senkrechte Linien!!
-        {
-            if ((Betrag(pointsTr[j-1].x,x)<=Betrag(pointsTr[j-1].y,y))) x = pointsTr[j-1].x;
-            else y = pointsTr[j-1].y;
-        }*/
         pointsTr[j] = new CPoint(x,y);
         CRectangle r = new CRectangle(0,0,0,0);
         State s = EditorUtils.getInnermostStateOf(x,y,editor);
@@ -160,13 +146,7 @@ class Methoden_0
     }
 
 
-    //transitionmouseMoved(..)
-    //Methode soll aufgerufen werden, wenn Maus bewegt wird.
-    //Funktion: ruft weitere Methoden auf, die bearbeitet werden sollen,
-    //          wenn Transition gewaehlt ist
-    //Parametern: State, x- und y-Koordinaten des Mauszeigers
-
-    protected static void transitionMouseMoved(State state,int x, int y, Editor editor)
+   protected static void transitionMouseMoved(State state,int x, int y, Editor editor)
     {
         State st = editor.statechart.state;
         if (st == null) return;
@@ -191,15 +171,6 @@ class Methoden_0
         }
         showAllTrans(editor);
     }
-
-    //markTransitionMouseMoved(..)
-    //Funktion: Prueft, ob Mauszeiger im Rechtecht, wenn ja:
-    //          zeichnet an der Seite eines Rechtecks einen Kreis, um
-    //          das Hinzufuegen von Transition zu erleichtern
-    //          sonst: nichts
-    //Hilfsmethode: wherePoint
-    //Parametern: Rechteck und x-y-Koordinate des Mauszeigers
-
 
     private static void markTransitionMouseMoved(State state,int x, int y,Editor editor)
     {
@@ -393,7 +364,6 @@ class Methoden_0
     }
 
 
-// x,y absolute Koordinate des innersten zustandes
     protected static void bezier(Point[] p1,int x, int y,Color col, Editor editor)
     {
         Graphics g = editor.getGraphics();
@@ -475,15 +445,6 @@ class Methoden_0
     }
 
 
-    //wherePoint(..) (x,y): relative Koordinate
-    //Hilfsmethode fuer markTransitionMouseMoved
-    //Funktion: Prueft, in welchem "Bereich" der Mauszeiger sich im Rechteck
-    //          befindet.
-    //Rueckgabewerte: 1 fuer obere Seite
-    //                2 fuer rechte Seite
-    //                3 fuer untere Seite
-    //                4 fuer linke Seite
-
     protected static int wherePoint(Rectangle r, int x, int y)
     {
         Rectangle r1 = new Rectangle(r.x,r.y,r.width/2,r.height/2);
@@ -513,11 +474,6 @@ class Methoden_0
         else return 4; //Punkt liegt im "linken" Bereich
     }
 
-/*
-    Methode: getNullIndex(Point[] p)
-    Funktion: liefert den ersten Index, der den Wert null hat.
-    Benutzt von: addTransitionMouseMoved
-*/
     private static int getNullIndex(Point[] p)
     {
         int i=0;
@@ -527,24 +483,11 @@ class Methoden_0
         return i;
     }
 
-/*
-    Methode: setNullArray(CPoint[] p)
-    Funktion: setzt das Point[]-Array auf null
-    Benutzt von: addTransitionMouseMoved
-*/
     private static void setNullArray(CPoint[] p)
     {
         for(int i=0;i<50;i++) p[i] = null;
     }
 
-/*
-    Methode: checkMouseButton(MouseEvent e,int button)
-    Funktion: Ueberprueft, ob MausTaste (button) gedrueckt wurde
-    Werte fuer button: 1: linke Maustaste
-                       2: mittlere Maustaste
-                       3: rechte Maustaste
-    Rueckgabe: true, wenn die abgefragte Taste gedrueckt wurde, sonst false
-*/
 
     private static boolean checkMouseButton(MouseEvent e,int button)
     {
@@ -571,10 +514,6 @@ class Methoden_0
         else return (x-y);
     }
 
-/*
-    Methode: showStateNames(Editor editor)
-    Funktion: gibt die Zustandsnamen aus
-*/
 
     private static void showStateNames(Editor editor)
     {
@@ -770,7 +709,6 @@ class Methoden_0
         }
     }
 
-//State "root" kann zurueck gegeben werden
     protected static State getFirstOrStateOf(int x, int y, Editor editor)
     {
         State s = EditorUtils.getInnermostStateOf(x,y,editor);
@@ -786,10 +724,6 @@ class Methoden_0
         return s;
     }
 
-/*
-    Methode: getConEnvOf
-    Funktion: liefert den Connector, der um den absoluten Punkt(x,y) mit 10 Pixel Umgebung enthaelt
-*/
     protected static Connector getConEnvOf(int x, int y, Editor editor)
     {
         State s = getFirstOrStateOf(x,y,editor);

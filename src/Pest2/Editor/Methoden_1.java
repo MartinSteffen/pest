@@ -37,22 +37,10 @@ class Methoden_1
     protected static ObjectList selectList = null,copyList = null;
 
 
-/*
-    Methode: addStatenameMouseClicked(int x, int y, Editor editor)
-    Funktion: erzeugt ein Dialogfenster fuer die Eingabe von Statename zu dem
-              Zustand, der x,y im innersten hat.
-*/
     protected static void addStatenameMouseClicked(int x, int y, Editor editor)
     {
         State s = EditorUtils.getInnermostStateOf(x,y,editor);
         if (s == null) return;
-/*
-        if (s==editor.statechart.state)
-        {
-            editor.gui.OkDialog(editor,"Fehler","Zustand kann nicht umbenannt werden!");
-            return;
-        }
-*/
         String name = editor.gui.EingabeDialog(editor,"Zustand benennen", "Name fuer Zustand:", s.name.name);
         if (name != null)
         {
@@ -98,11 +86,6 @@ class Methoden_1
 
 
 
-/*
-    Methode: addTransNameMouseClicked(int x, int y, Editor editor)
-    Funktion: erzeugt ein Dialogfenster fuer die Eingabe von Transitionsnamen,
-
-*/
     protected static void addTransNameMouseClicked(int x, int y, Editor editor)
     {
         if (EditorUtils.getInnermostStateOf(x,y,editor) instanceof Basic_State) return;
@@ -160,9 +143,6 @@ class Methoden_1
       }
     }
 
-/*
-    Funktion: aendert Transition-> source,target, wenn Zustandsname veraendert wird
-*/
     private static void changeTransName(String name,int x, int y,Editor editor)
     {
         State s = Methoden_0.getFirstOrStateOf(x,y,editor);//noch And_State beachten!!!
@@ -173,7 +153,7 @@ class Methoden_1
             changeTrAnchorOf(list.head,new Point(r.x,r.y),editor);
             list = list.tail;
         }
-    } //END changeTransName()
+    } 
 
     protected static State getFirstAndOf(int x, int y, Editor editor)
     {
@@ -200,14 +180,6 @@ class Methoden_1
         return null;
     }
 
-/*
-    Methode: getNearestTransOf
-    Funktion: liefert die Transition am naehersten (x,y)
-    Parameter: tlist: Transliste, die durchsucht wird
-               p: absolute Koordinate des Or-Zustandes, der tlist enthaelt
-               (x,y) : MouseClicked-Position
-    -> tlist darf nicht leer sein!
-*/
 
     private static Tr getNearestTransOf(TrList tlist,Point p, int x, int y, Editor editor)
     {
@@ -231,9 +203,6 @@ class Methoden_1
         else return (x-y);
     }
 
-/*
-    Zoom-Faktor
-*/
     protected static double getFactor()
     {
         return factor;
@@ -567,11 +536,6 @@ class Methoden_1
          g.dispose();
     }
 
-/*
-    Methode: markSelectedTr(..)
-    Funktion: so wie die Methode oben, jedoch mit der Uebergabe von einer Farbe
-              (wird fuer die Simulation benutzt)
-*/
     private static void markSelectedTr(Tr tr, Point p, Color col, Editor editor)
     {
         if (tr == null | (tr.points.length <2)) return;
@@ -691,13 +655,6 @@ class Methoden_1
         }
     }
 
-/*
-    Methode: markSelectedCon
-    Funktion: markiert den ausgewaehlte Connector
-    Parameter: con: Connector
-               p : absoluter Punkt fuer con
-*/
-
     private static void markSelectedCon(Connector con, Point p, Editor editor)
     {
         Graphics g = editor.getGraphics();
@@ -804,10 +761,6 @@ class Methoden_1
        	editor.gui.StateChartHasChanged();
         Methoden_0.updateAll(editor);
     }
-/*
-    Methode: removeOne()
-    Funktion: entfernt das markierte Objekt
-*/
     protected static void removeOne(Editor editor)
     {
         if (markLast instanceof Connector)
@@ -815,10 +768,6 @@ class Methoden_1
         if (markLast instanceof Tr)
             removeOneTr(editor);
     }
-/*
-    Methode: removeOneCon()
-    Funktion; entfernt das markierte Objekt:Connector
-*/
     private static void removeOneCon(Editor editor)
     {
         StateList list = editor.stateList;
@@ -894,13 +843,6 @@ class Methoden_1
         }
     }
 
-/*
-    Methode: changeTrAnchorOf(..)
-    Funktion: beim Verschieben oder Einfuegen muessen die TrAnchor-Felder
-              dieser Transition auch veraendert werden
-    Parameter: tr: die zuveraendende Transition
-               p: absolute Koordinate desjenigen Or_States
-*/
     private static void changeTrAnchorOf(Tr tr, Point p,Editor editor)
     {
         Absyn source = null, target = null;
