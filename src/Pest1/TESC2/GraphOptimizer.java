@@ -4,7 +4,7 @@
  * Created: Mon Dec 07 16:43:30 1998
  * 
  * @author swtech14 : Eike Schulz & Martin Poerksen
- * @version $Id: GraphOptimizer.java,v 1.1 1998-12-07 16:44:37 swtech14 Exp $
+ * @version $Id: GraphOptimizer.java,v 1.2 1998-12-10 17:10:14 swtech14 Exp $
  */
 
 package TESC2;
@@ -21,7 +21,7 @@ public class GraphOptimizer {
    */
 
   public static final String[] LIST_OF_ALGORITHMS =
-  { "Algorithmus Eins", "Algorithmus Zwei" };
+  { "Algorithmus 1" };
 
 
   // Ergebniswert fuer Graphplazierungsalgorithmus :
@@ -31,32 +31,22 @@ public class GraphOptimizer {
   private int errorcode;
 
 
-  // Referenzvariable fuer uebergebenes Statechart-Objekt
+  // Referenzvariable fuer uebergebenes Statechart-Objekt.
   private Statechart sChart;
 
-  // Referenzvariable fuer uebergebenes FontMetrics-Objekt
+  // Referenzvariable fuer 'sChart'-Kopie -> Objekt, das mit
+  // Koordinaten ausgestattet und zurueckgegeben wird.
+  private Statechart cChart;
+
+  // Referenzvariable fuer uebergebenes FontMetrics-Objekt.
   private FontMetrics fMetrics;
 
-  // Speicherwert fuer Algorithmus-Art
+  // Speicherwert fuer Algorithmus-Art.
   private int algorithm;
 
 
   /**
-   * Konstruktor fuer Erzeugung eines Algorithmusobjektes (mit Parametern).
-   *
-   * Uebergabeobjekte:
-   * - Statechart-Objekt
-   * - FontMetrics-Objekt
-   */
-
-  public GraphOptimizer (Statechart sc, FontMetrics fm) {
-    sChart = sc;
-    fMetrics = fm;
-  } // constructor GraphOptimizer (Statechart sc, FontMetrics fm)
-
-
-  /**
-   * Konstruktor fuer Erzeugung eines Algorithmusobjektes ()
+   * Konstruktor zur Erzeugung eines Algorithmusobjektes ()
    */
 
   public GraphOptimizer () {
@@ -66,29 +56,52 @@ public class GraphOptimizer {
   } // constructor GraphOptimizer ()
 
 
+  /**
+   * Konstruktor zur Erzeugung eines Algorithmusobjektes (mit Parametern).
+   *
+   * Uebergabeobjekte:
+   * - Statechart-Objekt,
+   * - FontMetrics-Objekt.
+   */
+
+  public GraphOptimizer (Statechart sc, FontMetrics fm) {
+    sChart = sc;
+    fMetrics = fm;
+  } // constructor GraphOptimizer (Statechart sc, FontMetrics fm)
+
+
 
   /**
    * Start des Graphplazierungsalgorithmus ().
    */
 
-  public void start () throws AlgorithmException {
-    errorcode = 0;
+  public Statechart start () throws AlgorithmException {
+    errorcode = 0;           // "Reset" des Fehlercodes
+    //    cChart = (Statechart)sChart.clone(); // Kopiere 'sChart'-Objekt.
+    cChart = sChart;
+
+    // Pruefe, of 'algorithm' einen "sinnvollen" Wert besitzt.
+    // Falls nicht, fuehre Default-Algorithmus aus.
+
     if ((algorithm != 0) && (algorithm != 1))
       algorithm = 0;
 
     // (Aufruf des entsprechenden Algorithmus erfolgt hier...)
 
-    if (algorithm == 0) {
-       // Aufruf des Default-Algorithmus
+    switch (algorithm) {
+      case (0) : // Aufruf des Default-Algorithmus.
+	break;
+      case (1) : // Aufruf des Alternativ-Algorithmus.
+	break;
     }
-     
-    if (algorithm == 1) {
-       // Aufruf des Alternativ-Algorithmus 
-    }
+
+    // Falls Fehler aufgetreten ist, wirf Exception, sonst gib
+    // Referenz auf 'cChart' zurueck.
 
     if (errorOccured())
       throwException();
 
+    return (cChart);
   } // method start ()
 
 
@@ -99,9 +112,9 @@ public class GraphOptimizer {
    * - int-Wert fuer Algorithmus-Art
    */
 
-  public void start (int alg) throws AlgorithmException {
+  public Statechart start (int alg) throws AlgorithmException {
     algorithm = alg;
-    start();
+    return start();
   } // method start (int)
 
 
@@ -163,7 +176,7 @@ public class GraphOptimizer {
       case 2 :
 	throw
 	  new AlgorithmException
-	  ("Algorithmus-Art nicht verfuegbar.                           ");
+	  ("Kein Statechart-Objekt zur Optimierung vorhanden.           ");
 
       // (...)
 
