@@ -27,7 +27,7 @@ import absyn.*;
  * </code>
  * <p>
  * @author Michael Sülzer, Christoph Schütte.
- * @version  $Id: TESCTokenizer.java,v 1.7 1999-01-17 17:13:04 swtech20 Exp $
+ * @version  $Id: TESCTokenizer.java,v 1.8 1999-02-07 11:55:25 swtech20 Exp $
  *
  * @see Token
  * @see TESCParser
@@ -66,9 +66,14 @@ class TESCTokenizer {
 
     /**
      * Kommentarzeichen
-     * @see TESCTokenizer#input
      */
     private char comment[] = {'/','/'}; 
+
+     /**
+     * Anfuehrungszeichen
+     */
+    private char quotation_marks = '"'; 
+   
 
     /**
      * Erzeugt einen TESCTokenizer. 
@@ -259,13 +264,30 @@ class TESCTokenizer {
 	while (isWhitespaceChar(input_char))
 	    input_char = readChar();
 
+        // --- String-Token einlesen ----------------------------------------------------
+        if (input_char == quotation_marks) {
+	    StringBuffer content = new StringBuffer();
+	    
+	    input_char = readChar();
+	    while ((input_char != '\n') && !input_eof) {
+
+		if (input_char == quotation_marks)
+		    return (Token) Token.String.clone(content.toString(), input_line_number);
+                else
+		    content.append((char)input_char);
+
+		input_char = readChar();
+	    }
+	    return (Token) Token.StringError.clone("String endete nicht mit Hochkommata.",input_line_number);
+	}
+
 	// --- Kommentare ueberlesen ----------------------------------------------------
 	// Ein Kommentar beginnt mit //
 	if (input_char == comment[0]) {
 	    int input_save = input_char;
 	    input_char = readChar();
 	    if (input_char == comment[1]) {
-		while ((input_char != '\n') & !input_eof) {
+		while ((input_char != '\n') && !input_eof) {
 		    input_char = readChar();
 		}
 		unreadChar(input_char);
@@ -314,6 +336,9 @@ class TESCTokenizer {
 //      ----------------------------               
 //
 //      $Log: not supported by cvs2svn $
+//      Revision 1.7  1999/01/17 17:13:04  swtech20
+//      Neues Token TOK_SLASH fuer TLabel.caption. Kommentarzeichen jetzt //.
+//
 //      Revision 1.6  1999/01/11 12:13:57  swtech20
 //      Bugfixes.
 //
