@@ -5,6 +5,7 @@ import java.io.*;
 
 import absyn.*;
 import gui.*;
+import editor.*;
 
 /**
  * <h1>Syntax Check für Statecharts</h1>
@@ -48,12 +49,13 @@ import gui.*;
  * </DL COMPACT>
  *
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: ModelCheck.java,v 1.15 1999-01-10 16:06:35 swtech11 Exp $
+ * @version  $Id: ModelCheck.java,v 1.16 1999-01-11 21:37:04 swtech11 Exp $
  */
 public class ModelCheck {
   private ModelCheckMsg mcm; // Object, um die Fehler und Warnungen zu speichern
   private boolean outputGUI; // Meldungen auf die GUI ausgeben
   private GUIInterface gui = null; // Referenz auf die GUI
+  private Editor edit = null;
 
 /**
  * Der Constructor des Syntax Checkers.
@@ -74,6 +76,19 @@ public class ModelCheck {
     this();
     gui = _gui;
     outputGUI = true;
+  }
+
+/** 
+ * Der Constructor des Syntax Checkers.
+ * Es werden, wenn man die Einstellungen nicht ändert, Meldungen von Fehlern und Warnungen auf der GUI ausgegeben.
+ * @param _gui Referenz auf die GUI
+ * @see        #setOutputGUI(boolean)
+ */
+  public ModelCheck(GUIInterface _gui, Editor _edit) {
+    this();
+    gui = _gui;
+    outputGUI = true;
+    edit = _edit;
   }
 
 /**
