@@ -1,0 +1,91 @@
+/* Grammatik fuer Tesc - $Id: grammatik.txt,v 1.1 1998-12-07 13:20:42 swtech13 Exp $ 
+ *
+ * $Log: not supported by cvs2svn $
+ */
+
+<NUM> ::= 0|1|2|3|4|5|6|7|8|9|0
+
+<LET> ::= A|..|B|a|..|b|_|-
+
+<STRING> ::= <LET><STRING> | <LET> |
+	     <NUM><STRING> | <NUM>
+
+// Wieso Pathnames?
+<PATHNAMES>   ::= pathnames: <PATHLIST>
+
+<PATHLIST>    ::= <STRING>,<PATHLIST> | <STRING>;
+
+
+<BVARS>       ::= bvars: <BVARLIST>
+
+<BVARLIST>    ::= <STRING>,<BVARLIST> | <STRING>;
+
+<EVENTS>      ::= events: <EVENTLIST>
+
+<EVENTLIST>   ::= <STRING>,<EVENTLIST> | <STRING>;
+
+<CONS>        ::= connectors: <CONLIST>
+
+<CONLIST>     ::= <STRING>,<CONLIST> | <STRING>;
+
+<CHART>       ::= <EVENTS> <BVARS> <PATHNAMES> <STATE>
+
+<STATE>       ::= <BASICSTATE> | <ORSTATE> | <ANDSTATE>
+
+<ANDSTATE>    ::= and <STRING>: <ASTATES> <TRANSDEF> <CONS> end <STRING>; 
+
+<ORSTATE>     ::= or <STRING>: <STATES> <TRANSDEF> <CONS> end <STRING>;
+
+<STATES>      ::= <ORSTATE>;<STATES>    | <ORSTATE>;   |
+		  <ANDSTATE>;<STATES>   | <ANDSTATE>;  |
+		  <BASICSTATE>;<STATES> | <BASICSTATE>;
+
+<ASTATES>     ::= <ORSTATE>;<ASTATES>    | <ORSTATE>;   |
+                  <BASICSTATE>;<ASTATES> | <BASICSTATE>;
+
+<BASICSTATE>  ::= <STRING>;
+
+// wozu transitions einf’hren?
+<TRANSDEF>    ::= transitions: <TRLIST>
+
+<TRLIST>      ::= <TRANSITION>,<TRLIST> | <TRANSITION>
+
+
+<TRANSITION>  ::= from <SNAME> to <SNAME> on <GUARD> do <ACTION>;
+
+<SNAME>	      ::= undefined | <STRING> 
+
+<GUARD>       ::= <EMPTYSTR>  | 
+	          not <GUARD> | // ??????
+                  <COMPPATH>  |
+		  <COMPGUARD> |
+		  <STRING>
+
+<COMPPATH>    ::= <PATHOP> <STRING>
+
+<PATHOP>      ::= in | entered | exited
+
+<OP>          ::= && | || | => | <=>
+
+<COMPGUARD>   ::= <GUARD> <OP> <GUARD>
+
+<ACTION>      ::= <ACTIONLIST>
+
+<ACTIONLIST>  ::= <AKTION>;<ACTIONLIST> | <AKTION>;
+
+<AKTION>      ::= <STRING> | <BOOLSTMT> | <BASSIGN> 
+
+<BASSIGN>     ::= <STRING>:=<GUARD>
+
+<BOOLSTMT>    ::= false(<STRING>) | true(<STRING>) | <BASSIGN>  //???
+
+<EMPTYSTR>    ::= ~
+
+
+
+
+
+
+
+
+
