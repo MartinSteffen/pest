@@ -7,6 +7,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import com.oroinc.text.perl.*;
 import util.PrettyPrint;
+import util.Keyword;
 import gui.GUIInterface;
 import tesc1.TESCSaver;
 
@@ -63,7 +64,7 @@ import tesc1.TESCSaver;
  * </DL COMPACT>
  *
  * @author  Sven Jorga, Werner Lehmann
- * @version $Id: HAImport.java,v 1.18 1999-01-28 17:02:40 swtech18 Exp $
+ * @version $Id: HAImport.java,v 1.19 1999-02-01 19:35:25 swtech18 Exp $
  */
 public class HAImport implements Patterns {
   Perl5Util perl = new Perl5Util();
@@ -96,6 +97,7 @@ public class HAImport implements Patterns {
   private Hashtable coordHash = null;
   private Hashtable initHash = null;
   private Hashtable pathHash = new Hashtable();
+  private Hashtable rectHash = new Hashtable();
   private TESCSaver tesc = null;
   private boolean first = true;
   private Vector used = null;
@@ -427,7 +429,32 @@ public class HAImport implements Patterns {
   // einmal aufzurufen fÆr jeden Import eines HA-Formates
 
   private State getState() throws Exception {
-    return createState(rootString, new CRectangle(0,0,0,0));
+    State st = createState(rootString, new CRectangle(0,0,0,0));
+    fixAllTrans(st);
+    return st;
+  }
+
+  private void fixAllTrans(State s) throws Exception {
+    StateList currState = null;
+    if (s instanceof Or_State) {
+      TrList current = ((Or_State)s).trs;
+      while ( current != null) {
+        fixTrans(current.head.points,(CRectangle) rectHash.get(((Statename)current.head.source).name),
+                (CRectangle) rectHash.get(((Statename)current.head.target).name));
+        current = current.tail;
+      }
+      currState = ((Or_State)s).substates;
+      while (currState != null) {
+        fixAllTrans(currState.head);
+        currState = currState.tail;
+      }
+    }else if (s instanceof And_State) {
+      currState = ((And_State)s).substates;
+      while (currState != null) {
+        fixAllTrans(currState.head);
+        currState = currState.tail;
+      }
+    }
   }
 
   private CRectangle calcRect(Vector pointVec) {
@@ -463,6 +490,8 @@ public class HAImport implements Patterns {
     TLabel tLabel = null;
 
     stateName = perl.substitute("s/\"//g",stateName);
+    if ( Keyword.isReserved(stateName) )
+        throw new Exception("Zustandsname ("+ stateName+") ist reserviertes Schlüsselwort.");
     stateType = (String)tyHash.get(stateName);
     if (parseCoords) {
       // Rectangle erzeugen
@@ -476,6 +505,7 @@ public class HAImport implements Patterns {
                              resizedY.intValue(),
                              resizedWidth.intValue(),
                              resizedHeight.intValue());
+      rectHash.put(stateName,rtNew);
     }
     if (stateType.equalsIgnoreCase("BASIC"))
       return new Basic_State(new Statename(stateName),rtNew);
@@ -553,6 +583,33 @@ public class HAImport implements Patterns {
 
   }
 
+  private void fixTrans(CPoint pointVec[], CRectangle src, CRectangle dest) throws Exception{
+    if (src == null || dest == null)
+      throw new Exception("fixTrans: src oder dest ist null.");
+    if (!src.contains(pointVec[0])) {
+      pointVec[0] = nearestPoint(pointVec[0],src);
+    }
+    if (!dest.contains(pointVec[pointVec.length-1])) {
+      pointVec[pointVec.length-1] = nearestPoint(pointVec[pointVec.length-1],dest);
+    }
+  }
+
+  private CPoint nearestPoint(CPoint p, CRectangle r) throws Exception{
+    //if (p.x >= r.x && p.y >= r.y && p.x < r.x+r.width && p.y < r.y+r.height)
+    //  throw new Exception("Böse Falle");
+    if (p.x >= r.x && p.x < r.x+r.width)
+      if (p.y < r.y) return new CPoint(p.x,r.y);
+      else return new CPoint(p.x, r.y+r.height-1);
+    else if (p.y >= r.y && p.y < r.y+r.height)
+      if (p.x < r.x) return new CPoint(r.x,p.y);
+      else return new CPoint(r.x+r.width-1, p.y);
+    else if (p.x < r.x && p.y < r.y) return new CPoint(r.x,r.y);
+    else if (p.x >= r.x + r.width && p.y < r.y) return new CPoint(r.x+r.width-1, r.y);
+    else if (p.x < r.x && p.y >= r.y + r.height) return new CPoint(r.x,r.y+r.height-1);
+    else if (p.x >= r.x + r.width && p.y >= r.y + r.height) return new CPoint(r.x+r.width-1, r.y+r.height-1);
+    else throw new Exception("nearestPoint: Shit happens");
+  }
+
   private CPoint getUnusedPoint(Vector labelCoords, Vector trCoords) throws Exception {
     int i = 0;
     CPoint pt = null;
@@ -574,10 +631,10 @@ public class HAImport implements Patterns {
     CPoint pt = null, pt1 = null, pt2 = null;
 
     if (size % 2 > 0)
-      pt = (CPoint) trCoords.elementAt(size / 2 + 1);
+      pt = (CPoint) trCoords.elementAt(size / 2);
     else {
-      pt1 = (CPoint) trCoords.elementAt(size / 2);
-      pt2 = (CPoint) trCoords.elementAt(size / 2 + 1);
+      pt1 = (CPoint) trCoords.elementAt(size / 2 - 1);
+      pt2 = (CPoint) trCoords.elementAt(size / 2 );
       pt = new CPoint((pt1.x+pt2.x)/2,(pt1.y+pt2.y)/2);
     }
     return pt;
@@ -613,6 +670,8 @@ public class HAImport implements Patterns {
     String temp = null;
     if (perl.match("/^mk_egen\\((.*)\\)/",actionString)) {
       temp = perl.substitute("s/\"//g",perl.group(1));
+      if ( Keyword.isReserved(temp))
+        throw new Exception("ActionEvt-String (\""+ temp+"\") enthält reserviertes Schlüsselwort.");
       return new ActionEvt(new SEvent(new String(temp))); }
     else if (perl.match("/^mk_block\\(<(.*)>\\)/",actionString)) {
       return new ActionBlock(createAseq(perl.group(1))); }
@@ -645,14 +704,20 @@ public class HAImport implements Patterns {
     String temp = null;
     if (perl.match("/^mk_mtrue\\((.*)\\)/",boolstmtString)) {
       temp = perl.substitute("s/\"//g",perl.group(1));
+      if (Keyword.isReserved(temp))
+        throw new Exception("Bvar-String (\""+ temp+"\") enthält reserviertes Schlüsselwort.");
       return new MTrue( new Bvar(new String(temp))); }
     else if (perl.match("/^mk_mfalse\\((.*)\\)/",boolstmtString)) {
       temp = perl.substitute("s/\"//g",perl.group(1));
+      if (Keyword.isReserved(temp))
+        throw new Exception("Bvar-String (\""+ temp+"\") enthält reserviertes Schlüsselwort.");
       return new MFalse( new Bvar(new String(temp))); }
     else if (perl.match("/^mk_bass\\((.*)\\)/",boolstmtString)) {
       // Aufbau: mk_bass("X",...
       Vector vec = perl.split("/,/",perl.group(1));
       temp = perl.substitute("s/\"//g",(String) vec.elementAt(0));
+      if (Keyword.isReserved(temp))
+        throw new Exception("Bvar-String (\""+ temp+"\") enthält reserviertes Schlüsselwort.");
       return new BAss(new Bassign(new Bvar(new String(temp)),
                                      createGuard("",(String) vec.elementAt(1)))); }
     else {
@@ -669,8 +734,10 @@ public class HAImport implements Patterns {
 
     if (perl.match("/^mk_emptyexpr\\(.*\\)/",exprStr))
       return new GuardEmpty(new Dummy());
-    else if (perl.match("/^mk_basicexpr\\((.*)\\)/",exprStr))
-      return new GuardEvent(new SEvent(removeQuotes(perl.group(1))));
+    else if (perl.match("/^mk_basicexpr\\((.*)\\)/",exprStr)) {
+       if (Keyword.isReserved(perl.group(1)))
+        throw new Exception("SEvent-String (\""+perl.group(1)+"\") enthält reserviertes Schlüsselwort.");
+      return new GuardEvent(new SEvent(removeQuotes(perl.group(1)))); }
     else if (perl.match("/^mk_negexpr\\((.*)\\)/",exprStr))
       return new GuardNeg(createGuard(perl.group(1),""));
     else if (perl.match("/^mk_compe\\(mk_compexpr\\((.*)\\)\\)/",exprStr)) {
@@ -682,8 +749,10 @@ public class HAImport implements Patterns {
 
     if (perl.match("/^mk_emptycond\\(.*\\)/",condStr))
       return new GuardEmpty(new Dummy());
-    else if (perl.match("/^mk_istrue\\((.*)\\)/",condStr)) // ??? ?????????????????
-      return new GuardBVar(new Bvar(new String(perl.group(1))));
+    else if (perl.match("/^mk_istrue\\((.*)\\)/",condStr)) { // ??? ?????????????????
+      if (Keyword.isReserved(perl.group(1)))
+        throw new Exception("Bvar-String (\""+perl.group(1)+"\") enthält reserviertes Schlüsselwort.");
+      return new GuardBVar(new Bvar(new String(perl.group(1)))); }
     else if (perl.match("/^mk_negcond\\((.*)\\)/",condStr))
       return new GuardNeg(createGuard("",perl.group(1)));
     else if (perl.match("/^mk_instate\\((.*)\\)/",condStr))
