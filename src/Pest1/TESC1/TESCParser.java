@@ -273,6 +273,9 @@ class TESCParser {
 
 	    st = astate(null);
 	}
+	else if (tok.token==vTOKEN.IDENT) {
+	    addError(makeError(tok,"Zustandsdeklaration erwartet"));
+	}
 
 	if (st != null) st.location = loc;
 
@@ -1323,8 +1326,14 @@ class TESCParser {
 }
 
 /* TESCParser
- * $Id: TESCParser.java,v 1.9 1999-01-05 20:58:17 swtech13 Exp $
+ * $Id: TESCParser.java,v 1.10 1999-01-06 13:48:56 swtech13 Exp $
  * $Log: not supported by cvs2svn $
+ * Revision 1.9  1999/01/05 20:58:17  swtech13
+ *   - pathop -> absolute Pfade
+ *   - Keine Action angegeben -> new ActionEmpty(new Dummy())
+ *   - Schaltermechanismus eingebaut.
+ *   - debugmechanismus eingebaut.
+ *
  * Revision 1.8  1999/01/04 16:12:02  swtech13
  * Locations hinzugefuegt. Pruefen auf Keywords.
  *
