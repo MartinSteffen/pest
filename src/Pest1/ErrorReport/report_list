@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.74 1999-02-08 10:33:29 swtech24 Exp $
+//	$Id: report_list,v 1.75 1999-02-08 10:51:58 swtech24 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -337,7 +337,7 @@ die als Fehler angezeigt werden.
 #Number:	24
 #Autor:		Erich Mikk
 #Subject:	Interlevel Trs in SE-Examples/cd.st
-#Status:	reported
+#Status:	fixed
 #Description:
 
 STM-Import SE-Examples/cd.st.
@@ -437,7 +437,8 @@ ueber das normale Menue jedoch schon.
 #Number:	29
 #Autor:		Heiko Haller, Stefan Lemke, swtech21
 #Subject:	Editor: Nach Undo kein chart mehr
-#Status: 	processing
+#Status: 	fixed (alle weiteren Fehler ligen als Clone-Fehler in der
+		AbSyn)
 #Description: 
 
 or Safer:
@@ -663,7 +664,7 @@ aktiv).
 #Number:        45
 #Autor:         Bernd Weber bwe
 #Subject:       Editor: Labeln von Transition fast unmöglich
-#Status:        processing
+#Status:        fixed
 #Description:
 
 1. Zwei Basic States nebeneinander erzeugen
@@ -690,7 +691,8 @@ im And State ist Target der Transition geworden.
 #Number:        47
 #Autor:         Bernd Weber bwe
 #Subject:       Editor: Verschieben, Undo, Restore erzeugt inkonsistenten Zustand
-#Status:        processing
+#Status:        fixed (Alle hier auftretenden Fehler haengen mit Clone-Fehlern 
+		in der AbSyn zusammen)
 #Description:
 
 Mehrmals ist es mir gelungen, den Editor durch Benutzen der
@@ -801,7 +803,7 @@ geloescht, Zustaende und Transition verschoben).
 #Number:        55
 #Autor:         check swtech11
 #Subject:       Editor oder stm ? Interlevel-Transition
-#Status:        reported
+#Status:        fixed
 #Description:
 
 Das alte Problem mit den Interlevel-Transitionen nach dem Importieren durch STM.
