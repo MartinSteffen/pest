@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	------------------
 //
-//	$Id: report_list,v 1.31 1999-02-04 21:47:42 swtech23 Exp $
+//	$Id: report_list,v 1.32 1999-02-05 09:47:21 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -125,7 +125,7 @@ Der Statename hat offensichtlich keinen Inhalt.
 #Number:	7
 #Autor:		Erich Mikk erm
 #Subject:	STM-Import achtet nicht auf Keywords
-#Status: 	fixed
+#Status: 	confirmed
 #Description: 
 
 Importiere SE-Systems/vcr.st 
