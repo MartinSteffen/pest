@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	--------------
 //
-//	$Id: report_list,v 1.50 1999-02-10 16:50:51 swtech23 Exp $
+//	$Id: report_list,v 1.51 1999-02-10 18:24:48 swtech23 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -609,7 +609,7 @@ jedoch nicht und verbrt die gesamte Rechenzeit :-( .
 #Number:	40
 #Autor:		Erich Mikk
 #Subject:	Check erkennt Undet_Guard nicht
-#Status:	processing
+#Status:	fixed
 #Description:
 
 STM-Import SE-Systems/bf_thrusters.st.
