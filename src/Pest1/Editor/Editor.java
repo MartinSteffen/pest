@@ -84,6 +84,7 @@ public class Editor extends Frame {
     private static boolean drawstatus = false;
     public static double ZoomFaktor = 1;
     public static double zoomfk = 1;
+    public static final String LongLabel = "<LongLabel>";
     private static GUIInterface gui = null; // Referenz auf die GUI (mit NULL vorbelegen)
 
     static PESTDrawDesk scribble;
