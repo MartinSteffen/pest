@@ -4,7 +4,7 @@
  * This class is responsible for generating our hierarchical
  * automaton.
  *
- * @version $Id: dumpHA.java,v 1.7 1999-01-18 12:33:01 swtech25 Exp $
+ * @version $Id: dumpHA.java,v 1.8 1999-01-18 15:56:11 swtech25 Exp $
  * @author Marcel Kyas
  */
 package codegen;
@@ -35,6 +35,7 @@ public class dumpHA
 	 * its state chart with bla.
 	 */
 	public dumpHA(Statechart bla)
+		throws CodeGenException
 	{
 		path = null;
 		setStatechart(bla);
@@ -57,6 +58,7 @@ public class dumpHA
 	 * its state chart with bla and the path name to fasel.
 	 */
 	public dumpHA(Statechart bla, String fasel)
+		throws CodeGenException
 	{
 		setStatechart(bla);
 		setPathname(fasel);
@@ -65,14 +67,16 @@ public class dumpHA
 
 	/**
 	 * Set statechart to bla.
+	 * @exception CodeGenException if we cannot clone bla.
 	 */
 	public void setStatechart(Statechart bla)
+		throws CodeGenException
 	{
 		try {
 			S = (Statechart) bla.clone();
 		}
 		catch (CloneNotSupportedException e) {
-			// currently nothing.
+			throw(new CodeGenException(e.toString()));
 		}
 	}
 
@@ -87,20 +91,72 @@ public class dumpHA
 
 
 	/**
+	 * This will generate the code for an ActionStatement.
+	 *
+	 * @exception CodeGenException if and only if we cannot determine
+	 *   the type of statement.
+	 * @exception IOException .
+	 */
+	private void dumpStatement(OutputStreamWriter f, Boolstmt b)
+		throws CodeGenException, IOException
+	{
+		if (b instanceof BAss) {
+			BAss c = (BAss) b;
+			Integer i = (Integer) DT.cond_sym.get(c.ass.blhs.var);
+			f.write("post_cond[" + i + "] = " +
+				dumpGuard(c.ass.brhs) + ";");
+		} else if (b instanceof MFalse) {
+			MFalse c = (MFalse) b;
+			Integer i = (Integer) DT.cond_sym.get(c.var.var);
+			f.write("post_cond[" + i + "] = false;");
+		} else if (b instanceof MTrue) {
+			MTrue c = (MTrue) b;
+			Integer i = (Integer) DT.cond_sym.get(c.var.var);
+			f.write("post_cond[" + i + "] = true;");
+		} else {
+			throw(new CodeGenException("Unknown boolean assignment"));
+		}
+	}
+
+
+	/**
 	 * In this section we will generate the new
 	 * events.
 	 *
-	 * @exception CodeGenException ?
+	 * @exception CodeGenException iff we cannot determine the
+	 *   action type.
+	 * @exception IOException .
 	 */
 	private void dumpNewEvents(OutputStreamWriter f, Action a)
 		 throws CodeGenException, IOException
 	{
-		// currently nothing, todo
+		if (a instanceof ActionBlock) {
+			ActionBlock b = (ActionBlock) a;
+			Aseq current = b.aseq;
+			while (current != null) {
+				dumpNewEvents(f, current.head);
+				current = current.tail;
+			}
+		} else if (a instanceof ActionEmpty) {
+			return;
+		} else if (a instanceof ActionEvt) {
+			ActionEvt b = (ActionEvt) a;
+			Integer i = (Integer)
+				DT.events_sym.get(b.event.name);
+			f.write("post_events[" + i + "] = true;");
+		} else if (a instanceof ActionStmt) {
+			ActionStmt b = (ActionStmt) a;
+			dumpStatement(f, b.stmt);
+		} else {
+			throw(new CodeGenException("Unknown Action."));
+		}
 	}
 
 
 	/**
 	 * This method will create the boolean statement for a guard
+	 *
+	 * @exception CodeGenException .
 	 */
 	private String dumpGuard(Guard g)
 		throws CodeGenException
@@ -164,6 +220,38 @@ public class dumpHA
 
 
 	/**
+	 * This method will dump code for a new target.
+	 *
+	 * @exception CodeGenException .
+	 * @exception IOException .
+	 */
+	private void dumpNextState(OutputStreamWriter f, TrList tl, TrAnchor t)
+		throws CodeGenException, IOException
+	{
+		if (t instanceof Conname) {
+			dumpTransitions(f, tl, t);
+		} else if (t instanceof Statename) {
+			Statename s = (Statename) t;
+			Integer i = (Integer) DT.states_sym.get(s.name);
+			f.write("post_states[" + i + "] = true;");
+			// CAVE: we need to check for or states...
+			State v = null;
+			if (v instanceof Or_State) {
+				Or_State u = (Or_State) v;
+				Integer j = (Integer) DT.states_sym.get(
+					u.defaults.head.name
+				);
+				f.write("post_states[" + j + "] = true;");
+			}
+		} else if (t instanceof UNDEFINED) {
+			throw(new CodeGenException("Undefined target"));
+		} else {
+			throw(new CodeGenException("Unknown target"));
+		}
+	}
+
+
+	/**
 	 * This method will dump the necessary code for
 	 * transitions.  s denotes the source.
 	 */
@@ -179,21 +267,10 @@ public class dumpHA
 					dumpGuard(current.head.label.guard)
 					+ ") {");
 				dumpNewEvents(f, current.head.label.action);
-				// Dump next state.
+				dumpNextState(f, tl, current.head.target);
 				f.write("}");
 			}
 		}
-	}
-
-
-	/**
-	 * This section will create the code for a connector.
-	 * a connector c must be the source of this code.
-	 */
-	private void dumpConnector(OutputStreamWriter f, Connector c)
-		throws CodeGenException, IOException
-	{
-
 	}
 
 
@@ -275,6 +352,27 @@ public class dumpHA
 
 
 	/**
+	 *
+	 */
+	private void dumpAutomaton(OutputStreamWriter f)
+		throws CodeGenException, IOException
+	{
+		f.write("/**\n * This code was automatically generated\n */");
+		f.write("public class Automaton extends SymbolTable\n{");
+		if (S.state instanceof And_State) {
+			dumpAndState(f, (And_State) S.state);
+		} else if (S.state instanceof Or_State) {
+			dumpOrState(f, (Or_State) S.state);
+		} else if (S.state instanceof Basic_State) {
+			dumpBasicState(f, (Basic_State) S.state);
+		} else {
+			throw(new CodeGenException(
+				"Cannot determine type of state."));
+		}
+	}
+
+
+	/**
 	 * This method will dump the hierarchical automaton
 	 *
 	 * @exception CodeGenException
@@ -284,6 +382,7 @@ public class dumpHA
 		Runtime rt = Runtime.getRuntime(); // Horror, horror, eh?
 		FileWriter fw;
 
+		System.out.println("Dumping chart to " + path);
 		DT = new dumpTables(S);
 		try {
 			fw = new FileWriter(path + "/SymbolTable.java");
@@ -291,12 +390,16 @@ public class dumpHA
 			fw.flush();
 			fw.close();
 			rt.gc();
+			System.out.println("Dumped Symbol Table");
+			fw = new FileWriter(path + "/Automaton.java");
+			dumpAutomaton(fw);
+			fw.flush();
+			fw.close();
+			rt.gc();
+			System.out.println("Dumped Automaton");
 		}
 		catch (IOException e) {
 			throw(new CodeGenException(e.toString()));
 		}
 	}
 }
-
-
-
