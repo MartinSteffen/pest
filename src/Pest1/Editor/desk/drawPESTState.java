@@ -281,7 +281,7 @@ ttest = true;
 	    temppoint2 = (CPoint) trlist.head.points[pointlength];
 
 	    if (temprect.contains(temppoint1.x,temppoint1.y) & temprect.contains(temppoint2.x,temppoint2.y))
-	    {trlist4 = trlist2; trlist2 = new TrList(trlist.head,trlist4);
+		{//trlist4 = trlist2; trlist2 = new TrList(trlist.head,trlist4);
 	            for (int j = 1;j < pointlength;j ++)
 			{
 			   trlist.head.points[j].x = trlist.head.points[j].x-(cx1-matrix.x);
@@ -292,9 +292,12 @@ ttest = true;
 		 	trlist.head.points[0].y = trlist.head.points[0].y-(cy1-matrix.y);
 			trlist.head.points[pointlength].x = trlist.head.points[pointlength].x-(cx1-matrix.x);
 			trlist.head.points[pointlength].y = trlist.head.points[pointlength].y-(cy1-matrix.y);
-			trlist.head.label.position.x = trlist.head.label.position.x-(cx1-matrix.x);
-			trlist.head.label.position.y = trlist.head.label.position.y-(cy1-matrix.y);
-
+			if (trlist.head.label.position != null)
+			{
+			    trlist.head.label.position.x = trlist.head.label.position.x-(cx1-matrix.x);
+			    trlist.head.label.position.y = trlist.head.label.position.y-(cy1-matrix.y);
+			}
+			trlist4 = trlist2; trlist2 = new TrList(trlist.head,trlist4);
 		} else 
 		{trlist4 = trlist3; trlist3 = new TrList(trlist.head,trlist4);}
  

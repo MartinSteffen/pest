@@ -633,6 +633,19 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans" & trro
 		    repaint();
 		}
 
+	if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Referenz"))
+	    { // Editor.SetListen();
+		    new makeReferenz(g,root,
+					(int) (e.getX()/Editor.ZoomFaktor),
+					(int) (e.getY()/Editor.ZoomFaktor),
+					Editor.st_color());
+
+		    Editor.SetListen();trroot = false;
+
+		    repaint();
+		}
+
+
 	if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Select") & (copyobj == null))
 		{ 
 		    Absyn test = PESTdrawutil.getSmallObject(root,
