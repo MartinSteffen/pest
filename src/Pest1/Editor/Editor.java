@@ -390,7 +390,8 @@ public static void Dispose() {
  */
 
 public static void work(boolean arbeit) { 
-    if (arbeit == false) {Buttontype = "";}; if (menufeld != null) {menufeld.setVisible(arbeit);}
+    if (arbeit == false) {Buttontype = ""; if (menufeld != null) {menufeld.setVisible(arbeit);}}
+    else {if (menufeld != null) {menufeld.setVisible(arbeit);};}
     workable = arbeit;}
 
 
