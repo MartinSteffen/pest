@@ -1,14 +1,13 @@
 /**
- * GraphAlg.java
+ * GraphOptimizer.java
  *
  * Created: Mon Dec 07 16:43:30 1998
  * 
  * @author swtech14 : Eike Schulz & Martin Poerksen
- * @version $Id: GraphOptimizer.java,v 1.3 1998-12-10 18:05:38 swtech14 Exp $
+ * @version $Id: GraphOptimizer.java,v 1.4 1998-12-14 14:51:56 swtech14 Exp $
  */
 
 package TESC2;
-
 
 import Absyn.*;
 import java.awt.FontMetrics;
@@ -22,28 +21,24 @@ public class GraphOptimizer {
    */
 
   public static final String[] LIST_OF_ALGORITHMS =
-  { "Algorithmus 1" };
+  { "LeftRightAlgorithm" };
 
 
-  // Ergebniswert fuer Graphplazierungsalgorithmus :
-  // errorcode == 0 : Algorithmus korrekt gelaufen,
-  // errorcode != 0 : Fehler aufgetreten -> Fehlercode.
+  // 1.  Ergebniswert fuer Graphplazierungsalgorithmus :
+  //     errorcode == 0 : Algorithmus korrekt gelaufen,
+  //     errorcode != 0 : Fehler aufgetreten -> Fehlercode.
+  // 2.  Referenzvariable fuer uebergebenes Statechart-Objekt.
+  // 3.  Referenzvariable fuer 'sChart'-Kopie -> Objekt, das mit
+  //     Koordinaten ausgestattet und zurueckgegeben wird.
+  // 4.  Referenzvariable fuer uebergebenes FontMetrics-Objekt.
+  // 5.  Speicherwert fuer Algorithmus-Art.
 
-  private int errorcode;
 
-
-  // Referenzvariable fuer uebergebenes Statechart-Objekt.
-  private Statechart sChart;
-
-  // Referenzvariable fuer 'sChart'-Kopie -> Objekt, das mit
-  // Koordinaten ausgestattet und zurueckgegeben wird.
-  private Statechart cChart;
-
-  // Referenzvariable fuer uebergebenes FontMetrics-Objekt.
+  private int         errorcode;
+  private Statechart  sChart;
+  private Statechart  cChart;
   private FontMetrics fMetrics;
-
-  // Speicherwert fuer Algorithmus-Art.
-  private int algorithm;
+  private int         algorithm;
 
 
   /**
@@ -51,8 +46,8 @@ public class GraphOptimizer {
    */
 
   public GraphOptimizer () {
-    sChart = null;
-    fMetrics = null;
+    sChart    = null;
+    fMetrics  = null;
     algorithm = 0;
   } // constructor GraphOptimizer ()
 
@@ -86,8 +81,6 @@ public class GraphOptimizer {
 
     if ((algorithm != 0) && (algorithm != 1))
       algorithm = 0;
-
-    // (Aufruf des entsprechenden Algorithmus erfolgt hier...)
 
     switch (algorithm) {
       case (0) : // Aufruf des Default-Algorithmus.

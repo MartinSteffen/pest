@@ -32,7 +32,7 @@ clean:
 # Implicit rule for making Java class files from Java source files
 
 .java.class:
-	$(COMPILER) $(COPTIONS) -classpath "$(CLASSPATH)"  $?
+	$(COMPILER) $(COPTIONS)  GraphOptimizer.java
 
 #=================================================================
 
