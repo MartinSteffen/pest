@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestTransitions.java,v 1.14 1999-01-21 22:39:19 swtech11 Exp $
+ *  @version  $Id: TestTransitions.java,v 1.15 1999-01-22 20:33:26 swtech11 Exp $
  */
 class TestTransitions extends ModelCheckBasics {
   Vector newPLV = new Vector(); // Vector fuer die selbst angelegte PathList der States
@@ -35,9 +35,6 @@ class TestTransitions extends ModelCheckBasics {
     int pos;
     for (int i=0; (i<pl.size()) ; i++) {
       sn  = (String)pl.elementAt(i);
-//      pos = sn.lastIndexOf(".");
-//      if (pos>0) {sn = sn.substring(pos+1); }
-//      if (sn.equals(s)){ in = true; }
       if (sn.endsWith(s)){ in = true; }
     }
     return in;
@@ -59,6 +56,15 @@ class TestTransitions extends ModelCheckBasics {
     return in;
   }
 
+  // Name in der übergebenen ConnectorList finden und Connector zurückgeben
+  Connector getConnectorFromNameInThisStateConnectorList(ConnectorList _cl, String _s) {
+    Connector in = null;
+    if (_cl.head.name.name.equals(_s)) { in = _cl.head; }
+    else if (_cl.tail != null) { in = getConnectorFromNameInThisStateConnectorList(_cl.tail, _s);}
+    return in;
+  }
+
+  // durch TrList durchgehen
   void navTransInTransList(TrList tl, State _s, String p) {
     boolean u1 = false; boolean u2 = false;
     boolean v1 = false; boolean v2 = false; boolean w1 = false; boolean w2 = false;
@@ -67,9 +73,10 @@ class TestTransitions extends ModelCheckBasics {
     TransE mtr = new TransE();
     ConE co2 = new ConE();
 
-    String z1 = getTrSourceName(tl.head);
-    String z2 = getTrTargetName(tl.head);    
+    String z1 = msg.getTrSourceName(tl.head);
+    String z2 = msg.getTrTargetName(tl.head);    
 
+    mtr.t = tl.head;
     // Startanker der Transition bearbeiten
     if (tl.head.source instanceof UNDEFINED) { // undefiniert ?
       mtr.s = 0;
@@ -89,7 +96,11 @@ class TestTransitions extends ModelCheckBasics {
       co2.d = "Connector: " +z1 + " in State: " + p;
       newLCL.addElement(co2);
       w1 = !StatenameInPathList(newCLV, z1); // Connector -> nicht vorhanden ?
-      if (w1==false) { j1 = !ConnectorNameInThisStateConnectorList(((Or_State)_s).connectors, z1); } // Connector -> Interlevel ?
+      // Connector -> Interlevel ?
+      if (w1==false) {
+        co2.c = getConnectorFromNameInThisStateConnectorList(((Or_State)_s).connectors, z1);
+        if (co2.c == null) {j1 = true; }
+      }
     }
     else {System.out.println("unbekannter StartAnker");};
 
@@ -110,9 +121,14 @@ class TestTransitions extends ModelCheckBasics {
       co2.name = z2;
       co2.d = "Connector: " +z2 + " in State: " + p;
       newLCL.addElement(co2);
-      if (con1==true & z1.equals(z2)) { msg.addError(415,"Trans: "+z1+" -> "+z2+" in State: " + p); } // gleicher Connecntor bei Start und Ziel
       w2 = !StatenameInPathList(newCLV, z2); // Connector -> nicht vorhanden ?
-      if (w2==false) { j2 = !ConnectorNameInThisStateConnectorList(((Or_State)_s).connectors, z2); } // Connector -> Interlevel ?
+      // Connector -> Interlevel ?
+      if (w2==false) {
+        co2.c = getConnectorFromNameInThisStateConnectorList(((Or_State)_s).connectors, z2);
+        if (co2.c == null) {j2 = true; }
+      }
+      // gleicher Connecntor bei Start und Ziel
+      if (con1==true & z1.equals(z2)) { msg.addError(415,"Trans: "+z1+" -> "+z2+" in State: " + p,co2.c); }
     }
     else {System.out.println("unbekannter ZielAnker");};
 
@@ -319,16 +335,16 @@ class TestTransitions extends ModelCheckBasics {
     // Auswertung der Verbundenheit
     for (int i=0; i<tlv.size(); i++) {
       m = (TransE)tlv.elementAt(i);
-      if ( m.sz==0 & m.zz==0 ) { msg.addError(419,m.d); }
-      else if ( m.sz==0 ) { msg.addError(422,m.d); }
-      else if ( m.zz==0 ) { msg.addError(423,m.d); }
+      if ( m.sz==0 & m.zz==0 ) { msg.addError(419,m.d,m.t); }
+      else if ( m.sz==0 ) { msg.addError(422,m.d,m.t); }
+      else if ( m.zz==0 ) { msg.addError(423,m.d,m.t); }
     }
     // Connectorenzyklus
     for (int i=0; i<newLCL.size(); i++) {
       co = (ConE)newLCL.elementAt(i);
       co.count=1;
       testZyklusCon(co,tlv);
-      if (co.count>1) { msg.addError(421,co.d); } // Zyklus
+      if (co.count>1) { msg.addError(421,co.d,co.c); } // Zyklus
       for (int j=0; j<tlv.size(); j++) { // Zaehler wieder auf Null setzen
         m = (TransE)tlv.elementAt(j);
         m.count=0;
@@ -387,6 +403,8 @@ class TransE {
   // ist ein State hier oder in der Transition vorher (nachher) vorhanden
   int sz = 0; // 0: noch nicht getestet, 1: JA, 2:NEIN
   int zz = 0;
+  // Transition
+  Tr t = null;
 }
 
 // Connenctoren zur besseren Nutzung speichern
@@ -398,6 +416,8 @@ class ConE {
   // Beschreibung: Connector plus Path
   String d = new String();
   String name = null;
+  // Connector
+  Connector c;
 }
 
 class GuardE {

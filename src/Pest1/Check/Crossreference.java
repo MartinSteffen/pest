@@ -26,84 +26,79 @@ import java.awt.*;
  * <br>
  * <DL COMPACT>
  * <DT><STRONG>STATUS: </STRONG><br>
- * Die Auswertung erfolgt bis jetzt für: States (alle Arten), Connectoren, Anker der Transitionen
+ * Unserere Crossreference ist soweit fertig.
  * <DT><STRONG>To Do: </STRONG><br>
- * alles
+ * Testen, Testen, Testen.
  * <DT><STRONG>Bekannte Fehler: </STRONG><br>
  * keine
  * <DT><STRONG>Temporäre Features: </STRONG><br>
  * keine
  * </DL COMPACT>
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: Crossreference.java,v 1.13 1999-01-22 11:44:12 swtech11 Exp $
+ * @version  $Id: Crossreference.java,v 1.14 1999-01-22 20:33:22 swtech11 Exp $
  */
 public class Crossreference extends ModelCheckBasics {
   private GUIInterface gui = null; // Referenz auf die GUI
   private Editor edit = null;
-  public String such = new String("");
+  String such = new String("");
   private Vector items = new Vector();
+  private boolean high = false; // highlighten ?
 
-
-  public Crossreference(GUIInterface _gui, Editor _edit) {
+  /**
+  * Der Konstruktor der Crossreference.
+  * @param _gui Referenz auf die GUI
+  * @param _edit Referenz auf den Editor
+  */
+  public Crossreference(GUIInterface _gui, Editor _edit) {
     gui = _gui;
     edit = _edit;
   }
 
-  public Crossreference(GUIInterface _gui) {
-    gui = _gui;
-  }
-
-
+  /**
+  * Führt die Crossreference aus.
+  * @param sc  die zu checkende Statechart
+  */
   public void report(Statechart _sc) {
     sc=_sc;
     // Eingabe
     such = gui.EingabeDialog("Crossreference","Zu suchendes Element eingeben:",such);
     if (such!=null) {
-    //System.out.println(such);
-
-
-    report_list();
-
-    // Start der Auswertung
-    if (sc.state instanceof Or_State) {navOrState ((Or_State)sc.state, null,""); }
-    if (sc.state instanceof And_State) {navAndState ((And_State)sc.state, null,""); }
-    if (sc.state instanceof Basic_State) {navBasicState ((Basic_State)sc.state, null,""); }
-
-    // Ausgabe
-    highlightObject ho;
-    if (items.size()>0) {
-      if (edit!=null) { ho = new highlightObject(true); }// Highlighten vorbereiten
-      gui.userMessage("Check: "+such+" ist ein:");
-      for (int i=0; i<items.size(); i++) {
-        ReportItem rp = (ReportItem)items.elementAt(i);
-        gui.userMessage("Check:   - "+rp.Pth);
-        if (edit!=null & rp.HiObj!=null) {
-        ho = new highlightObject((Absyn)rp.HiObj,Color.black); // Object highlighten
-	};}
-      if (edit!=null) {ho = new highlightObject(); }// Highlighten aktivieren
-    }
-    else {
-      gui.userMessage("Check: "+such+" wurde nicht gefunden.");
-    }
-    };};
-
-    void report_list(){
-
-      for(SEventList e=sc.events; e!=null; e=e.tail){
-	  if (equalString(e.head.name,such)) {itemInput(e.head,null,"Def.Liste Events");};
+      // Start der Auswertung
+      report_list();
+      if (sc.state instanceof Or_State) {navOrState ((Or_State)sc.state, null,""); }
+      if (sc.state instanceof And_State) {navAndState ((And_State)sc.state, null,""); }
+      if (sc.state instanceof Basic_State) {navBasicState ((Basic_State)sc.state, null,""); }
+      // Ausgabe
+      if (edit != null) { high = true; } else { high = false; } // muß noch um Config erweiter werden
+      highlightObject ho;
+      if (items.size()>0) {
+        if (high==true) { ho = new highlightObject(true); }// Highlighten vorbereiten
+        gui.userMessage("Check: "+such+" ist ein:");
+        for (int i=0; i<items.size(); i++) {
+          ReportItem rp = (ReportItem)items.elementAt(i);
+          gui.userMessage("Check:   - "+rp.Pth);
+          if (high==true & rp.HiObj!=null) {
+            ho = new highlightObject((Absyn)rp.HiObj,Color.black); // Object highlighten
+  	      }
+        }
+        if (high==true) {ho = new highlightObject(); }// Highlighten aktivieren
       }
+      else { gui.userMessage("Check: "+such+" wurde nicht gefunden."); }
+    }
+  }
 
-      for(BvarList b=sc.bvars; b!=null;b=b.tail){
-	  if (equalString(b.head.var,such)) {itemInput(b.head,null,"Def.Liste BVars");};}
-          
-      for(PathList p=sc.cnames; p!=null;p=p.tail){
-	  if (equalString(PathtoString(p.head),such)) {itemInput(p.head,null,"Pfadliste States");};
-  
-
-
-      };}
-
-
+  // Listen durchsuchen
+  void report_list() {
+    for(SEventList e=sc.events; e!=null; e=e.tail){
+	     if (equalString(e.head.name,such)) {itemInput(e.head,null,"Def.Liste Events");}
+    }
+    for(BvarList b=sc.bvars; b!=null;b=b.tail){
+	    if (equalString(b.head.var,such)) {itemInput(b.head,null,"Def.Liste BVars");}
+    }
+    for(PathList p=sc.cnames; p!=null;p=p.tail) {
+	    if (equalString(PathtoString(p.head),such)) {itemInput(p.head,null,"Pfadliste States");}
+    }
+  }
 
   void navBasicState(Basic_State bs, State _s, String p) {
     if (equalString(bs.name.name,such)) { itemInput(bs,bs,"Basic-State in "+p); }
@@ -129,15 +124,13 @@ public class Crossreference extends ModelCheckBasics {
   }
 
   void navTransInTransList(TrList tl, State _s, String p) {
-    String z1 = getTrSourceName(tl.head);
-    String z2 = getTrTargetName(tl.head);
-    
+    String z1 = msg.getTrSourceName(tl.head);
+    String z2 = msg.getTrTargetName(tl.head);
     // Ueberpruefe Guards und Actions
     // pruefeString(tl.head.label, tl.head, p); //ueberprueft den Caption auf infixStrings
     pruefeGuard(tl.head.label.guard, tl.head, p);
     pruefeAction(tl.head.label.action, tl.head, p);
-
-    // Auswertung der Anker  
+    // Auswertung der Anker
     if (tl.head.source instanceof Statename) {
       if ( equalString(z1,such) )
         { itemInput(tl.head.source, tl.head,"Statename des Startankers der Transition "+z1+" -> "+z2+" in "+p); }
@@ -154,12 +147,11 @@ public class Crossreference extends ModelCheckBasics {
       if ( equalString(z2,such) )
         { itemInput(tl.head.target,tl.head,"Connectorname des Zielankers der Transition "+z1+" -> "+z2+" in "+p); }
     }
-
     if (tl.tail != null) { navTransInTransList(tl.tail, _s, p); }
   }
 
-
-    void pruefeGuard(Guard g, Tr t, String p){
+  //
+  void pruefeGuard(Guard g, Tr t, String p){
     if (g instanceof GuardBVar)  {pruefeBVar  (((GuardBVar )g).bvar, t, p, 1);}
       else {
       if (g instanceof GuardCompg) {pruefeGuard (((GuardCompg)g).cguard.elhs, t, p);
@@ -224,7 +216,7 @@ public class Crossreference extends ModelCheckBasics {
      
   };
 
-    boolean equalString(String a, String such) {
+  boolean equalString(String a, String such) {
     boolean b =false;
     boolean infix=false;
     boolean praefix=false;
@@ -234,8 +226,6 @@ public class Crossreference extends ModelCheckBasics {
     if ((!such.substring(suchl-1,suchl).equals("*")) && (such.substring(0,1).equals("*"))) {infix=false; praefix=false; postfix=true;};
     if ((such.substring(suchl-1,suchl).equals("*")) && (!such.substring(0,1).equals("*"))) {infix=false; praefix=true; postfix=false;};
     String _in=such;
-
-
 
     int al=a.length();
     String in="";
@@ -274,72 +264,34 @@ public class Crossreference extends ModelCheckBasics {
         in=_in;
         if (a.equals(in)) {b=true;};
   }
-
-
-
-
-
-    return b;
-    }
-
-  // Eingabe eines Report Ergebnises
-  void itemInput(int a, Object ho, String p) {
-    ReportItem ri = new ReportItem(a, ho, p);
-    items.addElement(ri);
+   return b;
   }
 
+  // Eingabe eines Report Ergebnises
   void itemInput(Object o, Object ho, String p) {
     ReportItem ri = new ReportItem(o, ho, p);
     items.addElement(ri);
   }
 
- void itemInput(Object o, Object ho, String p1, Tr t, String p) {
-  String s1="";
-  String s2="";
-  if (t.source instanceof Statename) { s1=((Statename)t.source).name;};
-  if (t.target instanceof Statename) { s2=((Statename)t.target).name;};
-  if (t.source instanceof Conname)  { s1=((Conname)t.source).name;};
-  if (t.target instanceof Conname)  { s2=((Conname)t.target).name;};
-  if (t.source instanceof UNDEFINED)  { s1="UNDEFINED";};
-  if (t.target instanceof UNDEFINED)  { s2="UNDEFINED";};
-
-
+  void itemInput(Object o, Object ho, String p1, Tr t, String p) {
+    String s1=msg.getTrSourceName(t);
+    String s2=msg.getTrTargetName(t);
     ReportItem ri = new ReportItem(o, ho, p1 +" Trans: "+s1+" -> "+s2+" in State: "+p);
     items.addElement(ri);
   }
-
-
 }
-
+
 class ReportItem {
   // die Art des Elementes, evtl. überflüssig
   Object Obj = null;
-  int Art = 0;
-       //   0: unbekannt oder egal
-       //   1: OrState
-       //   2: AndState
-       //   3: BasicState
-       //   4: Connectoren
-       //   5: Statename des Startanker
-       //   6: Statename des Zielanker
-       //   7: Connectorname des Startanker
-       //   8: Connectorname des Zielanker
-
   // das Objekt selbst, z.B. zum Highlighten, evtl. überflüssig
   Object HiObj = null;
   // die texttuelle Art des Elementes plus seiner Beschreibung der Lage
   String Pth = null;
-
-  public ReportItem(int a, Object ho, String p) {
-    Art = a;
-    HiObj = ho;
-    Pth = p;
-  }
 
   public ReportItem(Object o, Object ho, String p) {
     Obj = o;
     HiObj = ho;
     Pth = p;
   }
-
 }

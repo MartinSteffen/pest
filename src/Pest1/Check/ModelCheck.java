@@ -2,6 +2,7 @@ package check;
 
 import java.util.*;
 import java.io.*;
+import java.awt.*;
 
 import absyn.*;
 import gui.*;
@@ -11,7 +12,7 @@ import editor.*;
  * <h1>Syntax Check für Statecharts</h1>
  * <h2>Empfohlender Aufruf:</h2>
  * <ol>
- * <li>Initialisierung:   ModelCheck mc = new ModelCheck(GUI_Referenz)
+ * <li>Initialisierung:   ModelCheck mc = new ModelCheck(GUI_Referenz,EDITOR_Referenz)
  * <li>Aufruf des Checks: boolean = mc.checkModel(Statechart)
  * </ol>
  * <h2>Forderungen an die an den Check übergebene Statechart:</h2>
@@ -33,21 +34,17 @@ import editor.*;
  * <br>
  * <DL COMPACT>
  * <DT><STRONG>STATUS: </STRONG><br>
- * Unserer Syntax Check ist fertig, abgesehen davon,
- * daß wir unseren Test nicht in der Praxis testen konnten.
- * Ein Test des Syntax Checkers ist über
- * das selbsterklärende Programm t im Directory check/test möglich.
+ * Unserer Syntax Check ist soweit fertig.
  * <DT><STRONG>To Do: </STRONG><br>
- * Testen, Testen, Testen.<br>Wir müssen noch den Check auf Zyklen in den
- * Statecharts entfernen, sobald wir die Garantien der anderen haben.
+ * Testen, Testen, Testen.
  * <DT><STRONG>Bekannte Fehler: </STRONG><br>
- * Es gibt bestimmt welche, aber siehe STATUS.
+ * keine
  * <DT><STRONG>Temporäre Features: </STRONG><br>
  * Ausgabe der Dauer der einzelnen Tests in Sekunden.
  * </DL COMPACT>
  *
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: ModelCheck.java,v 1.26 1999-01-21 22:39:16 swtech11 Exp $
+ * @version  $Id: ModelCheck.java,v 1.27 1999-01-22 20:33:23 swtech11 Exp $
  */
 public class ModelCheck {
   private ModelCheckMsg mcm; // Object, um die Fehler und Warnungen zu speichern
@@ -55,36 +52,23 @@ public class ModelCheck {
   private GUIInterface gui = null; // Referenz auf die GUI
   private Editor edit = null;
 
-
 /**
  * Der Constructor des Syntax Checkers.
- * Es wird keine Ausgabe auf die GUI ermöglicht.
- */
-  public ModelCheck() {
-    mcm = new ModelCheckMsg();
-    outputGUI = false;
-  }
-
-/** 
- * Der Constructor des Syntax Checkers.
- * Es werden, wenn man die Einstellungen nicht ändert, Meldungen von Fehlern und Warnungen auf der GUI ausgegeben.
  * @param _gui Referenz auf die GUI
- * @see        #setOutputGUI(boolean)
  */
   public ModelCheck(GUIInterface _gui) {
-    this();
+    mcm = new ModelCheckMsg();
     gui = _gui;
     outputGUI = true;
   }
 
-/** 
+/**
  * Der Constructor des Syntax Checkers.
- * Es werden, wenn man die Einstellungen nicht ändert, Meldungen von Fehlern und Warnungen auf der GUI ausgegeben.
  * @param _gui Referenz auf die GUI
- * @see        #setOutputGUI(boolean)
+ * @param _edit Referenz auf den Editor
  */
   public ModelCheck(GUIInterface _gui, Editor _edit) {
-    this();
+    mcm = new ModelCheckMsg();
     gui = _gui;
     outputGUI = true;
     edit = _edit;
@@ -103,11 +87,36 @@ public class ModelCheck {
     boolean NoFatalError = false;
     boolean result = false;
 
-    boolean BrowserOut = true; // false; //  
+    Dialog V;
+    Panel pan;
+    Label l1,l2,l3;
+
+    boolean BrowserOut = true; // hier später Config
 
     boolean Zeitnahme = true;
     long s0=0; long e0=0; long s1=0; long e1=0; long s2=0; long e2=0;
     long s3=0; long e3=0; long s4=0; long e4=0; long s5=0; long e5=0;
+
+    // Fortschrittsanzeige
+    V = new Dialog((pest)gui,"Fortschrittanzeige");
+    pan = new Panel(new GridLayout(1,1));
+    l1 = new Label("");
+    //pan.add(l1);
+    l2 = new Label("");
+    l2.setAlignment(Label.CENTER);
+    pan.add(l2);
+    l3 = new Label("");
+    //pan.add(l3);
+    V.add(pan);
+
+    Point p = ((pest)gui).getLocation();
+    V.setLocation(p.x + 30 , p.y + 30);
+    V.pack();
+    Dimension d = V.getSize();
+    d.width=270;
+    V.setSize(d);
+	  V.setResizable(false);
+  	V.setVisible(true);
 
     // Test auf Kreisfreiheit und doppelte Referenzierung
     s0 = getTimeC();
@@ -117,7 +126,6 @@ public class ModelCheck {
     NoFatalError=true;
     e1 = getTimeC();
 
-
     if ( NoFatalError == false ) {
       if ( outputGUI == true ) {
         int j = gui.OkDialog("Fataler Fehler","Der Fehler führt zum Abbruch des Syntax Checks !");
@@ -125,6 +133,7 @@ public class ModelCheck {
     }
     else {
       // Checkt die States.
+      l2.setText("Check: States");
       if (sc.state == null) {
         mcm.addError(311,"uebergebene Statechart");
         if ( outputGUI == true ) {
@@ -140,6 +149,7 @@ public class ModelCheck {
         if ( outputGUI == true & NoStateError == true) { gui.userMessage("Check: Keine Fehler während der Überprüfung der States gefunden."); }
       }
       // Checkt die Transitionen.
+      l2.setText("Check: Transitionen");
       if (sc.state == null) {
         mcm.addError(420,"uebergebene Statechart");
         if ( outputGUI == true ) {
@@ -156,6 +166,7 @@ public class ModelCheck {
         }
       }
       // Checkt die Events.
+      l2.setText("Check: Events");
       if (sc.events == null) { mcm.addWarning(210,"uebergebene Statechart"); }
       s4 = getTimeC();
       TestEvents te = new TestEvents(sc, mcm);
@@ -165,6 +176,7 @@ public class ModelCheck {
         gui.userMessage("Check: Keine Fehler während der Überprüfung der Events gefunden.");
       }
       // Checkt die booleschen Variablen.
+      l2.setText("Check: boolesche Variablen");
       if (sc.bvars == null) { mcm.addWarning(110,"uebergebene Statechart"); }
       s5 = getTimeC();
       TestBVars tb = new TestBVars(sc, mcm);
@@ -193,10 +205,12 @@ public class ModelCheck {
       System.out.println("");
     }
 
+    l2.setText("Check: Meldungen sortieren");
     mcm.sort(); // Meldungen sortieren
+    V.dispose();
 
     if (BrowserOut==true) {
-	//CheckOption co = new CheckOption((pest)gui,new CheckConfig()); // zu Testzwecken
+	    // CheckOption co = new CheckOption((pest)gui,new CheckConfig()); // zu Testzwecken
       Browser b = new Browser((pest)gui,edit,mcm);
     }
     else if ( outputGUI == true ) { outputToGUI(); } // Ausgabe an die GUI
@@ -253,17 +267,13 @@ public class ModelCheck {
       gui.userMessage("Check: Fehlermeldungen ( Anzahl: " + getErrorNumber() +  " ):");
       for (int i=1; (i<=getErrorNumber()); i++) {
         gui.userMessage("Check: - "+getErrorMsg(i)+" ("+getErrorCode(i)+")" );
-        gui.userMessage("Check:   ["+getErrorPath(i)+"]");
-      }
-    }
+        gui.userMessage("Check:   ["+getErrorPath(i)+"]"); }}
     if (getWarningNumber()>0) {
       gui.userMessage("Check:");
       gui.userMessage("Check: Warnmeldungen ( Anzahl: " + getWarningNumber() +  " ):");
       for (int i=1; (i<=getWarningNumber()); i++) {
         gui.userMessage("Check: - "+getWarningMsg(i)+" ("+getWarningCode(i)+")" );
-        gui.userMessage("Check:   ["+getWarningPath(i)+"]");
-      }
-    }
+        gui.userMessage("Check:   ["+getWarningPath(i)+"]"); }}
   }
 
 /**
