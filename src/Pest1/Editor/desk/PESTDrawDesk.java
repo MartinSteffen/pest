@@ -626,9 +626,11 @@ private static Statechart redo() {
 
       public static void addundo(Statechart nroot)
       {        Statechart root = nroot;
-	 lauf = lauf.next;
+        lauf = lauf.next;
 	try {lauf.chart = (Statechart) root.clone();}
-	catch (Exception e) {System.out.println("Waere die Absyn korrekt, so funktionierte auch das Undo !!!!");}
+	catch (Exception e) {System.out.println("Waere die Absyn korrekt, so funktionierte auch das Undo !!!!");
+	lauf = lauf.prev;}
+	basis = lauf;
       }
 
 public static Dimension sizer() {return dpanel.getSize();}

@@ -29,6 +29,10 @@ State allstate;
 Or_State allorstate;
 StateList stlist=null;
 ConnectorList colist=null;
+Or_State otemp1,otemp2;
+And_State atemp1;
+StateList sublist,sublist2;
+Basic_State tempbasic;
 
   
     
@@ -47,6 +51,26 @@ ConnectorList colist=null;
 		matrix2 = PESTdrawutil.getState(root,cx1,cy1);
 		matrix3 = PESTdrawutil.getState(root,cx1+allstate.rect.width,cy1+allstate.rect.height);
 		
+if (matrix2.akt == matrix3.akt & matrix1.akt instanceof Basic_State)
+		    {
+			if (matrix1.prev instanceof And_State) {
+			    atemp1 = (And_State) matrix1.prev;
+			    sublist = atemp1.substates;
+			}
+			if (matrix1.prev instanceof Or_State) {
+			    otemp1 = (Or_State) matrix1.prev;
+			    sublist = otemp1.substates;
+			}
+			while(sublist.head != matrix1.akt)
+			    {
+				sublist = sublist.tail;
+			    }
+			tempbasic = (Basic_State) sublist.head;
+			otemp2 = new Or_State(tempbasic.name,null,null,null,null,tempbasic.rect);
+			sublist.head = otemp2;
+		    }
+
+                 matrix1 = PESTdrawutil.getStateFrame(root,cx1,cy1,cx1+allstate.rect.width,cy1+allstate.rect.height);
 		if (matrix2.akt == matrix3.akt & matrix1.akt instanceof Or_State)
 		    {
 			allorstate = (Or_State) matrix1.akt;
@@ -94,7 +118,7 @@ System.out.println("**********");
 			    }
 			
 		    }
-
+		
 	    }
 
 
