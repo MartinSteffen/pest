@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	--------------
 //
-//	$Id: report_list,v 1.57 1999-02-11 13:27:17 swtech00 Exp $
+//	$Id: report_list,v 1.58 1999-02-11 13:36:18 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -661,12 +661,20 @@ das Menu fr den Zustand Nondet.
 //------------------------------------------------------------------------------
 #Number:	42
 #Autor:		Erich Mikk erm
-#Subject:	TESC2 berechnet falsche Koordinaten?
+#Subject:	TESC2 berechnet falsche Koordinaten, oder check spinnt?
 #Status:	reported
 #Description:
 
 TESC-Import /home/swtech12/Examples/PC/a1.pest2.tesc
 SyntaxCheck meldet interlevel Trs.
 Offenbar liegen dir TrAnchors nicht auf den Lienien der Zustände.
+
+Nachtrag.
+--------
+Ich wollte wissen, ob der IT-Chjeck von check auch richtig funktioniert.
+Sieht nicht so aus: wenn man die Datei, für die check ITs meldet, in
+PEST-Format speichert und in PEST1 lädt, dann werden keine IT-Probleme in
+PEST1 gemeldet.  Vielleicht ist das denn doch ein check-Fehler und kein
+TESC2.
 //------------------------------------------------------------------------------
  
