@@ -352,8 +352,8 @@ protected void processMouseMotionEvent(MouseEvent e)
 if (e.getID() == MouseEvent.MOUSE_MOVED & (Editor.Editor() == "Select" | Editor.Editor() == "Info" ))
       {
 	if (copyobj == null)
-	{
-	aktcomp2 = PESTdrawutil.getSmallObject(root,(int) (e.getX()/Editor.ZoomFaktor),(int) (e.getY()/Editor.ZoomFaktor)) ; 
+	{ 
+	aktcomp2 = PESTdrawutil.getSmallObject(root,(int) (e.getX()/Editor.ZoomFaktor),(int) (e.getY()/Editor.ZoomFaktor));
 	if (aktcomp2 != aktcomp) 
 	{
 		aktcomp = PESTdrawutil.getSmallObject(root,(int) (e.getX()/Editor.ZoomFaktor),(int) (e.getY()/Editor.ZoomFaktor));
@@ -757,8 +757,8 @@ if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Info"))
 		(int) (e.getY()/Editor.ZoomFaktor) <= 4000)
 	      {
 		    new drawPESTConn(g,root,
-			(int) (e.getX()/Editor.ZoomFaktor)-6,
-			(int) (e.getY()/Editor.ZoomFaktor)-6,
+			(int) (e.getX()/Editor.ZoomFaktor),
+			(int) (e.getY()/Editor.ZoomFaktor),
 				     Editor.con_color());}
 	        else {Editor.fehlermeldung2();}
 		    //     Editor.SetListen();

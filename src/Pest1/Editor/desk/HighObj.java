@@ -48,8 +48,8 @@ public class HighObj {
 
 	if (co == na) { 
 			h.setColor(col);
-			h.fillOval((int) ((co.position.x+neux)*Editor.ZoomFaktor),
-			(int) ((co.position.y+neuy)*Editor.ZoomFaktor),
+			h.fillOval((int) ((co.position.x+neux)*Editor.ZoomFaktor)-6,
+			(int) ((co.position.y+neuy)*Editor.ZoomFaktor)-6,
 			(int) (12*Editor.ZoomFaktor),
 			(int) (12*Editor.ZoomFaktor)
 				   ); //System.out.println("Connector gefunden");
@@ -90,9 +90,12 @@ public class HighObj {
 		else {h.setColor(col);h.drawRect((int) ((bs.rect.x+neux) * Editor.ZoomFaktor),
 							(int) ((bs.rect.y+neuy) * Editor.ZoomFaktor),
 							(int) (bs.rect.width* Editor.ZoomFaktor),
-							(int) (bs.rect.height* Editor.ZoomFaktor)
-
-					);}
+							(int) (bs.rect.height* Editor.ZoomFaktor));
+					h.drawRect((int) ((bs.rect.x+neux) * Editor.ZoomFaktor)+1,
+							(int) ((bs.rect.y+neuy) * Editor.ZoomFaktor)+1,
+				 			(int) ((bs.rect.width)* Editor.ZoomFaktor)-2,
+							(int) ((bs.rect.height)* Editor.ZoomFaktor)-2);
+		}
 	    }
 	// die Statename folgt spaeter
     }
@@ -123,9 +126,11 @@ public class HighObj {
 		    h.setColor(col);h.drawRect((int) ((os.rect.x+neux) * Editor.ZoomFaktor),
 							(int) ((os.rect.y+neuy) * Editor.ZoomFaktor),
 							(int) (os.rect.width* Editor.ZoomFaktor),
-							(int) (os.rect.height* Editor.ZoomFaktor)
-
-		);
+							(int) (os.rect.height* Editor.ZoomFaktor));
+		    h.drawRect((int) ((os.rect.x+neux) * Editor.ZoomFaktor)+1,
+							(int) ((os.rect.y+neuy) * Editor.ZoomFaktor)+1,
+				 			(int) ((os.rect.width)* Editor.ZoomFaktor)-2,
+							(int) ((os.rect.height)* Editor.ZoomFaktor)-2);
 		}
 	//	h.drawString( os.name.name,neux,neuy);
 
@@ -184,6 +189,10 @@ public class HighObj {
 				(int) ((as.rect.y+neuy) * Editor.ZoomFaktor),
 				(int) (as.rect.width* Editor.ZoomFaktor),
 				(int) (as.rect.height* Editor.ZoomFaktor));
+		h.drawRect((int) ((as.rect.x+neux) * Editor.ZoomFaktor)+1,
+			   (int) ((as.rect.y+neuy) * Editor.ZoomFaktor)+1,
+			   (int) ((as.rect.width)* Editor.ZoomFaktor)-2,
+			   (int) ((as.rect.height)* Editor.ZoomFaktor)-2);
 	    }
 
 		if (as.rect != null)

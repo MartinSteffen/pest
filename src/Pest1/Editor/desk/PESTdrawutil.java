@@ -296,24 +296,27 @@ public static Absyn getSmallObject(Statechart nroot, int cx1, int cy1) {
 
 	     while (temptrlist != null) {
 		trpoly = new Polygon();
-		for (int j = 0; j < temptrlist.head.points.length; j++) {trpoly.addPoint(temptrlist.head.points[j].x,temptrlist.head.points[j].y);}
-		if (temptrlist.head.points.length < 3){
-			trpoly = new Polygon();
-			trpoly.addPoint(temptrlist.head.points[0].x+10,temptrlist.head.points[0].y+10);
-			trpoly.addPoint(temptrlist.head.points[0].x-10,temptrlist.head.points[0].y+10);
-			trpoly.addPoint(temptrlist.head.points[0].x-10,temptrlist.head.points[0].y-10);
-
-			trpoly.addPoint(temptrlist.head.points[1].x+10,temptrlist.head.points[1].y+10);
-			trpoly.addPoint(temptrlist.head.points[1].x-10,temptrlist.head.points[1].y+10);
-			trpoly.addPoint(temptrlist.head.points[1].x-10,temptrlist.head.points[1].y-10);
-
+				trpoly.addPoint(temptrlist.head.points[0].x+10,temptrlist.head.points[0].y+10);
+				trpoly.addPoint(temptrlist.head.points[0].x-10,temptrlist.head.points[0].y+10);
+				trpoly.addPoint(temptrlist.head.points[0].x-10,temptrlist.head.points[0].y-10);
+				trpoly.addPoint(temptrlist.head.points[0].x+10,temptrlist.head.points[0].y-10);
+				trpoly.addPoint(temptrlist.head.points[0].x+10,temptrlist.head.points[0].y+10);
+				for (int j = 0; j < temptrlist.head.points.length; j++) {trpoly.addPoint(temptrlist.head.points[j].x,temptrlist.head.points[j].y);}
+				//if (temptrlist.head.points.length < 3)
+				{			
+					trpoly.addPoint(temptrlist.head.points[temptrlist.head.points.length-1].x+10,temptrlist.head.points[temptrlist.head.points.length-1].y+10);
+					trpoly.addPoint(temptrlist.head.points[temptrlist.head.points.length-1].x-10,temptrlist.head.points[temptrlist.head.points.length-1].y+10);
+					trpoly.addPoint(temptrlist.head.points[temptrlist.head.points.length-1].x-10,temptrlist.head.points[temptrlist.head.points.length-1].y-10);
+					trpoly.addPoint(temptrlist.head.points[temptrlist.head.points.length-1].x+10,temptrlist.head.points[temptrlist.head.points.length-1].y-10);
+					trpoly.addPoint(temptrlist.head.points[temptrlist.head.points.length-1].x+10,temptrlist.head.points[temptrlist.head.points.length-1].y+10);
+					
 			}
 		if (trpoly.contains(cx1-matrix1.x,cy1-matrix1.y)) {wert = temptrlist.head;}
 		temptrlist = temptrlist.tail;
 		}
 
 	     while(colist != null) {
-		temprect = new CRectangle(colist.head.position.x,colist.head.position.y,12,12);
+		temprect = new CRectangle(colist.head.position.x-6,colist.head.position.y-6,12,12);
 		if (temprect.contains(cx1-matrix1.x,cy1-matrix1.y)) {wert = colist.head;}
 		colist = colist.tail;
 		}

@@ -254,8 +254,8 @@ if (!(matrix1.akt.rect == null & getname1 == getname2 & matrix1.akt instanceof O
 public static void drawTrans(Graphics g,int cx1, int cy1, int cx2, int cy2,TrAnchor ta1,TrAnchor ta2, Color c_color) {
 	
 	double dx ,dy ,d ,ws ,winkel ,xu ,yu ,wneu;
-	int size = 6;
-	int size2 = 2;
+	int size = 8;
+	int size2 = 3;
 	int x, y;
 
 	winkel = 0;
@@ -350,11 +350,27 @@ public static CPoint transpoint(Statechart root,int cx1, int cy1)
 	if (Editor.Bez == true) {ta = Bezier(tp,4*(lauf2));} else {ta = tp;}
 	int trsize = ta.length-1;
 	//System.out.println("Anzahl ZeigerPunkte : "+(int) (trsize+1));
-	for (int lauf = 0;lauf < (trsize-1);lauf++) {h.setColor(def_tr);h.drawLine(	(int) ((ta[lauf].x+cx1)*Editor.ZoomFaktor),
+	for (int lauf = 0;lauf < (trsize-1);lauf++) {
+	h.setColor(def_tr);h.drawLine(	(int) ((ta[lauf].x+cx1)*Editor.ZoomFaktor),
 									(int) ((ta[lauf].y+cy1)*Editor.ZoomFaktor),
+									(int) ((ta[lauf].x+cx1)*Editor.ZoomFaktor),
+									(int) ((ta[lauf].y+cy1)*Editor.ZoomFaktor) );
+									
+	h.setColor(def_tr);h.drawLine(	(int) ((ta[lauf].x+cx1)*Editor.ZoomFaktor)+1,
+									(int) ((ta[lauf].y+cy1)*Editor.ZoomFaktor),
+									(int) ((ta[lauf+1].x+cx1)*Editor.ZoomFaktor)+1,
+									(int) ((ta[lauf+1].y+cy1)*Editor.ZoomFaktor) );
+									
+	h.setColor(def_tr);h.drawLine(	(int) ((ta[lauf].x+cx1)*Editor.ZoomFaktor),
+									(int) ((ta[lauf].y+cy1)*Editor.ZoomFaktor)+1,
 									(int) ((ta[lauf+1].x+cx1)*Editor.ZoomFaktor),
-									(int) ((ta[lauf+1].y+cy1)*Editor.ZoomFaktor) )
-									;}
+									(int) ((ta[lauf+1].y+cy1)*Editor.ZoomFaktor)+1 );
+									
+   h.setColor(def_tr);h.drawLine(	(int) ((ta[lauf].x+cx1)*Editor.ZoomFaktor)+1,
+   									(int) ((ta[lauf].y+cy1)*Editor.ZoomFaktor)+1,
+   									(int) ((ta[lauf+1].x+cx1)*Editor.ZoomFaktor)+1,
+									(int) ((ta[lauf+1].y+cy1)*Editor.ZoomFaktor)+1 );
+	}
 
  				drawPESTTrans.drawTrans(h,
 				(int) ((ta[trsize-1].x+cx1)*Editor.ZoomFaktor),
@@ -364,6 +380,31 @@ public static CPoint transpoint(Statechart root,int cx1, int cy1)
 				tr.source,
 				tr.target,
 				def_tr );
+				drawPESTTrans.drawTrans(h,
+								(int) ((ta[trsize-1].x+cx1)*Editor.ZoomFaktor)+1,
+								(int) ((ta[trsize-1].y+cy1)*Editor.ZoomFaktor),
+								(int) ((ta[trsize].x+cx1)*Editor.ZoomFaktor)+1,
+								(int) ((ta[trsize].y+cy1)*Editor.ZoomFaktor),
+								tr.source,
+								tr.target,
+				def_tr );
+				drawPESTTrans.drawTrans(h,
+								(int) ((ta[trsize-1].x+cx1)*Editor.ZoomFaktor),
+								(int) ((ta[trsize-1].y+cy1)*Editor.ZoomFaktor)+1,
+								(int) ((ta[trsize].x+cx1)*Editor.ZoomFaktor),
+								(int) ((ta[trsize].y+cy1)*Editor.ZoomFaktor)+1,
+								tr.source,
+								tr.target,
+				def_tr );
+				drawPESTTrans.drawTrans(h,
+								(int) ((ta[trsize-1].x+cx1)*Editor.ZoomFaktor)+1,
+								(int) ((ta[trsize-1].y+cy1)*Editor.ZoomFaktor)+1,
+								(int) ((ta[trsize].x+cx1)*Editor.ZoomFaktor)+1,
+								(int) ((ta[trsize].y+cy1)*Editor.ZoomFaktor)+1,
+								tr.source,
+								tr.target,
+				def_tr );
+ 				
 
 }
 

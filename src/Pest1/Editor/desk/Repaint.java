@@ -285,12 +285,19 @@ if (matrix2.prev.rect != null)
 						(int) (bs.rect.height* Editor.ZoomFaktor),
 						 Editor.st_color());
 		}
-		else {h.setColor( Editor.st_color());h.drawRect((int) ((bs.rect.x+neux) * Editor.ZoomFaktor),
+		else {h.setColor( Editor.st_color());
+			     h.drawRect((int) ((bs.rect.x+neux) * Editor.ZoomFaktor),
 							(int) ((bs.rect.y+neuy) * Editor.ZoomFaktor),
 							(int) (bs.rect.width* Editor.ZoomFaktor),
-							(int) (bs.rect.height* Editor.ZoomFaktor)
-
-					);}
+							(int) (bs.rect.height* Editor.ZoomFaktor));
+				if (Editor.da == true)
+				 {h.drawRect((int) ((bs.rect.x+neux) * Editor.ZoomFaktor)+1,
+							(int) ((bs.rect.y+neuy) * Editor.ZoomFaktor)+1,
+							(int) ((bs.rect.width)* Editor.ZoomFaktor)-2,
+							(int) ((bs.rect.height)* Editor.ZoomFaktor)-2);}			
+							
+							
+					}
 		if (bs instanceof Ref_State)
 		    {
 			Ref_State rstate = (Ref_State) bs;
@@ -326,12 +333,17 @@ if (matrix2.prev.rect != null)
 		    }
 		else 
 		    {
-		    h.setColor( Editor.st_color());h.drawRect((int) ((os.rect.x+neux) * Editor.ZoomFaktor),
+		    h.setColor( Editor.st_color());
+				 h.drawRect((int) ((os.rect.x+neux) * Editor.ZoomFaktor),
 							(int) ((os.rect.y+neuy) * Editor.ZoomFaktor),
 							(int) (os.rect.width* Editor.ZoomFaktor),
-							(int) (os.rect.height* Editor.ZoomFaktor)
-
-		);
+							(int) (os.rect.height* Editor.ZoomFaktor));
+				if (Editor.da == true)
+				 {h.drawRect((int) ((os.rect.x+neux) * Editor.ZoomFaktor)+1,
+							(int) ((os.rect.y+neuy) * Editor.ZoomFaktor)+1,
+				 			(int) ((os.rect.width)* Editor.ZoomFaktor)-2,
+							(int) ((os.rect.height)* Editor.ZoomFaktor)-2);}
+							
 		}
 	//	h.drawString( os.name.name,neux,neuy);
 
@@ -355,8 +367,8 @@ if (matrix2.prev.rect != null)
 		if (colist.head.position != null) 
 		{
 		h.setColor( Editor.con_color());
-		h.fillOval((int) ((colist.head.position.x+neux)*Editor.ZoomFaktor),
-			(int) ((colist.head.position.y+neuy)*Editor.ZoomFaktor),
+		h.fillOval((int) ((colist.head.position.x+neux-6)*Editor.ZoomFaktor),
+			(int) ((colist.head.position.y+neuy-6)*Editor.ZoomFaktor),
 			(int) (12*Editor.ZoomFaktor),
 			(int) (12*Editor.ZoomFaktor)
 			);
@@ -383,16 +395,12 @@ if (matrix2.prev.rect != null)
 	                if (templist.head.name.name.compareTo(tempstatelist.head.name) == 0) {
 		
 		h.setColor( Editor.st_color());
-		h.drawRect((int) ((templist.head.rect.x+neux)*Editor.ZoomFaktor)+2,
-			(int) ((templist.head.rect.y+neuy)*Editor.ZoomFaktor)+2,
-			(int) ((templist.head.rect.width)*Editor.ZoomFaktor)-4,
-			(int) ((templist.head.rect.height)*Editor.ZoomFaktor)-4
-			);
 		h.drawRect((int) ((templist.head.rect.x+neux)*Editor.ZoomFaktor)+4,
 			(int) ((templist.head.rect.y+neuy)*Editor.ZoomFaktor)+4,
 			(int) ((templist.head.rect.width)*Editor.ZoomFaktor)-8,
 			(int) ((templist.head.rect.height)*Editor.ZoomFaktor)-8
 			);
+			
 
 		}
 		templist = templist.tail;
@@ -423,8 +431,12 @@ if (matrix2.prev.rect != null)
 				(int) ((as.rect.y+neuy) * Editor.ZoomFaktor),
 				(int) (as.rect.width* Editor.ZoomFaktor),
 				(int) (as.rect.height* Editor.ZoomFaktor));
-
-
+		if (Editor.da == true)
+	     {h.drawRect((int) ((as.rect.x+neux) * Editor.ZoomFaktor)+1,
+				(int) ((as.rect.y+neuy) * Editor.ZoomFaktor)+1,
+				(int) (as.rect.width* Editor.ZoomFaktor)-2,
+				(int) (as.rect.height* Editor.ZoomFaktor)-2);
+		}
 
 		neux = neux + as.rect.x;
 		neuy = neuy + as.rect.y;

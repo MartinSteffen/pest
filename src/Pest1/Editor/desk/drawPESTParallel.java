@@ -518,39 +518,39 @@ public static void drawPar(Graphics g,int cx1, int cy1, int cx2, int cy2, Color 
 	g.drawLine(cx2,cy1,cx2,cy2);*/ 
 
 	l1 = (cy1 / 10) +1;
-	l2 = ((cy1+cy2) / 10);
+	l2 = ((cy1+cy2-1) / 10);
               
 	for (int i = l1; i < l2; i++)
 	{
 	g.drawLine(cx1,i*10,cx1,i*10+5);
-	g.drawLine(cx1+cx2,i*10,cx1+cx2,i*10+5);
+	g.drawLine(cx1+cx2-1,i*10,cx1+cx2-1,i*10+5);
 	}
 	if  ((l1 * 10) > (cy1+5)) {
 	g.drawLine(cx1,cy1,cx1,(10*l1) - 6);
-	g.drawLine(cx1+cx2,cy1,cx1+cx2,(10*l1) - 6);
+	g.drawLine(cx1+cx2-1,cy1,cx1+cx2-1,(10*l1) - 6);
 	} 
-	if  ((l2 * 10) < (cy1+cy2)) {
-	if ((l2*10)+5 < (cy1+cy2)) abg = (l2*10)+5; else abg = cy1+cy2;
+	if  ((l2 * 10) < (cy1+cy2-1)) {
+	if ((l2*10)+5 < (cy1+cy2-1)) abg = (l2*10)+5; else abg = cy1+cy2-1;
 	g.drawLine(cx1,l2 * 10,cx1,abg);
-	g.drawLine(cx1+cx2,l2 * 10,cx1+cx2,abg);
+	g.drawLine(cx1+cx2-1,l2 * 10,cx1+cx2-1,abg);
 	} 
 	
 	l1 = (cx1 / 10) +1;
-	l2 = ((cx1+cx2) / 10);
+	l2 = ((cx1+cx2-1) / 10);
               
 	for (int i = l1; i < l2; i++)
 	{
 	g.drawLine(i*10,cy1,i*10 + 5,cy1);
-	g.drawLine(i*10,cy1+cy2,i * 10+5,cy1+cy2);
+	g.drawLine(i*10,cy1+cy2-1,i * 10+5,cy1+cy2-1);
 	}
 	if  ((l1 * 10) > (cx1+5)) {
 	g.drawLine(cx1,cy1,(10*l1) - 6,cy1);
-	g.drawLine(cx1,cy1+cy2,(10*l1) - 6,cy1+cy2);
+	g.drawLine(cx1,cy1+cy2-1,(10*l1) - 6,cy1+cy2-1);
 	} 
-	if  ((l2 * 10) < (cx1+cx2)) {
-	if ((l2*10)+5 < (cx1+cx2)) abg = (l2*10)+5; else abg = cx1+cx2;
+	if  ((l2 * 10) < (cx1+cx2-1)) {
+	if ((l2*10)+5 < (cx1+cx2-1)) abg = (l2*10)+5; else abg = cx1+cx2-1;
 	g.drawLine(l2 * 10,cy1,abg,cy1);
-	g.drawLine(l2 * 10,cy1+cy2,abg,cy1+cy2);
+	g.drawLine(l2 * 10,cy1+cy2-1,abg,cy1+cy2-1);
 	}  
     } 
 

@@ -52,8 +52,8 @@ public class drawPESTConn
 	State tempstate1;
 
 	laufname = laufname+1;
-	matrix1 = PESTdrawutil.getState(root,cx1-2,cy1-2);
-	matrix2 = PESTdrawutil.getState(root,cx1+14,cy1+14);
+	matrix1 = PESTdrawutil.getState(root,cx1-7,cy1-7);
+	matrix2 = PESTdrawutil.getState(root,cx1+7,cy1+7);
 	
 	//System.out.println("ma1 : "+matrix1.akt);
 	//System.out.println("ma2 : "+matrix2.akt);
@@ -67,10 +67,10 @@ public class drawPESTConn
 			otemp2 = (Or_State) matrix1.akt;
 			colist2 = otemp2.connectors;
 			templist3 = otemp2.substates;
-			temprect = new CRectangle(cx1-matrix1.x,cy1-matrix1.y,12,12);
+			temprect = new CRectangle((cx1-matrix1.x)-6,(cy1-matrix1.y)-6,12,12);
 			while (colist2 != null)
 			    {
-				temprect2 = new CRectangle(colist2.head.position.x,colist2.head.position.y,12,12);
+				temprect2 = new CRectangle(colist2.head.position.x-6,colist2.head.position.y-6,12,12);
 				if (temprect.intersects(temprect2)) 
 				    {
 					test = false;
@@ -176,8 +176,8 @@ public class drawPESTConn
     private void drawConn(Graphics g, int cx1,int cy1,Color c_color)
     { 
 	g.setColor(c_color);
-	g.fillOval((int) (cx1*Editor.ZoomFaktor),
-		   (int) (cy1*Editor.ZoomFaktor),
+	g.fillOval((int) (cx1*Editor.ZoomFaktor)-6,
+		   (int) (cy1*Editor.ZoomFaktor)-6,
 		   12,
 		   12);
     }
