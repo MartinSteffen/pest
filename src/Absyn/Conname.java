@@ -29,23 +29,31 @@ public class Conname extends TrAnchor implements Serializable, Cloneable{
  * @exception CloneNotSupportedException self-explanatory exception
  */
   public Object clone() throws CloneNotSupportedException {
-    CPoint positionclone;
-    if (position != null) {
-      positionclone = (CPoint)position.clone();
-    } else
-      positionclone = null;
-    
-    Location  locationclone  = (location == null) ? null : (Location)location.clone();
+    CPoint     positionclone = (position == null) ? null : (CPoint)position.clone();
+    Location   locationclone = (location == null) ? null : (Location)location.clone();
+
     return new Conname(name, positionclone, locationclone);
+    // Beachte: name braucht _nicht_ geklont werden (siehe auch absyn/test)!
   };
+  
 }
 //----------------------------------------------------------------------
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Conname.java,v 1.8 1999-01-11 17:23:48 swtech00 Exp $
+//	$Id: Conname.java,v 1.9 1999-02-09 10:44:34 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.8  1999/01/11 17:23:48  swtech00
+//	Alle Bestandteile der abstrakten Syntax mit Locations (= nicht-abstrakte
+//	Unterklassen von Absyn) in der Form modifiziert, da"s das Locations-Feld
+//	mit-geklont wird. =>
+//
+//	     o	Jeweils neuer Kontruktor hinzugef"ugt
+//	     o  clone-Methode angepa"st
+//
+//	[Steffen]
+//
 //	Revision 1.7  1999/01/08 23:03:07  swtech14
 //	Conname um CPoint erweitert.
 //
