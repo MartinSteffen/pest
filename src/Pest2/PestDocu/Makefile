@@ -2,9 +2,12 @@
 #	javadoc collected HTML pages for all packages: makefile.
 #	--------------------------------------------------------
 #
-#	$Id: Makefile,v 1.1 1999-01-06 08:46:36 swtech12 Exp $
+#	$Id: Makefile,v 1.2 1999-01-11 12:08:00 swtech20 Exp $
 #
 #	$Log: not supported by cvs2svn $
+#	Revision 1.1  1999/01/06 08:46:36  swtech12
+#	Inherited freom the common Makefile for both PESTs
+#
 #----------------------------------------------------------------------
  
 
@@ -20,7 +23,13 @@ all:	images tesc1
 images:	
 	ln -s $(JDKHOME)/docs/api/images/ .
 
-tesc1:	$(TESC1DOCU_FROM)/Grammatik $(TESC1DOCU_FROM)/example.tesc
+tesc1:	$(TESC1DOCU_FROM)/Grammatik $(TESC1DOCU_FROM)/Example.tesc
 	mkdir -p $(TESC1DOCU_TO)
 	cp $(TESC1DOCU_FROM)/Grammatik $(TESC1DOCU_TO)/Grammatik
-	cp $(TESC1DOCU_FROM)/example.tesc $(TESC1DOCU_TO)/example.tesc
+	cp $(TESC1DOCU_FROM)/Example.tesc $(TESC1DOCU_TO)/Example.tesc
+
+clean: 
+	\rm -f *.html *~
+	\rm -f images
+	 \rm -f $(TESC1DOCU_TO)/*
+	\rmdir -p $(TESC1DOCU_TO)
