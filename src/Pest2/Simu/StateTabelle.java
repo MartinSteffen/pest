@@ -96,15 +96,11 @@ public class StateTabelle extends Object{
     keys=(tab.data).keys(); /* Zunaechst alle aktiven aus tab nach result...*/
     while (keys.hasMoreElements()){
       temp=(Path)keys.nextElement();
-      System.err.print("verbindeTabtab:");
-      debug(temp);
       result.setActive(temp,tab.getState(temp));
     }
     keys=data.keys();      /* und dann alle aktiven der Instanz */
     while (keys.hasMoreElements()){
       temp=(Path)keys.nextElement();
-      System.err.print("verbindeTabinstance:");
-      debug(temp);
       result.setActive(temp,getState(temp));
     }
     return result;

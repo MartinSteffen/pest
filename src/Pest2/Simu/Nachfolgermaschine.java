@@ -2,6 +2,7 @@ package simu;
 
 import absyn.*;
 import java.util.Vector;
+import gui.*;
 
 /** Die Nachfolgermaschine: NICHT ausreichend getestet!!!*/
 class Nachfolgermaschine extends Object{
@@ -15,12 +16,14 @@ class Nachfolgermaschine extends Object{
    EventTabelle pre_events=null;
    BooleanTabelle pre_booleans=null;
 
+   GUIInterface gui=null;
    Communicator comm=null;
    
    
-   public Nachfolgermaschine(Statechart sc, Communicator co){
+   public Nachfolgermaschine(Statechart sc, Communicator co, GUIInterface g){
      comm=co;
      chart=sc;
+     gui=g;
    };
 
 
@@ -43,8 +46,10 @@ class Nachfolgermaschine extends Object{
 
   /*step fuer And-States*/
    Status step(Path path, And_State as){
-     System.err.print("AND:");
-     debug(path);
+     if (gui.isDebug()){
+       System.out.print("AND:");
+       debug(path);
+     }
      Vector statusse=new Vector(); 
      Status result=new Status();
      (result.states).setActive(path,as); /*as aktiv setzen*/
@@ -58,11 +63,7 @@ class Nachfolgermaschine extends Object{
        statusse.addElement(step(path.append((temp.name).name),temp));/* fuer jeden Parallelstate */
      }                                                                /* step ausfuehren           */ 
      try{
-       System.err.println("Aktive vor verbinde:");
-       result.states.debug();
        result=result.verbinde(statusse);
-       System.err.println("Aktive nach verbinde:");
-       result.states.debug();
        /* results verschmelzen     */ 
      }
      catch (RacingException e){
@@ -73,11 +74,15 @@ class Nachfolgermaschine extends Object{
 
   /*step fuer OR-States:*/
    Status step(Path path, Or_State os){
-     System.err.print("OR:");
-     debug(path);
+     if (gui.isDebug()){
+       System.out.print("OR:");
+       debug(path);
+     }
      Status result=new Status();
      if (act_states.isActive(path)){ /*Ist os schon aktiv? Wenn ja, dann...*/
-       System.err.println("OS ist schon aktiv - suche Transitionen");
+       if (gui.isDebug()){
+	 System.out.println("OS ist schon aktiv - suche Transitionen");
+       }
        Vector transitionen=new Vector();
        if (os.trs!=null){
 	 Tr temp=(os.trs).head;
@@ -93,8 +98,10 @@ class Nachfolgermaschine extends Object{
 	   }
 	 }
        }
-       System.err.println("Gefunden: "+transitionen.size());
-	if (transitionen.size()>1){                  /* Gibt es mehr als eine moegliche Transition */
+       if (gui.isDebug()){
+	 System.out.println("Gefunden: "+transitionen.size());
+       }
+       if (transitionen.size()>1){                  /* Gibt es mehr als eine moegliche Transition */
 	  transitionen=comm.solveNonDeterminism(transitionen);
 	}
 	/* BEGIN HACK: Damit das folgende Code-Stueck funktioniert, muss in result     */
@@ -103,14 +110,18 @@ class Nachfolgermaschine extends Object{
 	State tempstate=substates.head;
 	StateList tempstatelist=substates.tail;
 	if (act_states.isActive(path.append(tempstate.name.name))){
-	  System.err.println("es ist einer aktiv...");
+	  if (gui.isDebug()){	  
+	    System.out.println("es ist einer aktiv...");
+	  }
 	  result.states.setActive(path.append((tempstate.name).name),tempstate);
 	}
 	while (tempstatelist!=null){
 	  tempstate=tempstatelist.head;
 	  tempstatelist=tempstatelist.tail;
 	   if (act_states.isActive(path.append(tempstate.name.name))){
-	    System.err.println("es ist einer aktiv...");
+	     if (gui.isDebug()){	    
+	       System.out.println("es ist einer aktiv...");
+	     }
 	    result.states.setActive(path.append((tempstate.name).name),tempstate);
 	  }
 	}
@@ -126,12 +137,16 @@ class Nachfolgermaschine extends Object{
 	 substates=os.substates;
 	 tempstate=substates.head;
 	 tempstatelist=substates.tail;
-	 System.err.println("Suche-----");
-	 debug(path.append((tempstate.name).name));
-	 System.err.println("Result-bisher aktiv:");
-	 result.states.debug();
-	 while (!((result.states).isActive(path.append((tempstate.name).name)))){
+	 if (gui.isDebug()){	 
+	   System.out.println("Suche-----");
 	   debug(path.append((tempstate.name).name));
+	   System.out.println("Result-bisher aktiv:");
+	   result.states.debug();
+	 }
+	 while (!((result.states).isActive(path.append((tempstate.name).name)))){
+	   if (gui.isDebug()){	
+	     debug(path.append((tempstate.name).name));
+	   }
 	   tempstate=tempstatelist.head;
 	   tempstatelist=tempstatelist.tail;
 	 }
@@ -151,7 +166,9 @@ class Nachfolgermaschine extends Object{
        State defaultstate=null;
        if (stlist.tail!=null){
          /* Eigener Check, sollte eigentlich vom Syntaxchecker abgefangen werden */
-	 System.err.println("Nichtdeterminismus: Mehrere Defaults in:"+path);
+	 if (gui.isDebug()){
+	   System.out.println("Nichtdeterminismus: Mehrere Defaults in:"+path);
+	 }
        }
        else{
 	 StateList substates=os.substates;
@@ -163,7 +180,9 @@ class Nachfolgermaschine extends Object{
 	 }
 	 defaultstate=temp; /*Defaulttransition gefunden*/
 	 try{
-	   System.err.println("Default ist: "+defaultstate.name.name);
+	   if (gui.isDebug()){   
+	     System.out.println("Default ist: "+defaultstate.name.name);
+	   }
 	   result=result.verbinde(step(path.append((defaultstate.name).name),defaultstate)); /* rekursiver Abstieg */
 	 }
 	 catch (RacingException e){
@@ -177,8 +196,10 @@ class Nachfolgermaschine extends Object{
   /*step fuer den Basicstate, nichts zu tun, ausser Rueckliefern*/
   /*eines Status, in dem bs aktiv gesetzt ist.                 */
    Status step(Path path, Basic_State bs){
-     System.err.print("BASIC:");
-     debug(path);
+     if (gui.isDebug()){
+       System.out.print("BASIC:");
+       debug(path);
+     }
      Status result=new Status();
      (result.states).setActive(path,bs);
      return result;
@@ -206,7 +227,9 @@ class Nachfolgermaschine extends Object{
    }
 
    Status liefereNachfolger(Status pre_status, Status act_status){
-     System.out.println("LiefereNachfolger");
+     if (gui.isDebug()){
+       System.out.println("LiefereNachfolger");
+     }
      /*Vereinfachter Zugriff auf Statusse*/
      act_states=act_status.states;
      act_transitions=act_status.transitions;
@@ -217,8 +240,10 @@ class Nachfolgermaschine extends Object{
      pre_events=pre_status.events;
      pre_booleans=pre_status.booleans;
      /*wende step-Relation auf rootstate an*/
-     System.err.println("Ausgangssituation:");
-     act_states.debug();
+     if (gui.isDebug()){ 
+       System.out.println("Ausgangssituation:");
+       act_states.debug();
+     }
      Status result=new Status();
      State rootstate=chart.state;
      if (rootstate!=null){
@@ -230,9 +255,13 @@ class Nachfolgermaschine extends Object{
 
    boolean isSatisfied(GuardEvent ge){
       SEvent event=ge.event;
-      System.err.println("Testing Event: "+event.name);
+      if (gui.isDebug()){   
+	System.out.println("Testing Event: "+event.name);
+      }
       if (act_events.isSet(event.name)){
-	System.err.println("Event set: "+event.name);
+	if (gui.isDebug()){
+	  System.out.println("Event set: "+event.name);
+	}
       }
       return act_events.isSet(event.name);
    }
@@ -353,7 +382,9 @@ class Nachfolgermaschine extends Object{
     State head=states.head;
     String headname=(head.name).name;
     StateList tail=states.tail;
-    System.err.println("getStatebyName: "+name);
+    if (gui.isDebug()){
+      System.out.println("getStatebyName: "+name);
+    }
     if (headname.equals(name)){
       result=head;
     }
@@ -361,7 +392,9 @@ class Nachfolgermaschine extends Object{
       head=tail.head;
       headname=(head.name).name;
       tail=tail.tail;
-      System.err.println(headname);
+      if (gui.isDebug()){  
+	System.out.println(headname);
+      }
       if (headname.equals(name)){
 	result=head;
       }
@@ -507,7 +540,9 @@ class Nachfolgermaschine extends Object{
   /* Progress führt die Transition t auf status aus, indem rekursiv die action aufgeloest wird, */
   /* und liefert einen lokal veränderten Status zurück */
   Status progress(Path path, Tr t, Or_State os, Status status){
-    System.err.println("Progress....");
+    if (gui.isDebug()){
+      System.out.println("Progress....");
+    }
     Status result=new Status();
     try{
       result=result.verbinde(status);

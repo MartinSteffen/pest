@@ -60,7 +60,6 @@ public class NonDeterminismDialog extends Dialog implements ActionListener{
 
   public void actionPerformed(ActionEvent e){
     int index=list.getSelectedIndex();
-    System.err.println("User hat angeklickt: "+index);
     Tr t=(Tr)listvector.elementAt(index);
     result.insertElementAt(t,0);
     setVisible(false);

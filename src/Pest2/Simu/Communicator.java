@@ -42,20 +42,24 @@ public class Communicator extends Frame{
     return true;
   }
 
-  /* to be done... */
   public Vector solveNonDeterminism(Vector v){
     Vector result=null;
-    System.err.println("Nicht-Determinismus");
+    if (gui.isDebug()){
+      System.out.println("Nicht-Determinismus");
+    }
     NonDeterminismDialog dialog=new NonDeterminismDialog(this,v);
     dialog.show();
-    System.err.println("Und weiter gehts...");
+    if (gui.isDebug()){
+      System.out.println("Und weiter gehts...");
+    }   
     result=dialog.getAnswer();
     return result;
   }
 
-  /* to be done */
   public Status solveBVarRacing(RacingException e){
-    System.err.println("Racing....");
+    if (gui.isDebug()){
+      System.out.println("Racing....");
+    }
     Status result=new Status();
     BooleanTabelle racing_status=e.status;
     Bvar racing_var=e.var;
@@ -65,14 +69,23 @@ public class Communicator extends Frame{
     return result;
   }
 
+
+  void vor_5(){
+    for (int i=1; i<=5; i++){
+      vor();
+    }
+  };
+
   void vor(){
     Status temp=maschine.liefereNachfolger(prev_status,akt_status);
     prev_status=akt_status;
     akt_status=temp;
-    System.err.println("-----------------------");
-    System.err.println("Ergebnis des Schrittes:");
-    akt_status.debug();
-    System.err.println("-----------------------");
+    if (gui.isDebug()){
+      System.out.println("-----------------------");
+      System.out.println("Ergebnis des Schrittes:");
+      akt_status.debug();
+      System.out.println("-----------------------");
+    }    
     unhighlightPrevStates();
     unhighlightPrevTrs();
     highlightAktStates();
@@ -84,42 +97,63 @@ public class Communicator extends Frame{
   }
 
   void highlightAktStates(){
+    highlightObject highlight=null;
     StateTabelle states=akt_status.states;
     Enumeration actives=states.data.elements();
     State element=null;
     while (actives.hasMoreElements()){
       element=(State)actives.nextElement();
-      //editor.highlight(element,FARBE ROT);
+      if (element instanceof Or_State){
+	highlight=new highlightObject((Or_State)element,Color.green);
+      }
+      if (element instanceof Basic_State){
+	highlight=new highlightObject((Basic_State)element,Color.green);
+      }
+        if (element instanceof And_State){
+	highlight=new highlightObject((And_State)element,Color.green);
+      }
     }
   }
 
   void unhighlightPrevStates(){
+    highlightObject highlight=null;
     StateTabelle states=prev_status.states;
     Enumeration actives=states.data.elements();
     State element=null;
     while (actives.hasMoreElements()){
       element=(State)actives.nextElement();
-      //editor.unhighlight(element,FARBE ROT);
+        if (element instanceof Or_State){
+	highlight=new highlightObject((Or_State)element);
+      }
+      if (element instanceof Basic_State){
+	highlight=new highlightObject((Basic_State)element);
+      }
+        if (element instanceof And_State){
+	highlight=new highlightObject((And_State)element);
+      }
     }
   }
     
   void highlightAktTrs(){
+    highlightObject highlight=null;
+    StateTabelle states=prev_status.states;
     TransitionTabelle transitions=akt_status.transitions;
     Enumeration actives=transitions.data.elements();
     Tr element=null;
     while (actives.hasMoreElements()){
       element=(Tr)actives.nextElement();
-      //editor.highlight(element,FARBE ROT);
+      highlight=new highlightObject(element,Color.green);
     }
   }
   
   void unhighlightPrevTrs(){
+    highlightObject highlight=null;
     TransitionTabelle transitions=akt_status.transitions;
     Enumeration actives=transitions.data.elements();
     Tr element=null;
     while (actives.hasMoreElements()){
       element=(Tr)actives.nextElement();
-      //editor.unhighlight(element,FARBE ROT);
+      highlight=new highlightObject(element);
     }
   } 
 
@@ -141,6 +175,12 @@ public class Communicator extends Frame{
 	vor();
       }
     });  
+    Button b2=new Button("5 Schritte weiter");
+    b2.addActionListener(new ActionListener(){
+      public void actionPerformed(ActionEvent e){
+	vor_5();
+      }
+    });
     tf=new TextField(10);
     Button b4=new Button("Event setzen");
     b4.addActionListener(new ActionListener(){
@@ -153,6 +193,7 @@ public class Communicator extends Frame{
       }
     });  
     add(b1);
+    add(b2);
     add(tf);
     add(b4);
     pack();
@@ -160,4 +201,10 @@ public class Communicator extends Frame{
   }
 
 }
+
+
+
+
+
+
 
