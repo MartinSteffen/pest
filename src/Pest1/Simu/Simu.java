@@ -7,7 +7,7 @@ import absyn.*;
 import editor.*;
 import gui.*;
 
-/**Hauptklasse der Simulation
+/**Hauptklasse der Simulation<p>
  * Der Start des Simulators erfolgt beim Aufruf des Kontruktors. Dabei wird
  * dann ein UI-Fenster erzeugt.<p>
  * <STRONG> Garantie. </STRONG> Wir garantieren, dass die von unseren
@@ -54,13 +54,17 @@ public class Simu extends Object{
 	private GUIInterface gui = null; // Referenz auf die GUI (mit NULL vorbelegen)
 	
 /**
- * Simulator Main-Klasse
+ * Simulator: (Alter) Main-Konstruktor<p>
  * Uebergabe nur einer Statechart
  */
 public Simu(Statechart Daten) {
 	Statechart SDaten = Daten;
 	if (SDaten != null) {
 		System.out.println("Simu: Statechart angekommen !");
+		UserInterface UIface = new UserInterface();
+		UIface.setTitle("Willkommen im Simulator");
+		UIface.setSize(576,300);
+		UIface.setLocation(100,100);
 	}
 	else {
 		System.out.println("Simu: Keine Statechart angekommen ! Objekt war null");
@@ -68,7 +72,7 @@ public Simu(Statechart Daten) {
 }
 
 /**
- * Simulator Main-Klasse
+ * Simulator: 2) moeglicher Main-Konstruktor<p>
  * Uebergabe einer Statechart und eines Editor-Objektes
  */
 public Simu(Statechart Daten, Editor eEdit) {
@@ -82,9 +86,9 @@ public Simu(Statechart Daten, Editor eEdit) {
 }
 
 /**
- * Simulator Main-Klasse
+ * Simulator: 3) gewuenschter, neuer Main-Konstruktor<p>
  * Uebergabe einer Statechart, eines Editorobjektes und einer GUI-
- * schnittstelle, um (hauptsaechlich zu Debuggingzwecken) Ausgaben
+ * schnittstelle, um (erstmal hauptsaechlich zu Debuggingzwecken) Ausgaben
  * im GUI-Fenster machen zu koennen.
  */
 public Simu(Statechart Daten, Editor eEdit, GUIInterface igui) {
@@ -99,9 +103,11 @@ public Simu(Statechart Daten, Editor eEdit, GUIInterface igui) {
 }
 
 /**
- * Simulator Main-Klasse
+ * Simulator: 4) Main-Konstruktor<p>
  * Uebergabe einer Statechart und einer GUI-Schnittstelle, die uns die
- * Ausgabe von Daten im GUI-Fenster ermoeglicht 
+ * Ausgabe von Daten im GUI-Fenster ermoeglicht.<p>
+ * Wurde mit aufgenommen, falls die Funktionalitaet auch ohne ein Editorobjekt
+ * erreicht werden kann. 
  */
 public Simu(Statechart Daten, GUIInterface igui) {
 	gui = igui;
