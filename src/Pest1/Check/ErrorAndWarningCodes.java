@@ -2,7 +2,7 @@ package Check;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: ErrorAndWarningCodes.java,v 1.6 1998-12-07 11:42:35 swtech11 Exp $
+ *  @version  $Id: ErrorAndWarningCodes.java,v 1.7 1998-12-08 00:08:52 swtech11 Exp $
  */
 class ErrorAndWarningCodes {
   ErrorAndWarningCodes() {
@@ -17,6 +17,10 @@ class ErrorAndWarningCodes {
       case   3: { _s = "Der State Check funktioniert noch nicht einwandfrei."; break;  }
       case   4: { _s = "Der Transition Check funktioniert noch nicht einwandfrei."; break;  }
       case   5: { _s = "Der BVars Check funktioniert noch nicht einwandfrei."; break;  }
+      case   6: { _s = "Der Check auf Kreiheitfreiheit funktioniert noch nicht einwandfrei."; break;  }
+
+      case  10: { _s = "Fataler Fehler: Kreise in den Listen der States"; break;  }
+      case  11: { _s = "Fataler Fehler: Kreise in den Listen der Transitionen"; break;  }
 
       case 100: {_s = "Doppelte Definition von BVar"; break; }
       case 101: {_s = "Keine Deklaration von BVar"; break; }
@@ -27,9 +31,8 @@ class ErrorAndWarningCodes {
       case 202: {_s = "Deklarierter Event wurde nicht verwendet"; break; }
       case 203: {_s = "Der Pathname in einem GuardComppath ist nicht vorhanden."; break; }
       case 204: {_s = "Der Pathname in einem GuardComppath ist mehrfach vorhanden."; break; }
-
       case 300: {_s = "Mehrfache Definition von Statename"; break; }
-      case 301: {_s = "Bezeichnung von Statename nicht eindeutig"; break;} 
+      case 301: {_s = "Bezeichnung von Statename nicht eindeutig"; break;}
       case 302: {_s = "Deklarierter State wurde nicht verwendet"; break; }
       case 303: {_s = "Keine Deklaration von Statename"; break; }
       case 304: {_s = ""; break; }

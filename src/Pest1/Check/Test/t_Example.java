@@ -3,7 +3,7 @@ import Absyn.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: t_Example.java,v 1.5 1998-12-07 11:43:07 swtech11 Exp $
+ *  @version  $Id: t_Example.java,v 1.6 1998-12-08 00:06:41 swtech11 Exp $
  */
 public class t_Example{
 
@@ -42,7 +42,7 @@ public class t_Example{
     PathList pathlist =
         new PathList (new Path ("SUD"),
           new PathList (new Path ("P1"),
-            new PathList (new Path ("P1"),
+            new PathList (new Path ("P2"),
               new PathList (new Path ("P3"),
 		new PathList (new Path ("Q1"),
                   new PathList (new Path ("Q2"),
@@ -51,12 +51,12 @@ public class t_Example{
                         new PathList (new Path ("S1"),
 			  new PathList (new Path ("S2"),
                             new PathList (new Path ("T1"),
-                              new PathList (new Path ("P1"),null))))))))))));  
+                              new PathList (new Path ("T2"),null))))))))))));  
 
   Basic_State S1 = new Basic_State (new Statename("S1"));
   Basic_State S2 = new Basic_State (new Statename("S2"));
   Basic_State T1 = new Basic_State (new Statename("T1"));
-  Basic_State T2 = new Basic_State (new Statename("T1"));
+  Basic_State T2 = new Basic_State (new Statename("T2"));
   
   Tr tr1 = new Tr (new Statename ("S1"), 
 		   new Statename ("S2"),
@@ -209,6 +209,60 @@ public class t_Example{
 			       new StatenameList (new Statename("P1"), null),
 			       new ConnectorList (new Connector(new Conname("SUD-1-CON")),
                new ConnectorList(new Connector(new Conname("sud-2-CON")), null))    );
+
+    return new Statechart (null, null, pathlist, SUD);
+  }
+
+  public static Statechart getExample_m3() {
+
+    PathList pathlist =
+        new PathList (new Path ("SUD"),
+          new PathList (new Path ("SUD.P1"),
+            new PathList (new Path ("SUD.P2"),
+              new PathList (new Path ("SUD.P2.Z1"),
+                new PathList (new Path ("SUD.P2.Z2"),
+             null)))));
+
+    Basic_State P1 = new Basic_State (new Statename("P1"));
+    Basic_State Z1 = new Basic_State (new Statename("Z1"));
+    Basic_State Z2 = new Basic_State (new Statename("Z2"));
+
+
+
+
+    Or_State d1 = new Or_State (
+			       new Statename ("d1"),
+             new StateList (Z2, null),
+             null,
+             null,
+             null);
+
+    Or_State P2 = new Or_State (
+			       new Statename ("P2"),
+			       new StateList (Z1,new StateList (d1,null)),
+			       new TrList (new Tr (new Statename ("Z1"), new Conname("BLABLA-CON"), new Label (null,null)),
+					     new TrList (new Tr (new Statename ("Z2"), new Statename ("Z1"), new Label (null,null)),
+						     new TrList (new Tr (new Conname("SUD-1-CON"), new Statename ("P1"), new Label (null,null)),
+                   new TrList (new Tr (new Statename ("Z2"), new UNDEFINED (), new Label (null,null)),
+                     new TrList (new Tr (new Statename ("Z1"), new Conname("P2-CON"), new Label (null,null)),
+              null))))),
+			       new StatenameList (new Statename("Z2"), null),
+			       new ConnectorList (new Connector(new Conname("P2-CON")), null));
+
+    Or_State SUD = new Or_State (
+			       new Statename ("SUD"),
+			       new StateList (P1,new StateList (P2,null)),
+			       new TrList (new Tr (new Conname("sud-3-CON"), new Statename ("P2"), new Label (null,null)),
+					     new TrList (new Tr (new Statename ("P1"), new Conname("P2-CON"), new Label (null,null)),
+						     new TrList (new Tr (new Statename ("P3"), new Statename ("P1"),	new Label (null,null)),
+                   new TrList (new Tr (new Conname("SUD-1-CON"), new Conname("sud-2-CON"), new Label (null,null)),
+                     new TrList (new Tr (new Statename ("P2"), new Statename ("P1"), new Label (null,null)),
+              null))))),
+			       new StatenameList (new Statename("P1"), null),
+			       new ConnectorList (new Connector(new Conname("SUD-1-CON")),
+               new ConnectorList(new Connector(new Conname("sud-2-CON")), null))    );
+
+    d1.substates.head=P2;
 
     return new Statechart (null, null, pathlist, SUD);
   }

@@ -6,7 +6,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: testTransitions.java,v 1.3 1998-12-06 23:03:56 swtech11 Exp $
+ *  @version  $Id: testTransitions.java,v 1.4 1998-12-08 00:08:54 swtech11 Exp $
  */
 class testTransitions extends modelCheckBasics {
   Vector newPLV = new Vector(); // Vector fuer die selbst angelegte PathList der States
@@ -14,7 +14,7 @@ class testTransitions extends modelCheckBasics {
 
   testTransitions(Statechart _s, modelCheckMsg _m) {
     super(_s,_m);
-    printOut = true;
+    // printOut = true;
   }
 
   boolean check() {
@@ -25,7 +25,7 @@ class testTransitions extends modelCheckBasics {
     if (sc.state instanceof Basic_State) {testTransBasicState ((Basic_State)sc.state, null,""); }
 
     msg.addWarning(4,"bei allen Transitionen");
-    return true;
+    return (msg.getErrorNumber()==0);
   }
 
 
