@@ -75,9 +75,9 @@ import tesc2.*;
 
     // Erzeugung der pop-up Menues
     String[] labels = new String[] {
-      "-","Undo", "Restore","-", "Objekt loeschen","Block loeschen","-","kopieren","verschieben"};
+      "-","Undo", "Restore","-", "Objekt loeschen","Block loeschen","-","kopieren","verschieben","-","Subchart speichern"};
     String[] commands = new String[] {
-      "","undo", "restore","", "loeschen","rloeschen","","kopieren","verschieben"};
+      "","undo", "restore","", "loeschen","rloeschen","","kopieren","verschieben","","sub"};
     popup = new PopupMenu("Werkzeugleiste");                   		// Menueerzeugung
     for(int i = 0; i < labels.length; i++) {
       MenuItem mi = new MenuItem(labels[i]);   	// erzeugt Menueeintrag
@@ -106,6 +106,17 @@ import tesc2.*;
 				        	catch (Exception e) {System.out.println("Clone-Fehler");}
 					System.out.println("test2 : "+copyobj);
 	}	
+    else if (command.equals("sub") & deleteobj != null) {
+	if (deleteobj instanceof State)
+	{
+	    System.out.println("speichern");
+	    Statechart myroot = new Statechart(null,null,null,null);
+	    myroot.state = (State) deleteobj;
+	    Relist rl = new Relist(); rl.start(myroot,null,null,myroot);
+	    new mysave(myroot);
+	    root = myroot;
+	}
+    }
     else if (command.equals("verschieben") & deleteobj != null) {	System.out.println("test3 : "+copyobj);
 					try     {copyobj = (Absyn) deleteobj.clone();}
 				        	catch (Exception e) {System.out.println("Clone-Fehler");}
@@ -740,6 +751,8 @@ private static Statechart undo() {
 	//xroot.bvars = lauf.chart.bvars;
 	//xroot.cnames = lauf.chart.cnames;
 	//Editor.newdraw();
+	System.out.println("lauf : "+lauf);
+	  System.out.println("basis : "+basis);  
 	return lauf.chart;
    }
 
@@ -752,16 +765,19 @@ private static Statechart redo() {
 	//xroot.cnames = lauf.chart.cnames;
 	//Editor.newdraw();
 	}
+	  System.out.println("lauf : "+lauf);
+	  System.out.println("basis : "+basis);
 	return lauf.chart;
    }
 
       public static void addundo(Statechart nroot)
       {        Statechart root = nroot;
-        lauf = lauf.next;
-	try {lauf.chart = (Statechart) root.clone();}
-	catch (Exception e) {System.out.println("Waere die Absyn korrekt, so funktionierte auch das Undo !!!!");
-	lauf = lauf.prev;}
-	basis = lauf;
+      //lauf = lauf.next;
+	try {lauf = lauf.next;lauf.chart = (Statechart) root.clone();basis = lauf;}
+	catch (Exception e) {System.out.println("Waere die Absyn korrekt, so funktionierte auch das Undo !!!!");}
+	//basis = lauf;
+System.out.println("lauf : "+lauf);
+	  System.out.println("basis : "+basis);
       }
 
 public static Dimension sizer() {return dpanel.getSize();}
