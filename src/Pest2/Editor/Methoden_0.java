@@ -709,7 +709,12 @@ public class Methoden_0
             g.setColor(editor.gui.getTransitioncolor());
 
             int groesse = (int)(Methoden_1.getFactor()*100);
-            if (editor.fontsize != 0) g.setFont(new Font("Serif",Font.PLAIN,editor.fontsize));
+            if (editor.fontsize != 0) g.setFont(new Font("Serif",Font.PLAIN,editor.fontsize));            public void windowActivated(WindowEvent e){
+                File file = new File("highlight.dat");
+                if(file.exists()) simulieren.setEnabled(true);
+                else simulieren.setEnabled(false);
+            }
+
             else{
             if (groesse < 25) g.setFont(new Font("Serif",Font.PLAIN,8));
             else if (groesse < 50) g.setFont(new Font("Serif",Font.PLAIN,10));
@@ -760,6 +765,7 @@ public class Methoden_0
         // Achtung: state muá im Baum h„ngen. Ist dies nicht der Fall
         // so ist die andere abs-Methode zu benutzen!
 
+	if (state == null) return null;
         if (state.equals(editor.statechart.state))
             return state.rect;
         State father = EditorUtils.getFatherOf(state, editor);
@@ -779,7 +785,9 @@ public class Methoden_0
     public static State getFirstOrStateOf(int x, int y, Editor editor)
     {
         State s = EditorUtils.getInnermostStateOf(x,y,editor);
+	if (s.equals(editor.statechart.state) & !(editor.statechart.state instanceof Or_State)) return null;
         Rectangle r = abs(editor,s);
+	if (r == null) return null;
         while (!(s instanceof Or_State))
         {
             s = EditorUtils.getInnermostStateOf(r.x-1,r.y-1,editor);

@@ -26,7 +26,7 @@ public class Editor extends Frame implements ActionListener {
     public StateList stateList = null;
     private String status = "";
     private Scrollbar vert,horiz;
-    public int scrollX=0,scrollY=-80;
+    public int scrollX=-20,scrollY=-80;
     public GUIInterface gui = null;
     private boolean changedStatechart = false; //fuer listenEditor()
     private String statechartName = "";
@@ -261,7 +261,7 @@ public class Editor extends Frame implements ActionListener {
         {
             public void adjustmentValueChanged(AdjustmentEvent e)
             {
-                scrollX = e.getValue();
+                scrollX = e.getValue()-20;
                 horiz.setValues(e.getValue(),40,0,4000);
                 repaint();
             }
@@ -425,14 +425,6 @@ public class Editor extends Frame implements ActionListener {
                     EditorUtils.dragStateMouseReleased(e, editor);
                 if (status.equals("Verschieben"))
                     Methoden_1.moveOne((int)((double)(e.getX()+scrollX)/Methoden_1.getFactor()),(int)((double)(e.getY()+scrollY)/Methoden_1.getFactor()),editor);
-                if (status.equals("Markieren")){
-                    Methoden_1.markObjects(newRect,editor);
-                    EditorUtils.show(newRect,getBackground(),editor,getGraphics());
-                    initCopy();
-                    initRemove();
-                    initMove();
-                    return;
-                }
                 initCopy();
                 initRemove();
                 initMove();
@@ -529,10 +521,6 @@ public class Editor extends Frame implements ActionListener {
                     EditorUtils.createStateMouseDragged(e, editor);
                 if (status.equals("Zustand verschieben"))
                     EditorUtils.dragStateMouseDragged(e, editor);
-                if (status.equals("Markieren"))
-                {
-                    EditorUtils.createStateMouseDragged(e,editor);
-                }
             }
         });
 
@@ -541,6 +529,11 @@ public class Editor extends Frame implements ActionListener {
             public void windowClosing(WindowEvent e) {
                 Window window = e.getWindow();
                 window.dispose();
+            }
+            public void windowActivated(WindowEvent e){
+                File file = new File("highlight.dat");
+                if(file.exists()) simulieren.setEnabled(true);
+                else simulieren.setEnabled(false);
             }
         });
 

@@ -218,13 +218,16 @@ public class Methoden_1
 
     public static ObjectList getObjects(Rectangle rect, Editor editor)
     {
+	if (rect == null) return null;
         ObjectList objList = null;
         Or_State os = (Or_State)(editor.statechart.state);
         Rectangle r = Methoden_0.abs(editor,os);
-        ConnectorList clist = os.connectors;
+	if (r == null) return null;
+	ConnectorList clist = os.connectors;
         TrList tlist = os.trs;
         while (clist != null) //fuer root-State
         {
+	    if (clist.head.position == null){clist = clist.tail;continue;}
             if (rect.contains(clist.head.position.x+r.x,clist.head.position.y+r.y))
             {
                 objList = new ObjectList(clist.head, objList);
@@ -249,6 +252,7 @@ public class Methoden_1
                 clist = ((Or_State)(list.head)).connectors;
             while (clist != null)
             {
+		if (clist.head.position == null){clist = clist.tail;continue;}
                 if (rect.contains(clist.head.position.x+r.x,clist.head.position.y+r.y))
                 {
                     objList = new ObjectList(clist.head, objList);
@@ -322,8 +326,6 @@ public class Methoden_1
             selectOneConnector(x,y,editor);
         else
             selectOneTr(x,y,editor);
-	//	new highlightObject(selectOneConnector,Color.white);
-	// new highlightObject(selectOneTr,Color.white);
     }
 
     public static void insertOne(int x, int y, Editor editor)
@@ -865,7 +867,7 @@ public class Methoden_1
     Parameter: tr: die zuveraendende Transition
                p: absolute Koordinate desjenigen Or_States
 */
-    private static void changeTrAnchorOf(Tr tr, Point p,Editor editor)
+    public static void changeTrAnchorOf(Tr tr, Point p,Editor editor)
     {
         Absyn source = null, target = null;
         TrAnchor s=null,t=null;
@@ -898,6 +900,7 @@ public class Methoden_1
     {
         StateList list = editor.stateList;
         TrList tlist = null;
+	if (!(editor.statechart.state instanceof Or_State)) return;
         tlist = ((Or_State)(editor.statechart.state)).trs;
         Rectangle r = editor.statechart.state.rect;
         Rectangle rect = new Rectangle();
