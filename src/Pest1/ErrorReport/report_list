@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.52 1999-02-03 08:48:29 swtech01 Exp $
+//	$Id: report_list,v 1.53 1999-02-03 09:29:53 swtech01 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -706,3 +706,30 @@ usw., also keine erkennbaren Zustandsaenderungen.
 
 Erstelle zwei Zustaende mit beschrifteter Trasition. Erzeuge einen
 parent state aussenrum. Dabei werden die Labels nach unten verschoben.
+//------------------------------------------------------------------------------
+#Number:        50
+#Autor:         Bernd Weber bwe
+#Subject:       Codegen: Implementierung nicht korrekt
+#Status:        reported
+#Description:
+
+1. Lade Chart ~swtech12/Examples/misc/abc.pest bzw. importiere
+   abc.pest
+2. Starte Codegenerator
+3. Uebersetze Java-Files Automaton, SimpleEnvironment und SymbolTable
+4. Starte "java SimpleEnvironment"
+
+Der Anfangszustand wird nicht verlassen.
+//------------------------------------------------------------------------------
+#Number:        51
+#Autor:         Bernd Weber bwe
+#Subject:       Editor: Basic-State wird durch PARALLEL umbenannt.
+#Status:        reported
+#Description:
+
+Man erzeuge einen Basic State und benenne diesen. Macht man ihn nun
+durch PARALLEL zu einem AND State, erhaelt er einen neuen Namen. Fatal
+deswegen, weil Codegen die Default-Namen nicht vertraegt.
+
+
+   
