@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.103 1999-02-12 08:48:27 swtech00 Exp $
+//	$Id: report_list,v 1.104 1999-02-12 08:50:51 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -469,7 +469,7 @@ mehr angezeigt.
 #Number:	30
 #Autor:		Erich Mikk erm
 #Subject:	Editor erzeugt Interlevel Transitionen (IT)?
-#Status: 	reported
+#Status: 	confirmed
 #Description: 
 
 Am 9.2. zurückgesetzt: es funktioniert zwar für a1.st, aber nicht für thrusters.st!
