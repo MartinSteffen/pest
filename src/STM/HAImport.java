@@ -50,16 +50,16 @@ import gui.GUIInterface;
  * <DT><STRONG>HINWEIS.</STRONG>
  * Die Methode main dient uns intern zum Testen ohne GUI.
  * Ein Beispiel mit hardkodiertem Dateinamen wird importiert und &uuml;ber
- * den PrettyPrinter ausgegeben. 
+ * den PrettyPrinter ausgegeben.
  * </DL COMPACT>
  *
  * @author  Sven Jorga, Werner Lehmann
- * @version $Id: HAImport.java,v 1.11 1999-01-11 14:31:05 swtech18 Exp $
+ * @version $Id: HAImport.java,v 1.12 1999-01-12 18:49:20 swtech18 Exp $
  */
 public class HAImport implements Patterns {
   Perl5Util perl = new Perl5Util();
 
-  private static final int SKAL = 1;
+  private double rFaktor = 1;
   private String mkhaString = null;
   private String eventsString = null;
   private String statesString = null;
@@ -91,7 +91,7 @@ public class HAImport implements Patterns {
     initImport(reader);
   }
 
-  /** Konstruktor mit GUI-Unterst&uuml;tzung. 
+  /** Konstruktor mit GUI-Unterst&uuml;tzung.
    * Dieser Konstruktor erwartet zus&auml;tzlich ein GUIInterface
    * und sollte nun anstelle des bisherigen verwendet werden, damit
    * Fehlermeldungen im Logfenster des GUIs erscheinen und nicht als
@@ -111,6 +111,7 @@ public class HAImport implements Patterns {
 
   private void initImport(BufferedReader reader) throws Exception {
     String str = new String();
+    CRectangle cRect = new CRectangle(0,0,0,0);
 
     initSuccess = false;
     while (reader.ready())
@@ -148,8 +149,25 @@ public class HAImport implements Patterns {
     hiHash = makeHiHash(hiString);
     trHash = makeTrHash(trmapString);
     coordHash = makeCoordHash(statesString);
+    rootString = removeQuotes(rootString);
+    cRect = calcRect((Vector)coordHash.get(rootString));
+    rFaktor = calcResize(640, 480, cRect.width, cRect.height);
+    System.out.println("resizeFaktor: "+rFaktor);
     initHash = makeInitHash(initString);
     initSuccess = true;
+  }
+
+  private double calcResize(int maxWidth, int maxHeight, int rootWidth, int rootHeight) {
+    double rFaktorX = 1.0, rFaktorY = 1.0;
+    double resize = 1.0;
+
+    rFaktorX = (double)maxWidth / rootWidth;
+    rFaktorY = (double)maxHeight / rootHeight;
+    if (rFaktorX > rFaktorY)
+      resize = rFaktorY;
+    else
+      resize = rFaktorX;
+    return resize;
   }
 
   /** Diese Methode liefert die StateChart, die aus dem dem Konstruktor
@@ -204,6 +222,7 @@ public class HAImport implements Patterns {
     Vector pointVec = null;
     String currentStr = null;
     String currentCoord = null;
+    Double xCoord = null, yCoord = null;
 
     statesString = perl.substitute("s/mk_gstate//g",statesString);
     gstatesVec = deliSplit(statesString,',');
@@ -220,8 +239,9 @@ public class HAImport implements Patterns {
         // Remove (...)
         currentCoord = currentCoord.substring(1,currentCoord.length()-1);
         xyVec = deliSplit(currentCoord,',');
-        pointVec.addElement(new CPoint(Integer.parseInt((String)xyVec.elementAt(0))*SKAL,
-                                      Integer.parseInt((String)xyVec.elementAt(1))*SKAL));
+        xCoord = new Double(Integer.parseInt((String)xyVec.elementAt(0)));
+        yCoord = new Double(Integer.parseInt((String)xyVec.elementAt(1)));
+        pointVec.addElement(new CPoint(xCoord.intValue(),yCoord.intValue()));
       }
       tempHash.put(removeQuotes((String)currentVec.elementAt(0)),pointVec);
     }
@@ -320,6 +340,24 @@ public class HAImport implements Patterns {
     }
   }
 
+  private CRectangle calcRect(Vector pointVec) {
+    CPoint pt = null;
+    Rectangle rect = null;
+    CRectangle cRect = null;
+
+    for (int l=0; l < pointVec.size(); l++) {
+      pt = (CPoint)pointVec.elementAt(l);
+      if (cRect == null)
+        cRect = new CRectangle(pt);
+      else {
+        rect = cRect.union(new CRectangle(pt));
+        cRect = new CRectangle(rect.x,rect.y,rect.width,rect.height);
+        //cRect = new CRectangle((CRectangle)cRect.union(new CRectangle(pt)));
+      }
+    }
+    return cRect;
+  }
+
   private State createState(String stateName, Rectangle baseRect) throws Exception {
     String stateType = null;
     Vector hiVec = null, trVec = null, pointVec = null;
@@ -327,28 +365,35 @@ public class HAImport implements Patterns {
     StateList sl = null;
     StatenameList snl = null;
     TrList tl = null;
-    CPoint pt = null;
-    Rectangle rect = null;
-    CRectangle rt = null;
+    CRectangle rt = null, rtNew = null;
     CPoint pointArray[];
+    Double xCoord = null, yCoord = null;
+    Double resizedX = null, resizedY = null, resizedWidth = null, resizedHeight = null;
 
     stateName = perl.substitute("s/\"//g",stateName);
     stateType = (String)tyHash.get(stateName);
     // Rectangle erzeugen
     pointVec = (Vector)coordHash.get(stateName);
-    for (int l=0; l < pointVec.size(); l++) {
-      pt = (CPoint)pointVec.elementAt(l);
-      if (rt == null)
-        rt = new CRectangle(pt);
-      else {
-        rect = rt.union(new CRectangle(pt));
-        rt = new CRectangle(rect.x,rect.y,rect.width,rect.height);
-        //rt = new CRectangle((CRectangle)rt.union(new CRectangle(pt)));
-        }
-    }
-    rt = new CRectangle(rt.x-baseRect.x,rt.y-baseRect.y,rt.width,rt.height);
+    rt = calcRect(pointVec);
+    resizedX = new Double((rt.x-baseRect.x) * rFaktor);
+    resizedY = new Double((rt.y-baseRect.y) * rFaktor);
+    resizedWidth = new Double(rt.width * rFaktor);
+    resizedHeight = new Double(rt.height * rFaktor);
+    rtNew = new CRectangle(resizedX.intValue(),
+                           resizedY.intValue(),
+                           resizedWidth.intValue(),
+                           resizedHeight.intValue());
+    /*resizedX = new Double(rt.x * 1.0);
+    resizedY = new Double(rt.y * 1.0);
+    resizedWidth = new Double(rt.width * 1.0);
+    resizedHeight = new Double(rt.height * 1.0);
+    rtNew = new CRectangle(resizedX.intValue()-baseRect.x,
+                           resizedY.intValue()-baseRect.y,
+                           resizedWidth.intValue(),
+                           resizedHeight.intValue());
+    */
     if (stateType.equalsIgnoreCase("BASIC"))
-      return new Basic_State(new Statename(stateName),rt);
+      return new Basic_State(new Statename(stateName),rtNew);
     else if (stateType.equalsIgnoreCase("OR")) {
       // Default-SatenameList erzeugen
       snl = new StatenameList(new Statename((String)initHash.get(stateName)),snl);
@@ -365,7 +410,9 @@ public class HAImport implements Patterns {
             pointVec.removeAllElements(); // pointVec soll jetzt die Koordinaten der Transitionen aufnehmen
             for (int m=6; m<currentTrVec.size(); m++) {
               perl.match("/<?mk_coord\\((\\d+),(\\d+)\\)>?/",(String)currentTrVec.elementAt(m));
-              pointVec.addElement(new CPoint((Integer.parseInt(perl.group(1))*SKAL)-rt.x,(Integer.parseInt(perl.group(2))*SKAL)-rt.y));
+              xCoord = new Double((Integer.parseInt(perl.group(1))-rt.x)*rFaktor);
+              yCoord = new Double((Integer.parseInt(perl.group(2))-rt.y)*rFaktor);
+              pointVec.addElement(new CPoint(xCoord.intValue(),yCoord.intValue()));
             }
             pointVec = removeDuplicates(pointVec);
             pointArray = new CPoint[pointVec.size()];
@@ -373,7 +420,10 @@ public class HAImport implements Patterns {
             tl = new TrList(new Tr(new Statename((String)hiVec.elementAt(i-1)),
                                    new Statename((String)currentTrVec.elementAt(0)),
                                    new TLabel(createGuard((String)currentTrVec.elementAt(3),(String)currentTrVec.elementAt(4)),
-                                             createAction((String)currentTrVec.elementAt(5))),
+                                             createAction((String)currentTrVec.elementAt(5)),
+                                             null, // CPoint
+                                             null, // Location
+                                             "HALLO"), // Caption
                                    pointArray),
                             tl); }
           }
@@ -381,7 +431,7 @@ public class HAImport implements Patterns {
       // ConnectorList entfaellt
       // Or-State erzeugen
       //System.exit(-1);
-      return new Or_State(new Statename(stateName),sl,tl,snl,null,rt);
+      return new Or_State(new Statename(stateName),sl,tl,snl,null,rtNew);
       }
     else if (stateType.equalsIgnoreCase("AND")) {
       // Liste der Substates
@@ -390,7 +440,7 @@ public class HAImport implements Patterns {
         throw new Exception("And-State muss Substates enthalten");
       for (int i=hiVec.size(); i>0; i--)
         sl = new StateList(createState((String)hiVec.elementAt(i-1),rt),sl);
-      return new And_State(new Statename(stateName),sl,rt);  }
+      return new And_State(new Statename(stateName),sl,rtNew);  }
     else
       throw new Exception("State "+stateName+" hat unbekannten Typ "+stateType);
 
