@@ -7,6 +7,17 @@ import GUI.popdialoge.*;
 
 import Absyn.*;
 
+/** Diese Klasse ist die Hauptklasse von PEST
+ * und daher ist sie auch startbar (sprich "main" ist adequat 
+ * vorhanden. Sie bildet das Hauptfenster von PEST und implementiert
+ * das "GUIInterface". Die einzigen PUBLIC-Elemente sind gegenwärtig
+ * die des Interface und die "main"-Methode.
+ * Darum wird hier nichts beschrieben.
+ * @see GUIInterface
+ * @author Christian Spinneker / Ingo Mielsch
+ * @version $id:$
+*/
+
 
 public class pest
 extends Frame
@@ -92,6 +103,8 @@ implements GUIInterface
 	theGUIMenu.updateMenu();	
     }
 
+
+
     public void addGUIMenu(Menu m){
 	theGUIMenu.add(m);
     }
@@ -137,7 +150,7 @@ implements GUIInterface
      * @see            java.awt.FileDialog
      */
     
-    public void load()
+    void load()
     {
 	fDialog.setMode(FileDialog.LOAD);
 	fDialog.setTitle("StateChart laden");
@@ -179,7 +192,7 @@ implements GUIInterface
      * @see            java.awt.FileDialog
      */
     
-    public void save()
+    void save()
     {
 	fDialog.setMode(FileDialog.SAVE);
 	fDialog.setTitle("Statechart speichern");

@@ -3,7 +3,7 @@ class testClass{
 
 GUIInterface gt;
 
-    public testClass(GUIInterface gt)
+    protected testClass(GUIInterface gt)
     {
 	this.gt = gt;
 	gt.OkDialog("Fehler","Noch nicht funktionsfähig");
