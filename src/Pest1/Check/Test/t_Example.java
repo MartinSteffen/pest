@@ -1,9 +1,9 @@
-import Check.*;
+
 import Absyn.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: t_Example.java,v 1.1 1998-12-03 22:00:10 swtech11 Exp $
+ *  @version  $Id: t_Example.java,v 1.2 1998-12-04 08:13:37 swtech11 Exp $
  */
 public class t_Example{
 
