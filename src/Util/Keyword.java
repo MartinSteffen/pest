@@ -9,7 +9,7 @@ import java.io.*;
  * die Vorkommen von Schlüsselwörtern in einem String überprüft
  * <p>
  * @author Michael Suelzer, Christoph Schuette.
- * @version  $Id: Keyword.java,v 1.4 1999-02-07 11:53:43 swtech20 Exp $
+ * @version  $Id: Keyword.java,v 1.5 1999-02-07 19:58:44 swtech13 Exp $
  */   
 
 public class Keyword {
@@ -18,7 +18,7 @@ public class Keyword {
      * Hier werden weitere Schlüsselwörter eingetragen...
      * Muss noch zwischen PEST1/2 abgeglichen werden
      */
-    private static final int KeywordAnz = 35; 
+    private static final int KeywordAnz = 36; 
     private static final String KeywordList[] = {
 	new String("default"),
 	new String("basic"),
@@ -54,7 +54,8 @@ public class Keyword {
         new String(","),
         new String("defcon"),  // U.S. defense condition
         new String("ref"),
-        new String("as")
+        new String("as"),
+	new String("type")
     };
 
     /**
@@ -73,6 +74,9 @@ public class Keyword {
 //	---------------------------
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.4  1999/02/07 11:53:43  swtech20
+//	- neue keywords fuer ref_state in PEST2/TESC1
+//
 //	Revision 1.3  1999/01/04 16:14:21  swtech13
 //	Neue Keywords
 //
