@@ -67,7 +67,7 @@ implements GUIInterface
     ControlWindow controlWindow;
     GUIControlWindowML cwlis;
     GUIexitLis exlis;
-    GUIsimExitLis simexitlis;
+//    GUIsimExitLis simexitlis;
     check.CheckConfig checkConfig;
 
     editor.Editor PEditor = null;
@@ -114,7 +114,7 @@ implements GUIInterface
 	super("Und hier kommt die PEST");
 	controlWindow = new ControlWindow(this);
 	exlis = new GUIexitLis(this);
-	simexitlis = new GUIsimExitLis(this);
+	//simexitlis = new GUIsimExitLis(this);
 	setBackground(Color.lightGray);
 	setSize(630,400); 
 	setLocation(200,200);
@@ -364,16 +364,17 @@ void startSimulator()
 	    {
 		if (PEditor != null)
 		    {
-			if(simu == null)
-			    {
+//			if(simu == null)
+//			    {
 				PEditor.work(false);   // Änderungen verbieten
 				simu = new simu.Simu(SyntaxBaum,PEditor,this);
-				simu.addWindowListener(simexitlis);
-			    }
-			else
-			    {
-			        OkDialog("Fehler","Es kann nur ein Simulator gestartet werden");
-			    }
+                                PEditor.work(true);
+//				simu.addWindowListener(simexitlis);
+//			    }
+//			else
+//			    {
+//			        OkDialog("Fehler","Es kann nur ein Simulator gestartet werden");
+//			    }
 			
 		    }
 		  else
