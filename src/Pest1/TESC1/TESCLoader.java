@@ -90,7 +90,7 @@ import java.util.*;
  * <br>
  * <hr>
  * @author Arne Koch/Mike Rumpf.
- * @version  $Id: TESCLoader.java,v 1.20 1999-01-20 21:39:34 swtech13 Exp $ 
+ * @version  $Id: TESCLoader.java,v 1.21 1999-01-20 22:07:53 swtech13 Exp $ 
  */ 
 public class TESCLoader {
 
@@ -197,23 +197,28 @@ public class TESCLoader {
      */ 
   public Guard getGuard(BufferedReader br, Statechart sc) throws IOException {
 	TESCParser parser = new TESCParser(br, gi);
-	parser.initSwitches(options);
 
-	Guard guard = parser.readGuard(br, sc);
-
-	if (parser.getErrorCount() > 0) {	   
-	    if (gi != null) gi.OkDialog("Fehler", "Guard ist fehlerhaft.");
-	    else System.out.println("Fehler: Guard ist fehlerhaft.");
-
-	    return null;
-        }
-	else {
-	    if (guard == null) guard = new GuardEmpty(new Dummy());
-	    evlist = parser.getSEventList();
-	    bvlist = parser.getBvarList();
-
-	    return guard;
+	if (parser != null) {
+	    parser.initSwitches(options);
+	
+	    Guard guard = parser.readGuard(br, sc);
+	
+	    if (parser.getErrorCount() > 0) {	   
+		if (gi != null) gi.OkDialog("Fehler", "Guard ist fehlerhaft.");
+		else System.out.println("Fehler: Guard ist fehlerhaft.");
+		
+		return null;
+	    }
+	    else {
+		if (guard == null) guard = new GuardEmpty(new Dummy());
+		evlist = parser.getSEventList();
+		bvlist = parser.getBvarList();
+		
+		return guard;
+	    }
 	}
+	else 
+	    return null;
     }
 
 
@@ -239,8 +244,10 @@ public class TESCLoader {
 	TLabel tl = new TLabel(tl_.guard, tl_.action, tl_.position, tl_.location, tl_.caption);
 
 	try {
-	    tl.guard = getGuard(new BufferedReader(new StringReader(G)), sc);
-	    tl.action = getAction(new BufferedReader(new StringReader(A)), sc);
+	    if (G != null)
+		tl.guard = getGuard(new BufferedReader(new StringReader(G)), sc);
+	    if (A != null)
+		tl.action = getAction(new BufferedReader(new StringReader(A)), sc);
 	}
 	catch (IOException ioe) {
 	    tl = null;
@@ -252,7 +259,7 @@ public class TESCLoader {
 
      // liefert den Guard-Teil des Labels
     private String getG(String str) {
-	String s = null;
+	String s = "~";
 
 	int pos = str.indexOf('/');
 	if (pos!=-1) {
@@ -263,19 +270,21 @@ public class TESCLoader {
 	    s = str;
 	}
 
+	if (s == null)
+	    s = new String("~");
+
 	// Haben Probleme, falls Länge == 1
 	return new String(s + " ");
     }
 
     // liefert den Action-Teil des Labels 
     private String getA(String str) {
-	String s = null;
+	String s = "~";
 
 	int pos = str.indexOf('/');
 	if (pos!=-1) {
 	    s = str.substring(pos+1);
-	    if (s.length()==0)
-		s = null;
+	    
 	}
 
 	// Action muss mit ";" enden; liegt am Parser
@@ -338,21 +347,26 @@ public class TESCLoader {
      */ 
     public Action getAction(BufferedReader br, Statechart st) throws IOException {
 	TESCParser parser = new TESCParser(br, gi);
-	parser.initSwitches(options);
-	Action action = parser.readAction(br, st);
+	if (parser != null) {
+	    parser.initSwitches(options);
+	    Action action = parser.readAction(br, st);
 
-	if (parser.getErrorCount() > 0) {	    
-	    if (gi != null) gi.OkDialog("Fehler", "Action ist fehlerhaft.");
-	    else System.out.println("Fehler: Action ist fehlerhaft.");
-	    return null;
-        }
+	    if (parser.getErrorCount() > 0) {	    
+		if (gi != null) gi.OkDialog("Fehler", "Action ist fehlerhaft.");
+		else System.out.println("Fehler: Action ist fehlerhaft.");
+		return null;
+	    }
+	    else {
+		if (action == null) action = new ActionEmpty(new Dummy());
+		
+		evlist = parser.getSEventList();
+		bvlist = parser.getBvarList();
+		
+		return action;
+	    }
+	}
 	else {
-	    if (action == null) action = new ActionEmpty(new Dummy());
-
-	    evlist = parser.getSEventList();
-	    bvlist = parser.getBvarList();
-
-	    return action;
+	    return null;
 	}
     }
     /** 
