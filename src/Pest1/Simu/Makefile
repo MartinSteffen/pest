@@ -3,13 +3,12 @@
 cc = javac
 
 
-all : Simu.class 
+all: $(patsubst %.java,%.class,$(wildcard *.java))
 
+%.class: %.java
+	javac $< 
 
-Simu.class :
-	$(cc) Simu.java 
-
-clean :
+clean:
 	rm -rf *.class
 
 # Ende Makefile
