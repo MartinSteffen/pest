@@ -110,7 +110,19 @@ if (tr.source instanceof UNDEFINED) {h.setColor( Editor.tr_color());
 		   if (localobject instanceof State) {
 		       State hier = (State) localobject;
 		       Statematrix matrix = PESTdrawutil.getState(root,tr.points[0].x+nx,tr.points[0].y+ny);
-Statename trtest = (Statename)tr.source;
+		       Statematrix matrix2 =  PESTdrawutil.getState(root,tr.points[0].x+nx,tr.points[0].y+ny);
+		 Statematrix matrix3 =  PESTdrawutil.getState(root,tr.points[trsize].x+nx,tr.points[trsize].y+ny);
+	
+                  Statename trtest=null;
+	 if (tr.source instanceof Statename) trtest = (Statename)tr.source; 
+		       if (tr.source instanceof Conname) 
+			   {
+			       Conname cotemp = (Conname)tr.source;
+			       trtest = new Statename(cotemp.name);
+			   } 
+
+
+	// Statename trtest = (Statename)tr.source;
 
  //System.out.println("AKT>"+matrix.akt);
 //System.out.println("PREV>"+matrix.prev);
@@ -121,17 +133,17 @@ if (matrix.akt.rect != null)
 	{
 	    System.out.println("Koord1"+(matrix.x-matrix.akt.rect.x));
 	    System.out.println("Koord2"+(matrix.y-matrix.akt.rect.y));
-	   if ((matrix.prev.rect.x !=0 | matrix.prev.rect.y != 0) )
-	    {
 		matrix = PESTdrawutil.getState(root,matrix.x-matrix.akt.rect.x,matrix.y-matrix.akt.rect.y);
-	    }
 	}
-else if (matrix.prev.rect != null)
-{ 
-//if (matrix.prev instanceof Or_State & (matrix.prev.rect.x == 0 & matrix.prev.rect.y == 0)) matrix = PESTdrawutil.getState(root,matrix.x-matrix.akt.rect.x,matrix.y-matrix.akt.rect.y);
-//if (matrix.prev instanceof Or_State & (matrix.prev.rect.x != 0 ^ matrix.prev.rect.y != 0)) matrix = PESTdrawutil.getState(root,matrix.x-matrix.akt.rect.x,matrix.y-matrix.akt.rect.y);
-
 }
+
+if (matrix2.prev.rect != null)
+{
+	if (matrix2.prev.rect.x == 0 & matrix2.prev.rect.y == 0 & matrix2.prev instanceof Or_State & matrix2.prev == matrix3.prev)
+	{
+	matrix = PESTdrawutil.getState(root,tr.points[0].x+nx,tr.points[0].y+ny);
+System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+	}
 }
 
 
@@ -144,7 +156,7 @@ else if (matrix.prev.rect != null)
 			    Editor.dislocation();}
 		//	    System.out.println("AND>"+matrix.akt);
 		//	  System.out.println("AND>"+matrix.akt.name.name);
-		//	  System.out.println("AND>"+matrix.prev);
+	//	  System.out.println("AND>"+matrix.prev);
 		//	  System.out.println("AND>"+matrix.prev.name.name);
 			  tr.source = new Statename(matrix.prev.name.name);} else 
 			      {
@@ -169,6 +181,10 @@ if (tr.target instanceof UNDEFINED) {h.setColor( Editor.tr_color());
 			if (hier.rect != null)
 			{
 		       Statematrix matrix = PESTdrawutil.getState(root,tr.points[trsize].x+nx,tr.points[trsize].y+ny);
+		 Statematrix matrix2 =  PESTdrawutil.getState(root,tr.points[trsize].x+nx,tr.points[trsize].y+ny);
+		 Statematrix matrix3 =  PESTdrawutil.getState(root,tr.points[0].x+nx,tr.points[0].y+ny);
+
+	//Statename trtest = (Statename)tr.source;
 		       Statename trtest2=null;
 		       if (tr.target instanceof Statename) trtest2 = (Statename)tr.target; 
 		       if (tr.target instanceof Conname) 
@@ -184,23 +200,21 @@ if (tr.target instanceof UNDEFINED) {h.setColor( Editor.tr_color());
  //System.out.println("AKTRECT2>"+matrix.prev.rect);
 
 if (matrix.akt.rect != null)
-
     {if ((matrix.prev instanceof Basic_State | matrix.prev instanceof Or_State) & matrix.prev.rect!= null ) 
 	{
-	    if ((matrix.prev.rect.x !=0 | matrix.prev.rect.y != 0))
-	    {
-		matrix = PESTdrawutil.getState(root,matrix.x-matrix.akt.rect.x,matrix.y-matrix.akt.rect.y);
-	    }
+	      matrix = PESTdrawutil.getState(root,matrix.x-matrix.akt.rect.x,matrix.y-matrix.akt.rect.y);
+	
 	}
-else if (matrix.prev.rect != null)
-    {
-	//if (matrix.prev instanceof Or_State & (matrix.prev.rect.x == 0 & matrix.prev.rect.y == 0)) matrix = PESTdrawutil.getState(root,matrix.x-matrix.akt.rect.x,matrix.y-matrix.akt.rect.y);
-//	if (matrix.prev instanceof Or_State & (matrix.prev.rect.x != 0 ^ matrix.prev.rect.y != 0)) matrix = PESTdrawutil.getState(root,matrix.x-matrix.akt.rect.x,matrix.y-matrix.akt.rect.y);
-
 }
 
+if (matrix2.prev.rect != null)
+{
+	if (matrix2.prev.rect.x == 0 & matrix2.prev.rect.y == 0 & matrix2.prev instanceof Or_State & matrix2.prev == matrix3.prev)
+	{
+	matrix = PESTdrawutil.getState(root,tr.points[trsize].x+nx,tr.points[trsize].y+ny);
+System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+	}
 }
-
 
 
 		       if (matrix.prev instanceof And_State) {
