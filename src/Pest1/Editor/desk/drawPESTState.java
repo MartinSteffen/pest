@@ -320,8 +320,8 @@ ttest = true;
 
 if ((matrix.akt instanceof Or_State)  & (colist2 != null | templist2 != null | trlist2 != null) &
    (colist3 != null | templist3 != null | trlist3 != null) )
-    {System.out.println("neue Funktion");}
-		            	{System.out.println("Or ein");
+    //  {System.out.println("neue Funktion");}
+		            	{System.out.println("Or einx");
 			tempstate5 = new Or_State(new Statename ("...State"+laufname),templist2,trlist2,null,colist2,new CRectangle(cx1-matrix.x,cy1-matrix.y,cx2-cx1,cy2-cy1));
 			otemp = (Or_State) matrix.akt;
 			templist4 = new StateList(tempstate5,templist3);
