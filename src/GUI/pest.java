@@ -69,7 +69,7 @@ implements GUIInterface
     {
 	if(!CheckedSC)
 	    {
-		Check.modelCheck SCchecker = new Check.modelCheck();
+		Check.modelCheck SCchecker = new Check.modelCheck(this);
 		ResultSC = SCchecker.checkModel(SyntaxBaum);
 		CheckedSC = true;
 		if (SCchecker.getErrorNumber()==0)

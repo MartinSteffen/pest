@@ -35,16 +35,16 @@ public void actionPerformed(ActionEvent e) {
       }else if (cmd.equals("Simulator")) {
 	  if (myWindow.checkSB())
 	      {
-		  //new Simu.Simu();
+		  //new Simu.Simu(myWindow.SyntaxBaum);
 		  myWindow.OkDialog("FEHLER","Wegen fehlender PACKAGE Anweisung in der Klasse Simu nicht implementiert");
 
 	      }
       }else if (cmd.equals("Codegenerator")) {
 	  if (myWindow.checkSB())
 	      {
-		  myWindow.OkDialog("FEHLER","Wegen nicht compilierbarem Quelltext nicht implementiert");
+		  //myWindow.OkDialog("FEHLER","Wegen nicht compilierbarem Quelltext nicht implementiert");
 
-		  //		  (new CodeGen.CodeGen()).Generate(".",myWindow.SyntaxBaum);
+		  new CodeGen.CodeGen(".",myWindow.SyntaxBaum);
 	      }
 
       }else{  
