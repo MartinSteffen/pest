@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.64 1999-02-05 10:44:14 swtech11 Exp $
+//	$Id: report_list,v 1.65 1999-02-05 10:59:03 swtech24 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -462,7 +462,7 @@ mehr angezeigt.
 #Number:	30
 #Autor:		Erich Mikk erm
 #Subject:	Editor erzeugt Interlevel Transitionen (IT)?
-#Status: 	reported
+#Status: 	fixed
 #Description: 
 
 Man nehme in der folgenden Sequenz statt PC/a1.st SAFER/thrusters.st.
@@ -661,7 +661,7 @@ aktiv).
 #Number:        45
 #Autor:         Bernd Weber bwe
 #Subject:       Editor: Labeln von Transition fast unmöglich
-#Status:        reported
+#Status:        processing
 #Description:
 
 1. Zwei Basic States nebeneinander erzeugen
@@ -676,7 +676,7 @@ aktiv).
 #Number:        46
 #Autor:         Bernd Weber bwe
 #Subject:       Editor: Editor erzeugt falsche Transition
-#Status:        processing
+#Status:        fixed
 #Description:
 
 Man erstelle zwei Zustaende wie in Number 43. Zeichne eine Transition
@@ -756,7 +756,7 @@ Der Anfangszustand wird nicht verlassen.
 #Number:        51
 #Autor:         Bernd Weber bwe
 #Subject:       Editor: Basic-State wird durch PARALLEL umbenannt.
-#Status:        reported
+#Status:        canceled (Absprache mit CodeGen steht noch aus)
 #Description:
 
 Man erzeuge einen Basic State und benenne diesen. Macht man ihn nun
@@ -766,7 +766,7 @@ deswegen, weil Codegen die Default-Namen nicht vertraegt.
 #Number:        53
 #Autor:         Bernd Weber bwe
 #Subject:       Editor: erzeugt Interlevel-Transitionen in AND-Sates
-#Status:        reported
+#Status:        fixed 
 #Description:
 
 Man erzeuge einen AND-State und in einer der Komponenten zwei Basic-Zustaende
@@ -780,7 +780,7 @@ geöffneten Editor keine Fehler, mit schon.
 #Number:        54
 #Autor:         Bernd Weber bwe
 #Subject:       Editor: entstellt Grafik beim Erzeugen von Or-States
-#Status:        reported
+#Status:        fixed
 #Description:
 
 Erstelle zwei Zustaende mit UNbeschrifteter Trasition. Erzeuge einen
