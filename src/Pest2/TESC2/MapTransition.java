@@ -15,12 +15,17 @@ class MapTransition  {
     
     int startRow,startColumn,endRow,endColumn;
     int number = 0;
+    int midheight = 0;
 
     MapTransition(int srow,int scolumn,int erow,int ecolumn) {
 	startRow = srow;
 	startColumn = scolumn;
 	endRow = erow;
 	endColumn = ecolumn;
+    }
+
+    void setHeight(int height, int bonus) {
+	midheight = height + (number * bonus);
     }
 
     public String toString() {

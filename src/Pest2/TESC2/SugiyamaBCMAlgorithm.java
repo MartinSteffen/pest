@@ -177,15 +177,16 @@ class SugiyamaBCMAlgorithm implements LayoutAlgorithm {
 	int counter = 1;
 	for (i = 0; i<pm.getHeight(); i++) {
 	    xpos = WIDTH_BONUS + ((maxWidth - RowWidth[i]) / 2);
-	    ypos = ypos + (counter * HEIGHT_BONUS);
-	    counter = 1;
 	    maxHeight = 0;
-	    for (j = 0; j<pm.getWidthOfRow(i); j++) {
+	    for (j = pm.getWidthOfRow(i)-1; j>=0; j--) {
+		pm.getElement(i,j).setHeightUpper(ypos, HEIGHT_BONUS);
 		actHeight = pm.getElement(i, j).getRect().height;
 		if (actHeight>maxHeight) {
 		    maxHeight = actHeight;
 		}
 	    }
+	    ypos = ypos + (counter * HEIGHT_BONUS);
+	    counter = 1;
 	    for (j = 0; j<pm.getWidthOfRow(i); j++) {
 		counter = pm.getElement(i, j).numberLower(counter);
 		actHeight = pm.getElement(i, j).getRect().height;
@@ -220,13 +221,14 @@ class SugiyamaBCMAlgorithm implements LayoutAlgorithm {
 	    //System.out.println(pm);
 	    
 	    if (mt[i] != null) {
+		CPoint h;
 		transitions = new Vector();
 		me = pm.getElement(mt[i].startRow, mt[i].startColumn);
 		p = me.getTransPosition(mt[i]);
 		transitions.addElement(p);
 		MapTransition amt = mt[i];
 		if (me.isLoop(amt)) {
-		    CPoint h = new CPoint(p);
+		    h = new CPoint(p);
 		    h.translate(WIDTH_BONUS*(me.countLoops()-me.loops.indexOf(amt)), 0);
 		    transitions.addElement(h);
 		    h = new CPoint(h);
@@ -235,8 +237,13 @@ class SugiyamaBCMAlgorithm implements LayoutAlgorithm {
 		    h = new CPoint(h);
 		    h.x = p.x;
 		    transitions.addElement(h);
+		    p = new CPoint(p);
+		    ((MapEndTr) amt).transition.label.position = p;
 		}
 		else {
+		    p = new CPoint(p);
+		    p.y = amt.midheight;
+		    transitions.addElement(p);
 		    /* Vorgng&auml;ertransitionen sammeln */
 		    boolean search = true;
 		    while (search) {
@@ -248,7 +255,13 @@ class SugiyamaBCMAlgorithm implements LayoutAlgorithm {
 			    amt = mt[j];
 			    mt[j] = null;
 			    me = pm.getElement(amt.startRow, amt.startColumn);
-			    transitions.insertElementAt(me.getTransPosition(amt), 0);
+			    p = (CPoint) transitions.firstElement();
+			    p.y = amt.midheight;
+			    p = me.getTransPosition(amt);
+			    h = new CPoint(p);
+			    h.y = amt.midheight;
+			    transitions.insertElementAt(h, 0);
+			    transitions.insertElementAt(p, 0);
 			    search = true;
 			}
 			else {
@@ -256,8 +269,12 @@ class SugiyamaBCMAlgorithm implements LayoutAlgorithm {
 			}
 		    }
 		    me = pm.getElement(mt[i].endRow, mt[i].endColumn);
-		    transitions.addElement(me.getTransPosition(mt[i]));
 		    amt = mt[i];
+		    p = me.getTransPosition(amt);
+		    h = new CPoint(p);
+		    h.y = amt.midheight;
+		    transitions.addElement(h);
+		    transitions.addElement(p);
 		    /* Nachfolgertransitionen sammeln */
 		    search = true;
 		    while (search) {
@@ -269,13 +286,33 @@ class SugiyamaBCMAlgorithm implements LayoutAlgorithm {
 			    amt = mt[j];
 			    mt[j] = null;
 			    me = pm.getElement(amt.endRow, amt.endColumn);
-			    transitions.addElement(me.getTransPosition(amt));
+			    p = (CPoint) transitions.lastElement();
+			    p.y = amt.midheight;
+			    p = me.getTransPosition(amt);
+			    h = new CPoint(p);
+			    h.y = amt.midheight;
+			    transitions.addElement(h);
+			    transitions.addElement(p);
 			    search = true;
 			}
 			else {
 			    search = false;
 			}
 		    }
+		    /* Label platzieren */
+		    p = (CPoint) transitions.firstElement();
+		    h = (CPoint) transitions.lastElement();
+		    if (p.x < h.x) {
+			p = new CPoint(p);
+		    }
+		    else{
+			p = new CPoint(h);
+		    }
+		    p.y = amt.midheight;
+		    ((MapEndTr) amt).transition.label.position = p;
+
+		    /* $Testausgabe */
+		    //System.out.println("Label:"+p.x+","+p.y);
 		}
 		/* Punkteliste in Transition eintragen */
 		CPoint[] tpos = new CPoint[transitions.size()];
@@ -290,18 +327,6 @@ class SugiyamaBCMAlgorithm implements LayoutAlgorithm {
 		//System.out.println("amt instanceof MapEndTr="+(amt instanceof MapEndTr));		
 		
 		((MapEndTr) amt).transition.points = tpos;		
-		/* Label platzieren */
-		p = new CPoint(tpos[0]);
-		if (amt.endColumn < amt.startColumn) {
-		    p.translate(0, 10);
-		}
-		else{
-		    p.translate(0, -10);
-		}
-		((MapEndTr) amt).transition.label.position = p;
-		/* $Testausgabe */
-		//System.out.println("Label:"+p.x+","+p.y);
-				
 		mt[i] = null;
 	    }
 	}
@@ -627,8 +652,8 @@ class SugiyamaBCMAlgorithm implements LayoutAlgorithm {
 	
 	layoutState(sc.state);
 
-	sc.state.rect.x = 0;
-	sc.state.rect.y = 0;
+	sc.state.rect.x = 10;
+	sc.state.rect.y = 10;
     };
 
     /**

@@ -48,11 +48,37 @@ abstract class MapElement  {
     }
 
     int numberLower(int start) {
-	int i;
-	for (i = 0; i < lower.size(); i++) {
-	    ((MapTransition) lower.elementAt(i)).number = i + start;
+	int i = 0;
+	boolean search = true;
+	while (search && (i<lower.size())) {
+	    MapTransition mt = (MapTransition) lower.elementAt(i);
+	    if (mt.startRow < mt.endRow) {
+		search = mt.startColumn <= mt.endColumn;
+		i++;
+	    }
+	    else {
+		search = mt.endColumn <= mt.startColumn;
+		i++;
+	    }
 	}
-	return i + start;
+	if (!search) {
+	    i = i-1;
+	}
+	int j;
+	for (j = 0; j<i; j++) {
+	    ((MapTransition) lower.elementAt(j)).number = j + start;
+	}
+	for (j = 0; j+i<lower.size();j++) {
+	    ((MapTransition) lower.elementAt(lower.size()-j-1)).number=j+i+start;
+	}
+	return j + i + start;
+    }
+
+    void setHeightUpper(int height, int bonus) {
+	int i;
+	for (i = upper.size()-1; i>=0; i--) {
+	    ((MapTransition) upper.elementAt(i)).setHeight(height, bonus);
+	}
     }
 
     MapTransition findOpposite(MapTransition mt) {
