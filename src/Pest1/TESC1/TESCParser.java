@@ -462,6 +462,11 @@ class TESCParser {
 
 	    st = astate(null);
 	}
+	else if (tok.token==vTOKEN.AT) {
+	    match(vTOKEN.AT);
+
+	    st = refstate(null);
+	}
 	else if (tok.token==vTOKEN.IDENT) {
 	    addError(makeError(tok,"Zustandsdeklaration erwartet"));
 	}
@@ -501,6 +506,78 @@ class TESCParser {
 	    addError(makeError(tok,"Identifier erwartet"));
 
 	return bs;
+    }
+
+    private Ref_State refstate(Path p) throws IOException {
+	Statename     sn      = null;
+	Ref_State   rs      = null;
+	Path pth = null;
+	Location loc = new Location(tok.linenum);
+
+	if (tok.token == vTOKEN.IDENT) {
+	    sn = new Statename (tok.value_str);
+	    sn.location = loc;
+	    addStatename(tok.value_str, p);
+
+	    if (p == null) {
+		// root
+		pth = new Path(tok.value_str, null);
+	    }
+	    else {
+		pth = p.append(tok.value_str);
+	    }
+	    addPath(pth);
+
+	    match(vTOKEN.IDENT);
+
+	    match(vTOKEN.IN);
+	    if (tok.token == vTOKEN.IDENT) {
+		
+		String fname = new String(tok.value_str);
+		match(vTOKEN.IDENT);
+
+		match(vTOKEN.TYPE);
+
+		Syntax_Type reftyp = reftype();
+
+		match(vTOKEN.SCOLON);
+
+		rs = new Ref_State(sn, fname, reftyp);
+		rs.location = loc;
+
+	    }
+	    else
+		addError(makeError(tok,"Identifier erwartet"));
+	}
+	else
+	    addError(makeError(tok,"Identifier erwartet"));
+
+	return rs;
+    }
+
+    private Syntax_Type reftype() throws IOException { 
+	Syntax_Type st = null;
+	Location loc = new Location(tok.linenum);
+
+	if (tok.token ==  vTOKEN.IDENT) {
+	    if (tok.value_str.compareTo((String)"tesc") == 0) {
+		st = new Tesc_Syntax(loc);
+	    }
+	    else if (tok.value_str.compareTo((String)"pest_coord") == 0) {
+		st = new Pest_CoordSyntax(loc);
+	    }
+	    else if (tok.value_str.compareTo((String)"pest_nocoord") == 0) {
+		st = new Pest_NocoordSyntax(loc);
+	    }
+	    else 
+		addError(makeError(tok,"Syntax_Type erwartet"));	
+
+	    match(vTOKEN.IDENT);
+	}
+	else
+	    addError(makeError(tok,"Syntax_Type erwartet"));
+
+	return st;
     }
 
     private Or_State ostate(Path p) throws IOException {
@@ -679,6 +756,18 @@ class TESCParser {
 	    
 	    if (b) {
 		sl = new StateList(ostate(p), astates(p));
+		
+	    }
+	    else {
+		sl = null;	
+	    }
+
+	}
+	else if (tok.token == vTOKEN.AT) {
+	    b = match(vTOKEN.AT);
+	    
+	    if (b) {
+		sl = new StateList(refstate(p), astates(p));
 		
 	    }
 	    else {
@@ -1447,6 +1536,15 @@ class TESCParser {
 		sl = null;	
 	    }
 	}
+	else if (tok.token == vTOKEN.AT) {
+	    b = match(vTOKEN.AT);
+	    if (b) {
+		sl = new StateList(refstate(p), states(p));
+	    }
+	    else {
+		sl = null;	
+	    }
+	}
 	else if (tok.token == vTOKEN.END) {
 	    sl = null;
 	}
@@ -1789,8 +1887,11 @@ class TESCParser {
 }
 
 /* TESCParser
- * $Id: TESCParser.java,v 1.21 1999-01-28 17:26:15 swtech13 Exp $
+ * $Id: TESCParser.java,v 1.22 1999-02-04 20:15:24 swtech13 Exp $
  * $Log: not supported by cvs2svn $
+ * Revision 1.21  1999/01/28 17:26:15  swtech13
+ * Kleine Änderungen
+ *
  * Revision 1.19  1999/01/25 13:27:49  swtech13
  * debug auskommentiert
  *

@@ -72,7 +72,7 @@ import util.*;
  * <br>
  * <hr>
  * @author Arne Koch/Mike Rumpf.
- * @version  $Id: TESCSaver.java,v 1.7 1999-01-28 17:26:16 swtech13 Exp $ 
+ * @version  $Id: TESCSaver.java,v 1.8 1999-02-04 20:15:25 swtech13 Exp $ 
  */ 
 
 /* Konventionen:
@@ -201,7 +201,7 @@ public class TESCSaver {
 
 	bw.write("# TESC-File generiert durch TESC-Export");
 	bw.newLine();
-	bw.write("# Formatierung geht beim Export verloren.");
+	bw.write("# Formatierung der Transitionlabel geht beim Export verloren.");
 	bw.newLine();
 	bw.write("# Transitionlabels sind i.a. vollstaendig geklammert (bis auf aeussere Klammern)");
 	bw.newLine();
@@ -219,10 +219,12 @@ public class TESCSaver {
 
 	if (sc instanceof Or_State)
 	    b = saveorstate((Or_State) sc);
+	else if (sc instanceof Ref_State)
+	    b = saverefstate((Ref_State) sc);
 	else if (sc instanceof Basic_State)
 	    b = savebasicstate((Basic_State) sc);
 	else if (sc instanceof And_State)
-	    b = saveandstate((And_State) sc);
+	    b = saveandstate((And_State) sc);	
 	else 
 	    b = false;
 
@@ -237,6 +239,43 @@ public class TESCSaver {
 	bw.newLine();
 
 	return true;
+    }
+
+    private boolean saverefstate(Ref_State st) throws IOException {
+	boolean b = false;
+
+	bw.write(whiteSpace(tiefe * TAB));
+	bw.write("@");
+	savestatename(st.name);
+	bw.write(" in ");
+	bw.write(st.filename);
+	
+	bw.write(" type ");
+	
+	b = savetype(st.filetype);
+
+        bw.write(";");
+	bw.newLine();
+
+	return b;
+    }
+
+    private boolean savetype(Syntax_Type st) throws IOException {
+	boolean b = true;
+
+	if (st instanceof Tesc_Syntax) {
+	    bw.write("tesc");
+	}
+	else if (st instanceof Pest_CoordSyntax) {
+	    bw.write("pest_coord");
+	}
+	else if (st instanceof Pest_NocoordSyntax) {
+	    bw.write("pest_nocoord");
+	}
+	else 
+	    b = false;
+
+	return b;
     }
 
     private boolean savestatename(Statename sn) throws IOException {

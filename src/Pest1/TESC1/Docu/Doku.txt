@@ -33,6 +33,8 @@ end <Name>;
 
 basic <Name>;
 
+@<Name> in <file> type <type>;
+
 ----------------------------
 
 Ein or-State kann enthalten (in dieser Reihenfolge, jeweils optional):
@@ -48,6 +50,12 @@ Ein or-State kann enthalten (in dieser Reihenfolge, jeweils optional):
 
 
 Ein and-State kann nur basic- oder or-States enthalten.
+
+----------------------------
+
+Ref-State (gekennzeichnet durch @):
+
+type: tesc , pest_coord, pest_nocoord
 
 ----------------------------
 

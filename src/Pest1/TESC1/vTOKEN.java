@@ -41,14 +41,21 @@ class vTOKEN {
     static final int DEFCON      = 32;
     static final int LPAR_E      = 33;
     static final int RPAR_E      = 34;
+    static final int AT          = 35;
+    static final int TYPE        = 36;
 
     // Nichtschlüsselwörter
     static final int IDENT    = 40; 
 }
 
 /* vTOKEN
- * $Id: vTOKEN.java,v 1.4 1999-01-11 20:10:33 swtech13 Exp $
+ * $Id: vTOKEN.java,v 1.5 1999-02-04 20:15:25 swtech13 Exp $
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  1999/01/11 20:10:33  swtech13
+ * An geaenderte Grammatik angepasst.
+ * Wir koennen jetzt den Typ der Variablen bei Guards/Actions aus dem Kontext
+ * bestimmen.
+ *
  * Revision 1.3  1998/12/15 17:51:58  swtech00
  * Towards new naming conventions in PEST1
  *
