@@ -1,6 +1,9 @@
-/* Grammatik fuer Tesc - $Id: grammatik.txt,v 1.5 1999-01-06 15:00:26 swtech13 Exp $ 
+/* Grammatik fuer Tesc - $Id: grammatik.txt,v 1.6 1999-01-11 20:11:29 swtech13 Exp $ 
  *
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  1999/01/06 15:00:26  swtech13
+ * kleiner Fehler verbessert connectors => cons
+ *
  * Revision 1.4  1998/12/15 00:00:25  swtech13
  * Aenderungen:
  * - Klammern bei PATHOP
@@ -84,15 +87,31 @@
 
 # ! vor && vor || vor =>, <=>
 
-<GUARD>        ::= <GUARD> => <O_COMPGUARD> | <GUARD> <=> <O_COMPGUARD> | <O_COMPGUARD> | <EMPTYSTR> | <COMPPATH> | <STRING>
+<GUARD>	       ::= <E_GUARD> [ <B_GUARD> ]
 
-<O_COMPGUARD>  ::= <O_COMPGUARD> || <A_COMPGUARD> | <A_COMPGUARD>
+# Events
+<GUARD_E>      ::= <GUARD_E> => <O_COMPGUARD_E> | <GUARD_E> <=> <O_COMPGUARD_E> | <O_COMPGUARD_E> | <EMPTYSTR> | <COMPPATH> | <STRING>
 
-<A_COMPGUARD>  ::= <A_COMPGUARD> && <N_COMPGUARD> | <N_COMPGUARD>
+<O_COMPGUARD_E>  ::= <O_COMPGUARD_E> || <A_COMPGUARD_E> | <A_COMPGUARD_E>
 
-<N_COMPGUARD>  ::= ! <K_COMPGUARD> | <K_COMPGUARD>
+<A_COMPGUARD_E>  ::= <A_COMPGUARD_E> && <N_COMPGUARD_E> | <N_COMPGUARD_E>
 
-<K_COMPGUARD>  ::= ( <GUARD> ) | <GUARD>
+<N_COMPGUARD_E>  ::= ! <K_COMPGUARD_E> | <K_COMPGUARD_E>
+
+<K_COMPGUARD_E>  ::= ( <GUARD_E> ) | <GUARD_E>
+
+
+#Bvars
+<GUARD_B>      ::= <GUARD_B> => <O_COMPGUARD_B> | <GUARD_B> <=> <O_COMPGUARD_B> | <O_COMPGUARD_B> | <EMPTYSTR> | <STRING>
+
+<O_COMPGUARD_B>  ::= <O_COMPGUARD_B> || <A_COMPGUARD_B> | <A_COMPGUARD_B>
+
+<A_COMPGUARD_B>  ::= <A_COMPGUARD_B> && <N_COMPGUARD_B> | <N_COMPGUARD_B>
+
+<N_COMPGUARD_B>  ::= ! <K_COMPGUARD_B> | <K_COMPGUARD_B>
+
+<K_COMPGUARD_B>  ::= ( <GUARD_B> ) | <GUARD_B>
+
 
 
 <COMPPATH>    ::= <PATHOP> ( <STRING> )
@@ -110,26 +129,10 @@
 <BASSIGN>     ::= <STRING>:=<BOOLOP>
 
 <BOOLOP>      ::= true | false |
-		  <GUARD>
+		  <GUARD_B>
 
 
 <EMPTYSTR>    ::= ~
-
-
-
-/* Änderungen:
- * - Klammern bei PATHOP
- * - ANDTSATES korrigiert
- * - BOOLOP    --- " ---
- * - AKTION um ~ erweitert
- * - GUARD um Klammer erweitert ( ist das so korrekt ?)
- * - TRLIST: Trennung durch ; nicht durch ,
- * - undefined -> undef
- * - ANDSTATES korrigiert
- * - Guards um Klammerung erweitert, not ersetzt duch !
- * - default-connectors hinzugefügt
- */
-
 
 
 
