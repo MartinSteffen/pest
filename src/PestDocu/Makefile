@@ -2,9 +2,12 @@
 #	javadoc collected HTML pages for all packages: makefile.
 #	--------------------------------------------------------
 #
-#	$Id: Makefile,v 1.5 1998-12-07 11:59:14 swtech00 Exp $
+#	$Id: Makefile,v 1.6 1998-12-15 18:30:59 swtech00 Exp $
 #
 #	$Log: not supported by cvs2svn $
+#	Revision 1.5  1998/12/07 11:59:14  swtech00
+#	Util hinzugefuegt.
+#
 #	Revision 1.4  1998/12/02 09:59:58  swtech00
 #	test
 #
@@ -20,11 +23,11 @@
 #----------------------------------------------------------------------
  
 
-DIRS	= "Absyn Editor STM Check GUI Simu CodeGen TESC1 TESC2 Util"
+DIRS	= "absyn editor stm check gui simu codegen tesc1 tesc2 util"
 JDKHOME = /opt/jdk/jdk1.1.6
 
 all:	images
-	(cd .. ; javadoc -version -author -d PestDocu $(DIRS) )
+	(cd .. ; javadoc -version -author -d pestdocu $(DIRS) )
 
 images:
 		ln -s $(JDKHOME)/docs/api/images/ .
