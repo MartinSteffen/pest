@@ -37,7 +37,6 @@ import java.io.*;
  * TODO.
  * </STRONG>
  * <UL>
- * <LI> Connectoren in die Nachfolgerberechung einbeziehen (-8.1)
  * <LI> Abfrage bei Nichtdeterminismus                     (-9.1)
  * <LI> Ausfuehrliche, dokumentierte Tests                 (-10.1)
  * </UL>
@@ -68,8 +67,8 @@ public class Simu extends Object{
   public Simu(Statechart s, Editor e, GUIInterface gui){
     if (s!=null){
       comm=new Communicator(gui);
-      //maschine=new Nachfolgermaschine(s,comm);
-      maschine=new Nachfolgermaschine(absyn.Example.getExample(),comm);
+      maschine=new Nachfolgermaschine(s,comm);
+      //maschine=new Nachfolgermaschine(absyn.Example.getExample(),comm);
       comm.setMachine(maschine);
       comm.setEditor(e);
     }
