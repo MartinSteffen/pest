@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	------------
 //
-//	$Id: report_list,v 1.77 1999-03-11 15:29:52 swtech25 Exp $
+//	$Id: report_list,v 1.78 1999-03-11 15:31:21 swtech25 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -726,7 +726,7 @@ Enthält eine Chart mehrere States mit demselben Namen, kann diese im
 Monitor nicht unterscheiden.
 //------------------------------------------------------------------------------
 #Number:	47
-#Autor:		Bernd Weber bwe
+#Autor:		Marcel Kyas swtech25
 #Subject:	Simu: Exception beim Laden von traces.
 #Status:	reported
 #Description:
