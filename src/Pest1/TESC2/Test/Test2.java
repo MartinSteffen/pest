@@ -4,7 +4,7 @@
  * Created: Fri Jan 01 1999, 02:34:05
  *
  * @author Developed by Eike Schulz for swtech14.
- * @version $Id: Test2.java,v 1.1 1999-01-08 23:16:07 swtech14 Exp $
+ * @version $Id: Test2.java,v 1.2 1999-01-22 21:59:20 swtech14 Exp $
  *
  *
  * Diese Klasse dient zum Testen der mit dem Graphplazierungsalgorithmus
@@ -19,6 +19,7 @@ import java.awt.*;
 import tesc2.GraphOptimizer;
 import tesc2.AlgorithmException;
 import java.applet.Applet;
+import util.PrettyPrint;
 
 public class Test2 {
   private static Statechart sChart;
@@ -49,7 +50,13 @@ public class Test2 {
 	sChart = TestObjects.getStatechart1();
       if (x1 == 3)
 	sChart = TestObjects.getStatechart2();
-      if (x1 != 1 && x1 != 2 && x1 != 3) {
+      if (x1 == 4)
+	sChart = TestObjects.getStatechart3();
+      if (x1 == 5)
+	sChart = TestObjects.getStatechart4();
+      if (x1 == 6)
+	sChart = TestObjects.getStatechart5();
+      if (x1 != 1 && x1 != 2 && x1 != 3 && x1 != 4 && x1 != 5 && x1 != 6) {
 	System.out.println ("Object not available.");
 	System.exit (0);
       }
@@ -61,18 +68,11 @@ public class Test2 {
     } else {
       System.out.println ("USAGE: Test2 <n> <c>");
       System.out.println
-	("n == number of testobject (1, 2 or 3);");
+	("n == number of testobject (1, 2, 3, 4, 5 or 6);");
       System.out.println
 	("c == relative (0) or absolute (1) coordinates.");
       System.exit (0);
     }
-
-    /*
-    Thread output = new TestOutput2();
-    ((TestOutput2)output).abs = (x2 == 0) ? false : true;
-    ((TestOutput2)output).sc = sChart;
-    output.start();
-    */
 
     TestOutput2 output = new TestOutput2();
     output.abs = (x2 == 0) ? false : true;
@@ -90,12 +90,12 @@ class TestOutput2 extends Applet {
   boolean abs;
   Statechart sc;
 
-  private Frame f = new Frame();
-  private Font font = new Font ("TimesRoman", Font.BOLD, 12);
+  private static Frame f = new Frame();
+  private Font font = new Font ("TimesRoman", Font.BOLD, 6);
   private FontMetrics fm;
 
-  private final int OFFSET_X = 24;
-  private final int OFFSET_Y = 24;
+  private final int OFFSET_X = 32;
+  private final int OFFSET_Y = 32;
 
   private  final Color COLOR_STATE      = Color.white;//red;
   private  final Color COLOR_TRANSITION = Color.white;//green;
@@ -103,36 +103,31 @@ class TestOutput2 extends Applet {
   private  final Color COLOR_LABEL      = Color.white;//orange;
 
 
-  public void start () {
+  public synchronized void start () {
 
     Applet a = new TestOutput2();
+    ((TestOutput2)a).abs = abs;
     ((TestOutput2)a).sc = sc;
     ((TestOutput2)a).fm = fm;
-    f.add (a, "Center");
+    f.add (a);
     f.resize (1024,700);
     f.show();
     f.setBackground (Color.black);
     f.move (10,20);
     a.init();
-
+    a.paint (f.getGraphics());
   } // method start
 
 
 
   public void init () {
-
-  }
-
-
-
-  public void paint (Graphics g) {
+    Graphics g = f.getGraphics();
     g.setFont (font);
 
     // Hole FontMetrics.
     fm = g.getFontMetrics (font);
 
-
-    // ------------------------- Rufe Algorithmus auf. ------------------------
+    // ------------------------ Rufe Algorithmus auf. -----------------------
 
     // ERZEUGE ALGORITHMUS-OBJEKT FUER STATECHART 'sc' UND FONTMETRICS 'fm'
 
@@ -142,20 +137,32 @@ class TestOutput2 extends Applet {
 
     try {
       sc = go.start (0);
-
-      // Testausgabe absolut/relativ, je nach Eingabeparameter.
-
-      if (abs == true)
-	abs_drawState (sc.state, g);
-      else
-	rel_drawState (sc.state, OFFSET_X, OFFSET_Y, g);
-
-      } catch (AlgorithmException ae) {
+    } catch (AlgorithmException ae) {
       System.out.println (ae.getMessage());
-      }
+      System.exit (0);
+    }
 
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------------------
 
+    //---    PrettyPrint pp = new PrettyPrint ();
+    //---    pp.start (sc);
+
+  } // method init
+
+
+
+  public void paint (Graphics g) {
+    g.setFont (font);
+
+    // Testausgabe absolut/relativ, je nach Eingabeparameter.
+
+    if (abs == true) {
+      abs_drawState (sc.state, g);
+      System.out.println ("Ausgabe mit Absolutkoordinaten.");
+    } else {
+      rel_drawState (sc.state, OFFSET_X, OFFSET_Y, g);
+      System.out.println ("Ausgabe mit Relativkoordinaten.");
+    }
   } // method paint
 
 
@@ -324,9 +331,10 @@ class TestOutput2 extends Applet {
 			t.points[i+1].x + coo_x,
 			t.points[i+1].y + coo_y);
       }
-      if ((t.label != null) && (t.label.position != null)) {
+      if ((t.label != null) && (t.label.position != null)
+	  && (t.label.caption != null)) {
 	g.setColor (COLOR_LABEL);
-	g.drawString ("Testlabel",
+	g.drawString (t.label.caption,
 		      t.label.position.x + coo_x,
 		      t.label.position.y + coo_y);
       }

@@ -4,7 +4,7 @@
  * Created: Fri Jan 01 1999, 02:43:25
  *
  * @author Developed by Eike Schulz for swtech14.
- * @version $Id: Test1.java,v 1.1 1999-01-08 23:15:54 swtech14 Exp $
+ * @version $Id: Test1.java,v 1.2 1999-01-22 21:59:17 swtech14 Exp $
  *
  *
  * Diese Klasse dient zum Testen der mit dem Graphplazierungsalgorithmus
@@ -48,13 +48,19 @@ public class Test1 {
 	sChart = TestObjects.getStatechart1();
       if (x1 == 3)
 	sChart = TestObjects.getStatechart2();
-      if (x1 != 1 && x1 != 2 && x1 != 3) {
+      if (x1 == 4)
+	sChart = TestObjects.getStatechart3();
+      if (x1 == 5)
+	sChart = TestObjects.getStatechart4();
+      if (x1 == 6)
+	sChart = TestObjects.getStatechart5();
+      if (x1 != 1 && x1 != 2 && x1 != 3 && x1 != 4 && x1 != 5 && x1 != 6) {
 	System.out.println ("Object not available.");
 	System.exit (0);
       }
     } else {
       System.out.println ("USAGE: Test1 <n>");
-      System.out.println ("n == number of testobject (1, 2 or 3);");
+      System.out.println ("n == number of testobject (1, 2, 3 or 4);");
       System.exit (0);
     }
 
@@ -65,7 +71,6 @@ public class Test1 {
     // Rufe Algorithmus auf.
 
     GraphOptimizer go = new GraphOptimizer (sChart, fm);
-
     try {
       sChart = go.start (0);
       PrettyPrint pp = new PrettyPrint();
