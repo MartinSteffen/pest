@@ -5,7 +5,7 @@ and Global:
 	or Safer:
 # P1.tesc ------------------------------------------------------
 # Global.Safer.P1
-# Es fehlt noch das freezen der Schalter, damit eine énderung der Schalter wÑhrend eines Zyklus keinen Einfluò auf die Berechnung hat.
+# Es fehlt noch das freezen der Schalter, damit eine ƒnderung der Schalter w‰hrend eines Zyklus keinen Einfluˇ auf die Berechnung hat.
 
 # events: P1_1Ready;
 
@@ -320,13 +320,13 @@ or All_axes_off:
 
 		# Berechnung von IC_y
 		from NO_ROT to tmp5 on [in(Global.grip_cmd_x.0) && !in(Global.grip_cmd_y.0)] do SET_IC_x_0, SET_IC_z_0;
-		# ¸berfl¸ssig: from tmp5 to IC_set on [in(Global.grip_cmd_y.0)] do SET_IC_y_0;
+		# ÅberflÅssig: from tmp5 to IC_set on [in(Global.grip_cmd_y.0)] do SET_IC_y_0;
 		from tmp5 to IC_set on [in(Global.grip_cmd_y.POS)] do SET_IC_y_POS;
 		from tmp5 to IC_set on [in(Global.grip_cmd_y.NEG)] do SET_IC_y_NEG;
 
 		# Berechnung von IC_x
 		from NO_ROT to tmp6 on [!in(Global.grip_cmd_x.0)] do SET_IC_y_0, SET_IC_z_0;
-		# ¸berfl¸ssig: from tmp6 to IC_set on [in(Global.grip_cmd_x.0)] do SET_IC_x_0;
+		# ÅberflÅssig: from tmp6 to IC_set on [in(Global.grip_cmd_x.0)] do SET_IC_x_0;
 		from tmp6 to IC_set on [in(Global.grip_cmd_x.POS)] do SET_IC_x_POS;
 		from tmp6 to IC_set on [in(Global.grip_cmd_x.NEG)] do SET_IC_x_NEG;
 
@@ -455,13 +455,13 @@ end CombineROT;
 
 		# Berechnung von IC_y
 		from NO_ROT to tmp5 on [in(Global.grip_cmd_x.0) && !in(Global.grip_cmd_y.0)] do SET_IC_x_0, SET_IC_z_0;
-		# ÅberflÅssig: from tmp5 to IC_set on [in(Global.grip_cmd_y.0)] do SET_IC_y_0;
+		# ¸berfl¸ssig: from tmp5 to IC_set on [in(Global.grip_cmd_y.0)] do SET_IC_y_0;
 		from tmp5 to IC_set on [in(Global.grip_cmd_y.POS)] do SET_IC_y_POS;
 		from tmp5 to IC_set on [in(Global.grip_cmd_y.NEG)] do SET_IC_y_NEG;
 
 		# Berechnung von IC_x
 		from NO_ROT to tmp6 on [!in(Global.grip_cmd_x.0)] do SET_IC_y_0, SET_IC_z_0;
-		# ÅberflÅssig: from tmp6 to IC_set on [in(Global.grip_cmd_x.0)] do SET_IC_x_0;
+		# ¸berfl¸ssig: from tmp6 to IC_set on [in(Global.grip_cmd_x.0)] do SET_IC_x_0;
 		from tmp6 to IC_set on [in(Global.grip_cmd_x.POS)] do SET_IC_x_POS;
 		from tmp6 to IC_set on [in(Global.grip_cmd_x.NEG)] do SET_IC_x_NEG;
 
@@ -764,7 +764,7 @@ end P2;
 		from NEG to POS on SET_AAH_cmd_yaw_POS;
 	end AAH_cmd_yaw;
 
-	# Die folgende States sind f¸r das Speichern des Integrated Commands
+	# Die folgende States sind fÅr das Speichern des Integrated Commands
 	or IC_x:
 		basic POS;
 		basic 0;

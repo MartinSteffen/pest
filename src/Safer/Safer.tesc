@@ -240,7 +240,7 @@ and Global:
 		from NEG to POS on SET_AAH_cmd_yaw_POS;
 	end AAH_cmd_yaw;
 
-	# Die folgende States sind für das Speichern des Integrated Commands
+	# Die folgende States sind fr das Speichern des Integrated Commands
 	or IC_x:
 		basic POS;
 		basic 0;

@@ -1,5 +1,5 @@
 # Global.Safer.P1
-# Es fehlt noch das freezen der Schalter, damit eine Änderung der Schalter während eines Zyklus keinen Einfluß auf die Berechnung hat.
+# Es fehlt noch das freezen der Schalter, damit eine nderung der Schalter w„hrend eines Zyklus keinen Einflu˜ auf die Berechnung hat.
 
 events: P1_1Ready;
 
