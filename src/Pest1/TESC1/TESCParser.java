@@ -7,6 +7,16 @@ import gui.*;
 import java.lang.*;
 import util.*;
 
+/* Konventionen:
+ * Kommentare enthalten:
+ *
+ * Temporaere Features: temporar
+ * Debug      ---"--- : debug
+ * Evtl. Fehler       : ???
+ *
+ */
+
+
 /* Todo/Fragen
  * + Was enthält Path? Nur States oder auch Cons? - Nur States !
  * - Es wird immer ein ActionBlock zurückgeliefert
@@ -17,20 +27,21 @@ import util.*;
  * + Statenamelist in ostate fehlt noch ! <- defcons
  * - Undet bei Guards
  * - Fehlerbehandlung
- * - Bei Ident mit Bezug auf vorhandenes Obejkt immer prüfen, ob auch vorhanden s.u.
+ * + Bei Ident mit Bezug auf vorhandenes Obejkt immer prüfen, ob auch vorhanden s.u.
+ */
+
+/* Änderungen:
+ * - pathop -> absolute Pfade
+ * - Keine Action angegeben -> new ActionEmpty(new Dummy())
+ * - Schaltermechanismus eingebaut.
+ * - debugmechanismus eingebaut.
  */
 
 
-/* Vorraussetzungen
- * - Stufe 1: -
- * - Stufe 2:
- *   - Boolesche Ausdrücke sollten vom Editor GEPARST worden sein
- *
+/* In Example.java wird bei Comppath auf ein schon vorhandenes Objekt zurückgegriffen, was nicht ok sein sollte.
+ * Scheinbar prüft checkModel auf Objektid!!
  */
- 
-/* Erfüllte Vorraussetzungen:
- * - Auftretende Bezeichner sind gültig. (z.B. Statenames in transitions existieren auch als State)
- */
+
 
 class TESCParser {
 
@@ -49,8 +60,9 @@ class TESCParser {
 
     private Vector path;          // enthält die Pfade
 
+    private Vector switches;      // temporar
+
     private BufferedReader is;
-    //private static final int NNT = 0;  // NoNextToken
 
     // protected-Methoden für das Package
 	
@@ -63,6 +75,10 @@ class TESCParser {
 	cnlist = new Vector();
 	bnlist = new Vector();
 	enlist = new Vector();
+
+	switches = new Vector();
+	initSwitches();
+	
 
 	path = new Vector();
     }
@@ -106,6 +122,12 @@ class TESCParser {
 
 
     // private Methoden
+
+
+    private void initSwitches() {
+	//switches.addElement("debug");
+	//switches.addElement("UsePathRef");
+    }
 
     /** Das erste Token kann sein:
      *  - events
@@ -155,6 +177,21 @@ class TESCParser {
 	return evlist;
     }
     
+    // bvars :
+    private BvarList bvars() throws IOException {
+	boolean b = false;
+	BvarList bvlist = null;
+
+	b = match(vTOKEN.BVARS);
+	b = match(vTOKEN.COLON);
+
+	if (b) {
+	    bvlist = bvarlist();
+	}
+
+	return bvlist;
+    }
+
     // eventliste aufbauen
     private SEventList eventlist() throws IOException {
 	SEvent ev;
@@ -184,6 +221,7 @@ class TESCParser {
 	return evlist;
     }
     
+
     // bvarliste aufbauen
     private BvarList bvarlist() throws IOException {
 	Bvar bv;
@@ -213,20 +251,6 @@ class TESCParser {
 	return bvlist;
     }
     
-    // bvars :
-    private BvarList bvars() throws IOException {
-	boolean b = false;
-	BvarList bvlist = null;
-
-	b = match(vTOKEN.BVARS);
-	b = match(vTOKEN.COLON);
-
-	if (b) {
-	    bvlist = bvarlist();
-	}
-
-	return bvlist;
-    }
 
     // liefert den root-state
     private State state() throws IOException {
@@ -348,8 +372,7 @@ class TESCParser {
 
 	    if (tok.token == vTOKEN.IDENT) {
 		if (s.compareTo(tok.value_str) != 0) {
-		    //Error
-		    //addError(makeError(tok,"Unbekannter Zustandsname"));
+		    //Error		    
 		    StringBuffer sb = new StringBuffer();
 		    sb.append("Name ungleich -> ");
 		    sb.append(s);
@@ -371,10 +394,8 @@ class TESCParser {
     private And_State astate(Path p) throws IOException {
 	And_State      as      = null;
 	Statename     sn      = null;
-	StateList     slist   = null;
-	//TrList        trlist  = null;
+	StateList     slist   = null;	
 	StatenameList snlist  = null;
-	//ConnectorList clist = null;
 	Path pth = null;
 
 	String s = null;
@@ -399,8 +420,7 @@ class TESCParser {
 
 	    match(vTOKEN.IDENT);
 	    match(vTOKEN.COLON);
-	    // Liste der States innerhalb dieses States <- genau 2 ?
-	    //slist = new StateList(astates(pth), new StateList(astates(pth), null));
+	    
 	    slist = astates(pth);
 	    
 	    as = new And_State(sn, slist);
@@ -546,9 +566,6 @@ class TESCParser {
 	return snlist;
     }
 
-    
-
-    // !!!!!
 
     private Action actionstmt (Path p) throws IOException {
 	Action act = null;
@@ -563,6 +580,10 @@ class TESCParser {
 	    
 	    act = new ActionBlock(al);
 	    act.location = loc;
+	}
+	else {
+	    // keine Action angegeben
+	    act = new ActionEmpty(new Dummy());
 	}
 
 	return act;
@@ -601,7 +622,7 @@ class TESCParser {
 		match(vTOKEN.IDENT);
 	    }
 	    else {
-		addError(makeError(tok,"Unbekannter Zustandsname"));
+		addError(makeError(tok,"Unbekannter Identifikator"));
 	    }   
 	   
 	}
@@ -620,6 +641,12 @@ class TESCParser {
 	Location loc = new Location(tok.linenum);
 
 	if (tok.token == vTOKEN.IDENT) {
+
+	    // Fehler, falls neue Bvar
+	    if (!is_bvarname(tok.value_str)) {
+		addError(makeError(tok,"Bvar nicht eingeführt!"));	
+	    }
+
 	    bv = new Bvar(tok.value_str);
 	    bv.location = loc;
 	    match(vTOKEN.IDENT);
@@ -648,7 +675,6 @@ class TESCParser {
 	return a;
     }
         
-    // hier
     // Guards
     private Guard guard(Path p) throws IOException {
 	Guard grd1 = null;
@@ -735,12 +761,12 @@ class TESCParser {
 	Location loc = new Location(tok.linenum);
 	
 	if (tok.token == vTOKEN.NOT) {
-	    // ??
+	    // ???
 	    match(vTOKEN.NOT);
 	    grd = new GuardNeg(kcompg(p));
 	}
 	else if(tok.token == vTOKEN.EMPTYEXP) {
-	    // Rekursion ?? oder kann ~ nur für sich stehen ?
+	    // Rekursion ??? oder kann ~ nur für sich stehen ?
 	    grd = new GuardEmpty(new Dummy()); 
 	}
 	else if(tok.token == vTOKEN.IN || tok.token == vTOKEN.ENTERED || tok.token == vTOKEN.EXITED) {
@@ -752,6 +778,9 @@ class TESCParser {
 	    }
 	    else if (is_eventname(tok.value_str)) {
 		grd = new GuardEvent(new SEvent(tok.value_str));
+	    }
+	    else {
+		addError(makeError(tok,"Unbekannter Identifikator"));
 	    }
 	    match(vTOKEN.IDENT);
 	}
@@ -767,17 +796,32 @@ class TESCParser {
 
     }
 
-    // ???
+    // ??? SyntaxChecker meckert. In Example.java wird eine REferenz auf einen schon vorhandenen Path verwendet.
+    // Was ist richtig?
     private Guard pathop(Path actPath) throws IOException {
 	Guard grd = null;
 	Location loc = new Location(tok.linenum);
 
-	if (actPath!=null) addError(makeError(tok, "Internal Error!"));
+	if (actPath==null) addError(makeError(tok, "Internal Error!"));
+
 	switch(tok.token) {
 	case vTOKEN.IN:
 	    match (vTOKEN.IN);
 	    match (vTOKEN.LPAR);
-	    grd = new GuardCompp((Comppath)setLoc(new Comppath(Comppath.IN, actPath.append(tok.value_str)), loc));
+	    //grd = new GuardCompp((Comppath)setLoc(new Comppath(Comppath.IN, actPath.append(tok.value_str)), loc));
+	    // S. comment oben
+	    if (switches.contains("UsePathRef")) {
+		debug("pathop: Verwende PathRef. ACHTUNG: Nur Referenzen auf vorher eingegebene States mögl.!");
+		Path p = findPath(tok.value_str);
+		if (p != null)
+		    grd = new GuardCompp((Comppath)setLoc(new Comppath(Comppath.IN, p), loc));	
+		else 
+		    addError(makeError(tok,"Unbekannter Path"));
+	    }
+	    else {
+		debug("pathop: Erstelle neues Path-Obj.");
+		grd = new GuardCompp((Comppath)setLoc(new Comppath(Comppath.IN, StringToPath(tok.value_str)), loc));
+	    }
 	    grd.location = loc;
 	    match(vTOKEN.IDENT);
 	    match(vTOKEN.RPAR);
@@ -785,7 +829,19 @@ class TESCParser {
 	case vTOKEN.ENTERED:
 	    match (vTOKEN.ENTERED);
 	    match (vTOKEN.LPAR);
-	    grd = new GuardCompp((Comppath)setLoc(new Comppath(Comppath.ENTERED, actPath.append(tok.value_str)), loc));
+	    //grd = new GuardCompp((Comppath)setLoc(new Comppath(Comppath.ENTERED, actPath.append(tok.value_str)), loc));
+	    if (switches.contains("UsePathRef")) {
+		debug("pathop: Verwende PathRef.");
+		Path p = findPath(tok.value_str);
+		if (p != null)
+		    grd = new GuardCompp((Comppath)setLoc(new Comppath(Comppath.ENTERED, p), loc));
+		else 
+		    addError(makeError(tok,"Unbekannter Path"));
+	    }
+	    else {
+		debug("pathop: Erstelle neues Path-Obj.");
+		grd = new GuardCompp((Comppath)setLoc(new Comppath(Comppath.ENTERED, StringToPath(tok.value_str)), loc));
+	    }
 	    grd.location = loc;
 	    match(vTOKEN.IDENT);
 	    match(vTOKEN.RPAR);
@@ -793,7 +849,19 @@ class TESCParser {
 	case vTOKEN.EXITED:
 	    match (vTOKEN.EXITED);
 	    match (vTOKEN.LPAR);
-	    grd = new GuardCompp((Comppath)setLoc(new Comppath(Comppath.EXITED, actPath.append(tok.value_str)), loc));
+	    //grd = new GuardCompp((Comppath)setLoc(new Comppath(Comppath.EXITED, actPath.append(tok.value_str)), loc));
+	    if (switches.contains("UsePathRef")) {
+		debug("pathop: Verwende PathRef.");
+		Path p = findPath(tok.value_str);
+		if (p != null)
+		    grd = new GuardCompp((Comppath)setLoc(new Comppath(Comppath.EXITED, p), loc));
+		else 
+		    addError(makeError(tok,"Unbekannter Path"));
+	    }
+	    else {
+		debug("pathop: Erstelle neues Path-Obj.");
+		grd = new GuardCompp((Comppath)setLoc(new Comppath(Comppath.EXITED, StringToPath(tok.value_str)), loc));
+	    }
 	    grd.location = loc;
 	    match(vTOKEN.IDENT);
 	    match(vTOKEN.RPAR);
@@ -802,7 +870,9 @@ class TESCParser {
 
 	return grd;
     }
+    
 
+    // Transitionen
     private TrList trdef(Path p) throws IOException {
 	TrList trlist = null;
 
@@ -815,7 +885,7 @@ class TESCParser {
     }
     
     
-
+    // Eine Transition aufbauen
     private Tr trans(Path p) throws IOException {
 	Tr tr = null;
 	TrAnchor t1, t2;
@@ -843,6 +913,7 @@ class TESCParser {
 	return tr;
     }
 
+    // TrAnchor
     private TrAnchor sname(Path p) throws IOException {
 	TrAnchor ta = null;
 	Location loc = new Location(tok.linenum);
@@ -878,6 +949,7 @@ class TESCParser {
 	return ta;
     } 
 
+    // Liste von Transitionen
     private TrList translist(Path p) throws IOException {
 	//Tr tr;
 	TrList trlist = null;
@@ -896,6 +968,7 @@ class TESCParser {
 	return trlist;
     }
 
+    // Statelist innerhalb eines OR-States
     private StateList states(Path p) throws IOException {
 	StateList sl = null;
 	State st = null;
@@ -938,6 +1011,9 @@ class TESCParser {
 	return sl;
     }
 
+
+    // Hilfsfunktionen
+
     // erstellt PathList
     private PathList makePathlist() {
 	PathList pl = null;
@@ -959,6 +1035,38 @@ class TESCParser {
 
 	i = getPathPos(p);
 	path.insertElementAt(p, i);
+    }
+
+
+    // gibt Referenz auf Path-Objekt, null wenn nict gefunden / temporar
+    private Path findPath(String s) {
+	int i, si;
+	Path pth = null;
+	String pfad, tp;
+
+	debug(s.valueOf(path.size()));
+
+	if (path.size()>0) {
+	    pfad = s;
+	    //System.out.print("!!!!! -> ");
+	    //System.out.println(pfad);
+	    
+	    si = path.size();
+	    
+	    for(i=0; i<si; i++) {
+		pth = (Path)path.elementAt(i);
+		tp = makePathString(pth);
+		debug(tp);
+
+		if ( pfad.compareTo(tp) == 0 ) break;
+		pth = null;
+	    }
+	}
+	else {
+	    pth = null;
+	}
+
+	return pth;	
     }
 
     // liefert Position, an der p eingefügt werden soll
@@ -1017,6 +1125,33 @@ class TESCParser {
     }
     
 
+    // macht aus einem String einen Path
+    private Path StringToPath(String s) {
+	int l = s.length();
+	int i, b;
+	String sub;
+	Path p = null;
+
+	s = s.concat(".");
+	l++;
+
+	b = 0;
+	for (i=0; i<l; i++) {
+	    if (s.charAt(i) == '.') {
+		sub = s.substring( b, i);
+
+		if (b == 0) p = new Path(sub, null);
+		else p = p.append(sub);
+
+		b = i+1;
+	    }
+	}
+
+	//if (p == null && l != 0) p = new Path(s, null);
+
+	return p;
+    }
+
     // Match
     private boolean match(int t) throws IOException {
 
@@ -1031,18 +1166,13 @@ class TESCParser {
 	}
 	else {
 	    // Error
-	    /*
-	    System.out.print("FEHLER ( ");
-	    System.out.print(tok.linenum);
-	    System.out.print(") - ");
-	    System.out.print(ts.getString(t));
-	    System.out.println(" erwartet!");
-	    */
+	    
 	    b = false;
 	}
 
 	return b;
     }
+
 
     // Tools
 
@@ -1132,19 +1262,15 @@ class TESCParser {
 
     // Hinzufügen der jeweiligen Names in die Listen
     private void addStatename(String s, Path p) {
-	
 	snlist.addElement(makePathString(p).concat(".").concat(s));
-
     }
     
     private void addConname(String s, Path p) {
 	cnlist.addElement(makePathString(p).concat(".").concat(s));
-
     }
 
     private void addBvarname(String s) {
 	bnlist.addElement(s);
-
     }
     
     private void addEventname(String s) {
@@ -1152,7 +1278,7 @@ class TESCParser {
 
     }
 
-       // hängt Fehlermeldung an die Liste an.
+    // hängt Fehlermeldung an die Liste an.
     private void addError(String txt) {
 	errorList.addElement(txt);
 	errorCount++;
@@ -1184,11 +1310,24 @@ class TESCParser {
 	}
     }
 
+    private void debug(String s) {
+	
+	if (switches.contains("debug")) {
+	    String txt = new String("Tesc1: DEBUG-> ");
+	    
+	    txt = txt.concat(s);
+	    gi.userMessage(txt);
+	}
+    }
+
 }
 
 /* TESCParser
- * $Id: TESCParser.java,v 1.8 1999-01-04 16:12:02 swtech13 Exp $
+ * $Id: TESCParser.java,v 1.9 1999-01-05 20:58:17 swtech13 Exp $
  * $Log: not supported by cvs2svn $
+ * Revision 1.8  1999/01/04 16:12:02  swtech13
+ * Locations hinzugefuegt. Pruefen auf Keywords.
+ *
  * Revision 1.7  1998/12/21 16:17:36  swtech13
  * Fehlermeldungen im Parser -> GUI
  *

@@ -11,18 +11,21 @@ import gui.*;
  * Module erzeigten Statecharts folgende Eingenschaften haben:
  * 
  * <ul>
- * <li> Ist noch nicht bekannt.
- * <li> Alle States, Bvars, Events, etc. auf die in z.B. Transition Bezug genommen wird, sind auch vorhanden.
+ * <li> Alle Bvars, Events, etc. auf die in z.B. Transition Bezug genommen wird, sind auch vorhanden. 
+ *      <STRONG> AUSNAHME: </STRONG> States in Comppath
  * <li> Es gibt nur einen DefCon pro Ebene
  * <li> Keine Schleifen bei Listen.
  * <li> Keine unartigen Nullpointer.
+ * <li> Keine doppelte Referenzierung.
  * </ul>
  * 
  * Damit ist es nicht notwendig, folgende Checks an unsere Statecharts
  * anzuwenden:
  * 
  * <ul>
- * <li> unbekannt.
+ * <li> TestBVars.pruefeBVar(...)    // Allerdings sollte gecheckt werden, ob überflüssige BVars vorhanden
+ * <li> TestEvents.pruefeEvent(...)  // Allerdings sollte gecheckt werden, ob überflüssige Events vorhanden
+ * <li> TestPI                       // Falls wir das richtig verstanden haben ..
  * </ul>
  * 
  * <STRONG> Anforderungen. </STRONG> Wir verlassen uns darauf, dass die
@@ -51,14 +54,35 @@ import gui.*;
  * <DT><STRONG>
  * TODO.
  * </STRONG>
- * 
- * Undet bei Guards. Verbesserung der Fehlerbehandlung. Testen der Locations.
+ * <ul>
+ * <li> Undet bei Guards. 
+ * <li> Verbesserung der Fehlerbehandlung.
+ * <li> Testen der Locations.
+ * </ul>
  * Fertig am 11.01.99
+ *
+ * <DT><STRONG>
+ * TEMP.
+ * </STRONG>
+ * <ul>
+ * <li> in pathop: bei GuardCompp kann eine Referenz auf schon vorhandenes Path-Obj benutzt werden, oder
+ *      es wird ein neues Path-Obj angelet. Verhalten ueber switch einstellbar
+ * <li> debug-ausgaben ins GUI Fenster sind ebenfalls ueber switch einstellbar.
+ * </ul>
+ *
+ * <DT><STRONG>
+ * Einstellungsmöglichkeiten
+ * </STRONG>
+ *
+ * <ul>
+ * <li> UsePathRef
+ * <li> debug
+ * </ul>
  *
  * </DL COMPACT>
 
  * @author Arne Koch/Mike Rumpf.
- * @version  $Id: TESCLoader.java,v 1.8 1999-01-04 16:12:01 swtech13 Exp $ 
+ * @version  $Id: TESCLoader.java,v 1.9 1999-01-05 20:58:15 swtech13 Exp $ 
  */ 
 public class TESCLoader {
 
@@ -97,6 +121,9 @@ public class TESCLoader {
 
 /* 
  * $Log: not supported by cvs2svn $
+ * Revision 1.8  1999/01/04 16:12:01  swtech13
+ * Locations hinzugefuegt. Pruefen auf Keywords.
+ *
  * Revision 1.7  1998/12/21 16:17:35  swtech13
  * Fehlermeldungen im Parser -> GUI
  *
