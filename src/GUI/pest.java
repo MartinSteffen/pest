@@ -74,10 +74,10 @@ implements GUIInterface
 		check.ModelCheck SCchecker = new check.ModelCheck(this);
 		ResultSC = SCchecker.checkModel(SyntaxBaum);
 		CheckedSC = true;
-		if (SCchecker.getErrorNumber()==0)
-		    {
-			ResultSC = true;
-		    }
+//		if (SCchecker.getErrorNumber()==0)
+//		    {
+//			ResultSC = true;
+//		    }
 	    }
 	else
 	    {
