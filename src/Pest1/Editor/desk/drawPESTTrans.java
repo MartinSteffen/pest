@@ -239,10 +239,10 @@ public static CPoint transpoint(Statechart root,int cx1, int cy1)
 	     matrix1 = PESTdrawutil.getState(root,ncx1,ncy1);
 		if (matrix1.akt.rect != null)
 		{	
-	     if ( (ncx1-matrix1.x) <= 15) {ncx1=matrix1.x;movetest = true;}
-	     if ( (ncy1-matrix1.y) <= 15) {ncy1=matrix1.y;movetest = true;}
-	     if ( (matrix1.x+matrix1.akt.rect.width)-ncx1 <= 15) {ncx1=matrix1.x+matrix1.akt.rect.width;movetest = true;}
-	     if ( (matrix1.y+matrix1.akt.rect.height)-ncy1 <= 15) {ncy1=matrix1.y+matrix1.akt.rect.height;movetest = true;}
+	     if ( (ncx1-matrix1.x) <= 15) {ncx1=matrix1.x+1;movetest = true;}
+	     if ( (ncy1-matrix1.y) <= 15) {ncy1=matrix1.y+1;movetest = true;}
+	     if ( (matrix1.x+matrix1.akt.rect.width)-ncx1 <= 15) {ncx1=matrix1.x+matrix1.akt.rect.width-1;movetest = true;}
+	     if ( (matrix1.y+matrix1.akt.rect.height)-ncy1 <= 15) {ncy1=matrix1.y+matrix1.akt.rect.height-1;movetest = true;}
 	     ttest = true;
 		} 
 	     }
