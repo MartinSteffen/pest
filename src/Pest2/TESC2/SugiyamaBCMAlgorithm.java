@@ -173,28 +173,21 @@ class SugiyamaBCMAlgorithm implements LayoutAlgorithm {
 	CPoint p;
 	int maxHeight = 0;
 	int actHeight = 0;
-	int ypos = -1;
+	int ypos = 0;
+	int counter = 1;
 	for (i = 0; i<pm.getHeight(); i++) {
 	    xpos = WIDTH_BONUS + ((maxWidth - RowWidth[i]) / 2);
+	    ypos = ypos + (counter * HEIGHT_BONUS);
+	    counter = 1;
 	    maxHeight = 0;
-	    for (j = pm.getWidthOfRow(i)-1; j>=0; j--) {
+	    for (j = 0; j<pm.getWidthOfRow(i); j++) {
 		actHeight = pm.getElement(i, j).getRect().height;
 		if (actHeight>maxHeight) {
 		    maxHeight = actHeight;
 		}
 	    }
-	    if (i == 0) {
-		ypos = HEIGHT_BONUS;
-	    }
-	    else {
-		if (((RowWidth[i-1]+RowWidth[i]) /8) < HEIGHT_BONUS) {
-		    ypos = ypos + HEIGHT_BONUS;
-		}
-		else {
-		    ypos = ypos + ((RowWidth[i-1]+RowWidth[i]) / 8);
-		}
-	    }
 	    for (j = 0; j<pm.getWidthOfRow(i); j++) {
+		counter = pm.getElement(i, j).numberLower(counter);
 		actHeight = pm.getElement(i, j).getRect().height;
 		p = new CPoint(xpos, ypos + ((maxHeight-actHeight) / 2));
 		pm.getElement(i, j).setPosition(p);
@@ -512,9 +505,21 @@ class SugiyamaBCMAlgorithm implements LayoutAlgorithm {
 	    substate.rect.y = starty;
 	    substate.rect.width = endx - startx;
 	    substate.rect.height = endy - starty;
+
+	    if (substate instanceof And_State)
+		resizeAnd_State((And_State) substate);
+
 	    /* Substate-Namen plazieren */
-	    substate.name.position.x = startx+5;
-	    substate.name.position.y = starty-5;
+	    if (substate instanceof Basic_State) {
+		substate.name.position.x = startx+5;
+		substate.name.position.y = starty+10;
+	    } else if (substate instanceof And_State) {
+		substate.name.position.x = startx+5;
+		substate.name.position.y = starty-5;
+	    } else {
+		substate.name.position.x = startx+5;
+		substate.name.position.y = starty+10;
+	    }
 	    stateList = stateList.tail;
 
 	    /* $Testausgabe */
@@ -525,9 +530,75 @@ class SugiyamaBCMAlgorithm implements LayoutAlgorithm {
 	s.rect.width = posOfVertexGx[interVertexCountGx+1];
 	s.rect.height = posOfVertexGy[interVertexCountGy+1];
 
+	/* Da beim Setzen der substates auch And_States vergroessert
+	   werden koennen, muessen deren substates neu gesetzt werden */
+
+	//resizeAnd_State(s);	
+
 	/* x- und y-Wert werden beim Layout des Superstate gesetzt */
+
+	
     };
     
+    /* Passt die substate-Groessen von s an */
+
+    private void resizeAnd_State(And_State s) {
+
+	int newWidth = s.rect.width;
+	int newHeight = s.rect.height;
+	
+	/* es werden diejenigen substates von s vergroessert, die ganz
+	   rechts und ganz unten liegen. Das sind diejenigen, deren
+	   Werte x+width bzw. y+height maximal sind */
+
+	/* Bestimmung der Maximalwerte */
+	int xPlusWidthMax = 0;
+	int yPlusHeightMax = 0;
+
+	StateList substateList = s.substates;
+	State substate = null;
+	int actX;
+	int actY;
+
+	while (substateList != null) {
+	    substate = substateList.head;
+	    
+	    actX = substate.rect.x+substate.rect.width;
+	    actY = substate.rect.y+substate.rect.height;
+	    if (actX > xPlusWidthMax) {
+		xPlusWidthMax = actX;
+	    }
+	    if (actY > yPlusHeightMax) {
+		yPlusHeightMax = actY;
+	    }
+	    substateList = substateList.tail;
+	}
+	
+	/* Vergroessern der in Frage kommenden substates */
+	boolean stateChanged;
+	substateList = s.substates;
+	while (substateList != null) {
+	    stateChanged = false;
+	    substate = substateList.head;
+	    actX = substate.rect.x+substate.rect.width;
+	    actY = substate.rect.y+substate.rect.height;
+	    if (actX == xPlusWidthMax) {		
+		substate.rect.width = newWidth - substate.rect.x;
+		stateChanged = true;
+	    }
+	    if (actY == yPlusHeightMax) {
+		substate.rect.height = newHeight - substate.rect.y;
+		stateChanged = true;
+	    }
+	    /* falls es sich bei diesem substate um einen And_State handelt,
+	       muss dieser genauso behandelt werden */
+	    if ((substate instanceof And_State) && (stateChanged)) {
+		resizeAnd_State((And_State) substate);
+	    }
+	    substateList = substateList.tail;
+	}
+    };
+
     /**
      * Führt das Layout für einen beliebigen State durch
      */
@@ -538,11 +609,11 @@ class SugiyamaBCMAlgorithm implements LayoutAlgorithm {
 
 	Class classOfState = s.getClass();
 	
-	if (classOfState.getName().compareTo("absyn.Basic_State")==0) {
+	if (s instanceof Basic_State) {
 	    layoutBasicState((Basic_State) s);
-	} else if (classOfState.getName().compareTo("absyn.Or_State")==0) {
+	} else if (s instanceof Or_State) {
 	    layoutORState((Or_State) s);
-	} else if (classOfState.getName().compareTo("absyn.And_State")==0) {
+	} else if (s instanceof And_State) {
 	    layoutANDState((And_State) s);
 	} else {
 	    System.out.println("layoutState: classnameOfState="+classOfState.getName());
