@@ -178,6 +178,11 @@ public Editor(Statechart root,String name,int top,int left,int width,int height)
 	setdef.setActionCommand("Set_Default");
 	setdef.addActionListener(listener);
 
+	Button refstate = new Button("Referenz");
+	this.add(refstate);
+	refstate.setActionCommand("Referenz");
+	refstate.addActionListener(listener);
+
 	this.show();
     } 
 
