@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	--------------
 //
-//	$Id: report_list,v 1.40 1999-02-08 15:13:12 swtech16 Exp $
+//	$Id: report_list,v 1.41 1999-02-08 15:36:01 swtech01 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -318,7 +318,7 @@ wie ein Or State, sonst ist alles hin.
 #Number:	21
 #Autor:		Bernd Weber bwe
 #Subject:	Check: Mehrere oder keine Default States werden nicht erkannt
-#Status:	fixed
+#Status:	confirmed
 #Description:
 
 Check gibt weder Fehler noch Warnungen aus, obwohl keine bzw. zu viele
@@ -337,7 +337,7 @@ plaziert, wenn man sich ihnen mit dem Mauszeiger nhert.
 #Number:	23
 #Autor:		Bernd Weber bwe
 #Subject:	Crossreferenz funktioniert nicht
-#Status:	fixed
+#Status:	confirmed
 #Description:
 
 Aufruf von Crossreferenz ergibt Meldungen der GUI:
@@ -348,7 +348,7 @@ Das war's. Mehr passiert nicht.
 #Number:	24
 #Autor:		Bernd Weber bwe
 #Subject:	Check: erkennt multiple bzw. fehlende Default Connectoren nicht
-#Status:	fixed
+#Status:	confirmed
 #Description:
 
 Or State mit mehreren Default Connectoren bzw. gar keinen wird nicht bemngelt.
