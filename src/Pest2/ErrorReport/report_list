@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	------------------
 //
-//	$Id: report_list,v 1.12 1999-01-27 15:11:08 swtech00 Exp $
+//	$Id: report_list,v 1.13 1999-01-27 15:35:42 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -107,11 +107,11 @@ Fehler: Oberer Rand (etwa 1/5)der Chart ist nicht sichtbar.
 #Description: 
 
 Importiere File X.st aus SE-Systems.
+Exportiere es über Exprt->TESC.
 
-X \in {cd.st,vcr.st} dann kann TESC-Export es nicht exportieren
-
-X \in {tamagotc.st} dann kann das Exportierte File nicht mehr eingelesen werden.
-
+X \in {vcr.st,tamagotc.st} dann kann das Exportierte File nicht mehr
+eingelesen werden, obwohl der Syntax check keine Fehler gemeldet hat und
+der vorangegangene Export erfolgreich war.
 
 //------------------------------------------------------------------------------
 #Number:	7
@@ -127,4 +127,31 @@ Das kann aber nicht sein, denn in den Guards kommen Keywords vor (zumindest
 meckert tesc1 darüber; das sieht man, wenn man die Chart Exportiert und
 wieder Importiert über die TESC-Schnittstelle, der Import geht nicht wegen Keywords).
 
+//------------------------------------------------------------------------------
+#Number:	8
+#Autor:		Erich Mikk erm
+#Subject:	Zoom wirft Exceptions
+#Status: 	reported 
+#Description: 
+
+Importiere SE-Systems/cd.st.
+Exportiere es nach cd.tesc.
+Importiere cd.tesc.
+Starte Editor.
+Zoom 10%.
+Jetzt wirft  Editor eine Reihe von solchen:
+
+Exception occurred during event dispatching:
+java.lang.ClassCastException: absyn.And_State
+        at editor.Methoden_1.showFullTransName(Methoden_1.java:750)
+        at editor.Editor$13.mouseMoved(Editor.java:470)
+        at java.awt.Component.processMouseMotionEvent(Component.java:2444)
+        at java.awt.Component.processEvent(Component.java:2253)
+        at java.awt.Container.processEvent(Container.java:878)
+        at java.awt.Window.processEvent(Window.java:347)
+        at java.awt.Component.dispatchEventImpl(Component.java:1781)
+        at java.awt.Container.dispatchEventImpl(Container.java:923)
+        at java.awt.Window.dispatchEventImpl(Window.java:492)
+        at java.awt.Component.dispatchEvent(Component.java:1708)
+        at java.awt.EventDispatchThread.run(EventDispatchThread.java:81)
 //------------------------------------------------------------------------------
