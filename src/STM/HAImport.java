@@ -63,9 +63,8 @@ import tesc1.TESCSaver;
  * </DL COMPACT>
  *
  * @author  Sven Jorga, Werner Lehmann
- * @version $Id: HAImport.java,v 1.17 1999-01-28 11:30:42 swtech18 Exp $
+ * @version $Id: HAImport.java,v 1.18 1999-01-28 17:02:40 swtech18 Exp $
  */
-
 public class HAImport implements Patterns {
   Perl5Util perl = new Perl5Util();
 
@@ -400,7 +399,7 @@ public class HAImport implements Patterns {
 
   private String removeQuotes(String str) { return perl.substitute("s/\"//g",str); }
 
-  /** main dient uns intern zum Testen ohne GUI und sollte nicht
+  /** main dient uns intern zum testen ohne GUI und sollte nicht
    * verwendet werden.
    */
 
@@ -500,8 +499,6 @@ public class HAImport implements Patterns {
               for (int m=6; m<currentTrVec.size(); m++) {
                 String tmpStr = (String)currentTrVec.elementAt(m);
                 perl.match("/<?mk_coord\\((\\d+),(\\d+)\\)>?/",tmpStr);
-                //rFaktor = 1;
-                //rt.x = rt.y = 0;
                 xCoord = new Double((Integer.parseInt(perl.group(1))-rt.x)*rFaktor);
                 yCoord = new Double((Integer.parseInt(perl.group(2))-rt.y)*rFaktor);
                 if (tmpVec == null)
@@ -527,7 +524,7 @@ public class HAImport implements Patterns {
               newGuard = createGuard(exprStr, condStr);
             tLabel =  new TLabel(newGuard,
                                  createAction((String)currentTrVec.elementAt(5)),
-                                 getUnusedPoint(tmpVec), // CPoint
+                                 getUnusedPoint(tmpVec,pointVec), // CPoint
                                  null, // Location
                                  "");
             tesc.setCaption(tLabel);
@@ -556,17 +553,34 @@ public class HAImport implements Patterns {
 
   }
 
-  private CPoint getUnusedPoint(Vector vec) throws Exception {
+  private CPoint getUnusedPoint(Vector labelCoords, Vector trCoords) throws Exception {
     int i = 0;
-    if (vec == null || vec.size() == 0)
+    CPoint pt = null;
+    if (labelCoords == null || labelCoords.size() == 0)
       return null;
-    for (i=0; (i<vec.size()) && pointInVec(used,(CPoint)vec.elementAt(i)); i++);
-    if (i >= vec.size())
-      throw new Exception("Nicht genug Labelkoordinaten verfuegbar.");
-    else {
-      used.addElement((CPoint)vec.elementAt(i));
-      return (CPoint)used.lastElement();
+    for (i=0; (i<labelCoords.size()) && pointInVec(used,(CPoint)labelCoords.elementAt(i)); i++);
+    if (i >= labelCoords.size()) {
+      //throw new Exception("Nicht genug Labelkoordinaten verfuegbar.");
+      pt = calcPoint(trCoords);
+    } else {
+      used.addElement((CPoint)labelCoords.elementAt(i));
+      pt = (CPoint)used.lastElement();
     }
+    return pt;
+  }
+
+  private CPoint calcPoint(Vector trCoords) {
+    int size = trCoords.size();
+    CPoint pt = null, pt1 = null, pt2 = null;
+
+    if (size % 2 > 0)
+      pt = (CPoint) trCoords.elementAt(size / 2 + 1);
+    else {
+      pt1 = (CPoint) trCoords.elementAt(size / 2);
+      pt2 = (CPoint) trCoords.elementAt(size / 2 + 1);
+      pt = new CPoint((pt1.x+pt2.x)/2,(pt1.y+pt2.y)/2);
+    }
+    return pt;
   }
 
   private boolean pointInVec(Vector vec, CPoint p) {
