@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	------------
 //
-//	$Id: report_list,v 1.72 1999-02-28 14:20:16 swtech01 Exp $
+//	$Id: report_list,v 1.73 1999-02-28 14:34:43 swtech01 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -711,4 +711,13 @@ Check ist OK.
 Das kann aber nicht sein, weil es ein Event SE_RESET in der Transition 
 von Ready to Ready abgefragt wird.
 
+//------------------------------------------------------------------------------
+#Number:	46
+#Autor:		Bernd Weber bwe
+#Subject:	Simu: Zustandsnamen im Monitor nicht eindeutig
+#Status:	reported
+#Description:
+
+Enthält eine Chart mehrere States mit demselben Namen, kann diese im
+Monitor nicht unterscheiden.
 //------------------------------------------------------------------------------
