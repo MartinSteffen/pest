@@ -1,0 +1,7 @@
+Fehler: 100 Guard aus OFF->GO_OUT ist Null-Pointer, A1.A1_A1.M
+Fehler: 100 Guard aus OFF->GO_IN ist Null-Pointer, A1.A1_A1.M
+Fehler: 100 Pfad in Bedingung im Guard in GO_OUT->OFF nicht gefunden, A1.A1_A1.M
+Fehler: 100 Guard aus SWITCH_ON->SWITCH_OFF ist Null-Pointer, A1.A1_A1.MAG
+Fehler: 100 Guard aus SWITCH_OFF->SWITCH_ON ist Null-Pointer, A1.A1_A1.MAG
+Fehler: 5, Warnungen: 0
+GUI   : SyntaxCheck fehlgeschlagen

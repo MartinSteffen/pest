@@ -1,0 +1,11 @@
+Hinweise zur Durchfuehrung der Tests:
+
+Normaler Import ohne Besonderheiten:
+
+testIL.pest
+testIL2.pest
+ex_undet.pest
+
+tamagotc.tesc: 
+
+TESC-Export von tamagotc.st. Man erkennt beim Import an "TESC1 : Zeile 316 : Info : SE_RESET implizit als Event deklariert", daﬂ der Fehler beim Import von tamagotc.st gemeldet wird (SE_RESET sei nicht definiert), durch TESC bereinigt wird, so daﬂ auch der Check diesen Fehler nicht mehr finden kann.

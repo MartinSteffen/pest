@@ -1,0 +1,5 @@
+Warnung: 100 Defaultstate C gesetzt, root.A
+Fehler: 100 Transitions Target B nicht gefunden, root
+Fehler: 100 Kein Defaultstate gesetzt, root
+Fehler: 2, Warnungen: 1
+GUI   : SyntaxCheck fehlgeschlagen
