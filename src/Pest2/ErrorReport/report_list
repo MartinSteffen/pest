@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	--------------
 //
-//	$Id: report_list,v 1.51 1999-02-10 18:24:48 swtech23 Exp $
+//	$Id: report_list,v 1.52 1999-02-11 07:56:14 swtech01 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -385,12 +385,36 @@ java.lang.NullPointerException:
 #Number:	25.1
 #Autor:		Bernd Weber bwe
 #Subject:	Check: erkennt Interlevel-Transition nicht.
-#Status:	fixed
+#Status:	reported
 #Description:
 
 Erzeugt man einen Or-State und einen Basic-State wie in Nr. 24 und zieht eine
 Transition von einem der Basic-States im Or-State zum Basic-State neben dem
 Or-State gibt's beim Syntaxcheck keine Fehler.
+
+Zurueckgesetzt auf reported, denn folgende Sequenz erzeugt eine Exception:
+1. Or State mit einem Basic State erzeugen.
+2. Basic State neben Or-State erzeugen
+3. Transition vom Basic State im Or State zum einzelnen Basic State zeichnen.
+4. Aufruf von Syntaxcheck.
+
+Folgende Exception wird erzeugt:
+  Exception occurred during event dispatching:
+  java.lang.NullPointerException: 
+        at check.CheckTransitions.Contains(CheckTransitions.java:145)
+        at check.CheckTransitions.check(CheckTransitions.java:90)
+        at check.CheckStates.checkSingleState(CheckStates.java:93)
+        at check.CheckStates.checkState(CheckStates.java:54)
+        at check.CheckStates.check(CheckStates.java:26)
+        at check.ModelCheck.checkModel(ModelCheck.java:156)
+        at gui.pest.checkSB(pest.java:428)
+        at gui.GUIwerkML.actionPerformed(GUIwerkML.java:34)
+        at gui.GUIControlWindowML.mouseClicked(GUIControlWindowML.java:60)
+        at java.awt.Component.processMouseEvent(Component.java:1904)
+        at java.awt.Component.processEvent(Component.java:1778)
+        at java.awt.Component.dispatchEventImpl(Component.java:1456)
+        at java.awt.Component.dispatchEvent(Component.java:1393)
+        at java.awt.EventDispatchThread.run(EventDispatchThread.java:63)
 //------------------------------------------------------------------------------
 #Number:	25.2
 #Autor:		Bernd Weber bwe
