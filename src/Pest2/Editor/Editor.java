@@ -2,11 +2,11 @@
  * Editor.java
  */
 
-package Editor;
+package editor;
 
 import java.awt.*;
 import java.awt.event.*;
-import Absyn.*;
+import absyn.*;
 
 public class Editor extends Frame
 {

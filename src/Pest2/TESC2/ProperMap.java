@@ -9,10 +9,10 @@
  * @version
  */
 
-package TESC2;
+package tesc2;
 
 import java.util.Vector;
-import Absyn.*;
+import absyn.*;
 
 public class ProperMap {
 

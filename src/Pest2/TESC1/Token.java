@@ -1,10 +1,10 @@
-package TESC1;
+package tesc1;
 
 /**
  * Tokenklasse.
  * <p>
  * @author Michael Sülzer, Christoph Schütte.
- * @version  $Id: Token.java,v 1.1 1998-12-13 17:49:07 swtech20 Exp $
+ * @version  $Id: Token.java,v 1.2 1998-12-15 18:11:37 swtech00 Exp $
  */   
 
 public class Token {
@@ -102,5 +102,8 @@ public class Token {
 //      -----------               
 //
 //      $Log: not supported by cvs2svn $
+//      Revision 1.1  1998/12/13 17:49:07  swtech20
+//      Checkin für Baseline
+//
 //              
 //----------------------------------------------------------------------

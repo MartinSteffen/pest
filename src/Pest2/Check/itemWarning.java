@@ -9,7 +9,7 @@
 //
 // ****************************************************************************
 
-package Check;
+package check;
 
 public class itemWarning {
 

@@ -9,10 +9,10 @@
 //
 // ****************************************************************************
 
-package Check;
+package check;
 
-import Absyn.*;         // abstrakte Syntax
-import GUI.*;           // GUI Interface
+import absyn.*;         // abstrakte Syntax
+import gui.*;           // GUI Interface
 
 public class modelCheck {
 

@@ -1,8 +1,8 @@
-package TESC1;
+package tesc1;
 
 import java.io.*;
 import java.util.Vector;
-import Absyn.*;
+import absyn.*;
 
 /**
  * Tokenizer für TESC.<br>
@@ -27,7 +27,7 @@ import Absyn.*;
  * </code>
  * <p>
  * @author Michael Sülzer, Christoph Schütte.
- * @version  $Id: TESCTokenizer.java,v 1.2 1998-12-13 17:49:06 swtech20 Exp $
+ * @version  $Id: TESCTokenizer.java,v 1.3 1998-12-15 18:11:37 swtech00 Exp $
  *
  * @see Token
  * @see TESCParser
@@ -302,6 +302,9 @@ public class TESCTokenizer {
 //      ----------------------------               
 //
 //      $Log: not supported by cvs2svn $
+//      Revision 1.2  1998/12/13 17:49:06  swtech20
+//      Checkin für Baseline
+//
 //      Revision 1.1  1998/12/03 13:08:18  swtech20
 //      Geaenderte TESC1-Schnittstelle nach Absprache mit Gruppe TESC1 aus PEST1.
 //      Die Schnittstellen sind jetzt für beide Gruppen gleich.

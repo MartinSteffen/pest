@@ -1,12 +1,12 @@
-package TESC1;
+package tesc1;
 
 import java.io.*;
-import Absyn.*;
-import GUI.*;
+import absyn.*;
+import gui.*;
 
 /**
  * Schnittstellenklasse fuer TESC1. 
- * @version  $Id: TESCLoader.java,v 1.4 1998-12-13 17:49:05 swtech20 Exp $
+ * @version  $Id: TESCLoader.java,v 1.5 1998-12-15 18:11:37 swtech00 Exp $
  * @author Michael Suelzer, Christoph Schuette.
  */   
 public class TESCLoader {
@@ -54,6 +54,9 @@ public class TESCLoader {
 //	----------------------
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.4  1998/12/13 17:49:05  swtech20
+//	Checkin für Baseline
+//
 //	Revision 1.3  1998/12/07 19:55:16  swtech20
 //	Wir geben Fehlermeldungen jetzt direkt an die GUI.
 //

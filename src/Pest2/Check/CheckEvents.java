@@ -8,9 +8,9 @@
 //
 // ****************************************************************************
 
-package Check;
+package check;
 
-import Absyn.*;         // abstrakte Syntax
+import absyn.*;         // abstrakte Syntax
 
 public class CheckEvents {
   Statechart statechart;

@@ -9,9 +9,9 @@
 //
 // ****************************************************************************
 
-package Check;
+package check;
 
-import Absyn.*;
+import absyn.*;
 
 // Klasse zur Ueberpruefung der Transitionen
 public class CheckTransitions {

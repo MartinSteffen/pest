@@ -1,7 +1,7 @@
-package Simu;
+package simu;
 
-import Absyn.*;
-import Editor.*;
+import absyn.*;
+import editor.*;
 
 /**swtech22 - Simulation: Die Simulationsumgebung wird durch einen einfachen Konstruktor gestartet*/ 
 public class Simu extends Object{

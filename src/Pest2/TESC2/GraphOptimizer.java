@@ -1,7 +1,7 @@
-package TESC2;
+package tesc2;
 
 import java.awt.FontMetrics;
-import Absyn.*;
+import absyn.*;
 
 /**
  *
@@ -39,7 +39,7 @@ import Absyn.*;
  * Created: Fri Nov 27 11:26:25 1998
  *
  * @author Software Technologie 19, Klaus H&ouml;ppner, Achim Abeling
- * @version $Id: GraphOptimizer.java,v 1.4 1998-12-14 14:36:10 swtech19 Exp $
+ * @version $Id: GraphOptimizer.java,v 1.5 1998-12-15 18:11:39 swtech00 Exp $
  *
  */
 

@@ -8,7 +8,7 @@
  * @version
  */
 
-package TESC2;
+package tesc2;
 
 public class AlgorithmException extends Exception {
     

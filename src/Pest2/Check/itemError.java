@@ -9,7 +9,7 @@
 //
 // ****************************************************************************
 
-package Check;
+package check;
 
 // Wrapper Klasse fuer einen gefundenen Fehler
 public class itemError {

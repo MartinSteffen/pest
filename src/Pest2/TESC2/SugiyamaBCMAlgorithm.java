@@ -8,9 +8,9 @@
  * @version
  */
 
-package TESC2;
+package tesc2;
 
-import Absyn.*;
+import absyn.*;
 
 class SugiyamaBCMAlgorithm implements LayoutAlgorithm {
     

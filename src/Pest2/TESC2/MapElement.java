@@ -9,9 +9,9 @@
  * @version
  */
 
-package TESC2;
+package tesc2;
 
-import Absyn.TrAnchor;
+import absyn.TrAnchor;
 
 class MapElement  {
     
