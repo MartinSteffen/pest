@@ -53,7 +53,6 @@ class CheckStates {
       //System.out.println(substates.head.name.name);
       ok = checkSingleState(substates.head, path) && ok;
       ok = checkState(substates.head, path+"."+substates.head.name.name) && ok;
-System.out.println(ok);
       substates = substates.tail;
     }
 

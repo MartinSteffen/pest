@@ -123,7 +123,6 @@ String path;
         // Fall e): Ist die Transition eine Interlevel Transition?
         //          nur dann testen, wenn auch Koordinaten vorhanden sind!
         if (trans.points != null) {
-
           // Fall e1) : Anchor
           if (IsInterlevelTransition(state, trans, true)) {
             // fehler ausgeben
@@ -138,7 +137,7 @@ String path;
             error.addError(new ItemError(104, "Ziel: Interleveltransition gefunden",path));
           }
         }
-System.out.println(ok);
+
         trl = trl.tail; // nächste Transition
       } // while
 
@@ -186,14 +185,12 @@ System.out.println(ok);
     int hs=s.rect.height;
     int ws=s.rect.width;
 
-System.out.println(state.name.name+":"+xs+" "+ys+" "+ws+" "+hs+" "+xt+" "+xt);
-
     boolean OK=false;  // ist keine Interlevel Transition per default
-    
+
     // 1. Fall: Transition zeigt auf den Rand der eigenen State
     if (umgebung(xs,xt) || umgebung(xs+ws,xt) ||
         umgebung(ys,yt) || umgebung(ys+hs,yt)) OK = true;
-  
+
     // 2. Fall: Transition zeigt nach aussen
     if (xt<=xs || xt>=(xs+ws) || yt<=ys || yt>=(ys+hs)) OK=false;
 

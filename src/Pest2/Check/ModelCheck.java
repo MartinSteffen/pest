@@ -144,8 +144,7 @@ private boolean       OutputToGUI = false;
       } else System.out.println("Fataler Fehler: Statechart enthaelt einen Kreis");
 
     } else {
-      CheckEvents checkEvents = new CheckEvents(statechart, errors, warnings);
-      CheckBVars  checkBVars  = new CheckBVars(statechart, errors, warnings);
+      CheckLabels checkLabels = new CheckLabels(statechart, errors, warnings);
       CheckConnectors checkConnectors = new CheckConnectors(statechart, errors, warnings);
       CheckDupes checkDupes = new CheckDupes(statechart, errors, warnings);
 
@@ -155,8 +154,7 @@ private boolean       OutputToGUI = false;
       CheckStates cs = new CheckStates(statechart, errors, warnings);
 
       ok = cs.check() && ok;
-      ok = checkEvents.check() && ok;
-      ok = checkBVars.check() && ok;
+      ok = checkLabels.check() && ok;
       ok = checkConnectors.check() && ok;
 
       // Fehlerausgabe, falls "gui" zugewiesen ist
@@ -186,25 +184,16 @@ private boolean       OutputToGUI = false;
     return ok;
 	}
 
-	/** ueberprüft alle Events, die innerhalb der "Statechart" definiert sind
-	*   ueberflüssige Events koennten "Warnungen" sein.
+	/** ueberprüft alle BVars/Events, die innerhalb der "Statechart" definiert sind
+	*   ueberflüssige BVars/Events koennten "Warnungen" sein.
   *   Rueckgabe der Methode ist TRUE, wenn keine Fehler oder Warnungen vorhanden
   *   sind, FALSE sonst.
   */
-	public boolean checkEvents(Statechart statechart) {
+	public boolean checkLabels(Statechart statechart) {
     boolean ok = true;
 
-    CheckEvents checkEvents = new CheckEvents(statechart, errors, warnings);
-    ok = checkEvents.check();
-
-    return ok;
-  }
-
-  public boolean checkBVars(Statechart statechart) {
-    boolean ok = true;
-
-    CheckBVars  checkBVars  = new CheckBVars(statechart, errors, warnings);
-    ok = checkBVars.check();
+    CheckLabels checkLabels = new CheckLabels(statechart, errors, warnings);
+    ok = checkLabels.check();
 
     return ok;
   }
