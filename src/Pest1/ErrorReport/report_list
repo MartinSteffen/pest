@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.80 1999-02-08 16:14:11 swtech11 Exp $
+//	$Id: report_list,v 1.81 1999-02-08 16:26:32 swtech11 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -802,7 +802,7 @@ geloescht, Zustaende und Transition verschoben).
 #Number:        55
 #Autor:         check swtech11
 #Subject:       Editor oder stm ? Interlevel-Transition
-#Status:        fixed
+#Status:        confirmed
 #Description:
 
 Das alte Problem mit den Interlevel-Transitionen nach dem Importieren durch STM.
