@@ -17,6 +17,7 @@ import absyn.*;
 import editor.desk.*;
 import gui.*;
 import gui.popdialoge.*;
+import java.lang.*;
 
 /**
  * @author Mai / Bestaendig
@@ -387,16 +388,44 @@ public static void newdraw() {
 			scribble.repaint();
 			}
 
-
-
-    // Vorsicht : die folgende Methode wurde nur zu Testzwecken eingebaut
-    // und verursacht inkonsistente Zustaende !!!!!!!!!!!!!!!!!!!!!!!!!!!
-public Editor(boolean i) {System.out.println("loesche alles im Editor"); scribble.repaint(); }
+public Editor(boolean i) { scribble.repaint(); }
 
 public static void fehlermeldung1()
 {
   gui.OkDialog("Editor","Fehler beim Zeichnen aufgetreten");
 }
+
+public static String Stringeingabe(String a, String b, String c,Absyn type)
+    {
+	String tempname="",tempstring;
+	if (type instanceof State)
+	{
+	        if (c.length() >= 3) {
+		tempstring = c.substring(0,3);
+		if (tempstring.compareTo("...")==0) {tempname = "";} else {tempname = c;};}
+	}
+
+	tempstring = gui.EingabeDialog(a,b,tempname);
+	return tempstring;
+    }
+
+public static String labelObject (Absyn obj)
+    {
+	String name,ausgabe = "",ausgabe2 = "";
+	State stateobj;
+	
+	if (obj instanceof State)
+	    {
+		stateobj = (State) obj;
+		name = stateobj.name.name;
+		ausgabe = Stringeingabe("Zustand umbenennen","Neuer Name fuer den gewaehlten Zustand :",name,obj);
+		if (ausgabe != null) {
+		    if (ausgabe.length() < 1 ) {ausgabe2 = name;} else {ausgabe2 = ausgabe;}
+		} else {ausgabe2 = name;}
+		System.out.println("neuer Statename >"+ausgabe2+"<");
+	    }
+	return ausgabe2;
+    }
 
 
 }
