@@ -131,13 +131,19 @@ public Editor(Statechart root,String name,int top,int left,int width,int height)
     public Editor (String name) {
 	super(name);
 	this.setLayout(new GridLayout(0,1,5,5));
-	this.setSize(105,260);
+	this.setSize(105,300);
 	this.setLocation(50,100);
 	this.setResizable(false);
 	Button Select = new Button("Select");
 	this.add(Select);
 	Select.setActionCommand("Select");
 	Select.addActionListener(listener);
+
+	Button Info = new Button("Info");
+	this.add(Info);
+	Info.setActionCommand("Info");
+	Info.addActionListener(listener);
+
 	Button State = new Button("STATE");
 	this.add(State);
 	State.setActionCommand("Draw_State");
