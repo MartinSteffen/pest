@@ -4,10 +4,10 @@
  * Created: Fri Dec 04 1998, 00:00:00
  *
  * @author Developed by Eike Schulz for swtech14.
- * @version $Id: AlgorithmException.java,v 1.7 1999-02-12 16:25:59 swtech14 Exp $
+ * @version $Id: AlgorithmException.java,v 1.8 1999-02-15 10:39:20 swtech14 Exp $
  *
  *
- * Exception-Klasse fuer die Fehler-/Exception-Behandlung bzgl. GraphOptimizer.
+ * Exception-Klasse fuer die Fehler-/Exception-Behandlung bzgl. GraphOptimizer.java
  */
 
 package tesc2;
