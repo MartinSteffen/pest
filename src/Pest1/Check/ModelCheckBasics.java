@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: ModelCheckBasics.java,v 1.9 1999-01-20 15:06:51 swtech11 Exp $
+ *  @version  $Id: ModelCheckBasics.java,v 1.10 1999-01-20 15:26:45 swtech11 Exp $
  */
 class ModelCheckBasics {
   ModelCheckMsg msg = new ModelCheckMsg();
@@ -159,20 +159,19 @@ class ModelCheckBasics {
     for (int j=0; ((j<v.size()) && b); j++) {
               if ((v.elementAt(j) instanceof String) && (((String)v.elementAt(j)).equals(s))) {
 		            b=false;
-			    System.out.println("String "+j); 
-                            //v.removeElementAt(j);
+			    
 }
-           else { System.out.println("not String");
+	      else {
            if ((v.elementAt(j) instanceof BVarC) && ((((BVarC)v.elementAt(j)).b.var).equals(s))) {
 		            b=false; 
-                            //v.removeElementAt(j);
+                            
 }
 
 
            else {
            if ((v.elementAt(j) instanceof EventC) && ((((EventC)v.elementAt(j)).e.name).equals(s))) {
 		            b=false; 
-                            //v.removeElementAt(j);
+                           
 };};};};       
 
 
@@ -185,9 +184,9 @@ class ModelCheckBasics {
 
            if ((v.elementAt(j) instanceof String) && (((String)v.elementAt(j)).equals(s))) {
 		            b=false;
-			    System.out.println("String "+j); 
+			     
                             v.removeElementAt(j);}
-           else { System.out.println("not String");
+           else { 
            if ((v.elementAt(j) instanceof BVarC) && ((((BVarC)v.elementAt(j)).b.var).equals(s))) {
 		            b=false; 
                             v.removeElementAt(j);}
