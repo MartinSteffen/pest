@@ -37,30 +37,27 @@ public class Statechart extends Absyn implements Serializable, Cloneable  {
  * @exception CloneNotSupportedException self-explanatory exception
  */
     public Object clone () throws CloneNotSupportedException {
-	BvarList bvarsclone;
-	if (bvars != null)
-	    bvarsclone = (BvarList) bvars.clone();
-	else
-	    bvarsclone = null;
-		
-	SEventList seventsclone;
-	if (events != null)
-	    seventsclone = (SEventList) events.clone();
-	else
-	    seventsclone = null;
+      BvarList bvarsclone = (bvars == null) ? null : (BvarList) bvars.clone();
+      State    stateclone = (state == null) ? null : (State) state.clone();
+      Location  locationclone  = (location == null) ? null : (Location)location.clone();
+      SEventList seventsclone;
+      if (events != null)
+	seventsclone = (SEventList) events.clone();
+      else
+	seventsclone = null;
 
-	PathList cnamesclone;
-	if (cnames != null)
-	    cnamesclone = (PathList) cnames.clone();
-	else
-	    cnamesclone = null;
+      PathList cnamesclone;
+      if (cnames != null)
+	cnamesclone = (PathList) cnames.clone();
+      else
+	cnamesclone = null;
+      
 
-	Location  locationclone  = (location == null) ? null : (Location)location.clone();
 
 	return new Statechart((SEventList)seventsclone,
 			      (BvarList)bvarsclone,
 			      (PathList)cnamesclone,
-			      (State)state.clone(),
+			      (State)stateclone,
 			      locationclone);
     };
 
@@ -69,9 +66,19 @@ public class Statechart extends Absyn implements Serializable, Cloneable  {
 //	Abstract Syntax for PEST Statecharts
 //	------------------------------------
 //
-//	$Id: Statechart.java,v 1.14 1999-01-11 17:23:51 swtech00 Exp $
+//	$Id: Statechart.java,v 1.15 1999-02-09 09:53:02 swtech00 Exp $
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.14  1999/01/11 17:23:51  swtech00
+//	Alle Bestandteile der abstrakten Syntax mit Locations (= nicht-abstrakte
+//	Unterklassen von Absyn) in der Form modifiziert, da"s das Locations-Feld
+//	mit-geklont wird. =>
+//
+//	     o	Jeweils neuer Kontruktor hinzugef"ugt
+//	     o  clone-Methode angepa"st
+//
+//	[Steffen]
+//
 //	Revision 1.13  1999/01/09 15:47:54  swtech13
 //	clone() methoden korrigiert (weitere nullpointerabfragen)
 //
