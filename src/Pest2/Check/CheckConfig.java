@@ -1,0 +1,1 @@
+package check;import java.io.*;import java.awt.*;public class CheckConfig implements Serializable {  public CheckConfig() {  }}
