@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.108 1999-02-12 11:03:16 swtech24 Exp $
+//	$Id: report_list,v 1.109 1999-02-12 11:21:22 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -1119,7 +1119,7 @@ Codegenerator:
 #Number:	72
 #Autor:		Erich Mikk
 #Subject:	Editor: Hinzufügen eines AND bringt alles durcheinander
-#Status: 	fixed
+#Status: 	confirmed
 #Description: 
 
 STM-Import PC/a1.st
@@ -1133,7 +1133,7 @@ Result: vollkommen veränderte Chart (Trs verschoben)
 #Number:	73
 #Autor:		Erich Mikk
 #Subject:	Wieder IT-Probleme
-#Status: 	fixed
+#Status: 	confirmed
 #Description: 
 
 
