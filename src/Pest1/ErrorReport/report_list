@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.12 1999-01-18 12:08:14 swtech11 Exp $
+//	$Id: report_list,v 1.13 1999-01-18 16:01:02 swtech25 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -204,3 +204,23 @@ Wenn in verschiedenen Ebenenen States den gleichen Namen haben, kann man bei ein
 
 Die Interlevel-Transition, die man im Editor vom Standby zu CH1 sieht, ist keine. 
 Ihr Source ist Standby und ihr Target Working. Die Koordinaten des Linienzuges stimmen mit dem Ziel nicht ueberein. Die Koordinaten fuehren zu dem State CH1. Die Koordinaten sind wahrscheinlich schon im TV.st File falsch.
+
+
+//------------------------------------------------------------------------------
+#Number:	15
+#Autor:		Marcel Kyas, Walter Loeser, Andre Paetzold swtech25
+#Subject:	Simulator laesst sich nicht schliessen.
+#Status:	reported
+#Description:
+
+Das schliessen des Simulators fuehrt zu einer Null-pointer exception.
+
+
+//------------------------------------------------------------------------------#Number:	16
+#Autor:		Marcel Kyas, Walter Loeser, Andre Paetzold swtech25
+#Subject:	Kein Pfad fuer CodeGen.
+#Status:	reported
+#Description:
+
+Man kann fuer die Code Erzeugung keinen Pfad angeben.  Der Pfad "."
+ist leider nicht brauchbar zum ordentlichen testen.
