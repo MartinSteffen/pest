@@ -17,30 +17,44 @@ class MonitorComponent extends Container{
     update();
   }
 
+  public Vector getVector(){
+    return components;
+  }
+
   public void update(){
     removeAll();
     GridBagLayout layout=new GridBagLayout();
     GridBagConstraints c = new GridBagConstraints();
     c.fill=GridBagConstraints.NONE;
-    c.ipadx=2;
-    c.ipady=2;
+    c.ipadx=1;
+    c.ipady=1;
     c.gridwidth=1;
     c.gridheight=1;
     c.gridy=1;
     c.gridx=1;
-    c.anchor=GridBagConstraints.NORTH;
+    c.anchor=GridBagConstraints.NORTHWEST;
+    
     c.insets=new Insets(1,1,1,1);
     setLayout(layout);
     Component temp=null;
     Enumeration enum=components.elements();
     while (enum.hasMoreElements()){
       temp=(Component)enum.nextElement();
-      c.gridx++;
+      c.gridy++;
       layout.setConstraints(temp,c);
-      add((Component)(enum.nextElement()));
+      add((Component)(temp));
     }
     repaint();
   }
 }
     
   
+
+
+
+
+
+
+
+
+

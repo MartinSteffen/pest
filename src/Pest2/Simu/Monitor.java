@@ -4,23 +4,40 @@ import java.awt.event.*;
 import java.awt.*;
 import java.util.*;
 
-class Monitor extends Frame{
+import absyn.*;
+import gui.*;
+
+class Monitor extends Frame implements ActionListener{
+
+  Statechart statechart=null;
 
   Vector event_views=null;
   Vector state_views=null;
   Vector tr_views=null;
   Vector boolean_views=null;
+
+  Vector all_events=null;
+  Vector all_conditions=null;
+
   ScrollPane sp1=null;
   ScrollPane sp2=null;
   ScrollPane sp3=null;
   ScrollPane sp4=null;
+
   MonitorComponent event_list=null;
   MonitorComponent state_list=null;
   MonitorComponent tr_list=null;
   MonitorComponent boolean_list=null;
-  
 
-  public Monitor(){
+  MonitorConfigDialog config_states=null;
+  MonitorConfigDialog config_events=null;
+  MonitorConfigDialog config_trs=null;
+  MonitorConfigDialog config_conditions=null;
+
+  Status status=null;
+
+
+  public Monitor(Statechart s){
     super("Monitor - funktioniert noch nicht!!");
 
     addWindowListener(new WindowAdapter(){
@@ -28,6 +45,10 @@ class Monitor extends Frame{
 	setVisible(false);
       }
     });
+
+    status=new Status();
+    
+    parseStatechart(s);
 
     GridBagLayout layout=new GridBagLayout();
     GridBagConstraints c = new GridBagConstraints();
@@ -48,7 +69,10 @@ class Monitor extends Frame{
     state_list=new MonitorComponent(state_views);
     tr_list=new MonitorComponent(tr_views);
     boolean_list=new MonitorComponent(boolean_views);
-
+    event_list.update();
+    state_list.update();
+    tr_list.update();
+    boolean_list.update();
     c.gridwidth=12;
     c.gridheight=1;
     c.gridx=1;
@@ -108,18 +132,15 @@ class Monitor extends Frame{
     Label lt=new Label("Transitionen");
     layout.setConstraints(lt,c);
     
-    c.gridwidth=2;
-    c.gridheight=1;
-    c.gridx=1;
-    c.gridy=6;
-    Button bs=new Button("Hinzufuegen/Entfernen");
-    layout.setConstraints(bs,c);
 
     c.gridwidth=2;
     c.gridheight=1;
     c.gridx=4;
     c.gridy=6;
     Button be=new Button("Hinzufuegen/Entfernen");
+    be.setActionCommand("Knopf Events");
+    be.addActionListener(this);
+
     layout.setConstraints(be,c);
 
     c.gridwidth=2;
@@ -127,15 +148,12 @@ class Monitor extends Frame{
     c.gridx=7;
     c.gridy=6;
     Button bc=new Button("Hinzufuegen/Entfernen");
+    bc.setActionCommand("Knopf Conditions");
+    bc.addActionListener(this);
+
     layout.setConstraints(bc,c);
 
-    c.gridwidth=2;
-    c.gridheight=1;
-    c.gridx=10;
-    c.gridy=6;
-    Button bt=new Button("Hinzufuegen/Entfernen");
-    layout.setConstraints(bt,c);
-
+ 
 
     add(l);
     add(ls);
@@ -146,12 +164,59 @@ class Monitor extends Frame{
     add(sp2);
     add(sp3);
     add(sp4);
-    add(bs);
     add(be);
     add(bc);
-    add(bt);
     
   }
+
+  public void actionPerformed(ActionEvent e){
+    String command=e.getActionCommand();
+ 
+    if (command.equals("Knopf Events")){
+      config_events=new MonitorConfigDialog(this,all_events,event_views,"Events");
+      config_events.show();
+      event_views=config_events.getAnswer();
+    }
+
+
+    if (command.equals("Knopf Conditions")){
+      config_conditions=new MonitorConfigDialog(this,all_conditions,boolean_views,"Conditions");
+      config_conditions.show();
+      boolean_views=config_conditions.getAnswer();
+    }
+
+
+    setStatus(status);
+
+  }
+
+  void parseStatechart(Statechart s){
+    BvarList var_tail=s.bvars;
+    if (var_tail!=null){
+      Bvar var_head=var_tail.head;
+      all_conditions=new Vector();
+      all_conditions.addElement(new BooleanView(var_head));
+      var_tail=var_tail.tail;
+      while (var_tail!=null){
+	var_tail=var_tail.tail;
+	var_head=var_tail.head;
+	all_conditions.addElement(new BooleanView(var_head));
+      }
+    }
+    SEventList event_tail=s.events;
+    if (event_tail!=null){
+      SEvent event_head=event_tail.head;
+      all_events=new Vector();
+      all_events.addElement(new EventView(event_head));
+      event_tail=event_tail.tail;
+      while (event_tail!=null){
+	event_head=event_tail.head;
+	all_events.addElement(new EventView(event_head));
+	event_tail=event_tail.tail;
+      }
+    }
+  }  
+
 
   void setEvents(EventTabelle et){
     EventView temp=null;
@@ -199,7 +264,12 @@ class Monitor extends Frame{
   }
 
 
+
 }
    
      
     
+
+
+
+

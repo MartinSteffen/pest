@@ -26,13 +26,14 @@ public class Communicator extends Frame implements ActionListener{
   Vector listvector=null;
   Tr listresult=null;
 
-  public Communicator(GUIInterface g){
+  public Communicator(GUIInterface g,Statechart s){
     super("PEST: Simulation");
     gui=g;
     akt_status=new Status();
     prev_status=new Status();
     running=true;
-    monitor=new Monitor();
+    chart=s;
+    monitor=new Monitor(chart);
     buildFrame();
   }
 
@@ -101,15 +102,22 @@ public class Communicator extends Frame implements ActionListener{
       unhighlightPrevTrs();
       highlightAktStates();
       highlightAktTrs();
+      monitor.setStatus(akt_status);
     }
   }
 
   void setzeEvent(String name){
     akt_status.events.set(name,new SEvent(name));
+    monitor.setStatus(akt_status);
   }
 
   void aendereAutodet(){
     autodet=!autodet;
+  }
+
+  void brpo(){
+    BreakpointDialog dialog=new BreakpointDialog(this,chart,gui);
+    dialog.show();
   }
 
   void highlightAktStates(){
@@ -182,7 +190,8 @@ public class Communicator extends Frame implements ActionListener{
     addWindowListener(new WindowAdapter(){
       public void windowClosing(WindowEvent e){
 	setVisible(false);
-	running=false;
+	monitor.setVisible(false);
+	gui.simuExit();
       }
     });
     Button b1=new Button("naechster Simulationsschritt");
@@ -213,11 +222,21 @@ public class Communicator extends Frame implements ActionListener{
     setMenuBar(bar);
     Menu einstellungen=new Menu("Einstellungen");
     bar.add(einstellungen);
-    CheckboxMenuItem ndet=new CheckboxMenuItem("automatische Aufloesung von Nichtdeteminismus",false);
+    CheckboxMenuItem ndet=new CheckboxMenuItem("automatische Aufloesung von Nichtdeterminismus",false);
     einstellungen.add(ndet);
     ndet.addItemListener(new ItemListener(){
       public void itemStateChanged(ItemEvent e){
 	aendereAutodet();
+      }
+    });
+    MenuItem breakpoints=new MenuItem("Breakpoints");
+
+    breakpoints.setEnabled(false);
+
+    einstellungen.add(breakpoints);
+    breakpoints.addActionListener(new ActionListener(){
+      public void actionPerformed(ActionEvent e){
+	brpo();
       }
     });
     MenuItem schrittweite=new MenuItem("Schrittweite");

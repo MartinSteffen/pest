@@ -58,7 +58,7 @@ public class Simu extends Object{
   /**Der gewuenschte Konstruktor: die aktuelle Statechart, ein Editorobject und das GUIInterface als Parameter*/    
   public Simu(Statechart s, Editor e, GUIInterface gui){
     if (s!=null){
-      comm=new Communicator(gui);
+      comm=new Communicator(gui,s);
       maschine=new Nachfolgermaschine(s,comm,gui);
       //maschine=new Nachfolgermaschine(absyn.Example.getExample(),comm);
       comm.setMachine(maschine);
