@@ -21,6 +21,10 @@ public class editor extends Frame {
     private static String Buttontype = "";
     private static boolean update = false;
 
+
+    static Statechart nroot = new Statechart(null,null,null,null);
+
+
     ActionListener listener = new ActionListener() {
        public void actionPerformed(ActionEvent e){
        Buttontype = e.getActionCommand();}
@@ -33,7 +37,7 @@ public class editor extends Frame {
  * </ul>
  */
 
-    public editor(Statechart root,String name) {Statechart nroot = new Statechart(null,null,null,null);
+    public editor(Statechart root,String name) {
     nroot = root; new editor(nroot,name,100,100,500,400);}
 
     public editor (String name) {
@@ -94,7 +98,8 @@ public class editor extends Frame {
     pane.setSize(width,height);                  // Specify its size.
     this.add(pane, "Center");                // Add it to the frame.
     PESTDrawDesk scribble;
-    scribble = new PESTDrawDesk(this, 500, 500,root); // Create a bigger scribble area.
+    Panel panel = new Panel();
+    scribble = new PESTDrawDesk(panel, 500, 500,root); // Create a bigger scribble area.
     pane.add(scribble);                      // Add it to the ScrollPane.
 
     MenuBar menubar = new MenuBar();         // Create a menubar.
@@ -125,7 +130,9 @@ public static String editor () {return Buttontype ;}
  * (only for Editor-Events)
  */
 
-public static void SetListen() {  update = true;    }
+public static void SetListen() {  update = true;
+ PESTDrawDesk.addundo(nroot);}
+ 
 
 /**
  * This Method returns the status of the update-Listener 
