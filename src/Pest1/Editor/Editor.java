@@ -402,12 +402,15 @@ public static boolean active() { return drawstatus;}
  * <li>xroot   : aktueller Statechart 
  * </ul>
  */
-private static void Freeit(Statechart xroot) { 	xroot.state = null;
-					xroot.events = null;
-					xroot.bvars = null;
-   					xroot.cnames = null;
-					scribble.repaint();
-					}
+private static void Freeit(Statechart xroot) { 	
+    Statechart nroot = xroot;
+    nroot.state = null;
+    nroot.events = null;
+    nroot.bvars = null;
+    nroot.cnames = null;
+    SetListen();
+    newdraw();
+}
 
 /**
  * Aufruf der Drawdesk-Repaintmethode
