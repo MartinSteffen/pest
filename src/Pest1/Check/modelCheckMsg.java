@@ -18,7 +18,7 @@ class modelCheckMsg {
     WarningCode = new Vector();
     WarningMsg = new Vector();
     WarningPath = new Vector();
-  }
+  };
 
   // liefert die Anzahl der Fehler zurueck
   int getErrorNumber() { return ErrorCode.size(); }
