@@ -27,7 +27,7 @@ import util.*;
  * + Statenamelist in ostate fehlt noch ! <- defcons
  * - Undet bei Guards
  * + Fehlerbehandlung
- * - Wenn in der Tescdatei ein Basiszustand geparst wird,
+ * - Wenn in der Tescdatei der Rootzustand geparst wird,
  *   werden evt. noch dahinterstehende Zeilen vom Parser ignoriert.
  *   (eigentlich nicht unbedingt ein Fehler, vielleicht unschoen?)
  * + Bei Ident mit Bezug auf vorhandenes Obejkt immer prüfen, ob auch vorhanden s.u.
@@ -184,6 +184,40 @@ class TESCParser {
 	return act;
     }
 
+    
+    protected Action readAction(BufferedReader br, Statechart st) throws IOException {
+	Action act = null;
+
+	evlist = st.events;
+	bvlist = st.bvars;
+
+	ts = new TESCScanner(br);
+	tok = ts.nextToken();
+	tl_caption = new StringBuffer("/");
+
+	act = new ActionBlock(actionlist(null));
+
+	// Falls jetzt noch etwas != ; kommt, ist das falsch
+	if (tok.token == vTOKEN.SCOLON) {
+	    match(vTOKEN.SCOLON);
+	    // Falls jetzt noch etwas kommt, ist das falsch
+	    if (tok.token != vTOKEN.EOF) addError(makeError(tok,"Unerwartetes Token"));
+	}
+	else {
+	    addError(makeError(tok,"Unerwartetes Token"));
+	}
+
+	
+	if (errorCount>0) {
+           outputErrors();
+	}
+
+	st.events = evlist;
+	st.bvars  = bvlist;
+
+	return act;
+    }
+
     // ohne Anlegen neuer Listen
     protected Guard readGuard(BufferedReader br) throws IOException {
 	Guard grd = null;
@@ -231,6 +265,36 @@ class TESCParser {
            outputErrors();
 	}
 	
+	return grd;
+    }
+
+    // legt neue Listen an
+    protected Guard readGuard(BufferedReader br, Statechart st) throws IOException {
+	Guard grd = null;
+
+	debug("readGuard(BufferedReader br, SEventList el, BvarList bl)");
+
+	evlist = st.events;
+	bvlist = st.bvars;
+
+	ts = new TESCScanner(br);
+
+	tok = ts.nextToken();
+
+	tl_caption = new StringBuffer();
+	grd = guard(null);
+
+
+	// Falls jetzt noch etwas kommt, ist das falsch
+	if (tok.token != vTOKEN.EOF) addError(makeError(tok,"Unerwartetes Token"));
+
+	if (errorCount>0) {
+           outputErrors();
+	}
+	
+	st.events = evlist;
+	st.bvars  = bvlist;
+
 	return grd;
     }
 
@@ -1016,10 +1080,12 @@ class TESCParser {
 	    tl_caption.append(tok.value_str);
 	    match(vTOKEN.RPAR);
 	}
+	/*
 	else {
 	    // ??? !!!
 	    if (tok.token != vTOKEN.EOF) addError(makeError(tok,"Unerwartetes Token"));
 	}
+	*/
 	if (grd != null) grd.location = loc;
 	
 	return grd;
@@ -1214,10 +1280,12 @@ class TESCParser {
 	    tl_caption.append(tok.value_str);
 	    match(vTOKEN.RPAR);
 	}
+	/*
 	else {
 	    // ??? !!!
 	    if (tok.token != vTOKEN.EOF) addError(makeError(tok,"Unerwartetes Token"));
 	}
+	*/
 	if (grd != null) grd.location = loc;
 	
 	return grd;
@@ -1660,6 +1728,7 @@ class TESCParser {
     private void addError(String txt) {
 	errorList.addElement(txt);
 	errorCount++;
+	debug("Fehler!");
 	//System.out.println(txt);
     }
 
@@ -1703,7 +1772,7 @@ class TESCParser {
 }
 
 /* TESCParser
- * $Id: TESCParser.java,v 1.17 1999-01-13 18:43:07 swtech13 Exp $
+ * $Id: TESCParser.java,v 1.18 1999-01-17 21:42:36 swtech13 Exp $
  * $Log: not supported by cvs2svn $
  * Revision 1.15  1999/01/11 23:20:10  swtech13
  * ~ in Guards, bassign in Action wird jetzt erkannt

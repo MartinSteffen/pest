@@ -18,6 +18,8 @@ import java.util.*;
  * <li> Keine Schleifen bei Listen.
  * <li> Keine unartigen Nullpointer.
  * <li> Keine doppelte Referenzierung.
+ * <li> Keine UNDEFINED() TrAnchors
+ * <li> Keine GuardUndet()
  * </ul>
  * 
  * Damit ist es nicht notwendig, folgende Checks an unsere Statecharts
@@ -34,16 +36,13 @@ import java.util.*;
  * Statecharts, die uns uebergeben werden, folgende Eigenschaften haben: 
  * 
  * <ul>
- * <li> SyntaxCheck darf keine Fehler melden.
- * <li> TrAnchors duerfen nicht UNDEFINED() sein.
- * <li> Keine Schleifen bei Listen.
- * <li> Keine unartigen Nullpointer.
+ * <li> Diese Klasse erhält keine Statecharts
  * </ul>
  * 
  * die mit folgenden Checks ueberprueft werden koennen:
  * 
  * <ul>
- * <li> sollte von den Modulen, die Statecharts erzeugen, sowieso garantiert werden.
+ * <li> nichts.
  * </ul>
 
  * <DL COMPACT>
@@ -91,7 +90,7 @@ import java.util.*;
  * <br>
  * <hr>
  * @author Arne Koch/Mike Rumpf.
- * @version  $Id: TESCLoader.java,v 1.16 1999-01-13 18:43:07 swtech13 Exp $ 
+ * @version  $Id: TESCLoader.java,v 1.17 1999-01-17 21:42:35 swtech13 Exp $ 
  */ 
 public class TESCLoader {
 
@@ -105,7 +104,7 @@ public class TESCLoader {
  
     /** 
      * Nach der Instanzierung von TESCLoader getStatechart(...) aufrufen
-     * @param Referenz auf eine GUIInterface-Instanz
+     * @param gi_ Referenz auf eine GUIInterface-Instanz
      */
     public TESCLoader(GUIInterface gi_) {
 	gi = gi_;
@@ -116,7 +115,7 @@ public class TESCLoader {
 
     /** 
      * <A HREF="#options">Optionen</A> einstellen
-     * @param Referenz auf einen Vector, der die <A HREF="#options"> Optionen</A> enthält.
+     * @param opt Referenz auf einen Vector, der die <A HREF="#options"> Optionen</A> enthält.
      */
     public void initOptions(Vector opt) {
 	options = opt;
@@ -141,7 +140,7 @@ public class TESCLoader {
 
 
     /** 
-     * Umwandeln eines  TESC-File aus BufferedReader in Guard.<br>  Die Funktion wurde noch nicht getestet! Fehlerausgaben werden vom Parser ins gui-Fenster geschrieben.
+     * Umwandeln eines  TESC-File aus BufferedReader in Guard.<br> Fehlerausgaben werden vom Parser ins gui-Fenster geschrieben.<br><STRONG>  Temporär!! </STRONG>
      * @param Referenz auf einen BufferedReader
      * @return Liefert Guard oder null bei Fehler.
      */ 
@@ -162,7 +161,7 @@ public class TESCLoader {
     }
 
     /** 
-     * Umwandeln eines  TESC-File aus BufferedReader in Guard.<br>  Die Funktion wurde noch nicht getestet! Fehlerausgaben werden vom Parser ins gui-Fenster geschrieben.
+     * Umwandeln eines  TESC-File aus BufferedReader in Guard.<br> <STRONG>  Temporär!! </STRONG>.
      * @param Referenz auf einen BufferedReader
      * @param Referenz auf SEventList
      * @param Referenz auf BvarList
@@ -190,7 +189,35 @@ public class TESCLoader {
     }
 
     /** 
-     * Umwandeln eines  TESC-File aus BufferedReader in Action.<br> <STRONG> Achtung: </STRONG> Der String MUSS mit einem ; abgeschlossen sein
+     * Umwandeln eines  TESC-File aus BufferedReader in Guard.
+     * <br>Die neuen SEvents/Bvars werden in die Listen des übergebenen Statecharts eingetragen
+     * @param Referenz auf einen BufferedReader
+     * @param Referenz auf Statechart
+     * @return Liefert Guard oder null bei Fehler.
+     */ 
+	public Guard getGuard(BufferedReader br, Statechart sc) throws IOException {
+	TESCParser parser = new TESCParser(br, gi);
+	parser.initSwitches(options);
+
+	Guard guard = parser.readGuard(br, sc);
+
+	if (parser.getErrorCount() > 0) {	   
+	    if (gi != null) gi.OkDialog("Fehler", "Guard ist fehlerhaft.");
+	    else System.out.println("Fehler: Guard ist fehlerhaft.");
+
+	    return null;
+        }
+	else {
+	    if (guard == null) guard = new GuardEmpty(new Dummy());
+	    evlist = parser.getSEventList();
+	    bvlist = parser.getBvarList();
+
+	    return guard;
+	}
+    }
+
+    /** 
+     * Umwandeln eines  TESC-File aus BufferedReader in Action.<br> <STRONG> Achtung: </STRONG> Der String MUSS mit einem ; abgeschlossen sein<br><STRONG>  Temporär!! </STRONG>
      * @param Referenz auf einen BufferedReader     
      * @return Liefert Action oder null bei Fehler.
      */ 
@@ -210,7 +237,7 @@ public class TESCLoader {
     }
 
     /** 
-     * Umwandeln eines  TESC-File aus BufferedReader in Action.<br> <STRONG> Achtung: </STRONG> Es werden nur Actionstatements akzeptiert, die mit einem ; abgeschlossen sind!
+     * Umwandeln eines  TESC-File aus BufferedReader in Action.<br> <STRONG> Achtung: </STRONG> Es werden nur Actionstatements akzeptiert, die mit einem ; abgeschlossen sind!<br> <STRONG>  Temporär!! </STRONG>
      * @param Referenz auf einen BufferedReader
      * @param Referenz auf SEventList
      * @param Referenz auf BvarList
@@ -237,7 +264,33 @@ public class TESCLoader {
     }
 
     /** 
-     * Zugriff auf die SEventList des Parsers
+     * Umwandeln eines  TESC-File aus BufferedReader in Action.<br> <STRONG> Achtung: </STRONG> Es werden nur Actionstatements akzeptiert, die mit einem ; abgeschlossen sind!
+     * <br>Die neuen SEvents/Bvars werden in die Listen des übergebenen Statecharts eingetragen
+     * @param Referenz auf einen BufferedReader
+     * @param Referenz auf Statechart
+     * @return Liefert Action oder null bei Fehler.
+     */ 
+    public Action getAction(BufferedReader br, Statechart st) throws IOException {
+	TESCParser parser = new TESCParser(br, gi);
+	parser.initSwitches(options);
+	Action action = parser.readAction(br, st);
+
+	if (parser.getErrorCount() > 0) {	    
+	    if (gi != null) gi.OkDialog("Fehler", "Action ist fehlerhaft.");
+	    else System.out.println("Fehler: Action ist fehlerhaft.");
+	    return null;
+        }
+	else {
+	    if (action == null) action = new ActionEmpty(new Dummy());
+
+	    evlist = parser.getSEventList();
+	    bvlist = parser.getBvarList();
+
+	    return action;
+	}
+    }
+    /** 
+     * Zugriff auf die SEventList des Parsers<br><STRONG>  Temporär!! </STRONG>
      * @return Liefert SEventList des Parsers.
      */ 
     public SEventList getSEventList() {
@@ -245,7 +298,7 @@ public class TESCLoader {
     }
 
     /** 
-     * Zugriff auf die BvarList des Parsers
+     * Zugriff auf die BvarList des Parsers<br><STRONG>  Temporär!! </STRONG>
      * @return Liefert BvarList des Parsers.
      */ 
     public BvarList getBvarList() {

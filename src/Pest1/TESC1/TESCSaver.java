@@ -7,6 +7,74 @@ import gui.*;
 import java.lang.*;
 import util.*;
 
+/** 
+ *  
+ * <STRONG> Garantie. </STRONG> <br> Wir garantieren, dass die von unseren
+ * Modulen erzeugten Statecharts folgende Eingenschaften haben:
+ * 
+ * <ul>
+ * <li> Es werden keine Statecharts erzeugt.
+ * </ul>
+ * 
+ * <STRONG> Anforderungen. </STRONG> <br>
+ * Wir verlassen uns darauf, dass die
+ * Statecharts, die uns uebergeben werden, folgende Eigenschaften haben: 
+ * 
+ * <ul>
+ * <li> 1. SyntaxCheck darf keine Fehler melden.
+ * <li> 2. TrAnchors duerfen nicht UNDEFINED() sein.
+ * <li> 3. Kein GuardUndet (s. Status)
+ * <li> 4. Keine Schleifen bei Listen.
+ * <li> 5. Keine unartigen Nullpointer.
+ * <li> 6. TLabel müssen der tesc1-Syntax genügen. (Momentan geht der Export zwar immer, aber evtl. kein Reimport mögl.)
+ * </ul>
+ * 
+ * die mit folgenden Checks ueberprueft werden koennen:
+ * 
+ * <ul>
+ * <li> 2. TestTransitions
+ * <li> 3. ?
+ * <li> 4.-5. sollte von den Modulen, die Statecharts erzeugen, sowieso garantiert werden.
+ * </ul>
+
+ * <DL COMPACT>
+ * 
+ * <DT><STRONG>
+ * STATUS
+ * </STRONG>
+ * <br> 
+ * Der Export funktioniert. Bei Transitionlabels wird defaultmäßig der SyntaxBaum geparst.
+ * Alternativ kann auch einfach TLabel.caption gespeichert werden (hierbei bleibt die Formatierung
+ * erhalten, allerdings können bei falscher Syntax exportierte Files nicht reimportiert werden).
+ * Falls beim Parsen der Absyn ein GuardUndet auftritt, wird ein GuardEmpty exportiert, und der echte 
+ * Guard als Kommentar in die nächste Zeile geschrieben, so daß der User versuchen kann, noch etwas zu retten.
+ * Die GuardUndets tauchen z.B. beim stm-import auf, wenn ein stm-file importiert wurde, das Teil einer größeren
+ * Statechart ist, die in mehrere Files aufgeteilt wurde, und in Pfad-Operationen auf States in einem anderen File zugrifffen wird.
+ * <br>
+ * <DT><STRONG>
+ * TODO.
+ * </STRONG>
+ * <br>
+ * <ul>
+ * <li> Testen.
+ * <li> bessere GuardUndet-Behandlung (?, sehen momentan keine Möglichkeit)
+ * </ul>
+ * 
+ * <br>
+ * <DT><STRONG>
+ * TEMP.
+ * </STRONG>
+ * <ul>
+ * <li> debug-ausgaben ins GUI Fenster.
+ * </ul>
+ *
+ * </DL COMPACT>
+ * <br>
+ * <hr>
+ * @author Arne Koch/Mike Rumpf.
+ * @version  $Id: TESCSaver.java,v 1.3 1999-01-17 21:42:36 swtech13 Exp $ 
+ */ 
+
 /* Konventionen:
  * Kommentare enthalten:
  *
@@ -16,6 +84,10 @@ import util.*;
  *
  */
 
+/* Todo:
+ *
+ * - add* Funktionen in eigene Klasse auslagern, so daß TESCSaver reine Schnitstelle
+ */
 
 public class TESCSaver {
 
@@ -32,7 +104,6 @@ public class TESCSaver {
 
     private Vector switches;
 
-    // protected-Methoden für das Package
     /** 
      * Export eines Syntaxbaums in ein Tesc-File. 
      * @return 
@@ -55,7 +126,12 @@ public class TESCSaver {
 
 	return save();
     } 
- 	
+
+    /** 
+     * Schnittstelle zum Export eines Syntaxbaums in ein Tesc-File. 
+     * 
+     * @param gi_ Referenz auf GUIInterface, wenn null wird stdout benutzt
+     */ 	
     public TESCSaver(GUIInterface gi_) {
 	gi = gi_;
 	
@@ -68,13 +144,56 @@ public class TESCSaver {
 	
     }
 
-    private void initSwitches() {
-	 switches.addElement("debug");
-	 //switches.addElement("Trans.useAbsyn");
+    /**
+     * setzt TLabel.caption in TESC1-Syntax
+     * @param TLabel, dessen caption gesetzt werden soll.
+     * @return 
+     * <ul> 
+     * <li> <code>true</code>  : erfolgreich 
+     * <li> <code>false</code> : fehlgeschlagen 
+     * </ul>
+     */
+    public boolean setCaption(TLabel tl) {
+	boolean b = true, c, d;
+	String g = null;
+	String a = null;
+
+	TESCLabelGen tlg = new TESCLabelGen(tl.guard, tl.action, gi);
+
+	if (tl != null) {
+
+	    g = tlg.getGuard();
+	    c = !tlg.error();
+	    a = tlg.getAction();
+	    d = !tlg.error();
+	    
+	    b = (c && d);
+	   
+	    // Auch bei Fehler setzten ?
+	    tl.caption = new String(g + " / " + a);
+
+	}
+	else 
+	    b = false;
+
+	return b;
     }
 
-    protected boolean save() throws IOException {
+    private void initSwitches() {
+	 switches.addElement("debug");
+	 switches.addElement("Trans.useAbsyn");
+    }
+
+    private boolean save() throws IOException {
 	boolean b = false;
+
+	bw.write("# TESC-File generiert durch TESC-Export");
+	bw.newLine();
+	bw.write("# Formatierung geht beim Export verloren.");
+	bw.newLine();
+	bw.write("# Transitionlabels sind i.a. vollstaendig geklammert (bis auf aeussere Klammern)");
+	bw.newLine();
+	bw.newLine();
 	
 	b = savestate(stchart.state);
 	
@@ -204,10 +323,13 @@ public class TESCSaver {
 
 	    if (switches.contains("Trans.useAbsyn")) {
 
-		//TESCLabelGen tl = new TESCLabelGen(trans.label.guard, trans.label.action);
+		TESCLabelGen tl = new TESCLabelGen(trans.label.guard, trans.label.action, gi);
 		
-		//guard = tl.getGuard();
-		//action = tl.getAction();
+		guard = tl.getGuard();
+		// zurückkommen soll, ob die Fkt. funktioniert hat, deshalb negieren
+		b = !tl.error();
+		action = tl.getAction();
+		a = !tl.error();
 
 	    }
 	    else {
