@@ -9,11 +9,11 @@ import util.*;
  * Parser für TESC.
  * <p>
  * @author Michael Sülzer, Christoph Schütte.
- * @version  $Id: TESCParser.java,v 1.4 1998-12-15 18:11:37 swtech00 Exp $
+ * @version  $Id: TESCParser.java,v 1.5 1998-12-17 11:14:11 swtech20 Exp $
  */   
 public class TESCParser {
     
-    private static boolean DEBUG = false;  
+    private static boolean DEBUG = true;  
 
     private Statechart statechart;
     private SEventList eventlist;
@@ -33,17 +33,35 @@ public class TESCParser {
     /**
      * Startet den Parsevorgang.
      */
-    public Statechart parseStream(FileInputStream fis) throws IOException {
+    //public Statechart parseStream(FileInputStream fis) throws IOException {
+    public Statechart readStatechart(BufferedReader br) throws IOException {
+
 	errorText = new Vector();
 	errorCount = 0;
-	lexer = new TESCTokenizer(fis);
+
+	lexer = new TESCTokenizer(br);
 	debug("parseTESC");
+
 	//eventlist = new SEventList();
 	statechart = parseTesc();
-        (new util.PrettyPrint()).start(statechart);
+
+	if (DEBUG) {
+	    (new util.PrettyPrint()).start(statechart);
+	}
+
 	return statechart;
     }
-    
+
+    // Funktionen für die EDITOR-Leute
+    // Wenn alles ueber BufferedReader machen, dann koennen die selbst
+    // entscheiden, wie sie uns aufrufen wollen. 
+    // String oder Datei ist für dann kein Unterschied.
+    // Datei - FileReader
+    // String - StringReader
+    // beides klappt.
+    public Guard readGuard(BufferedReader br) throws IOException {return null;}
+    public Action readAction(BufferedReader br) throws IOException {return null;}
+
     /**
      * Liefert die Anzahl der Fehler, die beim letzten Parsen
      * aufgetreten sind.
@@ -366,6 +384,9 @@ public class TESCParser {
 //      ----------------------------               
 //
 //      $Log: not supported by cvs2svn $
+//      Revision 1.4  1998/12/15 18:11:37  swtech00
+//      Towards new naming conventions for PEST2
+//
 //      Revision 1.3  1998/12/13 17:49:06  swtech20
 //      Checkin für Baseline
 //

@@ -27,7 +27,7 @@ import absyn.*;
  * </code>
  * <p>
  * @author Michael Sülzer, Christoph Schütte.
- * @version  $Id: TESCTokenizer.java,v 1.3 1998-12-15 18:11:37 swtech00 Exp $
+ * @version  $Id: TESCTokenizer.java,v 1.4 1998-12-17 11:14:13 swtech20 Exp $
  *
  * @see Token
  * @see TESCParser
@@ -39,7 +39,8 @@ public class TESCTokenizer {
      * zurueckgeschrieben werden koennen.
      * @see TESCTokenizer#input_look_ahead
      */
-    private PushbackInputStream input;
+    //private PushbackInputStream input;
+    private PushbackReader input;
 
     /**
      * Look-Ahead-Grenze fuer den Eingabestrom. Bei ueberschreiten der Puffer
@@ -69,8 +70,12 @@ public class TESCTokenizer {
      * Der Eingabestrom wird an den PushbackInputStream <code>input</code> uebergeben
      * und der Zeilenzaehler initialisiert.
      */
-    public TESCTokenizer (FileInputStream fis) throws IOException {
-	input       = new PushbackInputStream(fis,input_look_ahead);
+    //public TESCTokenizer (FileInputStream fis) throws IOException {
+    public TESCTokenizer (BufferedReader r) throws IOException {
+    
+	//input       = new PushbackInputStream(fis,input_look_ahead);
+	input       = new PushbackReader(r,input_look_ahead);
+
 	input_line_number = 1;
     }
 
@@ -302,6 +307,9 @@ public class TESCTokenizer {
 //      ----------------------------               
 //
 //      $Log: not supported by cvs2svn $
+//      Revision 1.3  1998/12/15 18:11:37  swtech00
+//      Towards new naming conventions for PEST2
+//
 //      Revision 1.2  1998/12/13 17:49:06  swtech20
 //      Checkin für Baseline
 //
