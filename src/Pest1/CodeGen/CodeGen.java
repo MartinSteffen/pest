@@ -23,13 +23,12 @@ import absyn.*;
  * <DT><STRONG>To Do</STRONG>
  *   <UL>
  *   <LI>Need to debug the code properly.
- *   <LI>Need to fix transitions with connectors.
  *   <LI>Need to fix code for non-determinism.
  *   <LI>Symbolic names for conditions and events.
  *   <LI>We currently do not produce traces.
  * <DT><STRONG>Known Bugs</STRONG>
  *   <UL>
- *     <LI>Transitions are produced incorrectly.
+ *     <LI>Null pointer exception in generateEventArray()
  *   </UL>
  * <A HREF="mailto:swtech25@informatik.uni-kiel.de">swtech25</A>
  * </DL>
@@ -50,7 +49,7 @@ import absyn.*;
  * </DL>
  *
  * @author Marcel Kyas, Walter Loeser, Andre Paetzold.
- * @version $Id: CodeGen.java,v 1.11 1999-01-18 12:36:41 swtech25 Exp $
+ * @version $Id: CodeGen.java,v 1.12 1999-01-18 15:58:02 swtech25 Exp $
  */
 public class CodeGen
 {
