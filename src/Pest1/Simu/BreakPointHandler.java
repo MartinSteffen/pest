@@ -7,12 +7,6 @@ import tesc1.*;
  * New type, created from HH on INTREPID.
  */
 public class BreakPointHandler {
-	private com.sun.java.swing.JButton ivjJButton1 = null;
-	private com.sun.java.swing.JFrame ivjJFrame1 = null;
-	private com.sun.java.swing.JPanel ivjJFrameContentPane = null;
-	private com.sun.java.swing.JLabel ivjJLabel1 = null;
-	private com.sun.java.swing.JTextField ivjJTextField1 = null;
-
 	String BreakpointString;
 	Simu simuObject;
 	absyn.Statechart sc;
@@ -68,120 +62,6 @@ private static void getBuilderData() {
 	FACC4D2067DF8E5763F729E6FA7B65F0BD7A381EACD73DB3E7BE0F1E6392A2667379577DF8E8216B587F0DF96076AD54E9B3C957C9967D3F9FBEFC63540923DD51F559B2A60F48DECB3FA2DB3A477D32A5B4435E8E7D13F7AC689D33480A3785D6FFB3022F24F80D8978C96ECC1725BEF960477977B784F71254EE12CE1F1B27FD1F222BF9EF352442FC579F38D89A75AD243C1A77C455616F6149F7B08EF44047D69B7FD6FD47CE225FB97BA7A5D555A575FA1B5703774F761B3A9C4A4F1B6FA07F001843090C36
 	758E4ABDE1DA733F81GD0CB8788CDB31E5F708DGG48A4GGD0CB818294G94G88G88GEA22D7A6CDB31E5F708DGG48A4GG8CGGGGGGGGGGGGGGGGGE2F5E9ECE4E5F2A0E4E1F4E1D0CB8586GGGG81G81GBAGGGAA8EGGGG
 **end of data**/
-}
-/**
- * Return the JButton1 property value.
- * @return com.sun.java.swing.JButton
- */
-/* WARNING: THIS METHOD WILL BE REGENERATED. */
-private com.sun.java.swing.JButton getJButton1() {
-	if (ivjJButton1 == null) {
-		try {
-			ivjJButton1 = new com.sun.java.swing.JButton();
-			ivjJButton1.setName("JButton1");
-			ivjJButton1.setText("Ubernehmen");
-			ivjJButton1.setBounds(296, 59, 226, 26);
-			// user code begin {1}
-			// user code end
-		} catch (java.lang.Throwable ivjExc) {
-			// user code begin {2}
-			// user code end
-			handleException(ivjExc);
-		}
-	};
-	return ivjJButton1;
-}
-/**
- * Return the JFrame1 property value.
- * @return com.sun.java.swing.JFrame
- */
-/* WARNING: THIS METHOD WILL BE REGENERATED. */
-private com.sun.java.swing.JFrame getJFrame1() {
-	if (ivjJFrame1 == null) {
-		try {
-			ivjJFrame1 = new com.sun.java.swing.JFrame();
-			ivjJFrame1.setName("JFrame1");
-			ivjJFrame1.setDefaultCloseOperation(com.sun.java.swing.WindowConstants.DISPOSE_ON_CLOSE);
-			ivjJFrame1.setBounds(29, 19, 538, 102);
-			ivjJFrame1.setTitle("Breakpoint");
-			getJFrame1().setContentPane(getJFrameContentPane());
-			// user code begin {1}
-			// user code end
-		} catch (java.lang.Throwable ivjExc) {
-			// user code begin {2}
-			// user code end
-			handleException(ivjExc);
-		}
-	};
-	return ivjJFrame1;
-}
-/**
- * Return the JFrameContentPane property value.
- * @return com.sun.java.swing.JPanel
- */
-/* WARNING: THIS METHOD WILL BE REGENERATED. */
-private com.sun.java.swing.JPanel getJFrameContentPane() {
-	if (ivjJFrameContentPane == null) {
-		try {
-			ivjJFrameContentPane = new com.sun.java.swing.JPanel();
-			ivjJFrameContentPane.setName("JFrameContentPane");
-			ivjJFrameContentPane.setLayout(null);
-			getJFrameContentPane().add(getJTextField1(), getJTextField1().getName());
-			getJFrameContentPane().add(getJLabel1(), getJLabel1().getName());
-			getJFrameContentPane().add(getJButton1(), getJButton1().getName());
-			// user code begin {1}
-			// user code end
-		} catch (java.lang.Throwable ivjExc) {
-			// user code begin {2}
-			// user code end
-			handleException(ivjExc);
-		}
-	};
-	return ivjJFrameContentPane;
-}
-/**
- * Return the JLabel1 property value.
- * @return com.sun.java.swing.JLabel
- */
-/* WARNING: THIS METHOD WILL BE REGENERATED. */
-private com.sun.java.swing.JLabel getJLabel1() {
-	if (ivjJLabel1 == null) {
-		try {
-			ivjJLabel1 = new com.sun.java.swing.JLabel();
-			ivjJLabel1.setName("JLabel1");
-			ivjJLabel1.setText("Bitte geben Sie Ihre Breakpoint-Bedingung ein:");
-			ivjJLabel1.setBounds(10, 10, 291, 15);
-			ivjJLabel1.setForeground(new java.awt.Color(0,0,0));
-			// user code begin {1}
-			// user code end
-		} catch (java.lang.Throwable ivjExc) {
-			// user code begin {2}
-			// user code end
-			handleException(ivjExc);
-		}
-	};
-	return ivjJLabel1;
-}
-/**
- * Return the JTextField1 property value.
- * @return com.sun.java.swing.JTextField
- */
-/* WARNING: THIS METHOD WILL BE REGENERATED. */
-private com.sun.java.swing.JTextField getJTextField1() {
-	if (ivjJTextField1 == null) {
-		try {
-			ivjJTextField1 = new com.sun.java.swing.JTextField();
-			ivjJTextField1.setName("JTextField1");
-			ivjJTextField1.setBounds(8, 29, 514, 19);
-			// user code begin {1}
-			// user code end
-		} catch (java.lang.Throwable ivjExc) {
-			// user code begin {2}
-			// user code end
-			handleException(ivjExc);
-		}
-	};
-	return ivjJTextField1;
 }
 /**
  * Called whenever the part throws an exception.
