@@ -20,8 +20,15 @@ import absyn.*;
  *
  * If an error occures, we will throw a CodeGenException.
  *
+ * Prerequisites:  We expect the Statechart to be a complete,
+ *     executable and correct state chart.  We will not announce
+ *     an error, but instead create incorrect code (as far as it
+ *     is possible to talk about incorrect code).  The pathname
+ *     is assumed to be a fully qualified path to an existing
+ *     directory without trailing "/".
+ *
  * @author Marcel Kyas, Walter Loeser, Andre Paetzold.
- * @version $Id: CodeGen.java,v 1.5 1998-12-21 13:13:09 swtech25 Exp $
+ * @version $Id: CodeGen.java,v 1.6 1998-12-21 13:33:47 swtech25 Exp $
  */
 public class CodeGen
 {
