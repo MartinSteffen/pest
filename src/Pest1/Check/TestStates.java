@@ -8,7 +8,7 @@ import java.util.*;
  * ob die Deklarierten eindeutig sind und ob sie alle verwendet werden.
  *
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestStates.java,v 1.16 1999-02-01 10:19:51 swtech11 Exp $
+ *  @version  $Id: TestStates.java,v 1.17 1999-02-10 11:52:26 swtech11 Exp $
  */
 class TestStates extends ModelCheckBasics{
   private Vector Pfad1=new Vector();
@@ -195,7 +195,7 @@ class TestStates extends ModelCheckBasics{
   String getAddPathPart(String _p, String _n) {   // _p Pfad, _n Name des States
     String _np = new String();
     if (_p.equals("")) { _np = _n; } else { _np = _p + ts + _n; }
-    if (_n=="") {msg.addWarning(308,"State: "+_p);};
+    if (_n=="") {msg.addError(308,"State: "+_p);};
     return _np;
   }
 }

@@ -1,0 +1,6 @@
+Dokumentation von Check und Crossreference
+
+
+Bei Crossreference ist eine Praefix, Infix und Postfix suche moeglich.
+Man muss jeweils ein '*' fuer den unbekannten Text einsetzten.
+Folgende Varianten gibt es: <string>, *<string>, *<string>* oder <string>*

@@ -9,7 +9,7 @@ package check;
  *   400-499 Transitions Fehler
  *
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: ErrorAndWarningCodes.java,v 1.33 1999-02-01 19:51:15 swtech11 Exp $
+ *  @version  $Id: ErrorAndWarningCodes.java,v 1.34 1999-02-10 11:52:24 swtech11 Exp $
  */
 class ErrorAndWarningCodes {
 
@@ -49,7 +49,7 @@ class ErrorAndWarningCodes {
       case 104: {_s = "Die Boolsche Variable wird in keinem Action veraendert."; break; }
       case 105: {_s = "Kein Guard fragt den Wert der boolschen Variable ab."; break; }
       case 106: {_s = "Der Name des BVars ist ein leerer String."; break; }
-      case 110: {_s = "Die Statechart enthält keine Liste der booleschen Variablen."; break; }
+      case 110: {_s = "Die Statechart enthaelt keine Liste der booleschen Variablen."; break; }
       
       case 200: {_s = "Name von Event nicht eindeutig"; break; }
       case 201: {_s = "Keine Deklaration von Event"; break; }
@@ -58,7 +58,7 @@ class ErrorAndWarningCodes {
       case 204: {_s = "Das Guardevent wird nie von einem Actionevent ausgeloest.  "; break; }
       case 205: {_s = "Das Actionevent loest kein  Guardevent aus."; break; }
       case 206: {_s = "Der Name des Events ist ein leerer String."; break; }
-      case 210: {_s = "Die Statechart enthält keine Eventliste."; break; }
+      case 210: {_s = "Die Statechart enthaelt keine Eventliste."; break; }
 
       case 300: {_s = "Mehrfache Definition von Statename"; break; }
       case 301: {_s = "Bezeichnung von Statename nicht eindeutig"; break;}
@@ -69,8 +69,8 @@ class ErrorAndWarningCodes {
       case 306: {_s = "Fataler Fehler: Ein And-State enthaelt keinen inneren State."; break; }
       case 307: {_s = "Ein And-State enthaelt nur einen inneren State."; break; }
       case 308: {_s = "Der Statename ist ein leerer String"; break; }
-      case 310: {_s = "Die Statechart enthält keine Pfadliste."; break; }
-      case 311: {_s = "Die Statechart enthält keine States."; break; }
+      case 310: {_s = "Die Statechart enthaelt keine Pfadliste."; break; }
+      case 311: {_s = "Die Statechart enthaelt keine States."; break; }
       case 312: {_s = "Zu diesem Defaultconnector gibt es keinen State."; break; }
       case 313: {_s = "Der Defaultconnector ist mehrfach eingetragen."; break; }
       case 314: {_s = "In diesem State gibt es keinen Defaultconnector."; break; }
@@ -94,11 +94,11 @@ class ErrorAndWarningCodes {
       case 413: {_s = "Interlevel-Transition: Der Ziel-Connenctor liegt falsch."; break; }
       case 414: {_s = "Interlevel-Transition: Beide Connenctoren liegten falsch."; break; }
       case 415: {_s = "Die Transition hat den gleichen Start- und Ziel-Connector."; break; }
-      case 416: {_s = "Der Guard der Transition beinhaltet einen Nichtdetermininsmus."; break;}
+      case 416: {_s = "Der Guard der Transitionen ist syntaktisch gleich."; break;}
       case 417: {_s = "Der Guard der Transition laesst sich nicht spezifizieren."; break;}
       case 418: {_s = "Der Action der Transition laesst sich nicht spezifizieren."; break;}
       case 419: {_s = "Die Transition ist auf keinem Weg mit einem State verbunden."; break;}
-      case 420: {_s = "Die Statechart enthält keine Transitionen."; break; }
+      case 420: {_s = "Die Statechart enthaelt keine Transitionen."; break; }
       case 421: {_s = "Dieser Connector ist Teil eines Zyklus."; break;}
       case 422: {_s = "Die Transition ist an ihrem Startpunkt nicht durch andere Transitionen mit einem Startstate verbunden."; break;}
       case 423: {_s = "Die Transition ist an ihrem Zielpunkt nicht durch andere Transitionen mit einem Zielstate verbunden."; break;}

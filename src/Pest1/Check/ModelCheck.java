@@ -102,7 +102,7 @@ import editor.*;
  *<TR><TD ALIGN="right">305</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Fataler Fehler: Ein Or-State enthaelt keinen inneren State.</TD></TR>
  *<TR><TD ALIGN="right">306</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Fataler Fehler: Ein And-State enthaelt keinen inneren State.</TD></TR>
  *<TR><TD ALIGN="right">307</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Ein And-State enthaelt nur einen inneren State</TD></TR>
- *<TR><TD ALIGN="right">308</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Der Statename ist ein leerer String</TD></TR>
+ *<TR><TD ALIGN="right">308</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp</TD><TD>Der Statename ist ein leerer String</TD></TR>
  *<TR><TD ALIGN="right">310</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Die Statechart enthält keine Pfadliste.</TD></TR>
  *<TR><TD ALIGN="right">311</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Die Statechart enthält keine States.</TD></TR>
  *<TR><TD ALIGN="right">312</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Zu diesem Defaultconnector gibt es keinen State.</TD></TR>
@@ -127,7 +127,7 @@ import editor.*;
  *<TR><TD ALIGN="right">413</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Interlevel-Transition: Der Ziel-Connenctor liegt falsch.</TD></TR>
  *<TR><TD ALIGN="right">414</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Interlevel-Transition: Beide Connenctoren liegten falsch.</TD></TR>
  *<TR><TD ALIGN="right">415</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Die Transition hat den gleichen Start- und Ziel-Connector.</TD></TR>
- *<TR><TD ALIGN="right">416</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Der Guard der Transition beinhaltet einen Nichtdetermininsmus.</TD></TR>
+ *<TR><TD ALIGN="right">416</TD><TD ALIGN="center">&nbsp;</TD><TD ALIGN="center">X</TD><TD>Der Guard der Transitionen sind syntaktisch gleich.</TD></TR>
  *<TR><TD ALIGN="right">417</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Der Guard der Transition laesst sich nicht spezifizieren.</TD></TR>
  *<TR><TD ALIGN="right">418</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Der Action der Transition laesst sich nicht spezifizieren.</TD></TR>
  *<TR><TD ALIGN="right">419</TD><TD ALIGN="center">X</TD><TD ALIGN="center">&nbsp;</TD><TD>Die Transition ist auf keinem Weg mit einem State verbunden.</TD></TR>
@@ -140,7 +140,7 @@ import editor.*;
  *</Table>
  * <br>
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: ModelCheck.java,v 1.39 1999-02-10 01:11:03 swtech11 Exp $
+ * @version  $Id: ModelCheck.java,v 1.40 1999-02-10 11:52:25 swtech11 Exp $
  * @see CheckConfig
  */
 public class ModelCheck {
