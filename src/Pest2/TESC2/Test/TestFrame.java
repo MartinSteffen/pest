@@ -14,6 +14,7 @@ import java.awt.event.*;
 import tesc2.*;
 import util.*;
 import absyn.*;
+import java.io.*;
 
 /**
  * Dieses Programm dient zum Testen des GraphOptimizer.
@@ -66,9 +67,29 @@ public class TestFrame extends Frame {
 
 	/* Layout durchführen */
 	System.out.println("Doing layout");
+
 	
 	tesc2.GraphOptimizer graphOptimizer = 
 	    new tesc2.GraphOptimizer(statechart,fontMetrics);
+
+	System.out.println("Welcher Algorithmus soll verwendet werden?");
+	for (int i=0;i<tesc2.GraphOptimizer.LIST_OF_ALGORITHMS.length;i++)
+	    System.out.println(i+". "+tesc2.GraphOptimizer.LIST_OF_ALGORITHMS[i]);
+
+	int layoutAR = 0;
+	try {
+	    BufferedReader d
+		= new BufferedReader(new InputStreamReader(System.in)); 
+	    
+	    layoutAR = Integer.parseInt(d.readLine());
+	} catch (IOException e) {
+	    System.out.println("Fehler in der Eingabe:"+e.getMessage());
+	}
+
+	System.out.println("gewaehlter AR:"+layoutAR);
+
+	graphOptimizer.setAlgorithm(layoutAR);
+
 	try {
 	    drawableStatechart = graphOptimizer.start();
 	} catch (tesc2.AlgorithmException e) {
