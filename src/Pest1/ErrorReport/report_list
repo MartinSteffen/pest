@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.101 1999-02-11 11:15:53 swtech00 Exp $
+//	$Id: report_list,v 1.102 1999-02-11 11:43:45 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -22,9 +22,10 @@
 #Number: 	1
 #Autor:   	Erich Mikk erm
 #Subject:	Wiederholtes Starten des Editors nicht möglich
-#Status:        fixed 	
+#Status:        reported 	
 #Description: 
 
+Wieder zurückgesetzt, mit der gleichen Begründung:
 Zurückgesetzt, weil die gleiche Sequenz ist möglich, wenn man statt
 Menüs die graphische benutzerführung benutzt.
 
@@ -847,7 +848,7 @@ dann meldet einen Fehler.
 #Number:        57
 #Autor:         Erich Mikk erm
 #Subject:       Fehlerreports (Import STM und Import TESC) nicht einheitlich.
-#Status:        fixed
+#Status:        confirmed
 #Description:
 
 Wenn Import->Statemate fehlschlägt, gibt es ein pop-up window.
@@ -871,8 +872,10 @@ Speicherfunktion, wo man die Fehler in eine File abspeichern kann).
 #Number:        59
 #Autor:         Erich Mikk erm
 #Subject:       GUI: Graphische Benutzerführung und Menü Werkzeuge inkonsistent
-#Status:        fixed
+#Status:        reported
 #Description:
+
+Zurückgesetzt: es ist immer noch so. Siehe auch #1.
 
 Nach dem ein Editor geschlossen  worden ist,
 kann man den Editor nur über Werkzeuge->Editor starten, aber
@@ -952,7 +955,7 @@ Interessanterweise verstaerkt sich dieser Effekt, je weiter man hineinzoomt.
 #Number:        62
 #Autor:         Erich Mikk erm
 #Subject:       GUI: zu viele redraws?
-#Status:        fixed (war bei uns nicht erkennbar, Solaris speziefisch ?)
+#Status:        confirmed
 #Description:
 
 das Bild der graphishen Benutzerführung wird jedes mal, wenn die maus 
