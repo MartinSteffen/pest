@@ -4,7 +4,7 @@
  * Created: Mon Dec 07 16:43:30 1998
  * 
  * @author swtech14 : Eike Schulz & Martin Poerksen
- * @version $Id: GraphOptimizer.java,v 1.10 1999-01-25 12:04:29 swtech14 Exp $
+ * @version $Id: GraphOptimizer.java,v 1.11 1999-01-25 15:23:07 swtech14 Exp $
  *
  *
  * <br>Der GraphOptimizer stellt Algorithmen zur Verfuegung, die die Zuordnung
@@ -19,14 +19,14 @@
  *
  * <p>Erlaeuterungen zum eigentlichen Algorithmus siehe Datei
  * 'docu/SpreadAlgorithm.txt'
-
+ *
  * <p>Vorbedingungen:
  * <br> Das dem Konstruktor uebergebene Statechart-Objekt muss folgende Eigen-
  * schaften besitzen:
- * <br> -keine Interlevel-Transitionen,
- * <br> -keine Schleifen im State-Baum,
- * <br> -bis auf die Instanzvariablen fuer Koordinaten (und Listen usw.) 
- * duerfen keine null-Pointer vorkommen
+ * <br> - keine Interlevel-Transitionen,
+ * <br> - keine Schleifen im State-Baum,
+ * <br> - bis auf die Instanzvariablen fuer Koordinaten (und Listen usw.) 
+ *        duerfen keine null-Pointer vorkommen
  *
  * <p>Nachbedingungen:
  * <br> Es wird eine vollstaendig mit Koordinaten ausgestattete Kopie des
@@ -40,11 +40,13 @@
  * STATUS
  * </strong>
  * Der 'SpreadAlgorithm' ist weitestgehend fertig; die Anordnung der States
- * und der Transitionen funktionierte bei diversen Testobjekten einwandfrei.
- * Es muessen noch die neu hinzugefuegten Elemente (Connectoren) getestet wer-
- * den. Hierzu benoetigen wir jedoch Testobjekte, die uns evtl. andere Gruppen
- * zur Verfuegung stellen koennen (z.B. Editor), dann brauchen wir nicht alle
- * Testobjekte selber programmieren.
+ * und der Transitionen funktioniert bei den vorgegebenen Testobjekten einwand-
+ * frei. Nach Uebereinstimmung mit PEST1/editor werden Transitionenlabels nur
+ * bis zu 20 Characters angezeigt. Laengere TLabels werden im Editor gespei-
+ * chert und auf Wunsch eingeblendet.
+ * Noch nicht getestet sind die "SE-SYSTEMS"-Beispiele, da diese noch Interle-
+ * vel-Transitionen enthalten und somit nicht von stm berechnet werden (Aus-
+ * wurf einer Exception).
  * <p> Im Verzeichnis tesc2/Test befinden sich die Programme 'Test1' und
  * 'Test2', durch die einige unserer Testobjekte mit dem PrettyPrinter, bzw.
  * in einem selbsterzeugten Frame (schematisch) angesehen werden koennen. Bei
@@ -60,7 +62,7 @@
  * <dt><strong>
  * BEKANNTE FEHLER
  * </strong>
- * Die Laenge der Transitionennamen wird noch nicht beruecksichtigt.
+ * ---
  *
  * <dt><strong>
  * TEMPORAERE FEATURES
@@ -78,6 +80,12 @@ import absyn.*;
 import java.awt.*;
 
 public class GraphOptimizer {
+
+  /**
+   * Mindestlaenge fuer darzustellende Transitionenlabels.
+   */
+  public static final int TLABELLENGTH = 20;
+
 
   /**
    * Abstandskonstanten.
