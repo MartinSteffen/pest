@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	------------------
 //
-//	$Id: report_list,v 1.27 1999-02-04 10:11:36 swtech01 Exp $
+//	$Id: report_list,v 1.28 1999-02-04 11:18:18 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -601,4 +601,16 @@ root als sein eigener default markiert ist. Syntaxcheck meldet keine Fehler.
 Importiere ~swtech12/Examples/misc/bvar-test1.tesc2. Chart wird im Editor
 richtig angezeigt und enthält AFAIK keine Fehler. Der Syntaxcheck terminiert
 jedoch nicht und verbrät die gesamte Rechenzeit :-( .
+//------------------------------------------------------------------------------
+#Number:	38
+#Autor:		Erich Mikk
+#Subject:	Check erkennt Undet_Guard nicht
+#Status:	reported
+#Description:
+
+STM-Import SE-Systems/bf_thrusters.st.
+Der Import meldet sehr viele (!!!) Warnings (Undet-Guard).
+SyntaxCheck ist aber erfolgreich...
+Das kann aber nicht sein (auch deswegen nicht, weil TESC-Export die importierte Chart
+nicht exportieren kann).
 //------------------------------------------------------------------------------
