@@ -4,7 +4,7 @@
  * This class is responsible for generating our hierarchical
  * automaton.
  *
- * @version $Id: dumpHA.java,v 1.26 1999-03-11 14:57:54 swtech25 Exp $
+ * @version $Id: dumpHA.java,v 1.27 1999-03-11 15:36:43 swtech25 Exp $
  * @author Marcel Kyas
  */
 package codegen;
@@ -521,7 +521,9 @@ public class dumpHA
 
 
   /**
-   *
+   * The workhorse.
+   * @exception CodeGenException Passed from the guts of this code.
+   * @exception IOException see above.
    */
   private void dumpAutomaton(OutputStreamWriter f, String name, Statechart s)
        throws CodeGenException, IOException
@@ -577,7 +579,7 @@ public class dumpHA
   /**
    * This method will dump the hierarchical automaton
    *
-   * @exception CodeGenException
+   * @exception CodeGenException Passed from the guts of this code.
    */
   void dump() throws CodeGenException
   {
