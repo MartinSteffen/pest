@@ -6,7 +6,10 @@
  *
  * @author Software Technologie 26
  * @version
+ *
  */
+
+package Simu;
 
 import Absyn.*;
 
