@@ -132,13 +132,31 @@ public class TESCLabelGen {
 	if (b) s = new String("[" + s + "]");
 
 	if (undetUsed) {
+	 
+		s = makeLabelErrStr("Guard", s);   
+	/*
 	    s = new String("~ \n # Fehler: Variable(n) wurde(n) als GuardUndet angegegeben:\n # " + s + "\n");
 	    err("Variable(n) wurde(n) als GuardUndet angegegeben (Guard)!");
+	*/
 	}
 
 	return s;
     }
     
+    private String makeLabelErrStr(String w, String orig) {
+	String s = null;
+
+	if (switches.contains("in_setCaption")) {
+		s = new String("~  #Fehler: " + orig + "#");
+	}
+	else {
+		s = new String("~ \n # Fehler: Variable(n) wurde(n) als GuardUndet angegegeben:\n # " + orig + "\n");
+            	err("Variable(n) wurde(n) als GuardUndet angegegeben (" + w +")!");
+	}
+
+	return s;
+    }
+
     public String getAction() {
 	String s = null;
 	inEv = true;
@@ -151,8 +169,11 @@ public class TESCLabelGen {
 	s = addAction(act);
 
 	if (undetUsed) {
+		s = makeLabelErrStr("Action", s);
+	/*
 	    s = new String("~ \n # Fehler: Variable(n) wurde(n) als GuardUndet angegegeben: \n # " + s + "\n");
 	    err("Variable(n) wurde(n) als GuardUndet angegegeben (Action)!");
+	*/
 	}
 	return s;
     }
@@ -461,6 +482,15 @@ public class TESCLabelGen {
     private void initSwitches() {
 	 switches.addElement("debug");
 	 switches.addElement("Trans.useAbsyn");
+    }
+
+    // switches hinzu
+    protected void setOption(String s) {
+         switches.addElement(s);
+    }
+
+    protected void remOption(String s) {
+	switches.removeElement(s);
     }
 
     private void warn(String s) {

@@ -72,7 +72,7 @@ import util.*;
  * <br>
  * <hr>
  * @author Arne Koch/Mike Rumpf.
- * @version  $Id: TESCSaver.java,v 1.3 1999-01-17 21:42:36 swtech13 Exp $ 
+ * @version  $Id: TESCSaver.java,v 1.4 1999-01-18 16:44:32 swtech13 Exp $ 
  */ 
 
 /* Konventionen:
@@ -160,6 +160,9 @@ public class TESCSaver {
 
 	TESCLabelGen tlg = new TESCLabelGen(tl.guard, tl.action, gi);
 
+	// Keinen Zeilenumbruch bei Fehlern
+	tlg.setOption("in_setCaption");
+
 	if (tl != null) {
 
 	    g = tlg.getGuard();
@@ -175,6 +178,9 @@ public class TESCSaver {
 	}
 	else 
 	    b = false;
+	
+	// wieder normales Verhalten
+	tlg.remOption("in_setCaption");
 
 	return b;
     }
@@ -197,7 +203,7 @@ public class TESCSaver {
 	
 	b = savestate(stchart.state);
 	
-	
+	bw.flush();
 	
 	return b;
     }

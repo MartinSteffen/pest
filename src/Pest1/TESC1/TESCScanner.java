@@ -191,7 +191,11 @@ class TESCScanner {
 	    b = is.read(); 
 	    
 	    // Zusatzfeature des Scanners: Alles nach # ist comment
-	    if (b=='#') while (b!='\n' && b != -1) b = is.read();
+	    if (b=='#') {
+		b = is.read();
+		while (b!='\n' && b!='#' && b != -1) b = is.read();
+		if (b=='#') b = is.read();
+	    }
 	    
 	    // und sicherstellen, dass volständige Space-Klammerung
 	    b = trim(b);
@@ -408,8 +412,13 @@ class TESCScanner {
 
 
 /* TESCScanner
- * $Id: TESCScanner.java,v 1.9 1999-01-11 20:10:33 swtech13 Exp $
+ * $Id: TESCScanner.java,v 1.10 1999-01-18 16:44:33 swtech13 Exp $
  * $Log: not supported by cvs2svn $
+ * Revision 1.9  1999/01/11 20:10:33  swtech13
+ * An geaenderte Grammatik angepasst.
+ * Wir koennen jetzt den Typ der Variablen bei Guards/Actions aus dem Kontext
+ * bestimmen.
+ *
  * Revision 1.8  1998/12/21 16:17:37  swtech13
  * Fehlermeldungen im Parser -> GUI
  *
