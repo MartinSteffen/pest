@@ -29,7 +29,7 @@ Statechart root;
 
 boolean drawtest = true;  
 Statematrix matrix1=null;
-Or_State otemp1;
+Or_State otemp1,otemp2;
 Basic_State btemp1;
 StatenameList NameList1=null,NameList2=null,NameList3 = null;;
 boolean ttest;
@@ -53,7 +53,27 @@ boolean ttest;
 		NameList3 = null;
 		 if (ttest == true) {NameList3 = NameList2; NameList2 = new StatenameList(matrix1.akt.name,NameList3);}
 		   otemp1.defaults = NameList2;
-		} else {System.out.println(">>FEHLER in setDefault<<");}
-	}
-    
+		} else {System.out.println(">>FEHLER in setDefault1<<");}
+	
+
+	if ((matrix1.akt instanceof Or_State) & (matrix1.prev instanceof Or_State))
+		{
+		otemp1 = (Or_State) matrix1.prev;
+		otemp2 = (Or_State) matrix1.akt;
+		NameList1 = otemp1.defaults;
+		ttest = true;
+		while (NameList1 != null)
+		   {
+		       if (NameList1.head == otemp2.name) {ttest = false;} else
+		       {NameList3 = NameList2; NameList2 = new StatenameList(NameList1.head,NameList3);}
+		   NameList1 = NameList1.tail;
+		   }
+		NameList3 = null;
+		 if (ttest == true) {NameList3 = NameList2; NameList2 = new StatenameList(matrix1.akt.name,NameList3);}
+		   otemp1.defaults = NameList2;
+		} else {System.out.println(">>FEHLER in setDefault2<<");}
+
+	
+
+    }
 } // setDefault

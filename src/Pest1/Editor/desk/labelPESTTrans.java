@@ -33,9 +33,16 @@ Statechart root;
     {
 	root = nroot;
 	temptranslabel = Editor.labelObject(akttrans);
-	akttrans.label.caption = temptranslabel;
-	akttrans.label.position = new CPoint(cx1,cy1);
-	System.out.println("Trans:"+akttrans+"  label : "+temptranslabel);    
+System.out.println("Neues Label :"+temptranslabel);
+//	if (akttrans.label != null)
+//	{
+//	akttrans.label.caption = temptranslabel;
+//	akttrans.label.position = new CPoint(cx1,cy1);
+//	System.out.println("Trans:"+akttrans+"  label : "+temptranslabel);    
+//	} else 
+//	    {
+//		akttrans.label = new TLabel(new GuardEmpty(new Dummy()),new ActionEmpty(new Dummy()));
+//	    }
 }
     
 } // drawPESTTrans

@@ -29,7 +29,7 @@ import editor.*;
       protected Color current_color = Color.black;   	        // aktueller Farbe
       protected int width, height;                   		// Groessenvariablen
       protected PopupMenu popup;                     		// pop-up Menue
-      public static Panel xpanel;                        		// Menuefenster
+      public static Panel xpanel,dpanel;                        		// Menuefenster
 
       static Storelist anf;
       static Storelist lauf;
@@ -41,6 +41,7 @@ import editor.*;
       static Absyn deleteobj;
       static Statematrix aktmatrix = null,aktmatrix2 = null;
       static State tempstate1=null;
+   static Dimension dim;
       
      Statechart root= new Statechart(null,null,null,null);
 
@@ -49,10 +50,12 @@ import editor.*;
       public PESTDrawDesk(Panel panel, int width, int height,Statechart nroot) {
            new newStorelist();
 	  root = nroot;
-
-    this.xpanel = panel;
-    this.width = width;
-    this.height = height;
+    dpanel = panel;
+    dpanel.setSize(width,height);
+    dim = dpanel.getSize();
+    this.xpanel = dpanel;
+    this.width = dim.width;
+    this.height = dim.height;
     this.xpanel.setForeground(Color.black);
 
     // low-level Implementierungen
@@ -394,6 +397,13 @@ private static Statechart redo() {
 	catch (Exception e) {System.out.println("Waere die Absyn korrekt, so funktionierte auch das Undo !!!!");}
       }
 
+public static Dimension sizer() {return dpanel.getSize();}
+
+public static void resizer(int fak) {
+	Dimension old = dpanel.getSize();
+	dpanel.setSize(old.width*fak,old.height*(fak+1));
+	dim = dpanel.getSize();
+	}
 
 } // PESTDrawDesk
 

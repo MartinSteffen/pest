@@ -4,6 +4,7 @@ package editor.desk;
 import absyn.*;
 import java.awt.*;
 import util.*;
+import editor.*;
 
 public class Relist {
 
@@ -131,11 +132,12 @@ public class Relist {
 	//Relist re = new Relist(); re.start(root,pathlist,path,colist.head);
 	//colist = colist.tail;
 	//}
-
+	String temptranslabel;
 	trlist = os.trs;
 	while (trlist != null)
 	{
-	new makevarlist(root,trlist.head.label);
+	Editor.relabeltrans(trlist.head);
+	// new makevarlist(root,trlist.head.label);
 	trlist = trlist.tail;
 	}
 
