@@ -4,7 +4,7 @@
  * Created: Thu Dec 31 1998, 18:00:00
  *
  * @author Developed by Eike Schulz for swtech14.
- * @version $Id: SpreadAlgorithm.java,v 1.1 1999-01-08 23:11:28 swtech14 Exp $
+ * @version $Id: SpreadAlgorithm.java,v 1.2 1999-01-22 21:58:47 swtech14 Exp $
  *
  *
  * Durch diese Klasse wird ein (syntaktisch korrektes!) Statechart-Objekt mit
@@ -49,12 +49,13 @@ class SpreadAlgorithm extends GraphOptimizer {
   // Referenzvariable fuer ListenElemente aus StateInfo-Liste.
   private StateInfo sInfo;
 
-  // Referenzvariable f. Informationen ueber zuletzt berechneten And-/Or-State.
-  private StateInfo last_calculated_andOrState = null;
+  // Referenzvariable f. Informationen ueber zuletzt berechneten And-/Or-State
+  // (benoetigt zur Berechnung der Basicstate-x-Positionen).
+  private StateInfo last_calculated_andOrState;
 
   // Speichervariablen fuer maximale Spalten-/Zeilenkoordinaten.
-  private int maxCoord_x = 0;
-  private int maxCoord_y = 0;
+  private int maxCoord_x;
+  private int maxCoord_y;
 
   // Speichervariablen fuer die Font-Hoehe und fuer den Abstand der Schrift von
   // den einzelnen Komponenten.
@@ -63,25 +64,21 @@ class SpreadAlgorithm extends GraphOptimizer {
 
   // Referenzvariable auf Listen-Handler (verwaltet StateInfo-Liste, Statepos-
   // Info-Liste, ConnectorposInfo-Liste, und bietet einige andere wichtige
-  // Listenmethoden).
+  // Listenmethoden zum Suchen, etc.).
   private Listhandler lh;
 
-  // Referenzvariable auf And-/Or-State, dessen Substates noch nicht alle be-
-  // rechnet wurden.
-  private StateInfo unmarked_sInfo = null;
-
-  // Speichervariablen fuer Offset-Spalte/-Schachtelungstiefe (benoetigt zum
-  // Berechnen der And-/Or-State-Linien).
-  private int offset_x, lastDepth;
+  // Referenzvariable auf eine Liste der And-/Or-States, dessen Substates noch
+  // nicht alle berechnet wurden.
+  private StateInfoList unmarked_sInfos;
 
 
   /**
    * Konstruktor fuer Spread-Algorithmus.
    *
-   * Uebergabewerte:
+   * Uebergabeobjekte/-wert:
    *   Statechart, der mit Koordinaten ausgestattet werden soll;
    *   Fontmetrics (vom Editor uebergeben);
-   *   Boolescher Wert: Absolutkoordinaten ja/nein.
+   *   Boolescher Wert: Absolutkoordinaten ja/nein (von ´GraphOptimizer´).
    */
 
   SpreadAlgorithm (Statechart sc, FontMetrics fm, boolean r) {
@@ -99,28 +96,42 @@ class SpreadAlgorithm extends GraphOptimizer {
    */
 
   int calculate_coordinates () {
+
+    // Setze zunaechst alle "dynamischen" Werte zurueck.
+
     errorcode = 0;
+    last_calculated_andOrState = null;
+    maxCoord_x = 0;
+    maxCoord_y = 0;
+    unmarked_sInfos = null;
 
     // Lies zunaechst die Fonthoehe aus der FontMetrics.
     // Addiere einen gewissen Abstand hinzu, um die Schrift nicht zwischen die
     // einzelnen Komponenten zu "quetschen".
 
     stepsize_tiny = (int)((double)(fMetrics.getHeight())/4 + 0.5);
-    fontHeight = fMetrics.getHeight() + stepsize_tiny*2;
+    fontHeight = fMetrics.getHeight() + stepsize_tiny * 2;
 
-    // Initialisiere Listen-Handler, berechne die State(pos)Info-Listen.
+    // Initialisiere Listen-Handler, baue die State(pos)Info-Listen auf.
 
     lh = new Listhandler (sChart);
     lh.buildLists();
 
     // Berechne mit Hilfe der State(pos)Info-Listen die Koordinaten der State-
     // chart-Komponenten.
+    // Dabei werden die Koordinaten zunaechst ABSOLUT bestimmt.
 
     setCoordinates();
+
+    // Falls Relativkoordinaten gewuenscht sind, berechne diese mittels dem
+    // ´AbsToRelCalculator´.
+
     if (relCoord == true) {
       AbsToRelCalculator atrCalc = new AbsToRelCalculator (sChart);
       atrCalc.start();
     }
+
+    // Gib evtl. Fehlerwert an ´GraphOptimizer´ zurueck.
 
     return errorcode;
   } // method calculate_coordinates
@@ -132,6 +143,7 @@ class SpreadAlgorithm extends GraphOptimizer {
 
 
   // Berechne Koordinaten mit Hilfe der State(pos)Info-Listen.
+  // Anschliessend werden die Substates der And-States "aufgeblaeht".
 
   private void setCoordinates() {
     step_1a();
@@ -155,7 +167,7 @@ class SpreadAlgorithm extends GraphOptimizer {
   // Schritt 1b :
   //   Markiere sInfo-Objekt;
   //   Berechne Sub-Basicstates und Connectoren (inkl. State-/Connames);
-  //   Berechne Transitionen (inkl. Labels)
+  //   Berechne Transitionen (inkl. TLabels)
   //   Berechne umfassenden State.
   // -->> Uebergang zu Schritt 2.
 
@@ -182,31 +194,22 @@ class SpreadAlgorithm extends GraphOptimizer {
   private void step_2 () {
     if (sInfo.depth > 0) {
       sInfo =
-	lh.getStateInfo	(lh.getSurroundingState (sInfo.surrounding_state));
+	lh.getStateInfo (lh.getSurroundingState (sInfo.surrounding_state));
 
-      // Pruefe, ob alle Substates des neuen aktuellen And-/Or-States
-      // schon alle berechnet wurden.
+      // Pruefe, ob alle Substates des neuen aktuellen And-/Or-States schon
+      // alle berechnet wurden. Falls nicht, fuege ´sInfo´ an die Liste mit
+      // "noch nicht fertigen" States hinzu.
 
       if (!lh.all_andOrStates_marked (sInfo.substates)) {
 
-	// Registriere aktuellen State als "noch nicht fertig berechnet".
+	// Registriere aktuelle State-Info als "noch nicht alle Substates be-
+	// rechnet", falls ´sInfo´ noch nicht am Anfang der Liste steht.
 
-	unmarked_sInfo = sInfo;
-
-	// Bestimme die neue Offset-Spalte ´offset_x´ aus dem zuletzt berech-
-	// neten And-/Or-State.
-
-	StateInfo l = last_calculated_andOrState;
-	offset_x = (l == null) ?
-	  0 : l.surrounding_state.rect.x + l.surrounding_state.rect.width;
-
-	// Speichere ferner die Schachtelungstiefe des zuletzt berechneten
-	// And-/Or-States.
-
-	lastDepth = l.depth;
+	if (unmarked_sInfos == null || unmarked_sInfos.head != sInfo)
+	  unmarked_sInfos = new StateInfoList (sInfo, unmarked_sInfos);
 	step_3();
-      }
-      else
+
+      } else
 	step_1b();
     }
   } // method step_2
@@ -233,6 +236,10 @@ class SpreadAlgorithm extends GraphOptimizer {
 
 
 
+  //           ------- (private) Methoden fuer And-/Or-States -------
+
+
+
   // Setze die Koordinaten des umfassenden And-/Or-States (´surrounding_state´
   // aus ´sInfo´).
 
@@ -240,9 +247,6 @@ class SpreadAlgorithm extends GraphOptimizer {
 
     // Tiefe des Surrounding-States -> d.
     int d = sInfo.depth;
-
-    // Informationen ueber den zuletzt berechneten And-/Or-State -> l.
-    StateInfo l = last_calculated_andOrState;
 
     // Speichervariable fuer Statename-Laenge.
     int snL;
@@ -256,46 +260,72 @@ class SpreadAlgorithm extends GraphOptimizer {
 
     // Bestimme die x-Koordinate fuer den zu berechnenden Surrounding-State.
 
-    if (l == null)
+    // Falls keine State-Infos ueber States mit unmarkierten Substates in ´un-
+    // marked_sInfos´ existieren, bestimme ´x´ ausschliesslich abhaengig von
+    // der Tiefe des States.
+
+    if (unmarked_sInfos == null) {
       x = (STEPSIZE_LARGE * d);
+    }
+
+    // Falls State-Infos ueber States mit unmarkierten Substates in ´unmarked_
+    // sInfos´ existieren, pruefe ob ´sInfo´ an erster Stelle der Liste steht.
+    // Falls ja, bestimme ´x´ fuer den ´surrounding_state´ abhaengig von dem
+    // Minimum der x-Koordinaten aller Substates des ´surrounding_state´. Ent-
+    // ferne zudem ´sInfo´ aus ´unmarked_sInfos´.
+
     else
+      if (unmarked_sInfos.head == sInfo) {
+	x = getMinAndOr_x (sInfo) - STEPSIZE_LARGE;
 
-      if (unmarked_sInfo == null)
-	x = (STEPSIZE_LARGE * d);
+	unmarked_sInfos = unmarked_sInfos.tail;
 
-      else
-	if (unmarked_sInfo == sInfo) {
-	  unmarked_sInfo = null;
-	  x = (STEPSIZE_LARGE * d);
-	}
+      } else {
 
-	else
-	  x = STEPSIZE_LARGE * (d + 1 - lastDepth) + offset_x;
+	// Falls ´sInfo´ nicht an erster Stelle von ´unmarked_sInfos´ steht,
+	// handelt es sich um eine State-Info ueber einen Sub-And-/Or-State des
+	// ´surrounding_state´ aus der State-Info, die an erster Stelle der
+	// ´unmarked_sInfos´-Liste steht.
+
+	x = getMaxAndOr_x
+	  (lh.getStateInfo (lh.getSurroundingState (sInfo.surrounding_state)));
+	x = (x != -1) ?
+	  (x + STEPSIZE_LARGE) :
+	  (getMinAndOr_x (sInfo) - STEPSIZE_LARGE);
+      }
+
 
     // Die y-Koordinate ergibt sich aus dem And-/Or-Offset des ´surrounding-
     // state´.
 
     y = get_andOrOffset_y (sInfo.surrounding_state);
 
+
     // Die Breite ergibt sich aus dem Maximum der folgenden Groessen:
-    //   - neues x-Maximum minus x-Koordinate
+    //   - aktuelles x-Maximum minus x-Koordinate;
     //   - Laenge des Statenames plus (Anzahl der direkten Transitionen + 1),
     //     multipliziert mit dem Standardabstand zwischen Transitionen (´STEP-
-    //     SIZE_MEDIUM´))
+    //     SIZE_MEDIUM´));
     //   - Laenge des Statenames plus (Anzahl der INdirekten Transitionen + 1),
     //     multipliziert mit dem Standardabstand zwischen Transitionen (´STEP-
-    //     SIZE_MEDIUM´))
-    // (Bei Or-States entfaellt die Betrachtung der Transitionen!)
+    //     SIZE_MEDIUM´)) plus "Bonusabstand" (´STEPSIZE_SMALL´);
+    // (Bei Or-States wird die Statenamelaenge NICHT mit der Anzahl der Tran-
+    //  sitionen addiert, da der Statename innerhalb des States steht!)
 
     snL = getStatenameLength (sInfo.surrounding_state.name);
     spi = lh.getStateposInfo (sInfo.surrounding_state);
 
-    if (sInfo.surrounding_state instanceof And_State)
-      width = Math.max ((maxCoord_x + STEPSIZE_LARGE) - x,
-			Math.max (snL + (spi.directTrs + 1) * STEPSIZE_MEDIUM,
-				  snL + (spi.indirectTrs+1) *STEPSIZE_MEDIUM));
-    else
-      width = Math.max ((maxCoord_x + STEPSIZE_LARGE) - x, snL);
+    width = (sInfo.surrounding_state instanceof And_State) ?
+      Math.max
+      ((maxCoord_x + STEPSIZE_LARGE) - x, Math.max
+       (snL + (spi.directTrs + 1) * STEPSIZE_MEDIUM + STEPSIZE_SMALL,
+	snL + (spi.indirectTrs + 1) * STEPSIZE_MEDIUM * 2 + STEPSIZE_SMALL)) :
+      Math.max
+      ((maxCoord_x + STEPSIZE_LARGE) - x, Math.max
+       (snL, Math.max
+	((spi.directTrs + 1) * STEPSIZE_MEDIUM + STEPSIZE_SMALL,
+	 ((spi.indirectTrs + 1) * STEPSIZE_MEDIUM * 2 + STEPSIZE_SMALL))));
+
 
     // Die Hoehe ergibt sich aus dem Maximum der Maximalzeilen der im State
     // enthaltenen And-/Or-States und der Maximalzeile der Basic-States und
@@ -310,17 +340,15 @@ class SpreadAlgorithm extends GraphOptimizer {
     height = (maxCoord_y + Math.max (STEPSIZE_LARGE, fontHeight)) - y;
 
 
-    // Speichere Koordinaten.
+    // Speichere Koordinaten, setze Koordinaten der Statenames.
 
     sInfo.surrounding_state.rect = new CRectangle (x, y, width, height);
-    if (sInfo.surrounding_state.name != null)
 
-      if (sInfo.surrounding_state instanceof Or_State)
-	sInfo.surrounding_state.name.position =
-	  new CPoint (x + stepsize_tiny, y + fontHeight - stepsize_tiny);
-      else
-	sInfo.surrounding_state.name.position =
-	  new CPoint (x + stepsize_tiny, y - stepsize_tiny);
+    if (sInfo.surrounding_state.name != null)
+      sInfo.surrounding_state.name.position =
+	(sInfo.surrounding_state instanceof And_State) ?
+	(new CPoint (x + stepsize_tiny, y - stepsize_tiny))
+	: (new CPoint (x + stepsize_tiny, y + fontHeight - stepsize_tiny));
 
 
     // Pruefe und speichere evtl. neue Maximalwerte.
@@ -334,12 +362,61 @@ class SpreadAlgorithm extends GraphOptimizer {
 
     last_calculated_andOrState = sInfo;
 
-    // Setze Zeilenmaximum auf 0, um kein falsches y-Maximum fuer naechsten
-    // And-/Or-State zu berechnen
+    // Setze Zeilenmaximum wieder auf 0, um ein neues y-Maximum fuer naechsten
+    // And-/Or-State zu berechnen.
 
     maxCoord_y = 0;
 
   } // method set_surStateCoord
+
+
+
+  // Berechne Maximal-x-Koordinate der ´substates´ aus einer State-Info.
+  //
+  // Uebergabeobjekt:
+  //   StateInfo, aus deren ´substates´ das x-Maximum bestimmt werden soll.
+  //
+  // Rueckgabewert:
+  //   int-Wert mit x-Maximal-Koordinate; -1, falls ´substates´ von ´si´ null.
+
+  private int getMaxAndOr_x (StateInfo si) {
+    int n = -1;
+    StateList sL = si.substates;
+
+    while (sL != null) {
+      if ((sL.head != null) && (sL.head.rect != null))
+	n = Math.max (n, sL.head.rect.x + sL.head.rect.width);
+      sL = sL.tail;
+    }
+    return n;
+  } // method getMaxAndOr_x
+
+
+
+  // Berechne Minimal-x-Koordinate der ´substates´ aus einer State-Info.
+  //
+  // Uebergabeobjekt:
+  //   StateInfo, aus deren ´substates´ das x-Minimum bestimmt werden soll.
+  //
+  // Rueckgabewert:
+  //   int-Wert mit x-Minimal-Koordinate; ´Integer.MAX_VALUE´,falls ´substates´
+  //                                      von ´si´ null ist.
+
+  private int getMinAndOr_x (StateInfo si) {
+    int n = Integer.MAX_VALUE;
+    StateList sL = si.substates;
+
+    while (sL != null) {
+      if ((sL.head != null) && (sL.head.rect != null))
+	n = Math.min (n, sL.head.rect.x);
+      sL = sL.tail;
+    }
+    return n;
+  } // method getMinAndOr_x
+
+
+
+  //           -------- (private) Methoden fuer Transitionen --------
 
 
 
@@ -375,6 +452,7 @@ class SpreadAlgorithm extends GraphOptimizer {
       TrList trL2 = trL1;
       TrList trL3 = trL1;
       TrList trL4 = trL1;
+      TrList trL5 = trL1;
 
       // Berechne y-Offset fuer Transitionen
       // (d.h. ermittle And-/Or-Offset fuer umfassenden State und addiere 2 *
@@ -632,6 +710,18 @@ class SpreadAlgorithm extends GraphOptimizer {
 	trL4 = trL4.tail;
 
       } // while TrL4 != null
+
+
+      // Berechne neuen Maximalwert unter Beachtung der Transitionenlabel:
+
+      while (trL5 != null) {
+	if (trL5.head != null && trL5.head.label != null)
+	  maxCoord_x = Math.max (maxCoord_x,
+				 trL5.head.label.position.x +
+				 getTLabelLength (trL5.head.label));
+	trL5 = trL5.tail;
+      }
+
     } // if Or_State
 
   } // method set_trsCoord
@@ -660,16 +750,10 @@ class SpreadAlgorithm extends GraphOptimizer {
     // die die Verschiebung der Transitionen ermoeglichen.
 
     x1 = src.rect.x + (lh.getStateposInfo (src)).counter_x;
-    y1 = src.rect.y;
+    y1 = src.rect.y - 1;
 
     x2 = x1;
     y2 = dist_y;
-
-    x3 = trgt.rect.x + (lh.getStateposInfo (trgt)).counter_x;
-    y3 = dist_y;
-
-    x4 = x3;
-    y4 = trgt.rect.y;
 
     // Erhoehe Counterwerte je nach Basic- oder And-/Or-State.
 
@@ -677,6 +761,14 @@ class SpreadAlgorithm extends GraphOptimizer {
       lh.getStateposInfo (src).counter_x += STEPSIZE_SMALL;
     else
       lh.getStateposInfo (src).counter_x += STEPSIZE_MEDIUM;
+
+    x3 = trgt.rect.x + (lh.getStateposInfo (trgt)).counter_x;
+    y3 = y2;
+
+    x4 = x3;
+    y4 = trgt.rect.y - 1;
+
+    // Erhoehe Counterwerte je nach Basic- oder And-/Or-State.
 
     if (trgt instanceof Basic_State)
       lh.getStateposInfo (trgt).counter_x += STEPSIZE_SMALL;
@@ -735,7 +827,7 @@ class SpreadAlgorithm extends GraphOptimizer {
     if (src instanceof Basic_State) {
 
       x1 = src.rect.x + lh.getStateposInfo (src).counter_x;
-      y1 = src.rect.y + Math.max (BASICSTATE_MINHEIGHT, fontHeight);
+      y1 = src.rect.y + Math.max (BASICSTATE_MINHEIGHT, fontHeight) + 1;
 
       x2 = x1;
       y2 = trgt.position.y + lh.getConnectorposInfo (trgt).counter_ya +
@@ -765,7 +857,7 @@ class SpreadAlgorithm extends GraphOptimizer {
     } else {
 
       x1 = src.rect.x + lh.getStateposInfo (src).counter_x;
-      y1 = lh.getStateposInfo (src).max_y;
+      y1 = lh.getStateposInfo (src).max_y + 1;
 
       x2 = x1;
       y2 = dist_y;
@@ -894,11 +986,6 @@ class SpreadAlgorithm extends GraphOptimizer {
 
 
 
-
-
-
-
-
   // Setze Koordinaten der Basic-States des ´surrounding_state´ aus ´sInfo´.
 
   private void set_basicCoord_and_conCoord () {
@@ -938,9 +1025,10 @@ class SpreadAlgorithm extends GraphOptimizer {
 
       StateInfo si = last_calculated_andOrState;
 
-      x = (si == null) ? (STEPSIZE_LARGE * (d + 1))
-	: (STEPSIZE_LARGE * (d + 2 - si.depth) +
-	   si.surrounding_state.rect.x + si.surrounding_state.rect.width);
+      x = (si == null) ?
+	(STEPSIZE_LARGE * (d + 1)) :
+	(STEPSIZE_LARGE * (d + 2 - si.depth) +
+	 si.surrounding_state.rect.x + si.surrounding_state.rect.width);
 
       // Berechne y-Offset fuer States in ´bList´.
 
@@ -1297,9 +1385,8 @@ class SpreadAlgorithm extends GraphOptimizer {
   // Berechne Laenge des Statenames ´sn´.
 
   private int getStatenameLength (Statename sn) {
-    int length = (sn.name != null) ?
-      (fMetrics.stringWidth (sn.name) + stepsize_tiny*2) : 0;
-    return length;
+    return ((sn.name != null) ?
+	    (fMetrics.stringWidth (sn.name) + stepsize_tiny*2) : 0);
   } // method getStatenameLength
 
 
@@ -1307,20 +1394,20 @@ class SpreadAlgorithm extends GraphOptimizer {
   // Berechne Laenge des Connames ´cn´.
 
   private int getConnameLength (Conname cn) {
-    int length = (cn.name != null) ?
-      (fMetrics.stringWidth (cn.name) + stepsize_tiny*2) : 0;
-    return length;
+    return ((cn.name != null) ?
+	    (fMetrics.stringWidth (cn.name) + stepsize_tiny*2) : 0);
   } // method getConnameLength
 
 
 
-  // Berechne Laenge des Labels ´l´.
+  // Berechne Laenge des TLabels ´l´.
 
-  private int getLabelLength(TLabel l) {
-    int length = 0;
-
-    return length;
-  } // method getLabelLength
+  private int getTLabelLength(TLabel l) {
+    //    return ((l != null && l.caption != null) ?
+    //	    (fMetrics.stringWidth (l.caption) + stepsize_tiny*2) : 0);
+    return ((l != null && l.caption != null) ?
+	    (fMetrics.stringWidth ("Testlabel") + stepsize_tiny*2) : 0);
+  } // method getTLabelLength
 
 
 
