@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	--------------
 //
-//	$Id: report_list,v 1.59 1999-02-11 14:55:17 swtech23 Exp $
+//	$Id: report_list,v 1.60 1999-02-11 15:03:19 swtech16 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -257,7 +257,7 @@ Neue Zustaende sollten nicht Default States sein.
 #Number:	16
 #Autor:		Bernd Weber bwe
 #Subject:	Editor: Default-States nach Benennung von State inkonsistent
-#Status:	reported
+#Status:	processing und fixed
 #Description:
 
 Man erzeuge einen Basic State (ist immer default) und bennenne diesen um. Dann
@@ -359,7 +359,7 @@ Or State mit mehreren Default Connectoren bzw. gar keinen wird nicht bemngelt.
 #Number:	25
 #Autor:		Bernd Weber bwe
 #Subject:	Editor: Or-State kann nicht in And-State gewandelt werden
-#Status:	reported
+#Status:	processing
 #Description:
 
 Erzeuge einen Or-State mit zwei Zustanden und einen Basic-State neben dem
