@@ -10,7 +10,11 @@ import java.util.*;
  * <hr>
  * Die Grobstruktur stammt aus dem Pretty-Printer von Eike Schulz. 
  * <hr>
- * @version  $Id: TESCWriter.java,v 1.3 1999-02-01 11:53:00 swtech20 Exp $
+ * <p><STRONG>Testmoeglichkeiten: </STRONG> <p>
+ * Jedes Statechart, z.B. das <A HREF="./tesc1/Docu/Example.tesc">Beispiel</A> aus
+ * dem Pflichtenheft, kann testweise exportiert werden. 
+ * <hr>
+ * @version  $Id: TESCWriter.java,v 1.4 1999-02-07 11:56:58 swtech20 Exp $
  * @author Michael Suelzer, Christoph Schuette.
  *  
  */   
@@ -291,12 +295,15 @@ class TESCWriter {
      *  Ausgabe  States.
      */
     protected void output (BufferedWriter writer, State state) throws IOException {
-	if (state instanceof Basic_State)
+	if (state instanceof Ref_State)
+	    output (writer, (Ref_State)state);
+	else if (state instanceof Basic_State)
 	    output (writer, (Basic_State)state);
-	if (state instanceof And_State)
+	else if (state instanceof And_State)
 	    output (writer, (And_State)state);
-	if (state instanceof Or_State)
+	else if (state instanceof Or_State)
 	    output (writer, (Or_State)state);
+
     }
 
 
@@ -310,6 +317,31 @@ class TESCWriter {
 	}
     }
 
+    /**
+     *  Ausgabe  Ref-States.
+     */
+    protected void output (BufferedWriter writer, Ref_State rState) throws IOException {
+	if (rState != null) {
+	    writer.write (whiteSpace (column) + Token.KeyRef.getValue() + " ");
+            start( writer, rState.name);
+	    writer.write (" " + Token.KeyIn.getValue());
+	    writer.write (" \"" + rState.filename + "\"");
+	    writer.write (" " + Token.KeyAs.getValue());
+
+	    String type;
+	    if (rState.filetype instanceof Tesc_Syntax)
+		type = Token.KeyTesc.getValue();
+	    else if (rState.filetype instanceof Pest_CoordSyntax)
+		type = Token.KeyPest.getValue();
+	    else if (rState.filetype instanceof Pest_NocoordSyntax)
+		type = Token.KeyPestNoCoord.getValue();
+	    else {
+		type = "<unknown>";
+		Error("Dateityp in " + rState.name + " unbekannt.");
+	    } 
+	    writer.write(" " + type);
+	}
+    }
 
     /**
      *  Ausgabe  And-States.
@@ -474,7 +506,7 @@ class TESCWriter {
      *  Ausgabes  Guards.
      */
 	protected void output (BufferedWriter writer, Guard g) throws IOException {
-	    debug("Enter output(Guard)");
+	    //debug("Enter output(Guard)");
 
 	    if (g instanceof GuardBVar)
 		output (writer, (GuardBVar)g);
@@ -489,7 +521,7 @@ class TESCWriter {
 	    if (g instanceof GuardUndet)
 		output (writer, (GuardUndet)g);
 
-	    debug("Leave output(Guard)");
+	    //debug("Leave output(Guard)");
 	}
 
 
@@ -517,13 +549,13 @@ class TESCWriter {
      * Ausgabe  GuardCompp.
      */
     protected void output (BufferedWriter writer, GuardCompp gcp) throws IOException {
-	debug("Enter output(GuardCompp)");
+	//debug("Enter output(GuardCompp)");
 
 	if (gcp != null) {
 	    start (writer, gcp.cpath);
 	}
 
-	debug("Leave output(GuardCompp)");
+	//debug("Leave output(GuardCompp)");
     }
 
  
@@ -590,7 +622,7 @@ class TESCWriter {
      * Ausgabe  Comppath.
      */
     protected void output (BufferedWriter writer, Comppath cp) throws IOException {
-	debug("Enter output(Comppath)");
+	//debug("Enter output(Comppath)");
 
 	if (cp != null) {
 
@@ -611,7 +643,7 @@ class TESCWriter {
 	    start (writer, cp.path);
 	    writer.write (Token.RPar.getValue());	  
 	}
-	debug("Leave output(Comppath)");
+	//debug("Leave output(Comppath)");
     }
 	
 
@@ -806,6 +838,9 @@ class TESCWriter {
 //	----------------------
 //
 //	$Log: not supported by cvs2svn $
+//	Revision 1.3  1999/02/01 11:53:00  swtech20
+//	- globaler Debug-Schalter
+//
 //	Revision 1.2  1999/01/20 17:32:12  swtech20
 //	- Status und Doku aktualisiert
 //	- Fehler, dass Anderungen an Bvarlisten ... nicht nach aussen-
