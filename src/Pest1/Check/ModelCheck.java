@@ -10,13 +10,13 @@ import gui.*;
  * <b>Syntax Check für Statecharts</b>
  * <br>
  * <br><b>Folgender empfohlender Aufruf:</b>
- * <br>1. Initialisierung:   modelCheck mc = new modelCheck(GUI_Referenz)
+ * <br>1. Initialisierung:   ModelCheck mc = new ModelCheck(GUI_Referenz)
  * <br>2. Aufruf des Checks: boolean = mc.checkModel(Statechart)
  * <br>
  * <br><a href="#Codes">Codes von Fehlern und Warnungen beim Syntax Check</a>
  * <br>
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: ModelCheck.java,v 1.2 1998-12-15 17:51:39 swtech00 Exp $
+ * @version  $Id: ModelCheck.java,v 1.3 1998-12-16 10:21:30 swtech11 Exp $
  */
 public class ModelCheck {
   private ModelCheckMsg mcm; // Object, um die Fehler und Warnungen zu speichern
