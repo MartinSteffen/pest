@@ -35,12 +35,15 @@ import java.awt.*;
  * keine
  * </DL COMPACT>
  * @author Java Praktikum: <a href="mailto:swtech11@informatik.uni-kiel.de">Gruppe 11</a><br>Daniel Wendorff und Magnus Stiller
- * @version  $Id: Crossreference.java,v 1.8 1999-01-21 16:31:13 swtech11 Exp $
+ * @version  $Id: Crossreference.java,v 1.9 1999-01-21 17:14:17 swtech11 Exp $
  */
 public class Crossreference extends ModelCheckBasics {
   private GUIInterface gui = null; // Referenz auf die GUI
   public String such = new String("");
   private Vector items = new Vector();
+  private boolean infix=false;
+  private boolean praefix=false;
+  private boolean postfix=false;
 
   public Crossreference(GUIInterface _gui, Editor _edit) {
     gui = _gui;
@@ -57,7 +60,11 @@ public class Crossreference extends ModelCheckBasics {
     such = gui.EingabeDialog("Crossreference","Zu suchendes Element eingeben;",such);
     if (such!=null) {
     System.out.println(such);
-    
+    int suchl=such.length();
+    if ((such.substring(suchl-1,suchl).equals("*")) && (such.substring(0,1).equals("*"))) {infix=true; praefix=false; postfix=false;};
+    if ((!such.substring(suchl-1,suchl).equals("*")) && (such.substring(0,1).equals("*"))) {infix=false; praefix=false; postfix=true;};
+    if ((such.substring(suchl-1,suchl).equals("*")) && (!such.substring(0,1).equals("*"))) {infix=false; praefix=true; postfix=false;};
+
     report_list();
 
     // Start der Auswertung
@@ -128,7 +135,7 @@ public class Crossreference extends ModelCheckBasics {
     String z2 = new String();
     
     // Ueberpruefe Guards und Actions
-    //pruefeString(tl.head.label, tl.head, p); //ueberprueft den Caption auf infixStrings
+    pruefeString(tl.head.label, tl.head, p); //ueberprueft den Caption auf infixStrings
     pruefeGuard(tl.head.label.guard, tl.head, p);
     pruefeAction(tl.head.label.action, tl.head, p);
 
@@ -228,24 +235,54 @@ public class Crossreference extends ModelCheckBasics {
 
   void pruefeString(Absyn a, Tr t, String p){
 
-      if ((a instanceof TLabel) && (equalinString(((TLabel)a).caption, such))) {itemInput(a,t,"Infixtext in Caption",t,p);}
-      if ((a instanceof GuardUndet) && (equalinString(((GuardUndet)a).undet, such))) {itemInput(a,t,"Infixtext im GuardUndet",t,p);}
+      if ((a instanceof TLabel) && (equalString(((TLabel)a).caption, such))) {itemInput(a,t,"Text in Caption",t,p);}
+      if ((a instanceof GuardUndet) && (equalString(((GuardUndet)a).undet, such))) {itemInput(a,t,"Text im GuardUndet",t,p);}
      
   };
 
-    boolean equalinString(String a, String in) {
+    boolean equalString(String a, String _in) {
     boolean b =false;
     int al=a.length();
-    int il=in.length();
+    String in="";
     String m="";
-
-
-   if ((il<=al) && (al>0) && (il>0)) {
-	for (int j=0; ((j<=(al-il)) && (!b));j++) {
+    if (infix) {
+        in=_in.substring(1,_in.length()-1);
+        int il=in.length();
+        if ((il<=al) && (al>0) && (il>0)) {
+	  for (int j=0; ((j<=(al-il)) && (!b));j++) {
 	    m=a.substring(j,il+j);
+System.out.println("in: "+in+" sub: "+a);
 
 	    if (m.equals(in)) {b=true;};
-    };};
+	};};};
+  
+   if (postfix) {
+        in=_in.substring(1,_in.length());
+        int il=in.length();
+        if ((il<=al) && (al>0) && (il>0)) {
+                  m=a.substring(al-il,al);
+System.out.println("in: "+in+" sub: "+m+" a "+a);
+
+	    if (m.equals(in)) {b=true;};
+	};};
+
+  if (praefix) {
+        in=_in.substring(0,_in.length()-1);
+        int il=in.length();
+        if ((il<=al) && (al>0) && (il>0)) {
+                  m=a.substring(0,il);
+System.out.println("in: "+in+" sub: "+a);
+
+	    if (m.equals(in)) {b=true;};
+	};};
+  if (!praefix && !postfix && !infix) {
+        in=_in;
+        if (a.equals(in)) {b=true;};
+  }
+
+
+
+
 
     return b;
     }
