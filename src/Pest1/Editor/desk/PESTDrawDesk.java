@@ -20,6 +20,7 @@ import java.util.Vector;
 import java.util.Properties;     
 import absyn.*;
 import editor.*;
+import java.applet.*;
 
 
  /* Hauptzeichenfeld (Voreinstellungen & Definitionen) */
@@ -41,13 +42,18 @@ import editor.*;
       static Absyn deleteobj;
       static Statematrix aktmatrix = null,aktmatrix2 = null;
       static State tempstate1=null;
-   static Dimension dim;
+      static Dimension dim;
+      static tempobj ttobj = null;
+      //Image buffer;
+      //Graphics bufferGraphics;  
       
      Statechart root= new Statechart(null,null,null,null);
 
   /** Initialisierung des Hauptframes*/
 
       public PESTDrawDesk(Panel panel, int width, int height,Statechart nroot) {
+
+      
            new newStorelist();
 	  root = nroot;
     dpanel = panel;
@@ -101,10 +107,21 @@ import editor.*;
  
 
   // Grafik herstellen
-      public void paint(Graphics g) { 	  new Repaint(g,root);Repaint r = new Repaint(); r.start(root,0,0,true);
+      public void paint(Graphics g) { 
+ System.out.println("repaint gestartet");
+	  new Repaint(g,root);Repaint r = new Repaint(); r.start(root,0,0,true);
 				  new highlightObject(g,root);
 
-  // System.out.println("repaint gestartet");  
+   System.out.println("repaint beendet");  
+   if (ttobj != null)
+       {
+	   g.setColor(Color.black);
+	   if (ttobj.Id == "sq") {g.drawRect(ttobj.x1,ttobj.y1,ttobj.x2,ttobj.y2);}
+	   if (ttobj.Id == "pa") {g.drawLine(ttobj.x1,ttobj.y1,ttobj.x2,ttobj.y2);}
+	   ttobj = null;
+	   // repaint();
+       }
+
  
   }
 
@@ -163,14 +180,29 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_TransLabel")
 
 if ((e.getID() == MouseEvent.MOUSE_DRAGGED) & (Editor.Editor() =="Draw_State"))
 		{// Editor.SetListen();
-		    repaint(last_x,last_y,old_x,old_y);
-		    g.setColor(Color.black);
-		    g.drawRect((int) (last_x/Editor.ZoomFaktor),
-			       (int) (last_y/Editor.ZoomFaktor),
-			       (int) ((e.getX()-last_x)/Editor.ZoomFaktor),
-			       (int) ((e.getY()-last_y)/Editor.ZoomFaktor));
+System.out.println("-----------------");
+//repaint(last_x,last_y,old_x,old_y);
+ 
+		   
+		    System.out.println("boxdraw gestartet");
+		    //g.setColor(Color.black);
+		  //   g.drawRect((int) (last_x/Editor.ZoomFaktor),
+		  //	       (int) (last_y/Editor.ZoomFaktor),
+		  //	       (int) ((e.getX()-last_x)/Editor.ZoomFaktor),
+		  //	       (int) ((e.getY()-last_y)/Editor.ZoomFaktor));
+		      ttobj = new tempobj("sq",
+					  (int) (last_x),
+					  (int) (last_y),
+					  (int) ((e.getX()-last_x)),
+					  (int) ((e.getY()-last_y)));
+		       
+		       System.out.println("boxdraw beendet");
+
+		          repaint(last_x-1,last_y-1,old_x+1,old_y+1);
 		    old_x = e.getX()-last_x+1;
 		    old_y = e.getY()-last_y+1;
+
+		    //repaint();
 		    //  Editor.SetListen();trroot = false;
 
 		}
@@ -189,13 +221,26 @@ if ((e.getID() == MouseEvent.MOUSE_DRAGGED) & (Editor.Editor() =="Draw_Par"))
 				py2 = last_y;
 			    }
 
-		    repaint(last_x,last_y,old_x,old_y);
-		    g.setColor(Color.black);
-		    g.drawLine((int) (last_x/Editor.ZoomFaktor),
-			       (int) (last_y/Editor.ZoomFaktor),
+		    //repaint(last_x,last_y,old_x,old_y);
+		    // g.setColor(Color.black);
+		    // g.drawLine((int) (last_x/Editor.ZoomFaktor),
+		    //      (int) (last_y/Editor.ZoomFaktor),
 
-			       (int) ((px2)/Editor.ZoomFaktor),
-			       (int) ((py2)/Editor.ZoomFaktor));
+		    //    (int) ((px2)/Editor.ZoomFaktor),
+		    //    (int) ((py2)/Editor.ZoomFaktor));
+
+
+
+		    ttobj = new tempobj("pa",
+					  (int) (last_x),
+					  (int) (last_y),
+					  (int) (px2),
+					  (int) (py2));
+		       
+		       System.out.println("boxdraw beendet");
+		       repaint(last_x,last_y,old_x,old_y);
+		       //   repaint();
+
 		    old_x = e.getX()-last_x+1;
 		    old_y = e.getY()-last_y+1;
 		    //  Editor.SetListen();trroot = false;
@@ -316,7 +361,7 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans" & trro
 
 	    if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Draw_State"))
 		{// Editor.SetListen();
-		    repaint();
+		       repaint();
 		    new drawPESTState(g,root,(int) (last_x/Editor.ZoomFaktor),
 					     (int) (last_y/Editor.ZoomFaktor),
 					     (int) (e.getX()/Editor.ZoomFaktor),
@@ -457,6 +502,19 @@ public static void resizer(int fak) {
 	dpanel.setSize(old.width*fak,old.height*(fak+1));
 	dim = dpanel.getSize();
 	}
+
+
+      private static class tempobj {
+	  String Id;
+	  int x1,y1,x2,y2;
+	  public tempobj(String i,int a, int b, int c,int d){
+	      Id = i;
+	      x1 = a;
+	      y1 = b;
+	      x2 = c;
+	      y2 = d;
+	  }
+      }
 
 } // PESTDrawDesk
 
