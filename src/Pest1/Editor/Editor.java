@@ -332,7 +332,7 @@ public class Editor extends Frame {
 	//  *****************************
 	gui.userMessage("Editor : Update durchgefuehrt");
 	gui.StateChartHasChanged();
- 	PESTDrawDesk.addundo(nroot);
+ 	scribble.addundo(nroot);
     }
  
     private static void RemoveListen() {update = false;}
@@ -378,7 +378,7 @@ public class Editor extends Frame {
     /**
      * Gibt den drzeitigen Zeichenstatus zurueck 
      */
-    public static boolean active() { return drawstatus;}
+    protected static boolean active() { return drawstatus;}
 
     /**
      * loescht den aktuellen Statechart
@@ -423,7 +423,7 @@ public class Editor extends Frame {
      * <li>type : zu benennendes Objekt aus der AbSyn 
      * </ul> 
      */
-    public static String Stringeingabe(String a, String b, String c,Absyn type)
+    protected static String Stringeingabe(String a, String b, String c,Absyn type)
     {
 	String tempname=c,tempstring;
 	if (type instanceof State)
