@@ -4,7 +4,7 @@
  * This class is responsible for generating our hierarchical
  * automaton.
  *
- * @version $Id: dumpHA.java,v 1.20 1999-02-17 11:00:02 swtech25 Exp $
+ * @version $Id: dumpHA.java,v 1.21 1999-02-17 11:41:31 swtech25 Exp $
  * @author Marcel Kyas
  */
 package codegen;
@@ -204,23 +204,26 @@ public class dumpHA
    * This method will handle or-state targets.
    * @exception CodeGenException If chart is inconsistent.
    */
-  private String dumpDefaultStates(int lvl, Path p, Or_State o, TrAnchor t)
+  private String dumpDefaultStates(int lvl, Path p, State s, TrAnchor t)
        throws CodeGenException
   {
     String ret = new String();
-    
-    StateList current = o.substates;
-    if (!current.head.name.equals(t)) {
-      current = current.tail;
-      if (current == null) {
-	throw(new CodeGenException("Cannot determine sub-state"));
+
+    if (s instanceof Or_State) {
+      Or_State o = (Or_State) s;
+      StateList current = o.substates;
+      if (!current.head.name.equals(t)) {
+	current = current.tail;
+	if (current == null) {
+	  throw(new CodeGenException("Cannot determine sub-state"));
+	}
       }
-    }
-    if (current.head instanceof Or_State) {
-      Or_State u = (Or_State) current.head;
-      ret += printlnPP(lvl, "a.post_states[a." +
-		       dumpTables.generateSymState(p.append(u.defaults.head.name)) 
-		       + "] = true;");
+      if (current.head instanceof Or_State) {
+	Or_State u = (Or_State) current.head;
+	ret += printlnPP(lvl, "a.post_states[a." +
+			 dumpTables.generateSymState(p.append(u.defaults.head.name)) 
+			 + "] = true;");
+      }
     }
     return ret;
   }
@@ -431,7 +434,7 @@ public class dumpHA
 	    printlnPP(1, "public void init(SymbolTable a) {") +
 	    printlnPP(2, "pre_states[ " +
 		      dumpTables.generateSymState(p) + " ] = true;") +
-	    dumpDefaultState(2, p, S1.state, null) +
+	    dumpDefaultStates(2, p, S1.state, S1.state.name) +
 	    printlnPP(1, "}") +
 	    printlnPP(1, "") +
 	    printlnPP(1, "/**") +
