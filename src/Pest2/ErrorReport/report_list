@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	------------------
 //
-//	$Id: report_list,v 1.16 1999-01-28 13:48:23 swtech00 Exp $
+//	$Id: report_list,v 1.17 1999-01-28 14:17:25 swtech00 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -179,4 +179,15 @@ Im Editor wird nichts gehighlightet.
 Importiere TV/tv.st.
 Starte Editor.
 Default states nicht erkennbar.
+//------------------------------------------------------------------------------
+#Number:	11
+#Autor:		Erich Mikk
+#Subject:	Man kann mehrere Simulationen starten
+#Status:	processing
+#Description:
+
+Lade Chart (egal wie).
+Starte Editor.
+Starte Simulation (Werkzeuge->Simulation)
+Starte noch eine Simulation (z.B. auf der Chart der gr. Benutzerführung).
 //------------------------------------------------------------------------------
