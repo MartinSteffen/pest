@@ -1,0 +1,48 @@
+
+		 PrettyPrinter Dokumentation
+		 ===========================
+
+Betrifft:
+
+	  - Klasse ´PrettyPrint´ unter dem Paket ´Util´
+	  - Klasse ´PrettyEx´
+
+Kurzbeschreibung:
+
+´PrettyPrint´:
+Der PrettyPrinter gibt Objekte der Klasse ´Absyn´ rekursiv
+auf dem Bildschirm aus.
+
+Zu seiner Benutzung muss ein Objekt der Klasse ´PrettyPrint´
+erzeugt werden. Anschliessend wird einfach die ´start´-Me-
+thode mit entsprechendem Parameter in dem neuen Objekt auf-
+gerufen.
+
+Dem ´PrettyPrint´-Konstruktor koennen wahlweise zwei int-Pa-
+rameter uebergeben werden, die die Offset-Spalte (Spalte, in
+der die Ausgabe beginnen soll) und den Einrueck-Tabulator
+festlegen. Die Offset-Spalte sollte dabei ein Vielfaches des
+Einrueck-Tabulators sein, ansonsten wird sie entsprechend ab-
+gerundet.
+Werden keine Parameter uebergeben, so werden die Standard-
+werte (NORM_COLUMN == 0, NORM_TAB == 4) verwendet.
+
+Der ´start´-Methode wird als Parameter das auszugebende ´Ab-
+syn´-Objekt uebergeben.
+
+Bei der Bildschirmausgabe stellen in eckige Klammern einge-
+schlossene Namen Klassennamen dar (z.B. [TrList] ). Konstan-
+ten werden folgendermassen dargestellt (Bsp.´EXIT´):  <EXIT>
+
+Ansonsten sollte die Bildschirmausgabe ohne weitere Beschrei-
+bung zu verstehen sein.
+
+
+´PrettyEx´:
+Diese Klasse enthaelt lediglich ein Beispiel fuer die Anwen-
+dung des PrettyPrinters.
+Dabei wurde das uns zugrundeliegende Beispiel aus dem Pflich-
+tenheft verwendet.
+
+			    * * *
+
