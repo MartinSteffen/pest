@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST1
 //	---------------------
 //
-//	$Id: report_list,v 1.53 1999-02-03 09:29:53 swtech01 Exp $
+//	$Id: report_list,v 1.54 1999-02-03 09:36:15 swtech01 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -714,7 +714,7 @@ parent state aussenrum. Dabei werden die Labels nach unten verschoben.
 #Description:
 
 1. Lade Chart ~swtech12/Examples/misc/abc.pest bzw. importiere
-   abc.pest
+   abc.tesc1
 2. Starte Codegenerator
 3. Uebersetze Java-Files Automaton, SimpleEnvironment und SymbolTable
 4. Starte "java SimpleEnvironment"
