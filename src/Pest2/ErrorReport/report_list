@@ -2,7 +2,7 @@
 //	Fehlerliste von PEST2
 //	--------------
 //
-//	$Id: report_list,v 1.42 1999-02-09 09:02:32 swtech00 Exp $
+//	$Id: report_list,v 1.43 1999-02-09 14:28:29 swtech16 Exp $
 //
 //------------------------------------------------------------------------------
 
@@ -208,7 +208,7 @@ Starte noch eine Simulation (z.B. auf der Chart der gr. Benutzerfhrung).
 #Number:	12
 #Autor:		Erich Mikk
 #Subject:	Man kann mehrere Editore starten
-#Status:	processing
+#Status:	processing und fixed
 #Description:
 
 Man bereite sich eine Chart vor und speichere es (Datei->Speichern)
