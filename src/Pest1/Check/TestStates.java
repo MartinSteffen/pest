@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  *  @author   Daniel Wendorff und Magnus Stiller
- *  @version  $Id: TestStates.java,v 1.13 1999-01-27 12:18:53 swtech11 Exp $
+ *  @version  $Id: TestStates.java,v 1.14 1999-01-27 12:36:00 swtech11 Exp $
  */
 
 /** Diese Testklasse testet, ob alle Statenamen deklariert worden sind, 
@@ -88,7 +88,6 @@ class TestStates extends ModelCheckBasics{
 
     void erstelle_Pfad2(){
     String s;
-    Vector t=new Vector();
     for(PathList p=sc.cnames; p!=null; p=p.tail){
        Path p_=p.head;
        s=p_.head;
@@ -100,8 +99,6 @@ class TestStates extends ModelCheckBasics{
 	   s=s+"."+p_.head;
            if (p_.tail==null) {
                sn=p_.head;
-               if (equalString( t, p_.head)) {msg.addError(301,"State: "+p_.head);}
-	       else {t.addElement(p_.head);};
                };
            };
        StateC sc=new StateC(new Statename(sn),"Pfadliste",s);
