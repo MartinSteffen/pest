@@ -4,7 +4,7 @@
  * Created: Mon Dec 07 16:43:30 1998
  * 
  * @author swtech14 : Eike Schulz & Martin Poerksen
- * @version $Id: GraphOptimizer.java,v 1.8 1999-01-08 23:09:47 swtech14 Exp $
+ * @version $Id: GraphOptimizer.java,v 1.9 1999-01-22 21:56:30 swtech14 Exp $
  *
  *
  * <br>Der GraphOptimizer stellt Algorithmen zur Verfuegung, die die Zuordnung
@@ -83,18 +83,28 @@ public class GraphOptimizer {
    * Abstandskonstanten.
    */
 
-  static final int STEPSIZE_SMALL  = 4;
+  /*
+  static final int STEPSIZE_SMALL  = 2;
   static final int STEPSIZE_MEDIUM = STEPSIZE_SMALL * 2;
   static final int STEPSIZE_LARGE  = STEPSIZE_SMALL * 4;
 
   static final int BASICSTATE_MINWIDTH  = STEPSIZE_SMALL * 3;
   static final int BASICSTATE_MINHEIGHT = STEPSIZE_SMALL * 2;
+  */
+
+  static final int STEPSIZE_SMALL  = 1;
+  static final int STEPSIZE_MEDIUM = STEPSIZE_SMALL * 1;
+  static final int STEPSIZE_LARGE  = STEPSIZE_SMALL * 3;
+
+  static final int BASICSTATE_MINWIDTH  = STEPSIZE_SMALL * 2;
+  static final int BASICSTATE_MINHEIGHT = STEPSIZE_SMALL * 1;
 
   /**
-   * Width-Konstante fuer Connectoren.
+   * Width-Konstante fuer Connectoren (nach Absprache mit der Editor-Gruppe
+   * auf "12" gesetzt).
    */
 
-  public static final int CONNECTOR_SIZE = STEPSIZE_SMALL * 3;
+  public static final int CONNECTOR_SIZE = 4;
 
   /**
    * Stringkonstantenfeld zur Bezeichnung der verschiedenen Algorithmusarten.
@@ -153,16 +163,16 @@ public class GraphOptimizer {
       errorcode = 3;
     else if ((sChart == null) && (fMetrics == null))
       errorcode = 4;
-    else
+    else {
 
       // Erzeuge Kopie von 'sChart', rufe Algorithmus auf.
 
       try {
-        sChartCopy = (Statechart)sChart.clone();
+	sChartCopy = (Statechart)sChart.clone();
 
-        // Verzweige zu ´algorithm´ entsprechendem Algorithmus.
+	// Verzweige zu ´algorithm´ entsprechendem Algorithmus.
 
-        switch (algorithm)
+	switch (algorithm)
 	  {
 	  default : // Aufruf des Default-Algorithmus.
 
@@ -174,10 +184,11 @@ public class GraphOptimizer {
 
 	    //	case (1) : // Algorithmus_2.
 	    //	  break;
-	}
+	  }
       } catch (CloneNotSupportedException e) {
 	errorcode = 1;
       }
+    } // else
 
     // Falls ein Fehler aufgetreten ist, wirf Exception, sonst gib Referenz
     // auf ´sChartCopy´ zurueck.
