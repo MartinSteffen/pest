@@ -137,7 +137,7 @@ implements GUIInterface
 // 		{
 
 	} catch(Exception e){
-	    OkDialog("FEHLER","Die PEST-Parameter konnten nicht gespeichert werden.");
+	    userMessage("GUI   : Die PEST-Parameter konnten nicht geladen werden.");
 	}
 
     }
