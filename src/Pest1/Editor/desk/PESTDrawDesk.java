@@ -60,7 +60,7 @@ import tesc2.*;
       //Image buffer;
       Graphics bufferGraphics;  
       
-     Statechart root= new Statechart(null,null,null,null);
+     static Statechart root= new Statechart(null,null,null,null);
       static boolean mover = false;
 
   /** Initialisierung des Hauptframes*/
@@ -107,10 +107,11 @@ import tesc2.*;
   // pop-up Menueabfrage
  // pop-up Menueabfrage 
   public void actionPerformed(ActionEvent event) {
+      Statechart xroot = root;
     String command = event.getActionCommand();
 	Editor.Buttontype = "Select";
-    if (command.equals("undo")) {root = undo();Editor.newdraw();}
-    else if (command.equals("restore")) {root = redo();Editor.newdraw();}
+    if (command.equals("undo")) {undo();Editor.newdraw();}
+    else if (command.equals("restore")) {redo();Editor.newdraw();}
     else if (command.equals("kopieren") & deleteobj != null) {	System.out.println("test2 : "+copyobj);
 					try     {copyobj = (Absyn) deleteobj.clone();}
 				        	catch (Exception e) {System.out.println("Clone-Fehler");}
@@ -589,10 +590,11 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans" & trro
 
 	    if ((e.getID() == MouseEvent.MOUSE_PRESSED) & (Editor.Editor() =="Draw_StateLabel"))
 		{ 
-		    // Editor.SetListen();
+		     Editor.SetListen();
 		    new labelPESTState(root,(int) (e.getX()/Editor.ZoomFaktor),
 					     (int) (e.getY()/Editor.ZoomFaktor));
-		   Editor.SetListen(); trroot = false;
+		    //Editor.SetListen();
+		   trroot = false;
 		   repaint();
 		}
 
@@ -623,34 +625,37 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans" & trro
 
 		}
 	if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Draw_Par"))
-	    {// Editor.SetListen();
+	    { Editor.SetListen();
 		    new drawPESTParallel(g,root,(int) (last_x/Editor.ZoomFaktor),
 					     (int) (last_y/Editor.ZoomFaktor),
 					     (int) (e.getX()/Editor.ZoomFaktor),
 					     (int) (e.getY()/Editor.ZoomFaktor),
 					     Editor.st_color());
-		    Editor.SetListen();trroot = false;
+		    //Editor.SetListen();
+		    trroot = false;
 		    repaint();
 		}
 
 	if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Set_Default"))
-	    { // Editor.SetListen();
+	    {  Editor.SetListen();
 		    new setDefault(g,root,(int) (last_x/Editor.ZoomFaktor),
 					     (int) (last_y/Editor.ZoomFaktor),
 					     Editor.tr_color());
-		    Editor.SetListen();trroot = false;
+		    //Editor.SetListen();
+		    trroot = false;
 
 		    repaint();
 		}
 
 	if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Referenz"))
-	    { // Editor.SetListen();
+	    {  Editor.SetListen();
 		    new makeReferenz(g,root,
 					(int) (e.getX()/Editor.ZoomFaktor),
 					(int) (e.getY()/Editor.ZoomFaktor),
 					Editor.st_color());
 
-		    Editor.SetListen();trroot = false;
+		    // Editor.SetListen();
+		    trroot = false;
 
 		    repaint();
 		}
@@ -667,10 +672,11 @@ if (e.getID() == MouseEvent.MOUSE_MOVED & Editor.Editor() == "Draw_Trans" & trro
 		}
 
 	if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Select") & (copyobj != null) & (mover == false))
-		{ 
+		{   Editor.SetListen();
 		    new setcopymove(root,copyobj,e.getX(),e.getY());
 		    copyobj = null;
-		    Editor.SetListen();repaint();
+		    //Editor.SetListen();
+		    repaint();
 		}
 
 	if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Select") & (copyobj != null) & (mover == true))
@@ -712,12 +718,13 @@ if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Info"))
 
 
 	if ((e.getID() == MouseEvent.MOUSE_PRESSED) & (Editor.Editor() =="Draw_Conn"))
-	    { //  Editor.SetListen();
+	    {   Editor.SetListen();
 		    new drawPESTConn(g,root,
 			(int) (e.getX()/Editor.ZoomFaktor)-6,
 			(int) (e.getY()/Editor.ZoomFaktor)-6,
 			Editor.con_color());
-		     Editor.SetListen();trroot = false;
+		    //     Editor.SetListen();
+		     trroot = false;
 		     repaint();
 
 		}
@@ -772,31 +779,24 @@ if ((e.getID() == MouseEvent.MOUSE_RELEASED) & (Editor.Editor() =="Info"))
 	  }
       }
 
-private static Statechart undo() { 
-      	System.out.println("UNDO");
+      public static void undo() {
 	  lauf = lauf.prev;
-	//xroot.state = lauf.chart.state;
-	//xroot.events = lauf.chart.events;
-	//xroot.bvars = lauf.chart.bvars;
-	//xroot.cnames = lauf.chart.cnames;
-	//Editor.newdraw();
-	System.out.println("lauf : "+lauf);
-	  System.out.println("basis : "+basis);  
-	return lauf.chart;
+	root.state = lauf.chart.state;
+	root.events = lauf.chart.events;
+	root.bvars = lauf.chart.bvars;
+	root.cnames = lauf.chart.cnames;
+	
    }
 
-private static Statechart redo() { 
-   	System.out.println("REDO");
+public static void redo() { 
+   
 	  if (lauf != basis) {lauf = lauf.next;
-	//xroot.state = lauf.chart.state;
-	//xroot.events = lauf.chart.events;
-	//xroot.bvars = lauf.chart.bvars;
-	//xroot.cnames = lauf.chart.cnames;
-	//Editor.newdraw();
+	root.state = lauf.chart.state;
+        root.events = lauf.chart.events;
+	root.bvars = lauf.chart.bvars;
+	root.cnames = lauf.chart.cnames;
 	}
-	  System.out.println("lauf : "+lauf);
-	  System.out.println("basis : "+basis);
-	return lauf.chart;
+	 
    }
 
       public static void addundo(Statechart nroot)
