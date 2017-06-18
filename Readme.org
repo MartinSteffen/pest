@@ -20,7 +20,11 @@ The package contains the following files and subdirectories:
 
     - [[,/Readme.org]]:        this file
     - [[./src]]:               sources
+    - [[./baselines]]:         checked out versions of the various baselines
+    - [[./baselines/jars]]:    jar files of end-of-semester baseline (for demo)
+    - [[./safer]]:             the safer case study
     - [[./misc/cvsconfigs]]:   some original cvs configuration files
+
 
 
 The webpages, administrative information, and generated documentation is
