@@ -1,0 +1,66 @@
+<DL COMPACT>
+<DT><STRONG>
+STATUS
+</STRONG>
+<BR>
+
+
+Die Arbeiten an der abstrakten Syntax sind weitgehend abgeschlossen. Die
+letzten Änderungen waren: Label, ActionEvent und Path wurden
+umbenannt/geändert.
+<P>
+Die Musterlösung befindet sich in Absyn/Example.java.
+<P>
+
+Neues Paket Util.
+<UL>
+<LI> Pretty-Printer. U.a. kann man die Musterlösung mit dem
+pretty-printer ausgeben, z.B. mit "java Util.PrettyEx".
+<LI> Random-Zahlen.
+</UL>
+
+<DT><STRONG>
+To-Do
+</STRONG>
+<BR>
+
+Da die abstrakte Syntax geändert wurde, kann der alte Code z.T. nicht mehr
+übersetzt werden. Bitte den Code rund um  Label, ActionEvent und Path überprüfen.
+<BR>
+<STRONG>Zuständig:</STRONG> die jeweiligen Gruppen.
+<P>
+
+An der abstrakten Syntax sind folgende Punkte  noch in der Bearbeitung:
+<UL>
+<LI> Die Erweiterung der abstrakten Syntax um cloneable.
+<BR>
+<STRONG>Zuständig:</STRONG> Martin Steffen
+<LI> Pfichtenheft wird den neuen Klassen angepasst.
+<BR>
+<STRONG>Zuständig:</STRONG> Erich Mikk und Bernd Weber.
+</UL>
+<P>
+
+Folgende Gruppen haben noch keine Stubs zur Verfügung gestellt:
+PEST1/Simu und STM (zumindest nicht so, dass javadoc sie erkennt).
+<P>
+
+Folgende Fehlermeldung wird in PEST1 und PEST2 TESC2 erzeugt:
+<P>
+<PRE>
+Generating documentation for class TESC2.GraphOptimizer
+Method void start() 
+        declares that it throws class TESC2.AlgorithmException,
+        but there is no corresponding @exception item
+Method void start(int) 
+        declares that it throws class TESC2.AlgorithmException,
+        but there is no corresponding @exception item
+</PRE>
+
+Die Angleichung der Schnittstellen ist noch nicht abgeschlossen.
+<BR>
+<STRONG>Zuständig:</STRONG> die jeweiligen Gruppen.
+<P>
+Baseline wurde von Erich Mikk am 8.12.98 um 11:32 Uhr gezogen.
+</DL>
+

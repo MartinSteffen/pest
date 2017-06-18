@@ -1,0 +1,8 @@
+(cd .. ; javadep -i -n -o pestdocu/check-dep.html check editor codegen gui simu stm tesc1 tesc2)
+(cd .. ; javadep -i -n -o pestdocu/codegen-dep.html codegen editor check gui simu stm tesc1 tesc2)
+(cd .. ; javadep -i -n -o pestdocu/editor-dep.html editor check codegen gui simu stm tesc1 tesc2)
+(cd .. ; javadep -i -n -o pestdocu/gui-dep.html gui editor codegen check simu stm tesc1 tesc2)
+(cd .. ; javadep -i -n -o pestdocu/simu-dep.html simu editor codegen check gui stm tesc1 tesc2)
+(cd .. ; javadep -i -n -o pestdocu/stm-dep.html stm editor codegen check gui simu tesc1 tesc2)
+(cd .. ; javadep -i -n -o pestdocu/tesc1-dep.html tesc1 editor codegen check gui simu stm  tesc2)
+(cd .. ; javadep -i -n -o pestdocu/tesc2-dep.html tesc2 editor codegen check gui simu stm  tesc1)

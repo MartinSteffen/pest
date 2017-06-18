@@ -1,0 +1,368 @@
+//-----------------------------------------------------------------------------
+//	Fehlerliste von PEST1
+//	---------------------
+//
+//	$Id: report_list,v 1.35 1999/01/27 23:10:04 swtech18 Exp $
+//
+//------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------
+// Das ist ein Kommentar
+// Muster
+//
+// #Number: 	<Error number> 
+// #Autor: 	<name> <e-mail>
+// #Subject: 	<short title>
+// #Status: 	reported | processing | fixed | confirmed
+// #Description: 
+// <long description how to generate>
+//------------------------------------------------------------------------------
+
+
+#Number: 	1
+#Autor:   	Erich Mikk erm
+#Subject:	Wiederholtes Starten des Editors nicht möglich
+#Status: 	reported 
+#Description: 
+
+Die Hauptinstanz (gui) erkennt es offenbar nicht, wenn der Editor
+geschlossen worden ist. Folgende Sequenz führt zu dem Fehler:
+
+(1) Starte PEST:
+cd PEST1/gui
+java gui.pest
+
+(2) Importiere ein Statechart über File->Import->Statemate
+Man nehme z.B. /home/swtech12/Examples/TV/remote_control.st
+
+(3) Starte Editor: Werkzeuge->Editor
+
+(4) Schließe Editor: Im Editor Window->Schliessen
+
+(5) Versuche Editor zu starten: Werkzeuge->Editor
+
+FEHLER: Es erscheint eine Fehlermeldung (Es kann nur ein Editor gestartet
+werden!). obwohl der Editor geschlossen worden ist.
+
+//------------------------------------------------------------------------------
+
+#Number: 	2
+#Autor:   	Erich Mikk erm
+#Subject:	Hauptinstanz versucht Statechart zu laden
+#Status: 	reported 
+#Description: 
+
+(0) Man führe die Sequenz aus Number 1 aus. 
+(1) Man schließe PEST: Datei-> Beenden. I
+Im Dialog (etwa: Statechart ist nicht gespeichert, fortfahren?) 
+die Statechart NICHT speichern!
+(2) Starte PEST erneut.
+(3) Jetzt sieht man ein Fenster: 
+Das Laden ist fehlgeschlagen! (ERSTER FEHLER, warum laden)?
+(4) Antwort OK. Danach wird Editor gestartet (ZWEITER FEHLER, wieso?)
+
+//------------------------------------------------------------------------------
+
+#Number: 	3
+#Autor:   	Erich Mikk erm
+#Subject:	Menüs nicht einheitlich
+#Status: 	reported 
+#Description: 
+
+Das linke obere Menü hießt in der Hauptinstanz und im Editor anders. Auch
+die Menüpunkte heißen verschieden, obwohl die gleiche Funktionalität
+dahinter verbergt ist.
+//------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------
+
+#Number:        4 
+#Autor:         Sven Jorga, Werner Lehmann swtech18
+#Subject:       HA-Format Fehler 
+#Status:        confirmed
+#Description:
+
+Die Dateien ~/swtech12/Examples/SE-Systems/cd.st und ~/swtech12/Examples/TV/system.st
+sind fehlerhaft: cd.st hat keine Initmap und system.st hat keine Trmap.
+//-----------------------------------------------------------------------------
+
+#Number:        5
+#Autor:         Arne Koch swtech13
+#Subject:       Warnings bei SyntaxCheck
+#Status:        confirmed
+#Description:
+
+Falls in einer Action einer Transition Events generiert werden, auf die in
+keiner Transition reagiert wird, soll es eine Warnung geben. 
+Falls man aber eine Liste von Events angibt, wird nur eine Warnung
+ausgegeben, falls auf das LETZTE Element der Sequenz nicht reagiert wird.
+Bsp.: Als Events werden E1, E2, E3 generiert
+
+Check: - Deklarierter Event wurde nicht verwendet (202)
+Check:   [E3]
+
+Falls auf E3 reagiert wird, gibt es gar keine Meldung.
+
+(Import->TESC->tesc1/Test/bsp1.tesc->SyntaxCheck)
+
+//------------------------------------------------------------------------------
+#Number:        6
+#Autor:         Erich Mikk erm
+#Subject:       Interlevel Transitionen in TV
+#Status:        confirmed
+#Description:
+
+In ~swtech12/Examples/TV/tv.st ist eine Interlevel-Transition. Folgendes
+muss hier Passieren: z.B. Die Transition von VIDEOTEXT nach SHOW darf nicht
+als Interlevel-Transition dargestellt werden.
+//------------------------------------------------------------------------------
+
+#Number:        7
+#Autor:         Erich Mikk erm
+#Subject:       Default States im Editor nicht sichtbar.
+#Status:        confirmed
+#Description:
+
+
+Der Editor hat keine Bezeichnung für default states.
+
+Man sieht es, wenn man z.B. ~swtech12/Examples/TV/tv.st über 
+Datei->Import->Statemate lädt.
+
+//------------------------------------------------------------------------------
+#Number:	8
+#Autor:		Heiko Haller swtech21
+#Subject:	PEST1: Transitionen-Label machen Zoom nicht mit
+#Status:	fixed
+#Description:
+
+Wenn ich eine Transition zwischen zwei States mit einem Label versehe
+und dann Zoom ausfuehre, wird das Label nicht mehr an die Transition
+geschrieben. Die Label von States hingegen werden korrekt gezoomt.
+
+//------------------------------------------------------------------------------
+
+#Number:	9
+#Autor:		Stefan Lemke swtech21
+#Subject:	PEST1: Benennung von States im Zoom-Modus
+#Status:	fixed
+#Description:
+
+In eine Chart hineingezoomt.
+Einen kleinen Zustand auf dritter Ebene erstellt. Er konnte nicht benannt 
+werden, das Umbennen-Fenster wurde nicht geoeffnet.
+//------------------------------------------------------------------------------
+#Number:	10
+#Autor:		Stefan Lemke swtech21
+#Subject:	PEST1: Bildgroesse im Zoom-Modus
+#Status:	reported
+#Description:
+
+In eine Chart gezommt.
+Die rechte untere Ecke des Charts ist nicht mit den Slidern erreichbar.
+
+
+//------------------------------------------------------------------------------
+#Number:	11
+#Autor:		Stefan Lemke swtech21
+#Subject:	PEST1: Loeschen von States
+#Status:	reported
+#Description:
+
+State erstellt. Das Loeschen ist nicht moeglich. Auswahl der Funktion aus dem
+Kontextmenue hat keine Wirkung.
+
+//------------------------------------------------------------------------------
+#Number:	12
+#Autor:		Stefan Lemke swtech21
+#Subject:	Benennung von kleinen States
+#Status:	fixed
+#Description:
+
+3x in eine Statechart gezoomt. State (Groesse auf Bildschirm ca. 1 cm x 3 cm)
+ist nicht benennbar, groessere States jedoch schon.
+//------------------------------------------------------------------------------
+#Number:	13
+#Autor:		Magnus Stiller swtech11
+#Subject:	Namensgleichheit von States bei Interlevel Transitionen
+#Status:	confirmed
+#Description:
+
+Wenn in verschiedenen Ebenenen States den gleichen Namen haben, kann man bei einer Transition nicht sagen, ob sie nun von einem State zum selben geht, oder eine IT vorliegt.
+
+//------------------------------------------------------------------------------
+#Number:	14
+#Autor:	        Daniel Wendorff swtech11
+#Subject:	Interleveltransition ? siehe Nummer 6
+#Status:	confirmed
+#Description:
+
+
+>>In ~swtech12/Examples/TV/tv.st ist eine Interlevel-Transition. Folgendes
+>>muss hier Passieren: z.B. Die Transition von VIDEOTEXT nach SHOW darf nicht
+>>als Interlevel-Transition dargestellt werden.
+
+Die Interlevel-Transition, die man im Editor vom Standby zu CH1 sieht, ist keine. 
+Ihr Source ist Standby und ihr Target Working. Die Koordinaten des Linienzuges stimmen mit dem Ziel nicht ueberein. Die Koordinaten fuehren zu dem State CH1. Die Koordinaten sind wahrscheinlich schon im TV.st File falsch.
+
+
+//------------------------------------------------------------------------------
+#Number:	15
+#Autor:		Marcel Kyas, Walter Loeser, Andre Paetzold swtech25
+#Subject:	Simulator laesst sich nicht schliessen.
+#Status:	reported
+#Description:
+
+Das schliessen des Simulators fuehrt zu einer Null-pointer exception.
+
+
+//------------------------------------------------------------------------------
+#Number:	16
+#Autor:		Marcel Kyas, Walter Loeser, Andre Paetzold swtech25
+#Subject:	Kein Pfad fuer CodeGen.
+#Status:	reported
+#Description:
+
+Man kann fuer die Code Erzeugung keinen Pfad angeben.  Der Pfad "."
+ist leider nicht brauchbar zum ordentlichen testen.
+//------------------------------------------------------------------------------
+#Number:	17
+#Autor:		Erich Mikk erm
+#Subject:	stm generiert ein Exception, den keiner fängt
+#Status:	not processing (ist keine Exception, StackTrace auskommentiert) 
+#Description:
+
+Versuche Statecharts zu Importieren wie in Number 1 (wichtig; tv.st).
+Folgende Ausgabe des programms ist nicht erwünscht:
+java.lang.Exception: Interleveltransitionen nicht zulässig
+        at stm.HAImport.makeTrHash(HAImport.java:379)
+        at stm.HAImport.initImport(HAImport.java:181)
+        at stm.HAImport.<init>(HAImport.java:122)
+        at gui.GUIimportML.actionPerformed(GUIimportML.java:80)
+        at java.awt.MenuItem.processActionEvent(MenuItem.java:436)
+        at java.awt.MenuItem.processEvent(MenuItem.java:400)
+        at java.awt.MenuComponent.dispatchEventImpl(MenuComponent.java:177)
+        at java.awt.MenuComponent.dispatchEvent(MenuComponent.java:169)
+        at java.awt.EventDispatchThread.run(EventDispatchThread.java:83)
+
+//----------------------------------------------------------------------------
+#Number:	18
+#Autor:		Erich Mikk erm
+#Subject:	Start des Simulators gelingt nicht: NullPointerException
+#Status:	confirmed
+#Description:
+
+Importiere  ~swtech12/Examples/TV/tv.st
+Starte Editor
+Starte Simulator. Dann sieht man folgendes in stderr:
+
+java.lang.NullPointerException
+        at simu.Simu.makeTab(Simu.java:2192)
+        at simu.Simu.<init>(Simu.java:181)
+        at gui.GUIwerkML.actionPerformed(GUIwerkML.java:40)
+        at java.awt.MenuItem.processActionEvent(MenuItem.java:436)
+        at java.awt.MenuItem.processEvent(MenuItem.java:400)
+        at java.awt.MenuComponent.dispatchEventImpl(MenuComponent.java:177)
+        at java.awt.MenuComponent.dispatchEvent(MenuComponent.java:169)
+        at java.awt.EventDispatchThread.run(EventDispatchThread.java:83)
+ 
+//------------------------------------------------------------------------------
+#Number:	19
+#Autor:		Magnus Stiller swtech11
+#Subject:	Defaultstate im Editor nicht moeglich
+#Status:	reported
+#Description:
+
+Setzt man in einem leeren Editor einen State und will diesen als Default kennzeichenen, passiert nichts.
+
+//------------------------------------------------------------------------------
+#Number:	20
+#Autor:		Erich Mikk
+#Subject:	STM-Importierten Labels werden nicht angezeigt: Koordinaaten fehlen
+#Status:	processing
+#Description:
+
+Importiere z.B. TV/tv.st und starte Editor.
+Der Editor zeigt keine tr-Labels an.
+Das liegt wahrscheinlich daran, dass STM-Import sie nicht vorfindet 
+und auch selbst nicht erzeugt.
+//------------------------------------------------------------------------------
+
+#Number:	21
+#Autor:		Erich Mikk
+#Subject:	Code für TV/tv.st ist nicht kompilierbar
+#Status:	fixed
+#Description:
+
+Importiere TV/tv.st.
+Generiere Code (Werkzeuge-> Codegenerator).
+In der Direktory, wo pest gestartet wurde, befindet sich jetzt Automaton.java.
+Beim kompilieren bekommt man folgenden Fehler:
+
+goofy{swtech00} javac Automaton.java
+Automaton.java:12: ')' expected.
+        if ( pre_events[EVENT_$$stop$$] {
+                                       ^
+1 error
+//------------------------------------------------------------------------------
+
+#Number:	22
+#Autor:		Erich Mikk
+#Subject:	STM-Import traegt ~ für leere Beschriftung ein.
+#Status:	fixed
+#Description:
+
+Beim Import wird das Feld 'caption' in TLabel von  der STM-Import gefüllt. 
+Bei leeren Beschriftungen wird ~ als Beschriftung in caption eingetragen.
+So sehen die Berschrifungen z.Zt. so aus: ~[~]/~. 
+
+Sein soll: ein String der Länge null.
+//------------------------------------------------------------------------------
+
+#Number:	23
+#Autor:		Daniel Wendorff Magnus Stiller swtech11
+#Subject:	falsches Einsortieren von Transitionen durch Editor
+#Status:	reported
+#Description:
+
+Man importiert mit TESC examples ein. Dann einen SyntaxCheck, der keine Fehler anzeigt. Anschliessend oeffnet man den Editor und fuehrt erneut den Check durch, jetzt hat man viele Interlevel Transitionen, die als Fehler angezeigt werden.
+
+
+//------------------------------------------------------------------------------
+
+#Number:	24
+#Autor:		Erich Mikk
+#Subject:	Interlevel Trs in SE-Examples/cd.st
+#Status:	reported
+#Description:
+
+STM-Import SE-Examples/cd.st.
+TESC-Export nach cd.tesc
+TESC-Import von cd.tesc.
+Start Editor.
+Start Simulation.
+
+Jetzt wird im Errorbrowser angezeigt, dass eine Menge von Trs Interlevel
+sei.  Leider konnte ich die Bilder dazu nicht finden (Chart ist einfach zu
+gross), aber das faellt mir schwer zu glauben. Schliesslich sind die
+Koordinaaten von TESC2 berechnet und in der Originalchart gibt es keine
+Interlevel Trs.
+
+Was geht hier schief:
+
+(1) Koordinatenberechnung?
+(2) Ermittlung von Interlevel Trs anhand von Koordinaaten?
+
+//------------------------------------------------------------------------------
+#Number:	25
+#Autor:		Erich Mikk
+#Subject:	STM-Import ignoriert history connectors
+#Status:	processing
+#Description:
+
+In manchen Files des SAFER-Projekts verwendet man history connectors
+(z.B. active_axes.st). PEST unterstützt z.Zt. keine histories!
+Falsch ist, dass der Benutzer nicht gewarnt wird, dass STM-Import die
+history connectors vergisst. Also: Hier fehlt eine Warnung!
+
+//------------------------------------------------------------------------------

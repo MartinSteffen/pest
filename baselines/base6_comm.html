@@ -1,0 +1,120 @@
+<STRONG>
+KOMPILIERBARKEIT
+</STRONG>
+<P>
+
+PEST1 und PEST2 sind kompilierbar.
+
+<P>
+
+
+<STRONG>
+STATUS
+</STRONG>
+<P>
+
+
+Während der Besprechung haben die Gruppen den Status der Pakete
+folgendermassen beschrieben:
+
+<pre>
+GUI		beta
+CODEGEN		-
+STM		alpha
+
+PEST1/EDITOR	-
+PEST1/CHECK	beta
+PEST1/TESC1	alpha
+PEST1/TESC2	alpha
+
+PEST2/EDITOR	-
+PEST2/CHECK	alpha
+PEST2/TESC1	beta
+PEST2/TESC2	-
+</pre>
+
+<STRONG>
+Legende
+</STRONG>
+
+<DL COMPACT>
+<DT>
+<STRONG>-:</STRONG>	wesentliche Teile der Funktionalität fehlen.
+	Die Aufrufe sind wie Stubs: nehmen Argumente entgegen und
+	liefern Ergebnisse vom korrekten Typ, jedoch sind fest
+	Aussagen über die Funktionalität nicht möglich.
+<P>
+<DT>
+<STRONG>alpha:</STRONG>	wesentliche Teile der Funktionalität sind implementiert.
+	Das Paket befindet sich in der Testphase. 
+
+<P>
+<DT>
+<STRONG>beta:</STRONG>	alle Teile der Funktionalität sind implementiert und
+	ausführlich getestet (unit-test). Andere Teilnehmer werden
+	eingeladen, das Paket zu benutzen und die Gruppe über 
+	Fehler zu informieren.
+
+</DL COMPACT>
+
+<STRONG>
+Leider haben nicht alle Gruppen den Status auch bei Ihren Klassen dokumentiert!
+</STRONG>
+<P>
+<P>
+
+<STRONG>
+KONZEPTIONELLE KONSISTENZ
+</STRONG>
+<P>
+
+Leider ist es immer noch nicht möglich, das Zusammenspiel der Module
+auf konzeptionelle Konsistenz hin zu überprüfen. Folgende Gruppen
+haben es noch nicht geschafft, die Anforderungen und Garantien
+aufzuschreiben:
+
+<pre>
+CODEGEN
+GUI
+STM
+
+PEST1/EDITOR
+PEST1/TESC1	muß der Sache auf den Grund gehen und dafür sorgen,
+		daß Probleme erkannt werden (statt mit unbekannt
+		gekennzeichnet).
+PEST1/TESC2
+
+PEST2/EDITOR
+</pre>
+
+<STRONG>
+VORBEREITUNG DER NÄCHSTEN BASELINE
+</STRONG>
+<P>
+<P>
+
+Jetzt heißt es aufzusteigen: alle, die im Moment des Status '-'
+haben, sollten zum Montag 'alpha' erreichen, alle alpha-Gruppen
+sollten 'beta' erreichen und die beta-Gruppen sollten die
+Integrationstests vorantrieben.
+<P>
+	
+Mal sollte unbedingt darauf achten, daß man bei Änderungen in den
+Paketen auch die dazugehörigen Kommentare ggf. anpaßt. Das betrifft
+insbesondere die Kommentare zu Anforderungen, Garantien und den
+Statusbericht.
+<P>
+
+Ich werde versuchen, die Integrationstests zu formulieren, die dann
+hoffentlich am Montag zur Verfügung stehen. 
+<P>
+
+Wenn ich die Informationen zu Anforderungen und Garantien bekomme,
+kann ich die Pakete auf konzeptionelle Konsistenz hin überprüfen. Wenn
+ich die fehlenden Infos nicht bekomme, werde ich mich nur ärgern.
+
+<P>
+Es ist noch offen, ob die Repositorystruktur geändert wird. Z.Zt. gibt
+es ein pestdocu für beide PEST's. Während der Woche wird überprüft, ob
+man mit zwei pestdocu's besser fährt. 
+

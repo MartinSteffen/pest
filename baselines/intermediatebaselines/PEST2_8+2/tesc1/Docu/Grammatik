@@ -1,0 +1,129 @@
+Grammatik von TESC
+$Id: Grammatik,v 1.3 1999/01/20 17:32:37 swtech20 Exp $
+-----------------------------------------------------------------------
+
+Tokenklassen für den Scanner
+
+<character>     ::= {a..z,A..Z,.}
+<digits>        ::= {0..9}
+<sidentifier>   ::= <character>+(<character>+<digits>)*
+<identifier>    ::= <sidentifier>(<dot><sidentifier>)*
+<pathop>        ::= {in|entered|exited}
+<op>            ::= {&,|,->,<=>}
+<parentesis>    ::= {(,)}
+<komma>         ::= {,}
+<not>           ::= {!}
+<equal>		::= {=}
+<whitespace>    ::= {TAB, SPACE, ENTER}
+<EOF>           ::= {EOF}
+<comment>       ::= {//}
+
+Legende
+{.} = Menge
+ |  = Auswahl
+ *  = bel. Wiederholung
+ +  = Auswahl
+
+-----------------------------------------------------------------------
+
+TESC              ::= VAR EVENT STATE
+  
+VAR               ::= {"var" VARS}
+
+VARS              ::= IDENTIFIER | "(" VARLIST ")"
+
+VARLIST           ::= IDENTIFIER {"," VARLIST}
+
+EVENT             ::= {"event" EVENTS}
+
+EVENTS            ::= IDENTIFIER | "(" EVENTLIST ")"
+
+EVENTLIST         ::= IDENTIFIER {"," EVENTLIST}
+
+STATE             ::= AND_STATE | OR_STATE | BASIC_STATE
+
+AND_STATE         ::= "and" IDENTIFIER 
+                            AND_SUBSTATES 
+                      "end" IDENTIFIER
+
+AND_SUBSTATES     ::= OR_STATE {AND_SUBSTATES} | BASIC_STATE {AND_SUBSTATES}
+
+OR_STATE          ::= "or " IDENTIFIER
+                            OR_SUBSTATES CONNECTORS TRANSITIONS DEFAULTCON
+                      "end" IDENTIFIER
+
+OR_SUBSTATES      ::= STATE {OR_SUBSTATES}
+
+OR_SUBSTATES      ::= STATE {OR_SUBSTATES}
+
+BASIC_STATE       ::= "basic" IDENTIFIER
+
+CONNECTORS        ::= CONNECTOR {CONNECTORS}
+
+CONNECTOR         ::= "con" IDENTIFIER
+
+TRANSITIONS       ::= TRANSITION TRANSITION
+
+TRANSITION        ::= "from" TRANCHOR "to" TRANCHOR {"on" GUARD_STM} {"do" ACTION}
+
+TRANCHOR          ::= "UNDEF" | IDENTIFIER
+
+DEFAULTCONS       ::=  DEFAULTCON {DEFAULTCON}
+
+DEFAULTCON        ::= "default" IDENTIFIER
+
+GUARD_STM         ::= {GUARD} {"[" GUARD "]"}
+
+GUARD             ::= GUARDIMPLIES GUARD_REST
+
+GUARD_REST        ::= {"<=>" GUARDIMPLIES GUARD_REST}
+
+GUARDIMPLIES      ::= GUARDOR GUARDIMPLES_REST
+   
+GUARDIMPLIES_REST ::= {"=>" GUARDOR GUARDIMPLIES_REST}
+
+GUARDOR           ::= GUARDAND GUARDOR_REST
+
+GUARDOR_REST      ::= {"|" GUARDAND GUARDOR_REST}
+
+GUARDAND          ::= GUARDNOT GUARDAND_REST
+
+GUARDAND_REST     ::= {"&" GUARDNOT GUARDAND_REST}
+
+GUARDNOT          ::= {"!"} GUARDID
+
+GUARDID           ::= IDENTIFIER | COMPPATH | "(" GUARD ")"
+
+COMPPATH          ::= (IN | ENTERED | EXITED) "(" PATH ")"
+
+PATH              ::= IDENTIFIER {"." PATH}
+
+ACTIONS           ::= ( "(" ACTIONLIST ")" ) | ACTION
+
+ACTION            ::= IDENTIFIER | ( IDENTIFIER "=" ( true | false | GUARD_STM ))
+
+ACTIONLIST        ::= ACTION { "," ACTIONLIST }
+
+IDENTIFIER        ::= <Zeichen-/Ziffernkette>
+
+-----------------------------------------------------------------------
+
+In Regel GUARD_STM ::= {GUARD} {"[" GUARD "]"} duerfen im ersten
+Guard nur Events und im zweiten nur Bvars verwendet werden.
+
+-----------------------------------------------------------------------
+
+Legende 
+ .  = Nichterminal
+"." = Token
+{.} = Optional
+ |  = Auswahl
+
+-----------------------------------------------------------------------
+
+$Log: Grammatik,v $
+Revision 1.3  1999/01/20 17:32:37  swtech20
+- Grammatik und Doku aktualisiert
+
+Revision 1.2  1999/01/11 12:14:22  swtech20
+Updates.

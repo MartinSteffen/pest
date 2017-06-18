@@ -1,0 +1,159 @@
+/* Grammatik fuer Tesc - $Id: grammatik.txt,v 1.9 1999/02/04 20:15:40 swtech13 Exp $ 
+ *
+ * $Log: grammatik.txt,v $
+ * Revision 1.9  1999/02/04 20:15:40  swtech13
+ * Unterstuetzung von refstates.
+ *
+ * Revision 1.8  1999/01/29 20:50:36  swtech13
+ * on <guard> nicht mehr noetig
+ *
+ * Revision 1.7  1999/01/13 18:44:50  swtech13
+ * pathop nun in [ Bvar ]
+ *
+ * Revision 1.6  1999/01/11 20:11:29  swtech13
+ * Grammatik eingeschraenkt, so dass Variablentypen eindeutig aus dem Kontext
+ * bestimmt werden koennen.
+ *
+ * Erste Doku.
+ *
+ * Revision 1.5  1999/01/06 15:00:26  swtech13
+ * kleiner Fehler verbessert connectors => cons
+ *
+ * Revision 1.4  1998/12/15 00:00:25  swtech13
+ * Aenderungen:
+ * - Klammern bei PATHOP
+ * - ANDSTATES korrigiert
+ * - BOOLOP    --- " ---
+ * - AKTION um ~ erweitert
+ * - Guards um Klammerung erweitert, not ersetzt duch !
+ * - default-connectors hinzugefügt
+ * - TRLIST: Trennung durch ; nicht durch ,
+ * - undefined -> undef
+ *
+ * Revision 1.3  1998/12/07 13:59:09  swtech13
+ * redundante true/false-Regel entfernt
+ *
+ * Revision 1.2  1998/12/07 13:50:20  swtech13
+ * Vorlaeufig fertige Grammatik
+ *
+ * Revision 1.1  1998/12/07 13:20:42  swtech13
+ * Grammatik muss noch ueberarbeitet werden.
+ *
+ */
+
+<NUM> ::= 0|1|2|3|4|5|6|7|8|9|0
+
+<LET> ::= A|..|B|a|..|b|_|-
+
+<STRING> ::= <LET><STRING> | <LET> |
+	     <NUM><STRING> | <NUM>
+
+
+<CHART>       ::= <EVENTS> <BVARS> <STATE>
+
+
+<BVARS>       ::= bvars: <BVARLIST> | <eps>
+
+<BVARLIST>    ::= <STRING>,<BVARLIST> | <STRING>;
+
+
+<EVENTS>      ::= events: <EVENTLIST> | <eps>
+
+<EVENTLIST>   ::= <STRING>,<EVENTLIST> | <STRING>;
+
+
+<CONS>        ::= cons: <CONLIST>
+
+<CONLIST>     ::= <STRING>,<CONLIST> | <STRING>; | <eps>
+
+
+# darf es mehrere geben ?
+<DEFCON>      ::= defcon: <STRING>; | <eps>
+
+
+<STATE>       ::= <BASICSTATE> | <ORSTATE> | <ANDSTATE> | <REFSTATE>
+
+<ANDSTATE>    ::= and <STRING>: <ASTATES> end <STRING>; 
+
+<ORSTATE>     ::= or <STRING>: <STATES> <DEFCON> <CONS> <TRANSDEF>  end <STRING>;
+
+<STATES>      ::= <ORSTATE>;<STATES>     | <ORSTATE>;   |
+		  <ANDSTATE>;<STATES>    | <ANDSTATE>;  |
+		  <BASICSTATE>;<STATES>  | <BASICSTATE>;| 
+		  <REFSTATE>;<STATES>	 | <REFSTATE>;  |
+		  <eps>
+
+<ASTATES>      ::= <ORSTATE>;		|	<ORSTATE>;<ASTATES>
+                   <BASICSTATE>;	|	<BASICSTATE>;<ASTATES>
+		   <REFSTATE>;		|	<REFSTATE>;<ASTATES>
+
+<BASICSTATE>  ::= basic <STRING>;
+
+<REFSTATE>    ::= @<STRING> in <STRING> type <TYPE>;
+
+<TYPE>	      ::= tesc | pest_coord | pest_nocoord
+
+<TRANSDEF>    ::= transitions: <TRLIST> | <eps>
+
+<TRLIST>      ::= <TRANSITION>;<TRLIST> | <TRANSITION>;
+
+
+<TRANSITION>  ::= from <SNAME> to <SNAME> on <GUARD> <ACTIONSTMT> | from <SNAME> to <SNAME> <ACTIONSTMT>
+
+<ACTIONSTMT   ::= do <ACTION>; | ;
+
+
+<SNAME>	      ::= undef | <STRING> 
+
+
+# ! vor && vor || vor =>, <=>
+
+<GUARD>	       ::= <E_GUARD> [ <B_GUARD> ]
+
+# Events
+<GUARD_E>      ::= <GUARD_E> => <O_COMPGUARD_E> | <GUARD_E> <=> <O_COMPGUARD_E> | <O_COMPGUARD_E> | <EMPTYSTR> |  <STRING>
+
+<O_COMPGUARD_E>  ::= <O_COMPGUARD_E> || <A_COMPGUARD_E> | <A_COMPGUARD_E>
+
+<A_COMPGUARD_E>  ::= <A_COMPGUARD_E> && <N_COMPGUARD_E> | <N_COMPGUARD_E>
+
+<N_COMPGUARD_E>  ::= ! <K_COMPGUARD_E> | <K_COMPGUARD_E>
+
+<K_COMPGUARD_E>  ::= ( <GUARD_E> ) | <GUARD_E>
+
+
+#Bvars
+<GUARD_B>      ::= <GUARD_B> => <O_COMPGUARD_B> | <GUARD_B> <=> <O_COMPGUARD_B> | <O_COMPGUARD_B> | <EMPTYSTR> | <COMPPATH> | <STRING>
+
+<O_COMPGUARD_B>  ::= <O_COMPGUARD_B> || <A_COMPGUARD_B> | <A_COMPGUARD_B>
+
+<A_COMPGUARD_B>  ::= <A_COMPGUARD_B> && <N_COMPGUARD_B> | <N_COMPGUARD_B>
+
+<N_COMPGUARD_B>  ::= ! <K_COMPGUARD_B> | <K_COMPGUARD_B>
+
+<K_COMPGUARD_B>  ::= ( <GUARD_B> ) | <GUARD_B>
+
+
+
+<COMPPATH>    ::= <PATHOP> ( <STRING> )
+
+<PATHOP>      ::= in | entered | exited
+
+
+
+<ACTION>      ::= <ACTIONLIST>
+
+<ACTIONLIST>  ::= <AKTION>,<ACTIONLIST> | <AKTION>;
+
+<AKTION>      ::= <STRING> | <BASSIGN> | ~
+
+<BASSIGN>     ::= <STRING>:=<BOOLOP>
+
+<BOOLOP>      ::= true | false |
+		  <GUARD_B>
+
+
+<EMPTYSTR>    ::= ~
+
+
+

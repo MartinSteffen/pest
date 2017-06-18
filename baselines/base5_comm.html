@@ -1,0 +1,38 @@
+<DL COMPACT>
+<DT><STRONG>
+STATUS
+</STRONG>
+<P>
+Diese Baseline ist für PEST1 übersetzbar und ausführbar, aber nicht
+für PEST2. Die betroffenen Gruppe (gui) ist informiert worden.Da es um
+relativ kleine Fehler handelt, kann hoffentlich eine neue Baseline für
+PEST2 gezogen werden, die auch übersetzbar und ausführbar ist.
+<P>
+Alle PEST2-Mitglieder, die trotz anstehender Änderungen in gui PEST2
+ausführen möchten, können es tun. Zunächstmal, es handelt sich um
+syntaktische Änderungen, die Funktionalität der gui sollte beibehalten
+bleiben. Deswegen kann man die beim Kompilieren auftretenden Fehler
+LOKAL IN EIGENER WORKAREA KORRIGIEREN. Änderungen an fremden packages
+dürfen nicht eingecheckt werden!  
+<P>
+<STRONG>Fehler:</STRONG> Beim
+Übersetzen von gui in ~PEST2/gui:
+<pre>
+$ make gui
+javac GUIInterface.java 
+javac GUIMenu.java 
+/home/swtech00/PEST2/gui/pest.java:77: Method getErrorNumber() not found in class check.ModelCheck.
+                if (SCchecker.getErrorNumber()==0)
+                                            ^
+1 error
+make: *** [GUIMenu.class] Error 1
+</pre>
+<STRONG>Workaround:</STRONG> Man kommentiere
+das Codestück rund um getErrorNumber() aus.
+
+
+</DL COMPACT>
+
+</DL COMPACT>
+
+<DL COMPACT>

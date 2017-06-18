@@ -1,0 +1,620 @@
+//-----------------------------------------------------------------------------
+//	Fehlerliste von PEST2
+//	--------------
+//
+//	$Id: report_list,v 1.41 1999/02/08 15:36:01 swtech01 Exp $
+//
+//------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------
+// Das ist ein Kommentar
+// Muster
+//
+// #Number: 	<Error number> 
+// #Autor: 	<name> <e-mail>
+// #Subject: 	<short title>
+// #Status: 	reported | processing | fixed | confirmed
+// #Description: 
+// <long description how to generate>
+//------------------------------------------------------------------------------
+
+
+#Number: 	1
+#Autor:   	Michael Suelzer swtech20
+#Subject:	Statemate generiert Bvar mit Leerstring
+#Status: 	confirmed
+#Description: 
+Wenn man das Beispiel s1.st per Import->STATEMATE->stm/Test/a1.st importiert,
+erhaelt man eine Bvar mit leerem Bezeichner. Pretty-Printer:
+
+.
+|   [BvarList]
+|   |   [Bvar]
+.
+
+Probleme gibt es dann spaeter beim Export/Import mit TESC.
+//------------------------------------------------------------------------------
+
+
+#Number:  	2
+#Autor:		Michael Suelzer swtech20
+#Subject:	Checker erkennt eingetragene Zustaende nicht
+#Status:	confirmed
+Description:
+Wenn man Import->TESC->tesc1/Test/simple.tesc und anschlieend
+den Syntax-Checker ausfuehrt, erhaelt man den Fehler:
+
+.A1Event(e2) nicht gefunden
+
+,obwohl e2 in SEventList eingetragen ist. Pretty-Printer:
+
+|   [SEventList] 
+|   |   [SEvent] e1
+|   |   [location] 5
+|   |   [SEvent] e2
+|   |   [location] 5
+
+Ausserdem wird eine Exception geworfen:
+
+Exception occurred during event dispatching:
+java.lang.NullPointerException
+        at check.CheckEvents.check(CheckEvents.java:96)
+        at check.CheckEvents.check(CheckEvents.java:117)
+        at check.ModelCheck.checkModel(ModelCheck.java:157)
+        at gui.pest.checkSB(pest.java:224)
+        at gui.GUIwerkML.actionPerformed(GUIwerkML.java:32)
+        at java.awt.MenuItem.processActionEvent(MenuItem.java:436)
+        at java.awt.MenuItem.processEvent(MenuItem.java:400)
+        at java.awt.MenuComponent.dispatchEventImpl(MenuComponent.java:177)
+        at java.awt.MenuComponent.dispatchEvent(MenuComponent.java:169)
+        at java.awt.EventDispatchThread.run(EventDispatchThread.java:83)
+//------------------------------------------------------------------------------
+
+
+#Number:	3
+#Autor:		Mario Thies swtech23
+#Subject:	Statechart automatisch speichern
+#Status: 	confirmed 
+#Description: 
+Nach dem Importieren von ueber tesc, anschliessendem Check und Beenden von
+Pest erscheint das Fenster, dass die Statechart geaendert aber noch nicht
+gespeichert wurde.
+//------------------------------------------------------------------------------
+#Number:	4
+#Autor:		Erich Mikk erm
+#Subject:	Transitionsbeschriftungen nicht sichtbar
+#Status: 	confirmed
+#Description: 
+
+Import->Statemate ldt swtech12/Examples/TV/tv.st.
+Starte Editor.
+FEHLER:
+Transitionsbeschriftungen nicht sichtbar.
+//------------------------------------------------------------------------------
+#Number:	5
+#Autor:		Erich Mikk erm
+#Subject:	Chart nicht vollstndig sichtbar
+#Status: 	processing und fixed 
+>>>>>>> 1.38
+#Description: 
+
+Lade Statechart wie in Nr. 4. und starte Editor.
+Fehler: Oberer Rand (etwa 1/5)der Chart ist nicht sichtbar.
+//------------------------------------------------------------------------------
+#Number:	6
+#Autor:		Erich Mikk erm
+#Subject:	TESC Export/Import Probleme
+#Status: 	reported 
+#Description: 
+
+Importiere File X.st aus SE-Systems.
+Exportiere es ber Exprt->TESC.
+
+X \in {vcr.st,tamagotc.st} dann kann das Exportierte File nicht mehr
+eingelesen werden, obwohl der Syntax check keine Fehler gemeldet hat und
+der vorangegangene Export erfolgreich war.
+
+swtech20: Problem liegt beim STM-Import bzw. beim Syntax-Check. Wir
+verlassen uns darauf, dass wir korrekte Statecharts bekommen (siehe
+Anforderungen in unserer Doku.)
+Hier: In tamagotc.st ergibt PrettyPrint nach STM-Import.
+|   |   |   |   [StatenameList] 
+|   |   |   |   |   [Statename] 
+Der Statename hat offensichtlich keinen Inhalt.
+
+//------------------------------------------------------------------------------
+#Number:	7
+#Autor:		Erich Mikk erm
+#Subject:	STM-Import achtet nicht auf Keywords
+#Status: 	confirmed
+#Description: 
+
+Importiere SE-Systems/vcr.st 
+Mit dieser Chart gibt es Probleme, die man sieht, wenn man TESC benutzt.
+Zuerst Chart ber TESC exportieren.
+Dann versuchen wieder ber TESC zu importieren.
+Das geht jetzt nicht, weil TESC Keywords in Guards nicht zult 
+(das wird auch richtig gemeldet).
+
+Der Fehler besteht darin, da STM es zugelassen hat, eine "kranke" Chart zu importieren.
+
+Check mu auf Keywords nicht prfen, weil wir es so vereinbart haben
+(stattdessen mssen es TESC und STM-Import).
+
+
+//------------------------------------------------------------------------------
+#Number:	8
+#Autor:		Erich Mikk erm
+#Subject:	Zoom wirft Exceptions
+#Status: 	processing 
+#Description: 
+
+Importiere SE-Systems/cd.st.
+Exportiere es nach cd.tesc.
+Importiere cd.tesc.
+Starte Editor.
+Zoom 10%.
+Jetzt wirft  Editor eine Reihe von solchen:
+
+Exception occurred during event dispatching:
+java.lang.ClassCastException: absyn.And_State
+        at editor.Methoden_1.showFullTransName(Methoden_1.java:750)
+        at editor.Editor$13.mouseMoved(Editor.java:470)
+        at java.awt.Component.processMouseMotionEvent(Component.java:2444)
+        at java.awt.Component.processEvent(Component.java:2253)
+        at java.awt.Container.processEvent(Container.java:878)
+        at java.awt.Window.processEvent(Window.java:347)
+        at java.awt.Component.dispatchEventImpl(Component.java:1781)
+        at java.awt.Container.dispatchEventImpl(Container.java:923)
+        at java.awt.Window.dispatchEventImpl(Window.java:492)
+        at java.awt.Component.dispatchEvent(Component.java:1708)
+        at java.awt.EventDispatchThread.run(EventDispatchThread.java:81)
+//------------------------------------------------------------------------------
+
+#Number:	9
+#Autor:		Erich Mikk erm
+#Subject:	Simulation highlightet nicht
+#Status: 	processing 
+#Description: 
+
+Importiere TV/tv.st.
+Starte Editor.
+Starte Simulation.
+Fhre Schrittweise Simulation durch (ein Schritt reicht).
+Im Editor wird nichts gehighlightet.
+//------------------------------------------------------------------------------
+
+#Number:	10
+#Autor:		Erich Mikk erm
+#Subject:	Default states nicht erkennbar.
+#Status: 	processing und fixed 
+#Description: 
+
+
+Importiere TV/tv.st.
+Starte Editor.
+Default states nicht erkennbar.
+//------------------------------------------------------------------------------
+#Number:	11
+#Autor:		Erich Mikk
+#Subject:	Man kann mehrere Simulationen starten
+#Status:	processing
+#Description:
+
+Lade Chart (egal wie).
+Starte Editor.
+Starte Simulation (Werkzeuge->Simulation)
+Starte noch eine Simulation (z.B. auf der Chart der gr. Benutzerfhrung).
+//------------------------------------------------------------------------------
+#Number:	12
+#Autor:		Erich Mikk
+#Subject:	Man kann mehrere Editore starten
+#Status:	processing
+#Description:
+
+Man bereite sich eine Chart vor und speichere es (Datei->Speichern)
+Starte pest erneut und ffne diese Chart (Datei -> Oeffnen)
+Starte einen Editor (Chart der gr. Benutzerfhrung -> Editor)
+ffne die gleiche Chart nochmal (Chart der gr. Benutzerfhrung -> Oeffnen)
+Jetzt sieht man 2 gleichzeitig laufende Editore!
+Man knnte mit der gleichen Methode noch mehr davon starten.
+//------------------------------------------------------------------------------
+#Number:	13
+#Autor:		Erich Mikk
+#Subject:	Einstellungsmglichkeiten nicht vorhanden
+#Status:	fixed
+#Description:
+
+Einstellungen->TESC1 sagt
+	GUI   : NOCH NICHT IMPLEMENTIERT
+Einstellungen->SyntaxCheck
+	es passiert NICHTS
+//------------------------------------------------------------------------------
+#Number:	14
+#Autor:		Mario Thies swtech23
+#Subject:	Inkonsistenzen GUI
+#Status:	fixed
+#Description:
+
+Das Fenster "Statechart wurde geaendert, troztdem fortfahren" scheint nicht, wenn 
+man PEST direkt startet und eine neue leere Statechart erzeugt und PEST beenden
+will, es erscheint aber, wenn man davor eine nicht leere Statechart geladen hat;
+der interne Zustand nach dem Erstellen einer neuen leeren Statechart ist also von
+Vorbedingungen abhaengig.
+
+//------------------------------------------------------------------------------
+#Number:	15
+#Autor:		Bernd Weber bwe
+#Subject:	Editor: Alle neuen States sind Default States
+#Status:	processing und fixed
+#Description:
+
+Neue Zustaende sollten nicht Default States sein.
+//------------------------------------------------------------------------------
+#Number:	16
+#Autor:		Bernd Weber bwe
+#Subject:	Editor: Default-States nach Benennung von State inkonsistent
+#Status:	reported
+#Description:
+
+Man erzeuge einen Basic State (ist immer default) und bennenne diesen um. Dann
+steht noch immer der alte Name in der Liste der Default States. 
+Workaround: Erst Default Connectoren entfernen, dann umbenennen.
+//------------------------------------------------------------------------------
+#Number:	17
+#Autor:		Bernd Weber bwe
+#Subject:	GUI/Editor: GUI bekommt Aenderungen in Chart nicht mit.
+#Status:	reported (kein GUI-problem, siehe 2.mal #25 )
+#Description:
+
+Pest starten, neue Chart erzeugen, Editor starten und neuen Zustand hinzufgen.
+Jetzt neue Chart (aus GUI) erzeugen -> GUI meckert nicht!!!
+Editor warnt aber, wenn man im Editor "Datei-Neu" whlt.
+
+Aus diesem Grund ist auch SyntaxCheck nur einmal (aus graf. Menu) aufrufbar.
+//------------------------------------------------------------------------------
+#Number:	18
+#Autor:		Bernd Weber bwe
+#Subject:	Editor: Alle States auf einem Level bekommen Default Connectoren
+#Status:	processing
+#Description:
+
+Erzeugt man in einem Or State neue Basic States werden alle Zustaende des
+Or States zu Default States !?!
+//------------------------------------------------------------------------------
+#Number:	19
+#Autor:		Bernd Weber bwe
+#Subject:	Editor: erzeugt unbehandelte Exception
+#Status:	processing
+#Description:
+
+Lscht man die Default-Connectoren in einem Or State und versucht mehr
+als einen State zum Default zu machen, gibt es eine Exception:
+  
+  java.lang.NullPointerException: 
+        at editor.Methoden_0.addDefaultMouseClicked(Methoden_0.java:844)
+        at editor.Editor$12.mouseClicked(Editor.java:427)
+        at java.awt.Component.processMouseEvent(Component.java:1904)
+        at java.awt.Component.processEvent(Component.java:1778)
+        at java.awt.Container.processEvent(Container.java:792)
+        at java.awt.Window.processEvent(Window.java:273)
+        at java.awt.Component.dispatchEventImpl(Component.java:1456)
+        at java.awt.Container.dispatchEventImpl(Container.java:837)
+        at java.awt.Window.dispatchEventImpl(Window.java:401)
+        at java.awt.Component.dispatchEvent(Component.java:1393)
+        at java.awt.EventDispatchThread.run(EventDispatchThread.java:63)
+//------------------------------------------------------------------------------
+#Number:	20
+#Autor:		Bernd Weber bwe
+#Subject:	Editor: Default Connectoren von Or States nicht zu lschen
+#Status:	processing
+#Description:
+
+Default Connectoren von Or States koennen nicht geloescht werden. 
+Workaround: Erst Default Connector des Basic States loeschen, dann
+Substates erzeugen (und keine neuen Basic States auf gleicher Ebene
+wie ein Or State, sonst ist alles hin.
+//------------------------------------------------------------------------------
+#Number:	21
+#Autor:		Bernd Weber bwe
+#Subject:	Check: Mehrere oder keine Default States werden nicht erkannt
+#Status:	confirmed
+#Description:
+
+Check gibt weder Fehler noch Warnungen aus, obwohl keine bzw. zu viele
+Default States vorhanden sind.
+//------------------------------------------------------------------------------
+#Number:	22
+#Autor:		Bernd Weber bwe
+#Subject:	Editor: Transition werden bei Zoom verschoben
+#Status:	reported
+#Description:
+
+Erstellt man eine Chart mit Transitionbeschriftungen und whlt einen
+neuen Zoomfaktor, werden die Labels an anderer Stelle nochmal
+plaziert, wenn man sich ihnen mit dem Mauszeiger nhert.
+//------------------------------------------------------------------------------
+#Number:	23
+#Autor:		Bernd Weber bwe
+#Subject:	Crossreferenz funktioniert nicht
+#Status:	confirmed
+#Description:
+
+Aufruf von Crossreferenz ergibt Meldungen der GUI:
+GUI   : starte Crossreferenz
+GUI   : ende Crossreferenz
+Das war's. Mehr passiert nicht.
+//------------------------------------------------------------------------------
+#Number:	24
+#Autor:		Bernd Weber bwe
+#Subject:	Check: erkennt multiple bzw. fehlende Default Connectoren nicht
+#Status:	confirmed
+#Description:
+
+Or State mit mehreren Default Connectoren bzw. gar keinen wird nicht bemngelt.
+//------------------------------------------------------------------------------
+#Number:	25
+#Autor:		Bernd Weber bwe
+#Subject:	Editor: Or-State kann nicht in And-State gewandelt werden
+#Status:	reported
+#Description:
+
+Erzeuge einen Or-State mit zwei Zustanden und einen Basic-State neben dem
+Or-State. Zeichne eine Transition vom Or-State zum Basic-State. Versucht man
+nun, den Or-State zwischen den zwei Basic-States in einen And-State zu teilen,
+gibt's eine Exception (und unzhlige folgen):
+
+Exception occurred during event dispatching:
+java.lang.NullPointerException: 
+        at editor.EditorUtils.abs(EditorUtils.java:774)
+        at editor.EditorUtils.orStateSplit(EditorUtils.java:702)
+        at editor.EditorUtils.andStateMouseReleased(EditorUtils.java:412)
+        at editor.Editor$12.mouseReleased(Editor.java:379)
+        at java.awt.Component.processMouseEvent(Component.java:1901)
+        at java.awt.Component.processEvent(Component.java:1778)
+        at java.awt.Container.processEvent(Container.java:792)
+        at java.awt.Window.processEvent(Window.java:273)
+        at java.awt.Component.dispatchEventImpl(Component.java:1456)
+        at java.awt.Container.dispatchEventImpl(Container.java:837)
+        at java.awt.Window.dispatchEventImpl(Window.java:401)
+        at java.awt.Component.dispatchEvent(Component.java:1393)
+        at java.awt.EventDispatchThread.run(EventDispatchThread.java:63)
+//------------------------------------------------------------------------------
+#Number:	25.1
+#Autor:		Bernd Weber bwe
+#Subject:	Check: erkennt Interlevel-Transition nicht.
+#Status:	processing
+#Description:
+
+Erzeugt man einen Or-State und einen Basic-State wie in Nr. 24 und zieht eine
+Transition von einem der Basic-States im Or-State zum Basic-State neben dem
+Or-State gibt's beim Syntaxcheck keine Fehler.
+//------------------------------------------------------------------------------
+#Number:	25.2
+#Autor:		Bernd Weber bwe
+#Subject:	Editor: Nach "Datei-Neu" arbeiten GUI noch mit der alten Chart
+#Status:	reported
+#Description:
+
+Erzeugt man eine Chart und whlt im Datei-Menu "Neu" wirkt sich dies nur auf den
+Editor aus. Hier beginnt man eine neue Chart, whrend der PrettyPrinter noch die
+alte Chart anzeigt. nderungen im Editor haben keine Wirkung, da GUI die Chart
+an weitere Methoden wie Check, Export, Speichern usw. bergibt.
+//------------------------------------------------------------------------------
+#Number:	26
+#Autor:		Bernd Weber bwe
+#Subject:	Editor: Exception bei neuem Zustand wenn Interlevel-Tr. existieren
+#Status:	processing und fixed
+#Description:
+
+Erzeuge einen State und darin einen Substate.Erzeuge neben dem Or-State einen
+Basic-State. Erstelle Interlevel Transitionen vom Basic-State zum Substate des
+Or-States und eine in die umgekehrte Richtung.  Dann erzeuge neben Or- und
+Basic-State einen weiteren Zustand. Dann gibt's eine Exception:
+
+  java.lang.NullPointerException: 
+        at editor.EditorUtils.abs(EditorUtils.java:774)
+        at editor.EditorUtils.orStateSplit(EditorUtils.java:702)
+        at editor.EditorUtils.createStateMouseReleased(EditorUtils.java:107)
+        at editor.Editor$12.mouseReleased(Editor.java:377)
+        at java.awt.Component.processMouseEvent(Component.java:1901)
+        at java.awt.Component.processEvent(Component.java:1778)
+        at java.awt.Container.processEvent(Container.java:792)
+        at java.awt.Window.processEvent(Window.java:273)
+        at java.awt.Component.dispatchEventImpl(Component.java:1456)
+        at java.awt.Container.dispatchEventImpl(Container.java:837)
+        at java.awt.Window.dispatchEventImpl(Window.java:401)
+        at java.awt.Component.dispatchEvent(Component.java:1393)
+        at java.awt.EventDispatchThread.run(EventDispatchThread.java:63)
+//------------------------------------------------------------------------------
+#Number:	27
+#Autor:		Bernd Weber bwe
+#Subject:	Editor: Rckgngig lscht alle Zustnde
+#Status:	reported
+#Description:
+
+Man erzeuge eine Chart und darin drei Basic-States nebeneinander. Nun whlt man
+Rckgngig:Zustand hinzufgen, und alle States sind wieder weg (sagt auch
+PrettyPrinter).
+//------------------------------------------------------------------------------
+#Number:	28
+#Autor:		Bernd Weber bwe
+#Subject:	Editor: Rckgngig lscht alle Transitionen
+#Status:	reported
+#Description:
+
+Man erzeuge eine Chart und darin drei Basic-States nebeneinander. Nun zeichnet
+man mehrere Transitionen und whlt Rckgngig:Transition hinzufgen, und alle
+Transitionen sind wieder weg (sagt auch PrettyPrinter).
+//------------------------------------------------------------------------------
+#Number:	29
+#Autor:		Bernd Weber bwe
+#Subject:	Editor: Rckgngig lscht alle Elemente eines Typs
+#Status:	reported
+#Description:
+
+Anscheinend lscht Rckgngig wie in Nr. 27 und 28 immer alle Elemente eines
+Typs, die zuletzt in einem Rutsch erstellt wurden.
+//------------------------------------------------------------------------------
+#Number:	30
+#Autor:		Bernd Weber bwe
+#Subject:	Editor: Nach Transition knnen Zustnde nicht mehr erzeugt werden
+#Status:	processing und fixed
+#Description:
+
+Wie Nr. 26, nur mit einfacherem Beispiel:
+Erzeuge neue Chart mit einem Basic State, erstelle Transition von diesem Zustand
+zu sich selbst (selbstverstndlich erlaubt!) und versuche, einen neuen Zustand
+zu erzeugen. Das ergibt eine Exception:
+  java.lang.NullPointerException: 
+        at editor.EditorUtils.abs(EditorUtils.java:774)
+        at editor.EditorUtils.orStateSplit(EditorUtils.java:702)
+        at editor.EditorUtils.createStateMouseReleased(EditorUtils.java:107)
+        at editor.Editor$12.mouseReleased(Editor.java:377)
+        at java.awt.Component.processMouseEvent(Component.java:1901)
+        at java.awt.Component.processEvent(Component.java:1778)
+        at java.awt.Container.processEvent(Container.java:792)
+        at java.awt.Window.processEvent(Window.java:273)
+        at java.awt.Component.dispatchEventImpl(Component.java:1456)
+        at java.awt.Container.dispatchEventImpl(Container.java:837)
+        at java.awt.Window.dispatchEventImpl(Window.java:401)
+        at java.awt.Component.dispatchEvent(Component.java:1393)
+        at java.awt.EventDispatchThread.run(EventDispatchThread.java:63)
+//------------------------------------------------------------------------------
+#Number:	31
+#Autor:		Bernd Weber bwe
+#Subject:	Check: Erkennt Schleife an Connector nicht
+#Status:	processing
+#Description:
+
+Erstellt man einen Connector und darin eine Transition von diesem zu sich
+zurck, meldet Check keine Fehler.
+Genauso verhlt es sich, wenn man Connectoren ohne ausgehende bzw. eingehende
+Transitionen hat: keine Warnung, kein Fehler.
+//------------------------------------------------------------------------------
+#Number:	32
+#Autor:		Bernd Weber bwe
+#Subject:	Editor: Connector-Namen nicht eindeutig
+#Status:	processing
+#Description:
+
+Erstellt man mehrere Connectoren in einem State, haben diese alle den gleichen
+Namen.
+Erzeugt man eine Chart mit mehreren Basic States und Connectoren und ein paar
+Transitionen zwischen States und Connectoren, schlgt nach einem Tesc-Export der
+Import fehl (mit der sprlichen Meldung: FEHLER).
+//------------------------------------------------------------------------------
+#Number:	33
+#Autor:		Bernd Weber bwe
+#Subject:	Simulation: Kommt mit Connectoren nicht klar
+#Status:	reported
+#Description:
+
+Man erzeuge drei Basic-States und einen Connector. Nun generiert man eine
+Transition von einem der States zum Connector. Es folgen zwei Transitionen vom
+Connector zu den zwei anderen Zustnden. Jetzt startet man die Simulation und
+macht zwei Schritte. 
+Die Simulation terminiert nun nicht mehr, sondern blht sich im Speicher auf und
+frisst Speicher weg (bis mangels Swap-Space mein Linux-rechner
+stehenbleibt :-( ). 
+Sicherung dagegen: Mit ulimit maximalen Speicherverbrauch festlegen, dann wird
+PEST irgendwann gekillt AFAIK.
+//------------------------------------------------------------------------------
+#Number:	34
+#Autor:		Bernd Weber bwe
+#Subject:	Simulation: Transition bei Nicht-Determinismus nicht whlbar
+#Status:	reported
+#Description:
+
+Tritt in der Simulation ein Nicht-Determinismus auf, erscheint ein Fenster, in
+dem man die Transition(en) auswhlen knnen soll. Mir ist dies nicht mglich
+(Fenster zu klein, Funktionalitt nicht klar, Docu nicht vorhanden.)
+//------------------------------------------------------------------------------
+#Number:	35
+#Autor:		Bernd Weber bwe
+#Subject:	Simulation: Kommt i.A. mit Connectoren nicht klar
+#Status:	reported
+#Description:
+
+Erzeuge zwei States, dazwischen einen Connector und ein Transition vom einen
+State zum Connector und eine vom Connector zum zweiten State. Nach zwei
+Schritten in der Simulation gibt's eine Exception:
+  Exception occurred during event dispatching:
+  java.lang.ClassCastException: 
+        at simu.Nachfolgermaschine.getTrsFromConnectorname(Nachfolgermaschine.java:384)
+        at simu.Nachfolgermaschine.progress(Nachfolgermaschine.java:423)
+        at simu.Nachfolgermaschine.progress(Nachfolgermaschine.java:526)
+        at simu.Nachfolgermaschine.step(Nachfolgermaschine.java:122)
+        at simu.Nachfolgermaschine.step(Nachfolgermaschine.java:199)
+        at simu.Nachfolgermaschine.liefereNachfolger(Nachfolgermaschine.java:225)
+        at simu.Communicator.vor(Communicator.java:69)
+        at simu.Communicator$2.actionPerformed(Communicator.java:141)
+        at java.awt.Button.processActionEvent(Button.java:172)
+        at java.awt.Button.processEvent(Button.java:153)
+        at java.awt.Component.dispatchEventImpl(Component.java:1456)
+        at java.awt.Component.dispatchEvent(Component.java:1393)
+        at java.awt.EventDispatchThread.run(EventDispatchThread.java:63)
+//------------------------------------------------------------------------------
+#Number:	36
+#Autor:		Bernd Weber bwe
+#Subject:	Tesc: Fehlender Default State wird nicht erkannt
+#Status:	confirmed
+#Description:
+
+Importiere ~swtech12/Examples/misc/faulty1.tesc2. Ergibt keine Fehler, obwohl
+kein Default State markiert ist. Syntaxcheck meldet keine Fehler.
+//------------------------------------------------------------------------------
+#Number:	37
+#Autor:		Bernd Weber bwe
+#Subject:	Tesc: Zu viele Default States werden nicht erkannt
+#Status:	confirmed
+#Description:
+
+Importiere ~swtech12/Examples/misc/faulty2.tesc2. Ergibt keine Fehler, obwohl
+beide Basic States als Default angegeben sind. Syntaxcheck meldet keine Fehler.
+//------------------------------------------------------------------------------
+#Number:	38
+#Autor:		Bernd Weber bwe
+#Subject:	Tesc: Falscher Default State wird nicht erkannt
+#Status:	reported
+#Description:
+
+Importiere ~swtech12/Examples/misc/faulty3.tesc2. Ergibt keine Fehler, obwohl
+root als sein eigener default markiert ist. Syntaxcheck meldet keine Fehler.
+
+Zurückgesetzt weil das Beispiel noch immer importierbar ist und keine
+Fehler gemeldet werden.
+//------------------------------------------------------------------------------
+#Number:	39
+#Autor:		Bernd Weber bwe
+#Subject:	Check: Terminiert nicht !!!
+#Status:	confirmed
+#Description:
+
+Importiere ~swtech12/Examples/misc/bvar-test1.tesc2. Chart wird im Editor
+richtig angezeigt und enthlt AFAIK keine Fehler. Der Syntaxcheck terminiert
+jedoch nicht und verbrt die gesamte Rechenzeit :-( .
+//------------------------------------------------------------------------------
+#Number:	40
+#Autor:		Erich Mikk
+#Subject:	Check erkennt Undet_Guard nicht
+#Status:	processing
+#Description:
+
+STM-Import SE-Systems/bf_thrusters.st.
+Der Import meldet sehr viele (!!!) Warnings (Undet-Guard).
+SyntaxCheck ist aber erfolgreich...
+Das kann aber nicht sein (auch deswegen nicht, weil TESC-Export die importierte Chart
+nicht exportieren kann).
+//------------------------------------------------------------------------------
+#Number:	41
+#Autor:		Bernd Weber bwe
+#Subject:	BASIC-State kann nicht benannt werden
+#Status:	reported
+#Description:
+
+Man importiere ~swtech12/Examples/misc/nondet-test1.tesc2. Dann
+versuche man, den Zustand Init umzubenennen. Bei mir erscheint immer
+das Menu fr den Zustand Nondet.
+//------------------------------------------------------------------------------
+

@@ -1,0 +1,102 @@
+//-----------------------------------------------------------------------------
+//	Fehlerliste von PEST2
+//	------------------
+//
+//	$Id: report_list,v 1.10 1999/01/21 15:48:30 swtech23 Exp $
+//
+//------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------
+// Das ist ein Kommentar
+// Muster
+//
+// #Number: 	<Error number> 
+// #Autor: 	<name> <e-mail>
+// #Subject: 	<short title>
+// #Status: 	reported | processing | fixed | confirmed
+// #Description: 
+// <long description how to generate>
+//------------------------------------------------------------------------------
+
+
+#Number: 	1
+#Autor:   	Michael Suelzer swtech20
+#Subject:	Statemate generiert Bvar mit Leerstring
+#Status: 	confirmed
+#Description: 
+Wenn man das Beispiel s1.st per Import->STATEMATE->stm/Test/a1.st importiert,
+erhaelt man eine Bvar mit leerem Bezeichner. Pretty-Printer:
+
+.
+|   [BvarList]
+|   |   [Bvar]
+.
+
+Probleme gibt es dann spaeter beim Export/Import mit TESC.
+//------------------------------------------------------------------------------
+
+
+#Number:  	2
+#Autor:		Michael Suelzer swtech20
+#Subject:	Checker erkennt eingetragene Zustaende nicht
+#Status:	fixed
+Description:
+Wenn man Import->TESC->tesc1/Test/simple.tesc und anschliežend
+den Syntax-Checker ausfuehrt, erhaelt man den Fehler:
+
+.A1Event(e2) nicht gefunden
+
+,obwohl e2 in SEventList eingetragen ist. Pretty-Printer:
+
+|   [SEventList] 
+|   |   [SEvent] e1
+|   |   [location] 5
+|   |   [SEvent] e2
+|   |   [location] 5
+
+Ausserdem wird eine Exception geworfen:
+
+Exception occurred during event dispatching:
+java.lang.NullPointerException
+        at check.CheckEvents.check(CheckEvents.java:96)
+        at check.CheckEvents.check(CheckEvents.java:117)
+        at check.ModelCheck.checkModel(ModelCheck.java:157)
+        at gui.pest.checkSB(pest.java:224)
+        at gui.GUIwerkML.actionPerformed(GUIwerkML.java:32)
+        at java.awt.MenuItem.processActionEvent(MenuItem.java:436)
+        at java.awt.MenuItem.processEvent(MenuItem.java:400)
+        at java.awt.MenuComponent.dispatchEventImpl(MenuComponent.java:177)
+        at java.awt.MenuComponent.dispatchEvent(MenuComponent.java:169)
+        at java.awt.EventDispatchThread.run(EventDispatchThread.java:83)
+//------------------------------------------------------------------------------
+
+
+#Number:	3
+#Autor:		Mario Thies swtech23
+#Subject:	Statechart automatisch speichern
+#Status: 	confirmed 
+#Description: 
+Nach dem Importieren von ueber tesc, anschliessendem Check und Beenden von
+Pest erscheint das Fenster, dass die Statechart geaendert aber noch nicht
+gespeichert wurde.
+//------------------------------------------------------------------------------
+#Number:	4
+#Autor:		Erich Mikk erm
+#Subject:	Transitionsbeschriftungen nicht sichtbar
+#Status: 	reported 
+#Description: 
+
+Import->Statemate lädt swtech12/Examples/TV/tv.st.
+Starte Editor.
+FEHLER:
+Transitionsbeschriftungen nicht sichtbar.
+//------------------------------------------------------------------------------
+#Number:	5
+#Autor:		Erich Mikk erm
+#Subject:	Chart nicht vollständig sichtbar
+#Status: 	reported 
+#Description: 
+
+Lade Statechart wie in Nr. 4. und starte Editor.
+Fehler: Oberer Rand (etwa 1/5)der Chart ist nicht sichtbar.
+//------------------------------------------------------------------------------

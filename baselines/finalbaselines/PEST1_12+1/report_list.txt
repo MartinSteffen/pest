@@ -1,0 +1,1161 @@
+//-----------------------------------------------------------------------------
+//	Fehlerliste von PEST1
+//	---------------------
+//
+//	$Id: report_list,v 1.116 1999/02/28 18:18:49 swtech26 Exp $
+//
+//------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------
+// Das ist ein Kommentar
+// Muster
+//
+// #Number: 	<Error number> 
+// #Autor: 	<name> <e-mail>
+// #Subject: 	<short title>
+// #Status: 	reported | processing | fixed | confirmed
+// #Description: 
+// <long description how to generate>
+//------------------------------------------------------------------------------
+
+
+#Number: 	1
+#Autor:   	Erich Mikk erm
+#Subject:	Wiederholtes Starten des Editors nicht möglich
+#Status:        fixed(unter Linux gibt es diesen Fehler nicht) 	
+#Description: 
+
+Wieder zurückgesetzt, mit der gleichen Begründung:
+Zurückgesetzt, weil die gleiche Sequenz ist möglich, wenn man statt
+Menüs die graphische benutzerführung benutzt.
+
+Die Hauptinstanz (gui) erkennt es offenbar nicht, wenn der Editor
+geschlossen worden ist. Folgende Sequenz führt zu dem Fehler:
+
+(1) Starte PEST:
+cd PEST1/gui
+java gui.pest
+
+(2) Importiere ein Statechart über File->Import->Statemate
+Man nehme z.B. /home/swtech12/Examples/TV/remote_control.st
+
+(3) Starte Editor: Werkzeuge->Editor
+
+(4) Schließe Editor: Im Editor Window->Schliessen
+
+(5) Versuche Editor zu starten: Werkzeuge->Editor
+
+FEHLER: Es erscheint eine Fehlermeldung (Es kann nur ein Editor gestartet
+werden!). obwohl der Editor geschlossen worden ist.
+
+//------------------------------------------------------------------------------
+
+#Number: 	2
+#Autor:   	Erich Mikk erm
+#Subject:	Hauptinstanz versucht Statechart zu laden
+#Status: 	confirmed 
+#Description: 
+
+(0) Man führe die Sequenz aus Number 1 aus. 
+(1) Man schließe PEST: Datei-> Beenden. I
+Im Dialog (etwa: Statechart ist nicht gespeichert, fortfahren?) 
+die Statechart NICHT speichern!
+(2) Starte PEST erneut.
+(3) Jetzt sieht man ein Fenster: 
+Das Laden ist fehlgeschlagen! (ERSTER FEHLER, warum laden)?
+(4) Antwort OK. Danach wird Editor gestartet (ZWEITER FEHLER, wieso?)
+
+//------------------------------------------------------------------------------
+
+#Number: 	3
+#Autor:   	Erich Mikk erm
+#Subject:	Menüs nicht einheitlich
+#Status: 	confirmed 
+#Description: 
+
+Das linke obere Menü hießt in der Hauptinstanz und im Editor anders. Auch
+die Menüpunkte heißen verschieden, obwohl die gleiche Funktionalität
+dahinter verbergt ist.
+//------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------
+
+#Number:        4 
+#Autor:         Sven Jorga, Werner Lehmann swtech18
+#Subject:       HA-Format Fehler 
+#Status:        confirmed
+#Description:
+
+Die Dateien ~/swtech12/Examples/SE-Systems/cd.st und ~/swtech12/Examples/TV/system.st
+sind fehlerhaft: cd.st hat keine Initmap und system.st hat keine Trmap.
+//-----------------------------------------------------------------------------
+
+#Number:        5
+#Autor:         Arne Koch swtech13
+#Subject:       Warnings bei SyntaxCheck
+#Status:        confirmed
+#Description:
+
+Falls in einer Action einer Transition Events generiert werden, auf die in
+keiner Transition reagiert wird, soll es eine Warnung geben. 
+Falls man aber eine Liste von Events angibt, wird nur eine Warnung
+ausgegeben, falls auf das LETZTE Element der Sequenz nicht reagiert wird.
+Bsp.: Als Events werden E1, E2, E3 generiert
+
+Check: - Deklarierter Event wurde nicht verwendet (202)
+Check:   [E3]
+
+Falls auf E3 reagiert wird, gibt es gar keine Meldung.
+
+(Import->TESC->tesc1/Test/bsp1.tesc->SyntaxCheck)
+
+//------------------------------------------------------------------------------
+#Number:        6
+#Autor:         Erich Mikk erm
+#Subject:       Interlevel Transitionen in TV
+#Status:        confirmed
+#Description:
+
+In ~swtech12/Examples/TV/tv.st ist eine Interlevel-Transition. Folgendes
+muss hier Passieren: z.B. Die Transition von VIDEOTEXT nach SHOW darf nicht
+als Interlevel-Transition dargestellt werden.
+//------------------------------------------------------------------------------
+
+#Number:        7
+#Autor:         Erich Mikk erm
+#Subject:       Default States im Editor nicht sichtbar.
+#Status:        confirmed
+#Description:
+
+
+Der Editor hat keine Bezeichnung für default states.
+
+Man sieht es, wenn man z.B. ~swtech12/Examples/TV/tv.st über 
+Datei->Import->Statemate lädt.
+
+//------------------------------------------------------------------------------
+#Number:	8
+#Autor:		Heiko Haller swtech21
+#Subject:	PEST1: Transitionen-Label machen Zoom nicht mit
+#Status:	confirmed
+#Description:
+
+Wenn ich eine Transition zwischen zwei States mit einem Label versehe
+und dann Zoom ausfuehre, wird das Label nicht mehr an die Transition
+geschrieben. Die Label von States hingegen werden korrekt gezoomt.
+
+//------------------------------------------------------------------------------
+
+#Number:	9
+#Autor:		Stefan Lemke swtech21
+#Subject:	PEST1: Benennung von States im Zoom-Modus
+#Status:	confirmed
+#Description:
+
+In eine Chart hineingezoomt.
+Einen kleinen Zustand auf dritter Ebene erstellt. Er konnte nicht benannt 
+werden, das Umbennen-Fenster wurde nicht geoeffnet.
+//------------------------------------------------------------------------------
+#Number:	10
+#Autor:		Stefan Lemke swtech21
+#Subject:	PEST1: Bildgroesse im Zoom-Modus
+#Status:	fixed
+#Description:
+
+am 9.2.99 zurueckgesetzt: 50-fach aus einem Chart herausgezoomt und ganz unten
+ein State gezeichnet. Anschliessend 70-fach wieder eingezoomt: Der gezeichnete
+Zustand kann mit den Slidern nicht erreicht werden.
+
+
+In eine Chart gezommt.
+Die rechte untere Ecke des Charts ist nicht mit den Slidern erreichbar.
+
+
+//------------------------------------------------------------------------------
+#Number:	11
+#Autor:		Stefan Lemke swtech21
+#Subject:	PEST1: Loeschen von States
+#Status:	confirmed
+#Description:
+
+State erstellt. Das Loeschen ist nicht moeglich. Auswahl der Funktion aus dem
+Kontextmenue hat keine Wirkung.
+
+//------------------------------------------------------------------------------
+#Number:	12
+#Autor:		Stefan Lemke swtech21
+#Subject:	Benennung von kleinen States
+#Status:	confirmed
+#Description:
+
+3x in eine Statechart gezoomt. State (Groesse auf Bildschirm ca. 1 cm x 3 cm)
+ist nicht benennbar, groessere States jedoch schon.
+//------------------------------------------------------------------------------
+#Number:	13
+#Autor:		Magnus Stiller swtech11
+#Subject:	Namensgleichheit von States bei Interlevel Transitionen
+#Status:	confirmed
+#Description:
+
+Wenn in verschiedenen Ebenenen States den gleichen Namen haben, kann man bei einer Transition nicht sagen, ob sie nun von einem State zum selben geht, oder eine IT vorliegt.
+
+//------------------------------------------------------------------------------
+#Number:	14
+#Autor:	        Daniel Wendorff swtech11
+#Subject:	Interleveltransition ? siehe Nummer 6
+#Status:	confirmed
+#Description:
+
+
+>>In ~swtech12/Examples/TV/tv.st ist eine Interlevel-Transition. Folgendes
+>>muss hier Passieren: z.B. Die Transition von VIDEOTEXT nach SHOW darf nicht
+>>als Interlevel-Transition dargestellt werden.
+
+Die Interlevel-Transition, die man im Editor vom Standby zu CH1 sieht, ist keine. 
+Ihr Source ist Standby und ihr Target Working. Die Koordinaten des Linienzuges stimmen mit dem Ziel nicht ueberein. Die Koordinaten fuehren zu dem State CH1. Die Koordinaten sind wahrscheinlich schon im TV.st File falsch.
+
+
+//------------------------------------------------------------------------------
+#Number:	15
+#Autor:		Marcel Kyas, Walter Loeser, Andre Paetzold swtech25
+#Subject:	Simulator laesst sich nicht schliessen.
+#Status:	reported
+#Description:
+
+Das schliessen des Simulators fuehrt zu einer Null-pointer exception.
+
+
+//------------------------------------------------------------------------------
+#Number:	16
+#Autor:		Marcel Kyas, Walter Loeser, Andre Paetzold swtech25
+#Subject:	Kein Pfad fuer CodeGen.
+#Status:	confirmed	
+#Description:
+
+Man kann fuer die Code Erzeugung keinen Pfad angeben.  Der Pfad "."
+ist leider nicht brauchbar zum ordentlichen testen.
+//------------------------------------------------------------------------------
+#Number:	17
+#Autor:		Erich Mikk erm
+#Subject:	stm generiert ein Exception, den keiner fängt
+#Status:	not processing (ist keine Exception, StackTrace auskommentiert) 
+#Description:
+
+Versuche Statecharts zu Importieren wie in Number 1 (wichtig; tv.st).
+Folgende Ausgabe des programms ist nicht erwünscht:
+java.lang.Exception: Interleveltransitionen nicht zulässig
+        at stm.HAImport.makeTrHash(HAImport.java:379)
+        at stm.HAImport.initImport(HAImport.java:181)
+        at stm.HAImport.<init>(HAImport.java:122)
+        at gui.GUIimportML.actionPerformed(GUIimportML.java:80)
+        at java.awt.MenuItem.processActionEvent(MenuItem.java:436)
+        at java.awt.MenuItem.processEvent(MenuItem.java:400)
+        at java.awt.MenuComponent.dispatchEventImpl(MenuComponent.java:177)
+        at java.awt.MenuComponent.dispatchEvent(MenuComponent.java:169)
+        at java.awt.EventDispatchThread.run(EventDispatchThread.java:83)
+
+//----------------------------------------------------------------------------
+#Number:	18
+#Autor:		Erich Mikk erm
+#Subject:	Start des Simulators gelingt nicht: NullPointerException
+#Status:	confirmed
+#Description:
+
+Importiere  ~swtech12/Examples/TV/tv.st
+Starte Editor
+Starte Simulator. Dann sieht man folgendes in stderr:
+
+java.lang.NullPointerException
+        at simu.Simu.makeTab(Simu.java:2192)
+        at simu.Simu.<init>(Simu.java:181)
+        at gui.GUIwerkML.actionPerformed(GUIwerkML.java:40)
+        at java.awt.MenuItem.processActionEvent(MenuItem.java:436)
+        at java.awt.MenuItem.processEvent(MenuItem.java:400)
+        at java.awt.MenuComponent.dispatchEventImpl(MenuComponent.java:177)
+        at java.awt.MenuComponent.dispatchEvent(MenuComponent.java:169)
+        at java.awt.EventDispatchThread.run(EventDispatchThread.java:83)
+ 
+//------------------------------------------------------------------------------
+#Number:	19
+#Autor:		Magnus Stiller swtech11
+#Subject:	Defaultstate im Editor nicht moeglich
+#Status:	confirmed
+#Description:
+
+Setzt man in einem leeren Editor einen State und will diesen als Default kennzeichenen, passiert nichts.
+
+//------------------------------------------------------------------------------
+#Number:	20
+#Autor:		Erich Mikk
+#Subject:	STM-Importierten Labels werden nicht angezeigt: Koordinaaten fehlen
+#Status:	confirmed
+#Description:
+
+Importiere z.B. TV/tv.st und starte Editor.
+Der Editor zeigt keine tr-Labels an.
+Das liegt wahrscheinlich daran, dass STM-Import sie nicht vorfindet 
+und auch selbst nicht erzeugt.
+//------------------------------------------------------------------------------
+
+#Number:	21
+#Autor:		Erich Mikk
+#Subject:	Code für TV/tv.st ist nicht kompilierbar
+#Status:	confirmed
+#Description:
+
+Importiere TV/tv.st.
+Generiere Code (Werkzeuge-> Codegenerator).
+In der Direktory, wo pest gestartet wurde, befindet sich jetzt Automaton.java.
+Beim kompilieren bekommt man folgenden Fehler:
+
+goofy{swtech00} javac Automaton.java
+Automaton.java:12: ')' expected.
+        if ( pre_events[EVENT_$$stop$$] {
+                                       ^
+1 error
+//------------------------------------------------------------------------------
+
+#Number:	22
+#Autor:		Erich Mikk
+#Subject:	STM-Import traegt ~ für leere Beschriftung ein.
+#Status:	confirmed
+#Description:
+
+Beim Import wird das Feld 'caption' in TLabel von  der STM-Import gefüllt. 
+Bei leeren Beschriftungen wird ~ als Beschriftung in caption eingetragen.
+So sehen die Berschrifungen z.Zt. so aus: ~[~]/~. 
+
+Sein soll: ein String der Länge null.
+//------------------------------------------------------------------------------
+
+#Number:	23
+#Autor:		Daniel Wendorff Magnus Stiller swtech11
+#Subject:	falsches Einsortieren von Transitionen durch Editor
+#Status:	confirmed
+#Description:
+
+Man importiert mit TESC examples ein. Dann einen SyntaxCheck, der
+keine Fehler anzeigt. Anschliessend oeffnet man den Editor und fuehrt
+erneut den Check durch, jetzt hat man viele Interlevel Transitionen,
+die als Fehler angezeigt werden.
+//------------------------------------------------------------------------------
+
+#Number:	24
+#Autor:		Erich Mikk
+#Subject:	Interlevel Trs in SE-Examples/cd.st
+#Status:	confirmed
+#Description:
+
+STM-Import SE-Examples/cd.st.
+TESC-Export nach cd.tesc
+TESC-Import von cd.tesc.
+Start Editor.
+Start Simulation.
+
+Jetzt wird im Errorbrowser angezeigt, dass eine Menge von Trs Interlevel
+sei.  Leider konnte ich die Bilder dazu nicht finden (Chart ist einfach zu
+gross), aber das faellt mir schwer zu glauben. Schliesslich sind die
+Koordinaaten von TESC2 berechnet und in der Originalchart gibt es keine
+Interlevel Trs.
+
+Was geht hier schief:
+
+(1) Koordinatenberechnung?
+(2) Ermittlung von Interlevel Trs anhand von Koordinaaten?
+
+//------------------------------------------------------------------------------
+#Number:	25
+#Autor:		Erich Mikk
+#Subject:	STM-Import ignoriert history connectors
+#Status:	confirmed
+#Description:
+
+In manchen Files des SAFER-Projekts verwendet man history connectors
+(z.B. active_axes.st). PEST unterstützt z.Zt. keine histories!
+Falsch ist, dass der Benutzer nicht gewarnt wird, dass STM-Import die
+history connectors vergisst. Also: Hier fehlt eine Warnung!
+
+//------------------------------------------------------------------------------
+#Number:	26
+#Autor:		Erich Mikk erm
+#Subject:	STM-Import achtet nicht auf Keywords
+#Status: 	confirmed
+#Description: 
+
+AM 4.2. VOM FIXED AUF REPORTED ZURÜCKGESETZT. 
+
+GRUND:
+------
+
+Versuche SAFER/active_axes.st zu importieren.
+Das wird abgeleht und als Fehler wird angezeigt:
+
+TESC-Export: Fehler: Bvar "OK_TO_CHANGE" im Eventteil gefunden!
+TESC-Export: Fehler: Bvar "OK_TO_CHANGE" im Eventteil gefunden!
+TESC-Export: Fehler: Bvar "OK_TO_CHANGE" im Eventteil gefunden!
+STM: Fehler beim Importieren. (Zustandsname (ON) ist reserviertes Schlüsselwort.)
+
+Das kann doch nicht angehen, dass man Keywords als Substring nicht haben kann!?
+
+DIE FOLGENDE SEQUENZ IST IN DER TAT NICHT MEHR MÖGLICH.
+-------------------------------------------------------
+
+Importiere SE-Systems/vcr.st 
+Mit dieser Chart gibt es Probleme, die man sieht, wenn man TESC benutzt.
+Zuerst Chart über TESC exportieren.
+Dann versuchen wieder über TESC zu importieren.
+Das geht jetzt nicht, weil TESC Keywords in Guards nicht zuläßt 
+(das wird auch richtig gemeldet).
+
+Der Fehler besteht darin, daß STM es zugelassen hat, eine "kranke" Chart zu
+importieren. 
+
+Check muß auf Keywords nicht prüfen, weil wir es so vereinbart haben
+(stattdessen müssen es TESC und STM-Import).
+
+(Dieser Fehler ist auch bei PEST2 gemeldet, Nr. 7)
+//------------------------------------------------------------------------------
+#Number:	27
+#Autor:		Heiko Haller, Stefan Lemke, swtech21
+#Subject:	Editzeile beim Labeln zunaechst zu klein
+#Status:        confirmed
+#Description: 
+
+Wenn man Transitionen oder States labeln will, wird das Labelfenster
+mit einer defaultmaessig viel zu kleinen Eingabezeile
+geoeffnet. Vergroessern des Fensters vergroessert auch den
+Eingabebereich. 
+//------------------------------------------------------------------------------
+#Number:	28
+#Autor:		Heiko Haller, Stefan Lemke, swtech21
+#Subject:	Grafisches Menue laesst SyntaxCheck nicht zu
+#Status: 	confirmed
+#Description: 
+
+TESC importiert.
+Editor geoeffnet.
+SyntaxCheck ueber grafisches Menue gestartet und das Checkfenster wieder
+geschlossen. 
+Danach ist der SyntaxCheck nicht mehr ueber das grafische Menue aktivierbar,
+ueber das normale Menue jedoch schon.  
+
+//------------------------------------------------------------------------------
+#Number:	29
+#Autor:		Heiko Haller, Stefan Lemke, swtech21
+#Subject:	Editor: Nach Undo kein chart mehr
+#Status: 	confirmed (alle weiteren Fehler ligen als Clone-Fehler in der
+		AbSyn)
+#Description: 
+
+or Safer:
+        basic Init;
+	basic P1;
+        basic P2;
+        
+        defcon: Init;
+ 
+        transitions:
+	from Init to P1 on;
+        from P1 to P2 on P1Ready;
+        from P2 to P1 on P2Ready;
+        
+end Safer;
+
+obiges TESC-File importiert.
+Editor geoeffnet.
+Transition von Init nach P1 geloescht. Bei UNDO wird gesamtes Statechart nicht
+mehr angezeigt. 
+//------------------------------------------------------------------------------
+#Number:	30
+#Autor:		Erich Mikk erm
+#Subject:	Editor erzeugt Interlevel Transitionen (IT)?
+#Status: 	confirmed
+#Description: 
+
+Am 9.2. zurückgesetzt: es funktioniert zwar für a1.st, aber nicht für thrusters.st!
+
+Man nehme in der folgenden Sequenz statt PC/a1.st SAFER/thrusters.st.
+Dann hat man wieder den Eindruck, dass Editor ITs erzeugt.
+
+Import PC/a1.st (STM-Import).
+SyntaxCheck meldet zwar Fehler, aber keine IT-Fehler.
+Start Editor.
+Erneut SyntaxCheck.
+Jetzt werden IT-Fehler gemeldet.
+Offensichtlich wurden die Koordinaaten umberechnet (Editor?).
+
+Von Editor : Das Problem liegt in den Koordinatenangaben vom STM-Import,
+hier sind besonders die And-States zu nennen.
+
+//------------------------------------------------------------------------------
+#Number:	31
+#Autor:		Heiko Haller, Stefan Lemke, swtech21
+#Subject:	Editor zeichnet offenbar auch nicht sichtbare Bereiche
+#Status: 	canceled (Eine Auswahlroutine der zu zeichnenden Objekte dauert
+		          noch laenger)
+#Description: 
+
+in TESC beschriebenes Statechart importiert (~swtech21/tests/tesc/Safer3.tesc).
+Editor gestartet.
+10-fach in das chart gezoomt: Bis der Editor wieder reagiert dauert ewig lange.
+Scroll man ein kleines Stueck zur Seite, wird der neue Bereich aktualisiert und
+der Editor braucht wieder sehr lange.
+Bewegt man sich nun ganz nach rechts und Scrollt dort ein kleines Stueck
+zur Seite, wird der neue Bereich erst nach sehr langer Zeit nachgezeichnet.
+Dies legt die Vermutung nahe, dass beim Scrollen immer das ganze Chart
+gezeichnet wird.
+
+//------------------------------------------------------------------------------
+#Number:	32
+#Autor:		Heiko Haller, Stefan Lemke, swtech21
+#Subject:	Editor zeichnet Chart immer komplett
+#Status: 	canceled (Eine Auswahlroutine der zu zeichnenden Objekte dauert
+		          noch laenger)
+#Description: 
+
+Dieses Problem hatwahrscheinlich direkt mit 31 zu tun:
+Ich moechte in diesem grossen Chart eine Transition umlabeln, also
+'label Trans' aktiviert.
+Wandert man mit dem Cursor ueber die Transitionen wird jedesmal das komplette
+Chart neugezeichnet, was unglaublich lange dauert.
+TESC-file: ~swtech21/tests/tesc/Safer3.tesc
+
+//------------------------------------------------------------------------------
+#Number:	33
+#Autor:		Erich Mikk erm
+#Subject:	STM-Import nicht möglich (2 >= 2)?
+#Status: 	confirmed
+#Description: 
+
+STM-Import von folgenden Charts aus SAFER
+
+active_axes.st safer.st thrusters.st
+
+ist nicht möglich.
+Es ist auch nicht möglich nachzuvollziehen, warum nicht. Die einzige Meldung
+
+STM: Fehler beim Importieren. (2 >= 2)
+
+ist nicht besonders informativ.
+
+//------------------------------------------------------------------------------
+#Number:	34
+#Autor:		Bernd Weber bwe
+#Subject:	Editor erzeugt unbehandelte Exception:
+#Status: 	confirmed
+#Description: 
+
+Versucht man, ausserhalb aller gezeichneten Zustaende einen AND-State
+zu erzeugen, wird eine Exception erzeugt:
+
+Exception occurred during event dispatching:
+java.lang.NullPointerException
+        at editor.desk.drawPESTParallel.<init>(drawPESTParallel.java:69)
+        at editor.desk.PESTDrawDesk.processMouseEvent(PESTDrawDesk.java:476)
+        at java.awt.Component.processEvent(Component.java:2249)
+        at java.awt.Component.dispatchEventImpl(Component.java:1781)
+        at java.awt.Component.dispatchEvent(Component.java:1708)
+        at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:1559)
+        at java.awt.LightweightDispatcher.processMouseEvent(Container.java:1463)
+        at java.awt.LightweightDispatcher.dispatchEvent(Container.java:1395)
+        at java.awt.Container.dispatchEventImpl(Container.java:910)
+        at java.awt.Component.dispatchEvent(Component.java:1708)
+        at
+java.awt.EventDispatchThread.run(EventDispatchThread.java:81)
+
+Eine andere Exception wird erzeugt, falls man eine Komponente eines
+AND-States labeln will:
+Exception occurred during event dispatching:
+java.lang.ClassCastException: absyn.And_State
+        at editor.desk.labelPESTState.<init>(labelPESTState.java:52)
+        at editor.desk.PESTDrawDesk.processMouseEvent(PESTDrawDesk.java:442)
+        at java.awt.Component.processEvent(Component.java:2249)
+        at java.awt.Component.dispatchEventImpl(Component.java:1781)
+        at java.awt.Component.dispatchEvent(Component.java:1708)
+        at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:1559)
+        at java.awt.LightweightDispatcher.processMouseEvent(Container.java:1459)
+        at java.awt.LightweightDispatcher.dispatchEvent(Container.java:1395)
+        at java.awt.Container.dispatchEventImpl(Container.java:910)
+        at java.awt.Component.dispatchEvent(Component.java:1708)
+        at java.awt.EventDispatchThread.run(EventDispatchThread.java:81)
+//------------------------------------------------------------------------------
+#Number:	35
+#Autor:		Bernd Weber bwe
+#Subject:	Editor-Menu fehlt nach Simulation
+#Status: 	reported
+#Description: 
+
+Nach Beenden einer Simulation taucht das Editor-Menu nicht wieder auf.
+//------------------------------------------------------------------------------
+#Number:	36
+#Autor:		Bernd Weber bwe
+#Subject:	Syntaxfehler in von CodeGen erzeugtem Code
+#Status: 	confirmed
+#Description: 
+
+Default-Namen (beginnen mit "...") verursachen Syntax-Fehler im
+erzeugten Java-Code.
+//------------------------------------------------------------------------------
+#Number:	37
+#Autor:		Bernd Weber bwe
+#Subject:	Check-Meldungen inkonsistent
+#Status: 	confirmed
+#Description: 
+
+Beim Check einer leeren Chart, werden 2 Fehler gemeldet:
+ 1) Keine States
+ 2) Keine Transitionen
+Nach dem Erzeugen einer Transistion wird kein Fehler mehr gemeldet
+(sollte zumindest "Keine Transitionen" melden) -> Inkonsistenz. Es
+muessen keine Tr. vorkommen, also ist dies KEIN Fehler.
+//------------------------------------------------------------------------------
+#Number:	38
+#Autor:		Bernd Weber bwe
+#Subject:	TESC-Import nicht mit default-Namen moeglich
+#Status: 	confirmed
+#Description: 
+
+Exportiere Chart mit TESC-Export, die Default-Namen
+(z.B. ...DefaultState1) enthaelt. Der Import schlaegt dann fehl.
+
+Von reported auf confirmed gesetzt, da der Fehler nicht reproduzierbar ist.
+//------------------------------------------------------------------------------
+#Number:        39
+#Autor:         stm swtech18
+#Subject:       Nach dem Aendern von Labeln von Defaultstates sind dieses nicht mehr Default!
+#Status:        withdrawn
+#Description:
+Um Fehler beim Anwender zu vermeiden werden bei Namensaenderungen alle
+Default-States einer Ebene geloescht.
+//------------------------------------------------------------------------------
+#Number:        40
+#Autor:         stm swtech18
+#Subject:       GUI: Nach Import und weiterem Import (diesmal mit Fehler) ist alte Chart noch da. 
+#Status:        fixed (ist so gedacht)
+#Description:
+//------------------------------------------------------------------------------
+#Number:        41
+#Autor:         Bernd Weber bwe
+#Subject:       GUI: Nach Speichern wird Dateiname in Titelleiste nicht aktualisiert
+#Status:        confirmed
+#Description:
+//------------------------------------------------------------------------------
+#Number:        42
+#Autor:         Bernd Weber bwe
+#Subject:       GUI: Speichern über graf. Menu wird nicht erkannt
+#Status:        confirmed
+#Description:
+
+Speichert man über die graf. Benutzerführung, meldet GUI beim Versuch,
+etwas zu laden oder Pest zu beenden, dass die Chart noch nicht
+gespeichert wurde. Über normales Menu funktioniert's.
+//------------------------------------------------------------------------------
+#Number:        43
+#Autor:         Bernd Weber bwe
+#Subject:       Editor: Editor erzeugt selbst Koordinatenproblem
+#Status:        confirmed
+#Description:
+
+Zeichne Chart mit zwei Basic States, teile einen der beiden mittels
+"Parallel", zeichne dann eine Transition vom Basic State zum
+AND-State.
+Nach Speichern und Laden meldet der Editor nun ein Koordinatenproblem.
+//------------------------------------------------------------------------------
+#Number:        44
+#Autor:         Bernd Weber bwe
+#Subject:       Simu: Keine Funtionalität erkennbar
+#Status:        fixed 
+#Description:
+
+Erzeuge zwei Basic States und eine leere Transition vom Default State
+zum zweiten Zustand. Rufe Syntaxcheck und Simulator auf.
+Nach Klicken von "MakeStep" passiert nix (Default State noch immer
+aktiv).
+//------------------------------------------------------------------------------
+#Number:        45
+#Autor:         Bernd Weber bwe
+#Subject:       Editor: Labeln von Transition fast unmöglich
+#Status:        confirmed
+#Description:
+
+1. Zwei Basic States nebeneinander erzeugen
+2. Dicht an Mitte der rechten Kante innerhalb des linken Zustandes Anfangspunkt
+   einer Transition setzen. 
+3. Dicht an Mitte der linken Kante innerhalb des rechten Zustandes
+   Zwischenpunkt setzen (ein Linksklick)
+4. An selbem Punkt Endpunkt mit Doppelklick setzen.
+5. Versuchen Transition mit Label Transition zu selektieren (viel
+    Spass ;-) )
+//------------------------------------------------------------------------------
+#Number:        46
+#Autor:         Bernd Weber bwe
+#Subject:       Editor: Editor erzeugt falsche Transition
+#Status:        confirmed
+#Description:
+
+Man erstelle zwei Zustaende wie in Number 43. Zeichne eine Transition
+vom Basic State und lasse sie dicht neben der gestrichelten Linie
+enden. Die Transition "schnappt" dann genau auf Linie und der
+SyntaxCheck meldet eine Interlevel-Transition. Einer der Basic States
+im And State ist Target der Transition geworden.
+//------------------------------------------------------------------------------
+#Number:        47
+#Autor:         Bernd Weber bwe
+#Subject:       Editor: Verschieben, Undo, Restore erzeugt inkonsistenten Zustand
+#Status:        confirmed (jedenfalls untenstehendes Beispiel)
+#Description:
+
+Mehrmals ist es mir gelungen, den Editor durch Benutzen der
+o.g. Funktionen (ohne Selektieren ausgewaehlt zu haben) in einen
+Zustand zu bringen, in dem es überhaupt nicht mehr möglich ist, neue
+Elemente zu zeichnen (allerdings nicht immer reproduzierbar).
+Es sollte nicht möglich sein, diese Funktionen aufzurufen, wenn nichts
+selektiert ist bzw. sie keinen Sinn ergeben (Undo nur nach Aenderung,
+Restore nur nach Undo).
+
+Einfaches Beispiel: Neue Chart erzeugen, dann Restore. Nun gibt's bei
+jedem State eine Exception (wird aber gezeichnet, evt. dafür noch
+einmal restore) und PrettyPrinter zeigt keine Veraenderungen mehr.
+
+//------------------------------------------------------------------------------
+#Number:        48
+#Autor:         Bernd Weber bwe
+#Subject:       Codegen: Keine Schritte erkennbar
+#Status:        processing
+#Description:
+
+1. Importiere TV.st mit STM-Import
+2. Erzeuge dann Code mit dem Codegenerator (erzeugt
+   Automaton.java,SymbolTable.Java).
+3. SimpleEnvironment.java aus codegen-Verzeichnis in gleiches
+   Verzeichnis wie Automaton.java kopieren.
+4. "javac Automaton.java, SymbolTable.java SimpleEnvironment"
+    ausführen.
+5. "java SimpleEnvironment" ausführen. Erzeugt folgende Ausgabe:
+
+(
+ (TV.TV_TV.WORKING )
+ ()
+ ()
+)(
+ ()
+ ()
+ ()
+)
+usw., also keine erkennbaren Zustandsaenderungen.
+//------------------------------------------------------------------------------
+#Number:        49
+#Autor:         Bernd Weber bwe
+#Subject:       Editor: Transitions-Labels werden verschoben
+#Status:        confirmed
+#Description:
+
+Erstelle zwei Zustaende mit beschrifteter Trasition. Erzeuge einen
+parent state aussenrum. Dabei werden die Labels nach unten verschoben.
+//------------------------------------------------------------------------------
+#Number:        50
+#Autor:         Bernd Weber bwe
+#Subject:       Codegen: Implementierung nicht korrekt
+#Status:        processing
+#Description:
+
+1. Lade Chart ~swtech12/Examples/misc/abc.pest bzw. importiere
+   abc.tesc1
+2. Starte Codegenerator
+3. Uebersetze Java-Files Automaton, SimpleEnvironment und SymbolTable
+4. Starte "java SimpleEnvironment"
+
+Der Anfangszustand wird nicht verlassen.
+//------------------------------------------------------------------------------
+#Number:        51
+#Autor:         Bernd Weber bwe
+#Subject:       Editor: Basic-State wird durch PARALLEL umbenannt.
+#Status:        canceled (Absprache mit CodeGen steht noch aus)
+#Description:
+
+Man erzeuge einen Basic State und benenne diesen. Macht man ihn nun
+durch PARALLEL zu einem AND State, erhaelt er einen neuen Namen. Fatal
+deswegen, weil Codegen die Default-Namen nicht vertraegt.
+//------------------------------------------------------------------------------
+#Number:        53
+#Autor:         Bernd Weber bwe
+#Subject:       Editor: erzeugt Interlevel-Transitionen in AND-Sates
+#Status:        confirmed
+#Description:
+
+Man erzeuge einen AND-State und in einer der Komponenten zwei Basic-Zustaende
+und eine Transition zwischen beiden. Die Transition erhaelt als Source und
+Target den AND-State. Natürlich meldet Check dann eine Interlevel-Transition.
+
+Fehler passieren auch beim Importieren via Tesc-Import. Man importiere z.B.
+~swtech12/Examples/misc/and-test1.tesc1. SyntaxCheck ergibt ohne
+geöffneten Editor keine Fehler, mit schon.
+
+Zurückgesetzt auf "reported" !!!
+Das funktioniert noch immer:
+State zeichnen, mit parallel teilen. In der OBEREN Komponente linken Basic
+State, dann rechten Basic State erstellen und Transition von links nach rechts
+einzeichnen. Aufruf von SyntaxCheck meldet Interlevel-Transition. Im der unteren
+Komponente geht's gut.
+
+Auch das Importieren zeigt noch dasselbe Verhalten wie vorher !?!
+//------------------------------------------------------------------------------
+#Number:        54
+#Autor:         Bernd Weber bwe
+#Subject:       Editor: entstellt Grafik beim Erzeugen von Or-States
+#Status:        confirmed
+#Description:
+
+Erstelle zwei Zustaende mit UNbeschrifteter Trasition. Erzeuge einen
+parent state aussenrum. Dabei wird die Anzeige total entstellt (Or-State
+geloescht, Zustaende und Transition verschoben).
+//------------------------------------------------------------------------------
+#Number:        55
+#Autor:         check swtech11
+#Subject:       Editor oder stm ? Interlevel-Transition
+#Status:        confirmed
+#Description:
+
+Das alte Problem mit den Interlevel-Transitionen nach dem Importieren durch STM.
+Ich habe PC/a1.st importiert. Nachdem Aufruf des Editors zeigt der Check zwei Interlevel-Transitionen an.
+//------------------------------------------------------------------------------
+#Number:        56
+#Autor:         Erich Mikk erm
+#Subject:       TESC-Import kann sein eigenes Export-Resultat nicht einlesen.
+#Status:        confirmed
+#Description:
+
+STM-Import von PC/a1.st
+Starte Editor
+Schliesse Editor
+TESC-Export nach a1.tesc
+TESC-Import von a1.tesc wird abgelehnt:
+
+Tesc1: Zeile 18 - Syntax Error : Unerwartetes Token 'in'
+Tesc1: Zeile 18 - Syntax Error : Unerwartetes Token 'in'
+Tesc1: Zeile 18 - Fehler in Zustandsliste : Unerwartetes Token 'in'
+Tesc1: Zeile 18 - Syntax Error : Unerwartetes Token 'in'
+Tesc1: Zeile 18 - Syntax Error : Unerwartetes Token 'in'
+GUI   : TESC1 Fehlgeschlagen !
+
+Diagnose: Der Fehler tritt nicht auf, wenn der Editor nicht gestartet wird. 
+Es ist äusserst seltsam, dass beim Aufbau des Editors die Guards umsortiert werden. 
+Wie Marin (swtech24) es mir erklärte, machen es die TESC1-Methoden.
+Bitte TESC1, macht sowas nicht. Wenn ihr gezwungen seit, sowas zu machen,
+dann meldet einen Fehler.
+
+//------------------------------------------------------------------------------
+#Number:        57
+#Autor:         Erich Mikk erm
+#Subject:       Fehlerreports (Import STM und Import TESC) nicht einheitlich.
+#Status:        confirmed
+#Description:
+
+Wenn Import->Statemate fehlschlägt, gibt es ein pop-up window.
+Aber wenn Import->TESC fehlschlägt, gibt es kein po-up window.
+Mir gefällt die Variante mit pop-up besser.
+
+
+//----------------------------------------------------------------------------
+#Number:        58
+#Autor:         Erich Mikk erm
+#Subject:       Message-Browser, varia
+#Status:        confirmed
+#Description:
+
+(1) Meldungen benutzen Umlaute und stattdessen ae, ue usw.  durcheinander. 
+Bitte vollständig auf ae, ue usw. umsteigen, wegen rest-PEST.
+(2) Es ist nicht möglich, Fehlermeldungen aufzuheben (Selektieren ist
+nicht möglich weil es ein Browser ist, aber dann hätte ich gerne eine 
+Speicherfunktion, wo man die Fehler in eine File abspeichern kann).
+//----------------------------------------------------------------------------
+#Number:        59
+#Autor:         Erich Mikk erm
+#Subject:       GUI: Graphische Benutzerführung und Menü Werkzeuge inkonsistent
+#Status:        fixed(gibt es unter Linux nicht)
+#Description:
+
+Zurückgesetzt: es ist immer noch so. Siehe auch #1.
+
+Nach dem ein Editor geschlossen  worden ist,
+kann man den Editor nur über Werkzeuge->Editor starten, aber
+nicht auf der Graphik.
+
+//----------------------------------------------------------------------------
+#Number:        60
+#Autor:         Heiko Haller, swtech21
+#Subject:       Exception beim Anzeigen eines importierten TESC-Files.
+#Status:        fixed
+#Description:
+
+Wenn man ~swtech21/tests/tesc/Safer1.tesc importiert und dann den Editor auf-
+ruft, so erhaelt man unten abgebildete Meldung.
+Interessanterweise wird das Chart dennoch gezeichnet, aber nicht vollstaendig:
+Es werden alle States gezeichnet, aber dann nur die Transition von Init nach P1.
+
+TESC-File:
+~~~~~~~~~~
+
+# Safer in mehreren Schritten
+# Erster Schritt: Nur abbilden der Phasen
+# events: P1Ready, P2Ready;
+ 
+or Safer:
+        basic Init;
+        basic P1;
+        basic P2;
+        
+        defcon: Init;
+ 
+        transitions:
+        from Init to P1 on;
+        from P1 to P2 on P1Ready;
+        from P2 to P1 on P2Ready;
+        
+end Safer;
+
+
+Meldung:
+~~~~~~~~
+
+
+lauf.next :editor.desk.PESTDrawDesk$Storelist@1dc6106a
+basis.next :editor.desk.PESTDrawDesk$Storelist@1dc6106f
+lauf : editor.desk.PESTDrawDesk$Storelist@1dc6106f
+basis : editor.desk.PESTDrawDesk$Storelist@1dc6106f
+Exception occurred during event dispatching:
+java.lang.NullPointerException
+        at editor.desk.Repaint.redraw(Repaint.java:136)
+        at editor.desk.Repaint.start(Repaint.java:48)
+        at editor.desk.Repaint.redraw(Repaint.java:294)
+        at editor.desk.Repaint.start(Repaint.java:45)
+        at editor.desk.Repaint.redraw(Repaint.java:55)
+        at editor.desk.Repaint.start(Repaint.java:43)
+        at editor.desk.PESTDrawDesk.paint(PESTDrawDesk.java:327)
+        at java.awt.Container.paint(Container.java:703)
+        at sun.awt.motif.MComponentPeer.handleEvent(MComponentPeer.java:193)
+        at java.awt.Component.dispatchEventImpl(Component.java:1834)
+        at java.awt.Container.dispatchEventImpl(Container.java:923)
+        at java.awt.Component.dispatchEvent(Component.java:1708)
+        at java.awt.EventDispatchThread.run(EventDispatchThread.java:81)
+//----------------------------------------------------------------------------
+#Number:        61
+#Autor:         Heiko Haller, swtech21
+#Subject:       Editor: Nach Zoom werden States nach dem Zeichnen verschoben
+#Status:        fixed
+#Description:
+
+Man lege ein neues Chart an und oeffne den Editor. Anschliessend zoomt man 
+10-fach hinein.
+Beim Zeichnen von States werden diese verschoben, wenn man sie loslaesst.
+Interessanterweise verstaerkt sich dieser Effekt, je weiter man hineinzoomt.
+
+//----------------------------------------------------------------------------
+ 
+#Number:        62
+#Autor:         Erich Mikk erm
+#Subject:       GUI: zu viele redraws?
+#Status:        confirmed
+#Description:
+
+das Bild der graphishen Benutzerführung wird jedes mal, wenn die maus 
+das Fenster der Haupinstanz verlässt, neu gezeichnet. 
+Wenn das so weitergeht, muss ich bald zum Augenarzt...
+
+//------------------------------------------------------------------------------
+#Number:	63
+#Autor:		check swtech11
+#Subject:	Editor erzeugt unbehandelte Exception:
+#Status: 	confirmed
+#Description: 
+
+Ich habe all.tesc importiert und dann den Editor aufgerufen.
+Folgendes wurde ausgegeben.
+
+AND>absyn.Basic_State@1dc62668
+AND>Y
+AND>absyn.And_State@1dc6265e
+AND>A2
+Exception occurred during event dispatching:
+java.lang.ClassCastException: absyn.Conname
+        at editor.desk.Repaint.redraw(Repaint.java:175)
+        at editor.desk.Repaint.start(Repaint.java:48)
+        at editor.desk.Repaint.redraw(Repaint.java:294)
+        at editor.desk.Repaint.start(Repaint.java:45)
+        at editor.desk.Repaint.redraw(Repaint.java:287)
+        at editor.desk.Repaint.start(Repaint.java:45)
+        at editor.desk.Repaint.redraw(Repaint.java:55)
+        at editor.desk.Repaint.start(Repaint.java:43)
+        at editor.desk.PESTDrawDesk.paint(PESTDrawDesk.java:327)
+        at java.awt.Container.paint(Container.java:703)
+        at sun.awt.motif.MComponentPeer.handleEvent(MComponentPeer.java:193)
+        at java.awt.Component.dispatchEventImpl(Component.java:1834)
+        at java.awt.Container.dispatchEventImpl(Container.java:923)
+        at java.awt.Component.dispatchEvent(Component.java:1708)
+        at java.awt.EventDispatchThread.run(EventDispatchThread.java:81)
+//------------------------------------------------------------------------------
+#Number:	64
+#Autor:		Bernd Weber bwe
+#Subject:	"Neue Koordinaten" erzeugt Fehler in Statechart ?
+#Status: 	confirmed
+#Description:
+1. Tesc-Import von ~swtech12/Examples/cyber.tesc1
+2. Editor starten (Koordinaten ok)
+3. Neue Koordinaten starten
+Folgende Exception tritt dann auf:
+
+java.lang.NullPointerException: 
+        at editor.desk.Repaint.redraw(Repaint.java:120)
+        at editor.desk.Repaint.start(Repaint.java:48)
+        at editor.desk.Repaint.redraw(Repaint.java:308)
+        at editor.desk.Repaint.start(Repaint.java:45)
+        at editor.desk.Repaint.redraw(Repaint.java:393)
+        at editor.desk.Repaint.start(Repaint.java:46)
+        at editor.desk.Repaint.redraw(Repaint.java:55)
+        at editor.desk.Repaint.start(Repaint.java:43)
+        at editor.desk.PESTDrawDesk.paint(PESTDrawDesk.java:327)
+        at java.awt.Container.paint(Container.java:645)
+        at java.awt.Component.dispatchEventImpl(Component.java:1412)
+        at java.awt.Container.dispatchEventImpl(Container.java:837)
+        at java.awt.Component.dispatchEvent(Component.java:1393)
+        at java.awt.EventDispatchThread.run(EventDispatchThread.java:63)
+//------------------------------------------------------------------------------
+#Number:	65
+#Autor:		Bernd Weber bwe
+#Subject:	Editor erzeugt unbehandelte Exception
+#Status: 	fixed	
+#Description: 
+1. Erzeuge Chart mit zwei Basic States.
+2. Erzeuge ransition von linkem zu rechtem Basic State.
+3. Beschrifte Transition mit E/F
+Exception wird erzeugt:
+  Exception occurred during event dispatching:
+  java.lang.NullPointerException: 
+        at simu.Simu.handClonePath(Simu.java:2176)
+        at simu.Simu.makeTrans(Simu.java:3608)
+        at simu.Simu.makeTab(Simu.java:3516)
+        at simu.Simu.<init>(Simu.java:227)
+        at gui.pest.startSimulator(pest.java:371)
+        at gui.GUIwerkML.actionPerformed(GUIwerkML.java:37)
+        at gui.GUIControlWindowML.mouseClicked(GUIControlWindowML.java:90)
+        at java.awt.Component.processMouseEvent(Component.java:1904)
+        at java.awt.Component.processEvent(Component.java:1778)
+        at java.awt.Component.dispatchEventImpl(Component.java:1456)
+        at java.awt.Component.dispatchEvent(Component.java:1393)
+        at java.awt.EventDispatchThread.run(EventDispatchThread.java:63)
+//------------------------------------------------------------------------------
+#Number:	66
+#Autor:		Bernd Weber bwe
+#Subject:	Simulator oeffnet Event-Fenster nicht
+#Status:  	fixed	
+#Description: 
+Erzeuge States und Transition wie in Nr. 66. Dann starte
+Simulation. Diese oeffnet kein Fenster, um Events zu generieren.
+//------------------------------------------------------------------------------
+#Number:	67
+#Autor:		Bernd Weber bwe
+#Subject:	Einstellungen fuer Check Check haben keinen Effekt.
+#Status: 	processing
+#Description: 
+Erzeuge neue Chart. Checke Chart mit und ohne Option "Warnungen
+anzeigen" bzw. Message-Browser benutzen. Ausgaben sind identisch.
+
+Erzeuge States und Transition wie in Nr. 66. Dann starte
+Simulation. Diese oeffnet kein Fenster, um Events zu generieren.
+//------------------------------------------------------------------------------
+#Number:	68
+#Autor:		Bernd Weber bwe
+#Subject:	STM: Einstellung "Koordinaten uebernehmen" erzeugt Fehler
+#Status: 	reported
+#Description: 
+Setze in Einstellungen fuer STM Option "Koordinaten uebernehmen"
+ausser Kraft. Dann importiere File tv.st und starte den Editor.
+Keine Chart zu sehen, und beim Versuch, etwas zu machen  gibts
+hunderte von Exceptions.
+//------------------------------------------------------------------------------
+#Number:	69
+#Autor:		Erich Mikk
+#Subject:	Neue Koordinaten - neue Probleme
+#Status: 	confirmed
+#Description: 
+
+STM-Import a1.st
+Werkzeuge -> Neue Koordinaten
+Werkzeuge -> Editor
+Editor meldet: Koordinatenproblem aufgetreten.
+Das ist aber sehr seltsam.
+
+Wenn man die gleiche Chart erstmal TESC-Exportieren würde und
+dann wieder TESC-Importieren, dann gibt es das Problem nicht.
+//------------------------------------------------------------------------------
+#Number:	70
+#Autor:		Erich Mikk
+#Subject:	TESC2 berechnet Koordinaten, die Editor durcheinanderbringen (IT)
+#Status: 	confirmed
+#Description: 
+
+TESC-Import ~swtech12/Examples/TV/tv_system.pest1.tesc
+SyntaxCheck ist OK
+Starte Editor (alles klar)
+Erneut SyntaxCheck (es werden Interlevel-Trs gemeldet)
+Laut Auskunft von Martin B. (swtech24) ist das eine klare Indiz für falsche Koordinaten.
+
+//------------------------------------------------------------------------------
+#Number:	71
+#Autor:		Erich Mikk
+#Subject:	Fehler bei Codegenerierung
+#Status: 	reported
+#Description: 
+
+Datei->Oeffnen ~swtech12/Examples/TV/tv_system.pest
+SyntaxCheck ist OK
+Starte Editor (alles klar)
+Simuliere (alles klar)
+Erneut SyntaxCheck 
+Codegenerator:
+ meldet einen Fehler.
+
+//------------------------------------------------------------------------------
+#Number:	72
+#Autor:		Erich Mikk
+#Subject:	Editor: Hinzufügen eines AND bringt alles durcheinander
+#Status: 	confirmed
+#Description: 
+
+STM-Import PC/a1.st
+Check OK
+Editor OK
+Check OK
+Wähle PARALLEL
+Halbiere den OR-State MAG
+Result: vollkommen veränderte Chart (Trs verschoben)
+//------------------------------------------------------------------------------
+#Number:	73
+#Autor:		Erich Mikk
+#Subject:	Wieder IT-Probleme
+#Status: 	confirmed
+#Description: 
+
+
+STM-Import SAFER/compute_cmd.st
+Check OK
+Editor OK
+Erneut Check: ITs werden gemeldet
+
+Man kann sich die ITs anklicken und sehen, wo das schief geht.
+
+Das gleiche Problme in: active_axes.st
+//------------------------------------------------------------------------------
+#Number:	74
+#Autor:		Check swtech11
+#Subject:	GUI: SyntaxCheck Optionen Problem
+#Status: 	reported
+#Description: 
+
+Wenn keine pest.cfg Datei vorhanden ist, dann wird im Konstruktor CheckOption
+ ein null-Pointer fuer CheckConfig uebergeben. Diesen null-Pointer fangen wir
+ zur Zeit ab, aber Aenderungen in den Optionen gehen verloren.
+
+
+//------------------------------------------------------------------------------
+

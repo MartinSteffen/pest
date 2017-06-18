@@ -1,0 +1,80 @@
+Doku fuer Tesc1
+***************
+
+
+Die Tesc-Sprache wird ueber die Tesc-Grammatik (s. grammatik.txt) definiert.
+
+Ein Tesc-File beschreibt einen Statechart, der gemaess der Absyn aufgebaut wird.
+
+Die erste Zeile einer Tesc-Datei kann sein: 
+
+[temporaer?]
+events: <Liste von einzufuehrenden Events>;
+bvars:  <Liste von einzufuehrenden Bvars>;
+
+Falls events: angegeben sind, muss es in der ersten Zeile stehen.
+Falls bvars: angegeben sind, muss es vor <State> stehen.
+[/temporaer?]
+
+<State>
+----------------------------
+
+<State> kann sein: 
+
+or <Name>: 
+	<Inhalt>
+end <Name>;
+
+
+and <Name>:
+	<Inhalt>
+end <Name>;
+
+
+basic <Name>;
+
+----------------------------
+
+Ein or-State kann enthalten (in dieser Reihenfolge, jeweils optional):
+
+<States>		(and-, or-, basic-States in beliebiger Reihenfolge)
+
+<defcon>: <Statename>
+
+<cons:> <Durch , getrennte Liste von Konnektoren>
+
+<transitions:>
+	<Durch ; getrennte Liste der Transitionen>
+
+
+Ein and-State kann nur basic- oder or-States enthalten.
+
+----------------------------
+
+Transitionen sehen folgendermassen aus (Name1, Name2 sind Connames bzw. Statenames):
+
+ from <Name1> to <Name2> on <Guard>;	(Dummy-Action
+oder
+ from <Name1> to <Name2> on <Guard> do <Action>;
+oder
+ from <Name1> to <Name2>;
+oder
+ from <Name1> to <Name2> do <Action>;
+
+----------------------------
+
+Guards bestehen aus Boolschen-Ausdruecken mit Event- bzw. Bool-Variablen:
+
+<Eventteil> [ <Boolteil> ]
+
+<Eventteil> und <Boolteil> werden durch die Klammer durch && verknuepft.
+
+----------------------------
+
+Action ist eine durch , getrennte Liste von Aktionen:
+
+E, c := true
+
+wirft Event E und weist der Boolvariable c den Wert true zu, Boolvars koennen auch Boolsche
+Ausdruecke zugewiesen werden.
+

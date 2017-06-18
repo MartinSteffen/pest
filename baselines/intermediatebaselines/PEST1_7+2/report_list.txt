@@ -1,0 +1,132 @@
+//-----------------------------------------------------------------------------
+//	Fehlerliste von PEST1
+//	---------------------
+//
+//	$Id: report_list,v 1.7 1999/01/13 17:31:01 swtech11 Exp $
+//
+//------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------
+// Das ist ein Kommentar
+// Muster
+//
+// #Number: 	<Error number> 
+// #Autor: 	<name> <e-mail>
+// #Subject: 	<short title>
+// #Status: 	reported | processing | fixed | confirmed
+// #Description: 
+// <long description how to generate>
+//------------------------------------------------------------------------------
+
+
+#Number: 	1
+#Autor:   	Erich Mikk erm
+#Subject:	Wiederholtes Starten des Editors nicht möglich
+#Status: 	reported 
+#Description: 
+
+Die Hauptinstanz (gui) erkennt es offenbar nicht, wenn der Editor
+geschlossen worden ist. Folgende Sequenz führt zu dem Fehler:
+
+(1) Starte PEST:
+cd PEST1/gui
+java gui.pest
+
+(2) Importiere ein Statechart über File->Import->Statemate
+Man nehme z.B. /home/swtech12/Examples/TV/remote_control.st
+
+(3) Starte Editor: Werkzeuge->Editor
+
+(4) Schließe Editor: Im Editor Window->Schliessen
+
+(5) Versuche Editor zu starten: Werkzeuge->Editor
+
+FEHLER: Es erscheint eine Fehlermeldung (Es kann nur ein Editor gestartet
+werden!). obwohl der Editor geschlossen worden ist.
+
+//------------------------------------------------------------------------------
+
+#Number: 	2
+#Autor:   	Erich Mikk erm
+#Subject:	Hauptinstanz versucht Statechart zu laden
+#Status: 	reported 
+#Description: 
+
+(0) Man führe die Sequenz aus Number 1 aus. 
+(1) Man schließe PEST: Datei-> Beenden. I
+Im Dialog (etwa: Statechart ist nicht gespeichert, fortfahren?) 
+die Statechart NICHT speichern!
+(2) Starte PEST erneut.
+(3) Jetzt sieht man ein Fenster: 
+Das Laden ist fehlgeschlagen! (ERSTER FEHLER, warum laden)?
+(4) Antwort OK. Danach wird Editor gestartet (ZWEITER FEHLER, wieso?)
+
+//------------------------------------------------------------------------------
+
+#Number: 	3
+#Autor:   	Erich Mikk erm
+#Subject:	Menüs nicht einheitlich
+#Status: 	reported 
+#Description: 
+
+Das linke obere Menü hießt in der Hauptinstanz und im Editor anders. Auch
+die Menüpunkte heißen verschieden, obwohl die gleiche Funktionalität
+dahinter verbergt ist.
+//------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------
+
+#Number:        4 
+#Autor:         Sven Jorga, Werner Lehmann swtech18
+#Subject:       HA-Format Fehler 
+#Status:        reported
+#Description:
+
+Die Dateien ~/swtech12/Examples/SE-Systems/cd.st und ~/swtech12/Examples/TV/system.st
+sind fehlerhaft: cd.st hat keine Initmap und system.st hat keine Trmap.
+//-----------------------------------------------------------------------------
+
+#Number:        5
+#Autor:         Arne Koch swtech13
+#Subject:       Warnings bei SyntaxCheck
+#Status:        fixed
+#Description:
+
+Falls in einer Action einer Transition Events generiert werden, auf die in
+keiner Transition reagiert wird, soll es eine Warnung geben. 
+Falls man aber eine Liste von Events angibt, wird nur eine Warnung
+ausgegeben, falls auf das LETZTE Element der Sequenz nicht reagiert wird.
+Bsp.: Als Events werden E1, E2, E3 generiert
+
+Check: - Deklarierter Event wurde nicht verwendet (202)
+Check:   [E3]
+
+Falls auf E3 reagiert wird, gibt es gar keine Meldung.
+
+(Import->TESC->tesc1/Test/bsp1.tesc->SyntaxCheck)
+
+//------------------------------------------------------------------------------
+#Number:        6
+#Autor:         Erich Mikk erm
+#Subject:       Interlevel Transitionen in TV
+#Status:        reported
+#Description:
+
+In ~swtech12/Examples/TV/tv.st ist eine Interlevel-Transition. Folgendes
+muss hier Passieren: z.B. Die Transition von VIDEOTEXT nach SHOW darf nicht
+als Interlevel-Transition dargestellt werden.
+//------------------------------------------------------------------------------
+
+#Number:        7
+#Autor:         Erich Mikk erm
+#Subject:       Default States im Editor nicht sichtbar.
+#Status:        reported
+#Description:
+
+
+Der Editor hat keine Bezeichnung für default states.
+
+Man sieht es, wenn man z.B. ~swtech12/Examples/TV/tv.st über 
+Datei->Import->Statemate lädt.
+
+//------------------------------------------------------------------------------

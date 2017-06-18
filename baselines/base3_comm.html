@@ -1,0 +1,64 @@
+<DL COMPACT>
+Ziel diese Baseline war es, kompilierfähige PESTs zu haben, wo alle
+Teilfunktionalitäten von der GUI aus aktiviert werden können. DAS
+ZIEL WURDE NICHT ERREICHT!
+<P>
+
+
+<DT><STRONG>
+STATUS von PEST1
+</STRONG>
+<P>
+
+Diese Baseline ist zwar für PEST1 kompilierfähige, aber
+nicht alle Teilfunktionalitäten sind in GUI eingebunden. Damit
+können wir leben, d.h.
+
+<UL>
+<LI> Alle Gruppen können ihr Teil weiterentwickeln.
+<LI> Nur die in GUI eingebundenen Teilfunktionalitäten können von der
+GUI aus aufgerufen werden und Informationen untereinander Austauschen
+(Statecharts übergeben usw.).
+</UL>
+
+Die Kompilierfähigkeit von PEST1 wurde z.T. erst dadurch erreicht,
+daß wir Makefiles ändern mußten. Sorry, aber es mußte sein. Das
+Problem war, daß nicht alle Makefiles dem Konvention entsprachen,
+daß man die *.class Files (und nur das) durch ein Aufruf von 'make'
+in dem jeweiligen Directory konstruieren kann. (Damit wurde keineswegs
+die Verantwortung über die Makefiles an uns übertragen!)
+<P>
+Auch mußten wir in PEST1/Simu eine kleine Änderung vornehmen.
+
+<DT><STRONG>
+STATUS von PEST2
+</STRONG>
+<P>
+
+
+In PEST2 können alle Teilgruppen außer GUI übersetzt werden. Das
+liegt daran, daß die Schnittstellen noch nicht angeglichen
+sind. Damit kann in PEST2 die GUI nicht gestartet werden.
+<P>
+
+Auch hier mußten wir Makefiles ändern.
+<P>
+
+<DT><STRONG>
+LETZTE ÄNDERUNGEN AN DER ABSTRAKTEN SYNTAX.
+</STRONG>
+<BR>
+
+Bernd hat die abstrakte Syntax um Serialization erweitert. Damit steht
+jetzt dem Laden/Speichern von Statecharts unserseits nichts mehr im
+Wege. Martin Steffen hat Point und Rectangle durch entsprechende
+cloneable austauschen müssen. Jetzt sollte die gesamte Absyn
+cloneable sein.
+<P>
+
+Nach unsere Kenntnis muß nur noch Location mit "Leben gefüllt
+werden", was die TESC1-Leute machen müßten. Sonst dürfte in die
+abstrakte Syntax nichts mehr dazukommen.
+</DL COMPACT>
+
+
