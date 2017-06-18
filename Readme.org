@@ -1,14 +1,14 @@
 
 
-** Abstract
+** Abstract: Pest
 
 
-The repository collects the /sources/ of the ``Mist'' project
-(/Model-checking environment for state-transition systems/) , in the
-software programming lab course ``Programming in the Many'', summer
-semester 2000, at the University Kiel.
+The repository collects the /sources/ of the ``Pest'' project
+(/Programming environment for Statecharts/) , in the
+software programming lab course ``Programming in the Many'', winter 
+semester 1998/1999, at the University Kiel.
 
-For the webpages of the course project, see [[http://heim.ifi.uio.no/msteffen/teaching/softtech/ss00/pitm-mist/mist/][here]]
+For the webpages of the course project, see [[http://heim.ifi.uio.no/msteffen/teaching/softtech/ws9899/pitm-pest/pest/][here]].
 
 
 ** Structure
@@ -18,13 +18,7 @@ package contains the following files and subdirectories:
   
 
     - [[,/Readme.org]]:        this file
-    - [[./Prototyp]]:          requirement spec for that
-    - [[./Pflichtenheft/]]     requirement specification
-    - [[./Baselines]]:         short description about major
-                           development steps (CVS tags)
-    - [[./examples]]:          for testing
-    - [[./web]]:               some extra web-pages
-    - [[./tex/]]               common LaTeX-macros 
+    - [[./src]]:               sources
 
 
 ** Historical notes
@@ -37,5 +31,17 @@ not to be preserved as git labels in the final repository (see the
 the original development was done all via a common login ~swprakt~; in
 general, the contributors were the different students in the course plus
 the course teachers.
+
+*** CVS modules and configurability 
+
+The original project relied on a relatively elaborate CVS-setup, making use
+of /cvs-modules/. The purpose of the modules was the following. Different
+components of the system were programmed by more than one group. In the
+working directories at the client side, only /one/ configuration was
+intended, like a mix-and-mash of different ``features'' (checkout the tool
+with editor 1 + graph-placement 2 ....). That was regulated via cvs modules.
+
+In the process of migration from cvs to svn to git, it's unlikely that this
+setup has been properly preserved, i.e., the configurability has been lost.
 
 
