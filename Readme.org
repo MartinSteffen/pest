@@ -20,7 +20,7 @@ The package contains the following files and subdirectories:
 
     - [[,/Readme.org]]:        this file
     - [[./src]]:               sources
-    - [[./cvsconfigs]]         some original cvs configuration files
+    - [[./misc/cvsconfigs]]:   some original cvs configuration files
 
 
 The webpages, administrative information, and generated documentation is
@@ -35,7 +35,7 @@ apply. Also the /Snapshots/ or baselines (original svn revision tags) seem
 not to be preserved as git labels in the final repository (see the
 [[./Baselines]]-file).  Also, original /authors/ have not been preserved, as
 the original development was done all via ``anonoymous'' logins
-~swptech<xx>~ (with ~swtech00~ the login for the course
+~swtech<xx>~ (with ~swtech00~ the login for the course
 administrator/teacher, the others one login per group); in general, the
 contributors were the different students in the course plus the course
 teachers.

@@ -1,0 +1,76 @@
+# Three different line formats are valid:
+#	key	-a    aliases...
+#	key [options] directory
+#	key [options] directory files...
+#
+# Where "options" are composed of:
+#	-i prog		Run "prog" on "cvs commit" from top-level of module.
+#	-o prog		Run "prog" on "cvs checkout" of module.
+#	-e prog		Run "prog" on "cvs export" of module.
+#	-t prog		Run "prog" on "cvs rtag" of module.
+#	-u prog		Run "prog" on "cvs update" of module.
+#	-d dir		Place module in directory "dir" instead of module name.
+#	-l		Top-level directory only -- do not recurse.
+#
+# NOTE:  If you change any of the "Run" options above, you'll have to
+# release and re-checkout any working directories of these modules.
+#
+# And "directory" is a path to a directory relative to $CVSROOT.
+#
+# The "-a" option specifies an alias.  An alias is interpreted as if
+# everything on the right of the "-a" had been typed on the command line.
+#
+# You can encode a module within a module by using the special '&'
+# character to interpose another module into the current module.  This
+# can be useful for creating a module that consists of many directories
+# spread out over the entire source repository.
+
+########################## PEST ################################
+
+
+
+
+Pest1 	-a	Pest1_Editor Pest1_TESC1 Pest2_TESC2 Pest1_Simu Pest1_CodeGen Pest1_Check STM GUI Absyn Util  Pest1_Docu Pest1_ErrorReport Safer
+
+Pest2 	-a	Pest2_Editor Pest2_TESC1 Pest2_TESC2 Pest2_Simu Pest2_CodeGen Pest2_Check STM GUI Absyn Util Pest2_Docu Pest2_ErrorReport Safer
+
+SAFER	-a 	Safer
+
+# This is shared in both PESTs
+
+STM		-d Pest/src/stm 	 Pest/src/STM
+GUI		-d Pest/src/gui	         Pest/src/GUI
+Absyn		-d Pest/src/absyn	 Pest/src/Absyn
+Util		-d Pest/src/util	 Pest/src/Util
+Safer		-d Pest/src/safer	 Pest/src/Safer
+
+# PEST1 only
+
+Pest1_Editor  	  -d Pest/src/editor       Pest/src/Pest1/Editor
+Pest1_TESC1   	  -d Pest/src/tesc1	   Pest/src/Pest1/TESC1
+Pest1_TESC2   	  -d Pest/src/tesc2	   Pest/src/Pest1/TESC2
+Pest1_Simu    	  -d Pest/src/simu	   Pest/src/Pest1/Simu
+Pest1_CodeGen 	  -d Pest/src/codegen      Pest/src/Pest1/CodeGen
+Pest1_Check   	  -d Pest/src/check	   Pest/src/Pest1/Check
+Pest1_Docu	  -d Pest/src/pestdocu     Pest/src/Pest1/PestDocu
+Pest1_ErrorReport -d Pest/src/ErrorReport  Pest/src/Pest1/ErrorReport
+
+# PEST2 only
+
+Pest2_Editor  	  -d Pest/src/editor       Pest/src/Pest2/Editor
+Pest2_TESC1   	  -d Pest/src/tesc1	   Pest/src/Pest2/TESC1
+Pest2_TESC2   	  -d Pest/src/tesc2	   Pest/src/Pest2/TESC2
+Pest2_Simu    	  -d Pest/src/simu	   Pest/src/Pest2/Simu
+Pest2_CodeGen 	  -d Pest/src/codegen      Pest/src/Pest1/CodeGen
+Pest2_Check   	  -d Pest/src/check        Pest/src/Pest2/Check
+Pest2_Docu	  -d Pest/src/pestdocu     Pest/src/Pest2/PestDocu
+Pest2_ErrorReport -d Pest/src/ErrorReport  Pest/src/Pest2/ErrorReport
+
+# Osbert Ogelsby Projekt:  Softwarepraktikum SS02
+
+Osbert1		-a Osbert1SRC OsbertORG
+Osbert2		-a Osbert2SRC OsbertORG
+
+Osbert1SRC	-d Osbert	Osbert/Gruppe1
+Osbert2SRC	-d Osbert	Osbert/Gruppe2
+OsbertORG	-d Osbert/org	Osbert/org

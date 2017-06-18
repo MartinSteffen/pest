@@ -1,0 +1,4 @@
+~CVSROOT2~ corresponds to ~PEST-oldstuff/CVS/CVSOOT~ and ~CVSOOT~ to
+~mky/CVSROOT~ (under the original software praktikum repository). The first
+one seem to contain the module specifications for Pest, but for other
+projects as well.

@@ -1,0 +1,14 @@
+*.log
+*.dvi
+*~
+*.flc
+*.blg
+*.cmi
+*.cmo
+*.aux
+*.toc
+*.ilg
+*.gz
+*.idx
+a.out
+*.class
