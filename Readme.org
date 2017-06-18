@@ -1,0 +1,41 @@
+
+
+** Abstract
+
+
+The repository collects the /sources/ of the ``Mist'' project
+(/Model-checking environment for state-transition systems/) , in the
+software programming lab course ``Programming in the Many'', summer
+semester 2000, at the University Kiel.
+
+For the webpages of the course project, see [[http://heim.ifi.uio.no/msteffen/teaching/softtech/ss00/pitm-mist/mist/][here]]
+
+
+** Structure
+This is the root of the Snot-project from the summer term 2001.  The
+package contains the following files and subdirectories:
+
+  
+
+    - [[,/Readme.org]]:        this file
+    - [[./Prototyp]]:          requirement spec for that
+    - [[./Pflichtenheft/]]     requirement specification
+    - [[./Baselines]]:         short description about major
+                           development steps (CVS tags)
+    - [[./examples]]:          for testing
+    - [[./web]]:               some extra web-pages
+    - [[./tex/]]               common LaTeX-macros 
+
+
+** Historical notes
+
+The repository has been resurrected by migrating from ~cvs~ via svn (using
+~cvs2svn~) and from there to ~git~. Caveats concerning missing branches
+apply. Also the /Snapshots/ or baselines (original svn revision tags) seem
+not to be preserved as git labels in the final repository (see the
+[[./Baselines]]-file).  Also, original /authors/ have not been preserved, as
+the original development was done all via a common login ~swprakt~; in
+general, the contributors were the different students in the course plus
+the course teachers.
+
+
