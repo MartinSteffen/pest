@@ -8,7 +8,7 @@ The repository collects the /sources/ of the ``Pest'' project
 software programming lab course ``Programming in the Many'', winter 
 semester 1998/1999, at the University Kiel.
 
-For the webpages of the course project, see [[http://heim.ifi.uio.no/msteffen/teaching/softtech/ws9899/pitm-pest][here]].
+For the *webpages of the course project*, see [[https://martinsteffen.github.io/teaching/softtech/ws9899/pitm-pest][here]]
 
 
 ** Structure
